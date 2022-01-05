@@ -12,6 +12,7 @@ import ContactPage from './pages/contactPage/Contact'
 import FamenitiesPage from './pages/famenitiesPage/Famenities'
 import RoomPage from './pages/roomRatesPage/RoomRates'
 import Error404 from './pages/404Error/Error404';
+import Login from './pages/login/Login';
 
 const App = () => {
   return (
@@ -23,6 +24,7 @@ const App = () => {
                 <Route path="/aboutUs" element={<AboutPage />}/>
                 <Route path="/roomRate" element={<RoomPage />}/>
                 <Route path="/facilitiesAmenities" element={<FamenitiesPage />}/>
+                <Route path="/login" element={<Login />}/>
                 <Route path="*" element={<Error404 />}/>
             </Routes>
     </Router>
