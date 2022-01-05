@@ -2,12 +2,18 @@ import React from 'react'
 import { Button } from '../../components/button/styles';
 import { Container, LoginBorder, Square, Star } from './style';
 export const Login = () => {
+    const variants = {
+        visible: { scale: 1},
+        hidden: {scale: 0},
+      }
     return (
         <div>
             <Container>
             <LoginBorder
-            animate={{ scale:[0.99, 1, 0.99] }}
-            transition={{ ease: "easeInOut", duration: 2, repeat: Infinity }}
+            initial="hidden"
+            animate="visible"
+            variants={variants}
+            transition={{  duration: .5, type: "spring", stiffness: 200  }}
             >
 
             <h1>LOG IN</h1>
