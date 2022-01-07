@@ -1,10 +1,13 @@
 import React from 'react'
 import { Button } from '../../components/button/styles';
-import { Container, LoginBorder, Square, Star } from './style';
+import TextBox from '../../components/textBox/TextBox';
+import { Title } from '../../components/title/styles';
+import logo from '../../images/logo.png';
+import { Container, LoginBorder, Logo, Square, Star } from './style';
 export const Login = () => {
     const variants = {
-        visible: { scale: 1},
-        hidden: {scale: 0},
+        visible: { opacity: 1},
+        hidden: {opacity: -0.2},
       }
     return (
         <div>
@@ -13,15 +16,78 @@ export const Login = () => {
             initial="hidden"
             animate="visible"
             variants={variants}
-            transition={{  duration: .5, type: "spring", stiffness: 200  }}
+            transition={{  duration: 1.5}}
             >
 
-            <h1>LOG IN</h1>
-                <Button
-                w='90px' 
-                h='30px'
-                bg='#8F805F'
-                >Log in</Button>
+            <a href="/">
+                <Logo
+                whileHover={{ backgroundColor: "#2E2E2E", borderRadius: "5px" }}
+                src={logo} href="/"
+                ></Logo>
+            
+            </a>
+
+            <Title
+            margin="0px 0px 20px 0px"
+            >Welcome to RM Luxe Hotel</Title>
+
+            <TextBox
+            placeholder="User Name" type="text"
+            ></TextBox>
+
+            <TextBox 
+            placeholder="Password" type="password"
+            radius="0px"
+            ></TextBox>
+
+            <Title
+            size="12px"
+            family="arial"
+            color="red"
+            weight="normal"
+            display="none"
+            >Incorrect password or username</Title>
+
+            <Button
+            whileHover={{ scale: 1.05,  color: "red" }}
+            whileTap={{ scale: .9, color: "gray"}}
+            w='160px' 
+            h='30px'
+            textColor='black'
+            radius='5px'
+            weight='bold'
+            border='none'
+            align='right'
+            >Forgot your password?</Button>
+
+            <Button
+            whileHover={{ scale: 1.1, backgroundColor: "#8F805F",
+            border: "2px solid #2E2E2E", color: "white" }}
+            whileTap={{ scale: 1}}
+            w='190px' 
+            h='30px'
+            margin='40px 0 0 0'
+            textColor='black'
+            radius='5px'
+            weight='bold'
+            >Log in</Button>
+
+            <Title
+            size="10px"
+            margin="20px 0px 10px 0px"
+            >OR</Title>
+
+            <Button
+            whileHover={{ scale: 1.2, textdecoration: "underline", color: "blue" }}
+            whileTap={{ scale: .9, color: "gray"}}
+            w='60px' 
+            h='30px'
+            textColor='black'
+            radius='5px'
+            weight='bold'
+            border='none'
+            >Sign Up</Button>
+
             </LoginBorder>
             
 

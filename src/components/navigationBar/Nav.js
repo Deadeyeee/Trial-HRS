@@ -32,7 +32,7 @@ export const Nav = (props) => {
            <MenuItems><Link href="/roomRate">Rooms & Rates</Link></MenuItems>
            <MenuItems><Link href="/contactUs">Contact</Link></MenuItems>
            <MenuItems><Link href="/aboutUs">About Us</Link></MenuItems>
-           <Button href="https://www.w3schools.com"
+           <Button href="/login"
            w='90px' 
            h='30px'
            style={{ scale: .9}}
@@ -62,7 +62,7 @@ export const Nav = (props) => {
            <MenuItems><Link href="/roomRate">Rooms & Rates</Link></MenuItems>
            <MenuItems><Link href="/contactUs">Contact</Link></MenuItems>
            <MenuItems><Link href="/aboutUs">About Us</Link></MenuItems>
-           <Button href="https://www.w3schools.com"
+           <Button href="/login"
            w='90px' 
            h='30px'
            style={{ scale: .9}}
@@ -92,7 +92,7 @@ export const Nav = (props) => {
            <MenuItems><Link href="/roomRate">Rooms & Rates</Link></MenuItems>
            <MenuItems><Link href="/contactUs">Contact</Link></MenuItems>
            <MenuItems><Link href="/aboutUs">About Us</Link></MenuItems>
-           <Button href="https://www.w3schools.com"
+           <Button href="/login"
            w='90px' 
            h='30px'
            style={{ scale: .9}}
@@ -122,7 +122,7 @@ export const Nav = (props) => {
            <MenuItems><Link active href="/roomRate">Rooms & Rates</Link></MenuItems>
            <MenuItems><Link href="/contactUs">Contact</Link></MenuItems>
            <MenuItems><Link href="/aboutUs">About Us</Link></MenuItems>
-           <Button href="https://www.w3schools.com"
+           <Button href="/login"
            w='90px' 
            h='30px'
            style={{ scale: .9}}
@@ -152,7 +152,7 @@ export const Nav = (props) => {
            <MenuItems><Link href="/roomRate">Rooms & Rates</Link></MenuItems>
            <MenuItems><Link active href="/contactUs">Contact</Link></MenuItems>
            <MenuItems><Link href="/aboutUs">About Us</Link></MenuItems>
-           <Button href="https://www.w3schools.com"
+           <Button href="/login"
            w='90px' 
            h='30px'
            style={{ scale: .9}}
@@ -182,7 +182,7 @@ export const Nav = (props) => {
            <MenuItems><Link href="/roomRate">Rooms & Rates</Link></MenuItems>
            <MenuItems><Link href="/contactUs">Contact</Link></MenuItems>
            <MenuItems><Link active href="/aboutUs">About Us</Link></MenuItems>
-           <Button href="https://www.w3schools.com"
+           <Button href="/login"
            w='90px' 
            h='30px'
            style={{ scale: .9}}
@@ -212,7 +212,7 @@ export const Nav = (props) => {
            <MenuItems><Link href="/roomRate">Rooms & Rates</Link></MenuItems>
            <MenuItems><Link href="/contactUs">Contact</Link></MenuItems>
            <MenuItems><Link href="/aboutUs">About Us</Link></MenuItems>
-           <Button href="https://www.w3schools.com"
+           <Button href="/login"
            w='90px' 
            h='30px'
            style={{ scale: .9}}

@@ -22,7 +22,7 @@ export const LoginBorder = styled(motion.div)`
     width: 490px;
     height: 600px;
     background: rgba(255, 255, 255, 1);
-    border-radius: 30px;
+    border-radius: 20px;
     position: absolute;
     z-index: 1;
     overflow: hidden;
@@ -45,3 +45,13 @@ export const Square = styled(motion.div)`
     border: 1px solid;
     border-color: ${(props) => (props.color ? props.color : "white")};
 `;
+
+export const Logo = styled(motion.img)`
+    height: 150px;
+    width: 150px;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #8F805F;
+    border-radius: 50px;
+    `;
+ 
