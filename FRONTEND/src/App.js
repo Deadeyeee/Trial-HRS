@@ -1,9 +1,7 @@
 import { 
   BrowserRouter as Router,
   Route, 
-  Routes, 
-  Navigate,
-  Redirect   } from 'react-router-dom';
+  Routes} from 'react-router-dom';
 
 import HomePage from './pages/homePage/Home'
 import AboutPage from './pages/aboutUsPage/About'
