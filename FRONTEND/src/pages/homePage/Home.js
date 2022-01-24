@@ -8,7 +8,7 @@ export const Home = () => {
     return (
         <Container>
             <ChatBot/>
-            <NavigationBar isHome/>
+            <NavigationBar home/>
             <BookingHome title="Book Now!"/>
             <Footer/>
         </Container>

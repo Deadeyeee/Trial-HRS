@@ -7,7 +7,7 @@ export const RoomRates = () => {
     return (
         <Container>
             <ChatBot/>
-            <NavigationBar isRoom/>
+            <NavigationBar room/>
             <Footer/>
         </Container>
     )

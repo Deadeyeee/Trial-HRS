@@ -7,7 +7,7 @@ export const About = () => {
     return (
         <Container>
             <ChatBot/>
-            <NavigationBar isAbout/>
+            <NavigationBar about/>
             
             <Footer/>
         </Container>

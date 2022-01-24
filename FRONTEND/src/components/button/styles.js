@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 
 export const Button = styled(motion.a)`
     background-color: ${(props) => (props.bg ? props.bg : "transparent")};
-    color: ${(props) => (props.textColor ? props.textColor : "#F2F2F2")};
+    color: ${(props) => (props.textcolor ? props.textcolor : "#F2F2F2")};
     margin: ${(props) => (props.margin ? props.margin : "0px")};
     width: ${(props) => (props.w ? props.w : "10px")};
     height: ${(props) => (props.h ? props.h : "5px")};
@@ -13,7 +13,7 @@ export const Button = styled(motion.a)`
     text-align:${(props) => (props.align ? props.align : "center")};
     padding: 0px 5px;
     border-radius: ${(props) => (props.radius ? props.radius : "3px")};
-    display: inline-flex;
+    display: ${(props) => (props.display ? props.display : "inline-flex")};;
     align-items: center;
     justify-content: center;
     border: ${(props) => (props.border ? props.border : "2px solid #8F805F")};

@@ -7,7 +7,7 @@ export const Contact = () => {
     return (
         <Container>
             <ChatBot/>
-            <NavigationBar isContact/>
+            <NavigationBar contact/>
             <Footer/>
         </Container>
     )

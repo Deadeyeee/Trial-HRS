@@ -10,6 +10,26 @@ export const ChatBot = () => {
     const [isOpen, setIsOpen] = useState(false);
     const iconVariants = {
         opened: {
+            clipPath: `circle(0% at 100% 100%`,
+            transition: {
+                type: "spring",
+                stiffness: 50,
+                restDelta: 1
+              },
+        },
+        closed: {
+            display: "flex",
+            clipPath: `circle(150% at 100% 100%)`,
+            transition: {
+                type: "spring",
+                stiffness: 50,
+                restDelta: 1
+              },
+        }
+    };
+
+    const iconVariants2 = {
+        opened: {
             display: "none",
             scale: 0,
         },
@@ -18,6 +38,7 @@ export const ChatBot = () => {
             scale: 1,
         }
     };
+
 
     const variants = {
         visible: { opacity: 1 },
@@ -62,7 +83,7 @@ export const ChatBot = () => {
         <MinChat 
         initial={false}
         onClick={() => setIsOpen(state => !state)}
-        variants={iconVariants}
+        variants={iconVariants2}
         animate={isOpen ? "opened": "closed"}
         >
             <ButtonImage src={Chats} h="30px" w="30px"></ButtonImage>

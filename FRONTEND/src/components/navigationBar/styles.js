@@ -25,7 +25,8 @@ export const MenuItems = styled.li`
 export const Link = styled.a`
     color: ${props => props.active ? "#8F805F" : "#E1DACA"};
     border-top: ${props => props.active ? "0.5px solid white" : "none"};
-    padding: 10px 12px;
+    padding: 0px 12px;
+    padding-top: 10px;
     text-decoration: none;
     font-family: Georgia;
     ${MenuItems}:hover &{

@@ -1,14 +1,52 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
 import { Button } from '../../components/button/styles';
 import TextBox from '../../components/textBox/TextBox';
 import { Title } from '../../components/title/styles';
 import logo from '../../images/logo.png';
 import { Container, LoginBorder, Logo, Square, Star } from './style';
+import Axios from 'axios';
+
 export const Login = () => {
+    Axios.defaults.withCredentials = true;
+
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
+
+    
+    const [loginStatus, setLoginStatus] = useState("");
+
+
+    const checkAccount = () =>{
+        Axios.post('http://localhost:3001/login', 
+        {
+            username: username, 
+            password: password,
+        }).then((response)=>{
+            if(response.data.message){
+                setLoginStatus(response.data.message);
+            }
+            else{
+                window.location.href = '/';
+            }
+
+            console.log(response.data)
+        });
+    };
+
+    useEffect(()=>{
+        Axios.get("http://localhost:3001/login").then((response)=>{
+            if(response.data === "loged"){
+                window.location.href = '/';
+            }
+        })
+    });
+    
+
     const variants = {
         visible: { opacity: 1},
         hidden: {opacity: -0.2},
       }
+      
     return (
         <div>
             <Container>
@@ -32,12 +70,18 @@ export const Login = () => {
             >Welcome to RM Luxe Hotel</Title>
 
             <TextBox
-            placeholder="User Name" type="text"
+            placeholder="User Name" type="text" 
+            onChange={(e) => {
+                setUsername(e.target.value);
+            }}
             ></TextBox>
-
             <TextBox 
+            
+            onChange={(e) => {
+                setPassword(e.target.value);
+            }}
             placeholder="Password" type="password"
-            radius="0px"
+            radius="0px" 
             ></TextBox>
 
             <Title
@@ -45,15 +89,15 @@ export const Login = () => {
             family="arial"
             color="red"
             weight="normal"
-            display="none"
-            >Incorrect password or username</Title>
+            >{loginStatus}</Title>
 
             <Button
-            whileHover={{ scale: 1.05,  color: "red" }}
-            whileTap={{ scale: .9, color: "gray"}}
+
+            whileHover={{ scale: 1.05,  color: "rgb(255, 0, 0)" }}
+            whileTap={{ scale: .9, color: "rgb(220,220,220)"}}
             w='160px' 
             h='30px'
-            textColor='black'
+            textcolor='black'
             radius='5px'
             weight='bold'
             border='none'
@@ -61,13 +105,15 @@ export const Login = () => {
             >Forgot your password?</Button>
 
             <Button
+            onClick={checkAccount}
+
             whileHover={{ scale: 1.1, backgroundColor: "#8F805F",
-            border: "2px solid #2E2E2E", color: "white" }}
+            border: "2px solid #2E2E2E", color: "rgb(255, 255, 255)" }}
             whileTap={{ scale: 1}}
             w='190px' 
             h='30px'
             margin='40px 0 0 0'
-            textColor='black'
+            textcolor='black'
             radius='5px'
             weight='bold'
             >Log in</Button>
@@ -78,11 +124,11 @@ export const Login = () => {
             >OR</Title>
 
             <Button
-            whileHover={{ scale: 1.2, textdecoration: "underline", color: "blue" }}
-            whileTap={{ scale: .9, color: "gray"}}
+            whileHover={{ scale: 1.2, color: "rgb(0,0,255)" }}
+            whileTap={{ scale: .9, color: "rgb(220,220,220)"}}
             w='60px' 
             h='30px'
-            textColor='black'
+            textcolor='black'
             radius='5px'
             weight='bold'
             border='none'

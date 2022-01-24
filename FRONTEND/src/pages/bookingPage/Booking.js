@@ -7,7 +7,7 @@ export const Booking = () => {
     return (
         <Container>
             <ChatBot/>
-            <NavigationBar isBook/>
+            <NavigationBar book/>
             <Footer/>
         </Container>
     )

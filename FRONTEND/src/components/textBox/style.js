@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { motion } from "framer-motion";
 export const  TextInput = styled.input`
     width: ${(props) => (props.w ? props.w : "300px")};
     height: ${(props) => (props.h ? props.h : "35px")};
