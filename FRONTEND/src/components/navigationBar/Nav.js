@@ -59,9 +59,9 @@ export const Nav = (props) => {
            h='30px'
            style={{ scale: .9}}
            whileHover={{ scale: 1, backgroundColor: "#8F805F",
-           border: "1px solid white", rotate: [0, 10, -10, 0, ], }}
-           whileTap={{ scale: .7}}
-           transition={{ duration: .4 }}
+           border: "1px solid white", rotate: [0, 5, -5, 0, ], }}
+           whileTap={{ scale: .9}}
+           transition={{ duration: .2 }}
            >Log in</Button>
        </Menu>
        <image src="logo.png"></image>

@@ -1,6 +1,6 @@
 import styled from "styled-components";
-
-export const Title = styled.h1`
+import { motion } from "framer-motion";
+export const Title = styled(motion.h1)`
 font-family: ${(props) => (props.family ? props.family : "'Playfair Display', serif")};
 font-size: ${(props) => (props.size ? props.size : "30px")};
 font-weight: ${(props) => (props.weight ? props.weight : "bold")};

@@ -5,6 +5,7 @@ import { Title } from '../../components/title/styles';
 import logo from '../../images/logo.png';
 import { Container, LoginBorder, Logo, Square, Star } from './style';
 import Axios from 'axios';
+import Background from '../../components/background/Background';
 
 export const Login = () => {
     Axios.defaults.withCredentials = true;
@@ -70,7 +71,7 @@ export const Login = () => {
             >Welcome to RM Luxe Hotel</Title>
 
             <TextBox
-            placeholder="User Name" type="text" 
+            placeholder="Username" type="text" 
             onChange={(e) => {
                 setUsername(e.target.value);
             }}
@@ -85,8 +86,11 @@ export const Login = () => {
             ></TextBox>
 
             <Title
+            animate={{ scale:[1, .95, 1] }}
+            transition={{ ease: "linear", duration: 2, repeat: Infinity }}
             size="12px"
             family="arial"
+            margin="5px 0px 0px 0px"
             color="red"
             weight="normal"
             >{loginStatus}</Title>
@@ -94,7 +98,7 @@ export const Login = () => {
             <Button
 
             whileHover={{ scale: 1.05,  color: "rgb(255, 0, 0)" }}
-            whileTap={{ scale: .9, color: "rgb(220,220,220)"}}
+            whileTap={{ scale: 1, color: "rgb(220,220,220)"}}
             w='160px' 
             h='30px'
             textcolor='black'
@@ -125,7 +129,7 @@ export const Login = () => {
 
             <Button
             whileHover={{ scale: 1.2, color: "rgb(0,0,255)" }}
-            whileTap={{ scale: .9, color: "rgb(220,220,220)"}}
+            whileTap={{ scale: 1, color: "rgb(220,220,220)"}}
             w='60px' 
             h='30px'
             textcolor='black'
@@ -138,309 +142,7 @@ export const Login = () => {
             
 
             {/*FROM THIS POINT WILL BE THE BACKGROUND ANIMATION*/}
-            <Star
-            h="3px"
-            w="3px"
-            animate={{ y: [-1000, 1000] }}
-            transition={{ ease: "linear", duration: 15, repeat: Infinity }}
-            />
-            <Star
-            h="3px"
-            w="3px"
-            animate={{ y: [-1400, 1400] }}
-            transition={{ ease: "linear", duration: 20, repeat: Infinity }}
-            />
-            <Star
-            h="2px"
-            w="2px"
-            animate={{ y: [-1090, 1090] }}
-            transition={{ ease: "linear", duration: 13, repeat: Infinity }}
-            />
-            <Square
-            w="20px"
-            h="90px"
-            color="DeepPink"
-            animate={{ y: [-1520, 1000], rotate: [0, 360] }}
-            transition={{ ease: "linear", duration: 14, repeat: Infinity }}
-            />
-            <Star
-            h="1px"
-            w="1px"
-            animate={{ y: [-1200, 1200] }}
-            transition={{ ease: "linear", duration: 13, repeat: Infinity }}
-            />
-            <Star
-            h="3px"
-            w="3px"
-            animate={{ y: [-1300, 1300] }}
-            transition={{ ease: "linear", duration: 17, repeat: Infinity }}
-            />
-            <Star
-            h="2px"
-            w="2px"
-            animate={{ y: [-900, 900] }}
-            transition={{ ease: "linear", duration: 19, repeat: Infinity }}
-            /><Star
-            h="3px"
-            w="3px"
-            animate={{ y: [-1000, 1000] }}
-            transition={{ ease: "linear", duration: 15, repeat: Infinity }}
-            />
-            <Star
-            h="3px"
-            w="3px"
-            animate={{ y: [-1400, 1400] }}
-            transition={{ ease: "linear", duration: 20, repeat: Infinity }}
-            />
-            <Star
-            h="2px"
-            w="2px"
-            animate={{ y: [-1090, 1090] }}
-            transition={{ ease: "linear", duration: 12, repeat: Infinity }}
-            />
-            
-            <Star
-            h="1px"
-            w="1px"
-            animate={{ y: [-1200, 1200] }}
-            transition={{ ease: "linear", duration: 3, repeat: Infinity }}
-            />
-            <Star
-            h="1px"
-            w="1px"
-            animate={{ y: [-1300, 1300] }}
-            transition={{ ease: "linear", duration: 12, repeat: Infinity }}
-            />
-            <Star
-            h="1px"
-            w="1px"
-            animate={{ y: [-900, 900] }}
-            transition={{ ease: "linear", duration: 17, repeat: Infinity }}
-            /><Star
-            h="3px"
-            w="3px"
-            animate={{ y: [-1000, 1000] }}
-            transition={{ ease: "linear", duration: 5, repeat: Infinity }}
-            />
-            <Star
-            h="1px"
-            w="1px"
-            animate={{ y: [-1400, 1400] }}
-            transition={{ ease: "linear", duration: 10, repeat: Infinity }}
-            />
-            <Star
-            h="2px"
-            w="2px"
-            animate={{ y: [-1090, 1090] }}
-            transition={{ ease: "linear", duration: 5, repeat: Infinity }}
-            />
-
-            <Square
-            w="50px"
-            h="90px"
-            r="50px"
-            color="violet"
-            animate={{ y: [-1520, 1000], rotate: [0, 360], x:[-500, 500] }}
-            transition={{ ease: "linear", duration: 40, repeat: Infinity }}
-            />
-
-            <Star
-            h="1px"
-            w="1px"
-            animate={{ y: [-1200, 1200] }}
-            transition={{ ease: "linear", duration: 13, repeat: Infinity }}
-            />
-            <Star
-            h="3px"
-            w="3px"
-            animate={{ y: [-1300, 1300] }}
-            transition={{ ease: "linear", duration: 14, repeat: Infinity }}
-            />
-            <Star
-            h="2px"
-            w="2px"
-            animate={{ y: [-900, 900] }}
-            transition={{ ease: "linear", duration: 13, repeat: Infinity }}
-            />
-            <Star
-            h="3px"
-            w="3px"
-            animate={{ y: [-1000, 1000] }}
-            transition={{ ease: "linear", duration: 15, repeat: Infinity }}
-            />
-            <Square
-            w="200px"
-            h="200px"
-            animate={{rotate: [0, 360], x:[-1500, 1000] }}
-            transition={{ ease: "linear", duration: 30, repeat: Infinity }}
-            />
-            <Star
-            h="3px"
-            w="3px"
-            animate={{ y: [-1400, 1400] }}
-            transition={{ ease: "linear", duration: 20, repeat: Infinity }}
-            />
-            <Star
-            h="2px"
-            w="2px"
-            animate={{ y: [-1090, 1090] }}
-            transition={{ ease: "linear", duration: 10, repeat: Infinity }}
-            />
-            <Square
-            w="30px"
-            h="20px"
-            color="Orange "
-            animate={{ y: [1520, -1000], rotate: [0, 360], x:[1500, -900] }}
-            transition={{ ease: "linear", duration: 24, repeat: Infinity }}
-            />
-            <Star
-            h="1px"
-            w="1px"
-            animate={{ y: [-1200, 1200] }}
-            transition={{ ease: "linear", duration: 13, repeat: Infinity }}
-            />
-            <Star
-            h="3px"
-            w="3px"
-            animate={{ y: [-1300, 1300] }}
-            transition={{ ease: "linear", duration: 16, repeat: Infinity }}
-            />
-            <Star
-            h="2px"
-            w="2px"
-            animate={{ y: [-900, 900] }}
-            transition={{ ease: "linear", duration: 20, repeat: Infinity }}
-            />
-            <Star
-            h="2px"
-            w="2px"
-            animate={{ y: [-1000, 1000] }}
-            transition={{ ease: "linear", duration: 21, repeat: Infinity }}
-            />
-            <Star
-            h="1px"
-            w="1px"
-            animate={{ y: [-1000, 1000] }}
-            transition={{ ease: "linear", duration: 6, repeat: Infinity }}
-            />
-            <Star
-            h="2px"
-            w="2px"
-            animate={{ y: [-1000, 1000] }}
-            transition={{ ease: "linear", duration: 4, repeat: Infinity }}
-            />
-            <Square
-            w="50px"
-            h="90px"
-            
-            color="cyan"
-            animate={{ y: [-2520, 1000], rotate: [0, 360], x: [500, -1000] }}
-            transition={{ ease: "linear", duration: 14, repeat: Infinity }}
-            />
-            <Star
-            h="2px"
-            w="2px"
-            animate={{ y: [-1000, 1000] }}
-            transition={{ ease: "linear", duration: 21, repeat: Infinity }}
-            />
-            
-            <Star
-            h="4px"
-            w="4px"
-            animate={{ y: [-1000, 1000] }}
-            transition={{ ease: "linear", duration: 12, repeat: Infinity }}
-            />
-            
-            <Star
-            h="1px"
-            w="1px"
-            animate={{ y: [-1000, 1000] }}
-            transition={{ ease: "linear", duration: 17, repeat: Infinity }}
-            />
-            <Star
-            h="2px"
-            w="2px"
-            animate={{ y: [-1000, 1000] }}
-            transition={{ ease: "linear", duration: 12, repeat: Infinity }}
-            />
-            <Star
-            h="2px"
-            w="2px"
-            animate={{ y: [-1000, 1000] }}
-            transition={{ ease: "linear", duration: 3, repeat: Infinity }}
-            />
-            <Star
-            h="1px"
-            w="1px"
-            animate={{ y: [-1000, 1000] }}
-            transition={{ ease: "linear", duration: 7, repeat: Infinity }}
-            />
-            <Star
-            h="3px"
-            w="3px"
-            animate={{ y: [-1300, 1300] }}
-            transition={{ ease: "linear", duration: 10, repeat: Infinity }}
-            />
-            <Star
-            h="2px"
-            w="2px"
-            animate={{ y: [-900, 900] }}
-            transition={{ ease: "linear", duration: 21, repeat: Infinity }}
-            />
-            <Star
-            h="2px"
-            w="2px"
-            animate={{ y: [-1000, 1000] }}
-            transition={{ ease: "linear", duration: 19, repeat: Infinity }}
-            />
-            <Star
-            h="1px"
-            w="1px"
-            animate={{ y: [-1000, 1000] }}
-            transition={{ ease: "linear", duration: 6, repeat: Infinity }}
-            />
-            <Square
-            r="100px"
-            animate={{ y: [-1000, 1000], rotate: [0, 90] }}
-            transition={{ ease: "linear", duration: 10, repeat: Infinity }}
-            />
-            <Star
-            h="2px"
-            w="2px"
-            animate={{ y: [-1000, 1000] }}
-            transition={{ ease: "linear", duration: 20, repeat: Infinity }}
-            />
-            
-            <Star
-            h="2px"
-            w="2px"
-            animate={{ y: [-1000, 1000] }}
-            transition={{ ease: "linear", duration: 12, repeat: Infinity }}
-            />
-            <Star
-            h="3px"
-            w="3px"
-            animate={{ y: [-1220, 1000] }}
-            transition={{ ease: "linear", duration: 12, repeat: Infinity }}
-            />
-            <Star
-            h="3px"
-            w="3px"
-            animate={{ y: [-1520, 1000] }}
-            transition={{ ease: "linear", duration: 17, repeat: Infinity }}
-            />
-            <Square
-            
-            color="yellow"
-            animate={{ y: [-1520, 1000], rotate: [0, 360] }}
-            transition={{ ease: "linear", duration: 17, repeat: Infinity }}
-            />
-            <Star
-            h="3px"
-            w="3px"
-            animate={{ y: [-1620, 1000] }}
-            transition={{ ease: "linear", duration: 5, repeat: Infinity }}
-            />
+            <Background></Background>
         </Container>
         </div>
     )
