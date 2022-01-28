@@ -11,10 +11,11 @@ export const Button = styled(motion.a)`
     font-style: italic; 
     cursor:pointer;
     text-align:${(props) => (props.align ? props.align : "center")};
-    padding: 0px 5px;
+    padding: ${(props) => (props.padding ? props.padding : "0px 5px")};
     border-radius: ${(props) => (props.radius ? props.radius : "3px")};
     display: ${(props) => (props.display ? props.display : "inline-flex")};;
     align-items: center;
     justify-content: center;
     border: ${(props) => (props.border ? props.border : "2px solid #8F805F")};
+    z-index: ${(props) => (props.index ? props.index : "auto")};
     `;

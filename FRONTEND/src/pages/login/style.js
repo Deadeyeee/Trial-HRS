@@ -29,21 +29,6 @@ export const LoginBorder = styled(motion.div)`
 `;
 
 
-export const Star = styled(motion.div)`
-    width: ${(props) => (props.w ? props.w : "1px")};
-    height: ${(props) => (props.h ? props.h : "1px")};
-    background-color: white;
-    border-radius: 100px;
-`;
-
-export const Square = styled(motion.div)`
-    width: ${(props) => (props.w ? props.w : "50px")};
-    height: ${(props) => (props.h ? props.h : "50px")};
-    background: none;
-    border-radius: ${(props) => (props.r ? props.r : "1px")};
-    border: 1px solid;
-    border-color: ${(props) => (props.color ? props.color : "white")};
-`;
 
 export const Logo = styled(motion.img)`
     height: 150px;
