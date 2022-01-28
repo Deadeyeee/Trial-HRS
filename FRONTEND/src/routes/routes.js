@@ -12,6 +12,7 @@ import ContactPage from '../pages/contactPage/Contact'
 import FamenitiesPage from '../pages/famenitiesPage/Famenities'
 import RoomPage from '../pages/roomRatesPage/RoomRates'
 import Error404 from '../pages/404Error/Error404';
+import Register from '../pages/login/register/Register';
 
 export const routes = () => {
     return (
@@ -23,6 +24,7 @@ export const routes = () => {
                 <Route exact path="/roomRate" components={RoomPage}/>
                 <Route exact path="/facilitiesAmenities" components={FamenitiesPage}/>
                 <Route exact path="/404" components={Error404}/>
+                <Route exact path="/register" components={Register}/>
                 <Navigate  to="/404"/>
         </Router>
     )

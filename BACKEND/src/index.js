@@ -2,16 +2,13 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const mysql = require('mysql');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 
-const db = mysql.createPool({
-    host: '127.0.0.1',
-    user: 'jhim',
-    password: 'jhim',
-    database: 'rm_luxe_hotel_db',
-});
+
+//import routes here
+
+//create routes
 
 app.use(cors({
     origin: ["http://localhost:3000"],
@@ -30,6 +27,11 @@ app.use(session({
         expire: 5 * 3600000,
     },
 }))
+
+
+//routers
+const user = require('./routes/user.route.js')
+app.use('/api', user)
 
 app.post('/login', (req,res) =>{
     
@@ -79,6 +81,12 @@ app.delete('/logout', (req, res) => {
       }
 });
 
-app.listen(3001, () =>{
+//test server
+app.get('/', (req, res) =>{
+    res.send('hELLO WORLD');
+});
+const PORT = process.env.PORT || 3001
+
+app.listen(PORT, () =>{
     console.log("running on port 3001");
 });

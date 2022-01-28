@@ -3,7 +3,7 @@ import { Button } from '../../components/button/styles';
 import TextBox from '../../components/textBox/TextBox';
 import { Title } from '../../components/title/styles';
 import logo from '../../images/logo.png';
-import { Container, LoginBorder, Logo, Square, Star } from './style';
+import { Container, LoginBorder, Logo} from './style';
 import Axios from 'axios';
 import Background from '../../components/background/Background';
 
@@ -130,6 +130,7 @@ export const Login = () => {
             <Button
             whileHover={{ scale: 1.2, color: "rgb(0,0,255)" }}
             whileTap={{ scale: 1, color: "rgb(220,220,220)"}}
+            href='/register'
             w='60px' 
             h='30px'
             textcolor='black'
