@@ -3,12 +3,13 @@ import { motion } from "framer-motion";
 
 export const Button = styled(motion.a)`
     background-color: ${(props) => (props.bg ? props.bg : "transparent")};
+    font-family: ${(props) => (props.fam ? props.fam : "")};
     color: ${(props) => (props.textcolor ? props.textcolor : "#F2F2F2")};
     margin: ${(props) => (props.margin ? props.margin : "0px")};
     width: ${(props) => (props.w ? props.w : "10px")};
     height: ${(props) => (props.h ? props.h : "5px")};
     font-weight: ${(props) => (props.weight ? props.weight : "normal")};
-    font-style: italic; 
+    font-style: ${(props) => (props.fontStyle ? props.fontStyle : "italic")};
     cursor:pointer;
     text-align:${(props) => (props.align ? props.align : "center")};
     padding: ${(props) => (props.padding ? props.padding : "0px 5px")};
