@@ -5,7 +5,11 @@ export const TextInput = styled.input`
     margin: ${(props) => (props.margins ? props.margins : "20px 0px 0px 0px")};
     outline: ${(props) => (props.outline ? props.outline : "0")};
     text-align: ${(props) => (props.align ? props.align : "left")};
+<<<<<<< Updated upstream
     background-color: ${(props) => (props.background ? props.background : "none")};
+=======
+    background-color: ${(props) => (props.background ? props.background : "#8F805F")};
+>>>>>>> Stashed changes
     padding: ${(props) => (props.padding ? props.padding : "0")};
     placeholder: ${(props) => (props.placeholder ? props.placeholder : "-")};
     border-width: ${(props) => (props.border ? props.border : "0 0 2px")};
