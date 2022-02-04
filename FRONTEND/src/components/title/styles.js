@@ -6,10 +6,10 @@ font-size: ${(props) => (props.size ? props.size : "30px")};
 font-weight: ${(props) => (props.weight ? props.weight : "bold")};
 text-align: ${(props) => (props.align ? props.align : "center")};;
 margin: ${(props) => (props.margin ? props.margin : "0px")};
-padding: ${(props) => (props.padding ? props.padding : "auto")};
-color: ${(props)=>(props.color? props.color: "black")};
-display: ${(props) =>(props.display ? props.display : "block")};
-letter-spacing: ${(props) =>(props.spacing ? props.spacing : "1px")};
+color: ${(props) => (props.color ? props.color : "black")};
+display: ${(props) => (props.display ? props.display : "block")};
+letter-spacing: ${(props) => (props.spacing ? props.spacing : "1px")};
+padding: ${(props) => (props.padding ? props.padding : "0px")};
+align-self: ${(props) => (props.alignSelf ? props.alignSelf : "auto")};
 line-height: ${(props) =>(props.line ? props.line : "auto")};
-
 `;
