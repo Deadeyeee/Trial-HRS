@@ -10,7 +10,7 @@ export const  TextInput = styled.input`
     font-size: 14px;
     padding: ${(props) => (props.padding ? props.padding : "auto")};
     border-radius: ${(props) => (props.radius ? props.radius : "0px")};
-    font-family: arial;
+    font-family: ${(props) => (props.family ? props.family : "arial")};;
     &:focus{
         border-radius: ${(props) => (props.radiusFocus ? props.radiusFocus : "0px")};
         border-width: ${(props) => (props.widthFocus ? props.widthFocus : "0 0 2px")};

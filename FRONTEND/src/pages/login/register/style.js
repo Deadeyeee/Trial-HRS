@@ -22,12 +22,21 @@ export const RegisterBorder = styled(motion.div)`
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    width: 490px;
-    height: 650px;
+    width: auto;
+    height: auto;
     background: rgba(255, 255, 255, 1);
     border-radius: 20px;
     position: absolute;
     z-index: 1;
     overflow: hidden;
+    padding: 30px 50px 30px 50px;
     box-shadow: -5px 10px 5px black;
+`;
+
+export const RegistrationForm = styled.form`
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 `;

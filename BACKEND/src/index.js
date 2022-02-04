@@ -28,7 +28,6 @@ app.use(session({
     },
 }))
 
-
 //routers
 const user = require('./routes/user.route.js')
 app.use('/api', user)
@@ -84,6 +83,7 @@ app.delete('/logout', (req, res) => {
 //test server
 app.get('/', (req, res) =>{
     res.send('hELLO WORLD');
+    console.log(typeof(firstname))
 });
 const PORT = process.env.PORT || 3001
 

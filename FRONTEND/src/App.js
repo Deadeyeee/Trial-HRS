@@ -1,7 +1,8 @@
-import { 
+import {
   BrowserRouter as Router,
-  Route, 
-  Routes} from 'react-router-dom';
+  Route,
+  Routes
+} from 'react-router-dom';
 
 import HomePage from './pages/homePage/Home'
 import AboutPage from './pages/aboutUsPage/About'
@@ -15,18 +16,18 @@ import Register from './pages/login/register/Register';
 
 const App = () => {
   return (
-      <Router>
-            <Routes>
-                <Route path="/" element={<HomePage />}/>
-                <Route path="/booking" element={<BookingPage />}/>
-                <Route path="/contactUs" element={<ContactPage />}/>
-                <Route path="/aboutUs" element={<AboutPage />}/>
-                <Route path="/roomRate" element={<RoomPage />}/>
-                <Route path="/facilitiesAmenities" element={<FamenitiesPage />}/>
-                <Route path="/login" element={<Login />}/>
-                <Route path="/register" element={<Register />}/>
-                <Route path="*" element={<Error404 />}/>
-            </Routes>
+    <Router>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/booking" element={<BookingPage />} />
+        <Route path="/contactUs" element={<ContactPage />} />
+        <Route path="/aboutUs" element={<AboutPage />} />
+        <Route path="/roomRate" element={<RoomPage />} />
+        <Route path="/facilitiesAmenities" element={<FamenitiesPage />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="*" element={<Error404 />} />
+      </Routes>
     </Router>
   );
 }
