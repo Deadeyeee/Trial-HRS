@@ -7,7 +7,8 @@ exports.create = async(req,res)=>{
         const new_user =  await User.create(req.body);
         return res.status(200).send(new_user);
     } catch (error) {
-        return res.status(400).send(error.message);
+        return res.status(200).send(error.message);
+        
     }
 };
 
