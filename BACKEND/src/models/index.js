@@ -33,7 +33,8 @@ db.sequelize = sequelize;
 
 
 //Init models here
-db.users = require('./user.model.js')(sequelize, DataTypes)
+db.users = require('./user.model.js')(sequelize, DataTypes);
+db.guestInformations = require('./guestInformation.model.js')(sequelize, DataTypes)
 
 
 
