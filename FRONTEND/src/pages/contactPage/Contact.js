@@ -40,7 +40,7 @@ export const Contact = () => {
                                 margin='40px 0px 0px 0px'
                                 family='Lato'
                                 color='#5b5b5b'
-                                align='right'
+                                align='Right'
                                 size='20px'
                             >
                                 68 Cenacle Dr,<br></br>
