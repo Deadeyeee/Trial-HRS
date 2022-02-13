@@ -82,6 +82,7 @@ export const Login = () => {
                             onChange={(e) => {
                                 setUserName(e.target.value);
                                 setEmail(e.target.value);
+                                setLoginStatus("");
                             }}
                             placeholder="  &#xf007; Username or Email"
                             type="text"
@@ -92,6 +93,7 @@ export const Login = () => {
 
                             onChange={(e) => {
                                 setPassword(e.target.value);
+                                setLoginStatus("");
                             }}
                             placeholder="  &#xf023;  Password"
                             family="FontAwesome"
