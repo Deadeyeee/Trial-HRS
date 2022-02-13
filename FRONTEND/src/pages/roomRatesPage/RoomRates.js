@@ -19,7 +19,6 @@ export const RoomRates = () => {
                 Rooms & Rates
             </Title>
             <FlexboxContainer>
-
                 <FlexboxContentMain>
                     <FlexboxMainPhotoLeft></FlexboxMainPhotoLeft>
                     <FlexboxContent>

@@ -75,7 +75,6 @@ export const Famenities = () => {
 
                 </TitleHolder>
             </PhotoHolder>
-
             <Footer />
         </Container>
     )
