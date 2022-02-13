@@ -4,7 +4,7 @@ import logo from '../../images/profilePictures/emptyProfile.png';
 import { Title } from '../../components/title/styles';
 import Dropdown  from '../../icons/dropdown.png';
 import Profile from '../../icons/profile-user.png'
-import Logout from '../../icons/logout.png'
+import LogoutLogo from '../../icons/logout.png'
 import Book from '../../icons/book.png'
 import Messages from '../../icons/messages.png'
 import { withTheme } from 'styled-components';
@@ -14,21 +14,6 @@ export const ProfileDrop = (props) => {
 
     const [userName, setUserName] = useState("");
 
-    useEffect(()=>{
-        Axios.get("http://localhost:3001/login").then((response)=>{
-            if(response.data != "not loged"){
-                setUserName(response.data);
-    
-            }
-        })
-    });
-
-    const logout = () =>{
-      Axios.post("http://localhost:3001/logout").then((response) =>{
-          console.log(response);
-      });
-      document.location.reload();
-    }
     const [isOpen, setIsOpen] = useState(false);
     const iconVariants = {
         opened: {
@@ -68,7 +53,7 @@ export const ProfileDrop = (props) => {
             w="10px"
             overflow="hidden"
             align="left"
-            >{userName.charAt(0).toUpperCase()}{userName.slice(1)}</Title>
+            >{props.userName}</Title>
             </TitleCap>
             <DropDown  src={Dropdown}></DropDown>
         </Container>
@@ -119,12 +104,12 @@ export const ProfileDrop = (props) => {
             family="georgia">Messages</Title>
         </Menu>
         <Menu
-        onClick={logout}
+        onClick={props.Logout}
         whileHover={{backgroundColor: "#8F805F", color: "white",
         borderRadius: "2px"}}
         >
         <ProfilePicture 
-            src={Logout} href="/"
+            src={LogoutLogo} href="/"
             ></ProfilePicture>
         <Title 
             size="16px"

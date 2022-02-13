@@ -40,3 +40,9 @@ export const RegistrationForm = styled.form`
     justify-content: center;
     align-items: center;
 `;
+
+export const Image = styled(motion.img)`
+    width: 150px;
+    height: 150px;
+    border-radius: 30px;
+`;

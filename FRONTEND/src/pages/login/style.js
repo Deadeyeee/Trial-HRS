@@ -39,3 +39,10 @@ export const Logo = styled(motion.img)`
     border-radius: 50px;
     `;
  
+ export const RegistrationForm = styled.form`
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+`;

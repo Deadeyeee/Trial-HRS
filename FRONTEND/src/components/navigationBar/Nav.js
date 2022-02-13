@@ -8,24 +8,29 @@ import ProfileDrop from '../../containers/profileDrop/ProfileDrop';
 
 export const Nav = (props) => {
   
-  Axios.defaults.withCredentials = true;
 
   const [login, setLogin] = useState("");
   const [dropDown, setdropDown] = useState("");
   const [userName, setUserName] = useState("");
 
-  useEffect(()=>{
-    Axios.get("http://localhost:3001/login").then((response)=>{
-      console.log(response.data);
-        if(response.data != "not loged"){
-            setLogin("none");
-            setUserName(response.data)
+  const Logout = () => {
+      Axios.delete("http://localhost:3001/auth/Logout").then((response) => {
+        
+        window.location.reload();
+      })
+  }
 
-        }
-        else{
-          setdropDown("none");
-        }
-        console.log(response.data)
+  useEffect(()=>{
+    console.log()
+    Axios.defaults.withCredentials = true;
+    Axios.get("http://localhost:3001/auth/verify-token").then((response)=>{
+      setLogin("none");
+      setUserName(response.data.userName.charAt(0).toUpperCase()+ response.data.userName.slice(1));
+      
+    }).catch((e) => {
+      if(e.response.data === "Unauthorized"){
+        setdropDown("none");
+      }
     })
 });
   
@@ -35,12 +40,7 @@ export const Nav = (props) => {
   }
 
     return (
-      <Container
-       initial="hidden"
-       animate="visible"
-       variants={variants}
-       transition={{  duration: .8, type: "tween"  }}
-      >
+      <Container>
            <Menu>
            <Logo src={logo}/>
            <MenuItems><Link active={props.home == true} href="/">Home</Link></MenuItems>
@@ -52,6 +52,8 @@ export const Nav = (props) => {
           
           <ProfileDrop
           display={dropDown}
+          userName={userName}
+          Logout={Logout}
           ></ProfileDrop>
            <Button href="/login"
            display={login}

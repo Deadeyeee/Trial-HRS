@@ -19,11 +19,13 @@ export const VerticalLine = styled(motion.div)`
     background-color: black;
     height: 250px;
     width: 1px;
-    margin: 20px 0px; 
+    margin: 20px 50px; 
 `;
 
 export const FlexboxContainerMain = styled(motion.div)`
     display: flex;
+    width: auto;
+    overflow: hidden;
 
 `;
 export const FlexboxContainer1 = styled(motion.div)`    
@@ -40,14 +42,14 @@ export const FlexboxContainer2 = styled(motion.div)`
 export const FlexboxItem1 = styled(motion.div)`
     width: 300px;
     height: 300px;
-    margin: 20px 20px 0px 20px;
 
 `;
 
 export const FlexboxItem2 = styled(motion.div)`
-    width: 300px;
-    height: 300px;
-    margin: 0px 20px 20px 75px;
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
+
     
 `;
 
@@ -55,7 +57,7 @@ export const FlexboxTitle = styled(motion.div)`
     display: flex;
     width: 100%;
     justify-content: flex-start;
-    margin:0px 0px 0px 2%
+    margin:0px 0px 0px 2%;
 `;
 
 export const ContentContainer = styled(motion.div)`
@@ -68,4 +70,13 @@ export const ContentContainer = styled(motion.div)`
 export const FlexboxTitleContainer = styled(motion.div)`
     display: flex-start;
     width: 100%;
+`;
+
+
+export const MapContainer = styled(motion.div)`
+    display: flex;
+    height: 500px;
+    position: relative;
+    width: 100%;
+    overflow: hidden;
 `;
