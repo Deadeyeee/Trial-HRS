@@ -8,16 +8,17 @@ import Axios from 'axios';
 import 'font-awesome/css/font-awesome.min.css';
 
 export const Register = () => {
-  Axios.defaults.withCredentials = true;
 
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [userName, setUserName] = useState("");
   const [email, setEmail] = useState("");
+  const [number, setNumber] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [creationStatusUsername, setCreationStatusUsername] = useState("");
   const [creationStatusEmail, setCreationStatusEmail] = useState("");
+  const [creationStatusNumber, setCreationStatusNumber] = useState("");
   const [creationStatus, setCreationStatus] = useState("");
   const [passwordMatch, setPasswordMatch] = useState("");
 
@@ -26,35 +27,47 @@ export const Register = () => {
     e.preventDefault();
     if (password == confirmPassword) {
       Axios.post('http://localhost:3001/api/addUser', {
-        firstname: firstName.toLowerCase(),
-        lastname: lastName.toLowerCase(),
-        username: userName.toLowerCase(),
+        userName: userName.toLowerCase(),
         email: email.toLowerCase(),
+        contactNumber: number,
         password: password,
       }).then((response) => {
+        console.log(response.data)
         if (response.data == "Username already in use!") {
           setCreationStatusUsername("Username already in use!");
           setCreationStatusEmail("");
-          setPasswordMatch("")
-          setCreationStatus(false)
+          setPasswordMatch("");
+          setCreationStatus("");
+          setCreationStatusNumber("");
         }
         else if (response.data == "Email address already in use!") {
           setCreationStatusEmail("Email address already in use!");
           setCreationStatusUsername("");
-          setPasswordMatch("")
-          setCreationStatus(false)
+          setPasswordMatch("");
+          setCreationStatus("");
+          setCreationStatusNumber("");
+        }
+        else if (response.data == "Phone number already in use") {
+          setCreationStatusEmail("");
+          setCreationStatusUsername("");
+          setCreationStatusNumber("Phone number already in use");
+          setPasswordMatch("");
+          setCreationStatus("");
         }
         else {
           setCreationStatus("Account created successfuly");
+          console.log(response.data);
+ 
         }
-        console.log(creationStatus)
+        console.log(creationStatus);
       });
     }
     else {
       setPasswordMatch("Password does not match, please try again.");
       setCreationStatusEmail("");
       setCreationStatusUsername("");
-      setCreationStatus(false)
+      setCreationStatusNumber("");
+      setCreationStatus("");
     }
   }
   const variants = {
@@ -86,7 +99,7 @@ export const Register = () => {
               family="FontAwesome"
               type="text"
               widthFocus="0px"
-              w='50%'
+              width='50%'
               margins="15px 5px"
               border="0 0 1px"
               padding="5px 10px"
@@ -100,7 +113,7 @@ export const Register = () => {
               family="FontAwesome"
               type="text"
               widthFocus="0px"
-              w='50%'
+              width='50%'
               margins="15px 5px"
               border="0 0 1px"
               padding="5px 10px"
@@ -121,7 +134,7 @@ export const Register = () => {
             radiusFocus="0px"
             required></TextInput>
           <Title
-            
+
             initial="hidden"
             animate="visible"
             variants={variants}
@@ -155,6 +168,43 @@ export const Register = () => {
             weight="normal"
 
           >{creationStatusEmail}</Title>
+          <TextInput
+            onChange={(e) => {
+              setNumber(e.target.value);
+            }}
+            placeholder="&#xf095;  Phone number"
+            pattern="[0-9]{11}"
+            title="input valid contact number"
+            family="FontAwesome"
+            type="number"
+            widthFocus="0px"
+            padding="5px 10px"
+            margins="15px 0px 0px 0px"
+            radiusFocus="0px"
+            border="0 0 1px"
+            required></TextInput>
+
+          <Title
+            size="10px"
+            family="arial"
+            margin="5px auto 15px 20px"
+            color="gray"
+            weight="normal"
+          >
+            e.g. 09123456789 or 9123456789
+          </Title>
+          <Title
+
+            initial="hidden"
+            animate="visible"
+            variants={variants}
+            size="12px"
+            family="arial"
+            margin="5px 0px 0px 0px"
+            color="red"
+            weight="normal"
+
+          >{creationStatusNumber}</Title>
           <TextInput
             onChange={(e) => {
               setPassword(e.target.value);
@@ -197,7 +247,7 @@ export const Register = () => {
           ></Button>
 
           <FormButton
-            whileHover={{ scale: 1.1,  color: "rgb(255, 255, 255)" }}
+            whileHover={{ scale: 1.1, color: "rgb(255, 255, 255)" }}
             whileTap={{ scale: 1.05, backgroundColor: "#8F805F" }}
             type="submit"
             w='290px'

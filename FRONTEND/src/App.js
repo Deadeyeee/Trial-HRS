@@ -13,6 +13,7 @@ import RoomPage from './pages/roomRatesPage/RoomRates'
 import Error404 from './pages/404Error/Error404';
 import Login from './pages/login/Login';
 import Register from './pages/login/register/Register';
+import Registered from './pages/login/register/AccountCreated';
 
 const App = () => {
   return (
@@ -26,6 +27,7 @@ const App = () => {
         <Route path="/facilitiesAmenities" element={<FamenitiesPage />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/registered/:id" element={<Registered />} />
         <Route path="*" element={<Error404 />} />
       </Routes>
     </Router>

@@ -19,6 +19,7 @@ export const Button = styled(motion.a)`
     justify-content: center;
     border: ${(props) => (props.border ? props.border : "2px solid #8F805F")};
     z-index: ${(props) => (props.index ? props.index : "auto")};
+    font-size : ${(props) => (props.fontsize ? props.fontsize : "auto")};
     `;
 
 export const FormButton = styled(motion.input)`

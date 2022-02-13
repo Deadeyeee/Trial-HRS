@@ -9,24 +9,24 @@ module.exports = (sequelize, DataTypes, Sequelize) => {
             primaryKey: true,
             allowNull: false,
         },
-        firstname: {
-            type: DataTypes.TEXT,
-            allowNull: false,
-        },
-        lastname: {
-            type: DataTypes.TEXT,
-            allowNull: false,
-        },
-        username: {
+        userName: {
             type: DataTypes.STRING,
-            allowNull: false,
+            allowNull: true,
             validate: {},
             unique: {
               args: true,
               msg: "Username already in use!",
             },
         },
-        
+        contactNumber: {
+            type: DataTypes.INTEGER(11),
+            allowNull: true,
+            validate: {},
+            unique: {
+              args: true,
+              msg: "Phone number already in use",
+            },
+        },
         email: {
             type: DataTypes.STRING,
             allowNull: false,
@@ -36,8 +36,19 @@ module.exports = (sequelize, DataTypes, Sequelize) => {
                 msg: "Email address already in use!",
             },
         },
-        password: {
+        emailVerified:{
+            type: DataTypes.BOOLEAN,
             allowNull: false,
+            defaultValue: false,
+        },
+        emailVerification: {
+            type: DataTypes.UUID,
+            defaultValue: DataTypes.UUIDV4,
+            primaryKey: true,
+            allowNull: false,
+        },
+        password: {
+            allowNull: true,
             type: DataTypes.STRING,
         },
         role: {
@@ -79,6 +90,5 @@ module.exports = (sequelize, DataTypes, Sequelize) => {
     User.prototype.validPassword = async (password, hash) => {
         return await bcrypt.compareSync(password, hash);
        }
-    return User
-
+    return User;
 }

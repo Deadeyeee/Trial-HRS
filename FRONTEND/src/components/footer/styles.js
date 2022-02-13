@@ -3,13 +3,13 @@ import { motion } from 'framer-motion';
 
 export const Container = styled.div`
     display: flex;
+    margin-top: auto;
     justify-content: center;
-    position: relative;
-    bottom: 0;
     width: 100%;
     background-color: #302B20;
     color: white;
     text-align: center;
+    
     `;
 
 export const Image = styled.img`

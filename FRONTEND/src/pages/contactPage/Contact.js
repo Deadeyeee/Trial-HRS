@@ -1,11 +1,12 @@
 import React from 'react'
-import { Container, HorizontalLine, VerticalLine, FlexboxContainer1, FlexboxContainer2, FlexboxContainerMain, FlexboxItem1, FlexboxItem2, ContentContainer, FlexboxTitleContainer } from './styles'
+import { Container, HorizontalLine, VerticalLine, FlexboxContainer1, FlexboxContainer2, FlexboxContainerMain, FlexboxItem1, FlexboxItem2, ContentContainer, FlexboxTitleContainer, MapContainer } from './styles'
 import NavigationBar from '../../components/navigationBar/Nav';
 import Footer from '../../components/footer/Footer'
 import ChatBot from '../../components/chatBot/ChatBot';
 import { TextInput } from '../../components/textBox/style';
 import { Title } from '../../components/title/styles';
 import { Button } from '../../components/button/styles';
+import Location from '../../components/map/Location'
 
 export const Contact = () => {
     return (
@@ -63,6 +64,7 @@ export const Contact = () => {
                             </Title>
                             <TextInput
                                 margins='10px 0px 0px 0px'
+                                fontStyle='italic'
                                 width='375px'
                                 padding='0px 0px 0px 10px'
                                 background='#E1DACA'
@@ -72,6 +74,7 @@ export const Contact = () => {
                             </TextInput>
                             <TextInput
                                 margins='10px 0px 0px 0px'
+                                fontStyle='italic'
                                 width='375px'
                                 padding='0px 0px 0px 10px'
                                 background='#E1DACA'
@@ -81,6 +84,7 @@ export const Contact = () => {
                             </TextInput>
                             <TextInput
                                 margins='10px 0px 0px 0px'
+                                fontStyle='italic'
                                 width='375px'
                                 padding='0px 0px 0px 10px'
                                 background='#E1DACA'
@@ -90,6 +94,7 @@ export const Contact = () => {
                             </TextInput>
                             <TextInput
                                 margins='10px 0px 0px 0px'
+                                fontStyle='italic'
                                 width='375px'
                                 padding='0px 0px 80px 10px'
                                 background='#E1DACA'
@@ -112,6 +117,9 @@ export const Contact = () => {
                     </FlexboxContainer2>
                 </FlexboxContainerMain>
             </ContentContainer>
+            <MapContainer>
+                <Location></Location>
+            </MapContainer>
             <Footer />
         </Container>
     )
