@@ -12,4 +12,5 @@ letter-spacing: ${(props) => (props.spacing ? props.spacing : "1px")};
 padding: ${(props) => (props.padding ? props.padding : "0px")};
 align-self: ${(props) => (props.alignSelf ? props.alignSelf : "auto")};
 line-height: ${(props) =>(props.line ? props.line : "auto")};
+opacity: ${(props) => (props.opc ? props.opc : "100%")};
 `;

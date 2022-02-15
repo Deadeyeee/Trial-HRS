@@ -1,5 +1,5 @@
 import React from 'react'
-import { Container, HorizontalLine, PhotoHolder, TitleHolder } from './styles'
+import { Container, FlexTitle, HorizontalLine, PhotoHolder, TitleHolder } from './styles'
 import NavigationBar from '../../components/navigationBar/Nav';
 import Footer from '../../components/footer/Footer'
 import ChatBot from '../../components/chatBot/ChatBot';
@@ -17,7 +17,6 @@ export const Famenities = () => {
             >
                 Facilities & Amenities
             </Title>
-            <HorizontalLine></HorizontalLine>
             <PhotoHolder>
                 <TitleHolder>
                     <i>
@@ -27,25 +26,29 @@ export const Famenities = () => {
                             color='white'
                             size='46px'
                             weight='400'
-                            margin='294px 600px 0px 0px'
+                            align='left'
+                            margin="0px 0px 0px 300px"
                         >
                             EVENTS PLACE
                         </Title>
-                        <p
-                            family='Basic, Serif'
+                        <Title
                             color='white'
-                            size='16px'
+                            size='14px'
+                            align='left'
                             weight='400'
-
+                            margin="0px 0px 0px 300px"
                         >
                             See More
-                        </p>
+                        </Title>
 
                     </i>
                 </TitleHolder>
             </PhotoHolder>
             <PhotoHolder>
-                <TitleHolder>
+                <TitleHolder
+                
+                justifyContent="flex-end"
+                >
                     <i>
                         <Title
 
@@ -53,48 +56,26 @@ export const Famenities = () => {
                             color='white'
                             size='46px'
                             weight='400'
-                            margin='294px 0px 0px 550px'
+                            align='right'
                             opc='100%'
+                            margin="0px 300px 0px 0px"
                         >
                             GYM
                         </Title>
-                        <p
-                            family='Basic, Serif'
-                            color='white'
-                            size='16px'
-                            weight='400'
-                        >
-                            See More
-                        </p>
-                    </i>
-
-                </TitleHolder>
-            </PhotoHolder>
-            <PhotoHolder>
-                <TitleHolder>
-                    <i>
                         <Title
-
-                            family='Cormorant Garamond, Serif'
                             color='white'
-                            size='46px'
+                            size='14px'
+                            align='right'
                             weight='400'
-                            margin='294px 600px 0px 0px'
-                            opc='100%'
-                        >
-                            SPA
-                        </Title>
-                        <p
-                            family='Basic, Serif'
-                            color='white'
-                            size='16px'
-                            weight='400'
+                            margin="0px 300px 0px 0px"
                         >
                             See More
-                        </p>
+                        </Title>
                     </i>
+
                 </TitleHolder>
             </PhotoHolder>
+
             <Footer />
         </Container>
     )
