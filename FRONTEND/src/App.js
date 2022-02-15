@@ -14,6 +14,9 @@ import Error404 from './pages/404Error/Error404';
 import Login from './pages/login/Login';
 import Register from './pages/login/register/Register';
 import Registered from './pages/login/register/AccountCreated';
+import ForgotPasswordPage from './pages/login/forgotPasswordPage/ForgotPasswordPage';
+import ConfirmNewPassword from './pages/login/confirmNewPasswordPage/ConfirmNewPassword';
+import VerificationEmail from './pages/login/verificationEmailPage/VerificationEmail';
 
 const App = () => {
   return (
@@ -28,6 +31,9 @@ const App = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/registered/:id" element={<Registered />} />
+        <Route path="/forgotPassword" element={<ForgotPasswordPage />} />
+        <Route path="/newPassword" element={<ConfirmNewPassword />} />
+        <Route path="/verifyEmail" element={<VerificationEmail />} />
         <Route path="*" element={<Error404 />} />
       </Routes>
     </Router>
