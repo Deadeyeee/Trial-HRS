@@ -11,7 +11,7 @@ exports.create = async (req, res) => {
 
         let info = await EmailAuto.transporter.sendMail({
         from: '"Manyak" "<Rm.LuxeHotel@gmail.com>"', // sender address
-        to: "jhimwel8111@gmail.com",
+        to: new_user.email,
         subject: "Email Confirmation", // Subject line
         text: "Please click the link below to confirm your email", // plain text body
         html: "<div style=\"justify-content: center;flex-direction: column; display: flex; align-items: center; width: 400px; height: auto; background-color: #2E2E2E; border-radius: 5px; padding: 25px; margin: 50px; box-shadow: 5px 10px 5px black\"><img style=\"height: 200px; width: 200px;\" src=\"cid:logo\"><br><br><p style=\"color: #E1DACA; text-align: center;\">Hi <b>"+new_user.userName+"</b>,<br><br><br>We just need to <b>verify your email address</b> before you can access your account.<br><br>Verify your email address by <b>clicking the button bellow.</b><br><br><a style=\"cursor: pointer;\" href=\""+url+"\"><button style=\"padding: 15px 90px; background-color: #8F805F\">Verify!</button></a><br><br><br><br>Thanks! &#8211; <i>The Rm Luxe Hotel team</i></p></div>", // html body

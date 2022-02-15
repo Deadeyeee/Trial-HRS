@@ -1,5 +1,6 @@
 const nodemailer = require("nodemailer");
-
+const path = require('path')
+const hbs = require('nodemailer-express-handlebars')
 exports.transporter = nodemailer.createTransport({
     host: "smtp.gmail.com", 
     auth: {
@@ -8,3 +9,13 @@ exports.transporter = nodemailer.createTransport({
     },
   });
 
+
+  exports.handleBar = {
+      viewEngine:{
+        extName: ".handlebars",
+        parialsDir: path.resolve('./views'),
+        defaultLayout: false,
+      },
+      viewPath: path.resolve('./views'),
+      extName: ".handlebars",
+  }
