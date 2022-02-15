@@ -11,8 +11,6 @@ export const Container = styled(motion.div)`
     overflow: hidden;
 `;
 
-
-
 export const LoginBorder = styled(motion.div)`
     display: flex;
     flex-direction: column;
@@ -28,8 +26,6 @@ export const LoginBorder = styled(motion.div)`
     box-shadow: -5px 10px 5px black;
 `;
 
-
-
 export const Logo = styled(motion.img)`
     height: 150px;
     width: 150px;
@@ -38,8 +34,8 @@ export const Logo = styled(motion.img)`
     border: 1px solid #8F805F;
     border-radius: 50px;
     `;
- 
- export const RegistrationForm = styled.form`
+
+export const RegistrationForm = styled.form`
 
     display: flex;
     flex-direction: column;
