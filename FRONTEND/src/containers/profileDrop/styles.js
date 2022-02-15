@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { motion } from "framer-motion";
 
 export const MainContainer = styled(motion.div)`
-    display: ${(props) =>(props.display ? props.display : "inline-flex")};
+    display: ${(props) =>(props.display ? props.display : "none")};
     align-items: center;
     justify-content: center;
     flex-direction: column;

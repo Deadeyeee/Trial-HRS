@@ -1,5 +1,5 @@
 import React from 'react'
-import {FlexButtonPrice, Container, FlexboxContainer, FlexboxContent, FlexboxContentMain, FlexboxMainPhotoLeft, FlexboxMainPhotoRight, HorizontalLineShortRight, HorizontalLineShortLeft, Description } from './styles'
+import { FlexButtonPrice, Container, FlexboxContainer, FlexboxContent, FlexboxContentMain, FlexboxMainPhotoLeft, FlexboxMainPhotoRight, HorizontalLineShortRight, HorizontalLineShortLeft, Description } from './styles'
 import NavigationBar from '../../components/navigationBar/Nav';
 import Footer from '../../components/footer/Footer'
 import ChatBot from '../../components/chatBot/ChatBot';
@@ -42,29 +42,30 @@ export const RoomRates = () => {
                             </i>
                         </Description>
                         <FlexButtonPrice>
-                        <Button
-                            textcolor="black"
-                            w='125px'
-                            h='40px'
-                            margin='5px 0px 0px 0px'
-                            fam='Playfair Display'
-                            weight='-400'
-                            fontStyle='Normal'
-                            radius="0px"
-                            border="1px solid #8F805F"
-                        >
-                            Book Now!
-                        </Button>
-                        <Title
-                            family='roboto slab'
-                            weight='700'
-                            size='25px'
-                            color='#292929'
-                            margin='10px 0px 10px 0px'
-                            align='left'
-                        >
-                            ₱1000/night
-                        </Title>
+                            <Button
+                                whileHover={{ backgroundColor: "#2E2E2E", color: "white" }}
+                                textcolor="black"
+                                w='125px'
+                                h='40px'
+                                margin='5px 0px 0px 0px'
+                                fam='Playfair Display'
+                                weight='-400'
+                                fontStyle='Normal'
+                                radius="0px"
+                                border="1px solid #8F805F"
+                            >
+                                Book Now!
+                            </Button>
+                            <Title
+                                family='roboto slab'
+                                weight='700'
+                                size='25px'
+                                color='#292929'
+                                margin='10px 0px 10px 0px'
+                                align='left'
+                            >
+                                ₱1000/night
+                            </Title>
                         </FlexButtonPrice>
                     </FlexboxContent>
                 </FlexboxContentMain>
@@ -93,32 +94,33 @@ export const RoomRates = () => {
                                 Dis parturient montes nascetur ridiculus mus mauris. Facilisi nullam vehicula ipsum a arcu cursus vitae.
                             </i>
                         </Description>
-                        
+
                         <FlexButtonPrice
-                        justifyContent="flex-end"
+                            justifyContent="flex-end"
                         >
-                        
-                        <Title
-                            family='roboto slab'
-                            weight='700'
-                            size='25px'
-                            color='#292929'
-                            margin='10px 0px 10px auto'
-                        >
-                            ₱1000/night
-                        </Title>
-                        <Button
-                            w='125px'
-                            h='40px'
-                            textcolor="black"
-                            fam='Playfair Display'
-                            weight='-400'
-                            fontStyle='Normal'
-                            radius="0px"
-                            border="1px solid #8F805F"
-                        >
-                            Book Now!
-                        </Button>
+
+                            <Title
+                                family='roboto slab'
+                                weight='700'
+                                size='25px'
+                                color='#292929'
+                                margin='10px 0px 10px auto'
+                            >
+                                ₱1000/night
+                            </Title>
+                            <Button
+                                whileHover={{ backgroundColor: "#2E2E2E", color: "white" }}
+                                w='125px'
+                                h='40px'
+                                textcolor="black"
+                                fam='Playfair Display'
+                                weight='-400'
+                                fontStyle='Normal'
+                                radius="0px"
+                                border="1px solid #8F805F"
+                            >
+                                Book Now!
+                            </Button>
                         </FlexButtonPrice>
                     </FlexboxContent>
                     <FlexboxMainPhotoLeft></FlexboxMainPhotoLeft>

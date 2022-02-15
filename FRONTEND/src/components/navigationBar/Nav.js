@@ -9,7 +9,7 @@ import ProfileDrop from '../../containers/profileDrop/ProfileDrop';
 export const Nav = (props) => {
   
 
-  const [login, setLogin] = useState("");
+  const [login, setLogin] = useState(true);
   const [dropDown, setdropDown] = useState("");
   const [userName, setUserName] = useState("");
 
@@ -24,7 +24,8 @@ export const Nav = (props) => {
     console.log()
     Axios.defaults.withCredentials = true;
     Axios.get("http://localhost:3001/auth/verify-token").then((response)=>{
-      setLogin("none");
+      setLogin(false);
+      setdropDown("inline-flex")
       setUserName(response.data.userName.charAt(0).toUpperCase()+ response.data.userName.slice(1));
       
     }).catch((e) => {
@@ -56,7 +57,7 @@ export const Nav = (props) => {
           Logout={Logout}
           ></ProfileDrop>
            <Button href="/login"
-           display={login}
+           display={login ? "inline-flex": "none"}
            w='90px' 
            h='30px'
            style={{ scale: .9}}
