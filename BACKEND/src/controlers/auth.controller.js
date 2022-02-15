@@ -1,5 +1,5 @@
 const db = require("../models");
-const User = db.users;
+const User = db.user;
 const jwt = require('jsonwebtoken');
 const bcrypt = require("bcrypt");
 const config = require('../../config/auth.config');
@@ -13,7 +13,6 @@ exports.Login = async (req, res) => {
                         { email: req.body.email },
                         { userName: req.body.userName }
                     ],
-                    emailVerified: true
                 },
             });
     
@@ -29,22 +28,27 @@ exports.Login = async (req, res) => {
             }
     
             //our login secured authentication token
-            let token = jwt.sign(
-                { id: user_login.id, userName: user_login.userName, email: user_login.email, role: user_login.role },
-                config.auth.secret,
-                {
-                    expiresIn: 43200,
-                }
-            );
-    
-            req.session.user = token;
-            res.status(200).send({
-                id: user_login.id,
-                userName: user_login.userName,
-                email: user_login.email,
-                role: user_login.role,
-                cookieSession: req.session.user,
-            });
+            if(user_login.emailVerified === true){
+                let token = jwt.sign(
+                    { id: user_login.id, userName: user_login.userName, email: user_login.email, role: user_login.role },
+                    config.auth.secret,
+                    {
+                        expiresIn: 43200,
+                    }
+                );
+        
+                req.session.user = token;
+                res.status(200).send({
+                    id: user_login.id,
+                    userName: user_login.userName,
+                    email: user_login.email,
+                    role: user_login.role,
+                    cookieSession: req.session.user,
+                });
+            }
+            else{
+                res.status(400).send({message: "Please verify your email address."})
+            }
 
     } catch (error) {
         res.status(500).send({ message: error.message });
