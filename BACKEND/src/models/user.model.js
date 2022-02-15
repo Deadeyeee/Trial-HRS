@@ -41,12 +41,6 @@ module.exports = (sequelize, DataTypes, Sequelize) => {
             allowNull: false,
             defaultValue: false,
         },
-        emailVerification: {
-            type: DataTypes.UUID,
-            defaultValue: DataTypes.UUIDV4,
-            primaryKey: true,
-            allowNull: false,
-        },
         password: {
             allowNull: true,
             type: DataTypes.STRING,

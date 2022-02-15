@@ -1,10 +1,7 @@
 const db = require("../models");
 const EmailAuto = require("../automatedEmail/EmailConfig")
-const User = db.users;
+const User = db.user;
 // import Logo from "../../../FRONTEND/src/images/logo.png";
-
-
-
 
 exports.create = async (req, res) => {
     try {
@@ -24,7 +21,7 @@ exports.create = async (req, res) => {
             cid: 'logo' }]
         });
         return res.status(200).send({
-            accoount: new_user,
+            account: new_user,
             email: "Email Sent: " + info.messageId,
         });
     } catch (error) {

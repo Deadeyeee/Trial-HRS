@@ -26,6 +26,8 @@ export const Register = () => {
   const creatAccount = (e) => {
     e.preventDefault();
     if (password == confirmPassword) {
+
+
       Axios.post('http://localhost:3001/api/addUser', {
         userName: userName.toLowerCase(),
         email: email.toLowerCase(),
@@ -55,9 +57,19 @@ export const Register = () => {
           setCreationStatus("");
         }
         else {
+          console.log(response.data.account.id)
+          Axios.post('http://localhost:3001/api/addGuest', {
+            firstName: firstName.toLowerCase(),
+            lastName: lastName.toLowerCase(),
+            user_id: response.data.account.id,
+          }).then((response) => {
+            console.log(response.data);
+          }).catch((error)=>{
+            console.log(error.response.data)
+          });
           setCreationStatus("Account created successfuly");
           console.log(response.data);
- 
+
         }
         console.log(creationStatus);
       });

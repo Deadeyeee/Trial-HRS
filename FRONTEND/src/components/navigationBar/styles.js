@@ -10,6 +10,7 @@ export const Container = styled(motion.div)`
     position: sticky;
     top: 0;
     width: 100%;
+    z-index: 2;
     `;
 
 export const Menu = styled.ul`

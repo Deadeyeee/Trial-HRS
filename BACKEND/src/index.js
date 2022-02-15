@@ -27,62 +27,6 @@ app.use(session({
     },
 }))
 
-//routers
-const user = require('./routes/user.route.js');
-const auth = require('./routes/auth.route.js');
-
-app.use('/api', user);
-app.use('/auth', auth);
-
-
-
-// app.post('/login', (req,res) =>{
-    
-//     const password = req.body.password;
-//     const username = req.body.username;
-
-//     const findAccount = "select * from useraccounts where username = ? and password = ?"
-//     db.query(findAccount, [username, password], (err, result) => {
-//         if(err){
-//             res.send({err: err});
-//         }
-
-//         if(result.length > 0){
-            
-//             req.session.user = result;
-//             res.send(result);
-//         }
-//         else{
-//             res.send({message: "Incorrect password or username"})
-//         }
-//     });
-
-// });
-
-
-// app.post('/logout', (req, res) =>{
-//         req.session.destroy(); 
-//         res.send("succesfully Loged out!")
-// });
-
-
-// app.get('/login', (req, res) =>{
-//     if(req.session.user){
-//         res.send(req.session.user[0].username)
-//     }
-//     else{
-//         res.send("not loged")
-//     }
-// })
-
-
-// app.delete('/logout', (req, res) => {
-//     if (req.session) {
-//         req.session.destroy();
-//         res.send("successfully logedout");
-        
-//       }
-// });
 
 //test server
 app.get('/', (req, res) =>{
@@ -94,3 +38,18 @@ const PORT = process.env.PORT || 3001
 app.listen(PORT, () =>{
     console.log("running on port 3001");
 });
+
+
+
+//init routers
+const user = require('./routes/user.route.js');
+const auth = require('./routes/auth.route.js');
+const guest = require('./routes/guestInformation.route.js');
+
+
+
+//use Routes
+app.use('/api', user);
+app.use('/auth', auth);
+app.use('/api', guest);
+

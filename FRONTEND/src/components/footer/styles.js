@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 
 export const Container = styled.div`
     display: flex;
-    margin-top: auto;
+    margin-top: 20px;
     justify-content: center;
     width: 100%;
     background-color: #302B20;
