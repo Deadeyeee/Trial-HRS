@@ -1,14 +1,32 @@
 
+const hbs = require('nodemailer-express-handlebars');
+const path = require('path')
 const EmailAuto = require("../automatedEmail/EmailConfig")
 
-let info = await EmailAuto.transporter.sendMail({
-    from: '"Manyak" "<Rm.LuxeHotel@gmail.com>"', // sender address
+EmailAuto.transporter.use('compile', hbs({
+    viewEngine:{
+        extName: ".handlebars",
+        parialsDir: path.resolve('../views'),
+        defaultLayout: false,
+      },
+      viewPath: path.resolve('../views'),
+      extName: ".handlebars",
+}));
+
+let info = {
+    from: '"RM Luxe Hotel" "<Rm.LuxeHotel@gmail.com>"', // sender address
     to: "jhimwel8111@gmail.com",
     subject: "Email Confirmation", // Subject line
-    text: "Please click the link below to confirm your email", // plain text body
-    html: "", // html body
+    template: 'email',
+    context: {
+        userName: "jhimwel",
+        link: "link",
+        logo: "cid:logo",
+    },
     attachments: [{
         filename: 'logo.png',
-        path: 'src/controlers/logo.png',
+        path: '../controlers/logo.png',
         cid: 'logo' }]
-    });
+};
+
+EmailAuto.transporter.sendMail(info);

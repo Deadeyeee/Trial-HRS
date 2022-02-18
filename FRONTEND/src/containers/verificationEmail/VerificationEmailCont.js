@@ -4,7 +4,7 @@ import { EmailVerificationHolder, EmailVerificationPhoto } from "./Styles"
 
 import React from 'react'
 
-function VerificationEmailCont() {
+function VerificationEmailCont(props) {
     return (
         <EmailVerificationHolder>
             <EmailVerificationPhoto></EmailVerificationPhoto>
@@ -31,6 +31,7 @@ function VerificationEmailCont() {
                 padding='0.5px'
                 fam='Raleway'
                 fontStyle='normal'
+                onClick={props.onClick}
             >
                 Resend Verification Email
             </Button>

@@ -57,13 +57,15 @@ export const Register = () => {
           setCreationStatus("");
         }
         else {
-          console.log(response.data.account.id)
+          localStorage.setItem('id', response.data.account.id);
+          localStorage.setItem('email', response.data.account.email);
+          localStorage.setItem('userName', response.data.account.userName);
           Axios.post('http://localhost:3001/api/addGuest', {
             firstName: firstName.toLowerCase(),
             lastName: lastName.toLowerCase(),
             user_id: response.data.account.id,
           }).then((response) => {
-            console.log(response.data);
+            window.location.href = '/verifyEmail';
           }).catch((error)=>{
             console.log(error.response.data)
           });

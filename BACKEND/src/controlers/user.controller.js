@@ -1,34 +1,96 @@
 const db = require("../models");
 const EmailAuto = require("../automatedEmail/EmailConfig")
 const User = db.user;
+const hbs = require('nodemailer-express-handlebars');
+const path = require('path')
 // import Logo from "../../../FRONTEND/src/images/logo.png";
 
 exports.create = async (req, res) => {
     try {
         const new_user = await User.create(req.body);
         const url = 'http://localhost:3000/registered/' + new_user.id;
-        
 
-        let info = await EmailAuto.transporter.sendMail({
-        from: '"Manyak" "<Rm.LuxeHotel@gmail.com>"', // sender address
-        to: new_user.email,
-        subject: "Email Confirmation", // Subject line
-        text: "Please click the link below to confirm your email", // plain text body
-        html: "<div style=\"justify-content: center;flex-direction: column; display: flex; align-items: center; width: 400px; height: auto; background-color: #2E2E2E; border-radius: 5px; padding: 25px; margin: 50px; box-shadow: 5px 10px 5px black\"><img style=\"height: 200px; width: 200px;\" src=\"cid:logo\"><br><br><p style=\"color: #E1DACA; text-align: center;\">Hi <b>"+new_user.userName+"</b>,<br><br><br>We just need to <b>verify your email address</b> before you can access your account.<br><br>Verify your email address by <b>clicking the button bellow.</b><br><br><a style=\"cursor: pointer;\" href=\""+url+"\"><button style=\"padding: 15px 90px; background-color: #8F805F\">Verify!</button></a><br><br><br><br>Thanks! &#8211; <i>The Rm Luxe Hotel team</i></p></div>", // html body
-        attachments: [{
-            filename: 'logo.png',
-            path: 'src/controlers/logo.png',
-            cid: 'logo' }]
-        });
+
+        EmailAuto.transporter.use('compile', hbs({
+            viewEngine:{
+                extName: ".handlebars",
+                parialsDir: path.resolve('./src/views'),
+                defaultLayout: false,
+              },
+              viewPath: path.resolve('./src/views'),
+              extName: ".handlebars",
+        }));
+
+        let info = {
+            from: '"RM Luxe Hotel" "<Rm.LuxeHotel@gmail.com>"', // sender address
+            to: new_user.email,
+            subject: "Email Confirmation", // Subject line
+            template: 'email',
+            context: {
+                userName: new_user.userName,
+                link: url,
+                logo: "cid:logo",
+            },
+            attachments: [{
+                filename: 'logo.png',
+                path: './src/controlers/logo.png',
+                cid: 'logo' }]
+        };
+        EmailAuto.transporter.sendMail(info);
+
+        req.session.register = new_user;
+
         return res.status(200).send({
             account: new_user,
             email: "Email Sent: " + info.messageId,
         });
     } catch (error) {
-        return res.status(200).send(error.message);
+        return res.status(400).send(error.message);
 
     }
 };
+
+
+exports.resendEmail = async(req, res) =>{
+    try {
+        
+            const url = 'http://localhost:3000/registered/' + req.body.id;
+
+            EmailAuto.transporter.use('compile', hbs({
+                viewEngine:{
+                    extName: ".handlebars",
+                    parialsDir: path.resolve('./src/views'),
+                    defaultLayout: false,
+                  },
+                  viewPath: path.resolve('./src/views'),
+                  extName: ".handlebars",
+            }));
+    
+            let info = {
+                from: '"RM Luxe Hotel" "<Rm.LuxeHotel@gmail.com>"', // sender address
+                to: req.body.email,
+                subject: "Email Confirmation", // Subject line
+                template: 'email',
+                context: {
+                    userName: req.body.userName,
+                    link: url,
+                    logo: "cid:logo",
+                },
+                attachments: [{
+                    filename: 'logo.png',
+                    path: './src/controlers/logo.png',
+                    cid: 'logo' }]
+            };
+            EmailAuto.transporter.sendMail(info);
+
+            return res.status(200).send("mail sent");
+        
+        
+    } catch (error) {
+        
+        return res.status(400).send(error.message);
+    }
+}
 
 exports.findAll = async (req, res) => {
     const user = await User.findAll();
@@ -69,7 +131,7 @@ exports.delete = async (req, res) => {
 exports.confirmEmail = async (req, res) => {
     console.log("scammer")
     try {
-        await User.update({emailVerified: true}, {
+        await User.update({ emailVerified: true }, {
             where: {
                 id: req.params.id,
             },
