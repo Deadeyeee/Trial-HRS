@@ -73,6 +73,22 @@ exports.verifyToken = async (req, res) => {
     }
 };
 
+exports.verifyEmailToken = async (req, res) => {
+
+        const token = req.params.id;
+        try {
+            let jwtPayLoad = jwt.verify(token, config.auth.secret);
+            res.locals.user = jwtPayLoad;
+            res.status(200).send(res.locals.user);
+        } catch (error) {
+            res.status(401).send("Unauthorized");
+            res.locals.user = null;
+            return;
+        }
+    
+};
+
+
 
 exports.Logout = async (req, res) => {
     if (req.session) {

@@ -2,13 +2,23 @@ const db = require("../models");
 const EmailAuto = require("../automatedEmail/EmailConfig")
 const User = db.user;
 const hbs = require('nodemailer-express-handlebars');
+const config = require('../../config/auth.config');
+const jwt = require('jsonwebtoken');
 const path = require('path')
 // import Logo from "../../../FRONTEND/src/images/logo.png";
 
 exports.create = async (req, res) => {
     try {
         const new_user = await User.create(req.body);
-        const url = 'http://localhost:3000/registered/' + new_user.id;
+
+        let token = jwt.sign(
+            { id: new_user.id },
+            config.auth.secret,
+            {
+                expiresIn: 43200,
+            }
+        );
+        const url = 'http://localhost:3000/registered/' + token;
 
 
         EmailAuto.transporter.use('compile', hbs({
@@ -38,8 +48,6 @@ exports.create = async (req, res) => {
         };
         EmailAuto.transporter.sendMail(info);
 
-        req.session.register = new_user;
-
         return res.status(200).send({
             account: new_user,
             email: "Email Sent: " + info.messageId,
@@ -54,7 +62,14 @@ exports.create = async (req, res) => {
 exports.resendEmail = async(req, res) =>{
     try {
         
-            const url = 'http://localhost:3000/registered/' + req.body.id;
+        let token = jwt.sign(
+            { id: req.body.id },
+            config.auth.secret,
+            {
+                expiresIn: 200,
+            }
+        );
+            const url = 'http://localhost:3000/registered/' + token;
 
             EmailAuto.transporter.use('compile', hbs({
                 viewEngine:{
@@ -129,11 +144,10 @@ exports.delete = async (req, res) => {
 };
 
 exports.confirmEmail = async (req, res) => {
-    console.log("scammer")
     try {
         await User.update({ emailVerified: true }, {
             where: {
-                id: req.params.id,
+                id: req.body.id,
             },
         });
         return res.status(200).send("Email verified successfully!");

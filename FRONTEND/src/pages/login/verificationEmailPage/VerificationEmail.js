@@ -2,17 +2,33 @@ import React, { useEffect } from 'react'
 import VerificationEmailCont from '../../../containers/verificationEmail/VerificationEmailCont'
 import { Container } from '../style'
 import Background from '../../../components/background/Background'
-import Axios  from 'axios'
+import Axios from 'axios'
 
 function VerificationEmail() {
-    const resend = ()=>{
-        Axios.post('http://localhost:3001/api/resendEmail',{
+    useEffect(() => {
+        Axios.get('http://localhost:3001/api/getUsers/' + localStorage.getItem('id')).then((res) => {
+            if(res.data == ""){
+                localStorage.clear();
+                window.location = "/login"
+            }
+            if (res.data.emailVerified === true) {
+                localStorage.clear();
+                window.location = "/login"
+            }
+            console.log(res.data)
+        }).catch((err)=>{
+
+            console.log(err.res.data)
+        })
+    })
+    const resend = () => {
+        Axios.post('http://localhost:3001/api/resendEmail', {
             id: localStorage.getItem('id'),
             email: localStorage.getItem('email'),
             userName: localStorage.getItem('userName')
-        }).then((res) =>{
+        }).then((res) => {
             console.log(res.data);
-        }).catch((err)=>{
+        }).catch((err) => {
             console.log(err.res.data);
         });
     }
@@ -20,7 +36,7 @@ function VerificationEmail() {
         <div>
             <Container>
                 <VerificationEmailCont
-                onClick={resend}
+                    onClick={resend}
                 >
                 </VerificationEmailCont>
                 <Background></Background>
