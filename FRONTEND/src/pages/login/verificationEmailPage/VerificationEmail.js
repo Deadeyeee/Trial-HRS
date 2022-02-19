@@ -1,13 +1,20 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import VerificationEmailCont from '../../../containers/verificationEmail/VerificationEmailCont'
 import { Container } from '../style'
 import Background from '../../../components/background/Background'
 import Axios from 'axios'
+import { io } from 'socket.io-client';
+
 
 function VerificationEmail() {
+    const [verify, setVerify] = useState(false);
+
+    const socket = io('http://localhost:3001/')
+    
+    
     useEffect(() => {
         Axios.get('http://localhost:3001/api/getUsers/' + localStorage.getItem('id')).then((res) => {
-            if(res.data == ""){
+            if (res.data == "") {
                 localStorage.clear();
                 window.location = "/login"
             }
@@ -16,7 +23,7 @@ function VerificationEmail() {
                 window.location = "/login"
             }
             console.log(res.data)
-        }).catch((err)=>{
+        }).catch((err) => {
 
             console.log(err.res.data)
         })

@@ -4,10 +4,19 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
+const server = app.listen(3001)
+const io = require('socket.io')(server, {
+    cors: {
+        origin: ['http://localhost:3000'],
+    },   
+});
 
-//import routes here
+// websockets
+let socketId;
 
-//create routes
+io.on("connection", socket => {
+   
+})
 
 app.use(cors({
     origin: ["http://localhost:3000"],
@@ -15,7 +24,7 @@ app.use(cors({
     credentials: true
 }));
 app.use(express.json());
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(session({
     key: "user",
@@ -29,14 +38,9 @@ app.use(session({
 
 
 //test server
-app.get('/', (req, res) =>{
+app.get('/', (req, res) => {
     res.send('hELLO WORLD');
-    console.log(typeof(firstname))
-});
-const PORT = process.env.PORT || 3001
-
-app.listen(PORT, () =>{
-    console.log("running on port 3001");
+    console.log(typeof (firstname))
 });
 
 
@@ -45,6 +49,7 @@ app.listen(PORT, () =>{
 const user = require('./routes/user.route.js');
 const auth = require('./routes/auth.route.js');
 const guest = require('./routes/guestInformation.route.js');
+const { Socket } = require('socket.io');
 
 
 
