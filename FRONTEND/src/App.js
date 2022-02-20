@@ -17,6 +17,7 @@ import Registered from './pages/login/register/AccountCreated';
 import ForgotPasswordPage from './pages/login/forgotPasswordPage/ForgotPasswordPage';
 import ConfirmNewPassword from './pages/login/confirmNewPasswordPage/ConfirmNewPassword';
 import VerificationEmail from './pages/login/verificationEmailPage/VerificationEmail';
+import BookingChildPage from './pages/bookingChildPage/BookingChildPage';
 
 const App = () => {
   return (
@@ -34,6 +35,7 @@ const App = () => {
         <Route path="/forgotPassword" element={<ForgotPasswordPage />} />
         <Route path="/newPassword" element={<ConfirmNewPassword />} />
         <Route path="/verifyEmail" element={<VerificationEmail />} />
+        <Route path="booking/room" element={<BookingChildPage />} />
         <Route path="*" element={<Error404 />} />
       </Routes>
     </Router>

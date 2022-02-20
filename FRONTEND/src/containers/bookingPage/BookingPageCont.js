@@ -1,7 +1,6 @@
 import React from 'react'
 import { ButtonHolder, CalendarContainer, Container, HorizontalLine, RatingContainer, RoomContainer, RoomContainerContentLeft, RoomContainerContentPhoto, RoomContainerContentRight, RoomContainerMain, ServicesContainer, TitleCalendarContainer, RatingContainerRight, BookingLegendsMain, BookingLegendsContainer, BookingLegends, BookingLegendsWhite, BookingLegendsRed, BookingLegendsGreen, BookingLegendsBlue, BookingLegendsDarkJade, LocationPinRed, LocationPinGreen, Services, LabelDiv } from './Styles'
 import { Title } from '../../components/title/styles';
-import DatePicker from '../../components/datePicker/DatePicker';
 import { Button } from '../../components/button/styles';
 import { TextInput } from '../../components/textBox/style';
 import Rating from '@mui/material/Rating';
@@ -11,6 +10,7 @@ import ShowerIcon from '@mui/icons-material/Shower';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import TimeToLeaveIcon from '@mui/icons-material/TimeToLeave';
 import PersonIcon from '@mui/icons-material/Person';
+import DatePicker from '../../components/datePicker/DatePicker'
 
 export const BookingPageCont = () => {
     const ratingValue = 3.6;
