@@ -17,7 +17,7 @@ import Registered from './pages/login/register/AccountCreated';
 import ForgotPasswordPage from './pages/login/forgotPasswordPage/ForgotPasswordPage';
 import ConfirmNewPassword from './pages/login/confirmNewPasswordPage/ConfirmNewPassword';
 import VerificationEmail from './pages/login/verificationEmailPage/VerificationEmail';
-import BookingChildPage from './pages/bookingChildPage/BookingChildPage';
+import BookingChildPage from './pages/bookingPage/bookingChildPage/BookingChildPage';
 
 const App = () => {
   return (

@@ -1,9 +1,9 @@
 import React from 'react'
 import { Container, } from './styles'
-import NavigationBar from '../../components/navigationBar/Nav';
-import Footer from '../../components/footer/Footer'
-import ChatBot from '../../components/chatBot/ChatBot';
-import { BookingChildPageCont } from '../../containers/bookingChildPage/BookingChildPageCont';
+import NavigationBar from '../../../components/navigationBar/Nav';
+import Footer from '../../../components/footer/Footer'
+import ChatBot from '../../../components/chatBot/ChatBot';
+import { BookingChildPageCont } from '../../../containers/bookingChildPage/BookingChildPageCont';
 
 
 function BookingChildPage() {
