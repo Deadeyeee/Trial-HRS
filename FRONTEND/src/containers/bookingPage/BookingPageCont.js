@@ -1,13 +1,23 @@
 import React from 'react'
-import { ButtonHolder, CalendarContainer, Container, HorizontalLine, RatingContainer, RoomContainer, RoomContainerContentLeft, RoomContainerContentPhoto, RoomContainerContentRight, RoomContainerMain, ServicesContainer, TitleCalendarContainer, RatingContainerRight, BookingLegendsMain, BookingLegendsContainer, BookingLegends, BookingLegendsWhite, BookingLegendsRed, BookingLegendsGreen, BookingLegendsBlue, BookingLegendsDarkJade, LocationPinRed, LocationPinGreen } from './Styles'
+import { ButtonHolder, CalendarContainer, Container, HorizontalLine, RatingContainer, RoomContainer, RoomContainerContentLeft, RoomContainerContentPhoto, RoomContainerContentRight, RoomContainerMain, ServicesContainer, TitleCalendarContainer, RatingContainerRight, BookingLegendsMain, BookingLegendsContainer, BookingLegends, BookingLegendsWhite, BookingLegendsRed, BookingLegendsGreen, BookingLegendsBlue, BookingLegendsDarkJade, LocationPinRed, LocationPinGreen, Services, LabelDiv } from './Styles'
 import { Title } from '../../components/title/styles';
 import DatePicker from '../../components/datePicker/DatePicker';
 import { Button } from '../../components/button/styles';
+import { TextInput } from '../../components/textBox/style';
+import Rating from '@mui/material/Rating';
+import NetworkWifiIcon from '@mui/icons-material/NetworkWifi';
+import TvIcon from '@mui/icons-material/Tv';
+import ShowerIcon from '@mui/icons-material/Shower';
+import LocationOnIcon from '@mui/icons-material/LocationOn';
+import TimeToLeaveIcon from '@mui/icons-material/TimeToLeave';
+import PersonIcon from '@mui/icons-material/Person';
 
 export const BookingPageCont = () => {
-  return (
-    <Container>
-        <Title
+    const ratingValue = 3.6;
+
+    return (
+        <Container>
+            <Title
                 color='#bfaa7e'
                 weight='normal'
                 size='66px'
@@ -15,134 +25,195 @@ export const BookingPageCont = () => {
             >
                 Bookings
             </Title>
-            <HorizontalLine></HorizontalLine>
+            <HorizontalLine
+                w="20%"></HorizontalLine>
             <TitleCalendarContainer>
-                <Title
-                    color='#8f805f'
-                    weight='normal'
-                    size='16px'
-                    margin='30px 30px'
-                >
-                    Check in date
-                </Title>
-                <Title
-                    color='#8f805f'
-                    weight='normal'
-                    size='16px'
-                    margin='30px 30px'
-                >
-                    Check out Date
-                </Title>
-                <Title
-                    color='#8f805f'
-                    weight='normal'
-                    size='16px'
-                    margin='30px 30px'
-                >
-                    Number of Nights
-                </Title>
-                <Title
-                    color='#8f805f'
-                    weight='normal'
-                    size='16px'
-                    margin='30px 30px'
-                >
+                <DatePicker></DatePicker>
+                
+                <LabelDiv>
+                    <Title
+                        color='black'
+                        size='15px'
+                        margin='0px 0px auto 0px'
+                    >
+                        
                     Adults
-                </Title>
-                <Title
-                    color='#8f805f'
-                    weight='normal'
-                    size='16px'
-                    margin='30px 30px'
-                >
+                    </Title>
+
+                    <TextInput
+                    width="120px"
+                    placeholder="No. of Adults"
+                    align="center"
+                    borderColor='black'
+                    >
+
+                    </TextInput>
+                </LabelDiv>
+                <LabelDiv>
+                    <Title
+                        color='black'
+                        size='15px'
+                        margin='0px 0px auto 0px'
+                    >
+                        
                     Kids
-                </Title>
+                    </Title>
+
+                    
+                    <TextInput
+                    width="120px"
+                    placeholder="No. of Kids"
+                    align="center"
+                    borderColor='black'
+                    >
+
+                    </TextInput>
+                </LabelDiv>
             </TitleCalendarContainer>
-            <CalendarContainer>
-                <Title
-                    family='libre baskerville'
-                    size='25px'
-                    color='#2e2e2e'
-                    weight='400'
-                >
-                    4 Night(s)
-                </Title>
-            </CalendarContainer>
+
             <Button
-                 whileHover={{ backgroundColor: "#2E2E2E", color: "white" }}
-                 w='350px'
-                 h='40px'
-                 textcolor="black"
-                 fam='Times New Roman'
-                 weight='-400'
-                 fontStyle='Italic'
-                 radius="0px"
-                 border="1px solid #8F805F"
-                 margin='30px 0px 0px 0px'
-                 fontsize='25px'
+                whileHover={{ backgroundColor: "#2E2E2E", color: "white" }}
+                w='250px'
+                h='40px'
+                textcolor="black"
+                fam='Times New Roman'
+                weight='-400'
+                fontStyle='Italic'
+                radius="0px"
+                border="1px solid #8F805F"
+                margin='30px 0px 0px 0px'
+                fontsize='25px'
             >
-                BOOK NOW
+                Book now!!
             </Button>
+
             <Title
-             color='#2e2e2e'
-             weight='normal'   
-             size='66px'
-             margin='60px 0px 30px 0px'
-            > 
+                color='#2e2e2e'
+                weight='normal'
+                size='66px'
+                margin='200px 0px 30px 0px'
+            >
                 Available Rooms
 
             </Title>
-            <HorizontalLine></HorizontalLine>
+
+            <HorizontalLine
+                w="30%"
+            ></HorizontalLine>
             <RoomContainerMain>
                 <RoomContainer>
                     <RoomContainerContentPhoto></RoomContainerContentPhoto>
                     <RoomContainerContentRight>
                         <Title
                             color='#292929'
-                            weight='700'   
+                            weight='700'
                             size='33px'
                             fStyle='Normal'
                             margin='10px 0px 10px 0px'
                             align='left'
-                        > 
-                        Premium Room
+                        >
+                            Premium Room
                         </Title>
                         <Title
                             color='#8f805f'
-                            weight='700'   
+                            weight='700'
                             size='16px'
                             fStyle='Normal'
                             margin='10px 0px 0px 0px'
                             align='left'
-                        > 
+                        >
                             Ratings
                         </Title>
-                        <RatingContainer></RatingContainer>
+                        <RatingContainer>
+                            <Title
+                                family="Lato"
+                                fontStyle="normal"
+                                size="15px"
+                                margin="0px 10px 0px 0px"
+                            >{ratingValue}</Title>
+
+                            <Rating
+
+                                size="large"
+                                value={ratingValue}
+                                precision={0.1}
+                            ></Rating>
+
+
+                            <Title
+                                family="times new roman"
+                                // weight="normal"
+                                fontStyle="normal"
+                                size="15px"
+                                margin="0px 0px 0px 20px"
+                            >200 People love it!</Title>
+                        </RatingContainer>
                         <Title
                             color='#8f805f'
-                            weight='700'   
+                            weight='700'
                             size='16px'
                             fStyle='Normal'
                             margin='10px 0px 0px 0px'
                             align='left'
-                        > 
+                        >
                             Services
                         </Title>
-                        <ServicesContainer></ServicesContainer>
+                        <ServicesContainer>
+                            <Services>
+                                <NetworkWifiIcon
+                                    style={{ color: "#bfaa7e" }}
+                                />
+                                <Title
+                                    family="Arial"
+                                    size="12px"
+                                >
+                                    Free Wifi
+                                </Title>
+                            </Services>
+
+
+                            <Services>
+                                <TvIcon
+                                    style={{ color: "#bfaa7e" }}
+                                />
+                                <Title
+                                    family="Arial"
+                                    size="12px"
+                                >
+                                    Television
+                                </Title>
+                            </Services>
+
+
+                            <Services>
+                                <ShowerIcon
+                                    style={{ color: "#bfaa7e" }}
+                                />
+                                <Title
+                                    family="Arial"
+                                    size="12px"
+                                >
+                                    Washroom
+                                </Title>
+                            </Services>
+
+
+
+                        </ServicesContainer>
                         <Title
                             color='#8f805f'
-                            weight='700'   
+                            weight='700'
                             size='16px'
                             fStyle='Normal'
                             margin='10px 0px 0px 0px'
                             align='left'
-                        > 
+                        >
                             Occupancy
                         </Title>
                         <Title
                             family='Noticia Text'
                             color='#2e2e2e'
-                            weight='400'   
+                            weight='400'
                             size='17px'
                             fStyle='Normal'
                             margin='10px 0px 0px 10px'
@@ -151,7 +222,7 @@ export const BookingPageCont = () => {
                             2 Adults only
                         </Title>
                         <ButtonHolder>
-                        <Button
+                            <Button
                                 whileHover={{ backgroundColor: "#2E2E2E", color: "white" }}
                                 w='150px'
                                 h='40px'
@@ -162,94 +233,149 @@ export const BookingPageCont = () => {
                                 border="1px solid #8F805F"
                                 margin='30px 0px 0px 0px'
                                 fontsize='15px'
-                         >
-                              BOOK NOW
-                        </Button>
-                        <Title
-                            family='Roboto Slab'
-                            color='#2e2e2e'
-                            weight='700'   
-                            size='25px'
-                            fStyle='Normal'
-                            margin='35px 0px 0px 10px'
-                            align='left'
-                        >
-                            ₱1000/night
-                        </Title>
+                            >
+                                Book now!
+                            </Button>
+                            <Title
+                                family='Roboto Slab'
+                                color='#2e2e2e'
+                                weight='700'
+                                size='25px'
+                                fStyle='Normal'
+                                margin='35px 0px 0px 10px'
+                                align='left'
+                            >
+                                ₱1000/night
+                            </Title>
                         </ButtonHolder>
                     </RoomContainerContentRight>
                 </RoomContainer>
             </RoomContainerMain>
-            <HorizontalLine></HorizontalLine>
+            <HorizontalLine
+                w="20%"></HorizontalLine>
             <RoomContainerMain>
                 <RoomContainer>
-                    <RoomContainerContentLeft>
+                    <RoomContainerContentPhoto></RoomContainerContentPhoto>
+                    <RoomContainerContentRight>
                         <Title
                             color='#292929'
-                            weight='700'   
+                            weight='700'
                             size='33px'
                             fStyle='Normal'
                             margin='10px 0px 10px 0px'
-                            align='right'
-                        > 
-                            Deluxe Room
+                            align='left'
+                        >
+                            Delux Room
                         </Title>
                         <Title
                             color='#8f805f'
-                            weight='700'   
+                            weight='700'
                             size='16px'
                             fStyle='Normal'
                             margin='10px 0px 0px 0px'
-                            align='right'
-                        > 
+                            align='left'
+                        >
                             Ratings
                         </Title>
-                        <RatingContainerRight></RatingContainerRight>
+                        <RatingContainer>
+                            <Title
+                                family="Lato"
+                                fontStyle="normal"
+                                size="15px"
+                                margin="0px 10px 0px 0px"
+                            >{ratingValue}</Title>
+
+                            <Rating
+
+                                size="large"
+                                value={ratingValue}
+                                precision={0.1}
+                            ></Rating>
+
+
+                            <Title
+                                family="times new roman"
+                                // weight="normal"
+                                fontStyle="normal"
+                                size="15px"
+                                margin="0px 0px 0px 20px"
+                            >100 People love it!</Title>
+                        </RatingContainer>
                         <Title
                             color='#8f805f'
-                            weight='700'   
+                            weight='700'
                             size='16px'
                             fStyle='Normal'
                             margin='10px 0px 0px 0px'
-                            align='right'
-                        > 
+                            align='left'
+                        >
                             Services
                         </Title>
-                        <ServicesContainer></ServicesContainer>
+                        <ServicesContainer>
+                            <Services>
+                                <NetworkWifiIcon
+                                    style={{ color: "#bfaa7e" }}
+                                />
+                                <Title
+                                    family="Arial"
+                                    size="12px"
+                                >
+                                    Free Wifi
+                                </Title>
+                            </Services>
+
+
+                            <Services>
+                                <TvIcon
+                                    style={{ color: "#bfaa7e" }}
+                                />
+                                <Title
+                                    family="Arial"
+                                    size="12px"
+                                >
+                                    Television
+                                </Title>
+                            </Services>
+
+
+                            <Services>
+                                <ShowerIcon
+                                    style={{ color: "#bfaa7e" }}
+                                />
+                                <Title
+                                    family="Arial"
+                                    size="12px"
+                                >
+                                    Washroom
+                                </Title>
+                            </Services>
+
+
+
+                        </ServicesContainer>
                         <Title
                             color='#8f805f'
-                            weight='700'   
+                            weight='700'
                             size='16px'
                             fStyle='Normal'
                             margin='10px 0px 0px 0px'
-                            align='right'
-                        > 
+                            align='left'
+                        >
                             Occupancy
                         </Title>
                         <Title
                             family='Noticia Text'
                             color='#2e2e2e'
-                            weight='400'   
+                            weight='400'
                             size='17px'
                             fStyle='Normal'
                             margin='10px 0px 0px 10px'
-                            align='right'
-                        >
-                            2 Adults and 1 Kid
-                        </Title>
-                        <ButtonHolder>
-                        <Title
-                            family='Roboto Slab'
-                            color='#2e2e2e'
-                            weight='700'   
-                            size='25px'
-                            fStyle='Normal'
-                            margin='35px 10px 0px 10px'
                             align='left'
                         >
-                            ₱1500/night
+                            2 Adults only
                         </Title>
-                        <Button
+                        <ButtonHolder>
+                            <Button
                                 whileHover={{ backgroundColor: "#2E2E2E", color: "white" }}
                                 w='150px'
                                 h='40px'
@@ -260,18 +386,28 @@ export const BookingPageCont = () => {
                                 border="1px solid #8F805F"
                                 margin='30px 0px 0px 0px'
                                 fontsize='15px'
-                         >
-                              BOOK NOW
-                        </Button>
+                            >
+                                Book now!
+                            </Button>
+                            <Title
+                                family='Roboto Slab'
+                                color='#2e2e2e'
+                                weight='700'
+                                size='25px'
+                                fStyle='Normal'
+                                margin='35px 0px 0px 10px'
+                                align='left'
+                            >
+                                ₱1500/night
+                            </Title>
                         </ButtonHolder>
-                    </RoomContainerContentLeft>
+                    </RoomContainerContentRight>
                 </RoomContainer>
-                <RoomContainerContentPhoto></RoomContainerContentPhoto>
             </RoomContainerMain>
             <BookingLegendsMain>
                 <Title
                     color='#2e2e2e'
-                    weight='400'   
+                    weight='400'
                     size='26px'
                     fStyle='Normal'
                     margin='35px 0px 30px 10px'
@@ -283,9 +419,9 @@ export const BookingPageCont = () => {
                     <BookingLegendsWhite></BookingLegendsWhite>
                     <Title
                         family='Noticia Text, serif'
-                        weight='400'   
-                        size='17px'
-                        fStyle='Italic'
+                        weight='400'
+                        size='12px'
+                        fStyle='normal'
                         margin='0px 30px 0px 10px'
                         align='center'
                     >
@@ -294,9 +430,9 @@ export const BookingPageCont = () => {
                     <BookingLegendsRed></BookingLegendsRed>
                     <Title
                         family='Noticia Text, serif'
-                        weight='400'   
-                        size='17px'
-                        fStyle='Italic'
+                        weight='400'
+                        size='12px'
+                        fStyle='normal'
                         margin='0px 30px 0px 10px'
                         align='center'
                     >
@@ -305,31 +441,20 @@ export const BookingPageCont = () => {
                     <BookingLegendsGreen></BookingLegendsGreen>
                     <Title
                         family='Noticia Text, serif'
-                        weight='400'   
-                        size='17px'
-                        fStyle='Italic'
+                        weight='400'
+                        size='12px'
+                        fStyle='normal'
                         margin='0px 30px 0px 10px'
                         align='center'
                     >
-                        Check In Date
-                    </Title>
-                    <BookingLegendsBlue></BookingLegendsBlue>
-                    <Title
-                        family='Noticia Text, serif'
-                        weight='400'   
-                        size='17px'
-                        fStyle='Italic'
-                        margin='0px 30px 0px 10px'
-                        align='center'
-                    >
-                        Check Out Date
+                        Check In Date / Check Out Date
                     </Title>
                     <BookingLegendsDarkJade></BookingLegendsDarkJade>
                     <Title
                         family='Noticia Text, serif'
-                        weight='400'   
-                        size='17px'
-                        fStyle='Italic'
+                        weight='400'
+                        size='12px'
+                        fStyle='normal'
                         margin='0px 30px 0px 10px'
                         align='center'
                     >
@@ -338,7 +463,7 @@ export const BookingPageCont = () => {
                 </BookingLegendsContainer>
                 <Title
                     color='#2e2e2e'
-                    weight='400'   
+                    weight='400'
                     size='26px'
                     fStyle='Normal'
                     margin='35px 0px 30px 10px'
@@ -347,23 +472,26 @@ export const BookingPageCont = () => {
                     Hotel Policies
                 </Title>
                 <BookingLegendsContainer>
-                <LocationPinGreen></LocationPinGreen>
+                    <LocationOnIcon
+                        style={{ color: "green" }}
+                    />
                     <Title
                         family='Noticia Text, serif'
-                        weight='400'   
-                        size='17px'
-                        fStyle='Italic'
-                        margin='0px 30px 0px 10px'
+                        weight='400'
+                        size='12px'
+                        fStyle='normal'
+                        margin='0px auto 0px 10px'
                         align='center'
                     >
                         Check-in from: 2 pm to 4 am on the next day
                     </Title>
-                    <LocationPinRed></LocationPinRed>
+                    <TimeToLeaveIcon
+                    />
                     <Title
                         family='Noticia Text, serif'
-                        weight='400'   
-                        size='17px'
-                        fStyle='Italic'
+                        weight='400'
+                        size='12px'
+                        fStyle='normal'
                         margin='0px 30px 0px 10px'
                         align='center'
                     >
@@ -371,30 +499,34 @@ export const BookingPageCont = () => {
                     </Title>
                 </BookingLegendsContainer>
                 <BookingLegendsContainer>
-                <LocationPinGreen></LocationPinGreen>
+
+                    <TimeToLeaveIcon
+                        style={{ color: "red" }}
+                    />
                     <Title
                         family='Noticia Text, serif'
-                        weight='400'   
-                        size='17px'
-                        fStyle='Italic'
-                        margin='0px 240px 0px 10px'
+                        weight='400'
+                        size='12px'
+                        fStyle='normal'
+                        margin='0px auto 0px 10px'
                         align='center'
                     >
                         Check-out before: 12 pm
                     </Title>
-                    <LocationPinRed></LocationPinRed>
+                    <PersonIcon
+                    />
                     <Title
                         family='Noticia Text, serif'
-                        weight='400'   
-                        size='17px'
-                        fStyle='Italic'
+                        weight='400'
+                        size='12px'
+                        fStyle='normal'
                         margin='0px 80px 0px 10px'
                         align='center'
                     >
-                        Agre: 18 y/o to 65 y/o
+                        age: 18 y/o to 65 y/o
                     </Title>
                 </BookingLegendsContainer>
             </BookingLegendsMain>
-    </Container>
-  )
+        </Container>
+    )
 }

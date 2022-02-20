@@ -5,11 +5,11 @@ export const TextInput = styled.input`
     margin: ${(props) => (props.margins ? props.margins : "20px 0px 0px 0px")};
     outline: ${(props) => (props.outline ? props.outline : "0")};
     text-align: ${(props) => (props.align ? props.align : "left")};
-    background-color: ${(props) => (props.background ? props.background : "none")};
+    background-color: ${(props) => (props.background ? props.background : "transparent")};
     padding: ${(props) => (props.padding ? props.padding : "0")};
     placeholder: ${(props) => (props.placeholder ? props.placeholder : "-")};
     border-width: ${(props) => (props.border ? props.border : "0 0 2px")};
-    border-color: #8F805F;
+    border-color: ${(props) => (props.borderColor ? props.borderColor : "#8F805F")};
     font-size: 14px;
     padding: ${(props) => (props.padding ? props.padding : "auto")};
     border-radius: ${(props) => (props.radius ? props.radius : "0px")};

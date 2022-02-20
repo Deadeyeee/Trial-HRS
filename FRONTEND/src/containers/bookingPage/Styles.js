@@ -11,15 +11,26 @@ export const Container = styled(motion.div)`
 export const HorizontalLine = styled(motion.div)`
     background-color: black;
     height: 1px;
-    width: 70%;
+    width:${(props) => (props.w ? props.w : "60%")};
     margin: 30px 0px 10px 0px; 
     align: center;
 `;
 
 export const TitleCalendarContainer = styled(motion.div)`
     display: flex;
-    flex-direction: row;
+    justify-content: center;
     align-items: center;
+    margin: 20px 0px;
+    height: 80px;
+    gap: 40px;
+`;
+
+export const LabelDiv = styled(motion.div)`
+  display: flex;
+  flex-direction:column;
+    justify-content: flex-start;
+    align-items: center;
+    height: 70px;
 `;
 
 export const CalendarContainer = styled(motion.div)`
@@ -31,11 +42,14 @@ export const CalendarContainer = styled(motion.div)`
 export const RoomContainerMain = styled(motion.div)`
     display: flex;
     height: auto;
-    flex-direction: column
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     width: auto;
     gap: 40px;
+    margin: 50px 0px;
+    /* padding: 20px 50px;
+    background-color: #2e2e2e; */
 `;
 
 export const RoomContainer = styled(motion.div)`
@@ -49,7 +63,7 @@ export const RoomContainerContentPhoto = styled(motion.div)`
     border: 1px solid black;
     width: 450px;
     height: 250px;
-    margin 60px 60px 0px 0px;
+    margin: 60px 60px 0px 0px;
 `;
 
 export const RoomContainerContentRight = styled(motion.div)`
@@ -63,9 +77,10 @@ export const RoomContainerContentLeft = styled(motion.div)`
 `;
 
 export const RatingContainer = styled(motion.div)`
-    background-color: gray;
-    border: 1px solid black;
-    width: 150px;
+    display:flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: auto;
     height: 20px;
     margin: 10px 10px;
 `;
@@ -79,11 +94,23 @@ export const RatingContainerRight = styled(motion.div)`
 `;
 
 export const ServicesContainer = styled(motion.div)`
-    background-color: gray;
-    border: 1px solid black;
-    width: 300px;
-    height: 50px;
+    width: auto;
+    height: 70px;
     margin: 10px 10px;
+    display:flex;
+    align-items: center;
+    gap: 10px;
+`;
+
+export const Services = styled(motion.div)`
+    display: flex;
+    justify-content:center;
+    flex-direction: column;
+    align-items: center;
+    width: 90px;
+    gap: 10px;
+    height: 50px;
+
 `;
 
 export const ButtonHolder = styled(motion.div)`
@@ -92,10 +119,10 @@ export const ButtonHolder = styled(motion.div)`
 `;
 
 export const BookingLegendsMain = styled(motion.div)`
-    flex-direction: column
+display:flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 40px;
     background-color: #DFD3B9;
     margin-top: 150px;
     height: auto;
@@ -108,6 +135,7 @@ export const BookingLegendsContainer = styled(motion.div)`
     flex-direction: Row;
     justify-content: center;
     margin: 10px 0px 20px 0px;
+    width: 40%;
 `;
 
 export const BookingLegendsWhite = styled(motion.div)`
