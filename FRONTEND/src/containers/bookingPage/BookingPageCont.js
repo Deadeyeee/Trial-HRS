@@ -59,8 +59,6 @@ export const BookingPageCont = () => {
                 </Title>
             </TitleCalendarContainer>
             <CalendarContainer>
-                <DatePicker></DatePicker>
-                <DatePicker></DatePicker>
                 <Title
                     family='libre baskerville'
                     size='25px'
