@@ -9,7 +9,7 @@ export const Booking = () => {
         <Container>
             <ChatBot />
             <NavigationBar book />
-           <BookingPageCont></BookingPageCont>
+            <BookingPageCont></BookingPageCont>
             <Footer />
         </Container>
     )

@@ -1,7 +1,6 @@
 import React from 'react'
 import { ButtonHolder, CalendarContainer, Container, HorizontalLine, RatingContainer, RoomContainer, RoomContainerContentLeft, RoomContainerContentPhoto, RoomContainerContentRight, RoomContainerMain, ServicesContainer, TitleCalendarContainer, RatingContainerRight, BookingLegendsMain, BookingLegendsContainer, BookingLegends, BookingLegendsWhite, BookingLegendsRed, BookingLegendsGreen, BookingLegendsBlue, BookingLegendsDarkJade, LocationPinRed, LocationPinGreen } from './Styles'
 import { Title } from '../../components/title/styles';
-import DatePicker from '../../components/datePicker/DatePicker';
 import { Button } from '../../components/button/styles';
 
 export const BookingPageCont = () => {
