@@ -10,6 +10,7 @@ import ShowerIcon from '@mui/icons-material/Shower';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import TimeToLeaveIcon from '@mui/icons-material/TimeToLeave';
 import PersonIcon from '@mui/icons-material/Person';
+import DatePicker from '../../components/datePicker/DatePicker'
 
 export const BookingPageCont = () => {
     const ratingValue = 3.6;
