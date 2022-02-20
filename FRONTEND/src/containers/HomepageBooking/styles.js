@@ -9,6 +9,7 @@ font-weight: normal;
 text-align: center;
 `;
 
+
 export const Container = styled(motion.div)`
 display: flex;
 align-items: center;

@@ -35,8 +35,6 @@ export const FlexboxMainPhotoLeft = styled(motion.div)`
 export const FlexboxContent = styled(motion.div)`
     display: flex;
     flex-direction: column;
-    
-    
 `;
 
 
