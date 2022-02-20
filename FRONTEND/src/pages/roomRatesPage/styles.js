@@ -13,6 +13,7 @@ export const FlexboxContainer = styled(motion.div)`
     justify-content: center;
     overflow: hidden;
     display: flex;
+    margin-bottom: 100px;
 `;
 
 export const FlexboxContentMain = styled(motion.div)`

@@ -1,4 +1,4 @@
-import React,{useEffect, useState} from 'react';
+import React,{useEffect, useLayoutEffect, useState} from 'react';
 import { Logo, Container, MenuItems, Menu, Link } from './styles';
 import logo from '../../images/logo.png';
 import { Button } from '../button/styles';
@@ -20,7 +20,7 @@ export const Nav = (props) => {
       })
   }
 
-  useEffect(()=>{
+  useLayoutEffect(()=>{
     console.log()
     Axios.defaults.withCredentials = true;
     Axios.get("http://localhost:3001/auth/verify-token").then((response)=>{
