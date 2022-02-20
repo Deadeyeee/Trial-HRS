@@ -1,5 +1,5 @@
 import React from 'react'
-import { FlexButtonPrice, Container, FlexboxContainer, FlexboxContent, FlexboxContentMain, FlexboxMainPhotoLeft, FlexboxMainPhotoRight, HorizontalLineShortRight, HorizontalLineShortLeft, Description } from './styles'
+import { FlexButtonPrice, Container, FlexboxContainer, FlexboxContent, FlexboxContentMain, FlexboxMainPhotoLeft, HorizontalLineShortLeft, Description } from './styles'
 import NavigationBar from '../../components/navigationBar/Nav';
 import Footer from '../../components/footer/Footer'
 import ChatBot from '../../components/chatBot/ChatBot';
