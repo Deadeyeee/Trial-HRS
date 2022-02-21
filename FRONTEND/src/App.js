@@ -20,6 +20,7 @@ import VerificationEmail from './pages/login/verificationEmailPage/VerificationE
 import BookingChildPage from './pages/bookingPage/bookingChildPage/BookingChildPage';
 import GuestInfoPage from './pages/guestInformationPage/GuestInfoPage';
 import FAmenitiesContent from './pages/famenitiesPage/fAmenitiesChild/FAmenitiesContent';
+import BookingConfirmationPage from './pages/bookingPage/bookingConfirmationPage/BookingConfirmationPage';
 
 const App = () => {
   return (
@@ -40,6 +41,7 @@ const App = () => {
         <Route path="/verifyEmail" element={<VerificationEmail />} />
         <Route path="/booking/room" element={<BookingChildPage />} />
         <Route path="/guestInformation" element={<GuestInfoPage />} />
+        <Route path="booking/confirmation" element={<BookingConfirmationPage />} />
         <Route path="*" element={<Error404 />} />
 
       </Routes>
