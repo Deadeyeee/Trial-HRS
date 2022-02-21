@@ -1,4 +1,4 @@
-import { ButtonHolder, Container, ContentContainerHolder, RatingContainer, RoomContainer, RoomContainerContentPhoto, RoomContainerContentRight, RoomContainerMain, ServicesContainer,} from './Styles'
+import { Container, ContentContainerHolder, RatingContainer, RoomContainer, RoomContainerContentPhoto, RoomContainerContentRight, RoomContainerMain, ServicesContainer,} from './Styles'
 import { Title } from '../../components/title/styles';
 import { Button } from '../../components/button/styles';
 
