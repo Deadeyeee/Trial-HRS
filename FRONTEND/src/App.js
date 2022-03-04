@@ -19,6 +19,8 @@ import ConfirmNewPassword from './pages/login/confirmNewPasswordPage/ConfirmNewP
 import VerificationEmail from './pages/login/verificationEmailPage/VerificationEmail';
 import BookingChildPage from './pages/bookingPage/bookingChildPage/BookingChildPage';
 import GuestInfoPage from './pages/guestInformationPage/GuestInfoPage';
+import FAmenitiesContent from './pages/famenitiesPage/fAmenitiesChild/FAmenitiesContent';
+
 const App = () => {
   return (
     <Router>
@@ -29,6 +31,7 @@ const App = () => {
         <Route path="/aboutUs" element={<AboutPage />} />
         <Route path="/roomRate" element={<RoomPage />} />
         <Route path="/facilitiesAmenities" element={<FamenitiesPage />} />
+        <Route path="/facilitiesAmenities/eventsPlace" element={<FAmenitiesContent />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/registered/:id" element={<Registered />} />
@@ -38,6 +41,7 @@ const App = () => {
         <Route path="/booking/room" element={<BookingChildPage />} />
         <Route path="/guestInformation" element={<GuestInfoPage />} />
         <Route path="*" element={<Error404 />} />
+
       </Routes>
     </Router>
   );
