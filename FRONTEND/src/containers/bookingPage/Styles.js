@@ -8,6 +8,7 @@ export const Container = styled(motion.div)`
 
 `;
 
+
 export const HorizontalLine = styled(motion.div)`
     background-color: black;
     height: 1px;

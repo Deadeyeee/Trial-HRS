@@ -11,7 +11,7 @@ export const Container = styled(motion.div)`
 export const RoomContainerMain = styled(motion.div)`
     display: flex;
     height: auto;
-    flex-direction: column
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     width: auto;
@@ -22,6 +22,9 @@ export const RoomContainer = styled(motion.div)`
     display: flex;
     flex-direction: Row;
     margin: 40px;
+    justify-content: center;
+    align-items: center;
+    gap: 60px;
     
 `;
 
@@ -30,12 +33,23 @@ export const RoomContainerContentPhoto = styled(motion.div)`
     border: 1px solid black;
     width: 550px;
     height: 300px;
-    margin 40px 60px 0px 0px;
+`;
+
+export const Services = styled(motion.div)`
+    display: flex;
+    justify-content:center;
+    flex-direction: column;
+    align-items: center;
+    width: 90px;
+    gap: 10px;
+    height: 50px;
+
 `;
 
 export const RoomContainerContentRight = styled(motion.div)`
     display: flex;
     flex-direction: column;
+    gap: 10px 0px;
 `;
 
 export const RoomContainerContentLeft = styled(motion.div)`
@@ -44,19 +58,20 @@ export const RoomContainerContentLeft = styled(motion.div)`
 `;
 
 export const RatingContainer = styled(motion.div)`
-    background-color: gray;
-    border: 1px solid black;
-    width: 150px;
+    display:flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: auto;
     height: 20px;
-    margin: 10px 60px;
+    margin: 10px 0px 0px 60px;
 `;
 
 export const ServicesContainer = styled(motion.div)`
-    background-color: gray;
-    border: 1px solid black;
-    width: 300px;
-    height: 50px;
-    margin: 10px 0px 0px 50px;
+    width: auto;
+    height: 70px;
+    display:flex;
+    align-items: center;
+    gap: 10px;
 `;
 
 export const ButtonHolder = styled(motion.div)`
@@ -66,7 +81,7 @@ export const ButtonHolder = styled(motion.div)`
 
 export const ContentContainerHolder = styled(motion.div)`
     display: flex;
-    flex-direction: Row;
+
     width: 600px;
-    margin: 10px 0px 0px 0px;
+    margin: 20px 0px 0px 0px;
 `;

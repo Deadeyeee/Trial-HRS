@@ -41,7 +41,7 @@ export const Login = () => {
     useEffect(() => {
         Axios.get("http://localhost:3001/auth/verify-token").then((response) => {
             console.log(response.status)
-            if(response.status === 200){
+            if (response.status === 200) {
                 window.location.href = '/';
             }
 
