@@ -41,7 +41,7 @@ const App = () => {
         <Route path="/verifyEmail" element={<VerificationEmail />} />
         <Route path="/booking/room" element={<BookingChildPage />} />
         <Route path="/guestInformation" element={<GuestInfoPage />} />
-        <Route path="booking/confirmation" element={<BookingConfirmationPage />} />
+        <Route path="/booking/confirmation" element={<BookingConfirmationPage />} />
         <Route path="*" element={<Error404 />} />
 
       </Routes>
