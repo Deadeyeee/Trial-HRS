@@ -20,7 +20,7 @@ export const HorizontalLineSmall = styled(motion.div)`
     height: 1px;
     width: 10%;
     margin: 30px 0px 30px 23px; 
-    position: relative;'
+    position: relative;
 
 `;
 
@@ -54,8 +54,9 @@ export const FlexboxPhoto = styled(motion.div)`
     width: 220px;
     height: 500px;
     margin: 62px 20px 20px 20px;
-    border: 3px solid black;
-    background-color: gray;
+    background-image: url(${(props) => (props.link ? props.link : null)});
+    background-size: cover;
+    background-position: center;
 `;
 
 export const FlexboxTitle = styled(motion.div)`

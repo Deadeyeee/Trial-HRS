@@ -29,7 +29,9 @@ export const FlexboxMainPhotoLeft = styled(motion.div)`
     width: 450px;
     height: 250px;
     margin: 20px;
-    background-color: gray;
+    background-image: url(${(props) => (props.link ? props.link : null)});
+    background-size: cover;
+    background-position: center;
 `;
 
 export const FlexboxContent = styled(motion.div)`

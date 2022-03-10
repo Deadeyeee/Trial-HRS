@@ -29,8 +29,10 @@ export const RoomContainer = styled(motion.div)`
 `;
 
 export const RoomContainerContentPhoto = styled(motion.div)`
-    background-color: gray;
-    border: 1px solid black;
+    
+    background-image: url(${(props) => (props.link ? props.link : null)});
+    background-size: cover;
+    background-position: center;
     width: 550px;
     height: 300px;
 `;

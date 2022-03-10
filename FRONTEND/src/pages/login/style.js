@@ -17,13 +17,14 @@ export const LoginBorder = styled(motion.div)`
     align-items: center;
     justify-content: center;
     width: 490px;
-    height: 600px;
+    height: auto;
     background: rgba(255, 255, 255, 1);
     border-radius: 20px;
     position: absolute;
     z-index: 1;
     overflow: hidden;
     box-shadow: -5px 10px 5px black;
+    padding: 20px 0px;
 `;
 
 export const Logo = styled(motion.img)`

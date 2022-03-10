@@ -4,6 +4,7 @@ import NavigationBar from '../../components/navigationBar/Nav';
 import Footer from '../../components/footer/Footer'
 import ChatBot from '../../components/chatBot/ChatBot';
 import { Title } from '../../components/title/styles';
+import Background from '../../images/backgroundImages/aboutus.jpg';
 
 export const About = () => {
     return (
@@ -108,7 +109,8 @@ export const About = () => {
                             </p>
                         </FlexboxItem2>
                     </FlexboxContainer2>
-                    <FlexboxPhoto></FlexboxPhoto>
+                    <FlexboxPhoto
+                    link={Background}></FlexboxPhoto>
                 </FlexboxContainerMain>
             </ContentContainer>
             <Footer />

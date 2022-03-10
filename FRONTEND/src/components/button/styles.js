@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 
 export const Button = styled(motion.a)`
     background-color: ${(props) => (props.bg ? props.bg : "transparent")};
+    text-decoration: none;
     font-family: ${(props) => (props.fam ? props.fam : "auto")};
     color: ${(props) => (props.textcolor ? props.textcolor : "#F2F2F2")};
     margin: ${(props) => (props.margin ? props.margin : "0px")};

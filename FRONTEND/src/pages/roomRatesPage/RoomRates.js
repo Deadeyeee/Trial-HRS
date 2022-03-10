@@ -5,6 +5,8 @@ import Footer from '../../components/footer/Footer'
 import ChatBot from '../../components/chatBot/ChatBot';
 import { Button } from '../../components/button/styles';
 import { Title } from '../../components/title/styles';
+import Background from '../../images/RoomsIMG/premium.jpg'
+import Background2 from '../../images/RoomsIMG/delux.jpg'
 export const RoomRates = () => {
     return (
         <Container>
@@ -20,7 +22,8 @@ export const RoomRates = () => {
             </Title>
             <FlexboxContainer>
                 <FlexboxContentMain>
-                    <FlexboxMainPhotoLeft></FlexboxMainPhotoLeft>
+                    <FlexboxMainPhotoLeft
+                    link={Background}></FlexboxMainPhotoLeft>
                     <FlexboxContent>
                         <Title
                             family='playfair display, serif'
@@ -53,6 +56,7 @@ export const RoomRates = () => {
                                 fontStyle='Normal'
                                 radius="0px"
                                 border="1px solid #8F805F"
+                                href='/booking'
                             >
                                 Book Now!
                             </Button>
@@ -123,7 +127,8 @@ export const RoomRates = () => {
                             </Button>
                         </FlexButtonPrice>
                     </FlexboxContent>
-                    <FlexboxMainPhotoLeft></FlexboxMainPhotoLeft>
+                    <FlexboxMainPhotoLeft
+                    link={Background2}></FlexboxMainPhotoLeft>
                 </FlexboxContentMain>
             </FlexboxContainer>
             <Footer />

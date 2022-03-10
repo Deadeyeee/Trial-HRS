@@ -8,6 +8,7 @@ import { Description } from '../../components/paragraph/style';
 import TvIcon from '@mui/icons-material/Tv';
 import ShowerIcon from '@mui/icons-material/Shower';
 import NetworkWifiIcon from '@mui/icons-material/NetworkWifi';
+import Background from '../../images/RoomsIMG/premium.jpg'
 
 export const BookingChildPageCont = () => {
     const ratingValue = 3.6;
@@ -15,7 +16,6 @@ export const BookingChildPageCont = () => {
       
     <Container>
         <Title
-            color='#292929'
             weight='400'   
             size='66px'
             fStyle='Normal'
@@ -27,7 +27,8 @@ export const BookingChildPageCont = () => {
         </Title>
         <RoomContainerMain>
                 <RoomContainer>
-                    <RoomContainerContentPhoto></RoomContainerContentPhoto>
+                    <RoomContainerContentPhoto
+                    link={Background}></RoomContainerContentPhoto>
                     <RoomContainerContentRight>
                         <ContentContainerHolder>
                         <Title
@@ -203,6 +204,7 @@ export const BookingChildPageCont = () => {
                  border="1px solid #0C4426"
                  margin='30px 0px 0px 0px'
                  fontsize='23px'
+                 href='/guestInformation'
             >
                 Book this now!
             </Button>
@@ -218,6 +220,7 @@ export const BookingChildPageCont = () => {
                  margin='20px 0px 40px 0px'
                  fontsize='16px'
                  bg='#FF9292'
+                 href = '/booking'
             >
                 Cancel
             </Button>

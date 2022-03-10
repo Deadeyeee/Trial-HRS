@@ -11,6 +11,8 @@ import LocationOnIcon from '@mui/icons-material/LocationOn';
 import TimeToLeaveIcon from '@mui/icons-material/TimeToLeave';
 import PersonIcon from '@mui/icons-material/Person';
 import DatePicker from '../../components/datePicker/DatePicker'
+import Background from '../../images/RoomsIMG/premium.jpg'
+import Background2 from '../../images/RoomsIMG/delux.jpg'
 
 export const BookingPageCont = () => {
     const ratingValue = 3.6;
@@ -102,7 +104,8 @@ export const BookingPageCont = () => {
             ></HorizontalLine>
             <RoomContainerMain>
                 <RoomContainer>
-                    <RoomContainerContentPhoto></RoomContainerContentPhoto>
+                    <RoomContainerContentPhoto
+                    link={Background}></RoomContainerContentPhoto>
                     <RoomContainerContentRight>
                         <Title
                             color='#292929'
@@ -233,6 +236,7 @@ export const BookingPageCont = () => {
                                 border="1px solid #8F805F"
                                 margin='30px 0px 0px 0px'
                                 fontsize='15px'
+                                href='/booking/room'
                             >
                                 Book now!
                             </Button>
@@ -255,7 +259,8 @@ export const BookingPageCont = () => {
                 w="20%"></HorizontalLine>
             <RoomContainerMain>
                 <RoomContainer>
-                    <RoomContainerContentPhoto></RoomContainerContentPhoto>
+                    <RoomContainerContentPhoto
+                    link={Background2}></RoomContainerContentPhoto>
                     <RoomContainerContentRight>
                         <Title
                             color='#292929'

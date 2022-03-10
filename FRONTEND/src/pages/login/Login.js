@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import { Button, FormButton } from '../../components/button/styles';
-import TextBox from '../../components/textBox/TextBox';
 import { Title } from '../../components/title/styles';
 import logo from '../../images/logo.png';
 import { Container, LoginBorder, Logo, RegistrationForm } from './style';
@@ -10,6 +9,15 @@ import Background from '../../components/background/Background';
 import { TextInput } from '../../components/textBox/style';
 
 export const Login = () => {
+    var Recaptcha = require('react-recaptcha');
+
+    var callback = function () {
+        console.log('Done!!!!');
+    };
+
+    var verifyCallback = function (response) {
+        console.log(response);
+    };
     // Axios.defaults.withCredentials = true;
 
     const [userName, setUserName] = useState("");
@@ -129,6 +137,14 @@ export const Login = () => {
                             color="red"
                             weight="normal"
                         >{loginStatus}</Title>
+
+                        <Recaptcha
+                            sitekey="6LdJnrkeAAAAAOt5k6Gz1_Op5iBm0Jm75Sl4PME_"
+                            render="explicit"
+                            verifyCallback={verifyCallback}
+                            onloadCallback={callback}
+                        />
+
                         <FormButton
 
                             whileHover={{

@@ -1,6 +1,7 @@
 import React from 'react'
 import { Container, FlexboxContainer, FlexboxContentMain, FlexboxMainPhotoLeft, FlexboxContent, Description, HorizontalLine, } from './Styles'
 import { Title } from '../../components/title/styles';
+import BackgroundIMG2 from "../../images/FamenitiesIMG/eventsplace.jpg";
 export const FAmenitiesContentCont = () => {
   return (
     <Container>
@@ -15,7 +16,8 @@ export const FAmenitiesContentCont = () => {
             <HorizontalLine></HorizontalLine>
             <FlexboxContainer>
                 <FlexboxContentMain>
-                    <FlexboxMainPhotoLeft></FlexboxMainPhotoLeft>
+                    <FlexboxMainPhotoLeft
+                    link={BackgroundIMG2}></FlexboxMainPhotoLeft>
                     <FlexboxContent>
                         <Title
                             family='playfair display, serif'
