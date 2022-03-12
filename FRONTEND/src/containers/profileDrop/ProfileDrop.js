@@ -113,7 +113,6 @@ export const ProfileDrop = (props) => {
             ></ProfilePicture>
         <Title 
             size="16px"
-            color="#2E2E2E"
             weight="normal"
             color ="red"
             family="georgia">Logout</Title>

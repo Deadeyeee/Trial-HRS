@@ -25,6 +25,7 @@ import Profile from './pages/profilePage/Profile';
 import ClientBookingInfoPage from './pages/clientBookingInfoPage/ClientBookingInfoPage';
 import ClientPaymentInfoPage from './pages/clientPaymentInfoPage/ClientPaymentInfoPage';
 import ClientMessagesPage from './pages/clientMessagesPage/ClientMessagesPage';
+import ClientProfilePage from './pages/clientProfilePage/ClientProfilePage';
 
 const App = () => {
   return (
@@ -50,6 +51,8 @@ const App = () => {
         <Route path="/client/bookingInfo" element={<ClientBookingInfoPage />} />
         <Route path="/client/paymentInfo" element={<ClientPaymentInfoPage />} />
         <Route path="/client/messages" element={<ClientMessagesPage />} />
+        <Route path="/client/profilepage" element={<ClientProfilePage />} />
+
         <Route path="*" element={<Error404 />} />
 
       </Routes>

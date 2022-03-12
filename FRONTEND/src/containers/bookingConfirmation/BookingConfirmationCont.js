@@ -8,7 +8,6 @@ function BookingConfirmationCont() {
   return (
     <Container>
         <Title
-            color='#292929'
             weight='400'   
             size='66px'
             fStyle='Normal'
@@ -39,7 +38,7 @@ function BookingConfirmationCont() {
             fStyle='Normal'
             margin='50px 0px 10px 0px'
             align='Center'
-            color='#2e2e2e'
+            
         >
             Your booking is put on HOLD until confirmation of Bank Deposit/Transfer made
         </Title>
@@ -51,7 +50,7 @@ function BookingConfirmationCont() {
             fStyle='Normal'
             margin='20px 0px 10px 0px'
             align='Center'
-            color='#2e2e2e'
+            
         >
             <b>Instructions on how to make the payment:</b>
         </Title>
@@ -63,7 +62,7 @@ function BookingConfirmationCont() {
             fStyle='Normal'
             margin='20px 0px 10px 0px'
             align='Center'
-            color='#2e2e2e'
+            
         >
             Deposit payment through our bank account:
         </Title>
