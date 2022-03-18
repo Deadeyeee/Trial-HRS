@@ -8,6 +8,7 @@ font-style: ${(props) => (props.fStyle ? props.fStyle : "italic")};
 text-align: ${(props) => (props.align ? props.align : "center")};;
 margin: ${(props) => (props.margin ? props.margin : "0px")};
 color: ${(props) => (props.color ? props.color : "black")};
+border: ${(props) => (props.border ? props.border : "")};
 display: ${(props) => (props.display ? props.display : "block")};
 letter-spacing: ${(props) => (props.spacing ? props.spacing : "1px")};
 padding: ${(props) => (props.padding ? props.padding : "0px")};

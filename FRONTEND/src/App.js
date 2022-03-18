@@ -22,6 +22,9 @@ import GuestInfoPage from './pages/guestInformationPage/GuestInfoPage';
 import FAmenitiesContent from './pages/famenitiesPage/fAmenitiesChild/FAmenitiesContent';
 import BookingConfirmationPage from './pages/bookingPage/bookingConfirmationPage/BookingConfirmationPage';
 import Profile from './pages/profilePage/Profile';
+import ClientBookingInfoPage from './pages/clientBookingInfoPage/ClientBookingInfoPage';
+import ClientPaymentInfoPage from './pages/clientPaymentInfoPage/ClientPaymentInfoPage';
+import ClientMessagesPage from './pages/clientMessagesPage/ClientMessagesPage';
 
 const App = () => {
   return (
@@ -44,6 +47,9 @@ const App = () => {
         <Route path="/guestInformation" element={<GuestInfoPage />} />
         <Route path="client/profile" element={<Profile />} />
         <Route path="/booking/confirmation" element={<BookingConfirmationPage />} />
+        <Route path="/client/bookingInfo" element={<ClientBookingInfoPage />} />
+        <Route path="/client/paymentInfo" element={<ClientPaymentInfoPage />} />
+        <Route path="/client/messages" element={<ClientMessagesPage />} />
         <Route path="*" element={<Error404 />} />
 
       </Routes>
