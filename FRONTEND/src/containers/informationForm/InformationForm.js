@@ -1,5 +1,5 @@
 import React, { useLayoutEffect, useState } from 'react'
-import { FormButton } from '../../components/button/styles'
+import { FormButton, Button } from '../../components/button/styles'
 import { HorizontalLine } from '../../components/horizontalLine/HorizontalLine'
 import { Description } from '../../components/paragraph/style'
 import { TextInput } from '../../components/textBox/style'
@@ -101,7 +101,6 @@ const InformationForm = () => {
                                     size="20px">Male</Title>
                                 <TextInput
                                     margins='0px'
-                                    width='0%'
                                     width='20px'
                                     heigh='20px'
                                     type='radio'
@@ -152,7 +151,7 @@ const InformationForm = () => {
                         />
 
 
-                        <FormButton
+                        <Button
                             whileHover={{
                                 scale: 1.05, backgroundColor: "#0C4426",
                                 border: "2px solid #2E2E2E", color: "white"
@@ -167,9 +166,8 @@ const InformationForm = () => {
                             textcolor='#0C4426'
                             fontsize='20px'
                             fontStyle='normal'
-                            type='submit'
-                            value='Proceed'>
-                        </FormButton>
+                            href="/booking/confirmation">Proceed
+                        </Button>
 
                         <FormButton
                             whileHover={{
@@ -376,7 +374,6 @@ const InformationForm = () => {
                                         size="20px">{result}</Title>
                                     <TextInput
                                         margins='0px'
-                                        width='0%'
                                         width='20px'
                                         heigh='20px'
                                         type='radio'
@@ -415,7 +412,6 @@ const InformationForm = () => {
                                         size="20px">{result}</Title>
                                     <TextInput
                                         margins='0px'
-                                        width='0%'
                                         width='20px'
                                         heigh='20px'
                                         type='radio'
@@ -456,7 +452,6 @@ const InformationForm = () => {
                                         size="20px">{result}</Title>
                                     <TextInput
                                         margins='0px'
-                                        width='0%'
                                         width='20px'
                                         heigh='20px'
                                         type='radio'

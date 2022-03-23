@@ -21,6 +21,7 @@ import BookingChildPage from './pages/bookingPage/bookingChildPage/BookingChildP
 import GuestInfoPage from './pages/guestInformationPage/GuestInfoPage';
 import FAmenitiesContent from './pages/famenitiesPage/fAmenitiesChild/FAmenitiesContent';
 import BookingConfirmationPage from './pages/bookingPage/bookingConfirmationPage/BookingConfirmationPage';
+import Profile from './pages/profilePage/Profile';
 
 const App = () => {
   return (
@@ -41,6 +42,7 @@ const App = () => {
         <Route path="/verifyEmail" element={<VerificationEmail />} />
         <Route path="/booking/room" element={<BookingChildPage />} />
         <Route path="/guestInformation" element={<GuestInfoPage />} />
+        <Route path="client/profile" element={<Profile />} />
         <Route path="/booking/confirmation" element={<BookingConfirmationPage />} />
         <Route path="*" element={<Error404 />} />
 
