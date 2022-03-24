@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import {Container} from './styles'
+import { Container } from './styles'
 import NavigationBar from '../../components/navigationBar/Nav';
 import Footer from '../../components/footer/Footer'
 import ChatBot from '../../components/chatBot/ChatBot';
@@ -9,7 +9,7 @@ export const Profile = () => {
         <Container>
             <ChatBot />
             <NavigationBar home />
-            <ProfileContainer></ProfileContainer>
+            <ProfileContainer profile></ProfileContainer>
             <Footer />
         </Container >
     )

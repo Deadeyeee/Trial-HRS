@@ -9,6 +9,9 @@ import Background from '../../components/background/Background';
 import { TextInput } from '../../components/textBox/style';
 
 export const Login = () => {
+    useEffect(() => {
+        document.title = "Login"
+      }, [])
     var Recaptcha = require('react-recaptcha');
 
     var callback = function () {

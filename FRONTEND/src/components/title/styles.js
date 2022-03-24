@@ -18,4 +18,5 @@ opacity: ${(props) => (props.opc ? props.opc : "100%")};
 text-shadow:  ${(props) => (props.shadow ? props.shadow : "none")};
 width:${(props) => (props.w ? props.w : "auto")};
 background-color:${(props) => (props.bg ? props.bg : "none")};
+border-radius:${(props) => (props.borderRadius ? props.borderRadius : "none")}
 `;

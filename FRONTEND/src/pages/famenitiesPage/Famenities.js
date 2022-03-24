@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Container, FlexTitle, HorizontalLine, PhotoHolder, TitleHolder } from './styles'
 import NavigationBar from '../../components/navigationBar/Nav';
 import Footer from '../../components/footer/Footer'
@@ -8,6 +8,9 @@ import BackgroundIMG from "../../images/FamenitiesIMG/spa.jpg";
 import BackgroundIMG1 from "../../images/FamenitiesIMG/salon.jpg";
 import BackgroundIMG2 from "../../images/FamenitiesIMG/eventsplace.jpg";
 export const Famenities = () => {
+    useEffect(() => {
+        document.title = "Facilities & Ameneties"
+      }, [])
     return (
         <Container>
             <ChatBot />

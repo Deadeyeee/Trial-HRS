@@ -45,7 +45,7 @@ const App = () => {
         <Route path="/verifyEmail" element={<VerificationEmail />} />
         <Route path="/booking/room" element={<BookingChildPage />} />
         <Route path="/guestInformation" element={<GuestInfoPage />} />
-        <Route path="client/profile" element={<Profile />} />
+        <Route path="/client/profile" element={<Profile />} />
         <Route path="/booking/confirmation" element={<BookingConfirmationPage />} />
         <Route path="/client/bookingInfo" element={<ClientBookingInfoPage />} />
         <Route path="/client/paymentInfo" element={<ClientPaymentInfoPage />} />

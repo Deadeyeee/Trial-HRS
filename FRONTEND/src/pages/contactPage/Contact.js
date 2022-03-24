@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Container, HorizontalLine, VerticalLine, FlexboxContainer1, FlexboxContainer2, FlexboxContainerMain, FlexboxItem1, FlexboxItem2, ContentContainer, FlexboxTitleContainer, MapContainer } from './styles'
 import NavigationBar from '../../components/navigationBar/Nav';
 import Footer from '../../components/footer/Footer'
@@ -9,6 +9,9 @@ import { Button } from '../../components/button/styles';
 import Location from '../../components/map/Location'
 
 export const Contact = () => {
+    useEffect(() => {
+        document.title = "Contact Us"
+      }, [])
     return (
         <Container>
             <ChatBot />

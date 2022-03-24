@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Container, } from './styles'
 import NavigationBar from '../../../components/navigationBar/Nav';
 import Footer from '../../../components/footer/Footer'
@@ -7,6 +7,9 @@ import { BookingChildPageCont } from '../../../containers/bookingChildPage/Booki
 
 
 function BookingChildPage() {
+  useEffect(() => {
+    document.title = "Booking Room"
+  }, [])
   return (
     <Container>
         <ChatBot />

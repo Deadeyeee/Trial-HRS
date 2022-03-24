@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import { Button } from '../../components/button/styles';
 import { Title } from '../../components/title/styles';
 import { Container } from './style'
@@ -6,6 +6,9 @@ import logo from '../../images/logo.png';
 import {Logo} from './style'
 
 export const Error404 = () => {
+    useEffect(() => {
+        document.title = "404 Error"
+      }, [])
     return (
         <Container
         initial="hidden"

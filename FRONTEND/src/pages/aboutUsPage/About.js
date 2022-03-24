@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Container, FlexboxContainer1, FlexboxContainer2, FlexboxContainerMain, FlexboxItem1, FlexboxItem2, FlexboxPhoto, FlexboxTitle, HorizontalLine, HorizontalLineSmall, ContentContainer, FlexboxTitleContainer, } from './styles'
 import NavigationBar from '../../components/navigationBar/Nav';
 import Footer from '../../components/footer/Footer'
@@ -7,6 +7,9 @@ import { Title } from '../../components/title/styles';
 import Background from '../../images/backgroundImages/aboutus.jpg';
 
 export const About = () => {
+    useEffect(() => {
+        document.title = "About Us"
+      }, [])
     return (
         <Container>
             <ChatBot />
