@@ -10,3 +10,14 @@ export const Container = styled(motion.div)`
     justify-content: center;
 `;
 
+
+export const ContentContainer = styled(motion.div)`
+  display: flex;
+    flex-direction: column;
+    justify-content: center;
+  width: 1200px;
+  margin: 30px 0px;
+  box-shadow: 2px 0px 10px gray;
+  background-color: white;
+  height: auto;
+`;

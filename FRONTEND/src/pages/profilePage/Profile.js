@@ -1,15 +1,19 @@
 import React, { useState, useEffect } from 'react'
-import { Container } from './styles'
+import { Container, ContentContainer } from './styles'
 import NavigationBar from '../../components/navigationBar/Nav';
 import Footer from '../../components/footer/Footer'
 import ChatBot from '../../components/chatBot/ChatBot';
 import ProfileContainer from '../../containers/profileContainer/ProfileContainer';
+import ClientProfileCont from '../../containers/clientProfile/ClientProfileCont';
 export const Profile = () => {
     return (
         <Container>
             <ChatBot />
-            <NavigationBar home />
-            <ProfileContainer profile></ProfileContainer>
+            <NavigationBar/>
+           <ContentContainer>
+           <ProfileContainer profile></ProfileContainer>
+           <ClientProfileCont></ClientProfileCont>
+           </ContentContainer>
             <Footer />
         </Container >
     )

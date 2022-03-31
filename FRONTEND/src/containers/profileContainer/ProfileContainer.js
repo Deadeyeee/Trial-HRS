@@ -1,8 +1,12 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { HorizontalLine } from '../../components/horizontalLine/HorizontalLine'
 import { Title } from '../../components/title/styles'
 import { Link, MenuItems, Container, HeadContainer, MainContainer, Navigations, } from './style'
 
 const ProfileContainer = (props) => {
+  useEffect(() => {
+    document.title = "Profile"
+  }, [])
   return (
     <Container>
         <MainContainer>
@@ -15,15 +19,16 @@ const ProfileContainer = (props) => {
                 padding='10px 40px'
                 borderRadius='5px'
                 weight='normal'
-                >Juan Felipe</Title>
+                >Pedro Juan</Title>
             </HeadContainer>
             <Navigations>
             
-            <MenuItems><Link active={props.profile == true} href="/">Profile</Link></MenuItems>
-           <MenuItems><Link active={props.book == true} href="/booking">Booking</Link></MenuItems>
-           <MenuItems><Link active={props.payment == true} href="/facilitiesAmenities">Payments</Link></MenuItems>
-           <MenuItems><Link active={props.message == true} href="/roomRate">Messages</Link></MenuItems>
+            <MenuItems><Link active={props.profile == true} href="/client/profile">Profile</Link></MenuItems>
+           <MenuItems><Link active={props.book == true} href="/client/bookingInfo">Booking</Link></MenuItems>
+           <MenuItems><Link active={props.payment == true} href="/client/paymentInfo">Payments</Link></MenuItems>
+           <MenuItems><Link active={props.message == true} href="/client/messages">Messages</Link></MenuItems>
             </Navigations>
+            <HorizontalLine w='50%'></HorizontalLine>
         </MainContainer>
     </Container>
   )

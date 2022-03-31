@@ -6,7 +6,7 @@ export const Container = styled(motion.div)`
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  min-height: 1200px;
+  min-height: auto;
 `;
 
 export const MainContainer = styled(motion.div)`
@@ -14,11 +14,9 @@ export const MainContainer = styled(motion.div)`
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  min-height: 1200px;
-  min-width: 1200px;
-  background-color: white;
+  height: auto;
+  width: 100%;
   overflow: hidden;
-  box-shadow: 0px 0px 10px gray;
 `;
 
 export const HeadContainer = styled(motion.div)`

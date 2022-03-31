@@ -152,17 +152,7 @@ const ClientProfileCont = () => {
                 color= '#2e2e2e'
                 align='left'
             >
-                USER NAME:
-            </Title>
-            <Title
-                family= 'raleway, sans-serif'
-                weight= '700'
-                fStyle='Bold'
-                size= '20px'
-                color= '#2e2e2e'
-                align='left'    
-            >
-                PASSWORD:
+                User Name:
             </Title>
             </ProfileInformationContent>
             <ProfileInformationContent>
@@ -175,16 +165,6 @@ const ClientProfileCont = () => {
                 align='right'     
             >
                 Pedrojuan001221
-            </Title>
-            <Title
-                family= 'raleway, sans-serif'
-                weight= '700'
-                fStyle='Bold'
-                size= '20px'
-                color= '#2e2e2e'
-                align='right'     
-            >
-                232pa3432sad
             </Title>
             </ProfileInformationContent>
         </ProfileContentContainer>

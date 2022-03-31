@@ -14,5 +14,7 @@ export const PhotoBox = styled(motion.div)`
     align-items: center;
     justify-content: center;   
     border: 2px solid #BFAA7E;
-    margin: 40px 0px 20px 0px
+    margin: 10px 0px 10px 0px;
+    height: 400px;
+    width: 700px;
 `
