@@ -12,6 +12,7 @@ function ConfirmNewPasswordCont() {
                 family='Roboto Slab'
                 weight='100'
                 margin='10px 0px 15px 0px'
+                fStyle='Bold'
             >
                 Forgot Password
             </Title>

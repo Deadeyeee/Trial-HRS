@@ -270,7 +270,7 @@ export const BookingPageCont = () => {
                             margin='10px 0px 10px 0px'
                             align='left'
                         >
-                            Delux Room
+                            Deluxe Room
                         </Title>
                         <Title
                             color='#8f805f'

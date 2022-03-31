@@ -11,6 +11,7 @@ export const EmailVerificationHolder = styled(motion.div)`
     z-index: 1;
     background-color: white;
     border: 2px solid black;
+    border-radius: 5%;
     width: 400px;
     height: 275px;
     margin: 50px;

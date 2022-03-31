@@ -83,7 +83,6 @@ export const ButtonHolder = styled(motion.div)`
 
 export const ContentContainerHolder = styled(motion.div)`
     display: flex;
-
     width: 600px;
     margin: 20px 0px 0px 0px;
 `;

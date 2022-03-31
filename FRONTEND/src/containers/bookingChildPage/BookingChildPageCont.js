@@ -128,12 +128,15 @@ export const BookingChildPageCont = () => {
                             fStyle='Normal'
                             margin='0px 15px 0px 0px'
                             align='left'
+
                         > 
                             Description:
                         </Title>
                         <Description
                         align="left"
+                        width="450px"
                         size="15"
+
                         >
                         
                         

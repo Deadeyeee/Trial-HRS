@@ -12,6 +12,8 @@ function VerificationEmailCont(props) {
                 family='Roboto Slab'
                 weight='100'
                 margin='10px 0px 0px 0px'
+                fStyle='Bold'
+                w='450px'
             >
                 We've sent you an Email!
             </Title>
