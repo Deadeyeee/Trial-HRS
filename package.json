@@ -5,6 +5,10 @@
   "dependencies": {
     "concurrently": "^7.0.0"
   },
+  "engines": { 
+    "node": "14.18.0",
+    "npm": "8.5.3"
+  },
   "scripts": {
     "start": "concurrently  \"cd FRONTEND && npm start\" \"cd ../\" \"cd BACKEND && npm run dev\"",
     "build": "react-scripts build",

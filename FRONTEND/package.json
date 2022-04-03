@@ -28,6 +28,10 @@
     "web-vitals": "^2.1.2",
     "webfontloader": "^1.6.28"
   },
+  "engines": { 
+    "node": "14.18.0",
+    "npm": "8.5.3"
+  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",

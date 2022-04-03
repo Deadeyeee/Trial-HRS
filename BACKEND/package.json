@@ -8,6 +8,10 @@
     "start": "node src/index.js",
     "dev": "nodemon src/index.js"
   },
+  "engines": { 
+    "node": "14.18.0",
+    "npm": "8.5.3"
+  },
   "author": "",
   "license": "ISC",
   "dependencies": {
