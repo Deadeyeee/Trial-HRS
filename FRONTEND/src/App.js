@@ -4,27 +4,35 @@ import {
   Routes
 } from 'react-router-dom';
 
-import HomePage from './pages/homePage/Home'
-import AboutPage from './pages/aboutUsPage/About'
-import BookingPage from './pages/bookingPage/Booking'
-import ContactPage from './pages/contactPage/Contact'
-import FamenitiesPage from './pages/famenitiesPage/Famenities'
-import RoomPage from './pages/roomRatesPage/RoomRates'
-import Error404 from './pages/404Error/Error404';
-import Login from './pages/login/Login';
-import Register from './pages/login/register/Register';
-import Registered from './pages/login/register/AccountCreated';
-import ForgotPasswordPage from './pages/login/forgotPasswordPage/ForgotPasswordPage';
-import ConfirmNewPassword from './pages/login/confirmNewPasswordPage/ConfirmNewPassword';
-import VerificationEmail from './pages/login/verificationEmailPage/VerificationEmail';
-import BookingChildPage from './pages/bookingPage/bookingChildPage/BookingChildPage';
-import GuestInfoPage from './pages/guestInformationPage/GuestInfoPage';
-import FAmenitiesContent from './pages/famenitiesPage/fAmenitiesChild/FAmenitiesContent';
-import BookingConfirmationPage from './pages/bookingPage/bookingConfirmationPage/BookingConfirmationPage';
-import Profile from './pages/profilePage/Profile';
-import ClientBookingInfoPage from './pages/clientBookingInfoPage/ClientBookingInfoPage';
-import ClientPaymentInfoPage from './pages/clientPaymentInfoPage/ClientPaymentInfoPage';
-import ClientMessagesPage from './pages/clientMessagesPage/ClientMessagesPage';
+// CLIENT
+import HomePage from './client/pages/homePage/Home'
+import AboutPage from './client/pages/aboutUsPage/About'
+import BookingPage from './client/pages/bookingPage/Booking'
+import ContactPage from './client/pages/contactPage/Contact'
+import FamenitiesPage from './client/pages/famenitiesPage/Famenities'
+import RoomPage from './client/pages/roomRatesPage/RoomRates'
+import Error404 from './client/pages/404Error/Error404';
+import Login from './client/pages/login/Login';
+import Register from './client/pages/login/register/Register';
+import Registered from './client/pages/login/register/AccountCreated';
+import ForgotPasswordPage from './client/pages/login/forgotPasswordPage/ForgotPasswordPage';
+import ConfirmNewPassword from './client/pages/login/confirmNewPasswordPage/ConfirmNewPassword';
+import VerificationEmail from './client/pages/login/verificationEmailPage/VerificationEmail';
+import BookingChildPage from './client/pages/bookingPage/bookingChildPage/BookingChildPage';
+import GuestInfoPage from './client/pages/guestInformationPage/GuestInfoPage';
+import FAmenitiesContent from './client/pages/famenitiesPage/fAmenitiesChild/FAmenitiesContent';
+import BookingConfirmationPage from './client/pages/bookingPage/bookingConfirmationPage/BookingConfirmationPage';
+import Profile from './client/pages/profilePage/Profile';
+import ClientBookingInfoPage from './client/pages/clientBookingInfoPage/ClientBookingInfoPage';
+import ClientPaymentInfoPage from './client/pages/clientPaymentInfoPage/ClientPaymentInfoPage';
+import ClientMessagesPage from './client/pages/clientMessagesPage/ClientMessagesPage';
+
+
+
+
+
+// Admin
+
 
 const App = () => {
   return (
