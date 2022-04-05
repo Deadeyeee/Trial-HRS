@@ -3,5 +3,49 @@ import { motion } from "framer-motion";
 
 
 export const Container = styled(motion.div)`
-  
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    min-height: 100%;
+    gap: 10px;
+    padding: 0px 1rem;
+    width: 12%;
+    background-color: #2E2E2E;
 `;
+
+export const ProfileContainer = styled(motion.div)`
+  display: flex;
+  align-items: center;
+  margin: 50px 0px 20px 0px;
+  gap: 5px;
+`;
+
+export const Image = styled(motion.img)`
+    width: 50px;
+    height: 50px;
+    margin-right: 2px;
+    background-color: white;
+    border-radius: 0.5rem;
+`;
+
+export const DescriptionContainer = styled(motion.div)`
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+`;
+
+
+export const MenuContainer = styled(motion.a)`
+  display: flex;
+  align-items: center;
+  width: auto;
+  gap: 3px;
+  padding: 10px 0px 10px 10px;
+  border-radius: 0.5rem;
+  background-color: ${(props) => (props.bg ? props.bg : "none")};
+  margin: ${(props) => (props.margin ? props.margin : "0px")};
+  &:hover {
+    background-color: ${(props) => (props.hbg ? props.hbg : "rgb(186, 242, 233, .1)")};;
+  }
+`;
+

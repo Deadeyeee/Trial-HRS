@@ -32,7 +32,7 @@ import ClientMessagesPage from './client/pages/clientMessagesPage/ClientMessages
 
 
 // Admin
-
+import AdminProfile from './admin/pages/dashboard/Dashboard'
 
 const App = () => {
   return (
@@ -59,6 +59,8 @@ const App = () => {
         <Route path="/client/paymentInfo" element={<ClientPaymentInfoPage />} />
         <Route path="/client/messages" element={<ClientMessagesPage />} />
 
+
+        <Route path="/admin" element={<AdminProfile />} />
         <Route path="*" element={<Error404 />} />
 
       </Routes>
