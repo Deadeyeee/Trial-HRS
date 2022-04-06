@@ -47,6 +47,7 @@ export const BookingPageCont = () => {
                     placeholder="No. of Adults"
                     align="center"
                     borderColor='black'
+                    value='2'
                     >
 
                     </TextInput>
@@ -67,6 +68,7 @@ export const BookingPageCont = () => {
                     placeholder="No. of Kids"
                     align="center"
                     borderColor='black'
+                    value='0'
                     >
 
                     </TextInput>

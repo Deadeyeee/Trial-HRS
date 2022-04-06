@@ -7,13 +7,10 @@ import './style.css';
 import { LabelDiv } from '../../containers/bookingPage/Styles';
 
 const initialState = {
-    startDate: null,
-    endDate: null,
+    startDate: new Date().setHours(0,0,0,0),
+    endDate: new Date(new Date().getTime()+86400000).setHours(0,0,0,0),
     focusedInput: null,
 }
-
-let dateStart;
-let dateEnd;
 
 function reducer(state, action) {
     switch (action.type) {
@@ -30,14 +27,15 @@ export const DatePicker = () => {
 
     const [state, dispatch] = useReducer(reducer, initialState)
     const [nights, setNights] = useState();
-    useEffect(()=>{
-        if(state.startDate !== null && state.endDate !== null){
-           setNights( Math.floor((state.endDate - state.startDate) / (24*60*60*1000)));
+    useEffect(() => {
+        if (state.startDate !== null && state.endDate !== null) {
+            setNights(Math.floor((state.endDate - state.startDate) / (24 * 60 * 60 * 1000)));
         }
-        else{
+        else {
             setNights(0);
         }
-    })
+    },[state.startDate, state.endDate])
+    console.log("startdate=" + state.startDate + " enddate=" + state.endDate)
     return (
         <Container>
             <DateContainer>
@@ -56,7 +54,7 @@ export const DatePicker = () => {
                         breakpoints: ["32em", "48em", "64em"],
                         reactDatepicker: {
                             inputFontSize: "16px",
-                            inputLabelBorder: "1px solid #f2f2f2",
+                            inputLabelBorder: "1px solid black",
                             inputBackground: "#f2f2f2",
                             inputPlaceholderFontWeight: "bold",
                             datepickerBorderRadius: "20px",
@@ -84,18 +82,18 @@ export const DatePicker = () => {
                         focusedInput={state.focusedInput} // START_DATE, END_DATE or null
                     />
                 </ThemeProvider>
-                
+
             </DateContainer>
             <LabelDiv>
-                    <Title
-                        color='black'
-                        size='15px'
-                    >
-                        
-                    Number of Nights
-                    </Title>
+                <Title
+                    color='black'
+                    size='15px'
+                >
 
-                    <Title
+                    Number of Nights
+                </Title>
+
+                <Title
                     family='libre baskerville'
                     size='25px'
                     color='#2e2e2e'
@@ -103,9 +101,9 @@ export const DatePicker = () => {
                     fStyle='normal'
                     margin='auto 0px 0px 0px'
                 >
-                    <b>{nights}</b> {nights == 1 || nights == 0? "night" : "night(s)"}
+                    <b>{nights}</b> {nights == 1 || nights == 0 ? "night" : "night(s)"}
                 </Title>
-                </LabelDiv>
+            </LabelDiv>
         </Container>
     )
 }
