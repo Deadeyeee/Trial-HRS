@@ -56,10 +56,26 @@ export const MenuContainer = styled(motion.a)`
   gap: 3px;
   padding: 10px 0px 10px 10px;
   border-radius: 0.5rem;
+  background-color: ${props => props.active ? "rgb(191, 170, 126, 0.7)" : "none"};
+  margin: ${(props) => (props.margin ? props.margin : "0px")};
+  &:hover {
+    background-color: ${(props) => (props.hbg ? props.hbg : "rgb(186, 242, 233, .1)")};;
+  }
+`;
+
+
+export const Logout = styled(motion.a)`
+  display: flex;
+  align-items: center;
+  width: auto;
+  gap: 3px;
+  padding: 10px 0px 10px 10px;
+  border-radius: 0.5rem;
   background-color: ${(props) => (props.bg ? props.bg : "none")};
   margin: ${(props) => (props.margin ? props.margin : "0px")};
   &:hover {
     background-color: ${(props) => (props.hbg ? props.hbg : "rgb(186, 242, 233, .1)")};;
   }
 `;
+
 

@@ -11,11 +11,11 @@ import SensorDoorIcon from '@mui/icons-material/SensorDoor';
 import MeetingRoomIcon from '@mui/icons-material/MeetingRoom';
 import MailIcon from '@mui/icons-material/Mail';
 import AssessmentIcon from '@mui/icons-material/Assessment';
-import { Container, DescriptionContainer, Image, MenuContainer, ProfileContainer } from './style';
+import { Container, DescriptionContainer, Image, Logout, MenuContainer, ProfileContainer } from './style';
 import { Title } from '../../../client/components/title/styles';
 import { HorizontalLine } from '../../../client/components/horizontalLine/HorizontalLine';
 import LogoutIcon from '@mui/icons-material/Logout';
-const SideBarNav = () => {
+const SideBarNav = (props) => {
     return (
         <Container>
             <ProfileContainer>
@@ -46,10 +46,11 @@ const SideBarNav = () => {
             ></HorizontalLine>
 
             <MenuContainer
-            bg='rgb(191, 170, 126, 0.7)'
+            active={props.dashboard == true}
             >
                 <DashboardIcon
-                    style={{ color: "#2E2E2E" }}
+                    style={{ color: props.dashboard == true ? "#2E2E2E" : "#dddddd" }}
+                    active={true}
                 />
 
                 <Title
@@ -64,9 +65,12 @@ const SideBarNav = () => {
                 </Title>
             </MenuContainer>
 
-            <MenuContainer>
+            <MenuContainer
+            
+            active={props.booking == true}
+            >
                 <MenuBookIcon
-                    style={{ color: "#dddddd" }}
+                    style={{ color: props.booking == true ? "#2E2E2E" : "#dddddd" }}
                 />
 
                 <Title
@@ -81,9 +85,11 @@ const SideBarNav = () => {
                 </Title>
             </MenuContainer>
 
-            <MenuContainer>
+            <MenuContainer
+            
+            active={props.payment == true}>
                 <AccountBoxIcon
-                    style={{ color: "#dddddd" }}
+                    style={{ color: props.payment == true ? "#2E2E2E" : "#dddddd" }}
                 />
 
                 <Title
@@ -98,9 +104,11 @@ const SideBarNav = () => {
                 </Title>
             </MenuContainer>
 
-            <MenuContainer>
+            <MenuContainer
+            
+            active={props.guest == true}>
                 <PeopleIcon
-                    style={{ color: "#dddddd" }}
+                    style={{ color: props.guest == true ? "#2E2E2E" : "#dddddd" }}
                 />
 
                 <Title
@@ -115,9 +123,11 @@ const SideBarNav = () => {
                 </Title>
             </MenuContainer>
 
-            <MenuContainer>
+            <MenuContainer
+            
+            active={props.userlist == true}>
                 <AccountBoxIcon
-                    style={{ color: "#dddddd" }}
+                    style={{ color: props.userlist == true ? "#2E2E2E" : "#dddddd" }}
                 />
 
                 <Title
@@ -132,9 +142,11 @@ const SideBarNav = () => {
                 </Title>
             </MenuContainer>
 
-            <MenuContainer>
+            <MenuContainer
+            
+            active={props.userlog == true}>
                 <BookIcon
-                    style={{ color: "#dddddd" }}
+                    style={{ color: props.userlog == true ? "#2E2E2E" : "#dddddd" }}
                 />
 
                 <Title
@@ -149,9 +161,12 @@ const SideBarNav = () => {
                 </Title>
             </MenuContainer>
 
-            <MenuContainer>
+            <MenuContainer
+            
+            active={props.status == true}
+            >
                 <ContentPasteIcon
-                    style={{ color: "#dddddd" }}
+                    style={{ color: props.status == true ? "#2E2E2E" : "#dddddd" }}
                 />
 
                 <Title
@@ -166,9 +181,11 @@ const SideBarNav = () => {
                 </Title>
             </MenuContainer>
 
-            <MenuContainer>
+            <MenuContainer
+            
+            active={props.roomstatus == true}>
                 <SensorDoorIcon
-                    style={{ color: "#dddddd" }}
+                    style={{ color: props.roomstatus == true ? "#2E2E2E" : "#dddddd" }}
                 />
 
                 <Title
@@ -183,9 +200,11 @@ const SideBarNav = () => {
                 </Title>
             </MenuContainer>
 
-            <MenuContainer>
+            <MenuContainer
+            
+            active={props.roomdetails == true}>
                 <MeetingRoomIcon
-                    style={{ color: "#dddddd" }}
+                    style={{ color: props.roomdetails == true ? "#2E2E2E" : "#dddddd" }}
                 />
 
                 <Title
@@ -200,9 +219,11 @@ const SideBarNav = () => {
                 </Title>
             </MenuContainer>
 
-            <MenuContainer>
+            <MenuContainer
+            
+            active={props.message == true}>
                 <MailIcon
-                    style={{ color: "#dddddd" }}
+                    style={{ color: props.message == true ? "#2E2E2E" : "#dddddd" }}
                 />
 
                 <Title
@@ -217,9 +238,11 @@ const SideBarNav = () => {
                 </Title>
             </MenuContainer>
 
-            <MenuContainer>
+            <MenuContainer
+            
+            active={props.report == true}>
                 <AssessmentIcon
-                    style={{ color: "#dddddd" }}
+                    style={{ color: props.report == true ? "#2E2E2E" : "#dddddd" }}
                 />
 
                 <Title
@@ -233,7 +256,7 @@ const SideBarNav = () => {
                     Reports
                 </Title>
             </MenuContainer>
-            <MenuContainer
+            <Logout
             bg='red'
             margin='auto 0px 20px 0px'
             >
@@ -251,7 +274,7 @@ const SideBarNav = () => {
                 >
                     Logout
                 </Title>
-            </MenuContainer>
+            </Logout>
         </Container>
     )
 }

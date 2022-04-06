@@ -8,7 +8,7 @@ const Dashboard = () => {
   return (
     <Container>
       <ContainerInvisible></ContainerInvisible>
-    <SideBarNav/>
+    <SideBarNav dashboard/>
     <DashboardContainer/>
 </Container>
   )
