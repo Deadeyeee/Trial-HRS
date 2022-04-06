@@ -19,6 +19,10 @@ text-shadow:  ${(props) => (props.shadow ? props.shadow : "none")};
 width:${(props) => (props.w ? props.w : "auto")};
 background-color:${(props) => (props.bg ? props.bg : "none")};
 border-radius:${(props) => (props.borderRadius ? props.borderRadius : "none")};
+border:${(props) => (props.border ? props.border : "none")};
 cursor:${(props) => (props.cursor ? props.cursor : "auto")};
-overflow: hidden;
+overflow: ${(props) => (props.overflow ? props.overflow : "hidden")};
+&:hover{
+    color: ${(props) => (props.hoverColor ? props.hoverColor : "none")};;
+  }
 `;

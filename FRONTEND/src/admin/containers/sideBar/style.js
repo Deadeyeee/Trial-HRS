@@ -4,13 +4,27 @@ import { motion } from "framer-motion";
 
 export const Container = styled(motion.div)`
     display: flex;
+    position: fixed;
+    flex-direction: column;
+    height: 100%;
+    min-height: 100%;
+    gap: 10px;
+    padding: 0px 1rem;
+    width: 15%;
+    background-color: #2E2E2E;
+    z-index: 2;
+`;
+
+export const ContainerInvisible = styled(motion.div)`
+    display: flex;
     flex-direction: column;
     height: 100vh;
     min-height: 100%;
     gap: 10px;
     padding: 0px 1rem;
-    width: 12%;
-    background-color: #2E2E2E;
+    width: 18%;
+    opacity: 0;
+    background-color: pink;
 `;
 
 export const ProfileContainer = styled(motion.div)`
