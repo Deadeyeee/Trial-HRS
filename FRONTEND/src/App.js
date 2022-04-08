@@ -33,6 +33,7 @@ import ClientMessagesPage from './client/pages/clientMessagesPage/ClientMessages
 
 // Admin
 import AdminProfile from './admin/pages/dashboard/Dashboard'
+import Status from './admin/pages/status/Status';
 
 const App = () => {
   return (
@@ -61,6 +62,7 @@ const App = () => {
 
 
         <Route path="/admin" element={<AdminProfile />} />
+        <Route path="/admin/status" element={<Status />} />
         <Route path="*" element={<Error404 />} />
 
       </Routes>
