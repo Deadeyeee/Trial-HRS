@@ -35,6 +35,7 @@ import ClientMessagesPage from './client/pages/clientMessagesPage/ClientMessages
 import AdminProfile from './admin/pages/dashboard/Dashboard'
 import Status from './admin/pages/status/Status';
 import Payment from './admin/pages/payment/Payment';
+import Guest from './admin/pages/guest/Guest';
 
 const App = () => {
   return (
@@ -65,6 +66,7 @@ const App = () => {
         <Route path="/admin" element={<AdminProfile />} />
         <Route path="/admin/status" element={<Status />} />
         <Route path="/admin/payments" element={<Payment/>} />
+        <Route path="/admin/guests" element={<Guest />} />
         <Route path="*" element={<Error404 />} />
 
       </Routes>
