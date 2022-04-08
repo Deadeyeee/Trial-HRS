@@ -40,6 +40,7 @@ import Bookings from './admin/pages/bookings/Bookings';
 
 import UserLogs from './admin/pages/userLogs/UserLogs';
 import UserList from './admin/pages/userList/UserList';
+import RoomStatus from './admin/pages/roomStatus/RoomStatus';
 
 const App = () => {
   return (
@@ -65,6 +66,7 @@ const App = () => {
         <Route path="/client/bookingInfo" element={<ClientBookingInfoPage />} />
         <Route path="/client/paymentInfo" element={<ClientPaymentInfoPage />} />
         <Route path="/client/messages" element={<ClientMessagesPage />} />
+      
 
 
         <Route path="/admin" element={<AdminProfile />} />
@@ -75,6 +77,8 @@ const App = () => {
 
         <Route path="/admin/userLogs" element={<UserLogs />} />
         <Route path="/admin/userList" element={<UserList />} />
+
+        <Route path="/admin/roomStatus" element={<RoomStatus />}/>
         <Route path="*" element={<Error404 />} />
 
       </Routes>
