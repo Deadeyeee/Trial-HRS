@@ -4,7 +4,8 @@ import { Title } from '../../../client/components/title/styles'
 import { ContainerGlobal } from '../../components/container/container'
 import { HorizontalLine } from '../../../client/components/horizontalLine/HorizontalLine'
 import { TextInput } from '../../../client/components/textBox/style'
-
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 const BookingsContainer = () => {
   return (
     <Container>
@@ -21,11 +22,27 @@ const BookingsContainer = () => {
             Add A Booking Reservation
             </Title>
         </HeadContainer>
+
         <ContainerGlobal
             whileHover={{ scale: 1.01 }}
             whileTap={{ scale: 1 }}
             w='90%'
-            h='auto'
+            h='5vh'
+            bg='white'
+            direction='column'
+            padding='30px'
+            margin='20px 0px 10px 0px'
+            gap='10px'
+        >
+        </ContainerGlobal>
+
+
+
+        <ContainerGlobal
+            whileHover={{ scale: 1.01 }}
+            whileTap={{ scale: 1 }}
+            w='90%'
+            h='60vh'
             bg='white'
             direction='column'
             padding='30px'
@@ -232,6 +249,8 @@ const BookingsContainer = () => {
             padding='30px'
             margin='0px 0px 50px 0px'
             gap='10px'
+            justify='center'
+            align='center'
         >
             <ContainerGlobalRow>
                 <ContainerGlobalColumn>
@@ -492,6 +511,8 @@ const BookingsContainer = () => {
             padding='30px'
             margin='0px 0px 50px 0px'
             gap='10px'
+            justify='center'
+            align='center'
         >
             <ContainerGlobalRow>
                 <ContainerGlobalColumn>

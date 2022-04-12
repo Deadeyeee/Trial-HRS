@@ -30,6 +30,9 @@ export const TableContainer = styled(motion.table)`
 
 export const Tr = styled(motion.tr)`
   border: none;
+  &:hover{
+    background-color: gray;
+  }
 `;
 
 export const Th = styled(motion.th)`
@@ -54,6 +57,7 @@ export const TabContainer = styled(motion.td)`
   flex-direction: row;
   justify-content: flex-start;
   align-items: left;
+  gap: 20px;
   
 `;
 
