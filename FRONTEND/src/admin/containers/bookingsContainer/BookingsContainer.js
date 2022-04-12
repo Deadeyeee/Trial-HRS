@@ -4,8 +4,7 @@ import { Title } from '../../../client/components/title/styles'
 import { ContainerGlobal } from '../../components/container/container'
 import { HorizontalLine } from '../../../client/components/horizontalLine/HorizontalLine'
 import { TextInput } from '../../../client/components/textBox/style'
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+
 const BookingsContainer = () => {
   return (
     <Container>
