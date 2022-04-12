@@ -39,6 +39,7 @@ import Guest from './admin/pages/guest/Guest';
 import Bookings from './admin/pages/bookings/Bookings';
 
 import UserLogs from './admin/pages/userLogs/UserLogs';
+import UserList from './admin/pages/userList/UserList';
 
 const App = () => {
   return (
@@ -73,6 +74,7 @@ const App = () => {
         <Route path="/admin/booking" element={<Bookings/>}/>
 
         <Route path="/admin/userLogs" element={<UserLogs />} />
+        <Route path="/admin/userList" element={<UserList />} />
         <Route path="*" element={<Error404 />} />
 
       </Routes>
