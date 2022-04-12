@@ -36,6 +36,8 @@ import AdminProfile from './admin/pages/dashboard/Dashboard'
 import Status from './admin/pages/status/Status';
 import Payment from './admin/pages/payment/Payment';
 import Guest from './admin/pages/guest/Guest';
+import Bookings from './admin/pages/bookings/Bookings';
+
 
 const App = () => {
   return (
@@ -67,6 +69,8 @@ const App = () => {
         <Route path="/admin/status" element={<Status />} />
         <Route path="/admin/payments" element={<Payment/>} />
         <Route path="/admin/guests" element={<Guest />} />
+        <Route path="/admin/booking" element={<Bookings/>}/>
+
         <Route path="*" element={<Error404 />} />
 
       </Routes>
