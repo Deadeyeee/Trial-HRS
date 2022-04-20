@@ -15,6 +15,7 @@ import { Container, DescriptionContainer, Image, Logout, MenuContainer, ProfileC
 import { Title } from '../../../client/components/title/styles';
 import { HorizontalLine } from '../../../client/components/horizontalLine/HorizontalLine';
 import LogoutIcon from '@mui/icons-material/Logout';
+import Badge from '@mui/material/Badge';
 const SideBarNav = (props) => {
     return (
         <Container>
@@ -46,9 +47,9 @@ const SideBarNav = (props) => {
             ></HorizontalLine>
 
             <MenuContainer
-            href='/admin'
-            whileTap={{ scale: 0.98 }}
-            active={props.dashboard == true}
+                href='/admin'
+                whileTap={{ scale: 0.98 }}
+                active={props.dashboard == true}
             >
                 <DashboardIcon
                     style={{ color: props.dashboard == true ? "#2E2E2E" : "#dddddd" }}
@@ -68,10 +69,10 @@ const SideBarNav = (props) => {
             </MenuContainer>
 
             <MenuContainer
-            
-            href='/admin/booking'
-            whileTap={{ scale: 0.98 }}
-            active={props.booking == true}
+
+                href='/admin/booking'
+                whileTap={{ scale: 0.98 }}
+                active={props.booking == true}
             >
                 <MenuBookIcon
                     style={{ color: props.booking == true ? "#2E2E2E" : "#dddddd" }}
@@ -90,9 +91,9 @@ const SideBarNav = (props) => {
             </MenuContainer>
 
             <MenuContainer
-            href='/admin/payments'
-            whileTap={{ scale: 0.98 }}
-            active={props.payment == true}>
+                href='/admin/payments'
+                whileTap={{ scale: 0.98 }}
+                active={props.payment == true}>
                 <AccountBoxIcon
                     style={{ color: props.payment == true ? "#2E2E2E" : "#dddddd" }}
                 />
@@ -110,10 +111,10 @@ const SideBarNav = (props) => {
             </MenuContainer>
 
             <MenuContainer
-            whileTap={{ scale: 0.98 }}
-            
-            href='/admin/guests'
-            active={props.guest == true}>
+                whileTap={{ scale: 0.98 }}
+
+                href='/admin/guests'
+                active={props.guest == true}>
                 <PeopleIcon
                     style={{ color: props.guest == true ? "#2E2E2E" : "#dddddd" }}
                 />
@@ -131,10 +132,10 @@ const SideBarNav = (props) => {
             </MenuContainer>
 
             <MenuContainer
-            
-            href='/admin/userList'
-            whileTap={{ scale: 0.98 }}
-            active={props.userlist == true}>
+
+                href='/admin/userList'
+                whileTap={{ scale: 0.98 }}
+                active={props.userlist == true}>
                 <AccountBoxIcon
                     style={{ color: props.userlist == true ? "#2E2E2E" : "#dddddd" }}
                 />
@@ -152,10 +153,10 @@ const SideBarNav = (props) => {
             </MenuContainer>
 
             <MenuContainer
-            
-            href='/admin/userLogs'
-            whileTap={{ scale: 0.98 }}
-            active={props.userlog == true}>
+
+                href='/admin/userLogs'
+                whileTap={{ scale: 0.98 }}
+                active={props.userlog == true}>
                 <BookIcon
                     style={{ color: props.userlog == true ? "#2E2E2E" : "#dddddd" }}
                 />
@@ -173,9 +174,9 @@ const SideBarNav = (props) => {
             </MenuContainer>
 
             <MenuContainer
-            href='/admin/status'
-            whileTap={{ scale: 0.98 }}
-            active={props.status == true}
+                href='/admin/status'
+                whileTap={{ scale: 0.98 }}
+                active={props.status == true}
             >
                 <ContentPasteIcon
                     style={{ color: props.status == true ? "#2E2E2E" : "#dddddd" }}
@@ -194,10 +195,10 @@ const SideBarNav = (props) => {
             </MenuContainer>
 
             <MenuContainer
-            
-            href='/admin/roomStatus'
-            whileTap={{ scale: 0.98 }}
-            active={props.roomstatus == true}>
+
+                href='/admin/roomStatus'
+                whileTap={{ scale: 0.98 }}
+                active={props.roomstatus == true}>
                 <SensorDoorIcon
                     style={{ color: props.roomstatus == true ? "#2E2E2E" : "#dddddd" }}
                 />
@@ -215,9 +216,9 @@ const SideBarNav = (props) => {
             </MenuContainer>
 
             <MenuContainer
-            
-            whileTap={{ scale: 0.98 }}
-            active={props.roomdetails == true}>
+
+                whileTap={{ scale: 0.98 }}
+                active={props.roomdetails == true}>
                 <MeetingRoomIcon
                     style={{ color: props.roomdetails == true ? "#2E2E2E" : "#dddddd" }}
                 />
@@ -235,29 +236,31 @@ const SideBarNav = (props) => {
             </MenuContainer>
 
             <MenuContainer
-            
-            whileTap={{ scale: 0.98 }}
-            active={props.message == true}>
+
+                whileTap={{ scale: 0.98 }}
+                active={props.message == true}>
                 <MailIcon
                     style={{ color: props.message == true ? "#2E2E2E" : "#dddddd" }}
                 />
-
-                <Title
-                    size='14px'
-                    color='white'
-                    family='Helvetica'
-                    fstyle='normal'
-                    weight='600'
-                    align='left'
-                >
-                    Messages
-                </Title>
+                <Badge badgeContent={4} color="warning">
+                    <Title
+                        size='14px'
+                        color='white'
+                        family='Helvetica'
+                        fstyle='normal'
+                        weight='600'
+                        align='left'
+                        padding='0px 10px 0px 0px'
+                    >
+                        Messages
+                    </Title>
+                </Badge >
             </MenuContainer>
 
             <MenuContainer
-            
-            whileTap={{ scale: 0.98 }}
-            active={props.report == true}>
+
+                whileTap={{ scale: 0.98 }}
+                active={props.report == true}>
                 <AssessmentIcon
                     style={{ color: props.report == true ? "#2E2E2E" : "#dddddd" }}
                 />
@@ -274,8 +277,8 @@ const SideBarNav = (props) => {
                 </Title>
             </MenuContainer>
             <Logout
-            bg='red'
-            margin='auto 0px 20px 0px'
+                bg='red'
+                margin='auto 0px 20px 0px'
             >
                 <LogoutIcon
                     style={{ color: "#dddddd" }}

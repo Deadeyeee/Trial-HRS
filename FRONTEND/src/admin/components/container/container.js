@@ -18,4 +18,10 @@ export const ContainerGlobal = styled(motion.div)`
     overflow:${(props) => (props.overflow ? props.overflow : "hidden")};
     border-radius:${(props) => (props.radius ? props.radius : ".5rem")};
     flex-grow:${(props) => (props.grow ? props.grow : "0")};
+    border:${(props) => (props.border ? props.border : "none")};
+  z-index: ${(props) => (props.index ? props.index : "none")};
+    position: ${props => props.active ? "absolute" : "static"};
+  top: ${props => props.active ? "0" : "auto"};
+  left: ${props => props.active ? "0" : "auto"};
+  /* bring your own prefixes */
 `;
