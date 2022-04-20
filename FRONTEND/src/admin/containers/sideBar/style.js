@@ -60,7 +60,7 @@ export const MenuContainer = styled(motion.a)`
   margin: ${(props) => (props.margin ? props.margin : "0px")};
   cursor: pointer;
   &:hover {
-    background-color: ${(props) => (props.hbg ? props.hbg : "rgb(186, 242, 233, .1)")};;
+    background-color: ${props => props.active ? "none" : "rgb(186, 242, 233, .1)"};
   }
 `;
 

@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 
 export const Container = styled(motion.div)`
     display: flex;
-	  height: 100%;
+	  height: 100vh;
     width: 100%;
     position: relative;
     flex-direction: column;
@@ -30,9 +30,6 @@ export const TableContainer = styled(motion.table)`
 
 export const Tr = styled(motion.tr)`
   border: none;
-  &:hover{
-    background-color: gray;
-  }
 `;
 
 export const Th = styled(motion.th)`
@@ -41,6 +38,7 @@ export const Th = styled(motion.th)`
   text-align: ${(props) => (props.align ? props.align : "left")};
   font-family: Arial, Helvetica, sans-serif;
   width: 250px;
+  cursor: pointer;
 `;
 export const Td = styled(motion.td)`
   border: none;
@@ -78,13 +76,14 @@ export const GrayTab = styled(motion.td)`
 export const ContainerGlobalColumn = styled(motion.div)`
   display: flex;
   flex-direction: column;
-  padding: 0px 0px 0px 50px;
   
 
 `; 
 
 export const ContainerGlobalRow = styled(motion.div)`
   display: flex;
+  gap: 120px;
+  margin: 0px 30px;
   flex-direction: row;
   
   
