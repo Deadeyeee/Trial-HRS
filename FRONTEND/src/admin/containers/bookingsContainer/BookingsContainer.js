@@ -18,12 +18,13 @@ import Button from '@mui/material/Button';
 import CloseIcon from '@mui/icons-material/Close';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import ActionButton from '../../components/actionButton/ActionButton'
 import Grow from '@mui/material/Grow';
-import { Badge, FormControlLabel, Radio, RadioGroup, TextareaAutosize } from '@mui/material'
+import { Badge, FormControlLabel, Radio, RadioGroup, TextareaAutosize, FormControl } from '@mui/material'
 import { nationalities } from '../../../nationalities'
+
+
 const BookingsContainer = () => {
     const [value, setValue] = useState(new Date());
     const [outValue, setOutValue] = useState(Date.now() + 86400000);
@@ -441,7 +442,7 @@ const BookingsContainer = () => {
 
                                 >
                                     <MenuItem value={'Family'}>
-                                        <Badge badgeContent={40} color="success" style={{ marginTop: 10 }} title='40 Available rooms'>
+                                        <Badge badgeContent={9} color="success" style={{ marginTop: 10 }} title='40 Available rooms'>
                                             <ContainerGlobal
                                                 margin='0px 15px 0px 0px'>
                                                 Family Room
@@ -449,7 +450,7 @@ const BookingsContainer = () => {
                                         </Badge>
                                     </MenuItem>
                                     <MenuItem value={'Deluxe'} >
-                                        <Badge badgeContent={10} color="success" style={{ marginTop: 10 }} title='10 Available rooms'>
+                                        <Badge badgeContent={4} color="success" style={{ marginTop: 10 }} title='10 Available rooms'>
                                             <ContainerGlobal
                                                 margin='0px 15px 0px 0px'>
                                                 Deluxe Room
@@ -1139,6 +1140,49 @@ const BookingsContainer = () => {
                                 align='left'
                                 margin='15px 0px 20px 0px'
                             >
+                                Discount:
+                            </Title>
+                            <FormControl sx={{ width: 200, margin: '5px 0px' }} size="small" variant="standard">
+                                <InputLabel id="demo-select-small" >Discount</InputLabel>
+                                <Select
+                                    style={{ color: 'black', textAlign: 'left' }}
+                                    labelId="demo-select-small"
+                                    id="demo-select-small"
+                                    value={discount}
+                                    label="Menu"
+                                    onChange={(event) => {
+                                        setDiscount(event.target.value);
+                                    }}
+                                    disabled
+
+                                >
+
+                                    <MenuItem value={'none'} >None</MenuItem>
+                                    <MenuItem value={'senior'}>Senior Citizen</MenuItem>
+                                    <MenuItem value={'pwd'}>PWD</MenuItem>
+                                </Select>
+                            </FormControl>
+                        </ContainerGlobal>
+                        <ContainerGlobal
+                            w='420px'
+                            h='auto'
+                            direction='row'
+                            gap='10px'
+                            justify='space-between'
+                            align='center'
+                            overflow='auto'
+
+                        >
+
+                            <Title
+                                size='20px'
+                                color='Black'
+                                family='Helvetica'
+                                fstyle='Normal'
+                                weight='400'
+                                align='left'
+                                margin='15px 0px 20px 0px'
+                            >
                                 Downpayment:
                             </Title>
                             <TextField id="outlined-basic" label="" variant="standard" style={{ width: 200, margin: '5px 0px' }}
@@ -1272,10 +1316,10 @@ const BookingsContainer = () => {
                                     onChange={(event) => {
                                         setRoomType(event.target.value);
                                     }}
-
+                                    disabled
                                 >
                                     <MenuItem value={'Family'}>
-                                        <Badge badgeContent={40} color="success" style={{ marginTop: 10 }} title='40 Available rooms'>
+                                        <Badge badgeContent={9} color="success" style={{ marginTop: 10 }} title='40 Available rooms'>
                                             <ContainerGlobal
                                                 margin='0px 15px 0px 0px'>
                                                 Family Room
@@ -1283,7 +1327,7 @@ const BookingsContainer = () => {
                                         </Badge>
                                     </MenuItem>
                                     <MenuItem value={'Deluxe'} >
-                                        <Badge badgeContent={10} color="success" style={{ marginTop: 10 }} title='10 Available rooms'>
+                                        <Badge badgeContent={4} color="success" style={{ marginTop: 10 }} title='10 Available rooms'>
                                             <ContainerGlobal
                                                 margin='0px 15px 0px 0px'>
                                                 Deluxe Room
@@ -1296,6 +1340,59 @@ const BookingsContainer = () => {
                                                 Premium Room
                                             </ContainerGlobal>
                                         </Badge></MenuItem>
+                                </Select>
+                            </FormControl>
+                        </ContainerGlobal>
+                        <ContainerGlobal
+                            w='420px'
+                            h='auto'
+                            direction='row'
+                            gap='10px'
+                            justify='space-between'
+                            align='center'
+                            overflow='auto'
+
+                        >
+
+                            <Title
+                                size='20px'
+                                color='Black'
+                                family='Helvetica'
+                                fstyle='Normal'
+                                weight='400'
+                                align='left'
+                                margin='15px 0px 20px 0px'
+                            >
+                                Room Number:
+                            </Title>
+                            <FormControl sx={{ width: 200, margin: '5px 0px' }} size="large" variant="standard">
+                                <InputLabel id="demo-select-small" >Room Number</InputLabel>
+                                <Select
+                                    style={{ color: 'black', textAlign: 'left' }}
+                                    labelId="demo-select-small"
+                                    id="demo-select-small"
+                                    value={roomNumber}
+                                    label="Menu"
+                                    onChange={(event) => {
+                                        setRoomNumber(event.target.value);
+                                    }}
+                                    disabled
+                                >
+                                    <MenuItem value={'R101'} selected>
+                                        Room 101
+                                    </MenuItem>
+                                    <MenuItem value={'R102'} >
+                                        Room 102
+                                    </MenuItem>
+                                    <MenuItem value={'R103'} disabled>
+                                        Room 103
+                                    </MenuItem>
+                                    <MenuItem value={'R104'} >
+                                        Room 104
+                                    </MenuItem>
+                                    <MenuItem value={'R105'} >
+                                        Room 105
+                                    </MenuItem>
                                 </Select>
                             </FormControl>
                         </ContainerGlobal>
@@ -1944,6 +2041,49 @@ const BookingsContainer = () => {
                                 </Select>
                             </FormControl>
                         </ContainerGlobal>
+
+                        <ContainerGlobal
+                            w='420px'
+                            h='auto'
+                            direction='row'
+                            gap='10px'
+                            justify='space-between'
+                            align='center'
+                            overflow='auto'
+
+                        >
+
+                            <Title
+                                size='20px'
+                                color='Black'
+                                family='Helvetica'
+                                fstyle='Normal'
+                                weight='400'
+                                align='left'
+                                margin='15px 0px 20px 0px'
+                            >
+                                Discount:
+                            </Title>
+                            <FormControl sx={{ width: 200, margin: '5px 0px' }} size="small" variant="standard">
+                                <InputLabel id="demo-select-small" >Discount</InputLabel>
+                                <Select
+                                    style={{ color: 'black', textAlign: 'left' }}
+                                    labelId="demo-select-small"
+                                    id="demo-select-small"
+                                    value={discount}
+                                    label="Menu"
+                                    onChange={(event) => {
+                                        setDiscount(event.target.value);
+                                    }}
+                                    disabled
+                                >
+
+                                    <MenuItem value={'none'} >None</MenuItem>
+                                    <MenuItem value={'senior'}>Senior Citizen</MenuItem>
+                                    <MenuItem value={'pwd'}>PWD</MenuItem>
+                                </Select>
+                            </FormControl>
+                        </ContainerGlobal>
                         <ContainerGlobal
                             w='420px'
                             h='auto'
@@ -2099,7 +2239,7 @@ const BookingsContainer = () => {
 
                                 >
                                     <MenuItem value={'Family'}>
-                                        <Badge badgeContent={40} color="success" style={{ marginTop: 10 }} title='40 Available rooms'>
+                                        <Badge badgeContent={9} color="success" style={{ marginTop: 10 }} title='40 Available rooms'>
                                             <ContainerGlobal
                                                 margin='0px 15px 0px 0px'>
                                                 Family Room
@@ -2107,7 +2247,7 @@ const BookingsContainer = () => {
                                         </Badge>
                                     </MenuItem>
                                     <MenuItem value={'Deluxe'} >
-                                        <Badge badgeContent={10} color="success" style={{ marginTop: 10 }} title='10 Available rooms'>
+                                        <Badge badgeContent={4} color="success" style={{ marginTop: 10 }} title='10 Available rooms'>
                                             <ContainerGlobal
                                                 margin='0px 15px 0px 0px'>
                                                 Deluxe Room
@@ -2120,6 +2260,59 @@ const BookingsContainer = () => {
                                                 Premium Room
                                             </ContainerGlobal>
                                         </Badge></MenuItem>
+                                </Select>
+                            </FormControl>
+                        </ContainerGlobal>
+                        <ContainerGlobal
+                            w='420px'
+                            h='auto'
+                            direction='row'
+                            gap='10px'
+                            justify='space-between'
+                            align='center'
+                            overflow='auto'
+
+                        >
+
+                            <Title
+                                size='20px'
+                                color='Black'
+                                family='Helvetica'
+                                fstyle='Normal'
+                                weight='400'
+                                align='left'
+                                margin='15px 0px 20px 0px'
+                            >
+                                Room Number:
+                            </Title>
+                            <FormControl sx={{ width: 200, margin: '5px 0px' }} size="large" variant="standard">
+                                <InputLabel id="demo-select-small" >Room Number</InputLabel>
+                                <Select
+                                    style={{ color: 'black', textAlign: 'left' }}
+                                    labelId="demo-select-small"
+                                    id="demo-select-small"
+                                    value={roomNumber}
+                                    label="Menu"
+                                    onChange={(event) => {
+                                        setRoomNumber(event.target.value);
+                                    }}
+
+                                >
+                                    <MenuItem value={'R101'} selected>
+                                        Room 101
+                                    </MenuItem>
+                                    <MenuItem value={'R102'} >
+                                        Room 102
+                                    </MenuItem>
+                                    <MenuItem value={'R103'} disabled>
+                                        Room 103
+                                    </MenuItem>
+                                    <MenuItem value={'R104'} >
+                                        Room 104
+                                    </MenuItem>
+                                    <MenuItem value={'R105'} >
+                                        Room 105
+                                    </MenuItem>
                                 </Select>
                             </FormControl>
                         </ContainerGlobal>
@@ -2534,7 +2727,7 @@ const BookingsContainer = () => {
                     <Button variant="contained" size="large"
                         style={{ backgroundColor: '#50AA32' }}
                         onClick={() => setShowEditDetails(prev2 => !prev2)}>
-                        Confirm
+                        Save changes
                     </Button>
                     <Button variant="contained" size="large"
                         style={{ backgroundColor: '#FF2400' }}
