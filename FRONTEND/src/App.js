@@ -42,6 +42,9 @@ import UserLogs from './admin/pages/userLogs/UserLogs';
 import UserList from './admin/pages/userList/UserList';
 import RoomStatus from './admin/pages/roomStatus/RoomStatus';
 import Reservation from './admin/pages/reservation/Reservation';
+import BookingCartPage from './client/pages/bookingCartPage/BookingCartPage';
+import RoomDetails from './admin/pages/roomDetails/RoomDetails';
+import BillingSummaryPage from './client/pages/billingSummaryPage/BillingSummaryPage';
 
 const App = () => {
   return (
@@ -67,6 +70,8 @@ const App = () => {
         <Route path="/client/bookingInfo" element={<ClientBookingInfoPage />} />
         <Route path="/client/paymentInfo" element={<ClientPaymentInfoPage />} />
         <Route path="/client/messages" element={<ClientMessagesPage />} />
+        <Route path="/client/bookingCart" element={<BookingCartPage />} />
+        <Route path="/client/billingSummary" element={<BillingSummaryPage />} />
       
 
 
@@ -77,10 +82,12 @@ const App = () => {
         <Route path="/admin/booking" element={<Bookings/>}/>
         <Route path="/admin/reservation" element={<Reservation/>}/>
 
+  
         <Route path="/admin/userLogs" element={<UserLogs />} />
         <Route path="/admin/userList" element={<UserList />} />
 
         <Route path="/admin/roomStatus" element={<RoomStatus />}/>
+        <Route path="/admin/roomDetails" element={<RoomDetails />}/>
         <Route path="*" element={<Error404 />} />
 
       </Routes>

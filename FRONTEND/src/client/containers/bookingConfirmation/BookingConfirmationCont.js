@@ -26,7 +26,6 @@ function BookingConfirmationCont() {
             fStyle='Normal'
             margin='50px 0px 10px 0px'
             align='Center'
-            color='#2e2e2e'
         >
             Thank you for choosing <b>RM Luxe Hotel</b>
         </Title>
@@ -288,7 +287,7 @@ function BookingConfirmationCont() {
                         align='left' 
                         margin='20px 100px' 
                     >
-                        <b>: 232pa3432sad</b>
+                        <b>: ********</b>
                     </Title>
                 </GeneratedAccountContents>           
             </GeneratedAccountContentContainer>

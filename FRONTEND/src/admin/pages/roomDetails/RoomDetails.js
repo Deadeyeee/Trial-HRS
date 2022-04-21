@@ -1,17 +1,17 @@
 import React from 'react'
-import RoomStatusContainer from '../../containers/roomStatusContainer/RoomStatusContainer'
+import RoomDetailsContainer from '../../containers/roomDetailsContainer/RoomDetailsContainer'
 import SideBarNav from '../../containers/sideBar/SideBarNav'
 import { ContainerInvisible } from '../../containers/sideBar/style'
 import { Container } from './style'
 
-const RoomStatus = () => {
+const RoomDetails = () => {
   return (
     <Container>
         <ContainerInvisible></ContainerInvisible>
-        <SideBarNav roomStatus/>
-        <RoomStatusContainer/>
+        <SideBarNav roomDetails/>
+        <RoomDetailsContainer/>
     </Container>
   )
 }
 
-export default RoomStatus
+export default RoomDetails
