@@ -5,16 +5,32 @@ import { Description } from '../../components/paragraph/style'
 import { TextInput } from '../../components/textBox/style'
 import { Title } from '../../components/title/styles'
 import { ContainerChild, ContainerSummary, Container, ContainerForm, GenderContainer, InputContainer, BookingSummaryContainer, LeftColumn, RightColumn, DeatilsContainer, ContainerFormContent } from './style'
+import TextField from '@mui/material/TextField';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { DatePicker } from '@mui/x-date-pickers';
+import InputLabel from '@mui/material/InputLabel';
+import { Badge, FormControlLabel, Radio, RadioGroup, TextareaAutosize, FormControl } from '@mui/material'
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
+import { nationalities } from '../../../nationalities'
+import FormLabel from '@mui/material/FormLabel';
+import Checkbox from '@mui/material/Checkbox';
+import Link from '@mui/material/Link';
 
 const InformationForm = () => {
     var Recaptcha = require('react-recaptcha');
 
     var callback = function () {
         console.log('Done!!!!');
-      };
+    };
     const [paymentOption, setPaymentOption] = useState("");
     const [displayBanks, setDisplayBanks] = useState("");
     const [displayWallets, setDisplayWallets] = useState("");
+    const [nationality, setNationality] = useState('Filipino');
+    const [value, setValue] = useState(Date.now());
+    const bday = new Date(2000, 11, 2,);
+    const color = "#000";
 
     useLayoutEffect(() => {
         if (paymentOption === "E-Wallet payment") {
@@ -41,107 +57,154 @@ const InformationForm = () => {
                     <ContainerFormContent>
 
                         <InputContainer>
-                            <TextInput
-                                width='45%'
-                                type='text'
+                            <TextField
                                 placeholder='First Name'
-                                required
-                            ></TextInput>
-                            <TextInput
-                                width='45%'
-                                type='text'
+                                label="First Name"
+                                variant="outlined"
+                                style={{ width: '55%', }} />
+
+                            <TextField
                                 placeholder='Last Name'
-                                required
-                            ></TextInput>
+                                label="Last Name"
+                                variant="outlined"
+                                style={{ width: '55%', }} />
                         </InputContainer>
 
 
                         <InputContainer>
-                            <TextInput
-                                width='45%'
-                                type='email'
+                            <TextField
                                 placeholder='Email'
-                                required
-                            ></TextInput>
-                            <TextInput
-                                width='45%'
-                                type='number'
+                                label="Email"
+                                variant="outlined"
+                                type='email'
+                                style={{ width: '55%', }} />
+
+                            <TextField
                                 placeholder='Contact Number'
-                                required
-                            ></TextInput>
+                                label="Contact Number"
+                                variant="outlined"
+                                type='tel'
+                                patter
+                                style={{ width: '55%', }} />
                         </InputContainer>
 
 
                         <InputContainer>
-                            <TextInput
-                                width='45%'
-                                onFocus={(e) => {
-                                    e.currentTarget.type = "date";
-                                    e.currentTarget.focus();
-                                }}
-                                onBlur={(e) => {
-                                    e.currentTarget.type = "text";
-                                    e.currentTarget.placeholder = "Birthday";
-                                }}
-                                placeholder='Birthday'
-                                required
-                            ></TextInput>
-                            <TextInput
-                                width='45%'
-                                type='text'
-                                placeholder='Nationality'
-                                required
-                            ></TextInput>
+
+                            <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                <DatePicker
+
+                                    views={['day', 'month', 'year']}
+                                    label="Birthday"
+                                    value={bday}
+                                    onChange={(newValue) => {
+                                        setValue(newValue);
+                                    }}
+                                    renderInput={(params) =>
+                                        <TextField
+                                            {...params}
+                                            variant="standard"
+                                            style={{ width: "55%", margin: '5px 0px' }}
+                                            helperText={null}
+                                        />
+                                    }
+                                />
+
+                            </LocalizationProvider>
+
+                            <FormControl sx={{ width: "55%", margin: '5px 0px' }} size="small" variant="standard">
+                                <InputLabel id="demo-select-small" >Nationality</InputLabel>
+                                <Select
+                                    style={{ color: 'black', textAlign: 'left' }}
+                                    labelId="demo-select-small"
+                                    id="demo-select-small"
+                                    value={nationality}
+                                    label="Menu"
+                                    onChange={(event) => {
+                                        setNationality(event.target.value);
+                                    }}
+                                >
+
+                                    {nationalities.map(({ nationality }, index) => (
+                                        <MenuItem value={nationality} >{nationality}</MenuItem>
+                                    ))}
+                                </Select>
+                            </FormControl>
                         </InputContainer>
 
                         <InputContainer
                             justify='center'>
-                            <GenderContainer>
-                                <Title
-                                    size="20px">Male</Title>
-                                <TextInput
-                                    margins='0px'
-                                    width='20px'
-                                    heigh='20px'
-                                    type='radio'
-                                    name='gender'
-                                    placeholder='Special Instruction'
-                                    required
-                                ></TextInput>
-                            </GenderContainer>
-                            <GenderContainer>
-                                <Title
-                                    size="20px">Female</Title>
-                                <TextInput
-                                    margins='0px'
-                                    width='20px'
-                                    heigh='20px'
-                                    type='radio'
-                                    name='gender'
-                                    placeholder='Special Instruction'
-
-                                ></TextInput>
-                            </GenderContainer>
+                            <FormControl>
+                                <FormLabel id="demo-row-radio-buttons-group-label"
+                                    style={{ textAlign: 'center', }} >Gender</FormLabel>
+                                <RadioGroup
+                                    row
+                                    aria-labelledby="demo-row-radio-buttons-group-label" 
+                                    defaultValue="male"
+                                    name="row-radio-buttons-group">
+                                    <FormControlLabel
+                                        value="male"
+                                        control={<Radio />}
+                                        label="Male"
+                                    />
+                                    <FormControlLabel
+                                        value="female"
+                                        control={<Radio />}
+                                        label="Female"
+                                    />
+                                    <FormControlLabel
+                                        value="other"
+                                        control={<Radio />}
+                                        label="Other"
+                                    />
+                                </RadioGroup>
+                            </FormControl>
                         </InputContainer>
 
 
                         <InputContainer>
-                            <TextInput
-                                width='95%'
-                                type='email'
+                            <TextField
                                 placeholder='Address'
-                                required
-                            ></TextInput>
+                                label="Address"
+                                variant="outlined"
+                                type='email'
+                                multiline
+                                rows={4}
+                                style={{ width: '95%', }} />
+
+                            <TextField
+                                placeholder='Special Instruction'
+                                label="Special Instruction"
+                                variant="outlined"
+                                type='textarea'
+                                multiline
+                                rows={4}
+                                style={{ width: '95%', }} />
                         </InputContainer>
 
-
                         <InputContainer>
-                            <TextInput
-                                width='95%'
-                                type='textarea'
-                                placeholder='Special Instruction'
-                                required
-                            ></TextInput>
+                            <TextField
+                                placeholder='Username'
+                                label="Username"
+                                variant="outlined"
+                                style={{ width: '55%', }} />
+
+                            <TextField
+                                placeholder='Password'
+                                label="Password"
+                                type='password'
+                                variant="outlined"
+                                style={{ width: '55%', }} />
+                        </InputContainer>
+
+                        <InputContainer
+                        justify='center'
+                        gap='0px'>
+                            <FormControlLabel control={<Checkbox defaultChecked 
+                            style={{ padding: '0px',  margin: '0px', }} 
+                            />} />
+                            <p style={{fontSize: '14px'}}>Kindly, check the box if you have read and agreed to RM Luxe Hotel's <a href='/'>Terms and Conditions</a></p>
+
                         </InputContainer>
 
                         <Recaptcha

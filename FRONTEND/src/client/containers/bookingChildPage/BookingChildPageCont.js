@@ -23,7 +23,7 @@ export const BookingChildPageCont = () => {
             align='Center'
             color='#bfaa7e'
         > 
-            Premium Room
+            Premium room 102
         </Title>
         <RoomContainerMain>
                 <RoomContainer>
@@ -50,7 +50,7 @@ export const BookingChildPageCont = () => {
                             >{ratingValue}</Title>
 
                             <Rating
-
+                                readOnly
                                 size="large"
                                 value={ratingValue}
                                 precision={0.1}
