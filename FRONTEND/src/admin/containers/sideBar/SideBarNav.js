@@ -16,6 +16,7 @@ import { Title } from '../../../client/components/title/styles';
 import { HorizontalLine } from '../../../client/components/horizontalLine/HorizontalLine';
 import LogoutIcon from '@mui/icons-material/Logout';
 import Badge from '@mui/material/Badge';
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 const SideBarNav = (props) => {
     return (
         <Container>
@@ -67,7 +68,27 @@ const SideBarNav = (props) => {
                     Dashboard
                 </Title>
             </MenuContainer>
+            <MenuContainer
 
+                href='/admin/reservation'
+                whileTap={{ scale: 0.98 }}
+                active={props.reservation == true}
+            >
+                <CalendarMonthIcon
+                    style={{ color: props.reservation == true ? "#2E2E2E" : "#dddddd" }}
+                />
+
+                <Title
+                    size='14px'
+                    color='white'
+                    family='Helvetica'
+                    fstyle='normal'
+                    weight='600'
+                    align='left'
+                >
+                    Reservations
+                </Title>
+            </MenuContainer>
             <MenuContainer
 
                 href='/admin/booking'

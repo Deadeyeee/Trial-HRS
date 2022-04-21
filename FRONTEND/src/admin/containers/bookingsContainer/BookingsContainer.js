@@ -21,13 +21,18 @@ import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import ActionButton from '../../components/actionButton/ActionButton'
 import Grow from '@mui/material/Grow';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import { Badge, FormControlLabel, Radio, RadioGroup, TextareaAutosize, FormControl } from '@mui/material'
 import { nationalities } from '../../../nationalities'
+import { Global } from '@emotion/react'
 
 
 const BookingsContainer = () => {
-    const [value, setValue] = useState(new Date());
+    const [value, setValue] = useState(Date.now());
     const [outValue, setOutValue] = useState(Date.now() + 86400000);
+    const nights = (outValue - value) / 86400000;
+    console.log('nights' + nights)
     const color = "#c44242";
     const [age, setAge] = React.useState('');
 
@@ -67,7 +72,7 @@ const BookingsContainer = () => {
                 gap='10px'
                 justify='center'
                 align='center'
-                margin='200px 0px 40px 0px'
+                margin='400px 0px 40px 0px'
             >
                 <Title
                     size='26px'
@@ -162,6 +167,318 @@ const BookingsContainer = () => {
                                     readOnly: true,
                                 }}
                             />
+                        </ContainerGlobal>
+                        <ContainerGlobal
+                            w='420px'
+                            h='auto'
+                            direction='row'
+                            gap='10px'
+                            justify='space-between'
+                            align='center'
+                            overflow='auto'
+
+                        >
+
+                            <Title
+                                size='20px'
+                                color='Black'
+                                family='Helvetica'
+                                fstyle='Normal'
+                                weight='400'
+                                align='left'
+                                margin='15px 0px 20px 0px'
+                            >
+                                Room Type:
+                            </Title>
+                            <FormControl sx={{ width: 200, margin: '5px 0px' }} size="large" variant="standard">
+                                <InputLabel id="demo-select-small" >Room Type</InputLabel>
+                                <Select
+                                    style={{ color: 'black', textAlign: 'left' }}
+                                    labelId="demo-select-small"
+                                    id="demo-select-small"
+                                    value={roomType}
+                                    label="Menu"
+                                    onChange={(event) => {
+                                        setRoomType(event.target.value);
+                                    }}
+
+                                >
+                                    <MenuItem value={'Family'}>
+                                        <Badge badgeContent={9} color="success" style={{ marginTop: 10 }} title='40 Available rooms'>
+                                            <ContainerGlobal
+                                                margin='0px 15px 0px 0px'>
+                                                Family Room
+                                            </ContainerGlobal>
+                                        </Badge>
+                                    </MenuItem>
+                                    <MenuItem value={'Deluxe'} >
+                                        <Badge badgeContent={4} color="success" style={{ marginTop: 10 }} title='10 Available rooms'>
+                                            <ContainerGlobal
+                                                margin='0px 15px 0px 0px'>
+                                                Deluxe Room
+                                            </ContainerGlobal>
+                                        </Badge></MenuItem>
+                                    <MenuItem value={'Premium'} selected>
+                                        <Badge badgeContent={5} color="success" style={{ marginTop: 10 }} title='5 Available rooms'>
+                                            <ContainerGlobal
+                                                margin='0px 15px 0px 0px'>
+                                                Premium Room
+                                            </ContainerGlobal>
+                                        </Badge></MenuItem>
+                                </Select>
+                            </FormControl>
+                        </ContainerGlobal>
+                        <ContainerGlobal
+                            w='420px'
+                            h='auto'
+                            direction='row'
+                            gap='10px'
+                            justify='space-between'
+                            align='center'
+                            overflow='auto'
+
+                        >
+
+                            <Title
+                                size='20px'
+                                color='Black'
+                                family='Helvetica'
+                                fstyle='Normal'
+                                weight='400'
+                                align='left'
+                                margin='15px 0px 20px 0px'
+                            >
+                                Room Number:
+                            </Title>
+                            <FormControl sx={{ width: 200, margin: '5px 0px' }} size="large" variant="standard">
+                                <InputLabel id="demo-select-small" >Room Number</InputLabel>
+                                <Select
+                                    style={{ color: 'black', textAlign: 'left' }}
+                                    labelId="demo-select-small"
+                                    id="demo-select-small"
+                                    value={roomNumber}
+                                    label="Menu"
+                                    onChange={(event) => {
+                                        setRoomNumber(event.target.value);
+                                    }}
+
+                                >
+                                    <MenuItem value={'R101'} selected>
+                                        Room 101
+                                    </MenuItem>
+                                    <MenuItem value={'R102'} >
+                                        Room 102
+                                    </MenuItem>
+                                    <MenuItem value={'R103'} disabled>
+                                        Room 103
+                                    </MenuItem>
+                                    <MenuItem value={'R104'} >
+                                        Room 104
+                                    </MenuItem>
+                                    <MenuItem value={'R105'} >
+                                        Room 105
+                                    </MenuItem>
+                                </Select>
+                            </FormControl>
+                        </ContainerGlobal>
+                        <ContainerGlobal
+                            w='420px'
+                            h='auto'
+                            direction='row'
+                            gap='10px'
+                            justify='space-between'
+                            align='center'
+                            overflow='auto'
+
+                        >
+
+                            <Title
+                                size='20px'
+                                color='Black'
+                                family='Helvetica'
+                                fstyle='Normal'
+                                weight='400'
+                                align='left'
+                                margin='15px 0px 20px 0px'
+                            >
+                                Number of Adult:
+                            </Title>
+                            <TextField id="outlined-basic" label="" variant="standard" style={{ width: 200, margin: '5px 0px' }} />
+                        </ContainerGlobal>
+                        <ContainerGlobal
+                            w='420px'
+                            h='auto'
+                            direction='row'
+                            gap='10px'
+                            justify='space-between'
+                            align='center'
+                            overflow='auto'
+
+                        >
+
+                            <Title
+                                size='20px'
+                                color='Black'
+                                family='Helvetica'
+                                fstyle='Normal'
+                                weight='400'
+                                align='left'
+                                margin='15px 0px 20px 0px'
+                            >
+                                Number of Kids:
+                            </Title>
+                            <TextField id="outlined-basic" label="" variant="standard" style={{ width: 200, margin: '5px 0px' }} />
+                        </ContainerGlobal>
+
+                        <ContainerGlobal
+                            w='420px'
+                            h='auto'
+                            direction='row'
+                            gap='10px'
+                            justify='space-between'
+                            align='center'
+                            overflow='auto'
+
+                        >
+
+                            <Title
+                                size='20px'
+                                color='Black'
+                                family='Helvetica'
+                                fstyle='Normal'
+                                weight='400'
+                                align='left'
+                                margin='15px 0px 20px 0px'
+                            >
+                                Extra Bed:
+                            </Title>
+                            <TextField defaultValue='0' id="outlined-basic" label="" variant="standard" style={{ width: 200, margin: '5px 0px' }} />
+                        </ContainerGlobal>
+                        <ContainerGlobal
+                            w='420px'
+                            h='auto'
+                            direction='row'
+                            gap='10px'
+                            justify='space-between'
+                            align='center'
+                            overflow='auto'
+
+                        >
+
+                            <Title
+                                size='20px'
+                                color='Black'
+                                family='Helvetica'
+                                fstyle='Normal'
+                                weight='400'
+                                align='left'
+                                margin='15px 0px 20px 0px'
+                            >
+                                Extra Pillow:
+                            </Title>
+                            <TextField defaultValue='0' id="outlined-basic" label="" variant="standard" style={{ width: 200, margin: '5px 0px' }} />
+                        </ContainerGlobal>
+                        <ContainerGlobal
+                            w='420px'
+                            h='auto'
+                            direction='row'
+                            gap='10px'
+                            justify='space-between'
+                            align='center'
+                            overflow='auto'
+
+                        >
+
+                            <Title
+                                size='20px'
+                                color='Black'
+                                family='Helvetica'
+                                fstyle='Normal'
+                                weight='400'
+                                align='left'
+                                margin='15px 0px 20px 0px'
+                            >
+                                Extra Blanket:
+                            </Title>
+                            <TextField defaultValue='0' id="outlined-basic" label="" variant="standard" style={{ width: 200, margin: '5px 0px' }} />
+                        </ContainerGlobal>
+                    </ContainerGlobalColumn>
+                    <ContainerGlobalColumn>
+                        <ContainerGlobal
+                            w='420px'
+                            h='auto'
+                            direction='row'
+                            gap='10px'
+                            justify='space-between'
+                            align='center'
+
+                        >
+                            <Title
+                                size='20px'
+                                color='Black'
+                                family='Helvetica'
+                                fstyle='Normal'
+                                weight='400'
+                                align='left'
+                                margin='15px 0px 20px 0px'
+                            >
+                                Check out:
+                            </Title>
+                            <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                <DatePicker
+
+                                    views={['day', 'month', 'year']}
+                                    label="Check out"
+                                    value={outValue}
+                                    onChange={(newValue) => {
+                                        setOutValue(newValue);
+                                    }}
+                                    renderInput={(params) =>
+                                        <TextField
+                                            {...params}
+                                            sx={{
+                                                svg: { color: 'black' },
+                                                input: { color },
+                                                label: { color },
+                                                color: { color },
+                                                input: { color: 'black', fontWeight: 'bold' },
+
+                                            }}
+                                            variant="standard"
+                                            style={{ width: 200, margin: '5px 0px' }}
+                                            helperText={null}
+                                        />
+                                    }
+                                />
+
+                            </LocalizationProvider>
+                        </ContainerGlobal>
+                        <ContainerGlobal
+                            w='420px'
+                            h='auto'
+                            direction='row'
+                            gap='10px'
+                            justify='space-between'
+                            align='center'
+                            overflow='auto'
+
+                        >
+
+                            <Title
+                                size='20px'
+                                color='Black'
+                                family='Helvetica'
+                                fstyle='Normal'
+                                weight='400'
+                                align='left'
+                                margin='15px 0px 20px 0px'
+                            >
+                                Number of Nights:
+                            </Title>
+                            <TextField InputProps={{
+                                readOnly: true,
+                            }} value={nights}
+                                id="outlined-basic" label="" variant="standard" style={{ width: 200, margin: '5px 0px' }} />
                         </ContainerGlobal>
                         <ContainerGlobal
                             w='420px'
@@ -355,243 +672,6 @@ const BookingsContainer = () => {
                                 }}
                             />
                         </ContainerGlobal>
-                    </ContainerGlobalColumn>
-                    <ContainerGlobalColumn>
-                        <ContainerGlobal
-                            w='420px'
-                            h='auto'
-                            direction='row'
-                            gap='10px'
-                            justify='space-between'
-                            align='center'
-
-                        >
-                            <Title
-                                size='20px'
-                                color='Black'
-                                family='Helvetica'
-                                fstyle='Normal'
-                                weight='400'
-                                align='left'
-                                margin='15px 0px 20px 0px'
-                            >
-                                Check out:
-                            </Title>
-                            <LocalizationProvider dateAdapter={AdapterDateFns}>
-                                <DatePicker
-
-                                    views={['day', 'month', 'year']}
-                                    label="Check out"
-                                    value={outValue}
-                                    onChange={(newValue) => {
-                                        setOutValue(newValue);
-                                    }}
-                                    renderInput={(params) =>
-                                        <TextField
-                                            {...params}
-                                            sx={{
-                                                svg: { color: 'black' },
-                                                input: { color },
-                                                label: { color },
-                                                color: { color },
-                                                input: { color: 'black', fontWeight: 'bold' },
-
-                                            }}
-                                            variant="standard"
-                                            style={{ width: 200, margin: '5px 0px' }}
-                                            helperText={null}
-                                        />
-                                    }
-                                />
-
-                            </LocalizationProvider>
-                        </ContainerGlobal>
-                        <ContainerGlobal
-                            w='420px'
-                            h='auto'
-                            direction='row'
-                            gap='10px'
-                            justify='space-between'
-                            align='center'
-                            overflow='auto'
-
-                        >
-
-                            <Title
-                                size='20px'
-                                color='Black'
-                                family='Helvetica'
-                                fstyle='Normal'
-                                weight='400'
-                                align='left'
-                                margin='15px 0px 20px 0px'
-                            >
-                                Room Type:
-                            </Title>
-                            <FormControl sx={{ width: 200, margin: '5px 0px' }} size="large" variant="standard">
-                                <InputLabel id="demo-select-small" >Room Type</InputLabel>
-                                <Select
-                                    style={{ color: 'black', textAlign: 'left' }}
-                                    labelId="demo-select-small"
-                                    id="demo-select-small"
-                                    value={roomType}
-                                    label="Menu"
-                                    onChange={(event) => {
-                                        setRoomType(event.target.value);
-                                    }}
-
-                                >
-                                    <MenuItem value={'Family'}>
-                                        <Badge badgeContent={9} color="success" style={{ marginTop: 10 }} title='40 Available rooms'>
-                                            <ContainerGlobal
-                                                margin='0px 15px 0px 0px'>
-                                                Family Room
-                                            </ContainerGlobal>
-                                        </Badge>
-                                    </MenuItem>
-                                    <MenuItem value={'Deluxe'} >
-                                        <Badge badgeContent={4} color="success" style={{ marginTop: 10 }} title='10 Available rooms'>
-                                            <ContainerGlobal
-                                                margin='0px 15px 0px 0px'>
-                                                Deluxe Room
-                                            </ContainerGlobal>
-                                        </Badge></MenuItem>
-                                    <MenuItem value={'Premium'} selected>
-                                        <Badge badgeContent={5} color="success" style={{ marginTop: 10 }} title='5 Available rooms'>
-                                            <ContainerGlobal
-                                                margin='0px 15px 0px 0px'>
-                                                Premium Room
-                                            </ContainerGlobal>
-                                        </Badge></MenuItem>
-                                </Select>
-                            </FormControl>
-                        </ContainerGlobal>
-                        <ContainerGlobal
-                            w='420px'
-                            h='auto'
-                            direction='row'
-                            gap='10px'
-                            justify='space-between'
-                            align='center'
-                            overflow='auto'
-
-                        >
-
-                            <Title
-                                size='20px'
-                                color='Black'
-                                family='Helvetica'
-                                fstyle='Normal'
-                                weight='400'
-                                align='left'
-                                margin='15px 0px 20px 0px'
-                            >
-                                Room Number:
-                            </Title>
-                            <FormControl sx={{ width: 200, margin: '5px 0px' }} size="large" variant="standard">
-                                <InputLabel id="demo-select-small" >Room Number</InputLabel>
-                                <Select
-                                    style={{ color: 'black', textAlign: 'left' }}
-                                    labelId="demo-select-small"
-                                    id="demo-select-small"
-                                    value={roomNumber}
-                                    label="Menu"
-                                    onChange={(event) => {
-                                        setRoomNumber(event.target.value);
-                                    }}
-
-                                >
-                                    <MenuItem value={'R101'} selected>
-                                        Room 101
-                                    </MenuItem>
-                                    <MenuItem value={'R102'} >
-                                        Room 102
-                                    </MenuItem>
-                                    <MenuItem value={'R103'} disabled>
-                                        Room 103
-                                    </MenuItem>
-                                    <MenuItem value={'R104'} >
-                                        Room 104
-                                    </MenuItem>
-                                    <MenuItem value={'R105'} >
-                                        Room 105
-                                    </MenuItem>
-                                </Select>
-                            </FormControl>
-                        </ContainerGlobal>
-                        <ContainerGlobal
-                            w='420px'
-                            h='auto'
-                            direction='row'
-                            gap='10px'
-                            justify='space-between'
-                            align='center'
-                            overflow='auto'
-
-                        >
-
-                            <Title
-                                size='20px'
-                                color='Black'
-                                family='Helvetica'
-                                fstyle='Normal'
-                                weight='400'
-                                align='left'
-                                margin='15px 0px 20px 0px'
-                            >
-                                Number of Adult:
-                            </Title>
-                            <TextField id="outlined-basic" label="" variant="standard" style={{ width: 200, margin: '5px 0px' }} />
-                        </ContainerGlobal>
-                        <ContainerGlobal
-                            w='420px'
-                            h='auto'
-                            direction='row'
-                            gap='10px'
-                            justify='space-between'
-                            align='center'
-                            overflow='auto'
-
-                        >
-
-                            <Title
-                                size='20px'
-                                color='Black'
-                                family='Helvetica'
-                                fstyle='Normal'
-                                weight='400'
-                                align='left'
-                                margin='15px 0px 20px 0px'
-                            >
-                                Number of Kids:
-                            </Title>
-                            <TextField id="outlined-basic" label="" variant="standard" style={{ width: 200, margin: '5px 0px' }} />
-                        </ContainerGlobal>
-                        <ContainerGlobal
-                            w='420px'
-                            h='auto'
-                            direction='row'
-                            gap='10px'
-                            justify='space-between'
-                            align='center'
-                            overflow='auto'
-
-                        >
-
-                            <Title
-                                size='20px'
-                                color='Black'
-                                family='Helvetica'
-                                fstyle='Normal'
-                                weight='400'
-                                align='left'
-                                margin='15px 0px 20px 0px'
-                            >
-                                Number of Days:
-                            </Title>
-                            <TextField id="outlined-basic" label="" variant="standard" style={{ width: 200, margin: '5px 0px' }} />
-                        </ContainerGlobal>
-
                         <ContainerGlobal
                             w='420px'
                             h='auto'
@@ -673,7 +753,9 @@ const BookingsContainer = () => {
                             >
                                 First Name:
                             </Title>
-                            <TextField id="outlined-basic" label="" variant="standard" style={{ width: 200, margin: '5px 0px' }} />
+                            <TextField id="outlined-basic" label=""
+                                value=''
+                                variant="standard" style={{ width: 200, margin: '5px 0px' }} />
                         </ContainerGlobal>
                         <ContainerGlobal
                             w='420px'
@@ -682,10 +764,8 @@ const BookingsContainer = () => {
                             gap='10px'
                             justify='space-between'
                             align='center'
-                            overflow='auto'
 
                         >
-
                             <Title
                                 size='20px'
                                 color='Black'
@@ -697,7 +777,35 @@ const BookingsContainer = () => {
                             >
                                 Birthday:
                             </Title>
-                            <TextField id="outlined-basic" label="" variant="standard" style={{ width: 200, margin: '5px 0px' }} />
+                            <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                <DatePicker
+
+                                    views={['day', 'month', 'year']}
+                                    label="Birthday"
+                                    value={bday}
+                                    onChange={(newValue) => {
+                                        setValue(newValue);
+                                    }}
+                                    renderInput={(params) =>
+                                        <TextField
+                                            {...params}
+                                            sx={{
+                                                svg: { color: 'black' },
+                                                input: { color },
+                                                label: { color },
+                                                color: { color },
+                                                input: { color: 'black', fontWeight: 'bold' },
+
+                                            }}
+
+                                            variant="standard"
+                                            style={{ width: 200, margin: '5px 0px' }}
+                                            helperText={null}
+                                        />
+                                    }
+                                />
+
+                            </LocalizationProvider>
                         </ContainerGlobal>
                         <ContainerGlobal
                             w='420px'
@@ -722,9 +830,9 @@ const BookingsContainer = () => {
                                 Contact Number:
                             </Title>
                             <TextField id="outlined-basic"
+                                value=''
                                 label="" variant="standard" style={{ width: 200, margin: '5px 0px' }} type='number' />
                         </ContainerGlobal>
-
                         <ContainerGlobal
                             w='420px'
                             h='auto'
@@ -749,7 +857,7 @@ const BookingsContainer = () => {
 
                             <RadioGroup
                                 aria-labelledby="demo-radio-buttons-group-label"
-                                defaultValue="female"
+                                defaultValue="male"
                                 name="radio-buttons-group"
                                 style={{ width: 200 }}
                             >
@@ -758,8 +866,6 @@ const BookingsContainer = () => {
                                 <FormControlLabel value="other" control={<Radio />} label="Other" />
                             </RadioGroup>
                         </ContainerGlobal>
-
-
                         <ContainerGlobal
                             w='420px'
                             h='auto'
@@ -783,10 +889,12 @@ const BookingsContainer = () => {
                                 Address:
                             </Title>
                             <TextField id="outlined-basic"
+                                value=''
                                 multiline
                                 rows={4}
                                 label="" variant="standard" style={{ width: 200, margin: '5px 0px' }} />
                         </ContainerGlobal>
+
                     </ContainerGlobalColumn>
 
                     <ContainerGlobalColumn>
@@ -812,7 +920,9 @@ const BookingsContainer = () => {
                             >
                                 Last Name:
                             </Title>
-                            <TextField id="outlined-basic" label="" variant="standard" style={{ width: 200, margin: '5px 0px' }} />
+                            <TextField id="outlined-basic" label=""
+                                value=''
+                                variant="standard" style={{ width: 200, margin: '5px 0px' }} />
                         </ContainerGlobal>
                         <ContainerGlobal
                             w='420px'
@@ -836,7 +946,9 @@ const BookingsContainer = () => {
                             >
                                 Email:
                             </Title>
-                            <TextField id="outlined-basic" label="" variant="standard" style={{ width: 200, margin: '5px 0px' }} />
+                            <TextField id="outlined-basic"
+                                value=''
+                                label="" variant="standard" style={{ width: 200, margin: '5px 0px' }} />
                         </ContainerGlobal>
                         <ContainerGlobal
                             w='420px'
@@ -860,7 +972,24 @@ const BookingsContainer = () => {
                             >
                                 Nationality:
                             </Title>
-                            <TextField id="outlined-basic" label="" variant="standard" style={{ width: 200, margin: '5px 0px' }} />
+                            <FormControl sx={{ width: 200, margin: '5px 0px' }} size="small" variant="standard">
+                                <InputLabel id="demo-select-small" >Nationality</InputLabel>
+                                <Select
+                                    style={{ color: 'black', textAlign: 'left' }}
+                                    labelId="demo-select-small"
+                                    id="demo-select-small"
+                                    value={nationality}
+                                    label="Menu"
+                                    onChange={(event) => {
+                                        setNationality(event.target.value);
+                                    }}
+                                >
+
+                                    {nationalities.map(({ nationality }, index) => (
+                                        <MenuItem value={nationality} >{nationality}</MenuItem>
+                                    ))}
+                                </Select>
+                            </FormControl>
                         </ContainerGlobal>
                         <ContainerGlobal
                             w='420px'
@@ -924,14 +1053,12 @@ const BookingsContainer = () => {
             radius='none'
             justify='center'
             align='center'
-            bg='rgb(46, 46, 46, 0.5)'
+            bg='rgb(46, 46, 46, 0.9)'
             index='1'
             overflow='auto'
             active
         >
             <ContainerGlobal
-                whileHover={{ scale: 1.01 }}
-                whileTap={{ scale: 1 }}
                 w='auto'
                 h='auto'
                 bg='white'
@@ -940,6 +1067,7 @@ const BookingsContainer = () => {
                 gap='10px'
                 justify='center'
                 align='center'
+                margin='400px 0px 40px 0px'
             >
                 <Title
                     size='26px'
@@ -1036,6 +1164,341 @@ const BookingsContainer = () => {
                                     readOnly: true,
                                 }}
                             />
+                        </ContainerGlobal>
+                        <ContainerGlobal
+                            w='420px'
+                            h='auto'
+                            direction='row'
+                            gap='10px'
+                            justify='space-between'
+                            align='center'
+                            overflow='auto'
+
+                        >
+
+                            <Title
+                                size='20px'
+                                color='Black'
+                                family='Helvetica'
+                                fstyle='Normal'
+                                weight='400'
+                                align='left'
+                                margin='15px 0px 20px 0px'
+                            >
+                                Room Type:
+                            </Title>
+                            <FormControl sx={{ width: 200, margin: '5px 0px' }} size="large" variant="standard">
+                                <InputLabel id="demo-select-small" >Room Type</InputLabel>
+                                <Select
+                                    style={{ color: 'black', textAlign: 'left' }}
+                                    labelId="demo-select-small"
+                                    id="demo-select-small"
+                                    value={roomType}
+                                    label="Menu"
+                                    onChange={(event) => {
+                                        setRoomType(event.target.value);
+                                    }}
+                                    disabled
+                                >
+                                    <MenuItem value={'Family'}>
+                                        <Badge badgeContent={9} color="success" style={{ marginTop: 10 }} title='40 Available rooms'>
+                                            <ContainerGlobal
+                                                margin='0px 15px 0px 0px'>
+                                                Family Room
+                                            </ContainerGlobal>
+                                        </Badge>
+                                    </MenuItem>
+                                    <MenuItem value={'Deluxe'} >
+                                        <Badge badgeContent={4} color="success" style={{ marginTop: 10 }} title='10 Available rooms'>
+                                            <ContainerGlobal
+                                                margin='0px 15px 0px 0px'>
+                                                Deluxe Room
+                                            </ContainerGlobal>
+                                        </Badge></MenuItem>
+                                    <MenuItem value={'Premium'} selected>
+                                        <Badge badgeContent={5} color="success" style={{ marginTop: 10 }} title='5 Available rooms'>
+                                            <ContainerGlobal
+                                                margin='0px 15px 0px 0px'>
+                                                Premium Room
+                                            </ContainerGlobal>
+                                        </Badge></MenuItem>
+                                </Select>
+                            </FormControl>
+                        </ContainerGlobal>
+                        <ContainerGlobal
+                            w='420px'
+                            h='auto'
+                            direction='row'
+                            gap='10px'
+                            justify='space-between'
+                            align='center'
+                            overflow='auto'
+
+                        >
+
+                            <Title
+                                size='20px'
+                                color='Black'
+                                family='Helvetica'
+                                fstyle='Normal'
+                                weight='400'
+                                align='left'
+                                margin='15px 0px 20px 0px'
+                            >
+                                Room Number:
+                            </Title>
+                            <FormControl sx={{ width: 200, margin: '5px 0px' }} size="large" variant="standard">
+                                <InputLabel id="demo-select-small" >Room Number</InputLabel>
+                                <Select
+                                    style={{ color: 'black', textAlign: 'left' }}
+                                    labelId="demo-select-small"
+                                    id="demo-select-small"
+                                    value={roomNumber}
+                                    label="Menu"
+                                    onChange={(event) => {
+                                        setRoomNumber(event.target.value);
+                                    }}
+                                    disabled
+                                >
+                                    <MenuItem value={'R101'} selected>
+                                        Room 101
+                                    </MenuItem>
+                                    <MenuItem value={'R102'} >
+                                        Room 102
+                                    </MenuItem>
+                                    <MenuItem value={'R103'} disabled>
+                                        Room 103
+                                    </MenuItem>
+                                    <MenuItem value={'R104'} >
+                                        Room 104
+                                    </MenuItem>
+                                    <MenuItem value={'R105'} >
+                                        Room 105
+                                    </MenuItem>
+                                </Select>
+                            </FormControl>
+                        </ContainerGlobal>
+                        <ContainerGlobal
+                            w='420px'
+                            h='auto'
+                            direction='row'
+                            gap='10px'
+                            justify='space-between'
+                            align='center'
+                            overflow='auto'
+
+                        >
+
+                            <Title
+                                size='20px'
+                                color='Black'
+                                family='Helvetica'
+                                fstyle='Normal'
+                                weight='400'
+                                align='left'
+                                margin='15px 0px 20px 0px'
+                            >
+                                Number of Adult:
+                            </Title>
+                            <TextField id="outlined-basic" label="" variant="standard" style={{ width: 200, margin: '5px 0px' }}
+                                InputProps={{
+                                    readOnly: true,
+                                }}
+                                value='2'
+                            />
+                        </ContainerGlobal>
+                        <ContainerGlobal
+                            w='420px'
+                            h='auto'
+                            direction='row'
+                            gap='10px'
+                            justify='space-between'
+                            align='center'
+                            overflow='auto'
+
+                        >
+
+                            <Title
+                                size='20px'
+                                color='Black'
+                                family='Helvetica'
+                                fstyle='Normal'
+                                weight='400'
+                                align='left'
+                                margin='15px 0px 20px 0px'
+                            >
+                                Number of Kids:
+                            </Title>
+                            <TextField id="outlined-basic" label="" variant="standard" style={{ width: 200, margin: '5px 0px' }}
+                                InputProps={{
+                                    readOnly: true,
+                                }}
+                                value='0' />
+                        </ContainerGlobal>
+                        <ContainerGlobal
+                            w='420px'
+                            h='auto'
+                            direction='row'
+                            gap='10px'
+                            justify='space-between'
+                            align='center'
+                            overflow='auto'
+
+                        >
+
+                            <Title
+                                size='20px'
+                                color='Black'
+                                family='Helvetica'
+                                fstyle='Normal'
+                                weight='400'
+                                align='left'
+                                margin='15px 0px 20px 0px'
+                            >
+                                Extra Bed:
+                            </Title>
+                            <TextField
+                                InputProps={{
+                                    readOnly: true,
+                                }}
+                                defaultValue='0' id="outlined-basic" label="" variant="standard" style={{ width: 200, margin: '5px 0px' }} />
+                        </ContainerGlobal>
+                        <ContainerGlobal
+                            w='420px'
+                            h='auto'
+                            direction='row'
+                            gap='10px'
+                            justify='space-between'
+                            align='center'
+                            overflow='auto'
+
+                        >
+
+                            <Title
+                                size='20px'
+                                color='Black'
+                                family='Helvetica'
+                                fstyle='Normal'
+                                weight='400'
+                                align='left'
+                                margin='15px 0px 20px 0px'
+                            >
+                                Extra Pillow:
+                            </Title>
+                            <TextField
+                                InputProps={{
+                                    readOnly: true,
+                                }}
+                                defaultValue='0' id="outlined-basic" label="" variant="standard" style={{ width: 200, margin: '5px 0px' }} />
+                        </ContainerGlobal>
+                        <ContainerGlobal
+                            w='420px'
+                            h='auto'
+                            direction='row'
+                            gap='10px'
+                            justify='space-between'
+                            align='center'
+                            overflow='auto'
+
+                        >
+
+                            <Title
+                                size='20px'
+                                color='Black'
+                                family='Helvetica'
+                                fstyle='Normal'
+                                weight='400'
+                                align='left'
+                                margin='15px 0px 20px 0px'
+                            >
+                                Extra Blanket:
+                            </Title>
+                            <TextField
+                                InputProps={{
+                                    readOnly: true,
+                                }}
+                                defaultValue='0' id="outlined-basic" label="" variant="standard" style={{ width: 200, margin: '5px 0px' }} />
+                        </ContainerGlobal>
+                    </ContainerGlobalColumn>
+                    <ContainerGlobalColumn>
+                        <ContainerGlobal
+                            w='420px'
+                            h='auto'
+                            direction='row'
+                            gap='10px'
+                            justify='space-between'
+                            align='center'
+
+                        >
+                            <Title
+                                size='20px'
+                                color='Black'
+                                family='Helvetica'
+                                fstyle='Normal'
+                                weight='400'
+                                align='left'
+                                margin='15px 0px 20px 0px'
+                            >
+                                Check out:
+                            </Title>
+                            <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                <DatePicker
+
+                                    views={['day', 'month', 'year']}
+                                    label="Check out"
+                                    value={outValue}
+                                    onChange={(newValue) => {
+                                        setOutValue(newValue);
+                                    }}
+                                    renderInput={(params) =>
+                                        <TextField
+                                            {...params}
+                                            sx={{
+                                                svg: { color: 'black' },
+                                                input: { color },
+                                                label: { color },
+                                                color: { color },
+                                                input: { color: 'black', fontWeight: 'bold' },
+
+                                            }}
+                                            variant="standard"
+                                            style={{ width: 200, margin: '5px 0px' }}
+                                            helperText={null}
+                                        />
+                                    }
+                                    disabled
+                                />
+
+                            </LocalizationProvider>
+                        </ContainerGlobal>
+
+                        <ContainerGlobal
+                            w='420px'
+                            h='auto'
+                            direction='row'
+                            gap='10px'
+                            justify='space-between'
+                            align='center'
+                            overflow='auto'
+
+                        >
+
+                            <Title
+                                size='20px'
+                                color='Black'
+                                family='Helvetica'
+                                fstyle='Normal'
+                                weight='400'
+                                align='left'
+                                margin='15px 0px 20px 0px'
+                            >
+                                Number of Nights:
+                            </Title>
+                            <TextField id="outlined-basic" label="" variant="standard" style={{ width: 200, margin: '5px 0px' }}
+                                InputProps={{
+                                    readOnly: true,
+                                }}
+                                value={nights} />
                         </ContainerGlobal>
                         <ContainerGlobal
                             w='420px'
@@ -1231,257 +1694,6 @@ const BookingsContainer = () => {
                                 }}
                             />
                         </ContainerGlobal>
-                    </ContainerGlobalColumn>
-                    <ContainerGlobalColumn>
-                        <ContainerGlobal
-                            w='420px'
-                            h='auto'
-                            direction='row'
-                            gap='10px'
-                            justify='space-between'
-                            align='center'
-
-                        >
-                            <Title
-                                size='20px'
-                                color='Black'
-                                family='Helvetica'
-                                fstyle='Normal'
-                                weight='400'
-                                align='left'
-                                margin='15px 0px 20px 0px'
-                            >
-                                Check out:
-                            </Title>
-                            <LocalizationProvider dateAdapter={AdapterDateFns}>
-                                <DatePicker
-
-                                    views={['day', 'month', 'year']}
-                                    label="Check out"
-                                    value={outValue}
-                                    onChange={(newValue) => {
-                                        setOutValue(newValue);
-                                    }}
-                                    renderInput={(params) =>
-                                        <TextField
-                                            {...params}
-                                            sx={{
-                                                svg: { color: 'black' },
-                                                input: { color },
-                                                label: { color },
-                                                color: { color },
-                                                input: { color: 'black', fontWeight: 'bold' },
-
-                                            }}
-                                            variant="standard"
-                                            style={{ width: 200, margin: '5px 0px' }}
-                                            helperText={null}
-                                        />
-                                    }
-                                    disabled
-                                />
-
-                            </LocalizationProvider>
-                        </ContainerGlobal>
-                        <ContainerGlobal
-                            w='420px'
-                            h='auto'
-                            direction='row'
-                            gap='10px'
-                            justify='space-between'
-                            align='center'
-                            overflow='auto'
-
-                        >
-
-                            <Title
-                                size='20px'
-                                color='Black'
-                                family='Helvetica'
-                                fstyle='Normal'
-                                weight='400'
-                                align='left'
-                                margin='15px 0px 20px 0px'
-                            >
-                                Room Type:
-                            </Title>
-                            <FormControl sx={{ width: 200, margin: '5px 0px' }} size="large" variant="standard">
-                                <InputLabel id="demo-select-small" >Room Type</InputLabel>
-                                <Select
-                                    style={{ color: 'black', textAlign: 'left' }}
-                                    labelId="demo-select-small"
-                                    id="demo-select-small"
-                                    value={roomType}
-                                    label="Menu"
-                                    onChange={(event) => {
-                                        setRoomType(event.target.value);
-                                    }}
-                                    disabled
-                                >
-                                    <MenuItem value={'Family'}>
-                                        <Badge badgeContent={9} color="success" style={{ marginTop: 10 }} title='40 Available rooms'>
-                                            <ContainerGlobal
-                                                margin='0px 15px 0px 0px'>
-                                                Family Room
-                                            </ContainerGlobal>
-                                        </Badge>
-                                    </MenuItem>
-                                    <MenuItem value={'Deluxe'} >
-                                        <Badge badgeContent={4} color="success" style={{ marginTop: 10 }} title='10 Available rooms'>
-                                            <ContainerGlobal
-                                                margin='0px 15px 0px 0px'>
-                                                Deluxe Room
-                                            </ContainerGlobal>
-                                        </Badge></MenuItem>
-                                    <MenuItem value={'Premium'} selected>
-                                        <Badge badgeContent={5} color="success" style={{ marginTop: 10 }} title='5 Available rooms'>
-                                            <ContainerGlobal
-                                                margin='0px 15px 0px 0px'>
-                                                Premium Room
-                                            </ContainerGlobal>
-                                        </Badge></MenuItem>
-                                </Select>
-                            </FormControl>
-                        </ContainerGlobal>
-                        <ContainerGlobal
-                            w='420px'
-                            h='auto'
-                            direction='row'
-                            gap='10px'
-                            justify='space-between'
-                            align='center'
-                            overflow='auto'
-
-                        >
-
-                            <Title
-                                size='20px'
-                                color='Black'
-                                family='Helvetica'
-                                fstyle='Normal'
-                                weight='400'
-                                align='left'
-                                margin='15px 0px 20px 0px'
-                            >
-                                Room Number:
-                            </Title>
-                            <FormControl sx={{ width: 200, margin: '5px 0px' }} size="large" variant="standard">
-                                <InputLabel id="demo-select-small" >Room Number</InputLabel>
-                                <Select
-                                    style={{ color: 'black', textAlign: 'left' }}
-                                    labelId="demo-select-small"
-                                    id="demo-select-small"
-                                    value={roomNumber}
-                                    label="Menu"
-                                    onChange={(event) => {
-                                        setRoomNumber(event.target.value);
-                                    }}
-                                    disabled
-                                >
-                                    <MenuItem value={'R101'} selected>
-                                        Room 101
-                                    </MenuItem>
-                                    <MenuItem value={'R102'} >
-                                        Room 102
-                                    </MenuItem>
-                                    <MenuItem value={'R103'} disabled>
-                                        Room 103
-                                    </MenuItem>
-                                    <MenuItem value={'R104'} >
-                                        Room 104
-                                    </MenuItem>
-                                    <MenuItem value={'R105'} >
-                                        Room 105
-                                    </MenuItem>
-                                </Select>
-                            </FormControl>
-                        </ContainerGlobal>
-                        <ContainerGlobal
-                            w='420px'
-                            h='auto'
-                            direction='row'
-                            gap='10px'
-                            justify='space-between'
-                            align='center'
-                            overflow='auto'
-
-                        >
-
-                            <Title
-                                size='20px'
-                                color='Black'
-                                family='Helvetica'
-                                fstyle='Normal'
-                                weight='400'
-                                align='left'
-                                margin='15px 0px 20px 0px'
-                            >
-                                Number of Adult:
-                            </Title>
-                            <TextField id="outlined-basic" label="" variant="standard" style={{ width: 200, margin: '5px 0px' }}
-                                InputProps={{
-                                    readOnly: true,
-                                }}
-                                value='2'
-                            />
-                        </ContainerGlobal>
-                        <ContainerGlobal
-                            w='420px'
-                            h='auto'
-                            direction='row'
-                            gap='10px'
-                            justify='space-between'
-                            align='center'
-                            overflow='auto'
-
-                        >
-
-                            <Title
-                                size='20px'
-                                color='Black'
-                                family='Helvetica'
-                                fstyle='Normal'
-                                weight='400'
-                                align='left'
-                                margin='15px 0px 20px 0px'
-                            >
-                                Number of Kids:
-                            </Title>
-                            <TextField id="outlined-basic" label="" variant="standard" style={{ width: 200, margin: '5px 0px' }}
-                                InputProps={{
-                                    readOnly: true,
-                                }}
-                                value='0' />
-                        </ContainerGlobal>
-                        <ContainerGlobal
-                            w='420px'
-                            h='auto'
-                            direction='row'
-                            gap='10px'
-                            justify='space-between'
-                            align='center'
-                            overflow='auto'
-
-                        >
-
-                            <Title
-                                size='20px'
-                                color='Black'
-                                family='Helvetica'
-                                fstyle='Normal'
-                                weight='400'
-                                align='left'
-                                margin='15px 0px 20px 0px'
-                            >
-                                Number of Nights:
-                            </Title>
-                            <TextField id="outlined-basic" label="" variant="standard" style={{ width: 200, margin: '5px 0px' }}
-                                InputProps={{
-                                    readOnly: true,
-                                }}
-                                value='1' />
-                        </ContainerGlobal>
-
                         <ContainerGlobal
                             w='420px'
                             h='auto'
@@ -1516,6 +1728,49 @@ const BookingsContainer = () => {
                                     endAdornment: <InputAdornment position="end">PHP</InputAdornment>,
                                 }}
                             />
+                        </ContainerGlobal>
+                        <ContainerGlobal
+                            w='420px'
+                            h='auto'
+                            direction='row'
+                            gap='10px'
+                            justify='space-between'
+                            align='center'
+                            overflow='auto'
+
+                        >
+                            <Title
+                                size='20px'
+                                color='Black'
+                                family='Helvetica'
+                                fstyle='Normal'
+                                weight='600'
+                                align='left'
+                                margin='15px 0px 20px 0px'
+                            >
+                                Booking status:
+                            </Title>
+
+                            <RadioGroup
+                                row
+                                aria-labelledby="demo-radio-buttons-group-label"
+                                defaultValue="Departed"
+                                name="radio-buttons-group"
+                                style={{ width: 'auto', margin: '10px 0px 0px 0px' }}
+
+                            >
+                                <ContainerGlobal>
+                                    <ContainerGlobal
+                                        direction='column'>
+                                        <FormControlLabel value="Reserved" control={<Radio />} label="Reserved" disabled />
+                                        <FormControlLabel value="Arrived" control={<Radio />} label="Arrived" disabled />
+                                    </ContainerGlobal>
+                                    <ContainerGlobal
+                                        direction='column'><FormControlLabel value="Departed" control={<Radio />} label="Departed" disabled />
+                                        <FormControlLabel value="NoShow" control={<Radio />} label="No Show" disabled />
+                                    </ContainerGlobal>
+                                </ContainerGlobal>
+                            </RadioGroup>
                         </ContainerGlobal>
                     </ContainerGlobalColumn>
 
@@ -1643,12 +1898,47 @@ const BookingsContainer = () => {
                             >
                                 Contact Number:
                             </Title>
+
                             <TextField id="outlined-basic"
                                 InputProps={{
                                     readOnly: true,
                                 }}
                                 value='09291234567'
                                 label="" variant="standard" style={{ width: 200, margin: '5px 0px' }} type='number' />
+                        </ContainerGlobal>
+                        <ContainerGlobal
+                            w='420px'
+                            h='auto'
+                            direction='row'
+                            gap='10px'
+                            justify='space-between'
+                            align='center'
+                            overflow='auto'
+
+                        >
+                            <Title
+                                size='20px'
+                                color='Black'
+                                family='Helvetica'
+                                fstyle='Normal'
+                                weight='400'
+                                align='left'
+                                margin='15px 0px 20px 0px'
+                            >
+                                Gender:
+                            </Title>
+
+                            <RadioGroup
+                                aria-labelledby="demo-radio-buttons-group-label"
+                                defaultValue="male"
+                                name="radio-buttons-group"
+                                style={{ width: 200 }}
+                                disabled
+                            >
+                                <FormControlLabel value="female" control={<Radio />} label="Female" disabled />
+                                <FormControlLabel value="male" control={<Radio />} label="Male" disabled />
+                                <FormControlLabel value="other" control={<Radio />} label="Other" disabled />
+                            </RadioGroup>
                         </ContainerGlobal>
                         <ContainerGlobal
                             w='420px'
@@ -1766,7 +2056,7 @@ const BookingsContainer = () => {
                                 Nationality:
                             </Title>
                             <FormControl sx={{ width: 200, margin: '5px 0px' }} size="small" variant="standard">
-                                <InputLabel id="demo-select-small" >Payment Type</InputLabel>
+                                <InputLabel id="demo-select-small" >Nationality</InputLabel>
                                 <Select
                                     style={{ color: 'black', textAlign: 'left' }}
                                     labelId="demo-select-small"
@@ -1785,6 +2075,7 @@ const BookingsContainer = () => {
                                 </Select>
                             </FormControl>
                         </ContainerGlobal>
+
                         <ContainerGlobal
                             w='420px'
                             h='auto'
@@ -1815,6 +2106,7 @@ const BookingsContainer = () => {
                                 rows={4}
                             />
                         </ContainerGlobal>
+
                     </ContainerGlobalColumn>
 
                 </ContainerGlobalRow>
@@ -1848,14 +2140,12 @@ const BookingsContainer = () => {
             radius='none'
             justify='center'
             align='center'
-            bg='rgb(46, 46, 46, 0.5)'
+            bg='rgb(46, 46, 46, 0.9)'
             index='1'
             overflow='auto'
             active
         >
             <ContainerGlobal
-                whileHover={{ scale: 1.01 }}
-                whileTap={{ scale: 1 }}
                 w='auto'
                 h='auto'
                 bg='white'
@@ -1864,6 +2154,7 @@ const BookingsContainer = () => {
                 gap='10px'
                 justify='center'
                 align='center'
+                margin='400px 0px 40px 0px'
             >
                 <Title
                     size='26px'
@@ -1960,6 +2251,336 @@ const BookingsContainer = () => {
                                 }}
                             />
                         </ContainerGlobal>
+                        <ContainerGlobal
+                            w='420px'
+                            h='auto'
+                            direction='row'
+                            gap='10px'
+                            justify='space-between'
+                            align='center'
+                            overflow='auto'
+
+                        >
+
+                            <Title
+                                size='20px'
+                                color='Black'
+                                family='Helvetica'
+                                fstyle='Normal'
+                                weight='400'
+                                align='left'
+                                margin='15px 0px 20px 0px'
+                            >
+                                Room Type:
+                            </Title>
+                            <FormControl sx={{ width: 200, margin: '5px 0px' }} size="large" variant="standard">
+                                <InputLabel id="demo-select-small" >Room Type</InputLabel>
+                                <Select
+                                    style={{ color: 'black', textAlign: 'left' }}
+                                    labelId="demo-select-small"
+                                    id="demo-select-small"
+                                    value={roomType}
+                                    label="Menu"
+                                    onChange={(event) => {
+                                        setRoomType(event.target.value);
+                                    }}
+
+                                >
+                                    <MenuItem value={'Family'}>
+                                        <Badge badgeContent={9} color="success" style={{ marginTop: 10 }} title='40 Available rooms'>
+                                            <ContainerGlobal
+                                                margin='0px 15px 0px 0px'>
+                                                Family Room
+                                            </ContainerGlobal>
+                                        </Badge>
+                                    </MenuItem>
+                                    <MenuItem value={'Deluxe'} >
+                                        <Badge badgeContent={4} color="success" style={{ marginTop: 10 }} title='10 Available rooms'>
+                                            <ContainerGlobal
+                                                margin='0px 15px 0px 0px'>
+                                                Deluxe Room
+                                            </ContainerGlobal>
+                                        </Badge></MenuItem>
+                                    <MenuItem value={'Premium'} selected>
+                                        <Badge badgeContent={5} color="success" style={{ marginTop: 10 }} title='5 Available rooms'>
+                                            <ContainerGlobal
+                                                margin='0px 15px 0px 0px'>
+                                                Premium Room
+                                            </ContainerGlobal>
+                                        </Badge></MenuItem>
+                                </Select>
+                            </FormControl>
+                        </ContainerGlobal>
+                        <ContainerGlobal
+                            w='420px'
+                            h='auto'
+                            direction='row'
+                            gap='10px'
+                            justify='space-between'
+                            align='center'
+                            overflow='auto'
+
+                        >
+
+                            <Title
+                                size='20px'
+                                color='Black'
+                                family='Helvetica'
+                                fstyle='Normal'
+                                weight='400'
+                                align='left'
+                                margin='15px 0px 20px 0px'
+                            >
+                                Room Number:
+                            </Title>
+                            <FormControl sx={{ width: 200, margin: '5px 0px' }} size="large" variant="standard">
+                                <InputLabel id="demo-select-small" >Room Number</InputLabel>
+                                <Select
+                                    style={{ color: 'black', textAlign: 'left' }}
+                                    labelId="demo-select-small"
+                                    id="demo-select-small"
+                                    value={roomNumber}
+                                    label="Menu"
+                                    onChange={(event) => {
+                                        setRoomNumber(event.target.value);
+                                    }}
+
+                                >
+                                    <MenuItem value={'R101'} selected>
+                                        Room 101
+                                    </MenuItem>
+                                    <MenuItem value={'R102'} >
+                                        Room 102
+                                    </MenuItem>
+                                    <MenuItem value={'R103'} disabled>
+                                        Room 103
+                                    </MenuItem>
+                                    <MenuItem value={'R104'} >
+                                        Room 104
+                                    </MenuItem>
+                                    <MenuItem value={'R105'} >
+                                        Room 105
+                                    </MenuItem>
+                                </Select>
+                            </FormControl>
+                        </ContainerGlobal>
+                        <ContainerGlobal
+                            w='420px'
+                            h='auto'
+                            direction='row'
+                            gap='10px'
+                            justify='space-between'
+                            align='center'
+                            overflow='auto'
+
+                        >
+
+                            <Title
+                                size='20px'
+                                color='Black'
+                                family='Helvetica'
+                                fstyle='Normal'
+                                weight='400'
+                                align='left'
+                                margin='15px 0px 20px 0px'
+                            >
+                                Number of Adult:
+                            </Title>
+                            <TextField id="outlined-basic" label="" variant="standard" style={{ width: 200, margin: '5px 0px' }}
+
+                                value='2'
+                            />
+                        </ContainerGlobal>
+                        <ContainerGlobal
+                            w='420px'
+                            h='auto'
+                            direction='row'
+                            gap='10px'
+                            justify='space-between'
+                            align='center'
+                            overflow='auto'
+
+                        >
+
+                            <Title
+                                size='20px'
+                                color='Black'
+                                family='Helvetica'
+                                fstyle='Normal'
+                                weight='400'
+                                align='left'
+                                margin='15px 0px 20px 0px'
+                            >
+                                Number of Kids:
+                            </Title>
+                            <TextField id="outlined-basic" label="" variant="standard" style={{ width: 200, margin: '5px 0px' }}
+
+                                value='0' />
+                        </ContainerGlobal>
+                        <ContainerGlobal
+                            w='420px'
+                            h='auto'
+                            direction='row'
+                            gap='10px'
+                            justify='space-between'
+                            align='center'
+                            overflow='auto'
+
+                        >
+
+                            <Title
+                                size='20px'
+                                color='Black'
+                                family='Helvetica'
+                                fstyle='Normal'
+                                weight='400'
+                                align='left'
+                                margin='15px 0px 20px 0px'
+                            >
+                                Extra Bed:
+                            </Title>
+                            <TextField
+                                InputProps={{
+                                    readOnly: true,
+                                }}
+                                defaultValue='0' id="outlined-basic" label="" variant="standard" style={{ width: 200, margin: '5px 0px' }} />
+                        </ContainerGlobal>
+                        <ContainerGlobal
+                            w='420px'
+                            h='auto'
+                            direction='row'
+                            gap='10px'
+                            justify='space-between'
+                            align='center'
+                            overflow='auto'
+
+                        >
+
+                            <Title
+                                size='20px'
+                                color='Black'
+                                family='Helvetica'
+                                fstyle='Normal'
+                                weight='400'
+                                align='left'
+                                margin='15px 0px 20px 0px'
+                            >
+                                Extra Pillow:
+                            </Title>
+                            <TextField
+                                InputProps={{
+                                    readOnly: true,
+                                }}
+                                defaultValue='0' id="outlined-basic" label="" variant="standard" style={{ width: 200, margin: '5px 0px' }} />
+                        </ContainerGlobal>
+                        <ContainerGlobal
+                            w='420px'
+                            h='auto'
+                            direction='row'
+                            gap='10px'
+                            justify='space-between'
+                            align='center'
+                            overflow='auto'
+
+                        >
+
+                            <Title
+                                size='20px'
+                                color='Black'
+                                family='Helvetica'
+                                fstyle='Normal'
+                                weight='400'
+                                align='left'
+                                margin='15px 0px 20px 0px'
+                            >
+                                Extra Blanket:
+                            </Title>
+                            <TextField
+                                InputProps={{
+                                    readOnly: true,
+                                }}
+                                defaultValue='0' id="outlined-basic" label="" variant="standard" style={{ width: 200, margin: '5px 0px' }} />
+                        </ContainerGlobal>
+                    </ContainerGlobalColumn>
+                    <ContainerGlobalColumn>
+                        <ContainerGlobal
+                            w='420px'
+                            h='auto'
+                            direction='row'
+                            gap='10px'
+                            justify='space-between'
+                            align='center'
+
+                        >
+                            <Title
+                                size='20px'
+                                color='Black'
+                                family='Helvetica'
+                                fstyle='Normal'
+                                weight='400'
+                                align='left'
+                                margin='15px 0px 20px 0px'
+                            >
+                                Check out:
+                            </Title>
+                            <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                <DatePicker
+
+                                    views={['day', 'month', 'year']}
+                                    label="Check out"
+                                    value={outValue}
+                                    onChange={(newValue) => {
+                                        setOutValue(newValue);
+                                    }}
+                                    renderInput={(params) =>
+                                        <TextField
+                                            {...params}
+                                            sx={{
+                                                svg: { color: 'black' },
+                                                input: { color },
+                                                label: { color },
+                                                color: { color },
+                                                input: { color: 'black', fontWeight: 'bold' },
+
+                                            }}
+                                            variant="standard"
+                                            style={{ width: 200, margin: '5px 0px' }}
+                                            helperText={null}
+                                        />
+                                    }
+                                />
+
+                            </LocalizationProvider>
+                        </ContainerGlobal>
+                        <ContainerGlobal
+                            w='420px'
+                            h='auto'
+                            direction='row'
+                            gap='10px'
+                            justify='space-between'
+                            align='center'
+                            overflow='auto'
+
+                        >
+
+                            <Title
+                                size='20px'
+                                color='Black'
+                                family='Helvetica'
+                                fstyle='Normal'
+                                weight='400'
+                                align='left'
+                                margin='15px 0px 20px 0px'
+                            >
+                                Number of Nights:
+                            </Title>
+                            <TextField id="outlined-basic" label="" variant="standard" style={{ width: 200, margin: '5px 0px' }}
+                                InputProps={{
+                                    readOnly: true,
+                                }}
+                                value={nights} />
+                        </ContainerGlobal>
+
                         <ContainerGlobal
                             w='420px'
                             h='auto'
@@ -2152,252 +2773,6 @@ const BookingsContainer = () => {
                                 }}
                             />
                         </ContainerGlobal>
-                    </ContainerGlobalColumn>
-                    <ContainerGlobalColumn>
-                        <ContainerGlobal
-                            w='420px'
-                            h='auto'
-                            direction='row'
-                            gap='10px'
-                            justify='space-between'
-                            align='center'
-
-                        >
-                            <Title
-                                size='20px'
-                                color='Black'
-                                family='Helvetica'
-                                fstyle='Normal'
-                                weight='400'
-                                align='left'
-                                margin='15px 0px 20px 0px'
-                            >
-                                Check out:
-                            </Title>
-                            <LocalizationProvider dateAdapter={AdapterDateFns}>
-                                <DatePicker
-
-                                    views={['day', 'month', 'year']}
-                                    label="Check out"
-                                    value={outValue}
-                                    onChange={(newValue) => {
-                                        setOutValue(newValue);
-                                    }}
-                                    renderInput={(params) =>
-                                        <TextField
-                                            {...params}
-                                            sx={{
-                                                svg: { color: 'black' },
-                                                input: { color },
-                                                label: { color },
-                                                color: { color },
-                                                input: { color: 'black', fontWeight: 'bold' },
-
-                                            }}
-                                            variant="standard"
-                                            style={{ width: 200, margin: '5px 0px' }}
-                                            helperText={null}
-                                        />
-                                    }
-                                />
-
-                            </LocalizationProvider>
-                        </ContainerGlobal>
-                        <ContainerGlobal
-                            w='420px'
-                            h='auto'
-                            direction='row'
-                            gap='10px'
-                            justify='space-between'
-                            align='center'
-                            overflow='auto'
-
-                        >
-
-                            <Title
-                                size='20px'
-                                color='Black'
-                                family='Helvetica'
-                                fstyle='Normal'
-                                weight='400'
-                                align='left'
-                                margin='15px 0px 20px 0px'
-                            >
-                                Room Type:
-                            </Title>
-                            <FormControl sx={{ width: 200, margin: '5px 0px' }} size="large" variant="standard">
-                                <InputLabel id="demo-select-small" >Room Type</InputLabel>
-                                <Select
-                                    style={{ color: 'black', textAlign: 'left' }}
-                                    labelId="demo-select-small"
-                                    id="demo-select-small"
-                                    value={roomType}
-                                    label="Menu"
-                                    onChange={(event) => {
-                                        setRoomType(event.target.value);
-                                    }}
-
-                                >
-                                    <MenuItem value={'Family'}>
-                                        <Badge badgeContent={9} color="success" style={{ marginTop: 10 }} title='40 Available rooms'>
-                                            <ContainerGlobal
-                                                margin='0px 15px 0px 0px'>
-                                                Family Room
-                                            </ContainerGlobal>
-                                        </Badge>
-                                    </MenuItem>
-                                    <MenuItem value={'Deluxe'} >
-                                        <Badge badgeContent={4} color="success" style={{ marginTop: 10 }} title='10 Available rooms'>
-                                            <ContainerGlobal
-                                                margin='0px 15px 0px 0px'>
-                                                Deluxe Room
-                                            </ContainerGlobal>
-                                        </Badge></MenuItem>
-                                    <MenuItem value={'Premium'} selected>
-                                        <Badge badgeContent={5} color="success" style={{ marginTop: 10 }} title='5 Available rooms'>
-                                            <ContainerGlobal
-                                                margin='0px 15px 0px 0px'>
-                                                Premium Room
-                                            </ContainerGlobal>
-                                        </Badge></MenuItem>
-                                </Select>
-                            </FormControl>
-                        </ContainerGlobal>
-                        <ContainerGlobal
-                            w='420px'
-                            h='auto'
-                            direction='row'
-                            gap='10px'
-                            justify='space-between'
-                            align='center'
-                            overflow='auto'
-
-                        >
-
-                            <Title
-                                size='20px'
-                                color='Black'
-                                family='Helvetica'
-                                fstyle='Normal'
-                                weight='400'
-                                align='left'
-                                margin='15px 0px 20px 0px'
-                            >
-                                Room Number:
-                            </Title>
-                            <FormControl sx={{ width: 200, margin: '5px 0px' }} size="large" variant="standard">
-                                <InputLabel id="demo-select-small" >Room Number</InputLabel>
-                                <Select
-                                    style={{ color: 'black', textAlign: 'left' }}
-                                    labelId="demo-select-small"
-                                    id="demo-select-small"
-                                    value={roomNumber}
-                                    label="Menu"
-                                    onChange={(event) => {
-                                        setRoomNumber(event.target.value);
-                                    }}
-
-                                >
-                                    <MenuItem value={'R101'} selected>
-                                        Room 101
-                                    </MenuItem>
-                                    <MenuItem value={'R102'} >
-                                        Room 102
-                                    </MenuItem>
-                                    <MenuItem value={'R103'} disabled>
-                                        Room 103
-                                    </MenuItem>
-                                    <MenuItem value={'R104'} >
-                                        Room 104
-                                    </MenuItem>
-                                    <MenuItem value={'R105'} >
-                                        Room 105
-                                    </MenuItem>
-                                </Select>
-                            </FormControl>
-                        </ContainerGlobal>
-                        <ContainerGlobal
-                            w='420px'
-                            h='auto'
-                            direction='row'
-                            gap='10px'
-                            justify='space-between'
-                            align='center'
-                            overflow='auto'
-
-                        >
-
-                            <Title
-                                size='20px'
-                                color='Black'
-                                family='Helvetica'
-                                fstyle='Normal'
-                                weight='400'
-                                align='left'
-                                margin='15px 0px 20px 0px'
-                            >
-                                Number of Adult:
-                            </Title>
-                            <TextField id="outlined-basic" label="" variant="standard" style={{ width: 200, margin: '5px 0px' }}
-
-                                value='2'
-                            />
-                        </ContainerGlobal>
-                        <ContainerGlobal
-                            w='420px'
-                            h='auto'
-                            direction='row'
-                            gap='10px'
-                            justify='space-between'
-                            align='center'
-                            overflow='auto'
-
-                        >
-
-                            <Title
-                                size='20px'
-                                color='Black'
-                                family='Helvetica'
-                                fstyle='Normal'
-                                weight='400'
-                                align='left'
-                                margin='15px 0px 20px 0px'
-                            >
-                                Number of Kids:
-                            </Title>
-                            <TextField id="outlined-basic" label="" variant="standard" style={{ width: 200, margin: '5px 0px' }}
-
-                                value='0' />
-                        </ContainerGlobal>
-                        <ContainerGlobal
-                            w='420px'
-                            h='auto'
-                            direction='row'
-                            gap='10px'
-                            justify='space-between'
-                            align='center'
-                            overflow='auto'
-
-                        >
-
-                            <Title
-                                size='20px'
-                                color='Black'
-                                family='Helvetica'
-                                fstyle='Normal'
-                                weight='400'
-                                align='left'
-                                margin='15px 0px 20px 0px'
-                            >
-                                Number of Nights:
-                            </Title>
-                            <TextField id="outlined-basic" label="" variant="standard" style={{ width: 200, margin: '5px 0px' }}
-                                InputProps={{
-                                    readOnly: true,
-                                }}
-                                value='1' />
-                        </ContainerGlobal>
-
                         <ContainerGlobal
                             w='420px'
                             h='auto'
@@ -2432,6 +2807,50 @@ const BookingsContainer = () => {
                                     endAdornment: <InputAdornment position="end">PHP</InputAdornment>,
                                 }}
                             />
+                        </ContainerGlobal>
+                        <ContainerGlobal
+                            w='420px'
+                            h='auto'
+                            direction='row'
+                            gap='10px'
+                            justify='space-between'
+                            align='center'
+                            overflow='auto'
+
+                        >
+                            <Title
+                                size='20px'
+                                color='Black'
+                                family='Helvetica'
+                                fstyle='Normal'
+                                weight='600'
+                                align='left'
+                                margin='15px 0px 20px 0px'
+                            >
+                                Booking status:
+                            </Title>
+
+                            <RadioGroup
+                                row
+                                aria-labelledby="demo-radio-buttons-group-label"
+                                defaultValue="Reserved"
+                                name="radio-buttons-group"
+                                style={{ width: 'auto', margin: '10px 0px 0px 0px' }}
+
+                            >
+                                <ContainerGlobal>
+                                    <ContainerGlobal
+                                        direction='column'>
+                                        <FormControlLabel value="Reserved" control={<Radio />} label="Reserved" />
+                                        <FormControlLabel value="Arrived" control={<Radio />} label="Arrived" />
+                                    </ContainerGlobal>
+                                    <ContainerGlobal
+                                        direction='column'>
+                                        <FormControlLabel value="Departed" control={<Radio />} label="Departed" />
+                                        <FormControlLabel value="NoShow" control={<Radio />} label="No Show" />
+                                    </ContainerGlobal>
+                                </ContainerGlobal>
+                            </RadioGroup>
                         </ContainerGlobal>
                     </ContainerGlobalColumn>
 
@@ -2569,6 +2988,40 @@ const BookingsContainer = () => {
                             overflow='auto'
 
                         >
+                            <Title
+                                size='20px'
+                                color='Black'
+                                family='Helvetica'
+                                fstyle='Normal'
+                                weight='400'
+                                align='left'
+                                margin='15px 0px 20px 0px'
+                            >
+                                Gender:
+                            </Title>
+
+                            <RadioGroup
+                                aria-labelledby="demo-radio-buttons-group-label"
+                                defaultValue="male"
+                                name="radio-buttons-group"
+                                style={{ width: 200 }}
+                                disabled
+                            >
+                                <FormControlLabel value="female" control={<Radio />} label="Female" />
+                                <FormControlLabel value="male" control={<Radio />} label="Male" />
+                                <FormControlLabel value="other" control={<Radio />} label="Other" />
+                            </RadioGroup>
+                        </ContainerGlobal>
+                        <ContainerGlobal
+                            w='420px'
+                            h='auto'
+                            direction='row'
+                            gap='10px'
+                            justify='space-between'
+                            align='center'
+                            overflow='auto'
+
+                        >
 
                             <Title
                                 size='20px'
@@ -2666,7 +3119,7 @@ const BookingsContainer = () => {
                                 Nationality:
                             </Title>
                             <FormControl sx={{ width: 200, margin: '5px 0px' }} size="small" variant="standard">
-                                <InputLabel id="demo-select-small" >Payment Type</InputLabel>
+                                <InputLabel id="demo-select-small" >Nationality</InputLabel>
                                 <Select
                                     style={{ color: 'black', textAlign: 'left' }}
                                     labelId="demo-select-small"
@@ -2924,20 +3377,21 @@ const BookingsContainer = () => {
                 </HorizontalLine>
                 <TableContainer>
                     <Tr>
-                        <Th align='center'>Booking No.</Th>
-                        <Th align='center'>Guest's Name</Th>
-                        <Th align='center'>Booking Date</Th>
-                        <Th align='center'>Check in</Th>
-                        <Th align='center'>Check out</Th>
-                        <Th align='center'>Status</Th>
-                        <Th align='center'>Action</Th>
+                        <Th align='center'>Booking No. <ArrowDropDownIcon style={{ color: 'black' }} /> </Th>
+                        <Th align='center'>Guest's Name  <ArrowDropDownIcon style={{ color: 'black' }} /></Th>
+                        <Th align='center'>Booking Date <ArrowDropUpIcon style={{ color: 'black' }} /></Th>
+                        <Th align='center'>Check in <ArrowDropDownIcon style={{ color: 'black' }} /></Th>
+                        <Th align='center'>Check out <ArrowDropDownIcon style={{ color: 'black' }} /></Th>
+                        <Th align='center'>Payment Status  <ArrowDropDownIcon style={{ color: 'black' }} /></Th>
+                        <Th align='center'>Booking Status  <ArrowDropDownIcon style={{ color: 'black' }} /></Th>
+                        <Th align='center'>Action  <ArrowDropDownIcon style={{ color: 'black' }} /></Th>
                     </Tr>
                     <Tr>
                         <Td align='center'>091234568</Td>
                         <Td align='center'>Pedro Penduco</Td>
                         <Td align='center'>05/20/21</Td>
                         <Td align='center'>05/25/21</Td>
-                        <Td align='center'>05/29/21</Td>
+                        <Td align='center'>05/26/21</Td>
                         <Td align='center'>
                             <ContainerGlobal
                                 w='100px'
@@ -2963,6 +3417,32 @@ const BookingsContainer = () => {
                                 >
                                     Paid
                                 </Title></ContainerGlobal></Td>
+                        <Td align='center'>
+                            <ContainerGlobal
+                                w='100px'
+                                h='auto'
+                                margin='0px auto'
+                                bg='rgb(118, 185, 71, .2)'
+                                direction='row'
+                                padding='2px 0px'
+                                justify='center'
+                                align='center'
+                                border='2px solid rgb(118, 185, 71)'
+                                gap='10px'
+                                borderRadius='.5rem'
+                            >
+
+                                <Title
+                                    family='Helvetica'
+                                    size='12px'
+                                    color='BLACK'
+                                    fstyle='normal'
+                                    display='inline'
+                                    padding='5px 10px'
+                                >
+                                    Departed
+                                </Title></ContainerGlobal>
+                        </Td>
                         <Td align='center'>
                             <ActionButton
                                 view={() => setShowDetails(prev => !prev)}
@@ -3000,7 +3480,34 @@ const BookingsContainer = () => {
                                     padding='5px 10px'
                                 >
                                     Paid
-                                </Title></ContainerGlobal></Td>
+                                </Title></ContainerGlobal>
+                        </Td>
+                        <Td align='center'>
+                            <ContainerGlobal
+                                w='100px'
+                                h='auto'
+                                margin='0px auto'
+                                bg='rgb(33, 114, 255, .2)'
+                                direction='row'
+                                padding='2px 0px'
+                                justify='center'
+                                align='center'
+                                border='2px solid rgb(33, 114, 255)'
+                                gap='10px'
+                                borderRadius='.5rem'
+                            >
+
+                                <Title
+                                    family='Helvetica'
+                                    size='12px'
+                                    color='BLACK'
+                                    fstyle='normal'
+                                    display='inline'
+                                    padding='5px 10px'
+                                >
+                                    Arrived
+                                </Title></ContainerGlobal>
+                        </Td>
                         <Td align='center'><ActionButton /></Td>
                     </Tr>
                     <Tr>
@@ -3008,7 +3515,7 @@ const BookingsContainer = () => {
                         <Td align='center'>Pedro Penduco</Td>
                         <Td align='center'>05/20/21</Td>
                         <Td align='center'>05/25/21</Td>
-                        <Td align='center'>05/29/21</Td>
+                        <Td align='center'>05/27/21</Td>
                         <Td align='center'>
                             <ContainerGlobal
                                 w='100px'
@@ -3031,7 +3538,33 @@ const BookingsContainer = () => {
                                     display='inline'
                                     padding='5px 10px'
                                 >
-                                    Canceled
+                                    Cancelled
+                                </Title>
+                            </ContainerGlobal>
+                        </Td>
+                        <Td align='center'>
+                            <ContainerGlobal
+                                w='100px'
+                                h='auto'
+                                margin='0px auto'
+                                bg='rgb(244,194,194, .2)'
+                                direction='row'
+                                padding='2px 0px'
+                                justify='center'
+                                align='center'
+                                border='2px solid rgb(255, 36, 0)'
+                                gap='10px'
+                                borderRadius='.5rem'
+                            >
+                                <Title
+                                    family='Helvetica'
+                                    size='12px'
+                                    color='BLACK'
+                                    fstyle='normal'
+                                    display='inline'
+                                    padding='5px 10px'
+                                >
+                                    No show
                                 </Title>
                             </ContainerGlobal>
                         </Td>
@@ -3067,7 +3600,34 @@ const BookingsContainer = () => {
                                     padding='5px 10px'
                                 >
                                     Paid
-                                </Title></ContainerGlobal></Td>
+                                </Title></ContainerGlobal>
+                        </Td>
+                        <Td align='center'>
+                            <ContainerGlobal
+                                w='100px'
+                                h='auto'
+                                margin='0px auto'
+                                bg='rgb(32, 219, 213, .2)'
+                                direction='row'
+                                padding='2px 0px'
+                                justify='center'
+                                align='center'
+                                border='2px solid rgb(32, 219, 213)'
+                                gap='10px'
+                                borderRadius='.5rem'
+                            >
+
+                                <Title
+                                    family='Helvetica'
+                                    size='12px'
+                                    color='BLACK'
+                                    fstyle='normal'
+                                    display='inline'
+                                    padding='5px 10px'
+                                >
+                                    Reserved
+                                </Title></ContainerGlobal>
+                        </Td>
                         <Td align='center'><ActionButton /></Td>
                     </Tr>
                     <Tr>
@@ -3102,28 +3662,21 @@ const BookingsContainer = () => {
                                 </Title>
                             </ContainerGlobal>
                         </Td>
-                        <Td align='center'><ActionButton /></Td>
-                    </Tr>
-                    <Tr>
-                        <Td align='center'>091234568</Td>
-                        <Td align='center'>Pedro Penduco</Td>
-                        <Td align='center'>05/20/21</Td>
-                        <Td align='center'>05/25/21</Td>
-                        <Td align='center'>05/29/21</Td>
                         <Td align='center'>
                             <ContainerGlobal
                                 w='100px'
                                 h='auto'
                                 margin='0px auto'
-                                bg='rgb(244,194,194, .2)'
+                                bg='rgb(32, 219, 213, .2)'
                                 direction='row'
                                 padding='2px 0px'
                                 justify='center'
                                 align='center'
-                                border='2px solid rgb(255, 36, 0)'
+                                border='2px solid rgb(32, 219, 213)'
                                 gap='10px'
                                 borderRadius='.5rem'
                             >
+
                                 <Title
                                     family='Helvetica'
                                     size='12px'
@@ -3132,12 +3685,12 @@ const BookingsContainer = () => {
                                     display='inline'
                                     padding='5px 10px'
                                 >
-                                    Canceled
-                                </Title>
-                            </ContainerGlobal>
+                                    Reserved
+                                </Title></ContainerGlobal>
                         </Td>
                         <Td align='center'><ActionButton /></Td>
                     </Tr>
+
                 </TableContainer>
             </ContainerGlobal>
 

@@ -6,7 +6,6 @@ export const ContainerGlobal = styled(motion.div)`
     display: ${(props) => (props.display ? props.display : "flex")};
 	height: ${(props) => (props.h ? props.h : "auto")};
     width: ${(props) => (props.w ? props.w : "auto")};
-    position: ${(props) => (props.position ? props.position : "static")};
     flex-direction: ${(props) => (props.direction ? props.direction : "row")};
     padding: ${(props) => (props.padding ? props.padding : "0px")};
     gap: ${(props) => (props.gap ? props.gap : "0px")};
@@ -23,5 +22,4 @@ export const ContainerGlobal = styled(motion.div)`
     position: ${props => props.active ? "absolute" : "static"};
   top: ${props => props.active ? "0" : "auto"};
   left: ${props => props.active ? "0" : "auto"};
-  /* bring your own prefixes */
 `;
