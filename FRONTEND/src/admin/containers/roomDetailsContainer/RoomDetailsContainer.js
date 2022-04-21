@@ -16,6 +16,7 @@ import IconButton from '@mui/material/IconButton';
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
 import delux from '../../../client/images/RoomsIMG/delux.jpg';
 import prm from '../../../client/images/RoomsIMG/premium.jpg';
+import InputAdornment from '@mui/material/InputAdornment';
 
 const style = {
     position: 'absolute',
@@ -24,15 +25,15 @@ const style = {
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center ',
-    left: '50%',
+    left: '60%',
     transform: 'translate(-50%, -50%)',
-    height: '80vh',
+    height: 'auto',
     overflow: 'hidden',
-    width: 'auto',
+    width: '40%',
     bgcolor: 'background.paper',
     boxShadow: 24,
-    p: 4,
-    radius: '.5rem',
+    p: '20px 30px 40px 30px',
+    borderRadius: '.5rem',
 };
 
 const Input = styled('input')({
@@ -122,21 +123,25 @@ const RoomDetailsContainer = () => {
                     <Tr>
                         <Th align='center'>Room Type</Th>
                         <Th align='center'>Rate/Night</Th>
+                        <Th align='center'>Description</Th>
                         <Th align='center'>Action</Th>
                     </Tr>
                     <Tr>
                         <Td align='center'>Family Room</Td>
                         <Td align='center'>PHP 2,500</Td>
+                        <Td align='center'>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis consequat mattis leo, rutrum mollis risus lacinia at. Ut luctus pretium massa, a aliquet diam posuere id.</Td>
                         <Td align='center'>...</Td>
                     </Tr>
                     <Tr>
                         <Td align='center'>Premium Room</Td>
                         <Td align='center'>PHP 3,500</Td>
+                        <Td align='center'>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis consequat mattis leo, rutrum mollis risus lacinia at. Ut luctus pretium massa, a aliquet diam posuere id.</Td>
                         <Td align='center'>...</Td>
                     </Tr>
                     <Tr>
                         <Td align='center'>Deluxe Room</Td>
                         <Td align='center'>PHP 5,000</Td>
+                        <Td align='center'>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis consequat mattis leo, rutrum mollis risus lacinia at. Ut luctus pretium massa, a aliquet diam posuere id.</Td>
                         <Td align='center'>...</Td>
                     </Tr>
                 </TableContainer>
@@ -147,7 +152,7 @@ const RoomDetailsContainer = () => {
                 size="large"
                 onClick={handleOpen}
                 style={{ backgroundColor: '#2E2E2E' }}>
-                Add
+                Add Room Type
             </Button>
 
             <Modal
@@ -157,12 +162,27 @@ const RoomDetailsContainer = () => {
                 aria-describedby="modal-modal-description"
             >
                 <Box sx={style}>
-                    <Typography id="modal-modal-title" variant="h4" component="h2"
-                        style={{ textAlign: 'center', padding: '10px', marginTop: '50px' }}>
-                        Add Room
-                    </Typography>
+                    <Title
+                        size='33px'
+                        color='black'
+                        family='Helvetica'
+                        fstyle='normal'
+                        weight='600'
+                        align='left'
+                        margin='0px 0px 20px 0px'
+                    >
+                        Add Room Type
+                    </Title>
 
-                    <InputContainer>
+                    <HorizontalLine
+                        bg='gray'
+                        w='100%'
+                        margin='0px 0px 40px 0px'
+                    ></HorizontalLine>
+
+                    <InputContainer
+                        w='90%'
+                    >
                         <TextField
                             placeholder='Room Type'
                             label="Room Type"
@@ -170,10 +190,22 @@ const RoomDetailsContainer = () => {
                             style={{ width: '55%', }} />
 
                         <TextField
+                            placeholder='Room Type'
+                            label="Room Description"
+                            multiline
+                            maxRows={4}
+                            variant="outlined"
+                            style={{ width: '55%', }} />
+                            
+                        <TextField
                             placeholder='Rate per Night'
                             label="Rate per Night"
                             variant="outlined"
+                            InputProps={{
+                                startAdornment: <InputAdornment position="start">PHP</InputAdornment>,
+                            }}
                             style={{ width: '55%', }} />
+
                     </InputContainer>
 
                     <Typography id="modal-modal-title" variant="h5" component="h2"
@@ -198,7 +230,7 @@ const RoomDetailsContainer = () => {
                                     <label htmlFor="icon-button-file">
                                         <Input accept="image/*" id="icon-button-file" type="file" />
                                         <IconButton aria-label="upload picture" component="span"
-                                        style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)', }} >
+                                            style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)', }} >
                                             <PhotoCamera
                                                 style={{ color: '#CCA041', fontSize: '60px', }} />
                                         </IconButton>

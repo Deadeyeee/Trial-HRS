@@ -238,6 +238,7 @@ const SideBarNav = (props) => {
 
             <MenuContainer
 
+                href='/admin/roomDetails'
                 whileTap={{ scale: 0.98 }}
                 active={props.roomdetails == true}>
                 <MeetingRoomIcon
