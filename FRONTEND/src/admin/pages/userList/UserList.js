@@ -8,7 +8,7 @@ const UserList = () => {
   return (
     <Container>
         <ContainerInvisible></ContainerInvisible>
-        <SideBarNav userList/>
+        <SideBarNav userlist/>
         <UserListContainer/>
     </Container>
   )

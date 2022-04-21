@@ -29,7 +29,7 @@ export const InputContainer = styled(motion.div)`
   display:flex;
   justify-content: ${(props) => (props.justify ? props.justify : "space-evenly")};
   gap: ${(props) => (props.gap ? props.gap : "30px")};
-  width: 600px;
+  width: ${(props) => (props.w ? props.w : "600px")};;
 `;
 
 export const GenderContainer = styled(motion.div)`

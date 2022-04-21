@@ -11,6 +11,7 @@ const TermsAndConditionsCont = () => {
                 fstyle='Normal'
                 align='Center'
                 color='#bfaa7e'
+                margin='200px 0px 0px 0px'
             >
                 Terms And Conditions
             </Title>

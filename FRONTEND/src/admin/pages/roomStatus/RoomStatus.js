@@ -8,7 +8,7 @@ const RoomStatus = () => {
   return (
     <Container>
         <ContainerInvisible></ContainerInvisible>
-        <SideBarNav roomStatus/>
+        <SideBarNav roomstatus/>
         <RoomStatusContainer/>
     </Container>
   )
