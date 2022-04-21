@@ -6,6 +6,7 @@ import ChatBot from '../../components/chatBot/ChatBot';
 import { ContentContainer } from '../profilePage/styles';
 import BookingCartPageCont from '../../containers/bookingCartPage/BookingCartPageCont';
 import TermsAndConditionsCont from '../../containers/termsAndConditionsPage/TermsAndConditionsCont';
+import { ContainerGlobal } from '../../../admin/components/container/container';
 
 const BookingCartPage = () => {
   useEffect(() => {
@@ -16,7 +17,12 @@ const BookingCartPage = () => {
             <ChatBot />
             <NavigationBar/>
             <BookingCartPageCont></BookingCartPageCont>
+            <ContainerGlobal
+            w='1500px'
+            h='1000px'
+            >
             <TermsAndConditionsCont></TermsAndConditionsCont>
+            </ContainerGlobal>
             <Footer />
         </Container>
   )

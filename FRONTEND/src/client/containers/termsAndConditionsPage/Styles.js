@@ -6,6 +6,8 @@ export const Container = styled(motion.div)`
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    background-color: white;
+    padding: 20px 0px;
    
 `;
 
@@ -20,14 +22,14 @@ export const HorizontalLine = styled(motion.div)`
 export const TermsAndConditionsContainer = styled(motion.div)`
     display: flex;
     flex-direction: column;
-    margin: 40px; 100px;
-    width: 70%;
+    margin: 10px;
+    width: 97%;
 `;
 
 export const TermsAndConditionsContentContainer = styled(motion.div)`
     display: flex;
     flex-direction: row;
-    margin 10px 30px;
+    margin: 10px 30px;
 `;
 
 export const ButtonHolder = styled(motion.div)`

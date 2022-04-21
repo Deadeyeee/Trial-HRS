@@ -16,9 +16,12 @@ export const FlexboxContainer = styled(motion.div)`
     justify-content: center;
     width: 80%;
     overflow: hidden;
+    background-color: #DFD3B9;
     display: flex;
-    margin-top: 30px;
-    margin-bottom: 30px;
+    margin-top: 50px;
+    padding: 50px 30px;
+    gap: 30px;
+    
     
 `;
 
@@ -28,7 +31,8 @@ export const FlexboxContentMain = styled(motion.div)`
     height: auto;
     justify-content: center;
     align-items: center;
-    margin-top 30px;
+    margin-top: 20px;
+    
     gap: 10px;
 `;
 
@@ -36,11 +40,15 @@ export const TableContainer = styled(motion.table)`
   border: none;
   width: 100%;
   margin: 0px 10px;
+  
+
 `;
 
 export const Tr = styled(motion.tr)`
   border: none;
   padding: 0px 10px;
+  background-color: #F2F2F2;
+  padding: 30px 0px;
 `;
 
 export const Th = styled(motion.th)`
@@ -50,7 +58,7 @@ export const Th = styled(motion.th)`
   text-align: ${(props) => (props.align ? props.align : "center")};
   font-family: Arial, Helvetica, sans-serif;
   width: 250px;
-  padding: 5px 0px;
+  padding: 30px 0px;
 `;
 export const Td = styled(motion.td)`
   border: none;
@@ -58,7 +66,7 @@ export const Td = styled(motion.td)`
   font-family: Arial, Helvetica, sans-serif;
   font-weight: bold;
   color: #605f5f;
-  padding-top: 20px;
+  padding: 15px 0px;
 `;
 
 export const TabContainer = styled(motion.td)`
