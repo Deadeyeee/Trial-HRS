@@ -11,14 +11,14 @@ export const Container = styled(motion.div)`
 export const ProfileContentContainer = styled(motion.div)`
     display: flex;
     flex-direction: row;
-    align-items: center;
+    align-items: flex-start;
 `;
 
 export const ProfileContent = styled(motion.div)`
     display: flex;
     flex-direction: column;
     margin: 40px 50px;
-
+    gap: 5px;
 `;
 
 export const ProfileInformationContent = styled(motion.div)`

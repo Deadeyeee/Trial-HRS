@@ -21,13 +21,13 @@ export const ContainerFormContent = styled.div`
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  gap: 60px 0px;
+  gap: 30px 0px;
 `;
 
 export const InputContainer = styled(motion.div)`
   display:flex;
   justify-content: ${(props) => (props.justify ? props.justify : "space-evenly")};
-  gap: 30px;
+  gap: ${(props) => (props.gap ? props.gap : "30px")};
   width: 600px;
 `;
 

@@ -117,7 +117,7 @@ export const BookingPageCont = () => {
                             margin='10px 0px 10px 0px'
                             align='left'
                         >
-                            Premium Room
+                            Premium room 102
                         </Title>
                         <Title
                             color='#8f805f'
@@ -138,7 +138,7 @@ export const BookingPageCont = () => {
                             >{ratingValue}</Title>
 
                             <Rating
-
+                                readOnly
                                 size="large"
                                 value={ratingValue}
                                 precision={0.1}
@@ -272,7 +272,7 @@ export const BookingPageCont = () => {
                             margin='10px 0px 10px 0px'
                             align='left'
                         >
-                            Deluxe Room
+                            Deluxe room 201
                         </Title>
                         <Title
                             color='#8f805f'
@@ -293,7 +293,7 @@ export const BookingPageCont = () => {
                             >{ratingValue}</Title>
 
                             <Rating
-
+                                readOnly
                                 size="large"
                                 value={ratingValue}
                                 precision={0.1}
