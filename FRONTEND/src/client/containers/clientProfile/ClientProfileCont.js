@@ -21,6 +21,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FormLabel from '@mui/material/FormLabel';
 import Link from '@mui/material/Link';
 import { ContainerGlobal } from '../../../admin/components/container/container';
+import { HorizontalLine } from '../../components/horizontalLine/HorizontalLine';
 
 const style = {
     position: 'absolute',
@@ -32,12 +33,13 @@ const style = {
     justifyContent: 'center ',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    height: '80vh',
+    height: '90vh',
     overflow: 'scroll',
-    width: 'auto',
+    width: '35%',
     bgcolor: 'background.paper',
     boxShadow: 24,
-    p: 4,
+    borderRadius: '0.5rem',
+    p: '0px 50px',
 };
 
 const ClientProfileCont = () => {
@@ -291,187 +293,198 @@ const ClientProfileCont = () => {
                 aria-describedby="modal-modal-description"
             >
                 <Box sx={style}>
-                    <Typography id="modal-modal-title" variant="h4" component="h2"
-                        style={{ textAlign: 'center', padding: '10px', marginTop: '50px' }}>
+                    <Title
+                        size='26px'
+                        color='black'
+                        family='Helvetica'
+                        fstyle='normal'
+                        weight='600'
+                        align='left'
+                    >
                         Edit Profile
-                    </Typography>
+                    </Title>
+                    <HorizontalLine
+                        bg='gray'
+                        w='100%'
+                        margin='0px 0px 20px 0px'
+                    />
 
-                    <InputContainer>
-                        <TextField
-                            placeholder='First Name'
-                            label="First Name"
-                            defaultValue={firstName}
-                            variant="outlined"
-                            style={{ width: '55%', }} />
-
-                        <TextField
-                            placeholder='Last Name'
-                            label="Last Name"
-                            defaultValue={lastName}
-                            variant="outlined"
-                            style={{ width: '55%', }} />
-                    </InputContainer>
-
-                    <InputContainer>
-                        <TextField
-                            placeholder='Email'
-                            defaultValue={email}
-                            label="Email"
-                            variant="outlined"
-                            type='email'
-                            style={{ width: '55%', }} />
-
-                        <TextField
-                            placeholder='Contact Number'
-                            label="Contact Number"
-                            defaultValue={contactNumber}
-                            variant="outlined"
-                            type='tel'
-                            style={{ width: '55%', }} />
-                    </InputContainer>
-
-
-                    <InputContainer>
-
-                        <LocalizationProvider dateAdapter={AdapterDateFns}>
-                            <DatePicker
-
-                                views={['day', 'month', 'year']}
-                                label="Birthday"
-                                value={bday}
-                                onChange={(newValue) => {
-                                    setValue(newValue);
-                                }}
-                                renderInput={(params) =>
-                                    <TextField
-                                        {...params}
-                                        variant="standard"
-                                        style={{ width: "55%", margin: '5px 0px' }}
-                                        helperText={null}
-                                    />
-                                }
-                            />
-
-                        </LocalizationProvider>
-
-                        <FormControl sx={{ width: "55%", margin: '5px 0px' }} size="small" variant="standard">
-                            <InputLabel id="demo-select-small" >Nationality</InputLabel>
-                            <Select
-                                style={{ color: 'black', textAlign: 'left' }}
-                                labelId="demo-select-small"
-                                id="demo-select-small"
-                                value={nationality}
-                                label="Menu"
-                                onChange={(event) => {
-                                    setNationality(event.target.value);
-                                }}
-                            >
-
-                                {nationalities.map(({ nationality }, index) => (
-                                    <MenuItem value={nationality} >{nationality}</MenuItem>
-                                ))}
-                            </Select>
-                        </FormControl>
-                    </InputContainer>
-
-                    <InputContainer
-                        justify='center'>
-                        <FormControl>
-                            <FormLabel id="demo-row-radio-buttons-group-label"
-                                style={{ textAlign: 'center', }} >Gender</FormLabel>
-                            <RadioGroup
-                                row
-                                aria-labelledby="demo-row-radio-buttons-group-label"
-                                defaultValue="male"
-                                name="row-radio-buttons-group">
-                                <FormControlLabel
-                                    value="male"
-                                    control={<Radio />}
-                                    label="Male"
-                                />
-                                <FormControlLabel
-                                    value="female"
-                                    control={<Radio />}
-                                    label="Female"
-                                />
-                                <FormControlLabel
-                                    value="other"
-                                    control={<Radio />}
-                                    label="Other"
-                                />
-                            </RadioGroup>
-                        </FormControl>
-                    </InputContainer>
-
-                    <InputContainer>
-                        <TextField
-                            placeholder='Address'
-                            label="Address"
-                            variant="outlined"
-                            multiline
-                            rows={4}
-                            defaultValue={address}
-                            style={{ width: '50%', }} />
-
-                        <ContainerGlobal
-                            direction='column'
-                            w='50%'
-                            overflow="visible"
-                            gap="10px"
-                            align="flex-end">
+                        <InputContainer>
                             <TextField
-                                placeholder='Username'
-                                label="Username"
+                                placeholder='First Name'
+                                label="First Name"
+                                defaultValue={firstName}
                                 variant="outlined"
-                                defaultValue={username}
-                                style={{ width: '100%', }} />
+                                style={{ width: '55%', }} />
 
-                            <Link
-                                href="#">Reset Password
-                            </Link>
-                        </ContainerGlobal>
+                            <TextField
+                                placeholder='Last Name'
+                                label="Last Name"
+                                defaultValue={lastName}
+                                variant="outlined"
+                                style={{ width: '55%', }} />
+                        </InputContainer>
 
-                    </InputContainer>
+                        <InputContainer>
+                            <TextField
+                                placeholder='Email'
+                                defaultValue={email}
+                                label="Email"
+                                variant="outlined"
+                                type='email'
+                                style={{ width: '55%', }} />
 
-                    <Button
-                        whileHover={{
-                            scale: 1.05, backgroundColor: "#0C4426",
-                            border: "2px solid #2E2E2E", color: "white"
-                        }}
-                        whileTap={{ scale: 1 }}
-                        w='150px'
-                        h='20px'
-                        radius='0px'
-                        padding='10px 0px'
-                        border='2px solid black'
-                        fam='arial'
-                        textcolor='#0C4426'
-                        fontsize='20px'
-                        fontStyle='normal'
-                        onClick={handleClose}>Update
-                    </Button>
+                            <TextField
+                                placeholder='Contact Number'
+                                label="Contact Number"
+                                defaultValue={contactNumber}
+                                variant="outlined"
+                                type='tel'
+                                style={{ width: '55%', }} />
+                        </InputContainer>
 
-                    <FormButton
-                        whileHover={{
-                            scale: 1.05, backgroundColor: "rgba(219, 51, 51, 1)",
-                            border: "2px solid #2E2E2E", color: "white"
-                        }}
-                        whileTap={{ scale: 1 }}
-                        w='120px'
-                        h='40px'
-                        type='submit'
-                        bg='rgba(219, 51, 51, 0.55)'
-                        radius='0px'
-                        padding='0px 0px'
-                        border='2px solid black'
-                        margin='0px 0px 0px 0px'
-                        fam='arial'
-                        textcolor='white'
-                        fontsize='15px'
-                        fontStyle='normal'
-                        value='Cancel'
-                        onClick={handleClose}>
-                    </FormButton>
+
+                        <InputContainer>
+
+                            <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                <DatePicker
+
+                                    views={['day', 'month', 'year']}
+                                    label="Birthday"
+                                    value={bday}
+                                    onChange={(newValue) => {
+                                        setValue(newValue);
+                                    }}
+                                    renderInput={(params) =>
+                                        <TextField
+                                            {...params}
+                                            variant="standard"
+                                            style={{ width: "55%", margin: '5px 0px' }}
+                                            helperText={null}
+                                        />
+                                    }
+                                />
+
+                            </LocalizationProvider>
+
+                            <FormControl sx={{ width: "55%", margin: '5px 0px' }} size="small" variant="standard">
+                                <InputLabel id="demo-select-small" >Nationality</InputLabel>
+                                <Select
+                                    style={{ color: 'black', textAlign: 'left' }}
+                                    labelId="demo-select-small"
+                                    id="demo-select-small"
+                                    value={nationality}
+                                    label="Menu"
+                                    onChange={(event) => {
+                                        setNationality(event.target.value);
+                                    }}
+                                >
+
+                                    {nationalities.map(({ nationality }, index) => (
+                                        <MenuItem value={nationality} >{nationality}</MenuItem>
+                                    ))}
+                                </Select>
+                            </FormControl>
+                        </InputContainer>
+
+                        <InputContainer
+                            justify='center'>
+                            <FormControl>
+                                <FormLabel id="demo-row-radio-buttons-group-label"
+                                    style={{ textAlign: 'center', }} >Gender</FormLabel>
+                                <RadioGroup
+                                    row
+                                    aria-labelledby="demo-row-radio-buttons-group-label"
+                                    defaultValue="male"
+                                    name="row-radio-buttons-group">
+                                    <FormControlLabel
+                                        value="male"
+                                        control={<Radio />}
+                                        label="Male"
+                                    />
+                                    <FormControlLabel
+                                        value="female"
+                                        control={<Radio />}
+                                        label="Female"
+                                    />
+                                    <FormControlLabel
+                                        value="other"
+                                        control={<Radio />}
+                                        label="Other"
+                                    />
+                                </RadioGroup>
+                            </FormControl>
+                        </InputContainer>
+
+                        <InputContainer>
+                            <TextField
+                                placeholder='Address'
+                                label="Address"
+                                variant="outlined"
+                                multiline
+                                rows={4}
+                                defaultValue={address}
+                                style={{ width: '50%', }} />
+
+                            <ContainerGlobal
+                                direction='column'
+                                w='50%'
+                                overflow="visible"
+                                gap="10px"
+                                align="flex-end">
+                                <TextField
+                                    placeholder='Username'
+                                    label="Username"
+                                    variant="outlined"
+                                    defaultValue={username}
+                                    style={{ width: '100%', }} />
+
+                                <Link
+                                    href="#">Reset Password
+                                </Link>
+                            </ContainerGlobal>
+
+                        </InputContainer>
+
+                        <Button
+                            whileHover={{
+                                scale: 1.05, backgroundColor: "#0C4426",
+                                border: "2px solid #2E2E2E", color: "white"
+                            }}
+                            whileTap={{ scale: 1 }}
+                            w='150px'
+                            h='20px'
+                            radius='0px'
+                            padding='10px 0px'
+                            border='2px solid black'
+                            fam='arial'
+                            textcolor='#0C4426'
+                            fontsize='20px'
+                            fontStyle='normal'
+                            onClick={handleClose}>Update
+                        </Button>
+
+                        <FormButton
+                            whileHover={{
+                                scale: 1.05, backgroundColor: "rgba(219, 51, 51, 1)",
+                                border: "2px solid #2E2E2E", color: "white"
+                            }}
+                            whileTap={{ scale: 1 }}
+                            w='120px'
+                            h='40px'
+                            type='submit'
+                            bg='rgba(219, 51, 51, 0.55)'
+                            radius='0px'
+                            padding='0px 0px'
+                            border='2px solid black'
+                            margin='0px 0px 0px 0px'
+                            fam='arial'
+                            textcolor='white'
+                            fontsize='15px'
+                            fontStyle='normal'
+                            value='Cancel'
+                            onClick={handleClose}>
+                        </FormButton>
                 </Box>
             </Modal>
 

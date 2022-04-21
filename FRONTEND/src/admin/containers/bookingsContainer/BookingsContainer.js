@@ -473,7 +473,7 @@ const BookingsContainer = () => {
                                 align='left'
                                 margin='15px 0px 20px 0px'
                             >
-                                Number of Nights:
+                                Total Nights:
                             </Title>
                             <TextField InputProps={{
                                 readOnly: true,
@@ -1492,7 +1492,7 @@ const BookingsContainer = () => {
                                 align='left'
                                 margin='15px 0px 20px 0px'
                             >
-                                Number of Nights:
+                                Total Nights:
                             </Title>
                             <TextField id="outlined-basic" label="" variant="standard" style={{ width: 200, margin: '5px 0px' }}
                                 InputProps={{
@@ -1720,7 +1720,7 @@ const BookingsContainer = () => {
                                 id="outlined-basic"
                                 label=""
                                 type="number"
-                                value='600.00'
+                                value='1200.00'
                                 variant="standard"
                                 style={{ width: 200, margin: '5px 0px', fontWeight: 600 }}
                                 InputProps={{
@@ -2572,7 +2572,7 @@ const BookingsContainer = () => {
                                 align='left'
                                 margin='15px 0px 20px 0px'
                             >
-                                Number of Nights:
+                                Total Nights:
                             </Title>
                             <TextField id="outlined-basic" label="" variant="standard" style={{ width: 200, margin: '5px 0px' }}
                                 InputProps={{
@@ -2799,7 +2799,7 @@ const BookingsContainer = () => {
                                 id="outlined-basic"
                                 label=""
                                 type="number"
-                                value='600.00'
+                                value='1200.00'
                                 variant="standard"
                                 style={{ width: 200, margin: '5px 0px', fontWeight: 600 }}
                                 InputProps={{
