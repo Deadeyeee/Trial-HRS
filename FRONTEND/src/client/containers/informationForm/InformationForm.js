@@ -17,6 +17,27 @@ import { nationalities } from '../../../nationalities'
 import FormLabel from '@mui/material/FormLabel';
 import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
+import Modal from '@mui/material/Modal';
+import Box from '@mui/material/Box';
+import TermsAndConditionsCont from "../termsAndConditionsPage/TermsAndConditionsCont";
+
+
+const style = {
+    position: 'absolute',
+    display: 'flex',
+    top: '50%',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center ',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    height: '80vh',
+    overflow: 'scroll',
+    width: '1500px',
+    bgcolor: 'background.paper',
+    boxShadow: 24,
+    p: 4,
+};
 
 const InformationForm = () => {
     var Recaptcha = require('react-recaptcha');
@@ -31,6 +52,9 @@ const InformationForm = () => {
     const [value, setValue] = useState(Date.now());
     const bday = new Date(2000, 11, 2,);
     const color = "#000";
+    const [open, setOpen] = React.useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
 
     useLayoutEffect(() => {
         if (paymentOption === "E-Wallet payment") {
@@ -203,8 +227,22 @@ const InformationForm = () => {
                             <FormControlLabel control={<Checkbox defaultChecked 
                             style={{ padding: '0px',  margin: '0px', }} 
                             />} />
-                            <p style={{fontSize: '14px'}}>Kindly, check the box if you have read and agreed to RM Luxe Hotel's <a href='/'>Terms and Conditions</a></p>
-
+                            <p style={{fontSize: '14px'}}>Kindly, check the box if you have read and agreed to RM Luxe Hotel's 
+                            <Link
+                                onClick={handleOpen}> Terms and Conditions
+                            </Link></p>
+                            <Modal
+                                open={open}
+                                onClose={handleClose}
+                                aria-labelledby="modal-modal-title"
+                                aria-describedby="modal-modal-description"
+                            >
+                                <Box sx={style}
+                                onClick={handleClose}
+                                >
+                                    <TermsAndConditionsCont />
+                                </Box>
+                            </Modal>
                         </InputContainer>
 
                         <Recaptcha
