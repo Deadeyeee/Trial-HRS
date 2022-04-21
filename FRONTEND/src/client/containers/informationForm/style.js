@@ -7,7 +7,8 @@ export const Container = styled(motion.div)`
   flex-direction: column;
   justify-content: start;
   align-items: center;
-  min-height: 1200px;
+  height: auto;
+  margin-bottom: 50px;
 `;
 
 export const ContainerForm = styled.form`
