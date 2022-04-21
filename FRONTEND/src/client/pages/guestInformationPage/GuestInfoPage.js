@@ -10,7 +10,7 @@ const GuestInfoPage = () => {
   return (
     <Container>
         <ChatBot />
-            <NavigationBar home />
+            <NavigationBar book />
             <Title
             color='#bfaa7e'
             weight='normal'

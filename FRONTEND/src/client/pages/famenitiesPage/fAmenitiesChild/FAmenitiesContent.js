@@ -12,7 +12,7 @@ const FAmenitiesContent = () => {
   return (
     <Container>
         <ChatBot />
-        <NavigationBar book />
+        <NavigationBar facilities />
         <FAmenitiesContentCont></FAmenitiesContentCont>
         <Footer />
     </Container>
