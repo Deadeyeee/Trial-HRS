@@ -17,6 +17,13 @@ import PhotoCamera from '@mui/icons-material/PhotoCamera';
 import delux from '../../../client/images/RoomsIMG/delux.jpg';
 import prm from '../../../client/images/RoomsIMG/premium.jpg';
 import InputAdornment from '@mui/material/InputAdornment';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
+import OutlinedInput from '@mui/material/OutlinedInput';
+import Chip from '@mui/material/Chip';
+import MenuItem from '@mui/material/MenuItem';
+import { Theme, useTheme } from '@mui/material/styles';
+import InputLabel from '@mui/material/InputLabel';
+import FormControl from '@mui/material/FormControl';
 
 const style = {
     position: 'absolute',
@@ -28,10 +35,11 @@ const style = {
     left: '60%',
     transform: 'translate(-50%, -50%)',
     height: 'auto',
-    overflow: 'hidden',
-    width: '40%',
+    width: '800px',
+    height: '880px',
     bgcolor: 'background.paper',
     boxShadow: 24,
+    overflow: 'scroll',
     p: '20px 30px 40px 30px',
     borderRadius: '.5rem',
 };
@@ -70,12 +78,52 @@ const itemData = [
     },
 ];
 
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+    PaperProps: {
+        style: {
+            maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+            width: 250,
+        },
+    },
+};
+
+const names = [
+    'Free Wifi',
+    'Television',
+    'Wash Room',
+    'Mineral Water',
+    'Spotless Linen',
+    'Amenities',
+];
+
+function getStyles(name, personName, theme) {
+    return {
+        fontWeight:
+            personName.indexOf(name) === -1
+                ? theme.typography.fontWeightRegular
+                : theme.typography.fontWeightMedium,
+    };
+}
+
 const RoomDetailsContainer = () => {
 
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
+    const theme = useTheme();
+    const [personName, setPersonName] = React.useState([]);
+
+    const handleChange = (event) => {
+        const {
+            target: { value },
+        } = event;
+        setPersonName(
+            typeof value === 'string' ? value.split(',') : value,
+        );
+    };
     return (
 
         <Container>
@@ -123,24 +171,34 @@ const RoomDetailsContainer = () => {
                     <Tr>
                         <Th align='center'>Room Type</Th>
                         <Th align='center'>Rate/Night</Th>
+                        <Th align='center'>Services</Th>
                         <Th align='center'>Description</Th>
                         <Th align='center'>Action</Th>
                     </Tr>
                     <Tr>
                         <Td align='center'>Family Room</Td>
                         <Td align='center'>PHP 2,500</Td>
-                        <Td align='center'>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis consequat mattis leo, rutrum mollis risus lacinia at. Ut luctus pretium massa, a aliquet diam posuere id.</Td>
-                        <Td align='center'>...</Td>
-                    </Tr>
-                    <Tr>
-                        <Td align='center'>Premium Room</Td>
-                        <Td align='center'>PHP 3,500</Td>
+                        <Td align='center'>
+                            Free Wifi, Television, Washroom, Mineral Water, Spotless Linen, Amenities
+                        </Td>
                         <Td align='center'>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis consequat mattis leo, rutrum mollis risus lacinia at. Ut luctus pretium massa, a aliquet diam posuere id.</Td>
                         <Td align='center'>...</Td>
                     </Tr>
                     <Tr>
                         <Td align='center'>Deluxe Room</Td>
-                        <Td align='center'>PHP 5,000</Td>
+                        <Td align='center'>PHP 1,500</Td>
+                        <Td align='center'>
+                            Free Wifi, Television, Washroom, Mineral Water, Amenities
+                        </Td>
+                        <Td align='center'>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis consequat mattis leo, rutrum mollis risus lacinia at. Ut luctus pretium massa, a aliquet diam posuere id.</Td>
+                        <Td align='center'>...</Td>
+                    </Tr>
+                    <Tr>
+                        <Td align='center'>Premium Room</Td>
+                        <Td align='center'>PHP 1,000</Td>
+                        <Td align='center'>
+                            Free Wifi, Washroom, Amenities
+                        </Td>
                         <Td align='center'>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis consequat mattis leo, rutrum mollis risus lacinia at. Ut luctus pretium massa, a aliquet diam posuere id.</Td>
                         <Td align='center'>...</Td>
                     </Tr>
@@ -160,6 +218,7 @@ const RoomDetailsContainer = () => {
                 onClose={handleClose}
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
+                style={{ overflow: 'scroll' }}
             >
                 <Box sx={style}>
                     <Title
@@ -190,14 +249,6 @@ const RoomDetailsContainer = () => {
                             style={{ width: '55%', }} />
 
                         <TextField
-                            placeholder='Room Type'
-                            label="Room Description"
-                            multiline
-                            maxRows={4}
-                            variant="outlined"
-                            style={{ width: '55%', }} />
-                            
-                        <TextField
                             placeholder='Rate per Night'
                             label="Rate per Night"
                             variant="outlined"
@@ -205,7 +256,48 @@ const RoomDetailsContainer = () => {
                                 startAdornment: <InputAdornment position="start">PHP</InputAdornment>,
                             }}
                             style={{ width: '55%', }} />
+                    </InputContainer>
 
+                    <InputContainer
+                        w='90%'
+                        style={{ marginTop: '40px', }}>
+                        <FormControl style={{ width: '50%' }}>
+                            <InputLabel id="demo-multiple-name-label">Services</InputLabel>
+                            <Select
+                                labelId="demo-multiple-chip-label"
+                                id="demo-multiple-chip"
+                                multiple
+                                value={personName}
+                                onChange={handleChange}
+                                input={<OutlinedInput id="select-multiple-chip" label="Services" />}
+                                renderValue={(selected) => (
+                                    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                                        {selected.map((value) => (
+                                            <Chip key={value} label={value} />
+                                        ))}
+                                    </Box>
+                                )}
+                                MenuProps={MenuProps}
+                            >
+                                {names.map((name) => (
+                                    <MenuItem
+                                        key={name}
+                                        value={name}
+                                        style={getStyles(name, personName, theme)}
+                                    >
+                                        {name}
+                                    </MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl>
+
+                        <TextField
+                            placeholder='Room Type'
+                            label="Room Description"
+                            multiline
+                            maxRows={4}
+                            variant="outlined"
+                            style={{ width: '50%', }} />
                     </InputContainer>
 
                     <Typography id="modal-modal-title" variant="h5" component="h2"
@@ -241,7 +333,8 @@ const RoomDetailsContainer = () => {
                     </InputContainer>
 
 
-                    <InputContainer>
+                    <InputContainer
+                        style={{ marginTop: '40px', }}>
 
                         <Button
                             variant="contained"
@@ -262,7 +355,7 @@ const RoomDetailsContainer = () => {
                     </InputContainer>
                 </Box>
             </Modal>
-        </Container>
+        </Container >
     )
 }
 
