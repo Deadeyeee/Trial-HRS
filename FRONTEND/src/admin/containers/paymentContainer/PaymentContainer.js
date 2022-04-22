@@ -271,7 +271,7 @@ const PaymentContainer = () => {
                                 >
                                     Paid
                                 </Title></ContainerGlobal></Td>
-                        <Td align='center'><ActionButtonPayment/></Td>
+                        <Td align='center'><ActionButtonPayment paid/></Td>
                     </Tr>
                     <Tr>
                         <Td align='center'>20212304393</Td>
@@ -306,7 +306,7 @@ const PaymentContainer = () => {
                                 >
                                     Paid
                                 </Title></ContainerGlobal></Td>
-                        <Td align='center'><ActionButtonPayment/></Td>
+                        <Td align='center'><ActionButtonPayment paid/></Td>
                     </Tr>
                     <Tr>
                         <Td align='center'>20212304393</Td>
@@ -377,7 +377,7 @@ const PaymentContainer = () => {
                                     Paid
                                 </Title></ContainerGlobal>
                         </Td>
-                        <Td align='center'><ActionButtonPayment/></Td>
+                        <Td align='center'><ActionButtonPayment paid/></Td>
                     </Tr>
                     <Tr>
                         <Td align='center'>20212304393</Td>

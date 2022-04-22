@@ -20,7 +20,11 @@ import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 const SideBarNav = (props) => {
     return (
         <Container>
-            <ProfileContainer>
+            <ProfileContainer
+                href='/admin/profile'
+                whileTap={{ scale: 0.98 }}
+                active={props.profile == true}
+            >
                 <Image src={logo} />
                 <DescriptionContainer>
                     <Title

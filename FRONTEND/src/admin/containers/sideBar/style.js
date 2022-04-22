@@ -27,11 +27,19 @@ export const ContainerInvisible = styled(motion.div)`
     background-color: pink;
 `;
 
-export const ProfileContainer = styled(motion.div)`
+export const ProfileContainer = styled(motion.a)`
   display: flex;
   align-items: center;
+  text-decoration: none;
   margin: 50px 0px 20px 0px;
   gap: 5px;
+  border-radius: .5rem;
+  padding: 10px 0px 10px 10px;
+  background-color: ${props => props.active ? "rgb(191, 170, 126, 0.7)" : "none"};
+  cursor: pointer;
+  &:hover {
+    background-color: ${props => props.active ? "none" : "rgb(186, 242, 233, .1)"};
+  }
 `;
 
 export const Image = styled(motion.img)`
@@ -53,6 +61,7 @@ export const MenuContainer = styled(motion.a)`
   display: flex;
   align-items: center;
   width: auto;
+  text-decoration: none;
   gap: 3px;
   padding: 10px 0px 10px 10px;
   border-radius: 0.5rem;

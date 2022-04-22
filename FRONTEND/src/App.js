@@ -45,7 +45,7 @@ import Reservation from './admin/pages/reservation/Reservation';
 import BookingCartPage from './client/pages/bookingCartPage/BookingCartPage';
 import RoomDetails from './admin/pages/roomDetails/RoomDetails';
 import BillingSummaryPage from './client/pages/billingSummaryPage/BillingSummaryPage';
-
+import ProfileAdmin from './admin/pages/profile/ProfileAdmin';
 const App = () => {
   return (
     <Router>
@@ -89,6 +89,7 @@ const App = () => {
 
         <Route path="/admin/roomStatus" element={<RoomStatus />}/>
         <Route path="/admin/roomDetails" element={<RoomDetails />}/>
+        <Route path="/admin/profile" element={<ProfileAdmin />}/>
         <Route path="*" element={<Error404 />} />
 
       </Routes>

@@ -21,7 +21,7 @@ const ActionButtonReservation = (props) => {
             >
 
                 
-                <IconButton onClick={props.check} type="submit" sx={{ p: '8px', backgroundColor: props.unsettled == true ? 'rgb(46, 46, 46, .2)' : "rgb(80, 170, 50, 0.7)" }} aria-label="search" title='Edit/Update'
+                <IconButton onClick={props.check} type="submit" sx={{ p: '8px', backgroundColor: props.unsettled == true ? 'rgb(46, 46, 46, .2)' : "rgb(80, 170, 50, 0.7)" }} aria-label="search" title='Approve Reservation'
                 >
                     <CheckIcon style={{ color: '#2e2e2e', fontSize: '18px' }} title='View' />
                 </IconButton>
@@ -47,7 +47,7 @@ const ActionButtonReservation = (props) => {
             >
 
                 
-                <IconButton onClick={props.check} type="submit" sx={{ p: '8px', backgroundColor: "rgb(80, 170, 50, 0.7)" }} aria-label="search" title='Edit/Update'
+                <IconButton onClick={props.check} type="submit" sx={{ p: '8px', backgroundColor: "rgb(255, 215, 0)" }} aria-label="search" title='Approve Reservation'
                 >
                     <MenuBookIcon style={{ color: '#2e2e2e', fontSize: '18px' }} title='View' />
                 </IconButton>
