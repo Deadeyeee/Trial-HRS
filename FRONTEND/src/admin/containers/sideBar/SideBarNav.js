@@ -243,7 +243,7 @@ const SideBarNav = (props) => {
             </MenuContainer>
 
             <MenuContainer
-
+                href='/admin/messages'
                 whileTap={{ scale: 0.98 }}
                 active={props.message == true}>
                 <MailIcon

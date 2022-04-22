@@ -30,7 +30,6 @@ import ClientMessagesPage from './client/pages/clientMessagesPage/ClientMessages
 
 
 
-
 // Admin
 import AdminProfile from './admin/pages/dashboard/Dashboard'
 import Status from './admin/pages/status/Status';
@@ -46,6 +45,9 @@ import BookingCartPage from './client/pages/bookingCartPage/BookingCartPage';
 import RoomDetails from './admin/pages/roomDetails/RoomDetails';
 import BillingSummaryPage from './client/pages/billingSummaryPage/BillingSummaryPage';
 import ProfileAdmin from './admin/pages/profile/ProfileAdmin';
+
+import Messages from './admin/pages/messages/Messages';
+
 const App = () => {
   return (
     <Router>
@@ -90,6 +92,7 @@ const App = () => {
         <Route path="/admin/roomStatus" element={<RoomStatus />}/>
         <Route path="/admin/roomDetails" element={<RoomDetails />}/>
         <Route path="/admin/profile" element={<ProfileAdmin />}/>
+        <Route path="/admin/messages" element={<Messages />}/>
         <Route path="*" element={<Error404 />} />
 
       </Routes>
