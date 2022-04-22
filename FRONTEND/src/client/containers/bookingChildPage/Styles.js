@@ -33,8 +33,10 @@ export const RoomContainerContentPhoto = styled(motion.div)`
     background-image: url(${(props) => (props.link ? props.link : null)});
     background-size: cover;
     background-position: center;
-    width: 550px;
-    height: 300px;
+    width: ${(props) => (props.w ? props.w : "550px")};
+    height: ${(props) => (props.h ? props.h : "300px")};
+    cursor: ${(props) => (props.cursor ? props.cursor : "auto")};
+    border: ${(props) => (props.border ? props.border : "none")};
 `;
 
 export const Services = styled(motion.div)`
