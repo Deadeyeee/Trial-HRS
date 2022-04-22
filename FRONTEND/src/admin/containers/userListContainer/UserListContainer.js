@@ -19,6 +19,7 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import Select from '@mui/material/Select';
 import { HorizontalLine } from '../../../client/components/horizontalLine/HorizontalLine'
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
+import ActionButton from '../../components/actionButton/ActionButton';
 
 const UserListContainer = () => {
 
@@ -81,90 +82,8 @@ const UserListContainer = () => {
 
                             ),
                         }}
-                        style={{ width: 500 }} />
-                    <LocalizationProvider dateAdapter={AdapterDateFns}
-                    >
-                        <DatePicker
-                            views={['day', 'month', 'year']}
-                            label="Start Date"
-                            value={value}
-                            onChange={(newValue) => {
-                                setValue(newValue);
-                            }}
-                            renderInput={(params) =>
-                                <TextField
-                                    {...params}
-                                    sx={{
-                                        svg: { color: 'black' },
-                                        input: { color },
-                                        label: { color },
-                                        color: { color },
-                                        input: { color: 'black', fontWeight: 'bold' },
+                        style={{ width: '98%' }} />
 
-                                    }}
-                                    style={{ width: 200, margin: '0px 0px 0px 20px' }}
-                                    helperText={null}
-                                />
-                            }
-                        />
-
-                    </LocalizationProvider>
-                    <ArrowForwardIcon />
-                    <LocalizationProvider dateAdapter={AdapterDateFns}>
-                        <DatePicker
-
-                            views={['day', 'month', 'year']}
-                            label="End Date"
-                            value={value}
-                            onChange={(newValue) => {
-                                setValue(newValue);
-                            }}
-                            renderInput={(params) =>
-                                <TextField
-                                    {...params}
-                                    sx={{
-                                        svg: { color: 'black' },
-                                        input: { color },
-                                        label: { color },
-                                        color: { color },
-                                        input: { color: 'black', fontWeight: 'bold' },
-
-                                    }}
-                                    style={{ width: 200 }}
-                                    helperText={null}
-                                />
-                            }
-                        />
-
-                    </LocalizationProvider>
-                    <FormControl sx={{ m: 1, minWidth: 120, }} size="small">
-                        <InputLabel id="demo-select-small" >Menu</InputLabel>
-                        <Select
-                            style={{ color: 'black', fontWeight: 'bold' }}
-                            labelId="roomType-select-small"
-                            id="demo-select-small"
-                            value={age}
-                            label="Menu"
-                            onChange={(event) => {
-                                setAge(event.target.value);
-                            }}
-
-                        >
-
-                            <MenuItem value={'Check-in'} selected>Check-in</MenuItem>
-                            <MenuItem value={'Check-out'}>Check-out</MenuItem>
-                        </Select>
-                    </FormControl>
-                    <Button variant="contained"
-                        style={{ backgroundColor: 'rgb(80, 170, 50)' }}
-                        startIcon={<FilterAltIcon />}>
-                        Filter
-                    </Button>
-                    <Button variant="contained"
-                        style={{ backgroundColor: 'rgb(255, 36, 0)' }}
-                        startIcon={<CloseIcon />}>
-                        clear
-                    </Button>
 
 
 
@@ -174,7 +93,7 @@ const UserListContainer = () => {
 
             <ContainerGlobal
                 w='90%'
-                h='65vh'
+                h='55vh'
                 bg='white'
                 direction='column'
                 padding='30px'
@@ -214,7 +133,7 @@ const UserListContainer = () => {
                         <Td align='center'>Shirly Tuz</Td>
                         <Td align='center'>Connected</Td>
                         <Td align='center'>Front Desk</Td>
-                        <Td align='center'>...</Td>
+                        <Td align='center'><ActionButton /></Td>
                     </Tr>
                     <Tr>
                         <Td align='center'>EA9324</Td>
@@ -222,7 +141,7 @@ const UserListContainer = () => {
                         <Td align='center'>Kenzie Agil</Td>
                         <Td align='center'>Connected</Td>
                         <Td align='center'>Front Desk</Td>
-                        <Td align='center'>...</Td>
+                        <Td align='center'><ActionButton /></Td>
                     </Tr>
                     <Tr>
                         <Td align='center'>EA9325</Td>
@@ -230,7 +149,7 @@ const UserListContainer = () => {
                         <Td align='center'>Junsef Martin</Td>
                         <Td align='center'>Connected</Td>
                         <Td align='center'>Front Desk</Td>
-                        <Td align='center'>...</Td>
+                        <Td align='center'><ActionButton /></Td>
                     </Tr>
                     <Tr>
                         <Td align='center'>EA9326</Td>
@@ -238,10 +157,14 @@ const UserListContainer = () => {
                         <Td align='center'>Pitir Olibar</Td>
                         <Td align='center'>Connected</Td>
                         <Td align='center'>Front Desk</Td>
-                        <Td align='center'>...</Td>
+                        <Td align='center'><ActionButton /></Td>
                     </Tr>
                 </TableContainer>
             </ContainerGlobal>
+            <Button variant="contained" size="large"
+                style={{ backgroundColor: '#2E2E2E' }}>
+                Create User Account
+            </Button>
         </Container>
     )
 }

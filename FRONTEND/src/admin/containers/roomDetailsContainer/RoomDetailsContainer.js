@@ -32,6 +32,7 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import CloseIcon from '@mui/icons-material/Close';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
+import ActionButton from '../../components/actionButton/ActionButton';
 
 
 
@@ -193,90 +194,8 @@ const RoomDetailsContainer = () => {
 
                             ),
                         }}
-                        style={{ width: 500 }} />
-                    <LocalizationProvider dateAdapter={AdapterDateFns}
-                    >
-                        <DatePicker
-                            views={['day', 'month', 'year']}
-                            label="Start Date"
-                            value={value}
-                            onChange={(newValue) => {
-                                setValue(newValue);
-                            }}
-                            renderInput={(params) =>
-                                <TextField
-                                    {...params}
-                                    sx={{
-                                        svg: { color: 'black' },
-                                        input: { color },
-                                        label: { color },
-                                        color: { color },
-                                        input: { color: 'black', fontWeight: 'bold' },
-
-                                    }}
-                                    style={{ width: 200, margin: '0px 0px 0px 20px' }}
-                                    helperText={null}
-                                />
-                            }
-                        />
-
-                    </LocalizationProvider>
-                    <ArrowForwardIcon />
-                    <LocalizationProvider dateAdapter={AdapterDateFns}>
-                        <DatePicker
-
-                            views={['day', 'month', 'year']}
-                            label="End Date"
-                            value={value}
-                            onChange={(newValue) => {
-                                setValue(newValue);
-                            }}
-                            renderInput={(params) =>
-                                <TextField
-                                    {...params}
-                                    sx={{
-                                        svg: { color: 'black' },
-                                        input: { color },
-                                        label: { color },
-                                        color: { color },
-                                        input: { color: 'black', fontWeight: 'bold' },
-
-                                    }}
-                                    style={{ width: 200 }}
-                                    helperText={null}
-                                />
-                            }
-                        />
-
-                    </LocalizationProvider>
-                    <FormControl sx={{ m: 1, minWidth: 120, }} size="small">
-                        <InputLabel id="demo-select-small" >Menu</InputLabel>
-                        <Select
-                            style={{ color: 'black', fontWeight: 'bold' }}
-                            labelId="roomType-select-small"
-                            id="demo-select-small"
-                            value={age}
-                            label="Menu"
-                            onChange={(event) => {
-                                setAge(event.target.value);
-                            }}
-
-                        >
-
-                            <MenuItem value={'Check-in'} selected>Check-in</MenuItem>
-                            <MenuItem value={'Check-out'}>Check-out</MenuItem>
-                        </Select>
-                    </FormControl>
-                    <Button variant="contained"
-                        style={{ backgroundColor: 'rgb(80, 170, 50)' }}
-                        startIcon={<FilterAltIcon />}>
-                        Filter
-                    </Button>
-                    <Button variant="contained"
-                        style={{ backgroundColor: 'rgb(255, 36, 0)' }}
-                        startIcon={<CloseIcon />}>
-                        clear
-                    </Button>
+                        style={{ width: '98%' }} />
+                    
 
                 </ContainerGlobal>
             </ContainerGlobal>
@@ -322,7 +241,7 @@ const RoomDetailsContainer = () => {
                             Free Wifi, Television, Washroom, Mineral Water, Spotless Linen, Amenities
                         </Td>
                         <Td align='center'>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis consequat mattis leo, rutrum mollis risus lacinia at. Ut luctus pretium massa, a aliquet diam posuere id.</Td>
-                        <Td align='center'>...</Td>
+                        <Td align='center'><ActionButton/></Td>
                     </Tr>
                     <Tr>
                         <Td align='center'>Deluxe Room</Td>
@@ -331,7 +250,7 @@ const RoomDetailsContainer = () => {
                             Free Wifi, Television, Washroom, Mineral Water, Amenities
                         </Td>
                         <Td align='center'>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis consequat mattis leo, rutrum mollis risus lacinia at. Ut luctus pretium massa, a aliquet diam posuere id.</Td>
-                        <Td align='center'>...</Td>
+                        <Td align='center'><ActionButton/></Td>
                     </Tr>
                     <Tr>
                         <Td align='center'>Premium Room</Td>
@@ -340,7 +259,7 @@ const RoomDetailsContainer = () => {
                             Free Wifi, Washroom, Amenities
                         </Td>
                         <Td align='center'>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis consequat mattis leo, rutrum mollis risus lacinia at. Ut luctus pretium massa, a aliquet diam posuere id.</Td>
-                        <Td align='center'>...</Td>
+                        <Td align='center'><ActionButton/></Td>
                     </Tr>
                 </TableContainer>
             </ContainerGlobal>

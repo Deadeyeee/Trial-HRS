@@ -273,7 +273,8 @@ const PaymentContainer = () => {
                                     padding='5px 10px'
                                 >
                                     Paid
-                                </Title></ContainerGlobal></Td>
+                                </Title></ContainerGlobal>
+                                </Td>
                         <Td align='center'><ActionButtonPayment paid/></Td>
                     </Tr>
                     <Tr>

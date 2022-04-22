@@ -138,8 +138,8 @@ const SideBarNav = (props) => {
             <MenuContainer
                 whileTap={{ scale: 0.98 }}
 
-                href='/admin/guests'
-                active={props.guest == true}>
+                href='/admin/status'
+                active={props.clients == true}>
                 <PeopleIcon
                     style={{ color: props.guest == true ? "#2E2E2E" : "#dddddd" }}
                 />
@@ -152,7 +152,7 @@ const SideBarNav = (props) => {
                     weight='600'
                     align='left'
                 >
-                    Guest
+                    Clients
                 </Title>
             </MenuContainer>
 
@@ -198,26 +198,7 @@ const SideBarNav = (props) => {
                 </Title>
             </MenuContainer>
 
-            <MenuContainer
-                href='/admin/status'
-                whileTap={{ scale: 0.98 }}
-                active={props.status == true}
-            >
-                <ContentPasteIcon
-                    style={{ color: props.status == true ? "#2E2E2E" : "#dddddd" }}
-                />
-
-                <Title
-                    size='14px'
-                    color='white'
-                    family='Helvetica'
-                    fstyle='normal'
-                    weight='600'
-                    align='left'
-                >
-                    Status
-                </Title>
-            </MenuContainer>
+            
 
             <MenuContainer
 

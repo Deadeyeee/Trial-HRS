@@ -22,6 +22,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import ActionButton from '../../components/actionButton/ActionButton'
 
 const style = {
     position: 'absolute',
@@ -270,7 +271,7 @@ const RoomStatusContainer = () => {
                                     Vacant
                                 </Title></ContainerGlobal>
                         </Td>
-                        <Td align='center'>...</Td>
+                        <Td align='center'><ActionButton/></Td>
                     </Tr>
                     <Tr>
                         <Td align='center'>102</Td>
@@ -303,7 +304,7 @@ const RoomStatusContainer = () => {
                                 >
                                     Vacant
                                 </Title></ContainerGlobal></Td>
-                        <Td align='center'>...</Td>
+                        <Td align='center'><ActionButton/></Td>
                     </Tr>
                     <Tr>
                         <Td align='center'>103</Td>
@@ -336,7 +337,7 @@ const RoomStatusContainer = () => {
                                 >
                                     Occupied
                                 </Title></ContainerGlobal></Td>
-                        <Td align='center'>...</Td>
+                        <Td align='center'><ActionButton/></Td>
                     </Tr>
                     <Tr>
                         <Td align='center'>104</Td>
@@ -370,7 +371,7 @@ const RoomStatusContainer = () => {
                                     Vacant
                                 </Title></ContainerGlobal>
                         </Td>
-                        <Td align='center'>...</Td>
+                        <Td align='center'><ActionButton/></Td>
                     </Tr>
                     <Tr>
                         <Td align='center'>105</Td>
@@ -403,7 +404,7 @@ const RoomStatusContainer = () => {
                                 >
                                     Maintenance
                                 </Title></ContainerGlobal></Td>
-                        <Td align='center'>...</Td>
+                        <Td align='center'><ActionButton/></Td>
                     </Tr>
                     <Tr>
                         <Td align='center'>106</Td>
@@ -436,7 +437,7 @@ const RoomStatusContainer = () => {
                                 >
                                     Occupied
                                 </Title></ContainerGlobal></Td>
-                        <Td align='center'>...</Td>
+                        <Td align='center'><ActionButton/></Td>
                     </Tr>
                 </TableContainer>
             </ContainerGlobal>
