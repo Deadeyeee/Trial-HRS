@@ -163,7 +163,7 @@ const InformationForm = () => {
                                     style={{ textAlign: 'center', }} >Gender</FormLabel>
                                 <RadioGroup
                                     row
-                                    aria-labelledby="demo-row-radio-buttons-group-label" 
+                                    aria-labelledby="demo-row-radio-buttons-group-label"
                                     defaultValue="male"
                                     name="row-radio-buttons-group">
                                     <FormControlLabel
@@ -222,15 +222,15 @@ const InformationForm = () => {
                         </InputContainer>
 
                         <InputContainer
-                        justify='center'
-                        gap='0px'>
-                            <FormControlLabel control={<Checkbox defaultChecked 
-                            style={{ padding: '0px',  margin: '0px', }} 
+                            justify='center'
+                            gap='0px'>
+                            <FormControlLabel control={<Checkbox defaultChecked
+                                style={{ padding: '0px', margin: '0px', }}
                             />} />
-                            <p style={{fontSize: '14px'}}>Kindly, check the box if you have read and agreed to RM Luxe Hotel's 
-                            <Link
-                                onClick={handleOpen}> Terms and Conditions
-                            </Link></p>
+                            <p style={{ fontSize: '14px' }}>Kindly, check the box if you have read and agreed to RM Luxe Hotel's
+                                <Link
+                                    onClick={handleOpen}> Terms and Conditions
+                                </Link></p>
                             <Modal
                                 open={open}
                                 onClose={handleClose}
@@ -238,7 +238,7 @@ const InformationForm = () => {
                                 aria-describedby="modal-modal-description"
                             >
                                 <Box sx={style}
-                                onClick={handleClose}
+                                    onClick={handleClose}
                                 >
                                     <TermsAndConditionsCont />
                                 </Box>
@@ -253,320 +253,40 @@ const InformationForm = () => {
 
 
                         <Button
-                            whileHover={{
-                                scale: 1.05, backgroundColor: "#0C4426",
-                                border: "2px solid #2E2E2E", color: "white"
-                            }}
-                            whileTap={{ scale: 1 }}
-                            w='400px'
-                            h='60px'
-                            radius='0px'
-                            padding='10px 0px'
-                            border='1px solid black'
-                            fam='arial'
-                            textcolor='#0C4426'
-                            fontsize='20px'
-                            fontStyle='normal'
-                            href="/booking/confirmation">Proceed
-                        </Button>
-
-                        <FormButton
-                            whileHover={{
-                                scale: 1.05, backgroundColor: "rgba(219, 51, 51, 1)",
-                                border: "2px solid #2E2E2E", color: "white"
-                            }}
-                            whileTap={{ scale: 1 }}
+                            whileHover={{ backgroundColor: "#0C4426", color: "white" }}
                             w='200px'
-                            h='20px'
-                            bg='rgba(219, 51, 51, 0.55)'
-                            radius='0px'
-                            padding='10px 0px'
-                            border='1px solid black'
-                            margin='0px 0px 0px 0px'
-                            fam='arial'
-                            textcolor='white'
-                            fontsize='15px'
-                            fontStyle='normal'
-                            value='Cancel'>
-                        </FormButton>
+                            h='60px'
+                            textcolor="#0C4426"
+                            fam='Playfair Display, serif'
+                            weight='-400'
+                            fontStyle='Normal'
+                            radius="0px"
+                            border="1px solid #0C4426"
+                            margin='30px 0px 0px 0px'
+                            fontsize='23px'
+                            href='/billingSummary'
+                        >
+                            Continue
+                        </Button>
+                        <Button
+                            whileHover={{ color: "#0C4426" }}
+                            w='100px'
+                            h='40px'
+                            textcolor='#FFFFFF'
+                            fam='Times New Roman, serif'
+                            weight='-400'
+                            fontStyle='Italic'
+                            radius="0px"
+                            margin='20px 0px 40px 0px'
+                            fontsize='16px'
+                            bg='#FF9292'
+                            href='/bookingCart'
+                        >
+                            Cancel
+                        </Button>
                     </ContainerFormContent>
 
-                    <ContainerSummary>
-                        <Title
-                            color="f2f2f2"
-                            size='20px'
-                            margin="40px 0px"
-                        >
-                            SUMMARY
-                        </Title>
-
-
-                        <BookingSummaryContainer
-                            direction='column'>
-                            <Title
-                                size='20px'
-                                w='100%'
-                                bg='#323232'
-                                padding='10px 0px'
-                                color='white'
-                                weight='normal'
-                            >
-                                Booking Summary
-                            </Title>
-                            <DeatilsContainer>
-                                <LeftColumn>
-                                    <Description
-                                        family='arial'
-                                        align='left'
-                                        size='16px'>
-                                        Check-in:
-                                    </Description>
-                                    <Description
-                                        family='arial'
-                                        align='left'
-                                        size='16px'>
-                                        Check-out:
-                                    </Description>
-                                    <Description
-                                        family='arial'
-                                        align='left'
-                                        size='16px'>
-                                        Nights:
-                                    </Description>
-                                    <Description
-                                        family='arial'
-                                        align='left'
-                                        size='16px'>
-                                        Guests:
-                                    </Description>
-                                    <Description
-                                        family='arial'
-                                        align='left'
-                                        size='16px'>
-                                        Room Type
-                                    </Description>
-                                    <Description
-                                        family='arial'
-                                        align='left'
-                                        size='16px'>
-                                        Room Quantity:
-                                    </Description>
-
-                                </LeftColumn>
-                                <RightColumn>
-                                    <Description
-                                        align='left'
-                                        size='16px'>
-                                        <b>03/04/2022</b>
-                                    </Description>
-                                    <Description
-                                        align='left'
-                                        size='16px'>
-                                        <b>03/06/2022</b>
-                                    </Description>
-                                    <Description
-                                        align='left'
-                                        size='16px'>
-                                        <b>4 nights</b>
-                                    </Description>
-                                    <Description
-                                        align='left'
-                                        size='16px'>
-                                        <b>2 Guests</b>
-                                    </Description>
-                                    <Description
-                                        align='left'
-                                        size='16px'>
-                                        <b>Premium room</b>
-                                    </Description>
-                                    <Description
-                                        align='left'
-                                        size='16px'>
-                                        <b>1 Room only</b>
-                                    </Description>
-
-                                </RightColumn>
-                            </DeatilsContainer>
-                        </BookingSummaryContainer>
-
-
-
-                        <BookingSummaryContainer
-                            direction='column'>
-                            <Title
-                                size='20px'
-                                w='100%'
-                                bg='#323232'
-                                padding='10px 0px'
-                                color='white'
-                                weight='normal'
-                            >
-                                Total charge
-                            </Title>
-                            <DeatilsContainer>
-                                <LeftColumn>
-                                    <Description
-                                        family='arial'
-                                        align='left'
-                                        size='16px'>
-                                        Room charges
-                                    </Description>
-                                    <Description
-                                        family='arial'
-                                        align='left'
-                                        size='16px'>
-                                        Total Nights:
-                                    </Description>
-                                    <Description
-                                        family='arial'
-                                        align='left'
-                                        margin='20px 0px 0px 0px'
-                                        size='17px'>
-                                        GRAND TOTAL:
-                                    </Description>
-
-
-                                </LeftColumn>
-                                <RightColumn>
-                                    <Description
-                                        align='left'
-                                        size='16px'>
-                                        <b>₱1000</b>
-                                    </Description>
-                                    <Description
-                                        align='left'
-                                        size='16px'>
-                                        <b>x4</b>
-                                    </Description>
-                                    <Description
-                                        align='left'
-                                        margin='20px 0px 0px 0px'
-                                        size='20px'
-                                        color='green'>
-                                        <b>₱4000</b>
-                                    </Description>
-                                </RightColumn>
-
-                            </DeatilsContainer>
-
-                        </BookingSummaryContainer>
-
-
-
-                        <BookingSummaryContainer
-                            direction='column'>
-
-                            <Title
-                                size='20px'
-                                w='100%'
-                                bg='#323232'
-                                padding='10px 0px'
-                                color='white'
-                                weight='normal'
-                            >
-                                Payment method*
-                            </Title>
-                            {payments.map(result => (
-
-                                <GenderContainer>
-                                    <Title
-                                        family='calibri'
-                                        fStyle='normal'
-                                        size="20px">{result}</Title>
-                                    <TextInput
-                                        margins='0px'
-                                        width='20px'
-                                        heigh='20px'
-                                        type='radio'
-                                        name='gender'
-                                        value={result}
-                                        onChange={(e) => {
-                                            setPaymentOption(e.target.value);
-                                        }}
-                                        placeholder='Special Instruction'
-                                        required
-                                    ></TextInput>
-                                </GenderContainer>
-                            ))}
-
-
-                        </BookingSummaryContainer>
-
-                        <BookingSummaryContainer
-                            display={displayBanks}
-                            direction='column'>
-                            <Title
-                                size='20px'
-                                w='100%'
-                                bg='#323232'
-                                padding='10px 0px'
-                                color='white'
-                                weight='normal'
-                            >
-                                Select Bank payment*
-                            </Title>
-                            {banks.map(result => (
-                                <GenderContainer>
-                                    <Title
-                                        family='calibri'
-                                        fStyle='normal'
-                                        size="20px">{result}</Title>
-                                    <TextInput
-                                        margins='0px'
-                                        width='20px'
-                                        heigh='20px'
-                                        type='radio'
-                                        name='bank'
-                                        value={result}
-                                        placeholder='Special Instruction'
-                                        required
-                                    ></TextInput>
-                                    <Title>
-                                    </Title>
-                                </GenderContainer>
-                            ))}
-
-                        </BookingSummaryContainer>
-
-
-
-                        <BookingSummaryContainer
-                            display={displayWallets}
-                            direction='column'>
-
-                            <Title
-                                size='20px'
-                                w='100%'
-                                bg='#323232'
-                                padding='10px 0px'
-                                color='white'
-                                weight='normal'
-
-                            >
-                                Select E-wallet payment*
-                            </Title>
-                            {eWallets.map(result => (
-                                <GenderContainer>
-                                    <Title
-                                        family='calibri'
-                                        fStyle='normal'
-                                        size="20px">{result}</Title>
-                                    <TextInput
-                                        margins='0px'
-                                        width='20px'
-                                        heigh='20px'
-                                        type='radio'
-                                        name='eWallet'
-                                        value={result}
-                                        placeholder='Special Instruction'
-                                        required
-                                    ></TextInput>
-                                </GenderContainer>
-                            ))}
-
-
-                        </BookingSummaryContainer>
-                    </ContainerSummary>
+                    
 
                 </ContainerForm>
             </ContainerChild>

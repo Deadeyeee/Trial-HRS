@@ -15,14 +15,8 @@ const BookingCartPage = () => {
   return (
     <Container>
             <ChatBot />
-            <NavigationBar/>
+            <NavigationBar book/>
             <BookingCartPageCont></BookingCartPageCont>
-            <ContainerGlobal
-            w='1500px'
-            h='1000px'
-            >
-            <TermsAndConditionsCont></TermsAndConditionsCont>
-            </ContainerGlobal>
             <Footer />
         </Container>
   )

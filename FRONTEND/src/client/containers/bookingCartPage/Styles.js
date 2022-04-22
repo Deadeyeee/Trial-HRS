@@ -8,6 +8,7 @@ export const Container = styled(motion.div)`
     flex-direction: column;
     align-items: center;
     padding: 0px 10px;
+    margin: 50px 0px;
 `;
 
 export const FlexboxContainer = styled(motion.div)`

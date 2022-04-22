@@ -20,53 +20,65 @@ const BookingCartPageCont = () => {
           cellspacing="0"
           cellpadding="0">
           <Tr>
-            <Th align='center'>Room No.</Th>
-            <Th align='center'>Check In</Th>
-            <Th align='center'>Check Out</Th>
-            <Th align='center'>Price</Th>
-            <Th align='center'>No. of Nights</Th>
-            <Th align='center'>Amount</Th>
-            <Th align='center'>Action</Th>
+            <Th align='center'>Room number</Th>
+            <Th align='center'>Room type</Th>
+            <Th align='center'>Check in</Th>
+            <Th align='center'>Check out</Th>
+            <Th align='center'>Total nights</Th>
+            <Th align='center'>Rate per night</Th>
+            <Th align='center'>Total amout due</Th>
+            {/* <Th align='center'>Action</Th> */}
           </Tr>
           <Tr>
-            <Td align='center'>101</Td>
-            <Td align='center'>01/14/2022</Td>
-            <Td align='center'>01/17/2022</Td>
-            <Td align='center'>PHP 3000.00</Td>
-            <Td align='center'>3</Td>
-            <Td align='center'>PHP 9000.00</Td>
-            <Td align='center'>
+            <Td align='center'>102</Td>
+            <Td align='center'>Premium Room</Td>
+            <Td align='center'>03/04/2022</Td>
+            <Td align='center'>03/08/20222</Td>
+            <Td align='center'>4</Td>
+            <Td align='center'>PHP 1,000.00</Td>
+            <Td align='center' style={{color: 'red'}}>PHP 4,000.00</Td>
+            {/* <Td align='center'>
               <IconButton type="submit" sx={{ p: '8px', backgroundColor: 'rgb(255, 36, 0, 0.7)' }} aria-label="search" title='Delete'>
                     <DeleteIcon style={{ color: '#2e2e2e', fontSize: '18px' }} title='View' />
-                </IconButton></Td>
+                </IconButton></Td> */}
           </Tr>
         </TableContainer>
 
 
       </FlexboxContainer>
       <FlexboxContentMain>
-        <Button
-          bg='#60553F'
-          w='100px'
-          h='30px'
-          margin='5px 0px 0px 0px'
-          padding='0.5px'
-          fam='Raleway'
-          fontStyle='normal'
-        >
-          Add More
-        </Button>
-        <Button
-          bg='#60553F'
-          w='100px'
-          h='30px'
-          margin='5px 0px 0px 0px'
-          padding='0.5px'
-          fam='Raleway'
-          fontStyle='normal'
-        >
-          Continue
-        </Button>
+      <Button
+                 whileHover={{ backgroundColor: "#0C4426", color: "white" }}
+                 w='200px'
+                 h='60px'
+                 textcolor="#0C4426"
+                 fam='Playfair Display, serif'
+                 weight='-400'
+                 fontStyle='Normal'
+                 radius="0px"
+                 border="1px solid #0C4426"
+                 margin='30px 0px 0px 0px'
+                 fontsize='23px'
+                 href='/guestInformation'
+            >
+                Proceed
+            </Button>
+            <Button
+                 whileHover={{ color: "#0C4426" }}
+                 w='100px'
+                 h='40px'
+                 textcolor='#FFFFFF'
+                 fam='Times New Roman, serif'
+                 weight='-400'
+                 fontStyle='Italic'
+                 radius="0px"
+                 margin='20px 0px 40px 0px'
+                 fontsize='16px'
+                 bg='#FF9292'
+                 href = '/booking/room'
+            >
+                Cancel
+            </Button>
       </FlexboxContentMain>
     </Container>
   )

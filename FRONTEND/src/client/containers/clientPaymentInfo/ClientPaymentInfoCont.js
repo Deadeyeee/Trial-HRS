@@ -14,7 +14,7 @@ const ClientPaymentInfoCont = () => {
                 color='white'
                 weight='400'
                 size='25px'
-                fStyle='Normal'
+                fstyle='Normal'
                 margin='50px 0px 10px 0px'
                 align='Center'
             >
@@ -31,7 +31,7 @@ const ClientPaymentInfoCont = () => {
                 color='#292929'
                 weight='700'
                 size='24px'
-                fStyle='Normal'
+                fstyle='Normal'
                 align='Center'
             >
                 Pending
@@ -40,7 +40,7 @@ const ClientPaymentInfoCont = () => {
             <Title
                 family='poppins, sans-serif'
                 weight='700'
-                fStyle='Normal'
+                fstyle='Normal'
                 size='15px'
                 color='#ff4040'
                 align='center'
@@ -55,7 +55,7 @@ const ClientPaymentInfoCont = () => {
                 color='white'
                 weight='400'
                 size='25px'
-                fStyle='Normal'
+                fstyle='Normal'
                 margin='50px 0px 10px 0px'
                 align='Center'
             >
@@ -68,7 +68,7 @@ const ClientPaymentInfoCont = () => {
                     color='#BFA698'
                     weight='400'
                     size='25px'
-                    fStyle='Normal'
+                    fstyle='Normal'
 
                     align='Center'
                 >
@@ -107,7 +107,7 @@ const ClientPaymentInfoCont = () => {
                 color='black'
                 weight='400'
                 size='25px'
-                fStyle='Italic'
+                fstyle='Italic'
                 align='Center'
             >
                 or
@@ -116,7 +116,7 @@ const ClientPaymentInfoCont = () => {
                 whileHover={{ backgroundColor: "#302B20", color: "#A3987D" }}
                 w='150px'
                 h='40px'
-                textcolor='#A3987D'
+                textcolor='black'
                 fam='raleway'
                 weight='-400'
                 fontStyle='normal'

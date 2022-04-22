@@ -10,7 +10,7 @@ function BookingConfirmationCont() {
         <Title
             weight='400'   
             size='66px'
-            fStyle='Normal'
+            fstyle='Normal'
             margin='100px 0px 10px 0px'
             align='Center'
             color='#bfaa7e'
@@ -23,9 +23,10 @@ function BookingConfirmationCont() {
             color='#292929'
             weight='400'   
             size='37px'
-            fStyle='Normal'
+            fstyle='Normal'
             margin='50px 0px 10px 0px'
             align='Center'
+            overflow='visible'
         >
             Thank you for choosing <b>RM Luxe Hotel</b>
         </Title>
@@ -33,21 +34,22 @@ function BookingConfirmationCont() {
             family='raleway, sans-serif'
             color='#292929'
             weight='400'   
-            size='20px'
-            fStyle='Normal'
+            size='25px'
+            fstyle='Normal'
             margin='50px 0px 10px 0px'
             align='Center'
+            overflow='visible'
             
         >
-            Your booking is put on HOLD until confirmation of Bank Deposit/Transfer made
+            Your booking is put on <b style={{color: '#c9d81c'}}>HOLD</b> until confirmation of Bank Deposit/Transfer is made
         </Title>
         <Title
             family='raleway, sans-serif'
             color='#292929'
             weight='400'   
-            size='20px'
-            fStyle='Normal'
-            margin='20px 0px 10px 0px'
+            size='25px'
+            fstyle='Normal'
+            margin='25px 0px 10px 0px'
             align='Center'
             
         >
@@ -56,10 +58,11 @@ function BookingConfirmationCont() {
         <Title
             family='raleway, sans-serif'
             color='#292929'
+            overflow='visible'
             weight='400'   
-            size='20px'
-            fStyle='Normal'
-            margin='20px 0px 10px 0px'
+            size='25px'
+            fstyle='Normal'
+            margin='25px 0px 10px 0px'
             align='Center'
             
         >
@@ -70,8 +73,9 @@ function BookingConfirmationCont() {
                 <Title
                     family= 'raleway, sans-serif'
                     weight= '700'
-                    fStyle='Normal'
-                    size= '20px'
+                    fstyle='Normal'
+                    overflow='visible'
+                    size= '25px'
                     color= '#2e2e2e'
                     align='left'     
                 >
@@ -80,8 +84,8 @@ function BookingConfirmationCont() {
                 <Title
                     family= 'raleway, sans-serif'
                     weight= '700'
-                    fStyle='Normal'
-                    size= '20px'
+                    fstyle='Normal'
+                    size= '25px'
                     color= '#2e2e2e'
                     align='left'
                 >
@@ -90,8 +94,8 @@ function BookingConfirmationCont() {
                 <Title
                     family= 'raleway, sans-serif'
                     weight= '700'
-                    fStyle='Normal'
-                    size= '20px'
+                    fstyle='Normal'
+                    size= '25px'
                     color= '#2e2e2e'
                     align='left'
                 >
@@ -100,8 +104,8 @@ function BookingConfirmationCont() {
                 <Title
                     family= 'raleway, sans-serif'
                     weight= '700'
-                    fStyle='Normal'
-                    size= '20px'
+                    fstyle='Normal'
+                    size= '25px'
                     color= '#2e2e2e'
                     align='left'
                 >
@@ -110,8 +114,8 @@ function BookingConfirmationCont() {
                 <Title
                     family= 'raleway, sans-serif'
                     weight= '700'
-                    fStyle='Normal'
-                    size= '20px'
+                    fstyle='Normal'
+                    size= '25px'
                     color= '#2e2e2e'
                     align='left'
                 >
@@ -120,8 +124,8 @@ function BookingConfirmationCont() {
                 <Title
                     family= 'raleway, sans-serif'
                     weight= '700'
-                    fStyle='Normal'
-                    size= '20px'
+                    fstyle='Normal'
+                    size= '25px'
                     color= '#2e2e2e'
                     align='left'
                 >
@@ -132,8 +136,8 @@ function BookingConfirmationCont() {
             <Title
                 family= 'raleway, sans-serif'
                 weight= '400'
-                fStyle='Normal'
-                size= '20px'
+                fstyle='Normal'
+                size= '25px'
                 color= '#2e2e2e'
                 align='left'     
             >
@@ -142,8 +146,8 @@ function BookingConfirmationCont() {
             <Title
                 family= 'raleway, sans-serif'
                 weight= '400'
-                fStyle='Normal'
-                size= '20px'
+                fstyle='Normal'
+                size= '25px'
                 color= '#2e2e2e'
                 align='left'     
             >
@@ -152,8 +156,8 @@ function BookingConfirmationCont() {
             <Title
                 family= 'raleway, sans-serif'
                 weight= '400'
-                fStyle='Normal'
-                size= '20px'
+                fstyle='Normal'
+                size= '25px'
                 color= '#2e2e2e'
                 align='left'     
             >
@@ -162,8 +166,8 @@ function BookingConfirmationCont() {
             <Title
                 family= 'raleway, sans-serif'
                 weight= '400'
-                fStyle='Normal'
-                size= '20px'
+                fstyle='Normal'
+                size= '25px'
                 color= '#2e2e2e'
                 align='left'     
             >
@@ -172,8 +176,8 @@ function BookingConfirmationCont() {
             <Title
                 family= 'raleway, sans-serif'
                 weight= '400'
-                fStyle='Normal'
-                size= '20px'
+                fstyle='Normal'
+                size= '25px'
                 color= '#2e2e2e'
                 align='left'     
             >
@@ -182,8 +186,8 @@ function BookingConfirmationCont() {
             <Title
                 family= 'raleway, sans-serif'
                 weight= '400'
-                fStyle='Normal'
-                size= '20px'
+                fstyle='Normal'
+                size= '25px'
                 color= '#2e2e2e'
                 align='left'     
             >
@@ -195,8 +199,8 @@ function BookingConfirmationCont() {
         <Title
             family= 'raleway, sans-serif'
             weight= '400'
-            fStyle='Normal'
-            size= '20px'
+            fstyle='Normal'
+            size= '25px'
             color= '#2e2e2e'
             align='center' 
             margin='0px 200px'    
@@ -208,11 +212,11 @@ function BookingConfirmationCont() {
         <Title
             family= 'raleway, sans-serif'
             weight= '400'
-            fStyle='Normal'
-            size= '20px'
+            fstyle='Normal'
+            size= '25px'
             color= '#2e2e2e'
             align='center' 
-            margin='20px 200px'    
+            margin='25px 200px'    
         >
             For further inquiries, you may call <b>Company number</b> or send an email at <b>Company email</b>.  
             You will find the details of your reservation made below.
@@ -221,11 +225,11 @@ function BookingConfirmationCont() {
         <Title
             family= 'poppins, sans-serif'
             weight= '700'
-            fStyle='Normal'
+            fstyle='Normal'
             size= '36px'
             color= '#ff4040'
             align='center' 
-            margin='10px 0px 20px 0px'    
+            margin='10px 0px 25px 0px'    
         >
             <b>***IMPORTANT***</b>
         </Title>
@@ -233,35 +237,35 @@ function BookingConfirmationCont() {
             <Title
                 family= 'raleway, sans-serif'
                 weight= '700'
-                fStyle='Normal'
+                fstyle='Normal'
                 size= '36px'
                 color= '#2e2e2e'
                 align='center' 
-                margin='20px 200px' 
+                margin='25px 200px' 
             >
-                <b>Generated Account</b>
+                <b>Your User Account</b>
             </Title>
             <GeneratedAccountContentContainer>
                 <GeneratedAccountContents>
                     <Title
                         family= 'raleway, sans-serif'
                         weight= '400'
-                        fStyle='Normal'
-                        size= '20px'
+                        fstyle='Normal'
+                        size= '25px'
                         color= '#2e2e2e'
                         align='left' 
-                        margin='20px 200px' 
+                        margin='25px 200px' 
                     >
                         User Name
                     </Title>
                     <Title
                         family= 'raleway, sans-serif'
                         weight= '400'
-                        fStyle='Normal'
-                        size= '20px'
+                        fstyle='Normal'
+                        size= '25px'
                         color= '#2e2e2e'
                         align='left' 
-                        margin='20px 200px' 
+                        margin='25px 200px' 
                     >
                         Password
                     </Title>
@@ -270,22 +274,22 @@ function BookingConfirmationCont() {
                     <Title
                         family= 'raleway, sans-serif'
                         weight= '700'
-                        fStyle='Normal'
-                        size= '20px'
+                        fstyle='Normal'
+                        size= '25px'
                         color= '#2e2e2e'
                         align='left' 
-                        margin='20px 100px' 
+                        margin='25px 100px' 
                     >
                         <b>: Pedrojuan001221</b>
                     </Title>
                     <Title
                         family= 'raleway, sans-serif'
                         weight= '700'
-                        fStyle='Normal'
-                        size= '20px'
+                        fstyle='Normal'
+                        size= '25px'
                         color= '#2e2e2e'
                         align='left' 
-                        margin='20px 100px' 
+                        margin='25px 100px' 
                     >
                         <b>: ********</b>
                     </Title>
@@ -294,8 +298,8 @@ function BookingConfirmationCont() {
             <Title
                 family= 'raleway, sans-serif'
                 weight= '700'
-                fStyle='Italic'
-                size= '20px'
+                fstyle='Italic'
+                size= '25px'
                 color= '#2e2e2e'
                 align='Center' 
                 margin='50px 60px 10px 60px' 
@@ -307,7 +311,7 @@ function BookingConfirmationCont() {
         <Title
             family= 'raleway, sans-serif'
             weight= '700'
-            fStyle='Normal'
+            fstyle='Normal'
             size= '36px'
             color= '#2e2e2e'
             align='Center' 
@@ -320,18 +324,18 @@ function BookingConfirmationCont() {
             <Title
                 family= 'raleway, sans-serif'
                 weight= '400'
-                fStyle='Normal'
-                size= '20px'
+                fstyle='Normal'
+                size= '25px'
                 color= '#2e2e2e'
                 align='left'     
             >
-                Reservation Ref No. 
+                Reservation Number. 
             </Title>
             <Title
                 family= 'raleway, sans-serif'
                 weight= '400'
-                fStyle='Normal'
-                size= '20px'
+                fstyle='Normal'
+                size= '25px'
                 color= '#2e2e2e'
                 align='left'     
             >
@@ -340,8 +344,8 @@ function BookingConfirmationCont() {
             <Title
                 family= 'raleway, sans-serif'
                 weight= '400'
-                fStyle='Normal'
-                size= '20px'
+                fstyle='Normal'
+                size= '25px'
                 color= '#2e2e2e'
                 align='left'     
             >
@@ -350,8 +354,8 @@ function BookingConfirmationCont() {
             <Title
                 family= 'raleway, sans-serif'
                 weight= '400'
-                fStyle='Normal'
-                size= '20px'
+                fstyle='Normal'
+                size= '25px'
                 color= '#2e2e2e'
                 align='left'     
             >
@@ -360,8 +364,8 @@ function BookingConfirmationCont() {
             <Title
                 family= 'raleway, sans-serif'
                 weight= '400'
-                fStyle='Normal'
-                size= '20px'
+                fstyle='Normal'
+                size= '25px'
                 color= '#2e2e2e'
                 align='left'     
             >
@@ -370,8 +374,8 @@ function BookingConfirmationCont() {
             <Title
                 family= 'raleway, sans-serif'
                 weight= '400'
-                fStyle='Normal'
-                size= '20px'
+                fstyle='Normal'
+                size= '25px'
                 color= '#2e2e2e'
                 align='left'     
             >
@@ -380,8 +384,8 @@ function BookingConfirmationCont() {
             <Title
                 family= 'raleway, sans-serif'
                 weight= '400'
-                fStyle='Normal'
-                size= '20px'
+                fstyle='Normal'
+                size= '25px'
                 color= '#2e2e2e'
                 align='left'     
             >
@@ -390,8 +394,8 @@ function BookingConfirmationCont() {
             <Title
                 family= 'raleway, sans-serif'
                 weight= '400'
-                fStyle='Normal'
-                size= '20px'
+                fstyle='Normal'
+                size= '25px'
                 color= '#2e2e2e'
                 align='left'     
             >
@@ -400,8 +404,8 @@ function BookingConfirmationCont() {
             <Title
                 family= 'raleway, sans-serif'
                 weight= '400'
-                fStyle='Normal'
-                size= '20px'
+                fstyle='Normal'
+                size= '25px'
                 color= '#2e2e2e'
                 align='left'     
             >
@@ -410,8 +414,8 @@ function BookingConfirmationCont() {
             <Title
                 family= 'raleway, sans-serif'
                 weight= '400'
-                fStyle='Normal'
-                size= '20px'
+                fstyle='Normal'
+                size= '25px'
                 color= '#2e2e2e'
                 align='left'     
             >
@@ -420,8 +424,8 @@ function BookingConfirmationCont() {
             <Title
                 family= 'raleway, sans-serif'
                 weight= '400'
-                fStyle='Normal'
-                size= '20px'
+                fstyle='Normal'
+                size= '25px'
                 color= '#2e2e2e'
                 align='left'     
             >
@@ -430,8 +434,8 @@ function BookingConfirmationCont() {
             <Title
                 family= 'raleway, sans-serif'
                 weight= '400'
-                fStyle='Normal'
-                size= '20px'
+                fstyle='Normal'
+                size= '25px'
                 color= '#2e2e2e'
                 align='left'     
             >
@@ -440,18 +444,28 @@ function BookingConfirmationCont() {
             <Title
                 family= 'raleway, sans-serif'
                 weight= '400'
-                fStyle='Normal'
-                size= '20px'
+                fstyle='Normal'
+                size= '25px'
                 color= '#2e2e2e'
                 align='left'     
             >
-                Total No. of Guests 
+                Total No. of adult 
             </Title>
             <Title
                 family= 'raleway, sans-serif'
                 weight= '400'
-                fStyle='Normal'
-                size= '20px'
+                fstyle='Normal'
+                size= '25px'
+                color= '#2e2e2e'
+                align='left'     
+            >
+                Total No. of kids 
+            </Title>
+            <Title
+                family= 'raleway, sans-serif'
+                weight= '400'
+                fstyle='Normal'
+                size= '25px'
                 color= '#2e2e2e'
                 align='left'     
             >
@@ -462,28 +476,28 @@ function BookingConfirmationCont() {
             <Title
                 family= 'raleway, sans-serif'
                 weight= '700'
-                fStyle='Normal'
-                size= '20px'
+                fstyle='Normal'
+                size= '25px'
                 color= '#2e2e2e'
                 align='left'     
             >
-                <b>: 232pa3432sad</b>
+                <b>: 091234568</b>
             </Title>
             <Title
                 family= 'raleway, sans-serif'
                 weight= '700'
-                fStyle='Normal' 
-                size= '20px'
+                fstyle='Normal' 
+                size= '25px'
                 color= '#2e2e2e'
                 align='left'     
             >
-                <b>: Bank Deposit</b>
+                <b>: Bank (MetroBank)</b>
             </Title>
             <Title
                 family= 'raleway, sans-serif'
                 weight= '700'
-                fStyle='Normal'
-                size= '20px'
+                fstyle='Normal'
+                size= '25px'
                 color= '#2e2e2e'
                 align='left'     
             >
@@ -492,8 +506,8 @@ function BookingConfirmationCont() {
             <Title
                 family= 'raleway, sans-serif'
                 weight= '700'
-                fStyle='Normal'
-                size= '20px'
+                fstyle='Normal'
+                size= '25px'
                 color= '#2e2e2e'
                 align='left'     
             >
@@ -502,8 +516,8 @@ function BookingConfirmationCont() {
             <Title
                 family= 'raleway, sans-serif'
                 weight= '700'
-                fStyle='Normal'
-                size= '20px'
+                fstyle='Normal'
+                size= '25px'
                 color= '#2e2e2e'
                 align='left'     
             >
@@ -512,8 +526,8 @@ function BookingConfirmationCont() {
             <Title
                 family= 'raleway, sans-serif'
                 weight= '700'
-                fStyle='Normal'
-                size= '20px'
+                fstyle='Normal'
+                size= '25px'
                 color= '#2e2e2e'
                 align='left'     
             >
@@ -522,18 +536,19 @@ function BookingConfirmationCont() {
             <Title
                 family= 'raleway, sans-serif'
                 weight= '700'
-                fStyle='Normal'
-                size= '20px'
+                fstyle='Normal'
+                size= '25px'
                 color= '#2e2e2e'
-                align='left'     
+                align='left'    
+                width='' 
             >
-                <b>: 123 Highway Subdivision</b>
+                <b>: Cecilia Chapman 711...</b>
             </Title>
             <Title
                 family= 'raleway, sans-serif'
                 weight= '700'
-                fStyle='Normal'
-                size= '20px'
+                fstyle='Normal'
+                size= '25px'
                 color= '#2e2e2e'
                 align='left'     
             >
@@ -542,28 +557,28 @@ function BookingConfirmationCont() {
             <Title
                 family= 'raleway, sans-serif'
                 weight= '700'
-                fStyle='Normal'
-                size= '20px'
+                fstyle='Normal'
+                size= '25px'
                 color= '#2e2e2e'
                 align='left'     
             >
-                <b>: 11/10/2021</b>
+                <b>: 03/04/2022</b>
             </Title>
             <Title
                 family= 'raleway, sans-serif'
                 weight= '700'
-                fStyle='Normal'
-                size= '20px'
+                fstyle='Normal'
+                size= '25px'
                 color= '#2e2e2e'
                 align='left'     
             >
-                <b>: 11/14/2021</b>
+                <b>: 03/08/20222</b>
             </Title>
             <Title
                 family= 'raleway, sans-serif'
                 weight= '700'
-                fStyle='Normal'
-                size= '20px'
+                fstyle='Normal'
+                size= '25px'
                 color= '#2e2e2e'
                 align='left'     
             >
@@ -572,8 +587,8 @@ function BookingConfirmationCont() {
             <Title
                 family= 'raleway, sans-serif'
                 weight= '700'
-                fStyle='Normal'
-                size= '20px'
+                fstyle='Normal'
+                size= '25px'
                 color= '#2e2e2e'
                 align='left'     
             >
@@ -582,8 +597,8 @@ function BookingConfirmationCont() {
             <Title
                 family= 'raleway, sans-serif'
                 weight= '700'
-                fStyle='Normal'
-                size= '20px'
+                fstyle='Normal'
+                size= '25px'
                 color= '#2e2e2e'
                 align='left'     
             >
@@ -592,8 +607,18 @@ function BookingConfirmationCont() {
             <Title
                 family= 'raleway, sans-serif'
                 weight= '700'
-                fStyle='Normal'
-                size= '20px'
+                fstyle='Normal'
+                size= '25px'
+                color= '#2e2e2e'
+                align='left'     
+            >
+                <b>: 0</b>
+            </Title>
+            <Title
+                family= 'raleway, sans-serif'
+                weight= '700'
+                fstyle='Normal'
+                size= '25px'
                 color= '#2e2e2e'
                 align='left'     
             >
@@ -604,7 +629,7 @@ function BookingConfirmationCont() {
         <Title
             family= 'raleway, sans-serif'
             weight= '700'
-            fStyle='Normal'
+            fstyle='Normal'
             size= '36px'
             color= '#2e2e2e'
             align='Center' 
@@ -616,19 +641,19 @@ function BookingConfirmationCont() {
             <Title
                 family= 'raleway, sans-serif'
                 weight= '400'
-                fStyle='Normal'
-                size= '20px'
+                fstyle='Normal'
+                size= '25px'
                 color= '#2e2e2e'
                 align='left'     
                 margin='0px 100px 0px 0px'   
             >
-                Room Charge
+                Room Rate
             </Title>
             <Title
                 family= 'raleway, sans-serif'
                 weight= '400'
-                fStyle='Normal'
-                size= '20px'
+                fstyle='Normal'
+                size= '25px'
                 color= '#2e2e2e'
                 align='left'
                 margin='0px 100px 0px 0px'      
@@ -640,8 +665,8 @@ function BookingConfirmationCont() {
             <Title
                 family= 'raleway, sans-serif'
                 weight= '400'
-                fStyle='Normal'
-                size= '20px'
+                fstyle='Normal'
+                size= '25px'
                 color= '#2e2e2e'
                 align='left' 
                 margin='0px 0px 0px 100px'    
@@ -651,8 +676,8 @@ function BookingConfirmationCont() {
             <Title
                 family= 'raleway, sans-serif'
                 weight= '400'
-                fStyle='Normal'
-                size= '20px'
+                fstyle='Normal'
+                size= '25px'
                 color= '#2e2e2e'
                 align='left'
                 margin='0px 0px 0px 100px'      
@@ -667,7 +692,7 @@ function BookingConfirmationCont() {
             <Title
                 family= 'raleway, sans-serif'
                 weight= '700'
-                fStyle='Normal'
+                fstyle='Normal'
                 size= '30px'
                 color= '#2e2e2e'
                 align='left'     
@@ -680,7 +705,7 @@ function BookingConfirmationCont() {
             <Title
                 family= 'raleway, sans-serif'
                 weight= '700'
-                fStyle='Normal'
+                fstyle='Normal'
                 size= '30px'
                 color= '#13ed34'
                 align='left' 

@@ -6,7 +6,7 @@ export const Container = styled(motion.div)`
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    width: auto%;
+    width: auto;
 `;
 
 export const FlexboxContainer = styled(motion.div)`
@@ -18,19 +18,19 @@ export const FlexboxContainer = styled(motion.div)`
     display: flex;
     margin-top: 30px;
     margin-bottom: 30px;
-    border: 0.5px solid black;
+    gap: 10px;
     
 `;
 
 export const TableContainer = styled(motion.table)`
   border: none;
-  width: 100%;
-  margin: 0px 10px;
+  width: 98%;
+  margin: 10px auto;
+    border: ${(props) => (props.border ? props.border : "none")};
 `;
 
 export const Tr = styled(motion.tr)`
   border: none;
-  padding: 0px 10px;
 `;
 
 export const Th = styled(motion.th)`
@@ -49,15 +49,17 @@ export const Td = styled(motion.td)`
   font-family: Arial, Helvetica, sans-serif;
   font-weight: bold;
   color: #605f5f;
-  padding-top: 20px;
+  padding: 20px 0px;
 `;
 
 export const TabContainer = styled(motion.td)`
   display: flex;
-  flex-direction: row;
+  flex-direction: ${(props) => (props.direction ? props.direction : "row")};
   justify-content: flex-start;
   align-items: left;
-  width: 100%;
+  width: ${(props) => (props.w ? props.w : "99%")};
+    
+  border: ${(props) => (props.border ? props.border : "none")};
   
 `;
 export const BrownTab = styled(motion.td)`

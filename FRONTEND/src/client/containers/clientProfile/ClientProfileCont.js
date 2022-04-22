@@ -67,7 +67,7 @@ const ClientProfileCont = () => {
                 color='#bfaa7e'
                 weight='400'
                 size='66px'
-                fStyle='Normal'
+                fstyle='Normal'
                 margin='100px 0px 10px 0px'
                 align='Center'
             >
@@ -78,7 +78,7 @@ const ClientProfileCont = () => {
                     <Title
                         family='raleway, sans-serif'
                         weight='400'
-                        fStyle='Normal'
+                        fstyle='Normal'
                         size='20px'
                         color='#2e2e2e'
                         align='left'
@@ -88,7 +88,7 @@ const ClientProfileCont = () => {
                     <Title
                         family='raleway, sans-serif'
                         weight='400'
-                        fStyle='Normal'
+                        fstyle='Normal'
                         size='20px'
                         color='#2e2e2e'
                         align='left'
@@ -98,7 +98,7 @@ const ClientProfileCont = () => {
                     <Title
                         family='raleway, sans-serif'
                         weight='400'
-                        fStyle='Normal'
+                        fstyle='Normal'
                         size='20px'
                         color='#2e2e2e'
                         align='left'
@@ -108,7 +108,7 @@ const ClientProfileCont = () => {
                     <Title
                         family='raleway, sans-serif'
                         weight='400'
-                        fStyle='Normal'
+                        fstyle='Normal'
                         size='20px'
                         color='#2e2e2e'
                         align='left'
@@ -118,7 +118,7 @@ const ClientProfileCont = () => {
                     <Title
                         family='raleway, sans-serif'
                         weight='400'
-                        fStyle='Normal'
+                        fstyle='Normal'
                         size='20px'
                         color='#2e2e2e'
                         align='left'
@@ -128,7 +128,7 @@ const ClientProfileCont = () => {
                     <Title
                         family='raleway, sans-serif'
                         weight='400'
-                        fStyle='Normal'
+                        fstyle='Normal'
                         size='20px'
                         color='#2e2e2e'
                         align='left'
@@ -138,7 +138,7 @@ const ClientProfileCont = () => {
                     <Title
                         family='raleway, sans-serif'
                         weight='400'
-                        fStyle='Normal'
+                        fstyle='Normal'
                         size='20px'
                         color='#2e2e2e'
                         align='left'
@@ -148,7 +148,7 @@ const ClientProfileCont = () => {
                     <Title
                         family='raleway, sans-serif'
                         weight='400'
-                        fStyle='Normal'
+                        fstyle='Normal'
                         size='20px'
                         color='#2e2e2e'
                         align='left'
@@ -160,7 +160,7 @@ const ClientProfileCont = () => {
                     <Title
                         family='raleway, sans-serif'
                         weight='400'
-                        fStyle='Normal'
+                        fstyle='Normal'
                         size='20px'
                         color='#2e2e2e'
                         align='right'
@@ -170,7 +170,7 @@ const ClientProfileCont = () => {
                     <Title
                         family='raleway, sans-serif'
                         weight='400'
-                        fStyle='Normal'
+                        fstyle='Normal'
                         size='20px'
                         color='#2e2e2e'
                         align='right'
@@ -180,7 +180,7 @@ const ClientProfileCont = () => {
                     <Title
                         family='raleway, sans-serif'
                         weight='400'
-                        fStyle='Normal'
+                        fstyle='Normal'
                         size='20px'
                         color='#2e2e2e'
                         align='right'
@@ -190,7 +190,7 @@ const ClientProfileCont = () => {
                     <Title
                         family='raleway, sans-serif'
                         weight='400'
-                        fStyle='Normal'
+                        fstyle='Normal'
                         size='20px'
                         color='#2e2e2e'
                         align='right'
@@ -200,7 +200,7 @@ const ClientProfileCont = () => {
                     <Title
                         family='raleway, sans-serif'
                         weight='400'
-                        fStyle='Normal'
+                        fstyle='Normal'
                         size='20px'
                         color='#2e2e2e'
                         align='right'
@@ -210,7 +210,7 @@ const ClientProfileCont = () => {
                     <Title
                         family='raleway, sans-serif'
                         weight='400'
-                        fStyle='Normal'
+                        fstyle='Normal'
                         size='20px'
                         color='#2e2e2e'
                         align='right'
@@ -220,7 +220,7 @@ const ClientProfileCont = () => {
                     <Title
                         family='raleway, sans-serif'
                         weight='400'
-                        fStyle='Normal'
+                        fstyle='Normal'
                         size='20px'
                         color='#2e2e2e'
                         align='right'
@@ -230,7 +230,7 @@ const ClientProfileCont = () => {
                     <Title
                         family='raleway, sans-serif'
                         weight='400'
-                        fStyle='Normal'
+                        fstyle='Normal'
                         size='20px'
                         color='#2e2e2e'
                         align='right'
@@ -249,6 +249,7 @@ const ClientProfileCont = () => {
                         size='20px'
                         color='#2e2e2e'
                         align='left'
+                        overflow='visible'
                     >
                         User Name:
                     </Title>
@@ -261,6 +262,7 @@ const ClientProfileCont = () => {
                         size='20px'
                         color='#2e2e2e'
                         align='right'
+                        overflow='visible'
                     >
                         Pedrojuan001221
                     </Title>
@@ -297,7 +299,7 @@ const ClientProfileCont = () => {
                         size='26px'
                         color='black'
                         family='Helvetica'
-                        fstyle='normal'
+                        fstyle='Normal'
                         weight='600'
                         align='left'
                     >

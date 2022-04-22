@@ -17,7 +17,7 @@ const ClientBookingInfoCont = () => {
                 color='white'
                 weight='400'
                 size='25px'
-                fStyle='Normal'
+                fstyle='Normal'
                 margin='50px 0px 10px 0px'
                 align='Center'
             >
@@ -33,7 +33,7 @@ const ClientBookingInfoCont = () => {
                     color='#292929'
                     weight='700'
                     size='24px'
-                    fStyle='Normal'
+                    fstyle='Normal'
                     margin='10px 0px 10px 0px'
                     align='Center'
                 >
@@ -60,7 +60,7 @@ const ClientBookingInfoCont = () => {
                 color='white'
                 weight='400'
                 size='25px'
-                fStyle='Normal'
+                fstyle='Normal'
                 margin='60px 0px 10px 0px'
                 align='Center'
             >
@@ -71,7 +71,7 @@ const ClientBookingInfoCont = () => {
                     <Title
                         family='raleway, sans-serif'
                         weight='400'
-                        fStyle='Normal'
+                        fstyle='Normal'
                         size='20px'
                         color='#2e2e2e'
                         align='left'
@@ -82,7 +82,7 @@ const ClientBookingInfoCont = () => {
                     <Title
                         family='raleway, sans-serif'
                         weight='400'
-                        fStyle='Normal'
+                        fstyle='Normal'
                         size='20px'
                         color='#2e2e2e'
                         align='left'
@@ -93,7 +93,7 @@ const ClientBookingInfoCont = () => {
                     <Title
                         family='raleway, sans-serif'
                         weight='400'
-                        fStyle='Normal'
+                        fstyle='Normal'
                         size='20px'
                         color='#2e2e2e'
                         align='left'
@@ -104,7 +104,7 @@ const ClientBookingInfoCont = () => {
                     <Title
                         family='raleway, sans-serif'
                         weight='400'
-                        fStyle='Normal'
+                        fstyle='Normal'
                         size='20px'
                         color='#2e2e2e'
                         align='left'
@@ -115,7 +115,7 @@ const ClientBookingInfoCont = () => {
                     <Title
                         family='raleway, sans-serif'
                         weight='400'
-                        fStyle='Normal'
+                        fstyle='Normal'
                         size='20px'
                         color='#2e2e2e'
                         align='left'
@@ -126,7 +126,7 @@ const ClientBookingInfoCont = () => {
                     <Title
                         family='raleway, sans-serif'
                         weight='400'
-                        fStyle='Normal'
+                        fstyle='Normal'
                         size='20px'
                         color='#2e2e2e'
                         align='left'
@@ -137,7 +137,7 @@ const ClientBookingInfoCont = () => {
                     <Title
                         family='raleway, sans-serif'
                         weight='400'
-                        fStyle='Normal'
+                        fstyle='Normal'
                         size='20px'
                         color='#2e2e2e'
                         align='left'
@@ -148,7 +148,7 @@ const ClientBookingInfoCont = () => {
                     <Title
                         family='raleway, sans-serif'
                         weight='400'
-                        fStyle='Normal'
+                        fstyle='Normal'
                         size='20px'
                         color='#2e2e2e'
                         align='left'
@@ -159,7 +159,7 @@ const ClientBookingInfoCont = () => {
                     <Title
                         family='raleway, sans-serif'
                         weight='400'
-                        fStyle='Normal'
+                        fstyle='Normal'
                         size='20px'
                         color='#2e2e2e'
                         align='left'
@@ -170,7 +170,7 @@ const ClientBookingInfoCont = () => {
                     <Title
                         family='raleway, sans-serif'
                         weight='400'
-                        fStyle='Normal'
+                        fstyle='Normal'
                         size='20px'
                         color='#2e2e2e'
                         align='left'
@@ -181,7 +181,7 @@ const ClientBookingInfoCont = () => {
                     <Title
                         family='raleway, sans-serif'
                         weight='400'
-                        fStyle='Normal'
+                        fstyle='Normal'
                         size='20px'
                         color='#2e2e2e'
                         align='left'
@@ -192,7 +192,7 @@ const ClientBookingInfoCont = () => {
                     <Title
                         family='raleway, sans-serif'
                         weight='400'
-                        fStyle='Normal'
+                        fstyle='Normal'
                         size='20px'
                         color='#2e2e2e'
                         align='left'
@@ -203,7 +203,7 @@ const ClientBookingInfoCont = () => {
                     <Title
                         family='raleway, sans-serif'
                         weight='400'
-                        fStyle='Normal'
+                        fstyle='Normal'
                         size='20px'
                         color='#2e2e2e'
                         align='left'
@@ -216,7 +216,7 @@ const ClientBookingInfoCont = () => {
                     <Title
                         family='raleway, sans-serif'
                         weight='700'
-                        fStyle='Normal'
+                        fstyle='Normal'
                         size='20px'
                         color='#2e2e2e'
                         align='center'
@@ -227,7 +227,7 @@ const ClientBookingInfoCont = () => {
                     <Title
                         family='raleway, sans-serif'
                         weight='700'
-                        fStyle='Normal'
+                        fstyle='Normal'
                         size='20px'
                         color='#2e2e2e'
                         align='center'
@@ -238,7 +238,7 @@ const ClientBookingInfoCont = () => {
                     <Title
                         family='raleway, sans-serif'
                         weight='700'
-                        fStyle='Normal'
+                        fstyle='Normal'
                         size='20px'
                         color='#2e2e2e'
                         align='center'
@@ -249,7 +249,7 @@ const ClientBookingInfoCont = () => {
                     <Title
                         family='raleway, sans-serif'
                         weight='700'
-                        fStyle='Normal'
+                        fstyle='Normal'
                         size='20px'
                         color='#2e2e2e'
                         align='center'
@@ -260,7 +260,7 @@ const ClientBookingInfoCont = () => {
                     <Title
                         family='raleway, sans-serif'
                         weight='700'
-                        fStyle='Normal'
+                        fstyle='Normal'
                         size='20px'
                         color='#2e2e2e'
                         align='center'
@@ -271,7 +271,7 @@ const ClientBookingInfoCont = () => {
                     <Title
                         family='raleway, sans-serif'
                         weight='700'
-                        fStyle='Normal'
+                        fstyle='Normal'
                         size='20px'
                         color='#2e2e2e'
                         align='center'
@@ -282,7 +282,7 @@ const ClientBookingInfoCont = () => {
                     <Title
                         family='raleway, sans-serif'
                         weight='700'
-                        fStyle='Normal'
+                        fstyle='Normal'
                         size='20px'
                         color='#2e2e2e'
                         align='center'
@@ -293,7 +293,7 @@ const ClientBookingInfoCont = () => {
                     <Title
                         family='raleway, sans-serif'
                         weight='700'
-                        fStyle='Normal'
+                        fstyle='Normal'
                         size='20px'
                         color='#2e2e2e'
                         align='center'
@@ -304,7 +304,7 @@ const ClientBookingInfoCont = () => {
                     <Title
                         family='raleway, sans-serif'
                         weight='700'
-                        fStyle='Normal'
+                        fstyle='Normal'
                         size='20px'
                         color='#2e2e2e'
                         align='center'
@@ -315,7 +315,7 @@ const ClientBookingInfoCont = () => {
                     <Title
                         family='raleway, sans-serif'
                         weight='700'
-                        fStyle='Normal'
+                        fstyle='Normal'
                         size='20px'
                         color='#2e2e2e'
                         align='center'
@@ -326,7 +326,7 @@ const ClientBookingInfoCont = () => {
                     <Title
                         family='raleway, sans-serif'
                         weight='700'
-                        fStyle='Normal'
+                        fstyle='Normal'
                         size='20px'
                         color='#2e2e2e'
                         align='center'
@@ -337,7 +337,7 @@ const ClientBookingInfoCont = () => {
                     <Title
                         family='raleway, sans-serif'
                         weight='700'
-                        fStyle='Normal'
+                        fstyle='Normal'
                         size='20px'
                         color='#2e2e2e'
                         align='center'
@@ -348,7 +348,7 @@ const ClientBookingInfoCont = () => {
                     <Title
                         family='raleway, sans-serif'
                         weight='700'
-                        fStyle='Normal'
+                        fstyle='Normal'
                         size='20px'
                         color='#2e2e2e'
                         align='center'
@@ -361,143 +361,156 @@ const ClientBookingInfoCont = () => {
                     <Title
                         family='raleway, sans-serif'
                         weight='700'
-                        fStyle='Normal'
+                        fstyle='Normal'
                         size='20px'
                         color='#2e2e2e'
                         align='right'
                         margin='2px 0px'
+                        overflow='visible'
                     >
                         232pa3432sad
                     </Title>
                     <Title
                         family='raleway, sans-serif'
                         weight='700'
-                        fStyle='Normal'
+                        fstyle='Normal'
                         size='20px'
                         color='#2e2e2e'
                         align='right'
                         margin='2px 0px'
+                        overflow='visible'
                     >
                         Bank Deposit
                     </Title>
                     <Title
                         family='raleway, sans-serif'
                         weight='700'
-                        fStyle='Normal'
+                        fstyle='Normal'
                         size='20px'
                         color='#2e2e2e'
                         align='right'
                         margin='2px 0px'
+                        overflow='visible'
                     >
                         Juan Pedro
                     </Title>
                     <Title
                         family='raleway, sans-serif'
                         weight='700'
-                        fStyle='Normal'
+                        fstyle='Normal'
                         size='20px'
                         color='#2e2e2e'
                         align='right'
                         margin='2px 0px'
+                        overflow='visible'
                     >
                         2000/12/21
                     </Title>
                     <Title
                         family='raleway, sans-serif'
                         weight='700'
-                        fStyle='Normal'
+                        fstyle='Normal'
                         size='20px'
                         color='#2e2e2e'
                         align='right'
                         margin='2px 0px'
+                        overflow='visible'
                     >
                         Filipino
                     </Title>
                     <Title
                         family='raleway, sans-serif'
                         weight='700'
-                        fStyle='Normal'
+                        fstyle='Normal'
                         size='20px'
                         color='#2e2e2e'
                         align='right'
                         margin='2px 0px'
+                        overflow='visible'
                     >
                         PedroJuan@gmail.com
                     </Title>
                     <Title
                         family='raleway, sans-serif'
                         weight='700'
-                        fStyle='Normal'
+                        fstyle='Normal'
                         size='20px'
                         color='#2e2e2e'
                         align='right'
                         margin='2px 0px'
+                        overflow='visible'
                     >
                         09292333312
                     </Title>
                     <Title
                         family='raleway, sans-serif'
                         weight='700'
-                        fStyle='Normal'
+                        fstyle='Normal'
                         size='20px'
                         color='#2e2e2e'
                         align='right'
                         margin='2px 0px'
+                        overflow='visible'
                     >
                         11/10/2001
                     </Title>
                     <Title
                         family='raleway, sans-serif'
                         weight='700'
-                        fStyle='Normal'
+                        fstyle='Normal'
                         size='20px'
                         color='#2e2e2e'
                         align='right'
                         margin='2px 0px'
+                        overflow='visible'
                     >
                         11/14/2001
                     </Title>
                     <Title
                         family='raleway, sans-serif'
                         weight='700'
-                        fStyle='Normal'
+                        fstyle='Normal'
                         size='20px'
                         color='#2e2e2e'
                         align='right'
                         margin='2px 0px'
+                        overflow='visible'
                     >
                         4 Nights
                     </Title>
                     <Title
                         family='raleway, sans-serif'
                         weight='700'
-                        fStyle='Normal'
+                        fstyle='Normal'
                         size='20px'
                         color='#2e2e2e'
                         align='right'
                         margin='2px 0px'
+                        overflow='visible'
                     >
                         1
                     </Title>
                     <Title
                         family='raleway, sans-serif'
                         weight='700'
-                        fStyle='Normal'
+                        fstyle='Normal'
                         size='20px'
                         color='#2e2e2e'
                         align='right'
                         margin='2px 0px'
+                        overflow='visible'
                     >
                         2
                     </Title>
                     <Title
                         family='raleway, sans-serif'
                         weight='700'
-                        fStyle='Normal'
+                        fstyle='Normal'
                         size='20px'
                         color='#2e2e2e'
                         align='right'
                         margin='2px 0px'
+                        overflow='visible'
                     >
                         None
                     </Title>
@@ -531,8 +544,8 @@ const ClientBookingInfoCont = () => {
 
 
             <MainContainer
-            display='flex'
-            height='250px'>
+                display='flex'
+                height='250px'>
                 <MessagesTitleContainer>
                     <Title
                         bg='#272727'
@@ -540,178 +553,178 @@ const ClientBookingInfoCont = () => {
                         color='white'
                         weight='400'
                         size='25px'
-                        fStyle='Normal'
+                        fstyle='Normal'
                         align='Center'
                         margin='20px'
-                        
+
                     >
                         Previous Bookings
                     </Title>
-                    
+
                 </MessagesTitleContainer>
                 <PreviousBookingContainer>
-                        <Title
+                    <Title
                         family='arial'
                         color='white'
                         weight='bold'
                         size='12px'
-                        fStyle='Normal'
+                        fstyle='Normal'
                         align='Center'
                         w='120px'
-                        >
-                            Reservation No.
-                        </Title>
-                        <Title
+                    >
+                        Reservation No.
+                    </Title>
+                    <Title
                         family='arial'
                         color='white'
                         weight='bold'
                         size='12px'
-                        fStyle='Normal'
+                        fstyle='Normal'
                         align='Center'
                         w='120px'
-                        >
-                            Check-in
-                        </Title>
-                        <Title
+                    >
+                        Check-in
+                    </Title>
+                    <Title
                         family='arial'
                         color='white'
                         weight='bold'
                         size='12px'
-                        fStyle='Normal'
+                        fstyle='Normal'
                         align='Center'
                         w='120px'
-                        >
-                            Check-out
-                        </Title>
-                        <Title
+                    >
+                        Check-out
+                    </Title>
+                    <Title
                         family='arial'
                         color='white'
                         weight='bold'
                         size='12px'
-                        fStyle='Normal'
+                        fstyle='Normal'
                         align='Center'
                         w='120px'
-                        >
-                            Total Guest
-                        </Title>
-                        <Title
+                    >
+                        Total Guest
+                    </Title>
+                    <Title
                         family='arial'
                         color='white'
                         weight='bold'
                         size='12px'
-                        fStyle='Normal'
+                        fstyle='Normal'
                         align='Center'
                         w='120px'
-                        >
-                            Room type
-                        </Title>
-                        <Title
+                    >
+                        Room type
+                    </Title>
+                    <Title
                         family='arial'
                         color='white'
                         weight='bold'
                         size='12px'
-                        fStyle='Normal'
+                        fstyle='Normal'
                         align='Center'
                         w='120px'
-                        >
-                            Room number
-                        </Title>
-                        <Title
+                    >
+                        Room number
+                    </Title>
+                    <Title
                         family='arial'
                         color='white'
                         weight='bold'
                         size='12px'
-                        fStyle='Normal'
+                        fstyle='Normal'
                         align='Center'
                         w='120px'
-                        >
-                            Action
-                        </Title>
-                    </PreviousBookingContainer>
+                    >
+                        Action
+                    </Title>
+                </PreviousBookingContainer>
 
 
-                    <PreviousBookingContainerContent>
+                <PreviousBookingContainerContent>
                     <Title
                         family='arial'
                         color='black'
                         weight='bold'
                         size='12px'
-                        fStyle='Normal'
+                        fstyle='Normal'
                         align='Center'
                         w='120px'
-                        >
-                            232pa3432sad
-                        </Title>
-                        <Title
+                    >
+                        232pa3432sad
+                    </Title>
+                    <Title
                         family='arial'
                         color='black'
                         weight='bold'
                         size='12px'
-                        fStyle='Normal'
+                        fstyle='Normal'
                         align='Center'
                         w='120px'
-                        >
-                            10/10/2001
-                        </Title>
-                        <Title
+                    >
+                        10/10/2001
+                    </Title>
+                    <Title
                         family='arial'
                         color='black'
                         weight='bold'
                         size='12px'
-                        fStyle='Normal'
+                        fstyle='Normal'
                         align='Center'
                         w='120px'
-                        >
-                            10/14/2001
-                        </Title>
-                        <Title
+                    >
+                        10/14/2001
+                    </Title>
+                    <Title
                         family='arial'
                         color='black'
                         weight='bold'
                         size='12px'
-                        fStyle='Normal'
+                        fstyle='Normal'
                         align='Center'
                         w='120px'
-                        >
-                            2
-                        </Title>
-                        <Title
+                    >
+                        2
+                    </Title>
+                    <Title
                         family='arial'
                         color='black'
                         weight='bold'
                         size='12px'
-                        fStyle='Normal'
+                        fstyle='Normal'
                         align='Center'
                         w='120px'
-                        >
-                            Deluxe Room
-                        </Title>
-                        <Title
+                    >
+                        Deluxe Room
+                    </Title>
+                    <Title
                         family='arial'
                         color='black'
                         weight='bold'
                         size='12px'
-                        fStyle='Normal'
+                        fstyle='Normal'
                         align='Center'
                         w='120px'
-                        >
-                            Room 204
-                        </Title>
-                        <Title
+                    >
+                        Room 204
+                    </Title>
+                    <Title
                         cursor='pointer'
                         family='arial'
                         color='blue'
                         weight='bold'
                         size='12px'
-                        fStyle='Normal'
+                        fstyle='Normal'
                         align='Center'
                         w='120px'
-                        >
-                            view
-                        </Title>
-                    </PreviousBookingContainerContent>
+                    >
+                        view
+                    </Title>
+                </PreviousBookingContainerContent>
             </MainContainer>
-            
+
 
 
         </Container>

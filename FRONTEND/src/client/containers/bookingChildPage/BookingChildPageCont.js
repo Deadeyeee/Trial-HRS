@@ -207,7 +207,7 @@ export const BookingChildPageCont = () => {
                  border="1px solid #0C4426"
                  margin='30px 0px 0px 0px'
                  fontsize='23px'
-                 href='/guestInformation'
+                 href='/bookingCart'
             >
                 Book this now!
             </Button>
