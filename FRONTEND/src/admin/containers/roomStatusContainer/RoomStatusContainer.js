@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { HorizontalLine } from '../../../client/components/horizontalLine/HorizontalLine'
 import { Title } from '../../../client/components/title/styles'
 import { ContainerGlobal } from '../../components/container/container'
@@ -13,6 +13,15 @@ import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
+import IconButton from '@mui/material/IconButton';
+import SearchIcon from '@mui/icons-material/Search';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { DatePicker } from '@mui/x-date-pickers';
+import CloseIcon from '@mui/icons-material/Close';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import FilterAltIcon from '@mui/icons-material/FilterAlt';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
 const style = {
     position: 'absolute',
@@ -33,6 +42,10 @@ const style = {
 };
 
 const RoomStatusContainer = () => {
+
+    const [value, setValue] = useState(Date.now());
+    const color = "#c44242";
+    const [age, setAge] = React.useState('');
 
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
@@ -59,13 +72,138 @@ const RoomStatusContainer = () => {
                     Room Availability and Status
                 </Title>
             </HeadContainer>
-            <ContainerGlobal>
 
 
-            </ContainerGlobal>
             <ContainerGlobal
-                whileHover={{ scale: 1.01 }}
-                whileTap={{ scale: 1 }}
+                w='90%'
+                h='auto'
+                bg='WHITE'
+                direction='column'
+                align='center'
+                padding='10px 30px'
+                margin='20px 0px 10px 0px'
+                gap='10px'
+            >
+                <ContainerGlobal
+                    w='100%'
+                    h='7vh'
+                    bg='none'
+                    direction='row'
+                    overflow='visible'
+                    align='center'
+                    justify='center'
+                    gap='10px'
+                >
+                    <TextField
+                        id="outlined-basic"
+                        label="Search..."
+                        variant="outlined"
+                        sx={{
+                            input: { color: 'black', fontWeight: 'bold' },
+
+                        }}
+                        InputProps={{
+                            endAdornment: (
+                                <InputAdornment position="end">
+                                    <IconButton type="submit" sx={{ p: '10px' }} aria-label="search">
+                                        <SearchIcon />
+                                    </IconButton>
+                                </InputAdornment>
+
+                            ),
+                        }}
+                        style={{ width: 500 }} />
+                    <LocalizationProvider dateAdapter={AdapterDateFns}
+                    >
+                        <DatePicker
+                            views={['day', 'month', 'year']}
+                            label="Start Date"
+                            value={value}
+                            onChange={(newValue) => {
+                                setValue(newValue);
+                            }}
+                            renderInput={(params) =>
+                                <TextField
+                                    {...params}
+                                    sx={{
+                                        svg: { color: 'black' },
+                                        input: { color },
+                                        label: { color },
+                                        color: { color },
+                                        input: { color: 'black', fontWeight: 'bold' },
+
+                                    }}
+                                    style={{ width: 200, margin: '0px 0px 0px 20px' }}
+                                    helperText={null}
+                                />
+                            }
+                        />
+
+                    </LocalizationProvider>
+                    <ArrowForwardIcon />
+                    <LocalizationProvider dateAdapter={AdapterDateFns}>
+                        <DatePicker
+
+                            views={['day', 'month', 'year']}
+                            label="End Date"
+                            value={value}
+                            onChange={(newValue) => {
+                                setValue(newValue);
+                            }}
+                            renderInput={(params) =>
+                                <TextField
+                                    {...params}
+                                    sx={{
+                                        svg: { color: 'black' },
+                                        input: { color },
+                                        label: { color },
+                                        color: { color },
+                                        input: { color: 'black', fontWeight: 'bold' },
+
+                                    }}
+                                    style={{ width: 200 }}
+                                    helperText={null}
+                                />
+                            }
+                        />
+
+                    </LocalizationProvider>
+                    <FormControl sx={{ m: 1, minWidth: 120, }} size="small">
+                        <InputLabel id="demo-select-small" >Menu</InputLabel>
+                        <Select
+                            style={{ color: 'black', fontWeight: 'bold' }}
+                            labelId="roomType-select-small"
+                            id="demo-select-small"
+                            value={age}
+                            label="Menu"
+                            onChange={(event) => {
+                                setAge(event.target.value);
+                            }}
+
+                        >
+
+                            <MenuItem value={'Check-in'} selected>Check-in</MenuItem>
+                            <MenuItem value={'Check-out'}>Check-out</MenuItem>
+                        </Select>
+                    </FormControl>
+                    <Button variant="contained"
+                        style={{ backgroundColor: 'rgb(80, 170, 50)' }}
+                        startIcon={<FilterAltIcon />}>
+                        Filter
+                    </Button>
+                    <Button variant="contained"
+                        style={{ backgroundColor: 'rgb(255, 36, 0)' }}
+                        startIcon={<CloseIcon />}>
+                        clear
+                    </Button>
+
+
+
+                </ContainerGlobal>
+            </ContainerGlobal>
+
+
+            <ContainerGlobal
                 w='90%'
                 h='auto'
                 bg='white'

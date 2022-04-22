@@ -4,7 +4,6 @@ import { HorizontalLine } from '../../../client/components/horizontalLine/Horizo
 import { TextInput } from '../../../client/components/textBox/style'
 import { Title } from '../../../client/components/title/styles'
 import { BlackTab, Container, ContainerGlobalColumn, ContainerGlobalRow, GrayTab, HeadContainer, HeadContainerSmall, TabContainer, TableContainer, Td, Th, Tr } from './style'
-
 import { ContainerGlobal } from '../../components/container/container'
 import TextField from '@mui/material/TextField';
 import { Button as Button2 } from '../../../client/components/button/styles'
@@ -30,6 +29,10 @@ import { nationalities } from '../../../nationalities'
 import { Global } from '@emotion/react'
 import ActionButtonReservation from '../../components/actionButton/ActionButtonReservation'
 import ActionButtonPayment from '../../components/actionButton/ActionButtonPayment'
+
+
+
+
 const PaymentContainer = () => {
     const [value, setValue] = useState(Date.now());
     const [outValue, setOutValue] = useState(Date.now() + 86400000);
@@ -207,7 +210,7 @@ const PaymentContainer = () => {
                 bg='white'
                 direction='column'
                 padding='30px'
-                margin='0px 0px 50px 0px'
+                margin='20px 0px 20px 0px'
                 gap='10px'
             >
                 <Title
