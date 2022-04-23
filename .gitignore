@@ -1,4 +1,5 @@
 /node_modules
+/FRONTEND
 FRONTEND/node_modules/.cache/.eslintcache
 FRONTEND/node_modules/.cache/babel-loader/000bd5c2a3bafe6816190e50e8ca47e6.json
 FRONTEND/node_modules/.cache/babel-loader/014fab1cdda1ab3f3cd46d8f552c2b7b.json
