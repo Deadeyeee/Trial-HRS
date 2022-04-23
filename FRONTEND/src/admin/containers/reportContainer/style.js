@@ -4,12 +4,11 @@ import { motion } from "framer-motion";
 
 export const Container = styled(motion.div)`
     display: flex;
-	  height: 100%;
+	  height: auto;
     width: 100%;
     position: relative;
     flex-direction: column;
     align-items: center;
-    overflow-y: auto;
 `;
 
 export const HeadContainer = styled(motion.div)`
@@ -23,51 +22,68 @@ export const HeadContainer = styled(motion.div)`
   margin-bottom: 20px;
 `;
 
-export const TableFixHead = styled(motion.div)`
-  overflow-y: auto;
-  height: 400px;
-`;
-
 export const TableContainer = styled(motion.table)`
   border: none;
   width: 100%;
-  height: 200px;
-  border-spacing: 0px 10px;
-  border-collapse: collapse;
-  table-layout:fixed;
-  position: sticky;
-        top: 0;
 `;
 
 export const Tr = styled(motion.tr)`
   border: none;
-  border-bottom: .5px solid rgb(40, 40, 40, .2);
 `;
 
 export const Th = styled(motion.th)`
   border: none;
-  color: #fff;
+  color: #b2b2b2;
   text-align: ${(props) => (props.align ? props.align : "left")};
   font-family: Arial, Helvetica, sans-serif;
   width: 250px;
-  background-color: #2f2f2f;
-  padding: 20px 0px;
-  position: sticky;
-        top: 0;
-        z-index: 1;
+  cursor: pointer;
 `;
-
 export const Td = styled(motion.td)`
   border: none;
   text-align: ${(props) => (props.align ? props.align : "left")};
   font-family: Arial, Helvetica, sans-serif;
-  font-weight: ${(props) => (props.normal ? "normal" : "bold")};
+  font-weight: bold;
   color: #605f5f;
   padding-top: 20px;
-  padding-bottom: 20px;
-  overflow: hidden;
-  width: '200px';
-  height: 4px;
-  white-space: nowrap;
+`;
+
+
+export const TabContainer = styled(motion.td)`
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: left;
+  gap: 20px;
   
 `;
+
+export const BlackTab = styled(motion.td)`
+  background-color: #000000;
+  width: 250px;
+  height: 50px;
+  border-radius: 0.5em;
+`;
+
+export const GrayTab = styled(motion.td)`
+  background-color: #4F4F4F;
+  width: 250px;
+  height: 50px;
+  border-radius: 0.5em;
+
+`;
+export const ContainerGlobalColumn = styled(motion.div)`
+  display: flex;
+  flex-direction: column;
+  
+
+`; 
+
+export const ContainerGlobalRow = styled(motion.div)`
+  display: flex;
+  gap: 120px;
+  margin: 0px 30px;
+  flex-direction: row;
+  
+  
+`; 

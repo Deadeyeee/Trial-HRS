@@ -31,7 +31,7 @@ const GuestInfoPage = () => {
             family='arial'
             margin="10PX 0PX 50PX 0PX"
             >
-               Already have an account? please <a href='/login'><b>Login</b></a>.
+               Already have an account? please <a href='/login'><b>Log in</b></a>.
             </Title>
             <InformationForm></InformationForm>
             <Footer />
