@@ -24,13 +24,13 @@ export const BankDetailsContainer = styled(motion.div)`
 export const BankTitleContainer = styled(motion.div)`
     display: flex;
     flex-direction: column;
-    margin: 40px; 100px;
+    margin: 40px; 
 `;
 
 export const BankContentContainer = styled(motion.div)`
     display: flex;
     flex-direction: column;
-    margin: 40px; 100px;
+    margin: 40px;
 `;
 
 export const GeneratedAccountContainer = styled(motion.div)`
@@ -59,7 +59,8 @@ export const ReservationInformationContainer = styled(motion.div)`
 export const ReservationInformationContentsContainer = styled(motion.div)`
     display: flex;
     flex-direction: column;
-    margin: 90px; 100px;
+    margin: 90px;
+    gap: 10px;
 `;
 
 export const ChargeSummaryContainer = styled(motion.div)`
@@ -71,7 +72,7 @@ export const ChargeSummaryContainer = styled(motion.div)`
 export const ChargeSummaryContentContainer = styled(motion.div)`
     display: flex;
     flex-direction: column;
-    margin: 30px; 100px;
+    margin: 30px;
 `;
 
 export const BrokenHorizontalLine =styled(motion.div)`

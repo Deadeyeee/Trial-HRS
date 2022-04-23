@@ -10,19 +10,29 @@ const GuestInfoPage = () => {
   return (
     <Container>
         <ChatBot />
-            <NavigationBar home />
+            <NavigationBar book />
             <Title
             color='#bfaa7e'
             weight='normal'
             size='50px'
-            margin='60px 0px 30px 0px'
+            margin='40px 0px 30px 0px'
             >
                 Guest Information
             </Title>
             <HorizontalLine
             w="30%"
-            margin="0PX 0PX 50PX 0PX"
+            margin="0PX 0PX 0PX 0PX"
             ></HorizontalLine>
+            <Title
+            color='black'
+            weight='normal'
+            fstyle='normal'
+            size='16px'
+            family='arial'
+            margin="10PX 0PX 50PX 0PX"
+            >
+               Already have an account? please <a href='/login'><b>Log in</b></a>.
+            </Title>
             <InformationForm></InformationForm>
             <Footer />
     </Container>

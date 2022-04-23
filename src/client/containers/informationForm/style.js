@@ -7,7 +7,8 @@ export const Container = styled(motion.div)`
   flex-direction: column;
   justify-content: start;
   align-items: center;
-  min-height: 1200px;
+  height: auto;
+  margin-bottom: 50px;
 `;
 
 export const ContainerForm = styled.form`
@@ -21,14 +22,14 @@ export const ContainerFormContent = styled.div`
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  gap: 60px 0px;
+  gap: 30px 0px;
 `;
 
 export const InputContainer = styled(motion.div)`
   display:flex;
   justify-content: ${(props) => (props.justify ? props.justify : "space-evenly")};
-  gap: 30px;
-  width: 600px;
+  gap: ${(props) => (props.gap ? props.gap : "30px")};
+  width: ${(props) => (props.w ? props.w : "600px")};;
 `;
 
 export const GenderContainer = styled(motion.div)`
