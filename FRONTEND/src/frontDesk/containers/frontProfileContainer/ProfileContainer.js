@@ -110,7 +110,7 @@ export const ProfileContainer = () => {
                             color='#2e2e2e'
                             align='right'
                         >
-                            Juan
+                            Max
                         </Title>
                         <Title
                             family='raleway, sans-serif'
@@ -130,7 +130,7 @@ export const ProfileContainer = () => {
                             color='#2e2e2e'
                             align='right'
                         >
-                            JuanDC@gmail.com
+                            MaxDelaCruz@gmail.com
                         </Title>
                         <Title
                             family='raleway, sans-serif'
@@ -140,7 +140,7 @@ export const ProfileContainer = () => {
                             color='#2e2e2e'
                             align='right'
                         >
-                            09243567612
+                            09292435312
                         </Title>
 
                         <Title
@@ -193,7 +193,7 @@ export const ProfileContainer = () => {
                             align='right'
                             overflow='visible'
                         >
-                            JuanDelaCruz23441
+                            MaxDelaCruz2341
                         </Title>
                         <Title
                             family='raleway, sans-serif'
@@ -204,7 +204,7 @@ export const ProfileContainer = () => {
                             align='right'
                             overflow='visible'
                         >
-                            Admin
+                            Front Desk
                         </Title>
                     </ProfileInformationContent>
                 </ProfileContentContainer>

@@ -48,6 +48,19 @@ import ProfileAdmin from './admin/pages/profile/ProfileAdmin';
 import Reports from './admin/pages/Reports/Reports';
 import Messages from './admin/pages/messages/Messages';
 import Additional from './admin/pages/additional/Additional';
+import FrontDashboard from './frontDesk/pages/frontDashboard/FrontDashboard';
+import FrontBookings from './frontDesk/pages/frontBookings/FrontBookings';
+import FrontPayment from './frontDesk/pages/frontPayment/FrontPayment';
+import FrontStatus from './frontDesk/pages/frontStatus/FrontStatus';
+import FrontRoomDetails from './frontDesk/pages/frontRoomDetails/FrontRoomDetails';
+import FrontRoomStatus from './frontDesk/pages/frontRoomStatus/FrontRoomStatus';
+import FrontMessages from './frontDesk/pages/frontMessages/FrontMessages';
+import ProfileFront from './frontDesk/pages/frontProfile/ProfileFront';
+import FrontReservation from './frontDesk/pages/frontReservation/FrontReservation';
+import FrontAdditional from './frontDesk/pages/frontAdditional/FrontAdditional';
+
+
+//frontDesk
 
 const App = () => {
   return (
@@ -85,17 +98,28 @@ const App = () => {
         <Route path="/admin/guests" element={<Guest />} />
         <Route path="/admin/booking" element={<Bookings/>}/>
         <Route path="/admin/reservation" element={<Reservation/>}/>
-
-  
         <Route path="/admin/userLogs" element={<UserLogs />} />
         <Route path="/admin/userList" element={<UserList />} />
-
         <Route path="/admin/roomStatus" element={<RoomStatus />}/>
         <Route path="/admin/roomDetails" element={<RoomDetails />}/>
         <Route path="/admin/profile" element={<ProfileAdmin />}/>
         <Route path="/admin/messages" element={<Messages />}/>
         <Route path="/admin/report" element={<Reports />}/>
         <Route path="/admin/additionals" element={<Additional />}/>
+
+
+
+
+        <Route path="/frontdesk" element={<FrontDashboard />} />
+        <Route path="/frontdesk/status" element={<FrontStatus />} />
+        <Route path="/frontdesk/payments" element={<FrontPayment/>} />
+        <Route path="/frontdesk/booking" element={<FrontBookings/>}/>
+        <Route path="/frontdesk/reservation" element={<FrontReservation/>}/>
+        <Route path="/frontdesk/roomStatus" element={<FrontRoomStatus />}/>
+        <Route path="/frontdesk/roomDetails" element={<FrontRoomDetails />}/>
+        <Route path="/frontdesk/profile" element={<ProfileFront />}/>
+        <Route path="/frontdesk/messages" element={<FrontMessages />}/>
+        <Route path="/frontdesk/additionals" element={<FrontAdditional />}/>
         <Route path="*" element={<Error404 />} />
 
       </Routes>

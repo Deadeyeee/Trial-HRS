@@ -8,21 +8,21 @@ import MeetingRoomOutlinedIcon from '@mui/icons-material/MeetingRoomOutlined';
 import { Doughnut } from 'react-chartjs-2'
 import { Chart as CharJS } from 'chart.js/auto'
 import { ContainerGlobal } from '../../components/container/container';
-import { Reservation } from '../analytics/Reservation';
+import { Reservation } from '../frontAnalytics/Reservation';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
 import { HorizontalLine } from '../../../client/components/horizontalLine/HorizontalLine';
-import Occupancy from '../analytics/Occupancy';
+import Occupancy from '../frontAnalytics/Occupancy';
 import ActionButton from '../../components/actionButton/ActionButton';
 
-const DashboardContainer = () => {
 
+const DashboardContainer = () => {
     const Dates = new Date(Date.now());
 const DateNow = Dates.toString().split(' ');
     return (
         <Container>
             <HeadContainer>
-            <ContainerGlobal align='center'>
+                <ContainerGlobal align='center'>
                     <ContainerGlobal direction='column'>
                         <Title
                             size='20px'
@@ -242,7 +242,7 @@ const DateNow = Dates.toString().split(' ');
                         weight='600'
                         align='left'
                     >
-                        Reservations <a style={{fontSize: '12px'}} href='admin/report'>(view)</a>
+                        Reservations
                     </Title>
 
 
@@ -276,7 +276,7 @@ const DateNow = Dates.toString().split(' ');
                         weight='600'
                         align='left'
                     >
-                        Occupancy Rate <a style={{fontSize: '12px'}} href='admin/report'>(view)</a>
+                        Occupancy Rate
                     </Title>
 
 
@@ -319,7 +319,7 @@ const DateNow = Dates.toString().split(' ');
                     weight='600'
                     align='left'
                 >
-                    Bookings <a style={{fontSize: '12px'}} href='/admin/booking'>(view)</a>
+                    Bookings <a style={{ fontSize: '12px' }} href='/frontdesk/booking'>(view)</a>
                 </Title>
 
 
@@ -370,10 +370,10 @@ const DateNow = Dates.toString().split(' ');
                                     display='inline'
                                     padding='5px 10px'
                                 >
-                                    Paid    
+                                    Paid
                                 </Title></ContainerGlobal>
                         </Td>
-                        <Td align='center'><ActionButton/></Td>
+                        <Td align='center'><ActionButton /></Td>
                     </Tr>
                     <Tr>
                         <Td align='center'>Pedro Penduco</Td>
@@ -406,7 +406,7 @@ const DateNow = Dates.toString().split(' ');
                                 >
                                     Paid
                                 </Title></ContainerGlobal></Td>
-                        <Td align='center'><ActionButton/></Td>
+                        <Td align='center'><ActionButton /></Td>
                     </Tr>
                     <Tr>
 
@@ -440,7 +440,7 @@ const DateNow = Dates.toString().split(' ');
                                 >
                                     Paid
                                 </Title></ContainerGlobal></Td>
-                        <Td align='center'><ActionButton/></Td>
+                        <Td align='center'><ActionButton /></Td>
                     </Tr>
                 </TableContainer>
             </ContainerGlobal>
