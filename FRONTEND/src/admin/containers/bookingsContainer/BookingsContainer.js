@@ -3377,14 +3377,14 @@ const BookingsContainer = () => {
                 </HorizontalLine>
                 <TableContainer>
                     <Tr>
-                        <Th align='center'>Booking No. <ArrowDropDownIcon style={{ color: 'black' }} /> </Th>
+                        <Th align='center'>Booking Number <ArrowDropDownIcon style={{ color: 'black' }} /> </Th>
                         <Th align='center'>Guest's Name  <ArrowDropDownIcon style={{ color: 'black' }} /></Th>
                         <Th align='center'>Booking Date <ArrowDropUpIcon style={{ color: 'black' }} /></Th>
                         <Th align='center'>Check in <ArrowDropDownIcon style={{ color: 'black' }} /></Th>
                         <Th align='center'>Check out <ArrowDropDownIcon style={{ color: 'black' }} /></Th>
                         <Th align='center'>Payment Status  <ArrowDropDownIcon style={{ color: 'black' }} /></Th>
                         <Th align='center'>Booking Status  <ArrowDropDownIcon style={{ color: 'black' }} /></Th>
-                        <Th align='center'>Action  <ArrowDropDownIcon style={{ color: 'black' }} /></Th>
+                        <Th align='center'>Action</Th>
                     </Tr>
                     <Tr>
                         <Td align='center'>091234568</Td>

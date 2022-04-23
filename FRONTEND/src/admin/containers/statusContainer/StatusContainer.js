@@ -205,11 +205,11 @@ const StatusContainer = () => {
 
                 <TableContainer>
                     <Tr>
-                        <Th align='center'>Name</Th>
-                        <Th align='center'>Total Bookings</Th>
-                        <Th align='center'>Status</Th>
-                        <Th align='center'>Account Created</Th>
-                        <Th align='center'>Last Seen</Th>
+                        <Th align='center'>Name <ArrowDropDownIcon style={{ color: 'black' }}/></Th>
+                        <Th align='center'>Total Bookings <ArrowDropDownIcon style={{ color: 'black' }}/></Th>
+                        <Th align='center'>Status <ArrowDropDownIcon style={{ color: 'black' }}/></Th>
+                        <Th align='center'>Account Created <ArrowDropDownIcon style={{ color: 'black' }}/></Th>
+                        <Th align='center'>Last Seen <ArrowDropDownIcon style={{ color: 'black' }}/></Th>
                         <Th align='center'>Action</Th>
                     </Tr>
                     <Tr>

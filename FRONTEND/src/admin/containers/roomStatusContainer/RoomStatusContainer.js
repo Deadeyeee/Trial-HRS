@@ -231,12 +231,12 @@ const RoomStatusContainer = () => {
                 </HorizontalLine>
                 <TableContainer>
                     <Tr>
-                        <Th align='center'>Room No.</Th>
-                        <Th align='center'>Room Type</Th>
-                        <Th align='center'>Booking Date</Th>
-                        <Th align='center'>Check in</Th>
-                        <Th align='center'>Check out</Th>
-                        <Th align='center'>Room Status</Th>
+                        <Th align='center'>Room Number <ArrowDropDownIcon style={{ color: 'black' }}/></Th>
+                        <Th align='center'>Room Type <ArrowDropDownIcon style={{ color: 'black' }}/></Th>
+                        <Th align='center'>Booking Date <ArrowDropDownIcon style={{ color: 'black' }}/></Th>
+                        <Th align='center'>Check in <ArrowDropDownIcon style={{ color: 'black' }}/></Th>
+                        <Th align='center'>Check out <ArrowDropDownIcon style={{ color: 'black' }}/></Th>
+                        <Th align='center'>Room Status <ArrowDropDownIcon style={{ color: 'black' }}/></Th>
                         <Th align='center'>Action</Th>
                     </Tr>
                     <Tr>

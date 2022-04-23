@@ -9,6 +9,7 @@ import { Doughnut } from 'react-chartjs-2'
 import { Chart as CharJS } from 'chart.js/auto'
 import { ContainerGlobal } from '../../components/container/container';
 import { Reservation } from '../analytics/Reservation';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
 import { HorizontalLine } from '../../../client/components/horizontalLine/HorizontalLine';
 import Occupancy from '../analytics/Occupancy';
@@ -313,12 +314,12 @@ const DashboardContainer = () => {
 
                 <TableContainer>
                     <Tr>
-                        <Th align='center'>Customer</Th>
-                        <Th align='center'>Phone</Th>
-                        <Th align='center'>Room Type</Th>
-                        <Th align='center'>Check in</Th>
-                        <Th align='center'>Check out</Th>
-                        <Th align='center'>Status</Th>
+                        <Th align='center'>Customer  <ArrowDropDownIcon style={{ color: 'black' }} /></Th>
+                        <Th align='center'>Phone  <ArrowDropDownIcon style={{ color: 'black' }} /></Th>
+                        <Th align='center'>Room Type  <ArrowDropDownIcon style={{ color: 'black' }} /></Th>
+                        <Th align='center'>Check in  <ArrowDropDownIcon style={{ color: 'black' }} /></Th>
+                        <Th align='center'>Check out  <ArrowDropDownIcon style={{ color: 'black' }} /></Th>
+                        <Th align='center'>Status  <ArrowDropDownIcon style={{ color: 'black' }} /></Th>
                         <Th align='center'>Action</Th>
                     </Tr>
                     <Tr>
@@ -329,19 +330,30 @@ const DashboardContainer = () => {
                         <Td align='center'>05/25/21</Td>
                         <Td align='center'>05/29/21</Td>
                         <Td align='center'>
-                            <Title
-                            family='Helvetica'
-                            size='12px'
-                            color='BLACK'
-                            fstyle='normal'
-                            bg='rgb(118, 185, 71, .2)'
-                            display='inline'
-                            padding='5px 10px'
-                            borderRadius='.5rem'
-                            border='2px solid rgb(118, 185, 71)'
+                            <ContainerGlobal
+                                w='100px'
+                                h='auto'
+                                margin='0px auto'
+                                bg='rgb(118, 185, 71, .2)'
+                                direction='row'
+                                padding='2px 0px'
+                                justify='center'
+                                align='center'
+                                border='2px solid rgb(118, 185, 71)'
+                                gap='10px'
+                                borderRadius='.5rem'
                             >
-                                Paid
-                            </Title>
+
+                                <Title
+                                    family='Helvetica'
+                                    size='12px'
+                                    color='BLACK'
+                                    fstyle='normal'
+                                    display='inline'
+                                    padding='5px 10px'
+                                >
+                                    Paid
+                                </Title></ContainerGlobal>
                         </Td>
                         <Td align='center'>...</Td>
                     </Tr>
@@ -352,19 +364,30 @@ const DashboardContainer = () => {
                         <Td align='center'>05/25/21</Td>
                         <Td align='center'>05/29/21</Td>
                         <Td align='center'>
-                            <Title
-                            family='Helvetica'
-                            size='12px'
-                            color='BLACK'
-                            fstyle='normal'
-                            bg='rgb(118, 185, 71, .2)'
-                            display='inline'
-                            padding='5px 10px'
-                            borderRadius='.5rem'
-                            border='2px solid rgb(118, 185, 71)'
+                            <ContainerGlobal
+                                w='100px'
+                                h='auto'
+                                margin='0px auto'
+                                bg='rgb(118, 185, 71, .2)'
+                                direction='row'
+                                padding='2px 0px'
+                                justify='center'
+                                align='center'
+                                border='2px solid rgb(118, 185, 71)'
+                                gap='10px'
+                                borderRadius='.5rem'
                             >
-                                Paid
-                            </Title></Td>
+
+                                <Title
+                                    family='Helvetica'
+                                    size='12px'
+                                    color='BLACK'
+                                    fstyle='normal'
+                                    display='inline'
+                                    padding='5px 10px'
+                                >
+                                    Paid
+                                </Title></ContainerGlobal></Td>
                         <Td align='center'>...</Td>
                     </Tr>
                     <Tr>
@@ -375,19 +398,30 @@ const DashboardContainer = () => {
                         <Td align='center'>05/25/21</Td>
                         <Td align='center'>05/29/21</Td>
                         <Td align='center'>
-                            <Title
-                            family='Helvetica'
-                            size='12px'
-                            color='BLACK'
-                            fstyle='normal'
-                            bg='rgb(118, 185, 71, .2)'
-                            display='inline'
-                            padding='5px 10px'
-                            borderRadius='.5rem'
-                            border='2px solid rgb(118, 185, 71)'
+                            <ContainerGlobal
+                                w='100px'
+                                h='auto'
+                                margin='0px auto'
+                                bg='rgb(118, 185, 71, .2)'
+                                direction='row'
+                                padding='2px 0px'
+                                justify='center'
+                                align='center'
+                                border='2px solid rgb(118, 185, 71)'
+                                gap='10px'
+                                borderRadius='.5rem'
                             >
-                                Paid
-                            </Title></Td>
+
+                                <Title
+                                    family='Helvetica'
+                                    size='12px'
+                                    color='BLACK'
+                                    fstyle='normal'
+                                    display='inline'
+                                    padding='5px 10px'
+                                >
+                                    Paid
+                                </Title></ContainerGlobal></Td>
                         <Td align='center'>...</Td>
                     </Tr>
                 </TableContainer>

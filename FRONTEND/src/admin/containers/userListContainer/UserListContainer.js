@@ -120,11 +120,11 @@ const UserListContainer = () => {
 
                 <TableContainer>
                     <Tr>
-                        <Th align='center'>User Id</Th>
-                        <Th align='center'>Username</Th>
-                        <Th align='center'>Name</Th>
-                        <Th align='center'>Status</Th>
-                        <Th align='center'>Position</Th>
+                        <Th align='center'>User Id <ArrowDropDownIcon style={{ color: 'black' }}/></Th>
+                        <Th align='center'>Username <ArrowDropDownIcon style={{ color: 'black' }}/></Th>
+                        <Th align='center'>Name <ArrowDropDownIcon style={{ color: 'black' }}/></Th>
+                        <Th align='center'>Status <ArrowDropDownIcon style={{ color: 'black' }}/></Th>
+                        <Th align='center'>Position <ArrowDropDownIcon style={{ color: 'black' }}/></Th>
                         <Th align='center'>Action</Th>
                     </Tr>
                     <Tr>
