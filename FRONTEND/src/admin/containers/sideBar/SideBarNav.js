@@ -198,7 +198,7 @@ const SideBarNav = (props) => {
                 </Title>
             </MenuContainer>
 
-            
+
 
             <MenuContainer
 
@@ -243,7 +243,7 @@ const SideBarNav = (props) => {
             </MenuContainer>
 
             <MenuContainer
-
+                href='/admin/messages'
                 whileTap={{ scale: 0.98 }}
                 active={props.message == true}>
                 <MailIcon
@@ -265,7 +265,7 @@ const SideBarNav = (props) => {
             </MenuContainer>
 
             <MenuContainer
-
+                href='/admin/report'
                 whileTap={{ scale: 0.98 }}
                 active={props.report == true}>
                 <AssessmentIcon

@@ -157,6 +157,7 @@ const RoomDetailsContainer = () => {
             </HeadContainer>
 
             <ContainerGlobal
+            
                 w='90%'
                 h='auto'
                 bg='WHITE'
@@ -166,6 +167,7 @@ const RoomDetailsContainer = () => {
                 margin='20px 0px 10px 0px'
                 gap='10px'
             >
+                Lorem
                 <ContainerGlobal
                     w='100%'
                     h='7vh'
