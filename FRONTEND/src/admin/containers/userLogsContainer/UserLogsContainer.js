@@ -121,12 +121,12 @@ const UserLogsContainer = () => {
 
                 <TableContainer>
                     <Tr>
-                        <Th align='center'>User Id</Th>
-                        <Th align='center'>Username</Th>
-                        <Th align='center'>Name</Th>
-                        <Th align='center'>Log-In Time</Th>
-                        <Th align='center'>Log-Out Time</Th>
-                        <Th align='center'>Position</Th>
+                        <Th align='center'>User Id <ArrowDropDownIcon style={{ color: 'black' }}/></Th>
+                        <Th align='center'>Username <ArrowDropDownIcon style={{ color: 'black' }}/></Th>
+                        <Th align='center'>Name <ArrowDropDownIcon style={{ color: 'black' }}/></Th>
+                        <Th align='center'>Log-In Time <ArrowDropDownIcon style={{ color: 'black' }}/></Th>
+                        <Th align='center'>Log-Out Time <ArrowDropDownIcon style={{ color: 'black' }}/></Th>
+                        <Th align='center'>Position <ArrowDropDownIcon style={{ color: 'black' }}/></Th>
                     </Tr>
                     <Tr>
                         <Td align='center'>EA9323</Td>

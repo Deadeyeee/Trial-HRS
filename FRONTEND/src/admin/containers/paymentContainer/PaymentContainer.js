@@ -239,7 +239,7 @@ const PaymentContainer = () => {
                         <Th align='center'>Check out <ArrowDropDownIcon style={{ color: 'black' }}/></Th>
                         <Th align='center'>Balance <ArrowDropDownIcon style={{ color: 'black' }}/></Th>
                         <Th align='center'>Status <ArrowDropDownIcon style={{ color: 'black' }}/></Th>
-                        <Th align='center'>Action <ArrowDropDownIcon style={{ color: 'black' }}/></Th>
+                        <Th align='center'>Action</Th>
                     </Tr>
                     <Tr>
                         <Td align='center'>20212304393</Td>

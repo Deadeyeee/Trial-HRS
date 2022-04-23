@@ -230,10 +230,10 @@ const RoomDetailsContainer = () => {
 
                 <TableContainer>
                     <Tr>
-                        <Th align='center'>Room Type</Th>
-                        <Th align='center'>Rate/Night</Th>
-                        <Th align='center'>Services</Th>
-                        <Th align='center'>Description</Th>
+                        <Th align='center'>Room Type <ArrowDropDownIcon style={{ color: 'black' }}/></Th>
+                        <Th align='center'>Rate/Night <ArrowDropDownIcon style={{ color: 'black' }}/></Th>
+                        <Th align='center'>Services <ArrowDropDownIcon style={{ color: 'black' }}/></Th>
+                        <Th align='center'>Description <ArrowDropDownIcon style={{ color: 'black' }}/></Th>
                         <Th align='center'>Action</Th>
                     </Tr>
                     <Tr>
