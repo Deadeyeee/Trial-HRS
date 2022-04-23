@@ -45,7 +45,7 @@ const BillingSummaryContainer = () => {
                 w="30%"
                 margin="0PX 0PX 10PX 0PX"
             ></HorizontalLine>
-            
+
             <FlexboxContainer>
 
                 <TabContainer
@@ -100,7 +100,7 @@ const BillingSummaryContainer = () => {
                             >
                                 <b>Email Address:</b> 09292333312
                             </Title>
-                            
+
                             <Title
                                 size='18px'
                                 color='#2e2e2e'
@@ -123,7 +123,7 @@ const BillingSummaryContainer = () => {
                                 align='left'
                                 margin='20px 30px'
                             >
-                                <b>Reservation Date:</b> 2022-03-22 2:31PM
+                                <b>Reservation Date:</b> 03/01/2022 2:31PM
                             </Title>
                             <Title
                                 size='18px'
@@ -168,7 +168,7 @@ const BillingSummaryContainer = () => {
                                 margin='20px 30px'
                             >
                                 <b>Special Instruction:</b> NaN
-                                </Title>
+                            </Title>
                         </TableContainer>
                     </TabContainer>
                 </TabContainer>
@@ -369,37 +369,37 @@ const BillingSummaryContainer = () => {
                 </TabContainer>
             </FlexboxContainer>
             <Button2
-                            whileHover={{ backgroundColor: "#0C4426", color: "white" }}
-                            w='200px'
-                            h='60px'
-                            textcolor="#0C4426"
-                            fam='Playfair Display, serif'
-                            weight='-400'
-                            fontStyle='Normal'
-                            radius="0px"
-                            border="1px solid #0C4426"
-                            margin='30px 0px 0px 0px'
-                            fontsize='23px'
-                            href='/booking/confirmation'
-                        >
-                            Continue
-                        </Button2>
-                        <Button2
-                            whileHover={{ color: "#0C4426" }}
-                            w='100px'
-                            h='40px'
-                            textcolor='#FFFFFF'
-                            fam='Times New Roman, serif'
-                            weight='-400'
-                            fontStyle='Italic'
-                            radius="0px"
-                            margin='20px 0px 40px 0px'
-                            fontsize='16px'
-                            bg='#FF9292'
-                            href='/guestInformation'
-                        >
-                            Cancel
-                        </Button2>
+                whileHover={{ backgroundColor: "#0C4426", color: "white" }}
+                w='200px'
+                h='60px'
+                textcolor="#0C4426"
+                fam='Playfair Display, serif'
+                weight='-400'
+                fontStyle='Normal'
+                radius="0px"
+                border="1px solid #0C4426"
+                margin='30px 0px 0px 0px'
+                fontsize='23px'
+                href='/booking/confirmation'
+            >
+                Continue
+            </Button2>
+            <Button2
+                whileHover={{ color: "#0C4426" }}
+                w='100px'
+                h='40px'
+                textcolor='#FFFFFF'
+                fam='Times New Roman, serif'
+                weight='-400'
+                fontStyle='Italic'
+                radius="0px"
+                margin='20px 0px 40px 0px'
+                fontsize='16px'
+                bg='#FF9292'
+                href='/guestInformation'
+            >
+                Cancel
+            </Button2>
         </Container>
     )
 }

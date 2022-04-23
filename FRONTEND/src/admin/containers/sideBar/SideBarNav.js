@@ -17,6 +17,7 @@ import { HorizontalLine } from '../../../client/components/horizontalLine/Horizo
 import LogoutIcon from '@mui/icons-material/Logout';
 import Badge from '@mui/material/Badge';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import AddIcon from '@mui/icons-material/Add';
 const SideBarNav = (props) => {
     return (
         <Container>
@@ -240,6 +241,27 @@ const SideBarNav = (props) => {
                 >
                     Room Details
                 </Title>
+            </MenuContainer>
+
+
+            <MenuContainer
+                href='/admin/additionals'
+                whileTap={{ scale: 0.98 }}
+                active={props.additional == true}>
+                <AddIcon
+                    style={{ color: props.additional == true ? "#2E2E2E" : "#dddddd" }}
+                />
+                    <Title
+                        size='14px'
+                        color='white'
+                        family='Helvetica'
+                        fstyle='normal'
+                        weight='600'
+                        align='left'
+                        padding='0px 10px 0px 0px'
+                    >
+                        Additionals
+                    </Title>
             </MenuContainer>
 
             <MenuContainer

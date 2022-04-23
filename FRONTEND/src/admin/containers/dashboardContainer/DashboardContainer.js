@@ -13,6 +13,7 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
 import { HorizontalLine } from '../../../client/components/horizontalLine/HorizontalLine';
 import Occupancy from '../analytics/Occupancy';
+import ActionButton from '../../components/actionButton/ActionButton';
 
 const DashboardContainer = () => {
 
@@ -224,7 +225,7 @@ const DashboardContainer = () => {
                         weight='600'
                         align='left'
                     >
-                        Reservations
+                        Reservations <a style={{fontSize: '12px'}} href='admin/report'>(view)</a>
                     </Title>
 
 
@@ -258,7 +259,7 @@ const DashboardContainer = () => {
                         weight='600'
                         align='left'
                     >
-                        Occupancy Rate
+                        Occupancy Rate <a style={{fontSize: '12px'}} href='admin/report'>(view)</a>
                     </Title>
 
 
@@ -301,7 +302,7 @@ const DashboardContainer = () => {
                     weight='600'
                     align='left'
                 >
-                    Bookings
+                    Bookings <a style={{fontSize: '12px'}} href='/admin/booking'>(view)</a>
                 </Title>
 
 
@@ -355,7 +356,7 @@ const DashboardContainer = () => {
                                     Paid
                                 </Title></ContainerGlobal>
                         </Td>
-                        <Td align='center'>...</Td>
+                        <Td align='center'><ActionButton/></Td>
                     </Tr>
                     <Tr>
                         <Td align='center'>Pedro Penduco</Td>
@@ -388,7 +389,7 @@ const DashboardContainer = () => {
                                 >
                                     Paid
                                 </Title></ContainerGlobal></Td>
-                        <Td align='center'>...</Td>
+                        <Td align='center'><ActionButton/></Td>
                     </Tr>
                     <Tr>
 
@@ -422,7 +423,7 @@ const DashboardContainer = () => {
                                 >
                                     Paid
                                 </Title></ContainerGlobal></Td>
-                        <Td align='center'>...</Td>
+                        <Td align='center'><ActionButton/></Td>
                     </Tr>
                 </TableContainer>
             </ContainerGlobal>

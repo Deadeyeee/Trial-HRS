@@ -339,6 +339,16 @@ function BookingConfirmationCont() {
                 color= '#2e2e2e'
                 align='left'     
             >
+                Reservation Date. 
+            </Title>
+            <Title
+                family= 'raleway, sans-serif'
+                weight= '400'
+                fstyle='Normal'
+                size= '25px'
+                color= '#2e2e2e'
+                align='left'     
+            >
                 Payment Type 
             </Title>
             <Title
@@ -482,6 +492,16 @@ function BookingConfirmationCont() {
                 align='left'     
             >
                 <b>: 091234568</b>
+            </Title>
+            <Title
+                family= 'raleway, sans-serif'
+                weight= '700'
+                fstyle='Normal'
+                size= '25px'
+                color= '#2e2e2e'
+                align='left'     
+            >
+                <b>: 03/01/2022</b>
             </Title>
             <Title
                 family= 'raleway, sans-serif'
@@ -634,7 +654,7 @@ function BookingConfirmationCont() {
             color= '#2e2e2e'
             align='Center' 
         >
-            <b>Charge Summary</b>    
+            <b>Charge Summary</b>
         </Title>
         <ChargeSummaryContainer>
             <ChargeSummaryContentContainer>
@@ -660,6 +680,17 @@ function BookingConfirmationCont() {
             >
                 Total Night(s)
             </Title>
+            <Title
+                family= 'raleway, sans-serif'
+                weight= '400'
+                fstyle='Normal'
+                size= '25px'
+                color= '#2e2e2e'
+                align='left'
+                margin='0px 100px 0px 0px'      
+            >
+                Discount
+            </Title>
             </ChargeSummaryContentContainer>
             <ChargeSummaryContentContainer>
             <Title
@@ -683,6 +714,17 @@ function BookingConfirmationCont() {
                 margin='0px 0px 0px 100px'      
             >
                 : 4
+            </Title>
+            <Title
+                family= 'raleway, sans-serif'
+                weight= '400'
+                fstyle='Normal'
+                size= '25px'
+                color= '#2e2e2e'
+                align='left'
+                margin='0px 0px 0px 100px'      
+            >
+                : None
             </Title>
             </ChargeSummaryContentContainer>
         </ChargeSummaryContainer>

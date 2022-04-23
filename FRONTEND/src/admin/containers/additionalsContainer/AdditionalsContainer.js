@@ -118,7 +118,7 @@ function getStyles(name, personName, theme) {
     };
 }
 
-const RoomDetailsContainer = () => {
+const AdditionalsContainer = () => {
 
     const [value, setValue] = useState(Date.now());
     const color = "#c44242";
@@ -152,7 +152,7 @@ const RoomDetailsContainer = () => {
                     align='left'
                     margin='20px 0px 20px 30px'
                 >
-                    Room Details
+                    Manage Additional Amenities
                 </Title>
             </HeadContainer>
 
@@ -167,6 +167,7 @@ const RoomDetailsContainer = () => {
                 margin='20px 0px 10px 0px'
                 gap='10px'
             >
+                
                 <ContainerGlobal
                     w='100%'
                     h='7vh'
@@ -218,7 +219,7 @@ const RoomDetailsContainer = () => {
                     weight='600'
                     align='left'
                 >
-                    Room Details
+                    Additionals
                 </Title>
                 <HorizontalLine
                     bg='gray'
@@ -229,39 +230,26 @@ const RoomDetailsContainer = () => {
 
                 <TableContainer>
                     <Tr>
-                        <Th align='center'>Room Type <ArrowDropDownIcon style={{ color: 'black' }}/></Th>
-                        <Th align='center'>Rate/Night <ArrowDropDownIcon style={{ color: 'black' }}/></Th>
-                        <Th align='center'>Services <ArrowDropDownIcon style={{ color: 'black' }}/></Th>
-                        <Th align='center'>Description <ArrowDropDownIcon style={{ color: 'black' }}/></Th>
+                        <Th align='center'>Name <ArrowDropDownIcon style={{ color: 'black' }}/></Th>
+                        <Th align='center'>Price <ArrowDropDownIcon style={{ color: 'black' }}/></Th>
                         <Th align='center'>Action</Th>
                     </Tr>
                     <Tr>
-                        <Td align='center'>Family Room</Td>
-                        <Td align='center'>PHP 2,500</Td>
-                        <Td align='center'>
-                            Free Wifi, Television, Washroom, Mineral Water, Spotless Linen, Amenities
-                        </Td>
-                        <Td align='center'>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis consequat mattis leo, rutrum mollis risus lacinia at. Ut luctus pretium massa, a aliquet diam posuere id.</Td>
+                        <Td align='center'>Bed</Td>
+                        <Td align='center'>PHP 500.00</Td>
                         <Td align='center'><ActionButton/></Td>
                     </Tr>
                     <Tr>
-                        <Td align='center'>Deluxe Room</Td>
-                        <Td align='center'>PHP 1,500</Td>
-                        <Td align='center'>
-                            Free Wifi, Television, Washroom, Mineral Water, Amenities
-                        </Td>
-                        <Td align='center'>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis consequat mattis leo, rutrum mollis risus lacinia at. Ut luctus pretium massa, a aliquet diam posuere id.</Td>
+                        <Td align='center'>Pillow</Td>
+                        <Td align='center'>PHP 100.00</Td>
                         <Td align='center'><ActionButton/></Td>
                     </Tr>
                     <Tr>
-                        <Td align='center'>Premium Room</Td>
-                        <Td align='center'>PHP 1,000</Td>
-                        <Td align='center'>
-                            Free Wifi, Washroom, Amenities
-                        </Td>
-                        <Td align='center'>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis consequat mattis leo, rutrum mollis risus lacinia at. Ut luctus pretium massa, a aliquet diam posuere id.</Td>
+                        <Td align='center'>Blanket</Td>
+                        <Td align='center'>PHP 200.00</Td>
                         <Td align='center'><ActionButton/></Td>
                     </Tr>
+                    
                 </TableContainer>
             </ContainerGlobal>
 
@@ -270,7 +258,7 @@ const RoomDetailsContainer = () => {
                 size="large"
                 onClick={handleOpen}
                 style={{ backgroundColor: '#2E2E2E' }}>
-                Add Room Type
+                Add amenities
             </Button>
 
             <Modal
@@ -419,4 +407,4 @@ const RoomDetailsContainer = () => {
     )
 }
 
-export default RoomDetailsContainer
+export default AdditionalsContainer

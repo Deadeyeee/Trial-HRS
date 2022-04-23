@@ -3386,12 +3386,14 @@ const BookingsContainer = () => {
                         <Th align='center'>Booking Status  <ArrowDropDownIcon style={{ color: 'black' }} /></Th>
                         <Th align='center'>Action</Th>
                     </Tr>
+
+
                     <Tr>
                         <Td align='center'>091234568</Td>
-                        <Td align='center'>Pedro Penduco</Td>
-                        <Td align='center'>05/20/21</Td>
-                        <Td align='center'>05/25/21</Td>
-                        <Td align='center'>05/26/21</Td>
+                        <Td align='center'>Pedro Juan</Td>
+                        <Td align='center'>03/01/22</Td>
+                        <Td align='center'>03/04/22</Td>
+                        <Td align='center'>03/08/22</Td>
                         <Td align='center'>
                             <ContainerGlobal
                                 w='100px'
@@ -3511,7 +3513,7 @@ const BookingsContainer = () => {
                         <Td align='center'><ActionButton /></Td>
                     </Tr>
                     <Tr>
-                        <Td align='center'>091234568</Td>
+                        <Td align='center'>095554568</Td>
                         <Td align='center'>Pedro Penduco</Td>
                         <Td align='center'>05/20/21</Td>
                         <Td align='center'>05/25/21</Td>
@@ -3571,7 +3573,7 @@ const BookingsContainer = () => {
                         <Td align='center'><ActionButton /></Td>
                     </Tr>
                     <Tr>
-                        <Td align='center'>091234568</Td>
+                        <Td align='center'>091123568</Td>
                         <Td align='center'>Pedro Penduco</Td>
                         <Td align='center'>05/20/21</Td>
                         <Td align='center'>05/25/21</Td>
@@ -3631,7 +3633,7 @@ const BookingsContainer = () => {
                         <Td align='center'><ActionButton /></Td>
                     </Tr>
                     <Tr>
-                        <Td align='center'>091234568</Td>
+                        <Td align='center'>091124568</Td>
                         <Td align='center'>Pedro Penduco</Td>
                         <Td align='center'>05/20/21</Td>
                         <Td align='center'>05/25/21</Td>
@@ -3695,11 +3697,6 @@ const BookingsContainer = () => {
             </ContainerGlobal>
 
 
-            <Button variant="contained" size="large"
-                style={{ backgroundColor: '#2E2E2E' }}
-                onClick={() => setShow(prev => !prev)}>
-                Walk-in / Reservation
-            </Button>
 
 
 

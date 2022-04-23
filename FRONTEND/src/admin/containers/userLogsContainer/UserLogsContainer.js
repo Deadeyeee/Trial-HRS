@@ -156,8 +156,8 @@ const UserLogsContainer = () => {
                         <Td align='center'>EA9326</Td>
                         <Td align='center'>FDSK4</Td>
                         <Td align='center'>Pitir Olibar</Td>
-                        <Td align='center'>Connected</Td>
                         <Td align='center'>08:30</Td>
+                        <Td align='center'>20:30</Td>
                         <Td align='center'>Admin</Td>
                     </Tr>
                 </TableContainer>

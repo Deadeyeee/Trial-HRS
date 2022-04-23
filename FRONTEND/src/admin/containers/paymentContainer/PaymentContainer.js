@@ -242,12 +242,12 @@ const PaymentContainer = () => {
                         <Th align='center'>Action</Th>
                     </Tr>
                     <Tr>
-                        <Td align='center'>20212304393</Td>
-                        <Td align='center'>Pedro Penduco</Td>
-                        <Td align='center'>Deluxe Room</Td>
-                        <Td align='center'>101</Td>
+                        <Td align='center'>091234568</Td>
+                        <Td align='center'>Pedro Juam</Td>
+                        <Td align='center'>Premium Room</Td>
+                        <Td align='center'>102</Td>
                         <Td align='center'>03/04/2022</Td>
-                        <Td align='center'>03/06/2022</Td>
+                        <Td align='center'>03/08/2022</Td>
                         <Td align='center'>00.00 PHP</Td>
                         <Td align='center'>
                             <ContainerGlobal
@@ -278,7 +278,7 @@ const PaymentContainer = () => {
                         <Td align='center'><ActionButtonPayment paid/></Td>
                     </Tr>
                     <Tr>
-                        <Td align='center'>20212304393</Td>
+                        <Td align='center'>094534568</Td>
                         <Td align='center'>Pedro Penduco</Td>
                         <Td align='center'>Deluxe Room</Td>
                         <Td align='center'>102</Td>
@@ -313,7 +313,7 @@ const PaymentContainer = () => {
                         <Td align='center'><ActionButtonPayment paid/></Td>
                     </Tr>
                     <Tr>
-                        <Td align='center'>20212304393</Td>
+                        <Td align='center'>095644568</Td>
                         <Td align='center'>Pedro Penduco</Td>
                         <Td align='center'>Premium Room</Td>
                         <Td align='center'>103</Td>
@@ -348,7 +348,7 @@ const PaymentContainer = () => {
                         <Td align='center'><ActionButtonPayment/></Td>
                     </Tr>
                     <Tr>
-                        <Td align='center'>20212304393</Td>
+                        <Td align='center'>095432368</Td>
                         <Td align='center'>Pedro Penduco</Td>
                         <Td align='center'>Deluxe Room</Td>
                         <Td align='center'>104</Td>
@@ -384,7 +384,7 @@ const PaymentContainer = () => {
                         <Td align='center'><ActionButtonPayment paid/></Td>
                     </Tr>
                     <Tr>
-                        <Td align='center'>20212304393</Td>
+                        <Td align='center'>091114568</Td>
                         <Td align='center'>Pedro Penduco</Td>
                         <Td align='center'>Premium Room</Td>
                         <Td align='center'>105</Td>
@@ -419,7 +419,7 @@ const PaymentContainer = () => {
                         <Td align='center'><ActionButtonPayment/></Td>
                     </Tr>
                     <Tr>
-                        <Td align='center'>20212304393</Td>
+                        <Td align='center'>094444568</Td>
                         <Td align='center'>Pedro Penduco</Td>
                         <Td align='center'>Deluxe Room</Td>
                         <Td align='center'>106</Td>
@@ -457,8 +457,8 @@ const PaymentContainer = () => {
 
             </ContainerGlobal>
 
-
-            {/*OFFICIAL RECEIPT */}
+{/* 
+            OFFICIAL RECEIPT
             <HeadContainer>
                 <Title
                     size='20px'
@@ -474,7 +474,6 @@ const PaymentContainer = () => {
             </HeadContainer>
 
             <ContainerGlobalRow>
-                {/*CLIENT DETAILS RECEIPT CONTAINER */}
                 <ContainerGlobal
                     whileHover={{ scale: 1.01 }}
                     whileTap={{ scale: 1 }}
@@ -896,7 +895,7 @@ const PaymentContainer = () => {
                         </ContainerGlobal>
                     </ContainerGlobalRow>
                 </ContainerGlobal>
-            </ContainerGlobalRow>
+            </ContainerGlobalRow> */}
 
 
 

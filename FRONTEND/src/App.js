@@ -47,6 +47,7 @@ import BillingSummaryPage from './client/pages/billingSummaryPage/BillingSummary
 import ProfileAdmin from './admin/pages/profile/ProfileAdmin';
 import Reports from './admin/pages/Reports/Reports';
 import Messages from './admin/pages/messages/Messages';
+import Additional from './admin/pages/additional/Additional';
 
 const App = () => {
   return (
@@ -94,6 +95,7 @@ const App = () => {
         <Route path="/admin/profile" element={<ProfileAdmin />}/>
         <Route path="/admin/messages" element={<Messages />}/>
         <Route path="/admin/report" element={<Reports />}/>
+        <Route path="/admin/additionals" element={<Additional />}/>
         <Route path="*" element={<Error404 />} />
 
       </Routes>
