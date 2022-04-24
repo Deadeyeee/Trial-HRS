@@ -349,6 +349,16 @@ function BookingConfirmationCont() {
                 color= '#2e2e2e'
                 align='left'     
             >
+                Payment Mode 
+            </Title>
+            <Title
+                family= 'raleway, sans-serif'
+                weight= '400'
+                fstyle='Normal'
+                size= '25px'
+                color= '#2e2e2e'
+                align='left'     
+            >
                 Payment Type 
             </Title>
             <Title
@@ -512,6 +522,16 @@ function BookingConfirmationCont() {
                 align='left'     
             >
                 <b>: Bank (MetroBank)</b>
+            </Title>
+            <Title
+                family= 'raleway, sans-serif'
+                weight= '700'
+                fstyle='Normal' 
+                size= '25px'
+                color= '#2e2e2e'
+                align='left'     
+            >
+                <b>: Down Payment</b>
             </Title>
             <Title
                 family= 'raleway, sans-serif'
@@ -702,7 +722,7 @@ function BookingConfirmationCont() {
                 align='left' 
                 margin='0px 0px 0px 100px'    
             >
-                : ₱1000
+                : ₱2,000
             </Title>
             <Title
                 family= 'raleway, sans-serif'
@@ -753,7 +773,7 @@ function BookingConfirmationCont() {
                 align='left' 
                 margin='0px 0px 0px 100px'    
             >
-                : ₱4000
+                : ₱8,000
             </Title>
             </ChargeSummaryContentContainer>
         </ChargeSummaryContainer>

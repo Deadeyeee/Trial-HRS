@@ -40,7 +40,7 @@ const StatusContainer = () => {
                     align='left'
                     margin='20px 0px 20px 30px'
                 >
-                    Check Status of Clients
+                    Check Status of Guests
                 </Title>
             </HeadContainer>
 
@@ -191,7 +191,7 @@ const StatusContainer = () => {
                     weight='600'
                     align='left'
                 >
-                    Client Status
+                    Guest Status
                 </Title>
 
                 <HorizontalLine

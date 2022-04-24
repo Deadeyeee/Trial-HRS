@@ -35,8 +35,8 @@ const BookingCartPageCont = () => {
             <Td align='center'>03/04/2022</Td>
             <Td align='center'>03/08/20222</Td>
             <Td align='center'>4</Td>
-            <Td align='center'>PHP 1,000.00</Td>
-            <Td align='center' style={{color: 'red'}}>PHP 4,000.00</Td>
+            <Td align='center'>PHP 2,000.00</Td>
+            <Td align='center' style={{color: 'red'}}>PHP 8,000.00</Td>
             {/* <Td align='center'>
               <IconButton type="submit" sx={{ p: '8px', backgroundColor: 'rgb(255, 36, 0, 0.7)' }} aria-label="search" title='Delete'>
                     <DeleteIcon style={{ color: '#2e2e2e', fontSize: '18px' }} title='View' />

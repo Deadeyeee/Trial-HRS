@@ -223,11 +223,11 @@ const BillingSummaryContainer = () => {
                             <RadioGroup
                                 aria-labelledby="demo-controlled-radio-buttons-group"
                                 name="controlled-radio-buttons-group"
-                                value='installment'
+                                value='Down Payment'
                                 onChange={handleChange}
                                 style={{ margin: '0px 0px 0px 30px' }}
                             >
-                                <FormControlLabel value="installment" control={<Radio />} label="Installment" />
+                                <FormControlLabel value="Down Payment" control={<Radio />} label="Down Payment" />
                                 <FormControlLabel value="full" control={<Radio />} label="Full Payment" />
                             </RadioGroup>
                         </TableContainer>
@@ -327,7 +327,7 @@ const BillingSummaryContainer = () => {
                             <Td align='center'>03/04/2022</Td>
                             <Td align='center'>03/08/20222</Td>
                             <Td align='center'>4</Td>
-                            <Td align='center'>PHP 1,000.00</Td>
+                            <Td align='center'>PHP 2,000.00</Td>
                             {/* <Td align='center'>
               <IconButton type="submit" sx={{ p: '8px', backgroundColor: 'rgb(255, 36, 0, 0.7)' }} aria-label="search" title='Delete'>
                     <DeleteIcon style={{ color: '#2e2e2e', fontSize: '18px' }} title='View' />
@@ -363,7 +363,7 @@ const BillingSummaryContainer = () => {
                             align='Right'
                             margin='20px 30px'
                         >
-                            Total Amount: PHP 4,000.00
+                            Total Amount: PHP 8,000.00
                         </Title>
                     </TableContainer>
                 </TabContainer>

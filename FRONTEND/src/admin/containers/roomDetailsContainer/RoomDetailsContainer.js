@@ -237,7 +237,7 @@ const RoomDetailsContainer = () => {
                     </Tr>
                     <Tr>
                         <Td align='center'>Family Room</Td>
-                        <Td align='center'>PHP 2,500</Td>
+                        <Td align='center'>PHP 2,700</Td>
                         <Td align='center'>
                             Free Wifi, Television, Washroom, Mineral Water, Spotless Linen, Amenities
                         </Td>
@@ -246,7 +246,7 @@ const RoomDetailsContainer = () => {
                     </Tr>
                     <Tr>
                         <Td align='center'>Deluxe Room</Td>
-                        <Td align='center'>PHP 1,500</Td>
+                        <Td align='center'>PHP 1,200</Td>
                         <Td align='center'>
                             Free Wifi, Television, Washroom, Mineral Water, Amenities
                         </Td>
@@ -255,7 +255,7 @@ const RoomDetailsContainer = () => {
                     </Tr>
                     <Tr>
                         <Td align='center'>Premium Room</Td>
-                        <Td align='center'>PHP 1,000</Td>
+                        <Td align='center'>PHP 2,000</Td>
                         <Td align='center'>
                             Free Wifi, Washroom, Amenities
                         </Td>

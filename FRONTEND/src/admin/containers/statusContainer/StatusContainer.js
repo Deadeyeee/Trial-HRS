@@ -40,7 +40,7 @@ const StatusContainer = () => {
                     align='left'
                     margin='20px 0px 20px 30px'
                 >
-                    Check Status of Clients
+                    Check Status of Guests
                 </Title>
             </HeadContainer>
 
@@ -191,7 +191,7 @@ const StatusContainer = () => {
                     weight='600'
                     align='left'
                 >
-                    Client Status
+                    Guest Status
                 </Title>
 
                 <HorizontalLine
@@ -409,7 +409,7 @@ const StatusContainer = () => {
             </ContainerGlobal>
             <Button variant="contained" size="large"
                 style={{ backgroundColor: '#2E2E2E' }}>
-                Create Client Account
+                Create Guest Account
             </Button>
         </Container>
     )

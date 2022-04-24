@@ -240,7 +240,7 @@ export const BookingChildPageCont = () => {
                                 margin='8px 0px 0px 83px'
                                 align='left'
                             >
-                                <b>₱1000</b>/night
+                                <b>₱2,000</b>/night
                             </Title>
 
                         </ContentContainerHolder>

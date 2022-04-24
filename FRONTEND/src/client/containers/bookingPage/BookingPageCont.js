@@ -251,7 +251,7 @@ export const BookingPageCont = () => {
                                 margin='35px 0px 0px 10px'
                                 align='left'
                             >
-                                ₱1000/night
+                                ₱2,000/night
                             </Title>
                         </ButtonHolder>
                     </RoomContainerContentRight>
@@ -405,7 +405,7 @@ export const BookingPageCont = () => {
                                 margin='35px 0px 0px 10px'
                                 align='left'
                             >
-                                ₱1500/night
+                                ₱1,200/night
                             </Title>
                         </ButtonHolder>
                     </RoomContainerContentRight>

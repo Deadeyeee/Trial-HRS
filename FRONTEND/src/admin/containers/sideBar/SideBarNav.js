@@ -153,7 +153,7 @@ const SideBarNav = (props) => {
                     weight='600'
                     align='left'
                 >
-                    Clients
+                    Guests
                 </Title>
             </MenuContainer>
 
