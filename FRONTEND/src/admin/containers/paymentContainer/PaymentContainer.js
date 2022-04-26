@@ -434,6 +434,38 @@ const PaymentContainer = () => {
                                 }}
                                 defaultValue='0' id="outlined-basic" label="" variant="standard" style={{ width: 200, margin: '5px 0px' }} />
                         </ContainerGlobal>
+                        <ContainerGlobal
+                            w='420px'
+                            h='auto'
+                            direction='row'
+                            gap='10px'
+                            justify='space-between'
+                            align='center'
+                            overflow='auto'
+
+                        >
+
+                            <Title
+                                size='20px'
+                                color='Black'
+                                family='Helvetica'
+                                fstyle='Normal'
+                                weight='400'
+                                align='left'
+                                margin='15px 0px 20px 0px'
+                            >
+                                Others:
+                            </Title>
+                            <TextField id="outlined-basic" label="" variant="standard" style={{ width: 200, margin: '5px 0px' }}
+                                value='00.00'
+                                type='number'
+                                InputProps={{
+                                    readOnly: true,
+                                    endAdornment: <InputAdornment position="end">PHP</InputAdornment>,
+                                }}
+
+                            />
+                        </ContainerGlobal>
                     </ContainerGlobalColumn>
                     <ContainerGlobalColumn>
                         <ContainerGlobal
@@ -1558,6 +1590,38 @@ const PaymentContainer = () => {
                                     readOnly: true,
                                 }}
                                 defaultValue='0' id="outlined-basic" label="" variant="standard" style={{ width: 200, margin: '5px 0px' }} />
+                        </ContainerGlobal>
+                        <ContainerGlobal
+                            w='420px'
+                            h='auto'
+                            direction='row'
+                            gap='10px'
+                            justify='space-between'
+                            align='center'
+                            overflow='auto'
+
+                        >
+
+                            <Title
+                                size='20px'
+                                color='Black'
+                                family='Helvetica'
+                                fstyle='Normal'
+                                weight='400'
+                                align='left'
+                                margin='15px 0px 20px 0px'
+                            >
+                                Others:
+                            </Title>
+                            <TextField id="outlined-basic" label="" variant="standard" style={{ width: 200, margin: '5px 0px' }}
+                                value='00.00'
+                                type='number'
+                                InputProps={{
+                                    readOnly: true,
+                                    endAdornment: <InputAdornment position="end">PHP</InputAdornment>,
+                                }}
+
+                            />
                         </ContainerGlobal>
                         <ContainerGlobal
                             w='420px'
