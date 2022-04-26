@@ -1,5 +1,6 @@
 {
   "name": "trial-app",
+  "homepage": "http://rmluxehotel.online/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
