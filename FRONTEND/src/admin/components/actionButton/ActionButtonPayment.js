@@ -24,7 +24,7 @@ function ActionButtonPayment(props) {
                 <IconButton onClick={props.view} type="submit" sx={{ p: '8px', backgroundColor: 'rgb(191, 170, 126, 0.7)' }} aria-label="search" title='View'>
                     <RemoveRedEyeIcon style={{ color: '#2e2e2e', fontSize: '18px' }} title='View' />
                 </IconButton>
-                <IconButton onClick={props.view} type="submit" sx={{ p: '8px', backgroundColor: props.paid == true ? 'rgb(191, 170, 126, 0.7)' : 'rgb(46, 46, 46, .2)' }} aria-label="search" title='Print receipt'>
+                <IconButton onClick={props.print} type="submit" sx={{ p: '8px', backgroundColor: props.paid == true ? 'rgb(191, 170, 126, 0.7)' : 'rgb(46, 46, 46, .2)' }} aria-label="search" title='Print receipt'>
                     <LocalPrintshopIcon style={{ color: '#2e2e2e', fontSize: '18px' }} title='View' />
                 </IconButton>
                 <IconButton onClick={props.delete} type="submit" sx={{ p: '8px', backgroundColor: 'rgb(255, 36, 0, 0.7)' }} aria-label="search" title='Delete'>

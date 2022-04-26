@@ -19,6 +19,7 @@ import { FormControlLabel, FormControl } from '@mui/material';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import Select from '@mui/material/Select';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
+import InformationForm from '../../../client/containers/informationForm/InformationForm'
 
 
 
@@ -265,6 +266,19 @@ const GuestContainer = () => {
                         <Td align='center'>...</Td>
                     </Tr>
                 </TableContainer>
+            </ContainerGlobal>
+            <ContainerGlobal
+            w='100%'
+            h='100%'
+            radius='none'
+            justify='center'
+            align='center'
+            bg='rgb(46, 46, 46, 0.9)'
+            index='1'
+            overflow='auto'
+            active
+        >
+<InformationForm></InformationForm>
             </ContainerGlobal>
         </Container>
     )

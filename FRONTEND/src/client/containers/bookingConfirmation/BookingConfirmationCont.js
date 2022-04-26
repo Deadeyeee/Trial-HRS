@@ -459,7 +459,7 @@ function BookingConfirmationCont() {
                 color= '#2e2e2e'
                 align='left'     
             >
-                Total No. of Rooms 
+                Room:
             </Title>
             <Title
                 family= 'raleway, sans-serif'
@@ -632,7 +632,7 @@ function BookingConfirmationCont() {
                 color= '#2e2e2e'
                 align='left'     
             >
-                <b>: 1</b>
+                <b>: Premium Room 102</b>
             </Title>
             <Title
                 family= 'raleway, sans-serif'

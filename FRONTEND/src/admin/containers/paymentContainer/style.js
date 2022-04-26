@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 
 export const Container = styled(motion.div)`
     display: flex;
-	  height: 100%;
+	  height: 100vh;
     width: 100%;
     position: relative;
     flex-direction: column;
@@ -85,7 +85,7 @@ export const GrayTab = styled(motion.td)`
 export const ContainerGlobalColumn = styled(motion.div)`
   display: flex;
   flex-direction: column;
-  padding: 0px 0px 0px 50px;
+  width: auto;
   
 
 `; 

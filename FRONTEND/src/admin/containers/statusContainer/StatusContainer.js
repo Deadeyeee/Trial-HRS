@@ -20,12 +20,80 @@ import Select from '@mui/material/Select';
 import { HorizontalLine } from '../../../client/components/horizontalLine/HorizontalLine'
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import ActionButton from '../../components/actionButton/ActionButton';
+import InformationForm from '../../../client/containers/informationForm/InformationForm';
+import { AdminInformationForm, AdminInformationFormFilled } from '../adminInformationForm/AdminInformationForm';
+import Grow from '@mui/material/Grow';
 
 const StatusContainer = () => {
 
     const [value, setValue] = useState(Date.now());
     const color = "#c44242";
     const [age, setAge] = React.useState('');
+
+
+    const [showDetails, setShowDetails] = useState(false);
+    const [showEditDetails, setShowEditDetails] = useState(false);
+    const [showReceipt, setShowReceipt] = useState(false);
+
+
+
+
+
+
+
+    // const viewDetails = (
+    //     <ContainerGlobal
+    //         w='100%'
+    //         h='100%'
+    //         radius='none'
+    //         justify='center'
+    //         align='center'
+    //         bg='rgb(46, 46, 46, 0.9)'
+    //         index='1'
+    //         overflow='auto'
+    //         active
+    //     >
+    //         <ContainerGlobal
+    //             w='auto'
+    //             h='auto'
+    //             bg='white'
+    //             direction='column'
+    //             padding='30px'
+    //             gap='10px'
+    //             justify='center'
+    //             align='center'
+    //             margin='0px 0px 0px 0px'
+    //         >
+    //             <Title
+    //                 size='26px'
+    //                 color='black'
+    //                 family='Helvetica'
+    //                 fstyle='normal'
+    //                 weight='600'
+    //                 align='left'
+    //             >
+    //                 Create Guest Account
+    //             </Title>
+    //             <HorizontalLine
+    //                 bg='gray'
+    //                 w='100%'
+    //                 margin='0px 0px 20px 0px'
+    //             ></HorizontalLine>
+    //             <AdminInformationForm></AdminInformationForm>
+    //             <ContainerGlobal gap='30px' overflow='visible' margin='20px 0px 0px 0px'>
+    //                 <Button variant="contained" size="large"
+    //                     style={{ backgroundColor: '#50AA32' }}>
+    //                     Create Account
+    //                 </Button>
+    //                 <Button variant="contained" size="large"
+    //                     style={{ backgroundColor: '#FF2400' }}>
+    //                     Cancel
+    //                 </Button>
+    //             </ContainerGlobal>
+    //         </ContainerGlobal>
+    //     </ContainerGlobal>
+    // );
+
 
 
     return (
@@ -205,11 +273,11 @@ const StatusContainer = () => {
 
                 <TableContainer>
                     <Tr>
-                        <Th align='center'>Name <ArrowDropDownIcon style={{ color: 'black' }}/></Th>
-                        <Th align='center'>Total Bookings <ArrowDropDownIcon style={{ color: 'black' }}/></Th>
-                        <Th align='center'>Status <ArrowDropDownIcon style={{ color: 'black' }}/></Th>
-                        <Th align='center'>Account Created <ArrowDropDownIcon style={{ color: 'black' }}/></Th>
-                        <Th align='center'>Last Seen <ArrowDropDownIcon style={{ color: 'black' }}/></Th>
+                        <Th align='center'>Name <ArrowDropDownIcon style={{ color: 'black' }} /></Th>
+                        <Th align='center'>Total Bookings <ArrowDropDownIcon style={{ color: 'black' }} /></Th>
+                        <Th align='center'>Status <ArrowDropDownIcon style={{ color: 'black' }} /></Th>
+                        <Th align='center'>Account Created <ArrowDropDownIcon style={{ color: 'black' }} /></Th>
+                        <Th align='center'>Last Seen <ArrowDropDownIcon style={{ color: 'black' }} /></Th>
                         <Th align='center'>Action</Th>
                     </Tr>
                     <Tr>
@@ -411,6 +479,104 @@ const StatusContainer = () => {
                 style={{ backgroundColor: '#2E2E2E' }}>
                 Create Guest Account
             </Button>
+
+            {/* <ContainerGlobal
+                w='100%'
+                h='100%'
+                radius='none'
+                justify='center'
+                align='center'
+                bg='rgb(46, 46, 46, 0.9)'
+                index='1'
+                overflow='auto'
+                active
+            >
+                <ContainerGlobal
+                    w='auto'
+                    h='auto'
+                    bg='white'
+                    direction='column'
+                    padding='30px'
+                    gap='10px'
+                    justify='center'
+                    align='center'
+                    margin='0px 0px 0px 0px'
+                >
+                    <Title
+                        size='26px'
+                        color='black'
+                        family='Helvetica'
+                        fstyle='normal'
+                        weight='600'
+                        align='left'
+                    >
+                        Create Guest Account
+                    </Title>
+                    <HorizontalLine
+                        bg='gray'
+                        w='100%'
+                        margin='0px 0px 20px 0px'
+                    ></HorizontalLine>
+                    <AdminInformationForm></AdminInformationForm>
+                    <ContainerGlobal gap='30px' overflow='visible' margin='20px 0px 0px 0px'>
+                        <Button variant="contained" size="large"
+                            style={{ backgroundColor: '#50AA32' }}>
+                            Create Account
+                        </Button>
+                        <Button variant="contained" size="large"
+                            style={{ backgroundColor: '#FF2400' }}>
+                            Cancel
+                        </Button>
+                    </ContainerGlobal>
+                </ContainerGlobal>
+
+
+
+                <ContainerGlobal
+                    w='auto'
+                    h='auto'
+                    bg='white'
+                    direction='column'
+                    padding='30px'
+                    gap='10px'
+                    justify='center'
+                    align='center'
+                    margin='0px 0px 0px 0px'
+                >
+                    <Title
+                        size='26px'
+                        color='black'
+                        family='Helvetica'
+                        fstyle='normal'
+                        weight='600'
+                        align='left'
+                    >
+                        Create Guest Account
+                    </Title>
+                    <HorizontalLine
+                        bg='gray'
+                        w='100%'
+                        margin='0px 0px 20px 0px'
+                    ></HorizontalLine>
+                    <AdminInformationFormFilled></AdminInformationFormFilled>
+                    <ContainerGlobal gap='30px' overflow='visible' margin='20px 0px 0px 0px'>
+                        <Button variant="contained" size="large"
+                            style={{ backgroundColor: '#50AA32' }}>
+                            Create Account
+                        </Button>
+                        <Button variant="contained" size="large"
+                            style={{ backgroundColor: '#FF2400' }}>
+                            Cancel
+                        </Button>
+                    </ContainerGlobal>
+                </ContainerGlobal>
+                
+            </ContainerGlobal> */}
+
+            {/* <Grow in={showDetails}>{viewDetails}</Grow>
+            <Grow in={showEditDetails}>{EditDetails}</Grow>
+            <Grow in={showReceipt}>{receipt}</Grow> */}
+
         </Container>
     )
 }
