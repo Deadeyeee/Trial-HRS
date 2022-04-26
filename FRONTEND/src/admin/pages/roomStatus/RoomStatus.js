@@ -1,10 +1,13 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import RoomStatusContainer from '../../containers/roomStatusContainer/RoomStatusContainer'
 import SideBarNav from '../../containers/sideBar/SideBarNav'
 import { ContainerInvisible } from '../../containers/sideBar/style'
 import { Container } from './style'
 
 const RoomStatus = () => {
+  useEffect(() => {
+    document.title = "Admin | Room Status"
+  }, [])
   return (
     <Container>
         <ContainerInvisible></ContainerInvisible>
