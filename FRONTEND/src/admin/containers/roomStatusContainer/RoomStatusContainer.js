@@ -23,6 +23,10 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import ActionButton from '../../components/actionButton/ActionButton'
+import FormGroup from '@mui/material/FormGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
+
 
 const style = {
     position: 'absolute',
@@ -282,7 +286,10 @@ const RoomStatusContainer = () => {
                                     Vacant
                                 </Title></ContainerGlobal>
                         </Td>
-                        <Td align='center'><ActionButton /></Td>
+                        <Td align='center'><ActionButton 
+                        view={handleOpen2}
+                        edit={handleOpen3}
+                        /></Td>
                     </Tr>
                     <Tr>
                         <Td align='center'>102</Td>
@@ -387,9 +394,9 @@ const RoomStatusContainer = () => {
                     <Tr>
                         <Td align='center'>105</Td>
                         <Td align='center'>Premium</Td>
-                        <Td align='center'>05/20/21</Td>
-                        <Td align='center'>05/25/21</Td>
-                        <Td align='center'>05/29/21</Td>
+                        <Td align='center'>.........</Td>
+                        <Td align='center'>.........</Td>
+                        <Td align='center'>.........</Td>
                         <Td align='center'>
                             <ContainerGlobal
                                 w='100px'
@@ -520,6 +527,13 @@ const RoomStatusContainer = () => {
 
                     </InputContainer>
 
+                    <InputContainer>
+
+                        <FormGroup>
+                            <FormControlLabel control={<Checkbox size='large' />} label='Mark as Under "Maintenance"' />
+                        </FormGroup>
+                    </InputContainer>
+
                     <InputContainer
                         style={{ marginTop: '40px', }}>
 
@@ -535,6 +549,8 @@ const RoomStatusContainer = () => {
                             Cancel
                         </Button>
                     </InputContainer>
+
+
                 </Box>
             </Modal>
 
@@ -574,7 +590,10 @@ const RoomStatusContainer = () => {
                             placeholder='Room Number'
                             label="Room No."
                             variant="outlined"
-                            style={{ width: '50%', }} />
+                            defaultValue='101'
+                            style={{ width: '50%', }} 
+                            inputProps={{readOnly: true,}}
+                            />
 
                         <FormControl
                             variant="outlined"
@@ -583,9 +602,10 @@ const RoomStatusContainer = () => {
                             <Select
                                 labelId="demo-simple-select-autowidth-label"
                                 id="demo-simple-select-autowidth"
-                                value={roomType}
+                                value='Deluxe'
                                 onChange={handleChange}
                                 label="roomType"
+                                disabled
                             >
                                 <MenuItem value={"Family"}>Family</MenuItem>
                                 <MenuItem value={"Premium"}>Premium</MenuItem>
@@ -593,6 +613,14 @@ const RoomStatusContainer = () => {
                             </Select>
                         </FormControl>
 
+                    </InputContainer>
+
+
+                    <InputContainer>
+
+                        <FormGroup >
+                            <FormControlLabel control={<Checkbox size='large' disabled/>} label='Mark as Under "Maintenance"' />
+                        </FormGroup>
                     </InputContainer>
 
                     <InputContainer
@@ -605,6 +633,95 @@ const RoomStatusContainer = () => {
                         </Button>
 
                     </InputContainer>
+
+
+
+                </Box>
+            </Modal>
+
+
+
+
+
+
+            <Modal
+                open={open3}
+                onClose={handleClose3}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+            >
+                <Box sx={style}>
+                    <Title
+                        size='33px'
+                        color='black'
+                        family='Helvetica'
+                        fstyle='normal'
+                        weight='600'
+                        align='left'
+                        margin='0px 0px 20px 0px'
+                    >
+                        Add Room
+                    </Title>
+
+                    <HorizontalLine
+                        bg='gray'
+                        w='100%'
+                        margin='0px 0px 40px 0px'
+                    ></HorizontalLine>
+
+                    <InputContainer
+                        w='90%'
+                    >
+                        <TextField
+                            placeholder='Room Number'
+                            label="Room No."
+                            variant="outlined"
+                            defaultValue='101'
+                            style={{ width: '50%', }} 
+                            type='number'
+                            />
+
+                        <FormControl
+                            variant="outlined"
+                            sx={{ width: '50%', }}>
+                            <InputLabel id="demo-simple-select-autowidth-label">Room Type</InputLabel>
+                            <Select
+                                labelId="demo-simple-select-autowidth-label"
+                                id="demo-simple-select-autowidth"
+                                value='Deluxe'
+                                onChange={handleChange}
+                                label="roomType"
+                                
+                            >
+                                <MenuItem value={"Family"}>Family</MenuItem>
+                                <MenuItem value={"Premium"}>Premium</MenuItem>
+                                <MenuItem value={"Deluxe"}>Deluxe</MenuItem>
+                            </Select>
+                        </FormControl>
+
+                    </InputContainer>
+
+
+                    <InputContainer>
+
+                        <FormGroup >
+                            <FormControlLabel control={<Checkbox size='large' />} label='Mark as Under "Maintenance"' />
+                        </FormGroup>
+                    </InputContainer>
+
+                    <InputContainer
+                        style={{ marginTop: '40px', }}>
+
+                        <Button variant="contained" size="large"
+                            style={{ backgroundColor: '#50AA32' }}
+                            onClick={handleClose3}>
+                            OK
+                        </Button>
+
+                    </InputContainer>
+
+
+
                 </Box>
             </Modal>
         </Container>

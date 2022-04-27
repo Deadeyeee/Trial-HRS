@@ -2437,9 +2437,9 @@ const PaymentContainer = () => {
                 w='70%'
                 h='auto'
                 bg='white'
-                padding='20px'
                 justify='center'
                 align='center'
+                padding='0px 0px 20px 0px'
                 direction='column'>
 
                 <HeadContainer>
@@ -2782,8 +2782,9 @@ const PaymentContainer = () => {
                                         weight='400'
                                         align='left'
                                         margin='0px 0px 20px 0px'
+                                        W='500px'
                                     >
-                                        Senior/PWD Discount:
+                                        Discount:
                                     </Title>
                                     <Title
                                         size='20px'
