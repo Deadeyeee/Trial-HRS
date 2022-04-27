@@ -35,6 +35,10 @@ import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 import Box from '@mui/material/Box';
 import ActionButtonMessages from '../../components/actionButton/ActionButtonMessages';
+import DonutSmallIcon from '@mui/icons-material/DonutSmall';
+import { Reservation } from '../analytics/Reservation'
+import TimelineIcon from '@mui/icons-material/Timeline';
+import Occupancy from '../analytics/Occupancy'
 
 export const ReportContainer = () => {
     const [value, setValue] = useState(Date.now());
@@ -67,9 +71,14 @@ export const ReportContainer = () => {
 
 
     const [value2, setValue2] = React.useState('1');
+    const [value3, setValue3] = React.useState('1');
 
     const handleChange2 = (event, newValue) => {
         setValue2(newValue);
+    }
+
+    const handleChange3 = (event, newValue) => {
+        setValue3(newValue);
     }
 
 
@@ -132,15 +141,16 @@ export const ReportContainer = () => {
                             <Tab label="Monthly" value="2" />
                             <Tab label="Quarterly" value="3" />
                             <Tab label="Yearly" value="4" />
+                            <Tab label={<DonutSmallIcon />} value="5" />
                         </TabList>
                     </Box>
 
-                    
+
                     <TabPanel value="1" >
                         <ContainerGlobal
                             direction='column'
                             w='100%'
-overflow='visible'>
+                            overflow='visible'>
                             <ContainerGlobal
                                 w='100%'
                                 h='7vh'
@@ -373,12 +383,12 @@ overflow='visible'>
 
 
 
-                    <TabPanel value="2" style={{ width:'97%'}}>
+                    <TabPanel value="2" style={{ width: '97%' }}>
 
                         <ContainerGlobal
                             direction='column'
                             w='100%'
-overflow='visible'>
+                            overflow='visible'>
                             <ContainerGlobal
                                 w='100%'
                                 h='7vh'
@@ -564,12 +574,12 @@ overflow='visible'>
 
 
 
-                    <TabPanel value="3" style={{ width:'97%'}}>
+                    <TabPanel value="3" style={{ width: '97%' }}>
 
                         <ContainerGlobal
                             direction='column'
                             w='100%'
-overflow='visible'>
+                            overflow='visible'>
                             <ContainerGlobal
                                 w='100%'
                                 h='7vh'
@@ -754,11 +764,11 @@ overflow='visible'>
 
 
 
-                    <TabPanel value="4" style={{ width:'97%'}}>
+                    <TabPanel value="4" style={{ width: '97%' }}>
                         <ContainerGlobal
                             direction='column'
                             w='100%'
-overflow='visible'>
+                            overflow='visible'>
 
                             <ContainerGlobal
                                 w='100%'
@@ -929,6 +939,142 @@ overflow='visible'>
                         </ContainerGlobal>
 
                     </TabPanel>
+
+
+
+
+
+
+
+
+
+                    <TabPanel value="5" style={{ width: '97%' }}>
+                        <ContainerGlobal
+                            direction='column'
+                            w='100%'
+                            overflow='visible'>
+
+                            <ContainerGlobal
+                                w='100%'
+                                h='7vh'
+                                bg='none'
+                                direction='row'
+                                overflow='visible'
+                                align='center'
+                                justify='center'
+                                gap='10px'
+                            >
+                                <TextField
+                                    id="outlined-basic"
+                                    label="Search..."
+                                    variant="outlined"
+                                    sx={{
+                                        input: { color: 'black', fontWeight: 'bold' },
+
+                                    }}
+                                    InputProps={{
+                                        endAdornment: (
+                                            <InputAdornment position="end">
+                                                <IconButton type="submit" sx={{ p: '10px' }} aria-label="search">
+                                                    <SearchIcon />
+                                                </IconButton>
+                                            </InputAdornment>
+
+                                        ),
+                                    }}
+                                    style={{ width: 500 }} />
+                                <LocalizationProvider dateAdapter={AdapterDateFns}
+                                >
+                                    <DatePicker
+                                        views={['year']}
+                                        label="Start Date"
+                                        value={value}
+                                        onChange={(newValue) => {
+                                            setValue(newValue);
+                                        }}
+                                        renderInput={(params) =>
+                                            <TextField
+                                                {...params}
+                                                sx={{
+                                                    svg: { color: 'black' },
+                                                    input: { color },
+                                                    label: { color },
+                                                    color: { color },
+                                                    input: { color: 'black', fontWeight: 'bold' },
+
+                                                }}
+                                                style={{ width: 200, margin: '0px 0px 0px 20px' }}
+                                                helperText={null}
+                                            />
+                                        }
+                                    />
+
+                                </LocalizationProvider>
+                                <ArrowForwardIcon />
+                                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                    <DatePicker
+
+                                        views={['year']}
+                                        label="End Date"
+                                        value={valueEnd}
+                                        onChange={(newValue) => {
+                                            setValueEnd(newValue);
+                                        }}
+                                        renderInput={(params) =>
+                                            <TextField
+                                                {...params}
+                                                sx={{
+                                                    svg: { color: 'black' },
+                                                    input: { color },
+                                                    label: { color },
+                                                    color: { color },
+                                                    input: { color: 'black', fontWeight: 'bold' },
+
+                                                }}
+                                                style={{ width: 200 }}
+                                                helperText={null}
+                                            />
+                                        }
+                                    />
+
+                                </LocalizationProvider>
+
+                                <Button variant="contained"
+                                    style={{ backgroundColor: 'rgb(80, 170, 50)' }}
+                                    startIcon={<FilterAltIcon />}>
+                                    Filter
+                                </Button>
+                                <Button variant="contained"
+                                    style={{ backgroundColor: 'rgb(255, 36, 0)' }}
+                                    startIcon={<CloseIcon />}>
+                                    clear
+                                </Button>
+
+
+
+                            </ContainerGlobal>
+                            <ContainerGlobal margin='0px auto'
+                                w='50%'>
+                                <Reservation />
+                            </ContainerGlobal>
+                            <HorizontalLine
+                                bg='gray'
+                                w='100%'
+                                margin='0px 0px 20px 0px'
+                            >
+                            </HorizontalLine>
+
+
+                            <Button
+                                variant="contained"
+                                size="large"
+
+                                style={{ backgroundColor: '#2f2f2f', margin: '15px 0px 0px auto' }}>
+                                Print Visual report
+                            </Button>
+                        </ContainerGlobal>
+
+                    </TabPanel>
                 </TabContext>
 
 
@@ -968,154 +1114,317 @@ overflow='visible'>
                 >
                 </HorizontalLine>
 
-                <ContainerGlobal
-                    w='100%'
-                    h='7vh'
-                    bg='none'
-                    direction='row'
-                    overflow='visible'
-                    align='center'
-                    justify='center'
-                    gap='10px'
-                >
-                    <TextField
-                        id="outlined-basic"
-                        label="Search..."
-                        variant="outlined"
-                        sx={{
-                            input: { color: 'black', fontWeight: 'bold' },
+                <TabContext value={value3}>
+                    <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                        <TabList onChange={handleChange3} aria-label="lab API tabs example">
+                            <Tab label="Daily" value="1" />
+                            <Tab label={<TimelineIcon />} value="2" title='Analytics' />
+                        </TabList>
+                    </Box>
 
-                        }}
-                        InputProps={{
-                            endAdornment: (
-                                <InputAdornment position="end">
-                                    <IconButton type="submit" sx={{ p: '10px' }} aria-label="search">
-                                        <SearchIcon />
-                                    </IconButton>
-                                </InputAdornment>
 
-                            ),
-                        }}
-                        style={{ width: 500 }} />
-                    <LocalizationProvider dateAdapter={AdapterDateFns}
-                    >
-                        <DatePicker
-                            views={['day', 'month', 'year']}
-                            label="From"
-                            value={value}
-                            onChange={(newValue) => {
-                                setValue(newValue);
-                            }}
-                            renderInput={(params) =>
+                    <TabPanel value="1" style={{ width: '97%' }}>
+                        <ContainerGlobal
+                            direction='column'
+                            w='100%'
+                            overflow='visible'>
+                            <ContainerGlobal
+                                w='100%'
+                                h='7vh'
+                                bg='none'
+                                direction='row'
+                                overflow='visible'
+                                align='center'
+                                justify='center'
+                                gap='10px'
+                            >
                                 <TextField
-                                    {...params}
+                                    id="outlined-basic"
+                                    label="Search..."
+                                    variant="outlined"
                                     sx={{
-                                        svg: { color: 'black' },
-                                        input: { color },
-                                        label: { color },
-                                        color: { color },
                                         input: { color: 'black', fontWeight: 'bold' },
 
                                     }}
-                                    style={{ width: 200, margin: '0px 0px 0px 20px' }}
-                                    helperText={null}
-                                />
-                            }
-                        />
+                                    InputProps={{
+                                        endAdornment: (
+                                            <InputAdornment position="end">
+                                                <IconButton type="submit" sx={{ p: '10px' }} aria-label="search">
+                                                    <SearchIcon />
+                                                </IconButton>
+                                            </InputAdornment>
 
-                    </LocalizationProvider>
-                    <ArrowForwardIcon />
-                    <LocalizationProvider dateAdapter={AdapterDateFns}>
-                        <DatePicker
+                                        ),
+                                    }}
+                                    style={{ width: 500 }} />
+                                <LocalizationProvider dateAdapter={AdapterDateFns}
+                                >
+                                    <DatePicker
+                                        views={['day', 'month', 'year']}
+                                        label="From"
+                                        value={value}
+                                        onChange={(newValue) => {
+                                            setValue(newValue);
+                                        }}
+                                        renderInput={(params) =>
+                                            <TextField
+                                                {...params}
+                                                sx={{
+                                                    svg: { color: 'black' },
+                                                    input: { color },
+                                                    label: { color },
+                                                    color: { color },
+                                                    input: { color: 'black', fontWeight: 'bold' },
 
-                            views={['day', 'month', 'year']}
-                            label="To"
-                            value={valueOcc}
-                            onChange={(newValue) => {
-                                setValueOcc(newValue);
-                            }}
-                            renderInput={(params) =>
+                                                }}
+                                                style={{ width: 200, margin: '0px 0px 0px 20px' }}
+                                                helperText={null}
+                                            />
+                                        }
+                                    />
+
+                                </LocalizationProvider>
+                                <ArrowForwardIcon />
+                                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                    <DatePicker
+
+                                        views={['day', 'month', 'year']}
+                                        label="To"
+                                        value={valueOcc}
+                                        onChange={(newValue) => {
+                                            setValueOcc(newValue);
+                                        }}
+                                        renderInput={(params) =>
+                                            <TextField
+                                                {...params}
+                                                sx={{
+                                                    svg: { color: 'black' },
+                                                    input: { color },
+                                                    label: { color },
+                                                    color: { color },
+                                                    input: { color: 'black', fontWeight: 'bold' },
+
+                                                }}
+                                                style={{ width: 200 }}
+                                                helperText={null}
+                                            />
+                                        }
+                                    />
+
+                                </LocalizationProvider>
+
+                                <Button variant="contained"
+                                    style={{ backgroundColor: 'rgb(80, 170, 50)' }}
+                                    startIcon={<FilterAltIcon />}>
+                                    Filter
+                                </Button>
+                                <Button variant="contained"
+                                    style={{ backgroundColor: 'rgb(255, 36, 0)' }}
+                                    startIcon={<CloseIcon />}>
+                                    clear
+                                </Button>
+
+
+
+                            </ContainerGlobal>
+                            <TableContainer>
+                                <Tr>
+                                    <Th align='center'>From <ArrowDropDownIcon style={{ color: 'black' }} /> </Th>
+                                    <Th align='center'>To  <ArrowDropDownIcon style={{ color: 'black' }} /></Th>
+                                    <Th align='center'>Average Room Occupied  <ArrowDropDownIcon style={{ color: 'black' }} /></Th>
+                                    <Th align='center'>Total Number of Rooms  <ArrowDropDownIcon style={{ color: 'black' }} /></Th>
+                                </Tr>
+                                <Tr>
+                                    <Td align='center'>03/04/2022</Td>
+                                    <Td align='center'>03/08/2022</Td>
+                                    <Td align='center'>45.4</Td>
+                                    <Td align='center'>64</Td>
+                                </Tr>
+
+
+
+
+                            </TableContainer>
+
+                            <HorizontalLine
+                                bg='gray'
+                                w='100%'
+                                margin='0px 0px 20px 0px'
+                            >
+                            </HorizontalLine>
+                            <Title
+                                size='26px'
+                                color='black'
+                                family='Helvetica'
+                                fstyle='normal'
+                                weight='400'
+                                align='left'
+                                margin='0px 0px 0px auto'
+                            >
+                                Average Room Occupancy : <b style={{ color: 'green' }}>71%</b>
+                            </Title>
+
+                            <Button
+                                variant="contained"
+                                size="large"
+
+                                style={{ backgroundColor: '#2f2f2f', margin: '15px 0px 0px auto' }}>
+                                Print Average Room Occupancy
+                            </Button>
+                        </ContainerGlobal> </TabPanel>
+
+
+
+
+
+
+
+
+
+                    <TabPanel value="2" style={{ width: '97%' }}>
+                        <ContainerGlobal
+                            direction='column'
+                            w='100%'
+                            overflow='visible'>
+                            <ContainerGlobal
+                                w='100%'
+                                h='7vh'
+                                bg='none'
+                                direction='row'
+                                overflow='visible'
+                                align='center'
+                                justify='center'
+                                gap='10px'
+                            >
                                 <TextField
-                                    {...params}
+                                    id="outlined-basic"
+                                    label="Search..."
+                                    variant="outlined"
                                     sx={{
-                                        svg: { color: 'black' },
-                                        input: { color },
-                                        label: { color },
-                                        color: { color },
                                         input: { color: 'black', fontWeight: 'bold' },
 
                                     }}
-                                    style={{ width: 200 }}
-                                    helperText={null}
-                                />
-                            }
-                        />
+                                    InputProps={{
+                                        endAdornment: (
+                                            <InputAdornment position="end">
+                                                <IconButton type="submit" sx={{ p: '10px' }} aria-label="search">
+                                                    <SearchIcon />
+                                                </IconButton>
+                                            </InputAdornment>
 
-                    </LocalizationProvider>
+                                        ),
+                                    }}
+                                    style={{ width: 500 }} />
+                                <LocalizationProvider dateAdapter={AdapterDateFns}
+                                >
+                                    <DatePicker
+                                        views={['month', 'year']}
+                                        label="From"
+                                        value={value}
+                                        onChange={(newValue) => {
+                                            setValue(newValue);
+                                        }}
+                                        renderInput={(params) =>
+                                            <TextField
+                                                {...params}
+                                                sx={{
+                                                    svg: { color: 'black' },
+                                                    input: { color },
+                                                    label: { color },
+                                                    color: { color },
+                                                    input: { color: 'black', fontWeight: 'bold' },
 
-                    <Button variant="contained"
-                        style={{ backgroundColor: 'rgb(80, 170, 50)' }}
-                        startIcon={<FilterAltIcon />}>
-                        Filter
-                    </Button>
-                    <Button variant="contained"
-                        style={{ backgroundColor: 'rgb(255, 36, 0)' }}
-                        startIcon={<CloseIcon />}>
-                        clear
-                    </Button>
+                                                }}
+                                                style={{ width: 200, margin: '0px 0px 0px 20px' }}
+                                                helperText={null}
+                                            />
+                                        }
+                                    />
+
+                                </LocalizationProvider>
+                                <ArrowForwardIcon />
+                                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                    <DatePicker
+
+                                        views={['month', 'year']}
+                                        label="To"
+                                        value={valueOcc}
+                                        onChange={(newValue) => {
+                                            setValueOcc(newValue);
+                                        }}
+                                        renderInput={(params) =>
+                                            <TextField
+                                                {...params}
+                                                sx={{
+                                                    svg: { color: 'black' },
+                                                    input: { color },
+                                                    label: { color },
+                                                    color: { color },
+                                                    input: { color: 'black', fontWeight: 'bold' },
+
+                                                }}
+                                                style={{ width: 200 }}
+                                                helperText={null}
+                                            />
+                                        }
+                                    />
+
+                                </LocalizationProvider>
+
+                                <Button variant="contained"
+                                    style={{ backgroundColor: 'rgb(80, 170, 50)' }}
+                                    startIcon={<FilterAltIcon />}>
+                                    Filter
+                                </Button>
+                                <Button variant="contained"
+                                    style={{ backgroundColor: 'rgb(255, 36, 0)' }}
+                                    startIcon={<CloseIcon />}>
+                                    clear
+                                </Button>
 
 
 
-                </ContainerGlobal>
-                <TableContainer>
-                    <Tr>
-                        <Th align='center'>From <ArrowDropDownIcon style={{ color: 'black' }} /> </Th>
-                        <Th align='center'>To  <ArrowDropDownIcon style={{ color: 'black' }} /></Th>
-                        <Th align='center'>Average Room Occupied  <ArrowDropDownIcon style={{ color: 'black' }} /></Th>
-                        <Th align='center'>Total Number of Rooms  <ArrowDropDownIcon style={{ color: 'black' }} /></Th>
-                    </Tr>
-                    <Tr>
-                        <Td align='center'>03/04/2022</Td>
-                        <Td align='center'>03/08/2022</Td>
-                        <Td align='center'>45.4</Td>
-                        <Td align='center'>64</Td>
-                    </Tr>
+                            </ContainerGlobal>
+
+                            <ContainerGlobal
+                                w='100%'
+                                justify='center'
+                            >
+                                <Occupancy />
+                            </ContainerGlobal>
+
+                            <HorizontalLine
+                                bg='gray'
+                                w='100%'
+                                margin='0px 0px 20px 0px'
+                            >
+                            </HorizontalLine>
+                            <Title
+                                size='26px'
+                                color='black'
+                                family='Helvetica'
+                                fstyle='normal'
+                                weight='400'
+                                align='left'
+                                margin='0px 0px 0px auto'
+                            >
+                                Average Room Occupancy : <b style={{ color: 'green' }}>47%</b>
+                            </Title>
+
+                            <Button
+                                variant="contained"
+                                size="large"
+
+                                style={{ backgroundColor: '#2f2f2f', margin: '15px 0px 0px auto' }}>
+                                Print Room Occupancy Visual Report
+                            </Button>
+                        </ContainerGlobal> </TabPanel>
+                </TabContext>
+            </ContainerGlobal >
 
 
 
 
-                </TableContainer>
-
-                <HorizontalLine
-                    bg='gray'
-                    w='100%'
-                    margin='0px 0px 20px 0px'
-                >
-                </HorizontalLine>
-                <Title
-                    size='26px'
-                    color='black'
-                    family='Helvetica'
-                    fstyle='normal'
-                    weight='400'
-                    align='left'
-                    margin='0px 0px 0px auto'
-                >
-                    Average Room Occupancy : <b style={{ color: 'green' }}>71%</b>
-                </Title>
-
-                <Button
-                    variant="contained"
-                    size="large"
-
-                    style={{ backgroundColor: '#2f2f2f', margin: '15px 0px 0px auto' }}>
-                    Print Average Room Occupancy
-                </Button>
-            </ContainerGlobal>
-
-
-
-
-        </Container>
+        </Container >
     )
 }

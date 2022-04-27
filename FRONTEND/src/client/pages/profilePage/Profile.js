@@ -5,12 +5,13 @@ import Footer from '../../components/footer/Footer'
 import ChatBot from '../../components/chatBot/ChatBot';
 import ProfileContainer from '../../containers/profileContainer/ProfileContainer';
 import ClientProfileCont from '../../containers/clientProfile/ClientProfileCont';
+import Navprofile from '../../components/navigationBar/Navprofile';
 
 export const Profile = () => {
     return (
         <Container>
             <ChatBot />
-            <NavigationBar />
+            <Navprofile/>
             <ContentContainer>
                 <ProfileContainer profile></ProfileContainer>
                 <ClientProfileCont></ClientProfileCont>
