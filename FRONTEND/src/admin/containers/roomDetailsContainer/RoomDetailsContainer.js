@@ -47,7 +47,6 @@ const style = {
     transform: 'translate(-50%, -50%)',
     height: 'auto',
     width: '800px',
-    height: '880px',
     bgcolor: 'background.paper',
     boxShadow: 24,
     overflow: 'scroll',
@@ -128,6 +127,18 @@ const RoomDetailsContainer = () => {
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
+
+
+
+    const [open2, setOpen2] = React.useState(false);
+    const handleOpen2 = () => setOpen2(true);
+    const handleClose2 = () => setOpen2(false);
+
+
+    const [open3, setOpen3] = React.useState(false);
+    const handleOpen3 = () => setOpen3(true);
+    const handleClose3 = () => setOpen3(false);
+
     const theme = useTheme();
     const [personName, setPersonName] = React.useState([]);
 
@@ -157,7 +168,7 @@ const RoomDetailsContainer = () => {
             </HeadContainer>
 
             <ContainerGlobal
-            
+
                 w='90%'
                 h='auto'
                 bg='WHITE'
@@ -196,7 +207,7 @@ const RoomDetailsContainer = () => {
                             ),
                         }}
                         style={{ width: '98%' }} />
-                    
+
 
                 </ContainerGlobal>
             </ContainerGlobal>
@@ -229,10 +240,10 @@ const RoomDetailsContainer = () => {
 
                 <TableContainer>
                     <Tr>
-                        <Th align='center'>Room Type <ArrowDropDownIcon style={{ color: 'black' }}/></Th>
-                        <Th align='center'>Rate/Night <ArrowDropDownIcon style={{ color: 'black' }}/></Th>
-                        <Th align='center'>Services <ArrowDropDownIcon style={{ color: 'black' }}/></Th>
-                        <Th align='center'>Description <ArrowDropDownIcon style={{ color: 'black' }}/></Th>
+                        <Th align='center'>Room Type <ArrowDropDownIcon style={{ color: 'black' }} /></Th>
+                        <Th align='center'>Rate/Night <ArrowDropDownIcon style={{ color: 'black' }} /></Th>
+                        <Th align='center'>Services <ArrowDropDownIcon style={{ color: 'black' }} /></Th>
+                        <Th align='center'>Description <ArrowDropDownIcon style={{ color: 'black' }} /></Th>
                         <Th align='center'>Action</Th>
                     </Tr>
                     <Tr>
@@ -242,7 +253,10 @@ const RoomDetailsContainer = () => {
                             Free Wifi, Television, Washroom, Mineral Water, Spotless Linen, Amenities
                         </Td>
                         <Td align='center'>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis consequat mattis leo, rutrum mollis risus lacinia at. Ut luctus pretium massa, a aliquet diam posuere id.</Td>
-                        <Td align='center'><ActionButton/></Td>
+                        <Td align='center'><ActionButton 
+                        view={handleOpen2}
+                        edit={handleOpen3}
+                        /></Td>
                     </Tr>
                     <Tr>
                         <Td align='center'>Deluxe Room</Td>
@@ -251,7 +265,7 @@ const RoomDetailsContainer = () => {
                             Free Wifi, Television, Washroom, Mineral Water, Amenities
                         </Td>
                         <Td align='center'>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis consequat mattis leo, rutrum mollis risus lacinia at. Ut luctus pretium massa, a aliquet diam posuere id.</Td>
-                        <Td align='center'><ActionButton/></Td>
+                        <Td align='center'><ActionButton /></Td>
                     </Tr>
                     <Tr>
                         <Td align='center'>Premium Room</Td>
@@ -260,7 +274,7 @@ const RoomDetailsContainer = () => {
                             Free Wifi, Washroom, Amenities
                         </Td>
                         <Td align='center'>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis consequat mattis leo, rutrum mollis risus lacinia at. Ut luctus pretium massa, a aliquet diam posuere id.</Td>
-                        <Td align='center'><ActionButton/></Td>
+                        <Td align='center'><ActionButton /></Td>
                     </Tr>
                 </TableContainer>
             </ContainerGlobal>
@@ -396,25 +410,335 @@ const RoomDetailsContainer = () => {
                     <InputContainer
                         style={{ marginTop: '40px', }}>
 
-                        <Button
-                            variant="contained"
-                            size="large"
-                            style={{ backgroundColor: "rgba(219, 51, 51, 1)" }}
-                            onClick={handleClose}>
-                            Cancel
-                        </Button>
 
-                        <Button
-                            variant="contained"
-                            size="large"
-                            style={{ backgroundColor: '#0C4426' }}
+                        <Button variant="contained" size="large"
+                            style={{ backgroundColor: '#50AA32' }}
                             onClick={handleClose}>
                             Add
+                        </Button>
+                        <Button variant="contained" size="large"
+                            style={{ backgroundColor: '#FF2400' }}
+                            onClick={handleClose}>
+                            Cancel
                         </Button>
 
                     </InputContainer>
                 </Box>
             </Modal>
+
+
+
+
+
+
+            <Modal
+                open={open2}
+                onClose={handleClose2}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+                style={{ overflow: 'scroll' }}
+            >
+                <Box sx={style}>
+                    <Title
+                        size='33px'
+                        color='black'
+                        family='Helvetica'
+                        fstyle='normal'
+                        weight='600'
+                        align='left'
+                        margin='0px 0px 20px 0px'
+                    >
+                        View Room Type
+                    </Title>
+
+                    <HorizontalLine
+                        bg='gray'
+                        w='100%'
+                        margin='0px 0px 40px 0px'
+                    ></HorizontalLine>
+
+                    <InputContainer
+                        w='90%'
+                    >
+                        <TextField
+                            placeholder='Room Type'
+                            label="Room Type"
+                            variant="outlined"
+                            style={{ width: '55%', }}
+                            defaultValue='Family Room'
+                            InputProps={{
+                                readOnly: true,
+                            }} />
+
+                        <TextField
+                            placeholder='Rate per Night'
+                            label="Rate per Night"
+                            variant="outlined"
+                            defaultValue='2,700.00'
+                            InputProps={{
+                                readOnly: true,
+                                startAdornment: <InputAdornment position="start">PHP</InputAdornment>,
+                            }}
+                            style={{ width: '55%', }} />
+                    </InputContainer>
+
+                    <InputContainer
+                        w='90%'
+                        style={{ marginTop: '40px', }}>
+                        <FormControl style={{ width: '50%' }} disabled>
+                            <InputLabel id="demo-multiple-name-label">Services</InputLabel>
+                            <Select
+                                labelId="demo-multiple-chip-label"
+                                id="demo-multiple-chip"
+                                multiple
+                                value={names}
+                                onChange={handleChange}
+
+                                input={<OutlinedInput id="select-multiple-chip" label="Services" />}
+                                renderValue={(selected) => (
+                                    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                                        {selected.map((value) => (
+                                            <Chip key={value} label={value} />
+                                        ))}
+                                    </Box>
+                                )}
+                                MenuProps={MenuProps}
+                            >
+                                {names.map((name) => (
+                                    <MenuItem
+                                        key={name}
+                                        value={name}
+                                        style={getStyles(name, personName, theme)}
+                                    >
+                                        {name}
+                                    </MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl>
+
+                        <TextField
+                            placeholder='Room Type'
+                            label="Room Description"
+                            defaultValue='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis consequat mattis leo, rutrum mollis risus lacinia at. Ut luctus pretium massa, a aliquet diam posuere id.	
+                            '
+                            multiline
+                            maxRows={4}
+                            InputProps={{
+                                readOnly: true,
+                            }}
+                            variant="outlined"
+                            style={{ width: '50%', }} />
+                    </InputContainer>
+
+                    <Typography id="modal-modal-title" variant="h5" component="h2"
+                        style={{ textAlign: 'center', margin: '20px 0px 0px 0px', }}>
+                        Upload Photo
+                    </Typography>
+
+                    <InputContainer>
+
+                        <ImageList sx={{ width: '100%', height: 360 }} cols={1} rowHeight={164}>
+                            {itemData.map((item) => (
+                                <ImageListItem
+                                    style={{
+                                        backgroundColor: 'rgba(0, 0, 0, .1)',
+                                        width: 'auto', display: 'flex', justifyContent: 'center',
+                                        alignItems: 'center',
+                                        backgroundImage: `url(${item.img})`,
+                                        backgroundSize: 'cover',
+
+                                    }}>
+
+                                    <label htmlFor="icon-button-file">
+                                        <Input accept="image/*" id="icon-button-file" type="file" />
+                                        <IconButton aria-label="upload picture" component="span"
+                                            style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)', }} >
+                                            <PhotoCamera
+                                                style={{ color: '#CCA041', fontSize: '60px', }} />
+                                        </IconButton>
+                                    </label>
+                                </ImageListItem>
+                            ))}
+                        </ImageList>
+                    </InputContainer>
+
+
+                    <InputContainer
+                        style={{ marginTop: '40px', }}>
+
+
+                        <Button variant="contained" size="large"
+                            style={{ backgroundColor: '#50AA32' }}
+                            onClick={handleClose2}>
+                            OK
+                        </Button>
+
+                    </InputContainer>
+                </Box>
+            </Modal>
+
+
+
+
+
+
+            <Modal
+                open={open3}
+                onClose={handleClose3}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+                style={{ overflow: 'scroll' }}
+            >
+                <Box sx={style}>
+                    <Title
+                        size='33px'
+                        color='black'
+                        family='Helvetica'
+                        fstyle='normal'
+                        weight='600'
+                        align='left'
+                        margin='0px 0px 20px 0px'
+                    >
+                        Edit Room Type
+                    </Title>
+
+                    <HorizontalLine
+                        bg='gray'
+                        w='100%'
+                        margin='0px 0px 40px 0px'
+                    ></HorizontalLine>
+
+                    <InputContainer
+                        w='90%'
+                    >
+                        <TextField
+                            placeholder='Room Type'
+                            label="Room Type"
+                            variant="outlined"
+                            style={{ width: '55%', }}
+                            defaultValue='Family Room'
+                            InputProps={{
+                                readOnly: false,
+                            }} />
+
+                        <TextField
+                            placeholder='Rate per Night'
+                            label="Rate per Night"
+                            variant="outlined"
+                            defaultValue='2,700.00'
+                            InputProps={{
+                                readOnly: false,
+                                startAdornment: <InputAdornment position="start">PHP</InputAdornment>,
+                            }}
+                            style={{ width: '55%', }} />
+                    </InputContainer>
+
+                    <InputContainer
+                        w='90%'
+                        style={{ marginTop: '40px', }}>
+                        <FormControl style={{ width: '50%' }}>
+                            <InputLabel id="demo-multiple-name-label">Services</InputLabel>
+                            <Select
+                                labelId="demo-multiple-chip-label"
+                                id="demo-multiple-chip"
+                                multiple
+                                defaultValue={names}
+                                value={personName}
+                                onChange={handleChange}
+
+                                input={<OutlinedInput id="select-multiple-chip" label="Services" />}
+                                renderValue={(selected) => (
+                                    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                                        {selected.map((value) => (
+                                            <Chip key={value} label={value} />
+                                        ))}
+                                    </Box>
+                                )}
+                                MenuProps={MenuProps}
+                            >
+                                {names.map((name) => (
+                                    <MenuItem
+                                        key={name}
+                                        value={name}
+                                        style={getStyles(name, personName, theme)}
+                                    >
+                                        {name}
+                                    </MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl>
+
+                        <TextField
+                            placeholder='Room Type'
+                            label="Room Description"
+                            defaultValue='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis consequat mattis leo, rutrum mollis risus lacinia at. Ut luctus pretium massa, a aliquet diam posuere id.	
+                            '
+                            multiline
+                            maxRows={4}
+                            InputProps={{
+                                readOnly: true,
+                            }}
+                            variant="outlined"
+                            style={{ width: '50%', }} />
+                    </InputContainer>
+
+                    <Typography id="modal-modal-title" variant="h5" component="h2"
+                        style={{ textAlign: 'center', margin: '20px 0px 0px 0px', }}>
+                        Upload Photo
+                    </Typography>
+
+                    <InputContainer>
+
+                        <ImageList sx={{ width: '100%', height: 360 }} cols={1} rowHeight={164}>
+                            {itemData.map((item) => (
+                                <ImageListItem
+                                    style={{
+                                        backgroundColor: 'rgba(0, 0, 0, .1)',
+                                        width: 'auto', display: 'flex', justifyContent: 'center',
+                                        alignItems: 'center',
+                                        backgroundImage: `url(${item.img})`,
+                                        backgroundSize: 'cover',
+
+                                    }}>
+
+                                    <label htmlFor="icon-button-file">
+                                        <Input accept="image/*" id="icon-button-file" type="file" />
+                                        <IconButton aria-label="upload picture" component="span"
+                                            style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)', }} >
+                                            <PhotoCamera
+                                                style={{ color: '#CCA041', fontSize: '60px', }} />
+                                        </IconButton>
+                                    </label>
+                                </ImageListItem>
+                            ))}
+                        </ImageList>
+                    </InputContainer>
+
+
+                    <InputContainer
+                        style={{ marginTop: '40px', }}>
+
+
+                        <Button variant="contained" size="large"
+                            style={{ backgroundColor: '#50AA32' }}
+                            onClick={handleClose3}>
+                            Save Changes
+                        </Button>
+                        <Button variant="contained" size="large"
+                            style={{ backgroundColor: '#FF2400' }}
+                            onClick={handleClose3}>
+                            Cancel
+                        </Button>
+
+                    </InputContainer>
+                </Box>
+            </Modal>
+
+
+
+
+
+
         </Container >
     )
 }

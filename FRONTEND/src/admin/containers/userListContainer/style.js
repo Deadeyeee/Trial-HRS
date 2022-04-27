@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 
 export const Container = styled(motion.div)`
     display: flex;
-	  height: 100%;
+	  height: 100vh;
     width: 100%;
     position: relative;
     flex-direction: column;

@@ -272,7 +272,6 @@ export const Register = () => {
             weight='bold'
             bg="green"
             border='none'
-            radius='50px'
             padding='5px 5px'
             value="Creat account"
           ></FormButton>

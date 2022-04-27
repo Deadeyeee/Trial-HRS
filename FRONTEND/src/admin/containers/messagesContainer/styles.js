@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 
 export const Container = styled(motion.div)`
     display: flex;
-	  height: 100%;
+	  height: 100vh;
     width: 100%;
     position: relative;
     flex-direction: column;
@@ -42,6 +42,8 @@ export const TableContainer = styled(motion.table)`
 export const Tr = styled(motion.tr)`
   border: none;
   border-bottom: .5px solid rgb(40, 40, 40, .2);
+  
+  cursor: ${(props) => (props.cursor ? props.cursor : "pointer")};
 `;
 
 export const Th = styled(motion.th)`

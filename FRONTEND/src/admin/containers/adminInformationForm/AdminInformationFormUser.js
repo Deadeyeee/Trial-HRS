@@ -33,7 +33,7 @@ const style = {
     p: 4,
 };
 
-export const AdminInformationForm = () => {
+export const AdminInformationFormUser = () => {
     var Recaptcha = require('react-recaptcha');
 
     var callback = function () {
@@ -107,48 +107,6 @@ export const AdminInformationForm = () => {
                         </InputContainer>
 
 
-                        <InputContainer>
-
-                            <LocalizationProvider dateAdapter={AdapterDateFns}>
-                                <DatePicker
-
-                                    views={['day', 'month', 'year']}
-                                    label="Birthday"
-                                    value={bday}
-                                    onChange={(newValue) => {
-                                        setValue(newValue);
-                                    }}
-                                    renderInput={(params) =>
-                                        <TextField
-                                            {...params}
-                                            variant="standard"
-                                            style={{ width: "55%", margin: '5px 0px' }}
-                                            helperText={null}
-                                        />
-                                    }
-                                />
-
-                            </LocalizationProvider>
-
-                            <FormControl sx={{ width: "55%", margin: '5px 0px' }} size="small" variant="standard">
-                                <InputLabel id="demo-select-small" >Nationality</InputLabel>
-                                <Select
-                                    style={{ color: 'black', textAlign: 'left' }}
-                                    labelId="demo-select-small"
-                                    id="demo-select-small"
-                                    value={nationality}
-                                    label="Menu"
-                                    onChange={(event) => {
-                                        setNationality(event.target.value);
-                                    }}
-                                >
-
-                                    {nationalities.map(({ nationality }, index) => (
-                                        <MenuItem value={nationality} >{nationality}</MenuItem>
-                                    ))}
-                                </Select>
-                            </FormControl>
-                        </InputContainer>
 
                         <InputContainer
                             justify='center'>
@@ -158,7 +116,7 @@ export const AdminInformationForm = () => {
                                 <RadioGroup
                                     row
                                     aria-labelledby="demo-row-radio-buttons-group-label"
-                                    defaultValue="male"
+                                    defaultValue="female"
                                     name="row-radio-buttons-group">
                                     <FormControlLabel
                                         value="male"
@@ -182,17 +140,6 @@ export const AdminInformationForm = () => {
 
                         <InputContainer>
                             <TextField
-                                placeholder='Address'
-                                label="Address"
-                                variant="outlined"
-                                type='email'
-                                multiline
-                                rows={4}
-                                style={{ width: '100%', }} />
-                        </InputContainer>
-
-                        <InputContainer>
-                            <TextField
                                 placeholder='Username'
                                 label="Username"
                                 variant="outlined"
@@ -206,6 +153,31 @@ export const AdminInformationForm = () => {
                                 style={{ width: '55%', }} />
                         </InputContainer>
 
+
+                        <InputContainer
+                            justify='center'>
+                            <FormControl>
+                                <FormLabel id="demo-row-radio-buttons-group-label"
+                                    style={{ textAlign: 'center', }} >Position</FormLabel>
+                                <RadioGroup
+                                    row
+                                    aria-labelledby="demo-row-radio-buttons-group-label"
+                                    defaultValue="Front Desk"
+                                    name="row-radio-buttons-group">
+                                    <FormControlLabel
+                                        value="Front Desk"
+                                        control={<Radio />}
+                                        label="Front Desk"
+                                    />
+                                    <FormControlLabel
+                                        value="Admin"
+                                        control={<Radio />}
+                                        label="Admin"
+                                    />
+                                </RadioGroup>
+                            </FormControl>
+                        </InputContainer>
+
                     </ContainerFormContent>
 
 
@@ -234,7 +206,7 @@ export const AdminInformationForm = () => {
 
 
 
-export const AdminInformationFormFilled = () => {
+export const AdminInformationFormFilledUser = () => {
     var Recaptcha = require('react-recaptcha');
 
     var callback = function () {
@@ -281,7 +253,7 @@ export const AdminInformationFormFilled = () => {
                                 label="First Name"
                                 InputProps={{ readOnly: true }}
                                 variant="outlined"
-                                defaultValue='Pedro'
+                                defaultValue='Shirly'
                                 style={{ width: '55%', }} />
 
                             <TextField
@@ -289,7 +261,7 @@ export const AdminInformationFormFilled = () => {
                                 label="Last Name"
                                 variant="outlined"
                                 InputProps={{ readOnly: true }}
-                                defaultValue='Juan'
+                                defaultValue='Tuz'
                                 style={{ width: '55%', }} />
                         </InputContainer>
 
@@ -301,7 +273,7 @@ export const AdminInformationFormFilled = () => {
                                 variant="outlined"
                                 InputProps={{ readOnly: true }}
                                 type='email'
-                                defaultValue='PedroJuan@gmail.com'
+                                defaultValue='ShirlyTuz@gmail.com'
                                 style={{ width: '55%', }} />
 
                             <TextField
@@ -316,101 +288,77 @@ export const AdminInformationFormFilled = () => {
                         </InputContainer>
 
 
-                        <InputContainer>
 
-                            <LocalizationProvider dateAdapter={AdapterDateFns}>
-                                <DatePicker
-
-                                    views={['day', 'month', 'year']}
-                                    label="Birthday"
-                                    value={bday}
-                                    onChange={(newValue) => {
-                                        setValue(newValue);
-                                    }}
-                                    renderInput={(params) =>
-                                        <TextField
-                                            {...params}
-                                            variant="standard"
-                                            style={{ width: "55%", margin: '5px 0px' }}
-                                            InputProps={{ readOnly: true }}
-                                            helperText={null}
-                                        />
-                                    }
-                                />
-
-                            </LocalizationProvider>
-
-                            <FormControl sx={{ width: "55%", margin: '5px 0px' }} size="small" variant="standard">
-                                <InputLabel id="demo-select-small" >Nationality</InputLabel>
-                                <Select
-                                    style={{ color: 'black', textAlign: 'left' }}
-                                    labelId="demo-select-small"
-                                    id="demo-select-small"
-                                    value={nationality}
-                                    label="Menu"
-                                    onChange={(event) => {
-                                        setNationality(event.target.value);
-                                    }}
-disabled
-                                >
-
-                                    {nationalities.map(({ nationality }, index) => (
-                                        <MenuItem value={nationality} >{nationality}</MenuItem>
-                                    ))}
-                                </Select>
-                            </FormControl>
-                        </InputContainer>
 
                         <InputContainer
                             justify='center'>
-                            <FormControl>
+                            <FormControl >
                                 <FormLabel id="demo-row-radio-buttons-group-label"
                                     style={{ textAlign: 'center', }} >Gender</FormLabel>
                                 <RadioGroup
                                     row
+                                    
                                     aria-labelledby="demo-row-radio-buttons-group-label"
-                                    defaultValue="male"
-                                    name="row-radio-buttons-group" disabled>
+                                    defaultValue="female"
+                                    name="row-radio-buttons-group">
                                     <FormControlLabel
                                         value="male"
                                         control={<Radio />}
                                         label="Male"
+                                        disabled
                                     />
                                     <FormControlLabel
                                         value="female"
                                         control={<Radio />}
                                         label="Female"
+                                        disabled
                                     />
                                     <FormControlLabel
                                         value="other"
                                         control={<Radio />}
                                         label="Other"
+                                        disabled
                                     />
                                 </RadioGroup>
                             </FormControl>
                         </InputContainer>
 
-
                         <InputContainer>
-                            <TextField
-                                label="Address"
-                                variant="outlined"
-                                type='email'
-                                defaultValue='Cecilia Chapman 711-2880 Nulla St. Mankato Mississippi 96522 (257) 563-7401'
-                                multiline
-                                rows={4}
-                                InputProps={{ readOnly: true }}
-                                style={{ width: '55%', }} />
-
-
                             <TextField
                                 placeholder='Username'
                                 label="Username"
-                                defaultValue='Pedrojuan001221'
-                                variant="outlined"
-
+                                defaultValue='ShirlyTuz21234'
                                 InputProps={{ readOnly: true }}
+                                variant="outlined"
                                 style={{ width: '55%', }} />
+
+                        </InputContainer>
+
+
+                        <InputContainer
+                            justify='center'>
+                            <FormControl>
+                                <FormLabel id="demo-row-radio-buttons-group-label"
+                                    style={{ textAlign: 'center', }} >Position</FormLabel>
+                                <RadioGroup
+                                    row
+                                    aria-labelledby="demo-row-radio-buttons-group-label"
+                                    defaultValue="Front Desk"
+                                    name="row-radio-buttons-group">
+                                    <FormControlLabel
+                                        value="Front Desk"
+                                        control={<Radio />}
+                                        label="Front Desk"
+                                        disabled
+                                    />
+                                    <FormControlLabel
+                                        value="Admin"
+                                        control={<Radio />}
+                                        label="Admin"
+                                        disabled
+                                    />
+                                </RadioGroup>
+                            </FormControl>
                         </InputContainer>
 
                     </ContainerFormContent>
@@ -431,7 +379,7 @@ disabled
 
 
 
-export const AdminInformationFormFilledEdit = () => {
+export const AdminInformationFormFilledEditUser = () => {
     var Recaptcha = require('react-recaptcha');
 
     var callback = function () {
@@ -476,15 +424,17 @@ export const AdminInformationFormFilledEdit = () => {
                             <TextField
                                 placeholder='First Name'
                                 label="First Name"
+                                
                                 variant="outlined"
-                                defaultValue='Pedro'
+                                defaultValue='Shirly'
                                 style={{ width: '55%', }} />
 
                             <TextField
                                 placeholder='Last Name'
                                 label="Last Name"
                                 variant="outlined"
-                                defaultValue='Juan'
+                                
+                                defaultValue='Tuz'
                                 style={{ width: '55%', }} />
                         </InputContainer>
 
@@ -494,8 +444,9 @@ export const AdminInformationFormFilledEdit = () => {
                                 placeholder='Email'
                                 label="Email"
                                 variant="outlined"
+                                
                                 type='email'
-                                defaultValue='PedroJuan@gmail.com'
+                                defaultValue='ShirlyTuz@gmail.com'
                                 style={{ width: '55%', }} />
 
                             <TextField
@@ -503,104 +454,84 @@ export const AdminInformationFormFilledEdit = () => {
                                 label="Contact Number"
                                 variant="outlined"
                                 defaultValue='09292333312'
+                                
                                 type='tel'
                                 patter
                                 style={{ width: '55%', }} />
                         </InputContainer>
 
 
-                        <InputContainer>
 
-                            <LocalizationProvider dateAdapter={AdapterDateFns}>
-                                <DatePicker
-
-                                    views={['day', 'month', 'year']}
-                                    label="Birthday"
-                                    value={bday}
-                                    onChange={(newValue) => {
-                                        setValue(newValue);
-                                    }}
-                                    renderInput={(params) =>
-                                        <TextField
-                                            {...params}
-                                            variant="standard"
-                                            style={{ width: "55%", margin: '5px 0px' }}
-                                            helperText={null}
-                                        />
-                                    }
-                                />
-
-                            </LocalizationProvider>
-
-                            <FormControl sx={{ width: "55%", margin: '5px 0px' }} size="small" variant="standard">
-                                <InputLabel id="demo-select-small" >Nationality</InputLabel>
-                                <Select
-                                    style={{ color: 'black', textAlign: 'left' }}
-                                    labelId="demo-select-small"
-                                    id="demo-select-small"
-                                    value={nationality}
-                                    label="Menu"
-                                    onChange={(event) => {
-                                        setNationality(event.target.value);
-                                    }}
-
-                                >
-
-                                    {nationalities.map(({ nationality }, index) => (
-                                        <MenuItem value={nationality} >{nationality}</MenuItem>
-                                    ))}
-                                </Select>
-                            </FormControl>
-                        </InputContainer>
 
                         <InputContainer
                             justify='center'>
-                            <FormControl>
+                            <FormControl >
                                 <FormLabel id="demo-row-radio-buttons-group-label"
                                     style={{ textAlign: 'center', }} >Gender</FormLabel>
                                 <RadioGroup
                                     row
+                                    
                                     aria-labelledby="demo-row-radio-buttons-group-label"
-                                    defaultValue="male"
-                                    name="row-radio-buttons-group" >
+                                    defaultValue="female"
+                                    name="row-radio-buttons-group">
                                     <FormControlLabel
                                         value="male"
                                         control={<Radio />}
                                         label="Male"
+                                        
                                     />
                                     <FormControlLabel
                                         value="female"
                                         control={<Radio />}
                                         label="Female"
+                                        
                                     />
                                     <FormControlLabel
                                         value="other"
                                         control={<Radio />}
                                         label="Other"
+                                        
                                     />
                                 </RadioGroup>
                             </FormControl>
                         </InputContainer>
 
-
                         <InputContainer>
-                            <TextField
-                                label="Address"
-                                variant="outlined"
-                                type='email'
-                                defaultValue='Cecilia Chapman 711-2880 Nulla St. Mankato Mississippi 96522 (257) 563-7401'
-                                multiline
-                                rows={4}
-                                style={{ width: '55%', }} />
-
-
                             <TextField
                                 placeholder='Username'
                                 label="Username"
-                                defaultValue='Pedrojuan001221'
+                                defaultValue='ShirlyTuz21234'
+                                
                                 variant="outlined"
-
                                 style={{ width: '55%', }} />
+
+                        </InputContainer>
+
+
+                        <InputContainer
+                            justify='center'>
+                            <FormControl>
+                                <FormLabel id="demo-row-radio-buttons-group-label"
+                                    style={{ textAlign: 'center', }} >Position</FormLabel>
+                                <RadioGroup
+                                    row
+                                    aria-labelledby="demo-row-radio-buttons-group-label"
+                                    defaultValue="Front Desk"
+                                    name="row-radio-buttons-group">
+                                    <FormControlLabel
+                                        value="Front Desk"
+                                        control={<Radio />}
+                                        label="Front Desk"
+                                        
+                                    />
+                                    <FormControlLabel
+                                        value="Admin"
+                                        control={<Radio />}
+                                        label="Admin"
+                                        
+                                    />
+                                </RadioGroup>
+                            </FormControl>
                         </InputContainer>
 
                     </ContainerFormContent>
