@@ -6,6 +6,7 @@ import ChatBot from '../../components/chatBot/ChatBot';
 import ClientMessagesCont from '../../containers/clientMessagesCont/ClientMessagesCont';
 import { ContentContainer } from '../profilePage/styles';
 import ProfileContainer from '../../containers/profileContainer/ProfileContainer';
+import Navprofile from '../../components/navigationBar/Navprofile';
 
 const ClientMessagesPage = () => {
   useEffect(() => {
@@ -14,7 +15,7 @@ const ClientMessagesPage = () => {
   return (
       <Container>
         <ChatBot />
-        <NavigationBar/>
+        <Navprofile/>
         <ContentContainer>
           <ProfileContainer message></ProfileContainer>
           

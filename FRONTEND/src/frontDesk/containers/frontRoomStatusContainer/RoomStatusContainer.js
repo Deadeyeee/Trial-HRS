@@ -23,6 +23,10 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import ActionButton from '../../components/actionButton/ActionButton'
+import FormGroup from '@mui/material/FormGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
+
 
 const style = {
     position: 'absolute',
@@ -51,6 +55,17 @@ const RoomStatusContainer = () => {
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+
+
+
+    const [open2, setOpen2] = React.useState(false);
+    const handleOpen2 = () => setOpen2(true);
+    const handleClose2 = () => setOpen2(false);
+
+
+    const [open3, setOpen3] = React.useState(false);
+    const handleOpen3 = () => setOpen3(true);
+    const handleClose3 = () => setOpen3(false);
 
     const [roomType, setroomType] = React.useState('');
 
@@ -231,12 +246,12 @@ const RoomStatusContainer = () => {
                 </HorizontalLine>
                 <TableContainer>
                     <Tr>
-                        <Th align='center'>Room Number <ArrowDropDownIcon style={{ color: 'black' }}/></Th>
-                        <Th align='center'>Room Type <ArrowDropDownIcon style={{ color: 'black' }}/></Th>
-                        <Th align='center'>Booking Date <ArrowDropDownIcon style={{ color: 'black' }}/></Th>
-                        <Th align='center'>Check in <ArrowDropDownIcon style={{ color: 'black' }}/></Th>
-                        <Th align='center'>Check out <ArrowDropDownIcon style={{ color: 'black' }}/></Th>
-                        <Th align='center'>Room Status <ArrowDropDownIcon style={{ color: 'black' }}/></Th>
+                        <Th align='center'>Room Number <ArrowDropDownIcon style={{ color: 'black' }} /></Th>
+                        <Th align='center'>Room Type <ArrowDropDownIcon style={{ color: 'black' }} /></Th>
+                        <Th align='center'>Booking Date <ArrowDropDownIcon style={{ color: 'black' }} /></Th>
+                        <Th align='center'>Check in <ArrowDropDownIcon style={{ color: 'black' }} /></Th>
+                        <Th align='center'>Check out <ArrowDropDownIcon style={{ color: 'black' }} /></Th>
+                        <Th align='center'>Room Status <ArrowDropDownIcon style={{ color: 'black' }} /></Th>
                         <Th align='center'>Action</Th>
                     </Tr>
                     <Tr>
@@ -271,7 +286,10 @@ const RoomStatusContainer = () => {
                                     Vacant
                                 </Title></ContainerGlobal>
                         </Td>
-                        <Td align='center'><ActionButton/></Td>
+                        <Td align='center'><ActionButton 
+                        view={handleOpen2}
+                        edit={handleOpen3}
+                        /></Td>
                     </Tr>
                     <Tr>
                         <Td align='center'>102</Td>
@@ -304,7 +322,7 @@ const RoomStatusContainer = () => {
                                 >
                                     Vacant
                                 </Title></ContainerGlobal></Td>
-                        <Td align='center'><ActionButton/></Td>
+                        <Td align='center'><ActionButton /></Td>
                     </Tr>
                     <Tr>
                         <Td align='center'>103</Td>
@@ -337,7 +355,7 @@ const RoomStatusContainer = () => {
                                 >
                                     Occupied
                                 </Title></ContainerGlobal></Td>
-                        <Td align='center'><ActionButton/></Td>
+                        <Td align='center'><ActionButton /></Td>
                     </Tr>
                     <Tr>
                         <Td align='center'>104</Td>
@@ -371,14 +389,14 @@ const RoomStatusContainer = () => {
                                     Vacant
                                 </Title></ContainerGlobal>
                         </Td>
-                        <Td align='center'><ActionButton/></Td>
+                        <Td align='center'><ActionButton /></Td>
                     </Tr>
                     <Tr>
                         <Td align='center'>105</Td>
                         <Td align='center'>Premium</Td>
-                        <Td align='center'>05/20/21</Td>
-                        <Td align='center'>05/25/21</Td>
-                        <Td align='center'>05/29/21</Td>
+                        <Td align='center'>.........</Td>
+                        <Td align='center'>.........</Td>
+                        <Td align='center'>.........</Td>
                         <Td align='center'>
                             <ContainerGlobal
                                 w='100px'
@@ -404,7 +422,7 @@ const RoomStatusContainer = () => {
                                 >
                                     Maintenance
                                 </Title></ContainerGlobal></Td>
-                        <Td align='center'><ActionButton/></Td>
+                        <Td align='center'><ActionButton /></Td>
                     </Tr>
                     <Tr>
                         <Td align='center'>106</Td>
@@ -437,7 +455,7 @@ const RoomStatusContainer = () => {
                                 >
                                     Occupied
                                 </Title></ContainerGlobal></Td>
-                        <Td align='center'><ActionButton/></Td>
+                        <Td align='center'><ActionButton /></Td>
                     </Tr>
                 </TableContainer>
             </ContainerGlobal>
@@ -448,6 +466,13 @@ const RoomStatusContainer = () => {
                 style={{ backgroundColor: '#2E2E2E' }}>
                 Add Room
             </Button>
+
+
+
+
+
+
+
 
             <Modal
                 open={open}
@@ -502,26 +527,201 @@ const RoomStatusContainer = () => {
 
                     </InputContainer>
 
+                    <InputContainer>
+
+                        <FormGroup>
+                            <FormControlLabel control={<Checkbox size='large' />} label='Mark as Under "Maintenance"' />
+                        </FormGroup>
+                    </InputContainer>
+
                     <InputContainer
                         style={{ marginTop: '40px', }}>
 
-                        <Button
-                            variant="contained"
-                            size="large"
-                            style={{ backgroundColor: "rgba(219, 51, 51, 1)" }}
-                            onClick={handleClose}>
-                            Cancel
-                        </Button>
 
-                        <Button
-                            variant="contained"
-                            size="large"
-                            style={{ backgroundColor: '#0C4426' }}
+                        <Button variant="contained" size="large"
+                            style={{ backgroundColor: '#50AA32' }}
                             onClick={handleClose}>
                             Add
                         </Button>
+                        <Button variant="contained" size="large"
+                            style={{ backgroundColor: '#FF2400' }}
+                            onClick={handleClose}>
+                            Cancel
+                        </Button>
+                    </InputContainer>
+
+
+                </Box>
+            </Modal>
+
+
+
+
+
+            <Modal
+                open={open2}
+                onClose={handleClose2}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+            >
+                <Box sx={style}>
+                    <Title
+                        size='33px'
+                        color='black'
+                        family='Helvetica'
+                        fstyle='normal'
+                        weight='600'
+                        align='left'
+                        margin='0px 0px 20px 0px'
+                    >
+                        Add Room
+                    </Title>
+
+                    <HorizontalLine
+                        bg='gray'
+                        w='100%'
+                        margin='0px 0px 40px 0px'
+                    ></HorizontalLine>
+
+                    <InputContainer
+                        w='90%'
+                    >
+                        <TextField
+                            placeholder='Room Number'
+                            label="Room No."
+                            variant="outlined"
+                            defaultValue='101'
+                            style={{ width: '50%', }} 
+                            inputProps={{readOnly: true,}}
+                            />
+
+                        <FormControl
+                            variant="outlined"
+                            sx={{ width: '50%', }}>
+                            <InputLabel id="demo-simple-select-autowidth-label">Room Type</InputLabel>
+                            <Select
+                                labelId="demo-simple-select-autowidth-label"
+                                id="demo-simple-select-autowidth"
+                                value='Deluxe'
+                                onChange={handleChange}
+                                label="roomType"
+                                disabled
+                            >
+                                <MenuItem value={"Family"}>Family</MenuItem>
+                                <MenuItem value={"Premium"}>Premium</MenuItem>
+                                <MenuItem value={"Deluxe"}>Deluxe</MenuItem>
+                            </Select>
+                        </FormControl>
 
                     </InputContainer>
+
+
+                    <InputContainer>
+
+                        <FormGroup >
+                            <FormControlLabel control={<Checkbox size='large' disabled/>} label='Mark as Under "Maintenance"' />
+                        </FormGroup>
+                    </InputContainer>
+
+                    <InputContainer
+                        style={{ marginTop: '40px', }}>
+
+                        <Button variant="contained" size="large"
+                            style={{ backgroundColor: '#50AA32' }}
+                            onClick={handleClose2}>
+                            OK
+                        </Button>
+
+                    </InputContainer>
+
+
+
+                </Box>
+            </Modal>
+
+
+
+
+
+
+            <Modal
+                open={open3}
+                onClose={handleClose3}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+            >
+                <Box sx={style}>
+                    <Title
+                        size='33px'
+                        color='black'
+                        family='Helvetica'
+                        fstyle='normal'
+                        weight='600'
+                        align='left'
+                        margin='0px 0px 20px 0px'
+                    >
+                        Add Room
+                    </Title>
+
+                    <HorizontalLine
+                        bg='gray'
+                        w='100%'
+                        margin='0px 0px 40px 0px'
+                    ></HorizontalLine>
+
+                    <InputContainer
+                        w='90%'
+                    >
+                        <TextField
+                            placeholder='Room Number'
+                            label="Room No."
+                            variant="outlined"
+                            defaultValue='101'
+                            style={{ width: '50%', }} 
+                            type='number'
+                            />
+
+                        <FormControl
+                            variant="outlined"
+                            sx={{ width: '50%', }}>
+                            <InputLabel id="demo-simple-select-autowidth-label">Room Type</InputLabel>
+                            <Select
+                                labelId="demo-simple-select-autowidth-label"
+                                id="demo-simple-select-autowidth"
+                                value='Deluxe'
+                                onChange={handleChange}
+                                label="roomType"
+                                
+                            >
+                                <MenuItem value={"Family"}>Family</MenuItem>
+                                <MenuItem value={"Premium"}>Premium</MenuItem>
+                                <MenuItem value={"Deluxe"}>Deluxe</MenuItem>
+                            </Select>
+                        </FormControl>
+
+                    </InputContainer>
+
+
+                    <InputContainer>
+
+                        <FormGroup >
+                            <FormControlLabel control={<Checkbox size='large' />} label='Mark as Under "Maintenance"' />
+                        </FormGroup>
+                    </InputContainer>
+
+                    <InputContainer
+                        style={{ marginTop: '40px', }}>
+
+                        <Button variant="contained" size="large"
+                            style={{ backgroundColor: '#50AA32' }}
+                            onClick={handleClose3}>
+                            OK
+                        </Button>
+
+                    </InputContainer>
+
+
+
                 </Box>
             </Modal>
         </Container>

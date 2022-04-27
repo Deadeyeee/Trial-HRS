@@ -2,26 +2,26 @@ import React, { useState } from 'react'
 import { ButtonHolder, Container, ProfileContent, ProfileContentContainer, ProfileInformationContent } from './styles'
 import { Title } from '../../components/title/styles';
 import { Button } from '../../components/button/styles';
-import Box from '@mui/material/Box';
-import Modal from '@mui/material/Modal';
-import TextField from '@mui/material/TextField';
 import { InputContainer } from '../informationForm/style';
-import Typography from '@mui/material/Typography';
-import { FormControlLabel, FormControl, Radio, RadioGroup } from '@mui/material'
-import Checkbox from '@mui/material/Checkbox';
 import { FormButton } from '../../components/button/styles'
+import { ContainerGlobal } from '../../../admin/components/container/container';
+import { HorizontalLine } from '../../components/horizontalLine/HorizontalLine';
+import { nationalities } from '../../../nationalities'
 
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { DatePicker } from '@mui/x-date-pickers';
 import InputLabel from '@mui/material/InputLabel';
 import Select from '@mui/material/Select';
-import { nationalities } from '../../../nationalities'
 import MenuItem from '@mui/material/MenuItem';
 import FormLabel from '@mui/material/FormLabel';
 import Link from '@mui/material/Link';
-import { ContainerGlobal } from '../../../admin/components/container/container';
-import { HorizontalLine } from '../../components/horizontalLine/HorizontalLine';
+import Typography from '@mui/material/Typography';
+import { FormControlLabel, FormControl, Radio, RadioGroup } from '@mui/material'
+import Checkbox from '@mui/material/Checkbox';
+import Box from '@mui/material/Box';
+import Modal from '@mui/material/Modal';
+import TextField from '@mui/material/TextField';
 
 const style = {
     position: 'absolute',

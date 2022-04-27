@@ -10,7 +10,7 @@ import { ContainerGlobal } from '../../../admin/components/container/container';
 
 const BookingCartPage = () => {
   useEffect(() => {
-    document.title = "Profile | Bookings"
+    document.title = "Booking Details"
   }, [])
   return (
     <Container>

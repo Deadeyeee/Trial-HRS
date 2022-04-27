@@ -14,7 +14,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import InputLabel from '@mui/material/InputLabel';
-import { FormControlLabel, FormControl } from '@mui/material';
+import { FormControlLabel, FormControl, Grow } from '@mui/material';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import Select from '@mui/material/Select';
 import { HorizontalLine } from '../../../client/components/horizontalLine/HorizontalLine'
@@ -26,6 +26,8 @@ import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 import Box from '@mui/material/Box';
 import ActionButtonMessages from '../../components/actionButton/ActionButtonMessages';
+import Recipt from '../../../client/images/sample_recipt.png';
+import AttachFileIcon from '@mui/icons-material/AttachFile';
 
 const MessagesContainer = () => {
 
@@ -36,9 +38,260 @@ const MessagesContainer = () => {
 
     const [value2, setValue2] = React.useState('1');
 
+    const [show, setShow] = useState(false);
+    const [showComposeMessage, setShowComposeMessage] = useState(false);
+
     const handleChange2 = (event, newValue) => {
         setValue2(newValue);
     };
+
+    const viewMessage = (
+        <ContainerGlobal
+            w='100%'
+            h='100%'
+            radius='none'
+            justify='center'
+            align='center'
+            bg='rgb(46, 46, 46, 0.9)'
+            index='1'
+            overflow='auto'
+            active
+        >
+            <ContainerGlobal
+                w='900px'
+                h='700px'
+                bg='white'
+                direction='column'
+                gap='10px'
+
+            >
+                <ContainerGlobal
+                    bg='#2e2e2e'
+                    radius='none'
+                    align='center'
+                    w='100%'>
+                    <Title
+                        size='20px'
+                        color='white'
+                        family='Helvetica'
+                        fstyle='normal'
+                        weight='600'
+                        align='left'
+                        bg='#2e2e2e'
+                        margin='20px'
+                    >
+                        Reservation Payment
+                    </Title>
+                    <IconButton aria-label="delete" size='large' style={{ color: 'white', margin: '0px 0px 0px auto' }}
+
+                        onClick={() => setShow(prev => !prev)}
+                    >
+                        <CloseIcon />
+                    </IconButton>
+
+                </ContainerGlobal>
+
+                <ContainerGlobal
+                    w='95%' overflow='visible' margin='5px auto'>
+                    <Title
+                        size='16px'
+                        color='black'
+                        family='Helvetica'
+                        fstyle='normal'
+                        weight='400'
+                        align='left'
+                        margin='0px 0px 0px 0px'
+                    >
+                        <b>From:</b> Pedrojuan001221
+                    </Title>
+                    <Title
+                        size='16px'
+                        color='black'
+                        family='Helvetica'
+                        fstyle='normal'
+                        weight='400'
+                        align='left'
+                        margin='0px 0px 0px auto'
+                    >
+                        04/20/21 - 12:26 PM
+                    </Title>
+                </ContainerGlobal>
+                <ContainerGlobal
+                    w='auto'
+                    h='450px'
+                    margin='0px 15px'
+                    bg='rgb(183, 183, 183,.3)'
+                    padding='10px'
+                    style={{ textAlign: 'justify' }}
+                    direction='column'
+                    overflow='auto'
+                >
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ut tellus id felis maximus semper vel non tellus. Ut rutrum nisi augue, eu efficitur tortor pellentesque sed. Suspendisse sed mi a dolor fringilla luctus non vitae augue. Duis consectetur finibus ultrices. Ut ac fermentum arcu. Sed commodo rhoncus lectus, a porttitor velit vehicula sed. Nullam bibendum purus eu mattis cursus. Cras porta sem sit amet eleifend malesuada. Nullam eu sagittis neque. Maecenas sagittis ornare nulla nec sagittis.
+                    <img style={{ margin: '20px 0px 0px 0px' }} width='30%' src={Recipt} />
+                </ContainerGlobal>
+
+                <ContainerGlobal
+                    w='auto'
+                    h='auto'
+                    bg='none'
+                    direction='row'
+                    gap='10px'
+                    justify='center'
+                    margin='auto'
+                    align='center'
+                    overflow='none'
+                >
+                    <Button variant="contained" size="large"
+                        style={{ backgroundColor: '#948566' }}
+
+                        onClick={() => setShow(prev => !prev)}
+                    >
+                        Reply
+                    </Button>
+                    <Button variant="contained" size="large"
+                        style={{ backgroundColor: '#FF2400' }}
+
+                        onClick={() => setShow(prev => !prev)}
+                    >
+                        Delete
+                    </Button>
+                </ContainerGlobal>
+            </ContainerGlobal>
+
+        </ContainerGlobal>
+    );
+
+
+
+    const composeMessage = (
+        <ContainerGlobal
+            w='100%'
+            h='100%'
+            radius='none'
+            justify='center'
+            align='center'
+            bg='rgb(46, 46, 46, 0.9)'
+            index='1'
+            overflow='auto'
+            active
+        >
+            <ContainerGlobal
+                w='900px'
+                h='650px'
+                bg='white'
+                direction='column'
+                gap='10px'
+
+            >
+                <ContainerGlobal
+                    bg='#2e2e2e'
+                    radius='none'
+                    align='center'
+                    w='100%'>
+                    <Title
+                        size='20px'
+                        color='white'
+                        family='Helvetica'
+                        fstyle='normal'
+                        weight='600'
+                        align='left'
+                        bg='#2e2e2e'
+                        margin='20px'
+                    >
+                        Compose message
+                    </Title>
+                    <IconButton aria-label="delete" size='large' style={{ color: 'white', margin: '0px 0px 0px auto' }}
+                        onClick={() => setShowComposeMessage(prev => !prev)}
+                    >
+                        <CloseIcon />
+                    </IconButton>
+
+                </ContainerGlobal>
+
+                <ContainerGlobal
+                    w='95%' overflow='visible' margin='5px auto'
+                    align='center' gap='50px'>
+                    <Title
+                        size='16px'
+                        color='black'
+                        family='Helvetica'
+                        fstyle='normal'
+                        weight='400'
+                        align='left'
+                        margin='0px 0px 0px 0px'
+                        
+                    >
+                        <b>To:</b>
+                    </Title>
+                    <TextField id="outlined-basic" style={{ width: '200px' }} label="" variant="outlined" size='small' />
+                </ContainerGlobal>
+                <ContainerGlobal
+                    w='95%' overflow='visible' margin='5px auto'
+                    align='center' gap='10px'
+                >
+                    <Title
+                        size='16px'
+                        color='black'
+                        family='Helvetica'
+                        fstyle='normal'
+                        weight='400'
+                        align='left'
+                        margin='0px 0px 0px 0px'
+                    >
+                        <b>Subject:</b>
+                    </Title>
+                    <TextField id="outlined-basic" style={{ width: '400px' }} label="" variant="outlined" size='small' />
+                </ContainerGlobal>
+                <Title
+                    size='16px'
+                    color='black'
+                    family='Helvetica'
+                    fstyle='normal'
+                    weight='400'
+                    align='left' w='95%' margin='5px auto'
+                >
+                    <b>Message:</b>
+                </Title>
+                <TextField id="outlined-basic" label="Write your message here..." variant="outlined" multiline rows={10} style={{ width: '95%', margin: '0px auto' }} />
+
+                <IconButton aria-label="delete" size='large' style={{ color: 'black', margin: '0px 0px 0px 25px', border: '1px solid black' }}
+
+                >
+                    <AttachFileIcon />
+                </IconButton>
+                <ContainerGlobal
+                    w='auto'
+                    h='auto'
+                    bg='none'
+                    direction='row'
+                    gap='10px'
+                    justify='center'
+                    margin='auto'
+                    align='center'
+                    overflow='none'
+                >
+                    <Button variant="contained" size="large"
+                        style={{ backgroundColor: '#948566' }}
+
+                        onClick={() => setShowComposeMessage(prev => !prev)}
+                    >
+                        Send
+                    </Button>
+                    <Button variant="contained" size="large"
+                        style={{ backgroundColor: '#FF2400' }}
+
+                        onClick={() => setShowComposeMessage(prev => !prev)}
+                    >
+                        Cancel
+                    </Button>
+                </ContainerGlobal>
+            </ContainerGlobal>
+
+        </ContainerGlobal>
+    );
+
+
+
 
     return (
         <Container>
@@ -154,7 +407,8 @@ const MessagesContainer = () => {
 
                     <Button variant="contained"
                         style={{ backgroundColor: 'rgb(80, 170, 50)' }}
-                        startIcon={<FilterAltIcon />}>
+                        startIcon={<FilterAltIcon />}
+                    >
                         Filter
                     </Button>
                     <Button variant="contained"
@@ -210,7 +464,7 @@ const MessagesContainer = () => {
                                 cellpadding="0"
                             >
                                 <thead>
-                                    <Tr>
+                                    <Tr cursor='normal'>
                                         <Th align='center' style={{ width: '5%' }}></Th>
                                         <Th align='center' style={{ width: '10%' }}>Name</Th>
                                         <Th align='center' style={{ width: '20%' }}>Subject</Th>
@@ -239,6 +493,8 @@ const MessagesContainer = () => {
                                         style={{ backgroundColor: 'rgb(40,40,40, .1', }}
                                         whileHover={{ boxShadow: '0px 2px 2px gray' }}
                                         whileTap={{ boxShadow: 'none' }}
+
+                                        onClick={() => setShow(prev => !prev)}
                                     >
                                         <Td align='center' normal>From:</Td>
                                         <Td align='center' normal >Pedro Juan</Td>
@@ -355,12 +611,22 @@ const MessagesContainer = () => {
 
 
             </ContainerGlobal>
+
             <Button
                 variant="contained"
                 size="large"
-                style={{ backgroundColor: '#2f2f2f' }}>
+                style={{ backgroundColor: '#2f2f2f' }}
+                onClick={() => setShowComposeMessage(prev => !prev)}
+            >
+
                 Compose message
             </Button>
+
+
+
+            <Grow in={show}>{viewMessage}</Grow>
+
+            <Grow in={showComposeMessage}>{composeMessage}</Grow>
         </Container>
     )
 }

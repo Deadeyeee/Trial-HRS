@@ -6,6 +6,7 @@ import ChatBot from '../../components/chatBot/ChatBot';
 import ClientBookingInfoCont from '../../containers/clientBookingInfo/ClientBookingInfoCont';
 import { ContentContainer } from '../profilePage/styles';
 import ProfileContainer from '../../containers/profileContainer/ProfileContainer';
+import Navprofile from '../../components/navigationBar/Navprofile';
 
 const ClientBookingInfoPage = () => {
   useEffect(() => {
@@ -14,8 +15,8 @@ const ClientBookingInfoPage = () => {
   return (
     <Container>
             <ChatBot />
-            <NavigationBar/>
-            <ContentContainer>
+            <Navprofile/>
+            <ContentContainer book>
               <ProfileContainer book></ProfileContainer>
             <ClientBookingInfoCont></ClientBookingInfoCont>
             </ContentContainer>

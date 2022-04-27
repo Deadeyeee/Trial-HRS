@@ -20,14 +20,200 @@ import Select from '@mui/material/Select';
 import { HorizontalLine } from '../../../client/components/horizontalLine/HorizontalLine'
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import ActionButton from '../../components/actionButton/ActionButton';
+import InformationForm from '../../../client/containers/informationForm/InformationForm';
+import { AdminInformationForm, AdminInformationFormFilled, AdminInformationFormFilledEdit } from '../adminInformationForm/AdminInformationForm';
+import Grow from '@mui/material/Grow';
 
 const StatusContainer = () => {
 
     const [value, setValue] = useState(Date.now());
     const color = "#c44242";
     const [age, setAge] = React.useState('');
+    
+    const [showDetails, setShowDetails] = useState(false);
+
+    const [showDetails2, setShowDetails2] = useState(false);
+    const [showDetails3, setShowDetails3] = useState(false);
+
+    
+    const addUser = (
+        <ContainerGlobal
+            w='100%'
+            h='100%'
+            radius='none'
+            justify='center'
+            align='center'
+            bg='rgb(46, 46, 46, 0.9)'
+            index='1'
+            overflow='auto'
+            active
+        >
+            <ContainerGlobal
+                w='auto'
+                h='auto'
+                bg='white'
+                direction='column'
+                padding='30px'
+                gap='10px'
+                justify='center'
+                align='center'
+                margin='0px 0px 0px 0px'
+            >
+                <Title
+                    size='26px'
+                    color='black'
+                    family='Helvetica'
+                    fstyle='normal'
+                    weight='600'
+                    align='left'
+                >
+                    Create Guest Account
+                </Title>
+                <HorizontalLine
+                    bg='gray'
+                    w='100%'
+                    margin='0px 0px 20px 0px'
+                ></HorizontalLine>
+                <AdminInformationForm></AdminInformationForm>
+                <ContainerGlobal gap='30px' overflow='visible' margin='20px 0px 0px 0px'>
+                    <Button variant="contained" size="large"
+                        style={{ backgroundColor: '#50AA32' }}
+                        onClick={() => setShowDetails(prev => !prev)}>
+                        Create Account
+                    </Button>
+                    <Button variant="contained" size="large"
+                        style={{ backgroundColor: '#FF2400' }}
+                        onClick={() => setShowDetails(prev => !prev)}>
+                        Cancel
+                    </Button>
+                </ContainerGlobal>
+            </ContainerGlobal>
+
+        </ContainerGlobal>
+    );
 
 
+    const viewUser = (
+        <ContainerGlobal
+            w='100%'
+            h='100%'
+            radius='none'
+            justify='center'
+            align='center'
+            bg='rgb(46, 46, 46, 0.9)'
+            index='1'
+            overflow='auto'
+            active
+        >
+            <ContainerGlobal
+                w='auto'
+                h='auto'
+                bg='white'
+                direction='column'
+                padding='30px'
+                gap='10px'
+                justify='center'
+                align='center'
+                margin='0px 0px 0px 0px'
+            >
+                <Title
+                    size='26px'
+                    color='black'
+                    family='Helvetica'
+                    fstyle='normal'
+                    weight='600'
+                    align='left'
+                >
+                    View Guest Account
+                </Title>
+                <HorizontalLine
+                    bg='gray'
+                    w='100%'
+                    margin='0px 0px 20px 0px'
+                ></HorizontalLine>
+                <AdminInformationFormFilled></AdminInformationFormFilled>
+                <ContainerGlobal gap='30px' overflow='visible' margin='20px 0px 0px 0px'>
+                    <Button variant="contained" size="large"
+                        style={{ backgroundColor: '#50AA32' }}
+                        onClick={() => setShowDetails2(prev => !prev)}>
+                        Ok
+                    </Button>
+                </ContainerGlobal>
+            </ContainerGlobal>
+
+        </ContainerGlobal>
+    );
+
+
+
+    const editUser = (
+        <ContainerGlobal
+            w='100%'
+            h='100%'
+            radius='none'
+            justify='center'
+            align='center'
+            bg='rgb(46, 46, 46, 0.9)'
+            index='1'
+            overflow='auto'
+            active
+        >
+            <ContainerGlobal
+                w='auto'
+                h='auto'
+                bg='white'
+                direction='column'
+                padding='30px'
+                gap='10px'
+                justify='center'
+                align='center'
+                margin='0px 0px 0px 0px'
+            >
+                <Title
+                    size='26px'
+                    color='black'
+                    family='Helvetica'
+                    fstyle='normal'
+                    weight='600'
+                    align='left'
+                >
+                    Edit Guest Account
+                </Title>
+                <HorizontalLine
+                    bg='gray'
+                    w='100%'
+                    margin='0px 0px 20px 0px'
+                ></HorizontalLine><AdminInformationFormFilledEdit/>
+                <ContainerGlobal gap='30px' overflow='visible' margin='20px 0px 0px 0px'>
+                <Button variant="contained" size="large"
+                        style={{ backgroundColor: '#50AA32' }}
+                        onClick={() => setShowDetails3(prev => !prev)}>
+                        Save Changes
+                    </Button>
+                    <Button variant="contained" size="large"
+                        style={{ backgroundColor: '#FF2400' }}
+                        onClick={() => setShowDetails3(prev => !prev)}>
+                        Cancel
+                    </Button>
+                </ContainerGlobal>
+            </ContainerGlobal>
+
+        </ContainerGlobal>
+    );
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
     return (
         <Container>
             <HeadContainer>
@@ -205,11 +391,11 @@ const StatusContainer = () => {
 
                 <TableContainer>
                     <Tr>
-                        <Th align='center'>Name <ArrowDropDownIcon style={{ color: 'black' }}/></Th>
-                        <Th align='center'>Total Bookings <ArrowDropDownIcon style={{ color: 'black' }}/></Th>
-                        <Th align='center'>Status <ArrowDropDownIcon style={{ color: 'black' }}/></Th>
-                        <Th align='center'>Account Created <ArrowDropDownIcon style={{ color: 'black' }}/></Th>
-                        <Th align='center'>Last Seen <ArrowDropDownIcon style={{ color: 'black' }}/></Th>
+                        <Th align='center'>Name <ArrowDropDownIcon style={{ color: 'black' }} /></Th>
+                        <Th align='center'>Total Bookings <ArrowDropDownIcon style={{ color: 'black' }} /></Th>
+                        <Th align='center'>Status <ArrowDropDownIcon style={{ color: 'black' }} /></Th>
+                        <Th align='center'>Account Created <ArrowDropDownIcon style={{ color: 'black' }} /></Th>
+                        <Th align='center'>Last Seen <ArrowDropDownIcon style={{ color: 'black' }} /></Th>
                         <Th align='center'>Action</Th>
                     </Tr>
                     <Tr>
@@ -242,7 +428,10 @@ const StatusContainer = () => {
                                 </Title></ContainerGlobal></Td>
                         <Td align='center'>01/15/21</Td>
                         <Td align='center'>10/24/21</Td>
-                        <Td align='center'><ActionButton /></Td>
+                        <Td align='center'><ActionButton view={() => setShowDetails2(prev => !prev)}
+                        edit={() => setShowDetails3(prev => !prev)}
+                        
+                        /></Td>
                     </Tr>
                     <Tr>
                         <Td align='center'>Kwasimodo H.</Td>
@@ -408,9 +597,16 @@ const StatusContainer = () => {
                 </TableContainer>
             </ContainerGlobal>
             <Button variant="contained" size="large"
-                style={{ backgroundColor: '#2E2E2E' }}>
-                Create Client Account
+                style={{ backgroundColor: '#2E2E2E' }}
+                onClick={() => setShowDetails(prev => !prev)}>
+                Create Guest Account
             </Button>
+
+            
+            <Grow in={showDetails}>{addUser}</Grow>
+            <Grow in={showDetails2}>{viewUser}</Grow>
+            <Grow in={showDetails3}>{editUser}</Grow>
+
         </Container>
     )
 }

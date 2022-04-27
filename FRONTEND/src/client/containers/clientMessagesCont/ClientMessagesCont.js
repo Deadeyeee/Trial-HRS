@@ -1,8 +1,32 @@
 import React, { useState, useEffect } from 'react'
 import { Container, MainContainer, Messages, MessagesContent, MessagesContentContainer, MessagesTitleContainer, OptionContainer } from './Styles'
 import { Title } from '../../components/title/styles'
-import { Button } from '../../components/button/styles'
+import { Button as Button2 } from '../../components/button/styles'
+import { ContainerGlobal, ContainerGlobal2 } from '../../../admin/components/container/container'
+import TextField from '@mui/material/TextField';
+import InputAdornment from '@mui/material/InputAdornment';
+import SearchIcon from '@mui/icons-material/Search';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { DatePicker } from '@mui/x-date-pickers';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import CloseIcon from '@mui/icons-material/Close';
+import Button from '@mui/material/Button';
+import MenuItem from '@mui/material/MenuItem';
+import InputLabel from '@mui/material/InputLabel';
+import { FormControlLabel, FormControl, Grow } from '@mui/material';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import Select from '@mui/material/Select';
+import FilterAltIcon from '@mui/icons-material/FilterAlt';
 
+import Tab from '@mui/material/Tab';
+import TabContext from '@mui/lab/TabContext';
+import TabList from '@mui/lab/TabList';
+import TabPanel from '@mui/lab/TabPanel';
+import Box from '@mui/material/Box';
+import AttachFileIcon from '@mui/icons-material/AttachFile';
+import IconButton from '@mui/material/IconButton';
+import Recipt from '../../images/sample_recipt.png';
 const ClientMessagesCont = () => {
   const [option, setOption] = useState('inbox');
 
@@ -10,10 +34,270 @@ const ClientMessagesCont = () => {
   useEffect(() => {
     console.log(option)
   })
+
+
+  const [value, setValue] = useState(Date.now());
+  const color = "#c44242";
+  const [age, setAge] = React.useState('');
+
+
+  const [value2, setValue2] = React.useState('1');
+
+  const [show, setShow] = useState(false);
+  const [showComposeMessage, setShowComposeMessage] = useState(false);
+
+  const handleChange2 = (event, newValue) => {
+    setValue2(newValue);
+  };
+
+  const viewMessage = (
+
+    <ContainerGlobal2
+      w='100%'
+      h='100%'
+      radius='none'
+      justify='center'
+      align='center'
+      bg='rgb(46, 46, 46, 0.9)'
+      index='2'
+      overflow='auto'
+      active
+    >
+      <ContainerGlobal
+        w='900px'
+        h='700px'
+        bg='white'
+        direction='column'
+        gap='10px'
+
+      >
+        <ContainerGlobal
+          bg='#998B6D'
+          radius='none'
+          align='center'
+          w='100%'>
+          <Title
+            size='20px'
+            color='black'
+            family='Helvetica'
+            fstyle='normal'
+            weight='600'
+            align='left'
+            margin='20px'
+          >
+            Reciept Confirmation
+          </Title>
+          <IconButton aria-label="delete" size='large' style={{ color: 'white', margin: '0px 0px 0px auto' }}
+
+            onClick={() => setShow(prev => !prev)}
+          >
+            <CloseIcon />
+          </IconButton>
+
+        </ContainerGlobal>
+
+        <ContainerGlobal
+          w='95%' overflow='visible' margin='5px auto'>
+          <Title
+            size='16px'
+            color='black'
+            family='Helvetica'
+            fstyle='normal'
+            weight='400'
+            align='left'
+            margin='0px 0px 0px 0px'
+          >
+            <b>From:</b> FrontDesk
+          </Title>
+          <Title
+            size='16px'
+            color='black'
+            family='Helvetica'
+            fstyle='normal'
+            weight='400'
+            align='left'
+            margin='0px 0px 0px auto'
+          >
+            04/20/21 - 12:26 PM
+          </Title>
+        </ContainerGlobal>
+        <ContainerGlobal
+          w='auto'
+          h='450px'
+          margin='0px 15px'
+          bg='rgb(183, 183, 183,.3)'
+          padding='10px'
+          style={{ textAlign: 'justify' }}
+          direction='column'
+          overflow='auto'
+        >
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ut tellus id felis maximus semper vel non tellus. Ut rutrum nisi augue, eu efficitur tortor pellentesque sed. Suspendisse sed mi a dolor fringilla luctus non vitae augue. Duis consectetur finibus ultrices. Ut ac fermentum arcu. Sed commodo rhoncus lectus, a porttitor velit vehicula sed. Nullam bibendum purus eu mattis cursus. Cras porta sem sit amet eleifend malesuada. Nullam eu sagittis neque. Maecenas sagittis ornare nulla nec sagittis.
+          <img style={{ margin: '20px 0px 0px 0px' }} width='30%' src={Recipt} />
+        </ContainerGlobal>
+
+        <ContainerGlobal
+          w='auto'
+          h='auto'
+          bg='none'
+          direction='row'
+          gap='10px'
+          justify='center'
+          margin='auto'
+          align='center'
+          overflow='none'
+        >
+          <Button variant="contained" size="large"
+            style={{ backgroundColor: '#948566' }}
+
+            onClick={() => setShow(prev => !prev)}
+          >
+            Reply
+          </Button>
+          <Button variant="contained" size="large"
+            style={{ backgroundColor: '#FF2400' }}
+
+            onClick={() => setShow(prev => !prev)}
+          >
+            Delete
+          </Button>
+        </ContainerGlobal>
+      </ContainerGlobal>
+
+    </ContainerGlobal2>
+  );
+
+
+
+  const composeMessage = (
+    <ContainerGlobal2
+      w='100%'
+      h='100%'
+      radius='none'
+      justify='center'
+      align='center'
+      bg='rgb(46, 46, 46, 0.9)'
+      index='4'
+      active
+    >
+      <ContainerGlobal
+        w='900px'
+        h='650px'
+        bg='white'
+        direction='column'
+        gap='10px'
+
+      >
+        <ContainerGlobal
+          bg='#2e2e2e'
+          radius='none'
+          align='center'
+          w='100%'>
+          <Title
+            size='20px'
+            color='white'
+            family='Helvetica'
+            fstyle='normal'
+            weight='600'
+            align='left'
+            bg='#2e2e2e'
+            margin='20px'
+          >
+            Compose message
+          </Title>
+          <IconButton aria-label="delete" size='large' style={{ color: 'white', margin: '0px 0px 0px auto' }}
+            onClick={() => setShowComposeMessage(prev => !prev)}
+          >
+            <CloseIcon />
+          </IconButton>
+
+        </ContainerGlobal>
+
+        <ContainerGlobal
+          w='95%' overflow='visible' margin='5px auto'
+          align='center' gap='50px'>
+          <Title
+            size='16px'
+            color='black'
+            family='Helvetica'
+            fstyle='normal'
+            weight='400'
+            align='left'
+            margin='0px 0px 0px 0px'
+
+          >
+            <b>To:</b>
+          </Title>
+          <TextField id="outlined-basic" style={{ width: '200px' }} label="" variant="outlined" size='small' />
+        </ContainerGlobal>
+        <ContainerGlobal
+          w='95%' overflow='visible' margin='5px auto'
+          align='center' gap='10px'
+        >
+          <Title
+            size='16px'
+            color='black'
+            family='Helvetica'
+            fstyle='normal'
+            weight='400'
+            align='left'
+            margin='0px 0px 0px 0px'
+          >
+            <b>Subject:</b>
+          </Title>
+          <TextField id="outlined-basic" style={{ width: '400px' }} label="" variant="outlined" size='small' />
+        </ContainerGlobal>
+        <Title
+          size='16px'
+          color='black'
+          family='Helvetica'
+          fstyle='normal'
+          weight='400'
+          align='left' w='95%' margin='5px auto'
+        >
+          <b>Message:</b>
+        </Title>
+        <TextField id="outlined-basic" label="Write your message here..." variant="outlined" multiline rows={10} style={{ width: '95%', margin: '0px auto' }} />
+
+        <IconButton aria-label="delete" size='large' style={{ color: 'black', margin: '0px 0px 0px 25px', border: '1px solid black' }}
+
+        >
+          <AttachFileIcon />
+        </IconButton>
+        <ContainerGlobal
+          w='auto'
+          h='auto'
+          bg='none'
+          direction='row'
+          gap='10px'
+          justify='center'
+          margin='auto'
+          align='center'
+          overflow='none'
+        >
+          <Button variant="contained" size="large"
+            style={{ backgroundColor: '#948566' }}
+
+            onClick={() => setShowComposeMessage(prev => !prev)}
+          >
+            Send
+          </Button>
+          <Button variant="contained" size="large"
+            style={{ backgroundColor: '#FF2400' }}
+
+            onClick={() => setShowComposeMessage(prev => !prev)}
+          >
+            Cancel
+          </Button>
+        </ContainerGlobal>
+      </ContainerGlobal>
+
+    </ContainerGlobal2>
+  );
+
   return (
     <Container>
       <OptionContainer>
-        <Button
+        <Button2
           onClick={() => {
             setOption('inbox');
             console.log(option);
@@ -30,8 +314,8 @@ const ClientMessagesCont = () => {
           fontsize='18px'>
 
           Inbox
-        </Button>
-        <Button
+        </Button2>
+        <Button2
           onClick={() => {
             setOption('sent');
             console.log(option);
@@ -47,7 +331,7 @@ const ClientMessagesCont = () => {
           border="1px solid #8F805F"
           fontsize='18px'>
           Sent
-        </Button>
+        </Button2>
       </OptionContainer>
 
       {/* inbox */}
@@ -86,7 +370,7 @@ const ClientMessagesCont = () => {
               align='Center'
               margin='20px'
             >
-              From: Finance
+              From: Front Desk
             </Title>
             <Title
               family='raleway, sans-serif'
@@ -110,6 +394,8 @@ const ClientMessagesCont = () => {
             </Title>
           </MessagesContent>
           <MessagesContent
+
+            onClick={() => setShow(prev => !prev)}
             whileHover={{ boxShadow: "5px 2px 10px gray" }}
             whileTap={{ scale: .99 }}
 
@@ -123,7 +409,7 @@ const ClientMessagesCont = () => {
               align='Center'
               margin='20px'
             >
-              From: Finance
+              From: Front Desk
             </Title>
             <Title
               family='raleway, sans-serif'
@@ -161,7 +447,7 @@ const ClientMessagesCont = () => {
               align='Center'
               margin='20px'
             >
-              From: Finance
+              From: Front Desk
             </Title>
             <Title
               family='raleway, sans-serif'
@@ -196,7 +482,7 @@ const ClientMessagesCont = () => {
               align='Center'
               margin='20px'
             >
-              From: Finance
+              From: Front Desk
             </Title>
             <Title
               family='raleway, sans-serif'
@@ -231,7 +517,7 @@ const ClientMessagesCont = () => {
               align='Center'
               margin='20px'
             >
-              From: Finance
+              From: Front Desk
             </Title>
             <Title
               family='raleway, sans-serif'
@@ -266,7 +552,7 @@ const ClientMessagesCont = () => {
               align='Center'
               margin='20px'
             >
-              From: Finance
+              From: Front Desk
             </Title>
             <Title
               family='raleway, sans-serif'
@@ -301,7 +587,7 @@ const ClientMessagesCont = () => {
               align='Center'
               margin='20px'
             >
-              From: Finance
+              From: Front Desk
             </Title>
             <Title
               family='raleway, sans-serif'
@@ -336,7 +622,7 @@ const ClientMessagesCont = () => {
               align='Center'
               margin='20px'
             >
-              From: Finance
+              From: Front Desk
             </Title>
             <Title
               family='raleway, sans-serif'
@@ -399,7 +685,7 @@ const ClientMessagesCont = () => {
               align='Center'
               margin='20px'
             >
-              To: Finance
+              To: Front Desk
             </Title>
             <Title
               family='raleway, sans-serif'
@@ -459,17 +745,17 @@ const ClientMessagesCont = () => {
               10/20/22
             </Title>
           </MessagesContent>
-          
+
 
         </MessagesContentContainer>
       </MainContainer>
 
-      <Button
+      <Button2
         whileHover={{ backgroundColor: "#302B20", color: "white" }}
-        w='150px'
+        w='auto'
         h='50px'
         textcolor="white"
-        fam='playfair display'
+        fam='georgia'
         weight='-400'
         fontStyle='normal'
         radius="0px"
@@ -477,10 +763,15 @@ const ClientMessagesCont = () => {
         margin='30px 0px 0px 0px'
         fontsize='18px'
         bg='#282626'
+        onClick={() => setShowComposeMessage(prev => !prev)}
       >
-        New Message
-      </Button>
+        Compose New Message
+      </Button2>
 
+
+      <Grow in={show}>{viewMessage}</Grow>
+
+      <Grow in={showComposeMessage}>{composeMessage}</Grow>
     </Container>
   )
 }

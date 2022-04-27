@@ -1,6 +1,9 @@
 import React, { useState } from 'react'
 import { Title } from '../../../client/components/title/styles'
 import { ContainerGlobal } from '../../components/container/container'
+import { HorizontalLine } from '../../../client/components/horizontalLine/HorizontalLine'
+import ActionButtonMessages from '../../components/actionButton/ActionButtonMessages';
+import Recipt from '../../../client/images/sample_recipt.png';
 import { Container, HeadContainer, TableContainer, TableFixHead, Td, Th, Tr } from './styles'
 import TextField from '@mui/material/TextField';
 import InputAdornment from '@mui/material/InputAdornment';
@@ -17,7 +20,6 @@ import InputLabel from '@mui/material/InputLabel';
 import { FormControlLabel, FormControl, Grow } from '@mui/material';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import Select from '@mui/material/Select';
-import { HorizontalLine } from '../../../client/components/horizontalLine/HorizontalLine'
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 
 import Tab from '@mui/material/Tab';
@@ -25,8 +27,6 @@ import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 import Box from '@mui/material/Box';
-import ActionButtonMessages from '../../components/actionButton/ActionButtonMessages';
-import Recipt from '../../../client/images/sample_recipt.png';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 
 const MessagesContainer = () => {
@@ -46,6 +46,7 @@ const MessagesContainer = () => {
     };
 
     const viewMessage = (
+        
         <ContainerGlobal
             w='100%'
             h='100%'

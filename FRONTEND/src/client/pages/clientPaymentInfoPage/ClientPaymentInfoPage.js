@@ -6,6 +6,7 @@ import ChatBot from '../../components/chatBot/ChatBot';
 import ClientPaymentInfoCont from '../../containers/clientPaymentInfo/ClientPaymentInfoCont';
 import { ContentContainer } from '../profilePage/styles';
 import ProfileContainer from '../../containers/profileContainer/ProfileContainer';
+import Navprofile from '../../components/navigationBar/Navprofile';
 
 const ClientPaymentInfoPage = () => {
   useEffect(() => {
@@ -14,7 +15,7 @@ const ClientPaymentInfoPage = () => {
   return (
     <Container>
       <ChatBot />
-      <NavigationBar/>
+      <Navprofile/>
       
       <ContentContainer>
       <ProfileContainer payment></ProfileContainer>

@@ -50,10 +50,11 @@ export const ProfileDrop = (props) => {
             size="12px"
             color="#E1DACA"
             family="georgia"
-            w="10px"
+            w="100%"
             overflow="hidden"
             align="left"
-            >{props.userName}</Title>
+            cursor='pointer'
+            >{props.userName} Pedro</Title>
             </TitleCap>
             <DropDown  src={Dropdown}></DropDown>
         </Container>
@@ -62,8 +63,8 @@ export const ProfileDrop = (props) => {
         variants={iconVariants}
         animate={isOpen ? "opened": "closed"}>
         <Menu
-
-        
+        href='/client/profile'
+        style={{textDecoration: 'none', cursor: 'pointer'}}
         whileHover={{backgroundColor: "#8F805F", 
         borderRadius: "3px", Color: "white"}}
         >
@@ -75,9 +76,12 @@ export const ProfileDrop = (props) => {
             size="16px"
             color="#2E2E2E"
             weight="normal"
+cursor='pointer'
             family="georgia">Profile</Title>
         </Menu>
         <Menu
+        href='/client/bookinginfo'
+        style={{textDecoration: 'none', cursor: 'pointer'}}
         whileHover={{backgroundColor: "#8F805F", 
         borderRadius: "3px"}}
         >
@@ -88,9 +92,12 @@ export const ProfileDrop = (props) => {
             size="16px"
             color="#2E2E2E"
             weight="normal"
+cursor='pointer'
             family="georgia">Bookings</Title>
         </Menu>
         <Menu
+        href='/client/messages'
+        style={{textDecoration: 'none', cursor: 'pointer'}}
         whileHover={{backgroundColor: "#8F805F", 
         borderRadius: "3px"}}
         >
@@ -101,9 +108,12 @@ export const ProfileDrop = (props) => {
             size="16px"
             color="#2E2E2E"
             weight="normal"
+cursor='pointer'
             family="georgia">Messages</Title>
         </Menu>
         <Menu
+        href='/login'
+        style={{textDecoration: 'none', cursor: 'pointer'}}
         onClick={props.Logout}
         whileHover={{backgroundColor: "#8F805F", color: "white",
         borderRadius: "2px"}}
@@ -114,6 +124,7 @@ export const ProfileDrop = (props) => {
         <Title 
             size="16px"
             weight="normal"
+cursor='pointer'
             color ="red"
             family="georgia">Logout</Title>
         </Menu>

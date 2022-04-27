@@ -49,6 +49,10 @@ export const Menu = styled(motion.a)`
     cursor: pointer;
     justify-content: center;
     padding: 5px 0px;
+    &:hover{
+        background-color: "#8F805F";
+        border-radius: "3px"
+    }
 `;
 
 export const ProfilePicture = styled(motion.img)`
