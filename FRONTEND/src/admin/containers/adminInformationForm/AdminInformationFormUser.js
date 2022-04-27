@@ -327,7 +327,7 @@ export const AdminInformationFormFilledUser = () => {
                             <TextField
                                 placeholder='Username'
                                 label="Username"
-                                defaultValue='ShirlyTuz21234'
+                                defaultValue='FDSK1'
                                 InputProps={{ readOnly: true }}
                                 variant="outlined"
                                 style={{ width: '55%', }} />
@@ -500,7 +500,7 @@ export const AdminInformationFormFilledEditUser = () => {
                             <TextField
                                 placeholder='Username'
                                 label="Username"
-                                defaultValue='ShirlyTuz21234'
+                                defaultValue='FDSK1'
                                 
                                 variant="outlined"
                                 style={{ width: '55%', }} />

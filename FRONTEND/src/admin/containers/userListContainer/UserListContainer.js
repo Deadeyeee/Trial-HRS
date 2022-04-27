@@ -20,7 +20,7 @@ import Select from '@mui/material/Select';
 import { HorizontalLine } from '../../../client/components/horizontalLine/HorizontalLine'
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import ActionButton from '../../components/actionButton/ActionButton';
-import { AdminInformationFormFilledUser, AdminInformationFormUser } from '../adminInformationForm/AdminInformationFormUser';
+import { AdminInformationFormFilledEditUser, AdminInformationFormFilledUser, AdminInformationFormUser } from '../adminInformationForm/AdminInformationFormUser';
 import Grow from '@mui/material/Grow';
 import Edit from '@mui/icons-material/Edit';
 
@@ -196,7 +196,7 @@ const UserListContainer = () => {
                     w='100%'
                     margin='0px 0px 20px 0px'
                 ></HorizontalLine>
-                <AdminInformationFormFilledUser />
+                <AdminInformationFormFilledEditUser />
                 <ContainerGlobal gap='30px' overflow='visible' margin='20px 0px 0px 0px'>
                     <Button variant="contained" size="large"
                         style={{ backgroundColor: '#50AA32' }}
@@ -321,7 +321,10 @@ const UserListContainer = () => {
                         <Td align='center'>Connected</Td>
                         <Td align='center'>Front Desk</Td>
                         <Td align='center'><ActionButton 
-                        view={() => setShowDetails2(prev => !prev)}/></Td>
+                        view={() => setShowDetails2(prev => !prev)}
+                        edit={() => setShowDetails3(prev => !prev)}
+                        
+                        /></Td>
                     </Tr>
                     <Tr>
                         <Td align='center'>EA9324</Td>
@@ -363,6 +366,7 @@ const UserListContainer = () => {
             <Grow in={showDetails}>{addUser}</Grow>
 
             <Grow in={showDetails2}>{viewUser}</Grow>
+            <Grow in={showDetails3}>{editUser}</Grow>
         </Container>
     )
 }
