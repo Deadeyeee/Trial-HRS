@@ -7,6 +7,7 @@ import { Button } from '../../components/button/styles';
 import { Title } from '../../components/title/styles';
 import Background from '../../images/RoomsIMG/premium.jpg'
 import Background2 from '../../images/RoomsIMG/delux.jpg'
+import Background3 from '../../images/RoomsIMG/family.jpg'
 export const RoomRates = () => {
     return (
         <Container>
@@ -23,7 +24,7 @@ export const RoomRates = () => {
             <FlexboxContainer>
                 <FlexboxContentMain>
                     <FlexboxMainPhotoLeft
-                    link={Background}></FlexboxMainPhotoLeft>
+                        link={Background2}></FlexboxMainPhotoLeft>
                     <FlexboxContent>
                         <Title
                             family='playfair display, serif'
@@ -32,7 +33,7 @@ export const RoomRates = () => {
                             color='#292929'
                             align='left'
                         >
-                            Premium Room
+                            Deluxe Room
                         </Title>
                         <Description>
                             <i>
@@ -68,7 +69,7 @@ export const RoomRates = () => {
                                 margin='10px 0px 10px 0px'
                                 align='left'
                             >
-                                ₱1000/night
+                                ₱1,200/night
                             </Title>
                         </FlexButtonPrice>
                     </FlexboxContent>
@@ -85,7 +86,7 @@ export const RoomRates = () => {
                             color='#292929'
                             align='right'
                         >
-                            Standard Room
+                            Premium Room
                         </Title>
                         <Description
                             align="right">
@@ -110,7 +111,7 @@ export const RoomRates = () => {
                                 color='#292929'
                                 margin='10px 0px 10px auto'
                             >
-                                ₱1000/night
+                                ₱2,000/night
                             </Title>
                             <Button
                                 whileHover={{ backgroundColor: "#2E2E2E", color: "white" }}
@@ -128,8 +129,66 @@ export const RoomRates = () => {
                         </FlexButtonPrice>
                     </FlexboxContent>
                     <FlexboxMainPhotoLeft
-                    link={Background2}></FlexboxMainPhotoLeft>
+                        link={Background}></FlexboxMainPhotoLeft>
                 </FlexboxContentMain>
+
+
+                <HorizontalLineShortLeft></HorizontalLineShortLeft>
+
+                <FlexboxContentMain>
+                    <FlexboxMainPhotoLeft
+                        link={Background3}></FlexboxMainPhotoLeft>
+                    <FlexboxContent>
+                        <Title
+                            family='playfair display, serif'
+                            weight='700'
+                            size='33px'
+                            color='#292929'
+                            align='left'
+                        >
+                            Family Room
+                        </Title>
+                        <Description>
+                            <i>
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Maecenas sed enim ut sem viverra.
+                                Rutrum quisque non tellus orci ac. Elementum eu facilisis sed odio. Eget egestas purus viverra accumsan. In eu mi bibendum neque egestas congue quisque egestas diam.
+                                Venenatis cras sed felis eget velit aliquet sagittis id. Viverra adipiscing at in tellus integer feugiat scelerisque varius morbi. Ullamcorper eget nulla facilisi etiam dignissim diam quis.
+                                Gravida rutrum quisque non tellus orci ac auctor augue. Dictum fusce ut placerat orci nulla. Lectus proin nibh nisl condimentum id venenatis a. Viverra orci sagittis eu volutpat.
+                                Tempor id eu nisl nunc mi ipsum faucibus vitae aliquet. Convallis convallis tellus id interdum. Tortor vitae purus faucibus ornare suspendisse sed nisi. Pellentesque elit eget gravida cum sociis natoque.
+                                Dis parturient montes nascetur ridiculus mus mauris. Facilisi nullam vehicula ipsum a arcu cursus vitae.
+                            </i>
+                        </Description>
+                        <FlexButtonPrice>
+                            <Button
+                                whileHover={{ backgroundColor: "#2E2E2E", color: "white" }}
+                                textcolor="black"
+                                w='125px'
+                                h='40px'
+                                margin='5px 0px 0px 0px'
+                                fam='Playfair Display'
+                                weight='-400'
+                                fontStyle='Normal'
+                                radius="0px"
+                                border="1px solid #8F805F"
+                                href='/booking'
+                            >
+                                Book Now!
+                            </Button>
+                            <Title
+                                family='roboto slab'
+                                weight='700'
+                                size='25px'
+                                color='#292929'
+                                margin='10px 0px 10px 0px'
+                                align='left'
+                            >
+                                ₱2,700/night
+                            </Title>
+                        </FlexButtonPrice>
+                    </FlexboxContent>
+                </FlexboxContentMain>
+
+                <HorizontalLineShortLeft></HorizontalLineShortLeft>
             </FlexboxContainer>
             <Footer />
         </Container>

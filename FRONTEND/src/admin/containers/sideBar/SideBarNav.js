@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import logo from '../../../client/images/logo.png'
 import MenuBookIcon from '@mui/icons-material/MenuBook';
@@ -18,7 +18,64 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import Badge from '@mui/material/Badge';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import AddIcon from '@mui/icons-material/Add';
+import { Button, Grow } from '@mui/material';
+import { ContainerGlobal, ContainerGlobal2 } from '../../components/container/container';
 const SideBarNav = (props) => {
+    const [show, setShow] = useState(false);
+
+    const deleteModal = (
+    
+        <ContainerGlobal2
+            w='100%'
+            h='100%'
+            radius='none'
+            justify='center'
+            align='center'
+            bg='rgb(46, 46, 46, 0.9)'
+            index='1'
+            overflow='auto'
+            active
+        >
+            <ContainerGlobal
+                w='40%'
+                h='auto'
+                bg='white'
+                direction='column'
+                padding='30px'
+                gap='10px'
+                justify='center'
+                align='center'
+            >
+                <Title
+                    size='26px'
+                    color='black'
+                    family='Helvetica'
+                    fstyle='normal'
+                    weight='600'
+                    align='left'
+                >
+                    Are you sure you want to <b style={{ color: 'red' }}>Logout</b>?
+                </Title>
+                <HorizontalLine
+                    bg='gray'
+                    w='100%'
+                    margin='0px'
+                />
+                <ContainerGlobal gap='30px' overflow='vissible'>
+                    <Button variant="contained"
+                        style={{ backgroundColor: 'rgb(80, 170, 50)' }}
+                        onClick={()=>{window.location.href='/login'}}>
+                        Yes
+                    </Button>
+                    <Button variant="contained"
+                        style={{ backgroundColor: 'rgb(255, 36, 0)' }}
+                        onClick={() => setShow(prev => !prev)}>
+                        No
+                    </Button>
+                </ContainerGlobal>
+            </ContainerGlobal>
+        </ContainerGlobal2>
+    );
     return (
         <Container>
             <ProfileContainer
@@ -33,6 +90,7 @@ const SideBarNav = (props) => {
                         color='white'
                         family='arial'
                         fstyle='normal'
+                        cursor='pointer'
                     >Juan Dela Cruz</Title>
                     <Title
                         size='12px'
@@ -41,6 +99,7 @@ const SideBarNav = (props) => {
                         fstyle='normal'
                         weight='normal'
                         align='left'
+                        cursor='pointer'
                     >Admin</Title>
 
                 </DescriptionContainer>
@@ -66,6 +125,7 @@ const SideBarNav = (props) => {
                     size='14px'
                     color='white'
                     family='Helvetica'
+                    cursor='pointer'
                     fstyle='normal'
                     weight='600'
                     align='left'
@@ -87,6 +147,7 @@ const SideBarNav = (props) => {
                     size='14px'
                     color='white'
                     family='Helvetica'
+                    cursor='pointer'
                     fstyle='normal'
                     weight='600'
                     align='left'
@@ -108,6 +169,7 @@ const SideBarNav = (props) => {
                     size='14px'
                     color='white'
                     family='Helvetica'
+                    cursor='pointer'
                     fstyle='normal'
                     weight='600'
                     align='left'
@@ -128,6 +190,7 @@ const SideBarNav = (props) => {
                     size='14px'
                     color='white'
                     family='Helvetica'
+                    cursor='pointer'
                     fstyle='normal'
                     weight='600'
                     align='left'
@@ -149,6 +212,7 @@ const SideBarNav = (props) => {
                     size='14px'
                     color='white'
                     family='Helvetica'
+                    cursor='pointer'
                     fstyle='normal'
                     weight='600'
                     align='left'
@@ -170,6 +234,7 @@ const SideBarNav = (props) => {
                     size='14px'
                     color='white'
                     family='Helvetica'
+                    cursor='pointer'
                     fstyle='normal'
                     weight='600'
                     align='left'
@@ -191,6 +256,7 @@ const SideBarNav = (props) => {
                     size='14px'
                     color='white'
                     family='Helvetica'
+                    cursor='pointer'
                     fstyle='normal'
                     weight='600'
                     align='left'
@@ -214,6 +280,7 @@ const SideBarNav = (props) => {
                     size='14px'
                     color='white'
                     family='Helvetica'
+                    cursor='pointer'
                     fstyle='normal'
                     weight='600'
                     align='left'
@@ -235,6 +302,7 @@ const SideBarNav = (props) => {
                     size='14px'
                     color='white'
                     family='Helvetica'
+                    cursor='pointer'
                     fstyle='normal'
                     weight='600'
                     align='left'
@@ -251,17 +319,18 @@ const SideBarNav = (props) => {
                 <AddIcon
                     style={{ color: props.additional == true ? "#2E2E2E" : "#dddddd" }}
                 />
-                    <Title
-                        size='14px'
-                        color='white'
-                        family='Helvetica'
-                        fstyle='normal'
-                        weight='600'
-                        align='left'
-                        padding='0px 10px 0px 0px'
-                    >
-                        Additionals
-                    </Title>
+                <Title
+                    size='14px'
+                    color='white'
+                    family='Helvetica'
+                    cursor='pointer'
+                    fstyle='normal'
+                    weight='600'
+                    align='left'
+                    padding='0px 10px 0px 0px'
+                >
+                    Additionals
+                </Title>
             </MenuContainer>
 
             <MenuContainer
@@ -276,6 +345,7 @@ const SideBarNav = (props) => {
                         size='14px'
                         color='white'
                         family='Helvetica'
+                        cursor='pointer'
                         fstyle='normal'
                         weight='600'
                         align='left'
@@ -298,6 +368,7 @@ const SideBarNav = (props) => {
                     size='14px'
                     color='white'
                     family='Helvetica'
+                    cursor='pointer'
                     fstyle='normal'
                     weight='600'
                     align='left'
@@ -308,6 +379,7 @@ const SideBarNav = (props) => {
             <Logout
                 bg='red'
                 margin='auto 0px 20px 0px'
+                onClick={() => setShow(prev => !prev)}
             >
                 <LogoutIcon
                     style={{ color: "#dddddd" }}
@@ -317,6 +389,7 @@ const SideBarNav = (props) => {
                     size='14px'
                     color='white'
                     family='Helvetica'
+                    cursor='pointer'
                     fstyle='normal'
                     weight='600'
                     align='left'
@@ -324,6 +397,8 @@ const SideBarNav = (props) => {
                     Logout
                 </Title>
             </Logout>
+
+            <Grow in={show}>{deleteModal}</Grow>
         </Container>
     )
 }

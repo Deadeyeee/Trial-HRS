@@ -36,7 +36,7 @@ const BookingsContainer = () => {
     const color = "#c44242";
     const [age, setAge] = React.useState('');
 
-    const [paymentType, setPaymentType] = React.useState('Installment');
+    const [paymentType, setPaymentType] = React.useState('Payment');
     const [paymentMethod, setPaymentMethod] = React.useState('Cash');
     const [roomType, setRoomType] = React.useState('Deluxe');
     const [discount, setDiscount] = React.useState('none');
@@ -402,6 +402,38 @@ const BookingsContainer = () => {
                             </Title>
                             <TextField defaultValue='0' id="outlined-basic" label="" variant="standard" style={{ width: 200, margin: '5px 0px' }} />
                         </ContainerGlobal>
+                        <ContainerGlobal
+                            w='420px'
+                            h='auto'
+                            direction='row'
+                            gap='10px'
+                            justify='space-between'
+                            align='center'
+                            overflow='auto'
+
+                        >
+
+                            <Title
+                                size='20px'
+                                color='Black'
+                                family='Helvetica'
+                                fstyle='Normal'
+                                weight='400'
+                                align='left'
+                                margin='15px 0px 20px 0px'
+                            >
+                                Others:
+                            </Title>
+                            <TextField id="outlined-basic" label="" variant="standard" style={{ width: 200, margin: '5px 0px' }}
+                                value='00.00'
+                                type='number'
+                                InputProps={{
+                                    readOnly: false,
+                                    endAdornment: <InputAdornment position="end">PHP</InputAdornment>,
+                                }}
+
+                            />
+                        </ContainerGlobal>
                     </ContainerGlobalColumn>
                     <ContainerGlobalColumn>
                         <ContainerGlobal
@@ -559,7 +591,7 @@ const BookingsContainer = () => {
                                 >
 
                                     <MenuItem value={'Full'} >Full payment</MenuItem>
-                                    <MenuItem value={'Installment'} selected>Installment payment</MenuItem>
+                                    <MenuItem value={'Payment'} selected>Down Payment</MenuItem>
                                 </Select>
                             </FormControl>
                         </ContainerGlobal>
@@ -1419,6 +1451,38 @@ const BookingsContainer = () => {
                                 }}
                                 defaultValue='0' id="outlined-basic" label="" variant="standard" style={{ width: 200, margin: '5px 0px' }} />
                         </ContainerGlobal>
+                        <ContainerGlobal
+                            w='420px'
+                            h='auto'
+                            direction='row'
+                            gap='10px'
+                            justify='space-between'
+                            align='center'
+                            overflow='auto'
+
+                        >
+
+                            <Title
+                                size='20px'
+                                color='Black'
+                                family='Helvetica'
+                                fstyle='Normal'
+                                weight='400'
+                                align='left'
+                                margin='15px 0px 20px 0px'
+                            >
+                                Others:
+                            </Title>
+                            <TextField id="outlined-basic" label="" variant="standard" style={{ width: 200, margin: '5px 0px' }}
+                                value='00.00'
+                                type='number'
+                                InputProps={{
+                                    readOnly: true,
+                                    endAdornment: <InputAdornment position="end">PHP</InputAdornment>,
+                                }}
+
+                            />
+                        </ContainerGlobal>
                     </ContainerGlobalColumn>
                     <ContainerGlobalColumn>
                         <ContainerGlobal
@@ -1579,7 +1643,7 @@ const BookingsContainer = () => {
                                 >
 
                                     <MenuItem value={'Full'} >Full payment</MenuItem>
-                                    <MenuItem value={'Installment'} selected>Installment payment</MenuItem>
+                                    <MenuItem value={'Payment'} selected>Down Payment</MenuItem>
                                 </Select>
                             </FormControl>
                         </ContainerGlobal>
@@ -2501,6 +2565,41 @@ const BookingsContainer = () => {
                                 }}
                                 defaultValue='0' id="outlined-basic" label="" variant="standard" style={{ width: 200, margin: '5px 0px' }} />
                         </ContainerGlobal>
+                        <ContainerGlobal
+                            w='420px'
+                            h='auto'
+                            direction='row'
+                            gap='10px'
+                            justify='space-between'
+                            align='center'
+                            overflow='auto'
+
+                        >
+
+                            <Title
+                                size='20px'
+                                color='Black'
+                                family='Helvetica'
+                                fstyle='Normal'
+                                weight='400'
+                                align='left'
+                                margin='15px 0px 20px 0px'
+                            >
+                                Others:
+                            </Title>
+                            <TextField id="outlined-basic" label="" variant="standard" style={{ width: 130, margin: '5px 0px 5px auto' }}
+                                defaultValue='00.00'
+                                type='number'
+                                InputProps={{
+                                    endAdornment: <InputAdornment position="end">PHP</InputAdornment>,
+                                }}
+
+                            />
+                            <Button variant="contained" size="small"
+                                style={{ backgroundColor: '#50AA32' }}>
+                                Add
+                            </Button>
+                        </ContainerGlobal>
                     </ContainerGlobalColumn>
                     <ContainerGlobalColumn>
                         <ContainerGlobal
@@ -2658,7 +2757,7 @@ const BookingsContainer = () => {
                                 >
 
                                     <MenuItem value={'Full'} >Full payment</MenuItem>
-                                    <MenuItem value={'Installment'} selected>Installment payment</MenuItem>
+                                    <MenuItem value={'Payment'} selected>Down Payment</MenuItem>
                                 </Select>
                             </FormControl>
                         </ContainerGlobal>

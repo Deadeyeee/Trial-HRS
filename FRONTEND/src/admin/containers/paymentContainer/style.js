@@ -85,7 +85,7 @@ export const GrayTab = styled(motion.td)`
 export const ContainerGlobalColumn = styled(motion.div)`
   display: flex;
   flex-direction: column;
-  width: auto;
+  padding: 0px 0px 0px 50px;
   
 
 `; 

@@ -33,6 +33,8 @@ export const HomeBooking = ({ title }) => {
           radius='0px'
           border='1px solid black'
           bg='transparent'
+          
+          onClick={()=>{window.location.href='/booking'}}
         >
           Book now!
         </Button>
@@ -129,6 +131,7 @@ export const HomeBooking = ({ title }) => {
               fam='Lato'
               bg='#302B20'
               margin='auto 0px 0px 0px'
+              onClick={()=>{window.location.href='/roomRate'}}
             >
               Read More
             </Button>

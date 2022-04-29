@@ -85,7 +85,7 @@ const ClientMessagesCont = () => {
             align='left'
             margin='20px'
           >
-            Reciept Confirmation
+            Reservation Confirmation
           </Title>
           <IconButton aria-label="delete" size='large' style={{ color: 'white', margin: '0px 0px 0px auto' }}
 
@@ -118,11 +118,11 @@ const ClientMessagesCont = () => {
             align='left'
             margin='0px 0px 0px auto'
           >
-            04/20/21 - 12:26 PM
+            04/22/21 - 12:26 PM
           </Title>
         </ContainerGlobal>
         <ContainerGlobal
-          w='auto'
+          w='95%'
           h='450px'
           margin='0px 15px'
           bg='rgb(183, 183, 183,.3)'
@@ -131,8 +131,37 @@ const ClientMessagesCont = () => {
           direction='column'
           overflow='auto'
         >
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ut tellus id felis maximus semper vel non tellus. Ut rutrum nisi augue, eu efficitur tortor pellentesque sed. Suspendisse sed mi a dolor fringilla luctus non vitae augue. Duis consectetur finibus ultrices. Ut ac fermentum arcu. Sed commodo rhoncus lectus, a porttitor velit vehicula sed. Nullam bibendum purus eu mattis cursus. Cras porta sem sit amet eleifend malesuada. Nullam eu sagittis neque. Maecenas sagittis ornare nulla nec sagittis.
-          <img style={{ margin: '20px 0px 0px 0px' }} width='30%' src={Recipt} />
+          Dear Pedro Juan, <br/><br/>
+
+          We are pleased to inform you that your RESERVATION [091234568] is confirmed.<br/><br/>
+
+          Your check-in : 04/26/2022<br/>
+          Your checkout : 04/27/2022<br/><br/>
+
+          Reservation details:<br/><br/>
+
+          Reservation Number: 091234568<br/>
+          Reservation Date: 03/01/2022<br/>
+          Payment Mode: Bank (MetroBank)<br/>
+          Payment Type: Down Payment<br/>
+          Guest Name: Pedro <br/>
+          Birthdate: 2000/12/21<br/>
+          Nationality: Filipino<br/>
+          Email Address: PedroJuan@gmail.com<br/>
+          Address: Cecilia Chapman 711 Philippines<br/>
+          Contact Number: 09292333312<br/>
+          Check-In Date: 03/04/2022<br/>
+          Check-Out Date: 03/08/2022<br/>
+          Night(s): 4 nights<br/>
+          Total No. of Rooms: 1<br/>
+          Total No. of adult: 2<br/>
+          Total No. of kids: 0<br/>
+          Special Request(s): none<br/><br/>
+
+          We are sincerely awaiting your visit, I hope you enjoy your stay with us.<br/><br/>
+
+          - Mr. Elbert<br/>
+          Hotel Manager
         </ContainerGlobal>
 
         <ContainerGlobal
@@ -419,7 +448,7 @@ const ClientMessagesCont = () => {
               fStyle='Normal'
               align='Center'
               margin='20px'>
-              Reciept Confirmation
+              Reservation Confirmation
             </Title>
             <Title
               family='raleway, sans-serif'
@@ -429,7 +458,7 @@ const ClientMessagesCont = () => {
               fStyle='Italic'
               align='Center'
               margin='20px'>
-              10/20/22
+              04/22/21
             </Title>
           </MessagesContent>
           <MessagesContent
@@ -695,7 +724,7 @@ const ClientMessagesCont = () => {
               fStyle='Normal'
               align='Center'
               margin='20px'>
-              Reciept Update
+              Receipt Update
             </Title>
             <Title
               family='raleway, sans-serif'

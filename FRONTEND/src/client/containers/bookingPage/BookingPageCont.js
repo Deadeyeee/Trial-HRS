@@ -87,6 +87,8 @@ export const BookingPageCont = () => {
                 border="1px solid #8F805F"
                 margin='30px 0px 0px 0px'
                 fontsize='25px'
+                
+                onClick={()=>{window.location.href='/booking'}}
             >
                 Book now!!
             </Button>

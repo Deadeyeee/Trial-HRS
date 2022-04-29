@@ -36,7 +36,7 @@ const BookingsContainer = () => {
     const color = "#c44242";
     const [age, setAge] = React.useState('');
 
-    const [paymentType, setPaymentType] = React.useState('Installment');
+    const [paymentType, setPaymentType] = React.useState('Payment');
     const [paymentMethod, setPaymentMethod] = React.useState('Cash');
     const [roomType, setRoomType] = React.useState('Deluxe');
     const [discount, setDiscount] = React.useState('none');
@@ -591,7 +591,7 @@ const BookingsContainer = () => {
                                 >
 
                                     <MenuItem value={'Full'} >Full payment</MenuItem>
-                                    <MenuItem value={'Installment'} selected>Installment payment</MenuItem>
+                                    <MenuItem value={'Payment'} selected>Down Payment</MenuItem>
                                 </Select>
                             </FormControl>
                         </ContainerGlobal>
@@ -1643,7 +1643,7 @@ const BookingsContainer = () => {
                                 >
 
                                     <MenuItem value={'Full'} >Full payment</MenuItem>
-                                    <MenuItem value={'Installment'} selected>Installment payment</MenuItem>
+                                    <MenuItem value={'Payment'} selected>Down Payment</MenuItem>
                                 </Select>
                             </FormControl>
                         </ContainerGlobal>
@@ -2757,7 +2757,7 @@ const BookingsContainer = () => {
                                 >
 
                                     <MenuItem value={'Full'} >Full payment</MenuItem>
-                                    <MenuItem value={'Installment'} selected>Installment payment</MenuItem>
+                                    <MenuItem value={'Payment'} selected>Down Payment</MenuItem>
                                 </Select>
                             </FormControl>
                         </ContainerGlobal>

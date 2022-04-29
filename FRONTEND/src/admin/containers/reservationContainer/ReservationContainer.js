@@ -37,7 +37,7 @@ export const ReservationContainer = () => {
     const color = "#c44242";
     const [age, setAge] = React.useState('');
 
-    const [paymentType, setPaymentType] = React.useState('Installment');
+    const [paymentType, setPaymentType] = React.useState('Down Payment');
     const [paymentMethod, setPaymentMethod] = React.useState('Cash');
     const [roomType, setRoomType] = React.useState('Deluxe');
     const [discount, setDiscount] = React.useState('none');
@@ -563,7 +563,7 @@ export const ReservationContainer = () => {
                                 >
 
                                     <MenuItem value={'Full'} >Full payment</MenuItem>
-                                    <MenuItem value={'Installment'} selected>Installment payment</MenuItem>
+                                    <MenuItem value={'Down Payment'} selected>Down Payment</MenuItem>
                                 </Select>
                             </FormControl>
                         </ContainerGlobal>
@@ -1583,7 +1583,7 @@ export const ReservationContainer = () => {
                                 >
 
                                     <MenuItem value={'Full'} >Full payment</MenuItem>
-                                    <MenuItem value={'Installment'} selected>Installment payment</MenuItem>
+                                    <MenuItem value={'Down Payment'} selected>Down Payment</MenuItem>
                                 </Select>
                             </FormControl>
                         </ContainerGlobal>
@@ -2660,7 +2660,7 @@ export const ReservationContainer = () => {
                                 >
 
                                     <MenuItem value={'Full'} >Full payment</MenuItem>
-                                    <MenuItem value={'Installment'} selected>Installment payment</MenuItem>
+                                    <MenuItem value={'Down Payment'} selected>Down Payment</MenuItem>
                                 </Select>
                             </FormControl>
                         </ContainerGlobal>
