@@ -215,7 +215,7 @@ const BillingSummaryContainer = () => {
                             >
                                 <FormControlLabel value="cash" control={<Radio />} label="Cash" />
                                 <FormControlLabel value="bank" control={<Radio />} label="Bank(Metro Bank)" />
-                                <FormControlLabel value="ebank" control={<Radio />} label="E-Bank(Gcash)" />
+                                <FormControlLabel value="ebank" control={<Radio />} label="E-Payment(Gcash)" />
                             </RadioGroup>
                         </TableContainer>
 
