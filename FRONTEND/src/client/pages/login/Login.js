@@ -98,7 +98,7 @@ export const Login = () => {
                             placeholder="  &#xf007; Username or Email"
                             type="text"
                             family="FontAwesome"
-                            required
+                            
                         ></TextInput>
                         <TextInput
 
@@ -110,7 +110,7 @@ export const Login = () => {
                             family="FontAwesome"
                             type="password"
                             radius="0px"
-                            required
+                            
                         ></TextInput>
 
 
@@ -163,6 +163,7 @@ export const Login = () => {
                             radius='5px'
                             weight='bold'
                             value='Log in'
+                            onClick={()=>{window.location.href='/client/profile'}}
                         ></FormButton>
                     </RegistrationForm>
 

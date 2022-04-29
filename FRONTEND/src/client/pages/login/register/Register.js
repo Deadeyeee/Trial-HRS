@@ -273,7 +273,7 @@ export const Register = () => {
             bg="green"
             border='none'
             padding='5px 5px'
-            value="Creat account"
+            value="Create account"
           ></FormButton>
         </RegistrationForm>
 
