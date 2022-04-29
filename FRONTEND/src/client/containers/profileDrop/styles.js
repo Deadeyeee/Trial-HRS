@@ -36,7 +36,7 @@ export const DropContainer = styled(motion.div)`
     background-color: #E1DACA;
     border-radius: 5px;
     position: absolute;
-    margin-top: 170px;
+    margin-top: 180px;
     box-shadow: 2px 5px 5px black;
 `;
 

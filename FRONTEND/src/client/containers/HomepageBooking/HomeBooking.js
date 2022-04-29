@@ -97,6 +97,8 @@ export const HomeBooking = ({ title }) => {
               fam='Lato'
               bg='#302B20'
               margin='auto 0px 0px 0px'
+              
+          onClick={()=>{window.location.href='/facilitiesAmenities'}}
             >
               Read More
             </Button>
@@ -165,6 +167,8 @@ export const HomeBooking = ({ title }) => {
               fam='Lato'
               bg='#302B20'
               margin='auto 0px 0px 0px'
+              
+          onClick={()=>{window.location.href='/contactUs'}}
             >
               Read More
             </Button>

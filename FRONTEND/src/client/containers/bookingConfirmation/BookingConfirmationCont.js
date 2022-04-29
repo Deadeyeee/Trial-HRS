@@ -205,9 +205,7 @@ function BookingConfirmationCont() {
             align='center' 
             margin='0px 200px'    
         >
-            Please make your deposit, three days before your check-in date to confirm your reservation. Once payment is made, 
-            please email the scanned copy of the deposit slip to <b>(COMPANY EMAIL)</b>
-            so we could verify the payment. You will receive a booking confirmation once the payment is verified.
+            To confirm your reservation, please make your deposit three days before your check-in date. Please email your proof of payment to <b>(COMPANY EMAIL)</b> or upload it to your user account by <a href='/login'>logging in</a> to our website and going to the PAYMENT SECTION so we can verify the payment. Once your payment has been verified, you will receive a booking confirmation.
         </Title>
         <Title
             family= 'raleway, sans-serif'
@@ -218,8 +216,7 @@ function BookingConfirmationCont() {
             align='center' 
             margin='25px 200px'    
         >
-            For further inquiries, you may call <b>Company number</b> or send an email at <b>Company email</b>.  
-            You will find the details of your reservation made below.
+            For further information, please send an email to Company email, or <a href='/login'>message us</a> through your account. You will find the details of your reservation made below.
         </Title>
         </BankContentContainer>
         <Title
