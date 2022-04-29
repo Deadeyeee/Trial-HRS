@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useState } from 'react'
+import React, { useLayoutEffect, useState, useEffect } from 'react'
 import { FormButton, Button } from '../../components/button/styles'
 import { HorizontalLine } from '../../components/horizontalLine/HorizontalLine'
 import { Description } from '../../components/paragraph/style'
@@ -74,6 +74,10 @@ const InformationForm = () => {
     let payments = ["Pay at hotel", "Bank payment", "E-Wallet payment"];
     let banks = ["BDO", "PNB", "BPI"];
     let eWallets = ["Gcash", "Paymaya"];
+
+    useEffect(() => {
+        document.title = "Guest Information"
+      }, [])
     return (
         <Container>
             <ContainerChild>

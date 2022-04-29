@@ -1,4 +1,4 @@
-import React from 'react'
+import {React, useEffect} from 'react'
 import { FlexButtonPrice, Container, FlexboxContainer, FlexboxContent, FlexboxContentMain, FlexboxMainPhotoLeft, HorizontalLineShortLeft, Description } from './styles'
 import NavigationBar from '../../components/navigationBar/Nav';
 import Footer from '../../components/footer/Footer'
@@ -9,6 +9,9 @@ import Background from '../../images/RoomsIMG/premium.jpg'
 import Background2 from '../../images/RoomsIMG/delux.jpg'
 import Background3 from '../../images/RoomsIMG/family.jpg'
 export const RoomRates = () => {
+    useEffect(() => {
+        document.title = "Rooms and Rates"
+      }, [])
     return (
         <Container>
             <ChatBot />
