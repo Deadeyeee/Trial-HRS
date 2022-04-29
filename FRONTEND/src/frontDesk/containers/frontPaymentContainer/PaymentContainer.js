@@ -3195,7 +3195,7 @@ const PaymentContainer = () => {
                     </Tr>
                     <Tr>
                         <Td align='center'>094534568</Td>
-                        <Td align='center'>Pedro Penduco</Td>
+                        <Td align='center'>Berna Boddit</Td>
                         <Td align='center'>Deluxe Room</Td>
                         <Td align='center'>102</Td>
                         <Td align='center'>01/04/2022</Td>
@@ -3232,7 +3232,7 @@ const PaymentContainer = () => {
                     </Tr>
                     <Tr>
                         <Td align='center'>095644568</Td>
-                        <Td align='center'>Pedro Penduco</Td>
+                        <Td align='center'>Hurarric Gaturn</Td>
                         <Td align='center'>Premium Room</Td>
                         <Td align='center'>103</Td>
                         <Td align='center'>01/04/2022</Td>
@@ -3267,7 +3267,7 @@ const PaymentContainer = () => {
                     </Tr>
                     <Tr>
                         <Td align='center'>095432368</Td>
-                        <Td align='center'>Pedro Penduco</Td>
+                        <Td align='center'>Kiehl Jam</Td>
                         <Td align='center'>Deluxe Room</Td>
                         <Td align='center'>104</Td>
                         <Td align='center'>01/04/2022</Td>
@@ -3303,7 +3303,7 @@ const PaymentContainer = () => {
                     </Tr>
                     <Tr>
                         <Td align='center'>091114568</Td>
-                        <Td align='center'>Pedro Penduco</Td>
+                        <Td align='center'>Hadjustim Karas</Td>
                         <Td align='center'>Premium Room</Td>
                         <Td align='center'>105</Td>
                         <Td align='center'>01/04/2022</Td>
@@ -3338,7 +3338,7 @@ const PaymentContainer = () => {
                     </Tr>
                     <Tr>
                         <Td align='center'>094444568</Td>
-                        <Td align='center'>Pedro Penduco</Td>
+                        <Td align='center'>Piyung Hiu</Td>
                         <Td align='center'>Deluxe Room</Td>
                         <Td align='center'>106</Td>
                         <Td align='center'>01/04/2022</Td>
