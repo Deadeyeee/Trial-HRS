@@ -3553,7 +3553,7 @@ const BookingsContainer = () => {
                     </Tr>
                     <Tr>
                         <Td align='center'>091224568</Td>
-                        <Td align='center'>Pedro Penduco</Td>
+                        <Td align='center'>Berna Boddit</Td>
                         <Td align='center'>05/20/21</Td>
                         <Td align='center'>05/25/21</Td>
                         <Td align='center'>05/29/21</Td>
@@ -3613,7 +3613,7 @@ const BookingsContainer = () => {
                     </Tr>
                     <Tr>
                         <Td align='center'>095554568</Td>
-                        <Td align='center'>Pedro Penduco</Td>
+                        <Td align='center'>Hurarric Gaturn</Td>
                         <Td align='center'>05/20/21</Td>
                         <Td align='center'>05/25/21</Td>
                         <Td align='center'>05/27/21</Td>
@@ -3673,7 +3673,7 @@ const BookingsContainer = () => {
                     </Tr>
                     <Tr>
                         <Td align='center'>091123568</Td>
-                        <Td align='center'>Pedro Penduco</Td>
+                        <Td align='center'>Kiehl Jam</Td>
                         <Td align='center'>05/20/21</Td>
                         <Td align='center'>05/25/21</Td>
                         <Td align='center'>05/29/21</Td>
@@ -3733,7 +3733,7 @@ const BookingsContainer = () => {
                     </Tr>
                     <Tr>
                         <Td align='center'>091124568</Td>
-                        <Td align='center'>Pedro Penduco</Td>
+                        <Td align='center'>Hadjustim Karas</Td>
                         <Td align='center'>05/20/21</Td>
                         <Td align='center'>05/25/21</Td>
                         <Td align='center'>05/29/21</Td>

@@ -3424,7 +3424,7 @@ export const ReservationContainer = () => {
                     </Tr>
                     <Tr>
                         <Td align='center'>091243568</Td>
-                        <Td align='center'>Pedro Penduco</Td>
+                        <Td align='center'>Berna Boddit</Td>
                         <Td align='center'>05/20/21</Td>
                         <Td align='center'>05/25/21</Td>
                         <Td align='center'>05/26/21</Td>
@@ -3464,7 +3464,7 @@ export const ReservationContainer = () => {
                     </Tr>
                     <Tr>
                         <Td align='center'>093224568</Td>
-                        <Td align='center'>Pedro Penduco</Td>
+                        <Td align='center'>Hurarric Gaturn</Td>
                         <Td align='center'>05/20/21</Td>
                         <Td align='center'>05/25/21</Td>
                         <Td align='center'>05/29/21</Td>
@@ -3499,7 +3499,7 @@ export const ReservationContainer = () => {
                     </Tr>
                     <Tr>
                         <Td align='center'>091212568</Td>
-                        <Td align='center'>Pedro Penduco</Td>
+                        <Td align='center'>Kiehl Jam</Td>
                         <Td align='center'>05/20/21</Td>
                         <Td align='center'>05/25/21</Td>
                         <Td align='center'>05/27/21</Td>
@@ -3534,7 +3534,7 @@ export const ReservationContainer = () => {
                     </Tr>
                     <Tr>
                         <Td align='center'>095434568</Td>
-                        <Td align='center'>Pedro Penduco</Td>
+                        <Td align='center'>Hadjustim Karas</Td>
                         <Td align='center'>05/20/21</Td>
                         <Td align='center'>05/25/21</Td>
                         <Td align='center'>05/29/21</Td>
@@ -3545,7 +3545,7 @@ export const ReservationContainer = () => {
                                 margin='0px auto'
                                 bg='rgb(118, 185, 71, .2)'
                                 direction='row'
-                                padding='2px 0px'
+                                padding='2px 0px'   
                                 justify='center'
                                 align='center'
                                 border='2px solid rgb(118, 185, 71)'

@@ -342,7 +342,7 @@ const DateNow = Dates.toString().split(' ');
                     </Tr>
                     <Tr>
 
-                        <Td align='center'>Pedro Penduco</Td>
+                        <Td align='center'>Berna Boddit</Td>
                         <Td align='center'>091234568</Td>
                         <Td align='center'>Deluxe Room</Td>
                         <Td align='center'>05/25/21</Td>
@@ -376,7 +376,7 @@ const DateNow = Dates.toString().split(' ');
                         <Td align='center'><ActionButton/></Td>
                     </Tr>
                     <Tr>
-                        <Td align='center'>Pedro Penduco</Td>
+                        <Td align='center'>Hurarric Gaturn</Td>
                         <Td align='center'>091234568</Td>
                         <Td align='center'>Deluxe Room</Td>
                         <Td align='center'>05/25/21</Td>
@@ -410,7 +410,7 @@ const DateNow = Dates.toString().split(' ');
                     </Tr>
                     <Tr>
 
-                        <Td align='center'>Pedro Penduco</Td>
+                        <Td align='center'>Kiehl Jam</Td>
                         <Td align='center'>091234568</Td>
                         <Td align='center'>Deluxe Room</Td>
                         <Td align='center'>05/25/21</Td>
