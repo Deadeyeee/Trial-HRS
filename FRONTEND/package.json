@@ -1,6 +1,7 @@
 {
   "name": "trial-app",
-  "version": "0.1.0",
+  "homepage": "http://rmluxehotel.online/",
+  "version": "0.3.0",
   "private": true,
   "dependencies": {
     "@babel/runtime": "^7.17.2",
