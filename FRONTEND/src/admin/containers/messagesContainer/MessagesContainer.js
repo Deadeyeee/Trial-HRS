@@ -237,7 +237,7 @@ const MessagesContainer = () => {
                         align='left'
                         margin='0px 0px 0px auto'
                     >
-                        04/20/21 - 12:26 PM
+                        04/22/21 - 12:26 PM
                     </Title>
                 </ContainerGlobal>
                 <ContainerGlobal
@@ -653,8 +653,8 @@ const MessagesContainer = () => {
                                         <Td align='center' normal >Pedro Juan</Td>
                                         <Td align='center' normal >Reservation Payment</Td>
                                         <Td align='center' normal >Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla et mattis urna. Nulla vel commodo massa. Proin a lectus pulvinar neque sollicitudin finibus. Curabitur mollis, tellus quis placerat sollicitudin, libero ipsum vulputate tortor, non vulputate mi lorem quis mauris. Duis sit amet gravida orci.</Td>
-                                        <Td align='center' normal >03/01/2022</Td>
-                                        <Td align='center' normal >11:10</Td>
+                                        <Td align='center' normal >04/20/21</Td>
+                                        <Td align='center' normal >12:26</Td>
                                         <Td align='center' normal ><ActionButtonMessages /></Td>
                                     </Tr>
                                     <Tr
@@ -724,7 +724,7 @@ const MessagesContainer = () => {
                                     <Td align='center' normal>Reservation Confirmationt</Td>
                                     <Td align='center' normal>
                                         Dear Pedro Juan,  We are pleased to inform you that your </Td>
-                                    <Td align='center' normal>03/04/2022</Td>
+                                    <Td align='center' normal>04/22/2021</Td>
                                     <Td align='center' normal>20:30</Td>
                                     <Td align='center' normal><ActionButtonMessages /></Td>
                                 </Tr>
