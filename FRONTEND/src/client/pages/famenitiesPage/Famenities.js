@@ -44,6 +44,7 @@ export const Famenities = () => {
                             align='left'
                             weight='400'
                             margin="0px 0px 0px 300px"
+                            style={{cursor: 'pointer'}}
                         >
                             See More
                         </Title></a>
