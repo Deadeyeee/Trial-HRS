@@ -3156,7 +3156,7 @@ const PaymentContainer = () => {
                     </Tr>
                     <Tr>
                         <Td align='center'>091234568</Td>
-                        <Td align='center'>Pedro Juam</Td>
+                        <Td align='center'>Pedro Juan</Td>
                         <Td align='center'>Premium Room</Td>
                         <Td align='center'>102</Td>
                         <Td align='center'>03/04/2022</Td>
