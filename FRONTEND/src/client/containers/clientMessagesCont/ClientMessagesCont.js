@@ -45,6 +45,7 @@ const ClientMessagesCont = () => {
 
   const [show, setShow] = useState(false);
   const [showComposeMessage, setShowComposeMessage] = useState(false);
+  const [show2, setShow2] = useState(false);
 
   const handleChange2 = (event, newValue) => {
     setValue2(newValue);
@@ -131,36 +132,36 @@ const ClientMessagesCont = () => {
           direction='column'
           overflow='auto'
         >
-          Dear Pedro Juan, <br/><br/>
+          Dear Pedro Juan, <br /><br />
 
-          We are pleased to inform you that your RESERVATION [091234568] is confirmed.<br/><br/>
+          We are pleased to inform you that your RESERVATION [091234568] is confirmed.<br /><br />
 
-          Your check-in : 04/26/2022<br/>
-          Your checkout : 04/27/2022<br/><br/>
+          Your check-in : 04/26/2022<br />
+          Your checkout : 04/27/2022<br /><br />
 
-          Reservation details:<br/><br/>
+          Reservation details:<br /><br />
 
-          Reservation Number: 091234568<br/>
-          Reservation Date: 03/01/2022<br/>
-          Payment Mode: Bank (MetroBank)<br/>
-          Payment Type: Down Payment<br/>
-          Guest Name: Pedro <br/>
-          Birthdate: 2000/12/21<br/>
-          Nationality: Filipino<br/>
-          Email Address: PedroJuan@gmail.com<br/>
-          Address: Cecilia Chapman 711 Philippines<br/>
-          Contact Number: 09292333312<br/>
-          Check-In Date: 03/04/2022<br/>
-          Check-Out Date: 03/08/2022<br/>
-          Night(s): 4 nights<br/>
-          Total No. of Rooms: 1<br/>
-          Total No. of adult: 2<br/>
-          Total No. of kids: 0<br/>
-          Special Request(s): none<br/><br/>
+          Reservation Number: 091234568<br />
+          Reservation Date: 03/01/2022<br />
+          Payment Mode: Bank (MetroBank)<br />
+          Payment Type: Down Payment<br />
+          Guest Name: Pedro <br />
+          Birthdate: 2000/12/21<br />
+          Nationality: Filipino<br />
+          Email Address: PedroJuan@gmail.com<br />
+          Address: Cecilia Chapman 711 Philippines<br />
+          Contact Number: 09292333312<br />
+          Check-In Date: 03/04/2022<br />
+          Check-Out Date: 03/08/2022<br />
+          Night(s): 4 nights<br />
+          Total No. of Rooms: 1<br />
+          Total No. of adult: 2<br />
+          Total No. of kids: 0<br />
+          Special Request(s): none<br /><br />
 
-          We are sincerely awaiting your visit, I hope you enjoy your stay with us.<br/><br/>
+          We are sincerely awaiting your visit, I hope you enjoy your stay with us.<br /><br />
 
-          - Mr. Elbert<br/>
+          - Mr. Elbert<br />
           Hotel Manager
         </ContainerGlobal>
 
@@ -186,6 +187,124 @@ const ClientMessagesCont = () => {
             style={{ backgroundColor: '#FF2400' }}
 
             onClick={() => setShow(prev => !prev)}
+          >
+            Delete
+          </Button>
+        </ContainerGlobal>
+      </ContainerGlobal>
+
+    </ContainerGlobal2>
+  );
+
+
+
+  const viewSentMessage = (
+
+    <ContainerGlobal2
+      w='100%'
+      h='100%'
+      radius='none'
+      justify='center'
+      align='center'
+      bg='rgb(46, 46, 46, 0.9)'
+      index='2'
+      overflow='auto'
+      active
+    >
+      <ContainerGlobal
+        w='900px'
+        h='700px'
+        bg='white'
+        direction='column'
+        gap='10px'
+
+      >
+        <ContainerGlobal
+          bg='#998B6D'
+          radius='none'
+          align='center'
+          w='100%'>
+          <Title
+            size='20px'
+            color='black'
+            family='Helvetica'
+            fstyle='normal'
+            weight='600'
+            align='left'
+            margin='20px'
+          >
+            Reservation Payment
+          </Title>
+          <IconButton aria-label="delete" size='large' style={{ color: 'white', margin: '0px 0px 0px auto' }}
+
+            onClick={() => setShow2(prev => !prev)}
+          >
+            <CloseIcon />
+          </IconButton>
+
+        </ContainerGlobal>
+
+        <ContainerGlobal
+          w='95%' overflow='visible' margin='5px auto'>
+          <Title
+            size='16px'
+            color='black'
+            family='Helvetica'
+            fstyle='normal'
+            weight='400'
+            align='left'
+            margin='0px 0px 0px 0px'
+          >
+            <b>To:</b> FrontDesk
+          </Title>
+          <Title
+            size='16px'
+            color='black'
+            family='Helvetica'
+            fstyle='normal'
+            weight='400'
+            align='left'
+            margin='0px 0px 0px auto'
+          >
+            04/20/21 - 12:26 PM
+          </Title>
+        </ContainerGlobal>
+        <ContainerGlobal
+          w='95%'
+          h='450px'
+          margin='0px 15px'
+          bg='rgb(183, 183, 183,.3)'
+          padding='10px'
+          style={{ textAlign: 'justify' }}
+          direction='column'
+          overflow='auto'
+        >
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ut tellus id felis maximus semper vel non tellus. Ut rutrum nisi augue, eu efficitur tortor pellentesque sed. Suspendisse sed mi a dolor fringilla luctus non vitae augue. Duis consectetur finibus ultrices. Ut ac fermentum arcu. Sed commodo rhoncus lectus, a porttitor velit vehicula sed. Nullam bibendum purus eu mattis cursus. Cras porta sem sit amet eleifend malesuada. Nullam eu sagittis neque. Maecenas sagittis ornare nulla nec sagittis.
+
+          <img style={{ margin: '20px 0px 0px 0px' }} width='30%' src={Recipt} />
+        </ContainerGlobal>
+        <ContainerGlobal
+          w='auto'
+          h='auto'
+          bg='none'
+          direction='row'
+          gap='10px'
+          justify='center'
+          margin='auto'
+          align='center'
+          overflow='none'
+        >
+          <Button variant="contained" size="large"
+            style={{ backgroundColor: '#948566' }}
+
+            onClick={() => setShow2(prev => !prev)}
+          >
+            Reply
+          </Button>
+          <Button variant="contained" size="large"
+            style={{ backgroundColor: '#FF2400' }}
+
+            onClick={() => setShow2(prev => !prev)}
           >
             Delete
           </Button>
@@ -704,6 +823,7 @@ const ClientMessagesCont = () => {
             whileHover={{ boxShadow: "5px 2px 10px gray" }}
             whileTap={{ scale: .99 }}
 
+            onClick={() => setShow2(prev => !prev)}
           >
             <Title
               family='raleway, sans-serif'
@@ -723,8 +843,10 @@ const ClientMessagesCont = () => {
               size='18px'
               fStyle='Normal'
               align='Center'
-              margin='20px'>
-              Receipt Update
+              margin='20px'
+
+            >
+              Reservation Payment
             </Title>
             <Title
               family='raleway, sans-serif'
@@ -799,6 +921,7 @@ const ClientMessagesCont = () => {
 
 
       <Grow in={show}>{viewMessage}</Grow>
+      <Grow in={show2}>{viewSentMessage}</Grow>
 
       <Grow in={showComposeMessage}>{composeMessage}</Grow>
     </Container>
