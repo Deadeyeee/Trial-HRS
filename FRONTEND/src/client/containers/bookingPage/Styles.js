@@ -19,19 +19,32 @@ export const HorizontalLine = styled(motion.div)`
 
 export const TitleCalendarContainer = styled(motion.div)`
     display: flex;
+    
     justify-content: center;
     align-items: center;
-    margin: 20px 0px;
-    height: 80px;
-    gap: 40px;
+    height: auto;
+    width: 100vw;
+    gap: 50px;
+    margin: 5% 0px 10% 0px;
+
+    @media (max-width: 1000px) {
+    flex-direction: column;
+    
+    gap: 20px;
+    }
+`;
+
+export const Persons = styled.div`
+  display: flex;
+  gap: 20px;
+
 `;
 
 export const LabelDiv = styled(motion.div)`
-  display: flex;
-  flex-direction:column;
-    justify-content: flex-start;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
     align-items: center;
-    height: 70px;
 `;
 
 export const CalendarContainer = styled(motion.div)`
@@ -56,22 +69,32 @@ export const RoomContainerMain = styled(motion.div)`
 export const RoomContainer = styled(motion.div)`
     display: flex;
     flex-direction: Row;
+    align-items: center;
+    justify-content: center;
+    gap: 50px;
+    @media (max-width: 1000px) {
+    flex-direction: column;
+    
+    }
     
 `;
 
-export const RoomContainerContentPhoto = styled(motion.div)`
+export const RoomContainerContentPhoto = styled.img`
     
-    background-image: url(${(props) => (props.link ? props.link : null)});
-    background-size: cover;
-    background-position: center;
-    width: 450px;
-    height: 250px;
-    margin: 60px 60px 0px 0px;
+    width: 25%;
+    height: auto;
+    
+    @media (max-width: 1000px) {
+    flex-direction: column;
+    
+    width: 65%;
+    }
 `;
 
 export const RoomContainerContentRight = styled(motion.div)`
     display: flex;
     flex-direction: column;
+    justify-content: flex-start;
 `;
 
 export const RoomContainerContentLeft = styled(motion.div)`
@@ -133,12 +156,14 @@ display:flex;
 `;
 
 export const BookingLegendsContainer = styled(motion.div)`
+display: flex;
     align-items: center;
-    display: flex;
     flex-direction: Row;
     justify-content: center;
     margin: 10px 0px 20px 0px;
-    width: 40%;
+    gap: 40px;
+    width: auto;
+    flex-wrap: wrap;
 `;
 
 export const BookingLegendsWhite = styled(motion.div)`

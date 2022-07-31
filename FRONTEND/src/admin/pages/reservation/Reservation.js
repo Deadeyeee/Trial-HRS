@@ -7,12 +7,12 @@ import { Container } from './style'
 const Reservation = () => {
     useEffect(() => {
         document.title = "Admin | Reservation Details"
-      }, [])
+    }, [])
     return (
         <Container>
             <ContainerInvisible></ContainerInvisible>
             <SideBarNav reservation />
-            <ReservationContainer/>
+            <ReservationContainer />
         </Container>
     )
 }

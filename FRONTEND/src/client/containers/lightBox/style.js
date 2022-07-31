@@ -7,15 +7,14 @@ export const Container = styled(motion.div)`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 700px;
-    width: 1000px;
+    height: 90%;
+    width: 80%;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     position: fixed;
     background-color: white;
     z-index: 3;
-
 `;
 
 
@@ -32,13 +31,17 @@ export const Announcement = styled(motion.div)`
 export const AnnouncementConent = styled(motion.img)`
     height: 100%;
     width: auto;
+    @media (max-width: 1000px) {
+        height: auto;
+        width: 100%;
+    }
 `;
 
 export const Background = styled(motion.div)`
     display: ${(props) => (props.display ? props.display : "none")};
     background-color: #8f805fa1;
-    height: 100vh;
-    width: 100vw;
+    height: 100%;
+    width: 100%;
     z-index: 3;
     top: 50%;
     left: 50%;

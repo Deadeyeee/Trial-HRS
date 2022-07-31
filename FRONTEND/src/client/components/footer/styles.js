@@ -8,21 +8,21 @@ export const Container = styled.div`
     background-color: #302B20;
     color: white;
     text-align: center;
-    z-index: -1;
     
     `;
 
 export const Image = styled.img`
-    height: 170px;
-    width: 170px;
-    padding: 0px 80px;
+    height: auto;
+    width: 40%;
+    margin: 0px 80px;
     border-top: 1px solid white;
     `;
 
 export const Icon = styled(motion.img)`
-    height: 50px;
-    width: 50px;
-    margin: 0px 20px;
+    height: 5%;
+    width: 5%;
+    margin: 0px 10px;
+    cursor: pointer;
     `;
 
 export const Right = styled.div`
@@ -35,6 +35,8 @@ export const Right = styled.div`
 export const IconDiv = styled.div`
     display: flex;
     margin: 20px 0px;
+    width: 100%;
+    
     justify-content: center;
     align-items: center;
     `;

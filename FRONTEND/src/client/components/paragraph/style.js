@@ -16,4 +16,7 @@ line-height: ${(props) =>(props.line ? props.line : "auto")};
 opacity: ${(props) => (props.opc ? props.opc : "100%")};
 text-shadow:  ${(props) => (props.shadow ? props.shadow : "none")};
 width:  ${(props) => (props.width ? props.width : "auto")};
+
+
+
 `;

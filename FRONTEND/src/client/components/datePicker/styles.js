@@ -5,7 +5,9 @@ export const Container = styled(motion.div)`
     display: flex;
     align-items: center;
     justify-content: center;
+    width: auto;
     z-index: 1;
+    gap: 2vw;
 `;
 
 export const DateContainer = styled(motion.div)`
@@ -14,8 +16,8 @@ export const DateContainer = styled(motion.div)`
     margin-right: 30px;
 `;
 
-export const DateLabel = styled(motion.dev)`
+export const DateLabel = styled(motion.div)`
     display: flex;
-    height: 20px;
-    gap: 150px;
+    flex-flow:column;
+    gap: 1vh;
 `;

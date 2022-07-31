@@ -1,5 +1,27 @@
-.kHzUTf{
-    
-    min-height: 45px;
-    box-shadow: 0px 2px 0px black;
+.react-datepicker-wrapper,
+.react-datepicker__input-container,
+.react-datepicker__input-container input {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    outline: 0;
+    border-width: 0 0 2px;
+    border-color: black;
+    height: 3vw;
+    font-size: 1.1vw;
+    font-weight: bold;
+    background: transparent;
+    z-index: 1;
+    overflow: visible;
+
+}
+
+@media only screen and (max-width: 1000px) {
+
+    .react-datepicker-wrapper,
+    .react-datepicker__input-container,
+    .react-datepicker__input-container input {
+
+        font-size: 2vw;
+    }
 }

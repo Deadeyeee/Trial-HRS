@@ -1,5 +1,5 @@
 import React,{useEffect, useLayoutEffect, useState} from 'react';
-import { Logo, Container, MenuItems, Menu, Link } from './styles';
+import { Logo, Container, MenuItems, Menu, Link, HamburgerMenu, MainMenu } from './styles';
 import logo from '../../images/logo.png';
 import { Button } from '../button/styles';
 import Axios from 'axios';
@@ -12,6 +12,8 @@ export const Nav = (props) => {
   const [login, setLogin] = useState(true);
   const [dropDown, setdropDown] = useState("");
   const [userName, setUserName] = useState("");
+
+  const [isOpen, setIsOpen] = useState(false);
 
   const Logout = () => {
       Axios.delete("http://localhost:3001/auth/Logout").then((response) => {
@@ -44,14 +46,25 @@ export const Nav = (props) => {
       <Container>
            <Menu>
            <Logo src={logo}/>
+           <HamburgerMenu onClick={
+             ()=> setIsOpen(!isOpen)
+           }>
+             <span/>
+             <span/>
+             <span/>
+           </HamburgerMenu>
+           <MainMenu isOpen={isOpen}
+           
+           >
+             
            <MenuItems><Link active={props.home == true} href="/">Home</Link></MenuItems>
            <MenuItems><Link active={props.book == true} href="/booking">Booking</Link></MenuItems>
            <MenuItems><Link active={props.facilities == true} href="/facilitiesAmenities">Facilities & Amenities</Link></MenuItems>
            <MenuItems><Link active={props.room == true} href="/roomRate">Rooms & Rates</Link></MenuItems>
            <MenuItems><Link active={props.contact == true} href="/contactUs">Contact</Link></MenuItems>
            <MenuItems><Link active={props.about == true} href="/aboutUs">About Us</Link></MenuItems>
-          
-          <ProfileDrop
+
+           <ProfileDrop
           display={dropDown}
           userName={userName}
           Logout={Logout}
@@ -66,8 +79,11 @@ export const Nav = (props) => {
            whileTap={{ scale: .9}}
            transition={{ duration: .2 }}
            >Log in</Button>
-       </Menu>
        <image src="logo.png"></image>
+           </MainMenu>
+          
+       </Menu>
+         
       </Container>
     )
   }

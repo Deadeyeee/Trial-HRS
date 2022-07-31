@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Container, ContentDiv, DatePickerContainer, FlexItems, HorizontalLine, HorizontalLineMini, Poster, WelcomeDiv } from './styles.js';
-import DatePicker from '../../components/datePicker/DatePicker.js';
+import DateRangePicker from '../../components/datePicker/DateRangePicker.js';
 import { Button } from '../../components/button/styles.js';
 import { Title } from '../../components/title/styles.js';
 import { Description } from '../../components/paragraph/style.js';
@@ -18,23 +18,24 @@ export const HomeBooking = ({ title }) => {
       transition={{ duration: .3, type: "tween", delay: .8 }}
     >
       <Title
-        size='66px'
+        size='3.5vw'
         weight='normal'
-        margin='50px 0px 50px 0px'
+        margin='2vw 0px 2vw 0px'
       >{title}</Title>
       <DatePickerContainer>
-        <DatePicker></DatePicker>
+        <DateRangePicker></DateRangePicker>
         <Button
           whileHover={{ scale: 1.05, backgroundColor: "#2e2e2e", color: "white" }}
           whileTap={{ scale: 1, color: "rgb(220,220,220)" }}
-          w='120px'
-          h='30px'
+          w='10vw'
+          h='2vw'
           textcolor='black'
           radius='0px'
           border='1px solid black'
           bg='transparent'
-          
-          onClick={()=>{window.location.href='/booking'}}
+          fontsize='1.1vw'
+
+          onClick={() => { window.location.href = '/booking' }}
         >
           Book now!
         </Button>
@@ -59,11 +60,12 @@ export const HomeBooking = ({ title }) => {
           RM Luxe Hotel
         </Title>
         <Description
-          width='490px'
+          width='70vw'
           size='15px'
           color='white'
           fontStyle='italic'
-          margin='30px 0px'>
+          margin='30px 0px'
+          >
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
         </Description>
         <FlexItems>
@@ -88,7 +90,7 @@ export const HomeBooking = ({ title }) => {
             </ContentDiv>
             <HorizontalLineMini></HorizontalLineMini>
             <Button
-              w='250px'
+              w='90%'
               h='45px'
               radius='0px'
               border='none'
@@ -97,8 +99,8 @@ export const HomeBooking = ({ title }) => {
               fam='Lato'
               bg='#302B20'
               margin='auto 0px 0px 0px'
-              
-          onClick={()=>{window.location.href='/facilitiesAmenities'}}
+
+              onClick={() => { window.location.href = '/facilitiesAmenities' }}
             >
               Read More
             </Button>
@@ -124,7 +126,7 @@ export const HomeBooking = ({ title }) => {
             </ContentDiv>
             <HorizontalLineMini></HorizontalLineMini>
             <Button
-              w='250px'
+              w='90%'
               h='45px'
               radius='0px'
               border='none'
@@ -133,7 +135,7 @@ export const HomeBooking = ({ title }) => {
               fam='Lato'
               bg='#302B20'
               margin='auto 0px 0px 0px'
-              onClick={()=>{window.location.href='/roomRate'}}
+              onClick={() => { window.location.href = '/roomRate' }}
             >
               Read More
             </Button>
@@ -158,7 +160,7 @@ export const HomeBooking = ({ title }) => {
             </ContentDiv>
             <HorizontalLineMini></HorizontalLineMini>
             <Button
-              w='250px'
+              w='90%'
               h='45px'
               radius='0px'
               border='none'
@@ -167,8 +169,8 @@ export const HomeBooking = ({ title }) => {
               fam='Lato'
               bg='#302B20'
               margin='auto 0px 0px 0px'
-              
-          onClick={()=>{window.location.href='/contactUs'}}
+
+              onClick={() => { window.location.href = '/contactUs' }}
             >
               Read More
             </Button>

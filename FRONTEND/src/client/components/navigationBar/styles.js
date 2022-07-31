@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { motion } from "framer-motion";
+import { device } from "../../../viewports";
 
 export const Container = styled(motion.div)`  
     background: #2E2E2E;
@@ -11,17 +12,73 @@ export const Container = styled(motion.div)`
     top: 0;
     width: 100%;
     z-index: 2;
+    @media (max-width: 1000px) {
+    position: static;
+    width: 100vw;
+    padding-bottom: 20px;
+  }
     `;
+
+export const HamburgerMenu = styled.div`
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+  span{
+      height: 2px;
+      width: 25px;
+      margin: 2px;
+      background-color: #E1DACA;
+
+  }
+  @media (max-width: 1000px) {
+      display: flex;
+  }
+`;
 
 export const Menu = styled.ul`
     margin: 0;
     padding: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+
+    @media (max-width: 1000px) {
+      
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
     `;
 
 export const MenuItems = styled.li`
     display: inline;
     margin: 0px 5px;
+
+    @media (max-width: 1000px) {
+        display: flex;
+    }
     `;
+
+
+export const MainMenu = styled(motion.div)`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    @media (max-width: 1000px) {
+        display: ${({isOpen}) => (isOpen ?  "flex" : "none")};
+        flex-direction: column;
+
+        justify-content: center;
+        align-items: center;
+        gap: 40px;
+        margin-top:2rem;
+        
+    }
+`;
 
 export const Link = styled.a`
     color: ${props => props.active ? "#8F805F" : "#E1DACA"};

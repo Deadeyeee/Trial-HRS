@@ -1,5 +1,5 @@
 import React from 'react'
-import { ButtonHolder, CalendarContainer, Container, HorizontalLine, RatingContainer, RoomContainer, RoomContainerContentLeft, RoomContainerContentPhoto, RoomContainerContentRight, RoomContainerMain, ServicesContainer, TitleCalendarContainer, RatingContainerRight, BookingLegendsMain, BookingLegendsContainer, BookingLegends, BookingLegendsWhite, BookingLegendsRed, BookingLegendsGreen, BookingLegendsBlue, BookingLegendsDarkJade, LocationPinRed, LocationPinGreen, Services, LabelDiv } from './Styles'
+import { ButtonHolder, CalendarContainer, Container, HorizontalLine, RatingContainer, RoomContainer, RoomContainerContentLeft, RoomContainerContentPhoto, RoomContainerContentRight, RoomContainerMain, ServicesContainer, TitleCalendarContainer, RatingContainerRight, BookingLegendsMain, BookingLegendsContainer, BookingLegends, BookingLegendsWhite, BookingLegendsRed, BookingLegendsGreen, BookingLegendsBlue, BookingLegendsDarkJade, LocationPinRed, LocationPinGreen, Services, LabelDiv, Persons } from './Styles'
 import { Title } from '../../components/title/styles';
 import { Button } from '../../components/button/styles';
 import { TextInput } from '../../components/textBox/style';
@@ -10,94 +10,98 @@ import ShowerIcon from '@mui/icons-material/Shower';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import TimeToLeaveIcon from '@mui/icons-material/TimeToLeave';
 import PersonIcon from '@mui/icons-material/Person';
-import DatePicker from '../../components/datePicker/DatePicker'
+import DateRangePicker from '../../components/datePicker/DateRangePicker'
 import Background from '../../images/RoomsIMG/premium.jpg'
 import Background2 from '../../images/RoomsIMG/delux.jpg'
+import { ContainerGlobal } from '../../../admin/components/container/container';
 
 export const BookingPageCont = () => {
     const ratingValue = 3.6;
 
     return (
+
         <Container>
             <Title
                 color='#bfaa7e'
                 weight='normal'
-                size='66px'
-                margin='60px 0px 30px 0px'
+                size='5vw'
+                margin='4vw 0px 4vw 0px'
             >
                 Bookings
             </Title>
             <HorizontalLine
-                w="20%"></HorizontalLine>
+                w="50%"></HorizontalLine>
             <TitleCalendarContainer>
-                <DatePicker></DatePicker>
-                
-                <LabelDiv>
-                    <Title
-                        color='black'
-                        size='15px'
-                        margin='0px 0px auto 0px'
-                    >
-                        
-                    Adults
-                    </Title>
+                <DateRangePicker></DateRangePicker>
 
-                    <TextInput
-                    width="120px"
-                    placeholder="No. of Adults"
-                    align="center"
-                    borderColor='black'
-                    value='2'
-                    >
+                <Persons>
+                    <LabelDiv>
+                        <TextInput
+                            style={{ fontWeight: 'bold', fontSize: '1.1vw' }}
+                            width="5vw"
+                            placeholder="No. of Adults"
+                            align="center"
+                            borderColor='black'
+                            margins='0px'
+                            value='2'
+                            height='3vw'
+                        >
 
-                    </TextInput>
-                </LabelDiv>
-                <LabelDiv>
-                    <Title
-                        color='black'
-                        size='15px'
-                        margin='0px 0px auto 0px'
-                    >
-                        
-                    Kids
-                    </Title>
+                        </TextInput>
+                        <Title
+                            size='1.1vw'
+                            weight="normal">
 
-                    
-                    <TextInput
-                    width="120px"
-                    placeholder="No. of Kids"
-                    align="center"
-                    borderColor='black'
-                    value='0'
-                    >
+                            Adults
+                        </Title>
+                    </LabelDiv>
+                    <LabelDiv>
 
-                    </TextInput>
-                </LabelDiv>
+
+                        <TextInput
+                            style={{ fontWeight: 'bold', fontSize: '1.1vw' }}
+                            width="5vw"
+                            placeholder="No. of Adults"
+                            align="center"
+                            borderColor='black'
+                            margins='0px'
+                            value='0'
+                            height='3vw'
+                        ></TextInput>
+
+                        <Title
+                            size='1.1vw'
+                            weight="normal">
+
+                            Kids
+                        </Title>
+                    </LabelDiv>
+                </Persons>
+                <Button
+                    whileHover={{ backgroundColor: "#2E2E2E", color: "white" }}
+                    w='10vw'
+                    h='2vw'
+                    textcolor="black"
+                    fam='Times New Roman'
+                    weight='-400'
+                    fontStyle='Italic'
+                    radius="0px"
+                    border="1px solid #8F805F"
+                    fontsize='1.1vw'
+
+                    onClick={() => { window.location.href = '/booking' }}
+                >
+                    Book now!!
+                </Button>
             </TitleCalendarContainer>
 
-            <Button
-                whileHover={{ backgroundColor: "#2E2E2E", color: "white" }}
-                w='250px'
-                h='40px'
-                textcolor="black"
-                fam='Times New Roman'
-                weight='-400'
-                fontStyle='Italic'
-                radius="0px"
-                border="1px solid #8F805F"
-                margin='30px 0px 0px 0px'
-                fontsize='25px'
-                
-                onClick={()=>{window.location.href='/booking'}}
-            >
-                Book now!!
-            </Button>
+
 
             <Title
                 color='#2e2e2e'
                 weight='normal'
-                size='66px'
-                margin='200px 0px 30px 0px'
+                size='3vw'
+
             >
                 Available Rooms
 
@@ -109,7 +113,7 @@ export const BookingPageCont = () => {
             <RoomContainerMain>
                 <RoomContainer>
                     <RoomContainerContentPhoto
-                    link={Background}></RoomContainerContentPhoto>
+                        src={Background}></RoomContainerContentPhoto>
                     <RoomContainerContentRight>
                         <Title
                             color='#292929'
@@ -260,11 +264,11 @@ export const BookingPageCont = () => {
                 </RoomContainer>
             </RoomContainerMain>
             <HorizontalLine
-                w="20%"></HorizontalLine>
+                w="50%"></HorizontalLine>
             <RoomContainerMain>
                 <RoomContainer>
                     <RoomContainerContentPhoto
-                    link={Background2}></RoomContainerContentPhoto>
+                        src={Background2}></RoomContainerContentPhoto>
                     <RoomContainerContentRight>
                         <Title
                             color='#292929'
@@ -425,50 +429,71 @@ export const BookingPageCont = () => {
                     Booking Legends
                 </Title>
                 <BookingLegendsContainer>
-                    <BookingLegendsWhite></BookingLegendsWhite>
-                    <Title
-                        family='Noticia Text, serif'
-                        weight='400'
-                        size='12px'
-                        fStyle='normal'
-                        margin='0px 30px 0px 10px'
+                    <ContainerGlobal
+                        justify='center'
                         align='center'
                     >
-                        Available Date
-                    </Title>
-                    <BookingLegendsRed></BookingLegendsRed>
-                    <Title
-                        family='Noticia Text, serif'
-                        weight='400'
-                        size='12px'
-                        fStyle='normal'
-                        margin='0px 30px 0px 10px'
+                        <BookingLegendsWhite></BookingLegendsWhite>
+                        <Title
+                            family='Noticia Text, serif'
+                            weight='400'
+                            size='12px'
+                            fStyle='normal'
+                            margin='0px 30px 0px 10px'
+                            align='center'
+                        >
+                            Available Date
+                        </Title>
+                    </ContainerGlobal>
+                    <ContainerGlobal
+                        justify='center'
                         align='center'
                     >
-                        Not Available Date
-                    </Title>
-                    <BookingLegendsGreen></BookingLegendsGreen>
-                    <Title
-                        family='Noticia Text, serif'
-                        weight='400'
-                        size='12px'
-                        fStyle='normal'
-                        margin='0px 30px 0px 10px'
+                        <BookingLegendsRed></BookingLegendsRed>
+                        <Title
+                            family='Noticia Text, serif'
+                            weight='400'
+                            size='12px'
+                            fStyle='normal'
+                            margin='0px 30px 0px 10px'
+                            align='center'
+                        >
+                            Not Available Date
+                        </Title>
+                    </ContainerGlobal>
+                    <ContainerGlobal
+                        justify='center'
                         align='center'
                     >
-                        Check In Date / Check Out Date
-                    </Title>
-                    <BookingLegendsDarkJade></BookingLegendsDarkJade>
-                    <Title
-                        family='Noticia Text, serif'
-                        weight='400'
-                        size='12px'
-                        fStyle='normal'
-                        margin='0px 30px 0px 10px'
+                        <BookingLegendsGreen></BookingLegendsGreen>
+                        <Title
+                            family='Noticia Text, serif'
+                            weight='400'
+                            size='12px'
+                            fStyle='normal'
+                            margin='0px 30px 0px 10px'
+                            align='center'
+                        >
+                            Check In Date / Check Out Date
+                        </Title>
+                    </ContainerGlobal>
+                    <ContainerGlobal
+                        justify='center'
                         align='center'
                     >
-                        Period of Stay
-                    </Title>
+                        <BookingLegendsDarkJade></BookingLegendsDarkJade>
+                        <Title
+                            family='Noticia Text, serif'
+                            weight='400'
+                            size='12px'
+                            fStyle='normal'
+                            margin='0px 30px 0px 10px'
+                            align='center'
+                        >
+                            Period of Stay
+                        </Title>
+
+                    </ContainerGlobal>
                 </BookingLegendsContainer>
                 <Title
                     color='#2e2e2e'
@@ -481,60 +506,74 @@ export const BookingPageCont = () => {
                     Hotel Policies
                 </Title>
                 <BookingLegendsContainer>
-                    <LocationOnIcon
-                        style={{ color: "green" }}
-                    />
-                    <Title
-                        family='Noticia Text, serif'
-                        weight='400'
-                        size='12px'
-                        fStyle='normal'
-                        margin='0px auto 0px 10px'
+                    <ContainerGlobal
+                        justify='center'
                         align='center'
                     >
-                        Check-in from: 2 pm to 4 am on the next day
-                    </Title>
-                    <TimeToLeaveIcon
-                    />
-                    <Title
-                        family='Noticia Text, serif'
-                        weight='400'
-                        size='12px'
-                        fStyle='normal'
-                        margin='0px 30px 0px 10px'
+                        <LocationOnIcon
+                            style={{ color: "green" }}
+                        />
+                        <Title
+                            family='Noticia Text, serif'
+                            weight='400'
+                            size='12px'
+                            fStyle='normal'
+                            align='center'
+                        >
+                            <b>Check-in from</b>: 2 pm to 4 am on the next day
+                        </Title>
+                    </ContainerGlobal>
+                    <ContainerGlobal
+                        justify='center'
                         align='center'
                     >
-                        Curfew: 10:00 pm to 8:00 am
-                    </Title>
+                        <TimeToLeaveIcon
+                        />
+                        <Title
+                            family='Noticia Text, serif'
+                            weight='400'
+                            size='12px'
+                            fStyle='normal'
+                            align='center'
+                        >
+                            <b>Curfew</b>: 10:00 pm to 8:00 am
+                        </Title>
+                    </ContainerGlobal>
+                    <ContainerGlobal
+                        justify='center'
+                        align='center'
+                    >
+                        <TimeToLeaveIcon
+                            style={{ color: "red" }}
+                        />
+                        <Title
+                            family='Noticia Text, serif'
+                            weight='400'
+                            size='12px'
+                            fStyle='normal'
+                            align='center'
+                        >
+                            <b>Check-out before</b>: 12 pm
+                        </Title>
+                    </ContainerGlobal>
+                    <ContainerGlobal
+                        justify='center'
+                        align='center'
+                    >
+                        <PersonIcon
+                        />
+                        <Title
+                            family='Noticia Text, serif'
+                            weight='400'
+                            size='12px'
+                            fStyle='normal'
+                            align='center'
+                        >
+                            <b>age</b>: 18 y/o to 65 y/o
+                        </Title>
+                    </ContainerGlobal>
                 </BookingLegendsContainer>
-                <BookingLegendsContainer>
 
-                    <TimeToLeaveIcon
-                        style={{ color: "red" }}
-                    />
-                    <Title
-                        family='Noticia Text, serif'
-                        weight='400'
-                        size='12px'
-                        fStyle='normal'
-                        margin='0px auto 0px 10px'
-                        align='center'
-                    >
-                        Check-out before: 12 pm
-                    </Title>
-                    <PersonIcon
-                    />
-                    <Title
-                        family='Noticia Text, serif'
-                        weight='400'
-                        size='12px'
-                        fStyle='normal'
-                        margin='0px 80px 0px 10px'
-                        align='center'
-                    >
-                        age: 18 y/o to 65 y/o
-                    </Title>
-                </BookingLegendsContainer>
             </BookingLegendsMain>
         </Container>
     )

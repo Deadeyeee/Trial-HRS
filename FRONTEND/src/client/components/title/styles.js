@@ -25,4 +25,7 @@ overflow: ${(props) => (props.overflow ? props.overflow : "visible")};
 &:hover{
     color: ${(props) => (props.hoverColor ? props.hoverColor : "none")};;
   }
+
+
+  
 `;
