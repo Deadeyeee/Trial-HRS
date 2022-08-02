@@ -45,6 +45,7 @@ app.listen(PORT, () =>{
 const user = require('./routes/user.route.js');
 const auth = require('./routes/auth.route.js');
 const guest = require('./routes/guestInformation.route.js');
+const roomType = require('./routes/roomType.route.js');
 
 
 
@@ -52,4 +53,5 @@ const guest = require('./routes/guestInformation.route.js');
 app.use('/api', user);
 app.use('/auth', auth);
 app.use('/api', guest);
+app.use('/api', roomType);
 

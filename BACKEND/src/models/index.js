@@ -35,6 +35,7 @@ db.sequelize = sequelize;
 //Init models here
 db.user = require('./user.model.js')(sequelize, Sequelize, DataTypes);
 db.guestInformation = require('./guestInformation.model.js')(sequelize, Sequelize, DataTypes)
+db.roomType = require('./roomType.model.js')(sequelize, Sequelize, DataTypes)
 
 
 // RELATIONSHIPS
