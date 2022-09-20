@@ -11,8 +11,24 @@ module.exports = (sequelize, DataTypes, Sequelize) => {
             type: DataTypes.STRING,
             allowNull: false,
         },
+        roomNumber: {
+            type: DataTypes.SMALLINT,
+            allowNull: false,
+        },
+        roomStatus: {
+            type: DataTypes.ENUM(['VACANT', 'OCCUPIED', 'MAINTENANCE']),
+            allowNull: false,
+        },
         roomRate: {
             type: DataTypes.DECIMAL(19, 4),
+            allowNull: false,
+        },
+        maxAdultOccupancy: {
+            type: DataTypes.TINYINT,
+            allowNull: false,
+        },
+        maxKidsOccupancy: {
+            type: DataTypes.TINYINT,
             allowNull: false,
         },
         roomDescription: {

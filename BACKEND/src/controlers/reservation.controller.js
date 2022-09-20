@@ -1,36 +1,36 @@
 const db = require("../models");
-const RoomType = db.roomType;
+const Reservation = db.reservation;
 // import Logo from "../../../FRONTEND/src/images/logo.png";
 
 
 
 exports.create = async (req, res) => {
     try {
-        const new_roomType = await RoomType.create(req.body);
-        return res.status(200).send({new_roomType});
+        const new_reservation = await Reservation.create(req.body);
+        return res.status(200).send({new_reservation});
     } catch (error) {
         return res.status(200).send(error.message);
     }
 };
 
 exports.findAll = async (req, res) => {
-    const roomType = await RoomType.findAll();
-    return res.status(200).send(roomType);
+    const reservation = await Reservation.findAll();
+    return res.status(200).send(reservation);
 };
 
 exports.findOne = async (req, res) => {
-    const roomType = await RoomType.findByPk(req.params.id);
-    return res.status(200).send(roomType);
+    const reservation = await Reservation.findByPk(req.params.id);
+    return res.status(200).send(reservation);
 };
 
 exports.update = async (req, res) => {
     try {
-        await RoomType.update(req.body, {
+        await Reservation.update(req.body, {
             where: {
                 id: req.params.id,
             },
         });
-        return res.status(200).send("RoomType information updated successfully");
+        return res.status(200).send("Reservation information updated successfully");
     } catch (error) {
         return res.status(400).send(error.message);
     }
@@ -38,12 +38,12 @@ exports.update = async (req, res) => {
 
 exports.delete = async (req, res) => {
     try {
-        await RoomType.destroy({
+        await Reservation.destroy({
             where: {
                 id: req.params.id,
             },
         });
-        return res.status(200).send("RoomType deleted successfully.");
+        return res.status(200).send("Reservation deleted successfully.");
     } catch (error) {
         return res.status(400).send(error.message);
     }

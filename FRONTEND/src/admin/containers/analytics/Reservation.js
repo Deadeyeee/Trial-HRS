@@ -37,8 +37,8 @@ export const Reservation = () => {
     }
     return (
         <ContainerGlobal
-            w='100%'
-            h='100%'
+            w='70%'
+            h='auto'
             direction='column'
         >
             <Doughnut

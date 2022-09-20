@@ -1,36 +1,36 @@
 const db = require("../models");
-const RoomType = db.roomType;
+const PaymentMode = db.paymentMode;
 // import Logo from "../../../FRONTEND/src/images/logo.png";
 
 
 
 exports.create = async (req, res) => {
     try {
-        const new_roomType = await RoomType.create(req.body);
-        return res.status(200).send({new_roomType});
+        const new_paymentMode = await PaymentMode.create(req.body);
+        return res.status(200).send({new_paymentMode});
     } catch (error) {
         return res.status(200).send(error.message);
     }
 };
 
 exports.findAll = async (req, res) => {
-    const roomType = await RoomType.findAll();
-    return res.status(200).send(roomType);
+    const paymentMode = await PaymentMode.findAll();
+    return res.status(200).send(paymentMode);
 };
 
 exports.findOne = async (req, res) => {
-    const roomType = await RoomType.findByPk(req.params.id);
-    return res.status(200).send(roomType);
+    const paymentMode = await PaymentMode.findByPk(req.params.id);
+    return res.status(200).send(paymentMode);
 };
 
 exports.update = async (req, res) => {
     try {
-        await RoomType.update(req.body, {
+        await PaymentMode.update(req.body, {
             where: {
                 id: req.params.id,
             },
         });
-        return res.status(200).send("RoomType information updated successfully");
+        return res.status(200).send("PaymentMode information updated successfully");
     } catch (error) {
         return res.status(400).send(error.message);
     }
@@ -38,12 +38,12 @@ exports.update = async (req, res) => {
 
 exports.delete = async (req, res) => {
     try {
-        await RoomType.destroy({
+        await PaymentMode.destroy({
             where: {
                 id: req.params.id,
             },
         });
-        return res.status(200).send("RoomType deleted successfully.");
+        return res.status(200).send("PaymentMode deleted successfully.");
     } catch (error) {
         return res.status(400).send(error.message);
     }

@@ -10,11 +10,12 @@ export const TextInput = styled.input`
     placeholder: ${(props) => (props.placeholder ? props.placeholder : "-")};
     border-width: ${(props) => (props.border ? props.border : "0 0 2px")};
     border-color: ${(props) => (props.borderColor ? props.borderColor : "#8F805F")};
-    font-size: 14px;
+    font-size: ${(props) => (props.fontSize ? props.fontSize : "14px")};;
     padding: ${(props) => (props.padding ? props.padding : "auto")};
     border-radius: ${(props) => (props.radius ? props.radius : "0px")};
     font-family: ${(props) => (props.family ? props.family : "arial")};
-    font-style: ${(props) => (props.fontStyle ? props.fontStyle : "normal")};
+    font-style: ${(props) => (props.fontStyle ? props.fontStyle : "Helvetica")};
+    letter-spacing: ${(props) => (props.letterSpacing ? props.letterSpacing : "auto")};
     &:focus{
         border-radius: ${(props) => (props.radiusFocus ? props.radiusFocus : "0px")};
         border-width: ${(props) => (props.widthFocus ? props.widthFocus : "0 0 2px")};
