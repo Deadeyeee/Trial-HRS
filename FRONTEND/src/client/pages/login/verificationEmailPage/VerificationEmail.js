@@ -5,7 +5,10 @@ import Background from '../../../components/background/Background'
 import Axios from 'axios'
 
 function VerificationEmail() {
+    
     useEffect(() => {
+        
+
         Axios.get('http://localhost:3001/api/getUsers/' + localStorage.getItem('id')).then((res) => {
             if(res.data == ""){
                 localStorage.clear();
@@ -22,6 +25,9 @@ function VerificationEmail() {
         })
     })
     const resend = () => {
+        if(localStorage.getItem('id') == null){
+            window.location = "/login"
+        }
         Axios.post('http://localhost:3001/api/resendEmail', {
             id: localStorage.getItem('id'),
             email: localStorage.getItem('email'),

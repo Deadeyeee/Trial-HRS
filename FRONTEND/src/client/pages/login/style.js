@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 export const Container = styled(motion.div)`
     display: flex;
     height: 100vh;
+    width: 100%;
     justify-content: space-around;
     background-color: #2E2E2E;
     align-items: center;
@@ -16,7 +17,8 @@ export const LoginBorder = styled(motion.div)`
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    width: 490px;
+    width: 30vw;
+    font-size: 1em;
     height: auto;
     background: rgba(255, 255, 255, 1);
     border-radius: 20px;

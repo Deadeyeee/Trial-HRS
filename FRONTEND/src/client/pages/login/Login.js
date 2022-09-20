@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { Button, FormButton } from '../../components/button/styles';
 import { Title } from '../../components/title/styles';
 import logo from '../../images/logo.png';
@@ -7,11 +7,12 @@ import Axios from 'axios';
 import 'font-awesome/css/font-awesome.min.css';
 import Background from '../../components/background/Background';
 import { TextInput } from '../../components/textBox/style';
+import ReCAPTCHA from "react-google-recaptcha";
 
 export const Login = () => {
     useEffect(() => {
         document.title = "Login"
-      }, [])
+    }, [])
     var Recaptcha = require('react-recaptcha');
 
     var callback = function () {
@@ -26,12 +27,24 @@ export const Login = () => {
     const [userName, setUserName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [verify, setverify] = useState("");
+    const captcha = useRef(null);
+    const [verifyCaptcha, setVerifyCaptcha] = useState(false);
+    const incorrectPassword = useRef(null);
+    const incorrectEmail = useRef(null);
 
 
     const [loginStatus, setLoginStatus] = useState("");
     Axios.defaults.withCredentials = true;
 
+    const captchaOnchange = (value) => {
+        console.log("captcha:" + value);
+        setVerifyCaptcha(true);
+    }
+
     const checkAccount = (e) => {
+
+
         e.preventDefault();
         Axios.post('http://localhost:3001/auth/login',
             {
@@ -40,24 +53,66 @@ export const Login = () => {
                 password: password,
             },
         ).then((response) => {
-            window.location.href = '/';
-            setLoginStatus("");
-            console.log(response.data)
+            if (verifyCaptcha == false) {
+                e.preventDefault();
+                setLoginStatus("Please Verify that you are not a robot")
+                captcha.current.focus();
+            }
+            else {
+                window.location.href = '/';
+                setLoginStatus("");
+                console.log(response.data)
+            }
         }).catch((err) => {
             setLoginStatus(err.response.data.message);
             console.log(err.response.data.message)
+            if (err.response.data.message == "Please verify your email address.") {
+                setverify("Click here to re-send Verification Code to your email")
+            }
+            else if (err.response.data.message == "Password is Incorrect.") {
+
+                incorrectPassword.current.focus();
+                incorrectPassword.current.select();
+            }
+            else if (err.response.data.message == "Username/Email or Password is Incorrect.") {
+
+                incorrectEmail.current.focus();
+                incorrectEmail.current.select();
+            }
         });;
+
     };
 
     useEffect(() => {
         Axios.get("http://localhost:3001/auth/verify-token").then((response) => {
-            console.log(response.status)
             if (response.status === 200) {
                 window.location.href = '/';
             }
-
         });
-    });
+    }, []);
+
+    useEffect(() => {
+        window.verifyCaptcha = verifyCaptcha;
+    })
+
+    const verifyEmail = () => {
+        Axios.get('http://localhost:3001/api/getAllUsers/').then((res) => {
+
+            for (let i = 0; i < res.data.length; i++) {
+                if (res.data[i].email == email || res.data[i].userName == userName) {
+                    localStorage.setItem('id', res.data[i].id);
+                    localStorage.setItem('email', res.data[i].email);
+                    localStorage.setItem('userName', res.data[i].userName);
+                    window.location.href = '/verifyEmail';
+                    break;
+                }
+
+            }
+        });
+    }
+
+    useEffect(() => {
+    }, []);
 
 
     const variants = {
@@ -85,6 +140,7 @@ export const Login = () => {
 
                     <Title
                         margin="0px 0px 20px 0px"
+                        fontSize='100%'
                     >Welcome to RM Luxe Hotel</Title>
 
                     <RegistrationForm
@@ -98,7 +154,10 @@ export const Login = () => {
                             placeholder="  &#xf007; Username or Email"
                             type="text"
                             family="FontAwesome"
-                            
+                            letterSpacing='1px'
+                            fontSize='16px'
+                            ref={incorrectEmail}
+                            required
                         ></TextInput>
                         <TextInput
 
@@ -110,8 +169,12 @@ export const Login = () => {
                             family="FontAwesome"
                             type="password"
                             radius="0px"
-                            
+                            letterSpacing='1px'
+                            fontSize='16px'
+                            required
+                            ref={incorrectPassword}
                         ></TextInput>
+
 
 
                         <Button
@@ -134,20 +197,34 @@ export const Login = () => {
                         <Title
                             animate={{ scale: [1, .95, 1] }}
                             transition={{ ease: "linear", duration: 2, repeat: Infinity }}
-                            size="12px"
+                            size="14px"
                             family="arial"
                             margin="5px 0px 0px 0px"
                             color="red"
-                            weight="normal"
+                            weight="bold"
                         >{loginStatus}</Title>
+                        <Title
+                            size="14px"
+                            family="arial"
+                            margin="5px 0px 0px 0px"
+                            color="blue"
+                            weight="normal"
+                            cursor='pointer'
+                            onClick={verifyEmail}
+                        >{verify}</Title>
 
-                        <Recaptcha
+                        {/* <Recaptcha
                             sitekey="6LdJnrkeAAAAAOt5k6Gz1_Op5iBm0Jm75Sl4PME_"
                             render="explicit"
                             verifyCallback={verifyCallback}
                             onloadCallback={callback}
-                        />
-
+                            onChange={captchaOnchange}
+                        /> */}
+                        <ReCAPTCHA
+                            sitekey="6LdJnrkeAAAAAOt5k6Gz1_Op5iBm0Jm75Sl4PME_"
+                            ref={captcha}
+                            onChange={captchaOnchange}
+                        />,
                         <FormButton
 
                             whileHover={{
@@ -158,12 +235,11 @@ export const Login = () => {
                             type="submit"
                             w='190px'
                             h='30px'
-                            margin='40px 0 0 0'
+                            margin='20px 0 0 0'
                             textcolor='black'
                             radius='5px'
                             weight='bold'
                             value='Log in'
-                            onClick={()=>{window.location.href='/client/profile'}}
                         ></FormButton>
                     </RegistrationForm>
 

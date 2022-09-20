@@ -25,8 +25,8 @@ const Occupancy = () => {
     }
     return (
         <ContainerGlobal
-            w='80%'
-            h='90%'
+            w='100%'
+            h='auto'
             direction='column'
         >
             <Line

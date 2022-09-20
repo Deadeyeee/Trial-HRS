@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Background from '../../../components/background/Background';
 import { Container, NameContainer, RegisterBorder, RegistrationForm } from './style';
 import { Title } from '../../../components/title/styles'
@@ -21,7 +21,10 @@ export const Register = () => {
   const [creationStatusNumber, setCreationStatusNumber] = useState("");
   const [creationStatus, setCreationStatus] = useState("");
   const [passwordMatch, setPasswordMatch] = useState("");
-
+  const userNameref = useRef(null); 
+  const emailref = useRef(null); 
+  const phoneNumber = useRef(null); 
+  const passwordref = useRef(null);
 
   const creatAccount = (e) => {
     e.preventDefault();
@@ -35,45 +38,57 @@ export const Register = () => {
         password: password,
       }).then((response) => {
         console.log(response.data)
-        if (response.data == "Username already in use!") {
+
+        localStorage.setItem('id', response.data.account.id);
+        localStorage.setItem('email', response.data.account.email);
+        localStorage.setItem('userName', response.data.account.userName);
+        Axios.post('http://localhost:3001/api/addGuest', {
+          firstName: firstName.toLowerCase(),
+          lastName: lastName.toLowerCase(),
+          user_id: response.data.account.id,
+        }).then((response) => {
+          window.location.href = '/verifyEmail';
+        }).catch((error) => {
+          console.log(error.response.data)
+        });
+        setCreationStatus("Account created successfuly");
+        console.log(response.data);
+
+
+        console.log(creationStatus);
+      }).catch((err) => {
+        console.log(err.response.data)
+        if (err.response.data == "Username already in use!") {
           setCreationStatusUsername("Username already in use!");
           setCreationStatusEmail("");
           setPasswordMatch("");
           setCreationStatus("");
           setCreationStatusNumber("");
+          userNameref.current.focus();
+          userNameref.current.select();
         }
-        else if (response.data == "Email address already in use!") {
+        else if (err.response.data == "Email address already in use!") {
           setCreationStatusEmail("Email address already in use!");
           setCreationStatusUsername("");
           setPasswordMatch("");
           setCreationStatus("");
           setCreationStatusNumber("");
+          emailref.current.focus();
+          emailref.current.select();
         }
-        else if (response.data == "Phone number already in use") {
+        else if (err.response.data == "Phone number already in use") {
           setCreationStatusEmail("");
           setCreationStatusUsername("");
           setCreationStatusNumber("Phone number already in use");
           setPasswordMatch("");
           setCreationStatus("");
+          phoneNumber.current.focus();
+          phoneNumber.current.select();
+          
         }
         else {
-          localStorage.setItem('id', response.data.account.id);
-          localStorage.setItem('email', response.data.account.email);
-          localStorage.setItem('userName', response.data.account.userName);
-          Axios.post('http://localhost:3001/api/addGuest', {
-            firstName: firstName.toLowerCase(),
-            lastName: lastName.toLowerCase(),
-            user_id: response.data.account.id,
-          }).then((response) => {
-            window.location.href = '/verifyEmail';
-          }).catch((error)=>{
-            console.log(error.response.data)
-          });
-          setCreationStatus("Account created successfuly");
-          console.log(response.data);
-
+          console.log(err.response.data);
         }
-        console.log(creationStatus);
       });
     }
     else {
@@ -82,6 +97,9 @@ export const Register = () => {
       setCreationStatusUsername("");
       setCreationStatusNumber("");
       setCreationStatus("");
+      passwordref.current.focus();
+      passwordref.current.select();
+      
     }
   }
   const variants = {
@@ -89,7 +107,13 @@ export const Register = () => {
     hidden: { opacity: -0.2 },
   }
 
-
+  useEffect(() => {
+    Axios.get("http://localhost:3001/auth/verify-token").then((response) => {
+      if (response.status === 200) {
+        window.location.href = '/';
+      }
+    });
+  }, []);
   return (
     <Container>
       <RegisterBorder
@@ -146,12 +170,11 @@ export const Register = () => {
             border="0 0 1px"
             padding="5px 10px"
             radiusFocus="0px"
+            ref={userNameref}
             required></TextInput>
           <Title
-
-            initial="hidden"
-            animate="visible"
-            variants={variants}
+            animate={{ scale: [1, .95, 1] }}
+            transition={{ ease: "linear", duration: 2, repeat: Infinity }}
             size="12px"
             family="arial"
             margin="5px 0px 0px 0px"
@@ -166,6 +189,7 @@ export const Register = () => {
             placeholder="&#xf0e0;  Email"
             family="FontAwesome"
             type="email"
+            ref={emailref}
             widthFocus="0px"
             padding="5px 10px"
             margins="15px 0px"
@@ -191,6 +215,7 @@ export const Register = () => {
             title="input valid contact number"
             family="FontAwesome"
             type="number"
+            ref={phoneNumber}
             widthFocus="0px"
             padding="5px 10px"
             margins="15px 0px 0px 0px"
@@ -208,10 +233,8 @@ export const Register = () => {
             e.g. 09123456789 or 9123456789
           </Title>
           <Title
-
-            initial="hidden"
-            animate="visible"
-            variants={variants}
+            animate={{ scale: [1, .95, 1] }}
+            transition={{ ease: "linear", duration: 2, repeat: Infinity }}
             size="12px"
             family="arial"
             margin="5px 0px 0px 0px"
@@ -244,6 +267,7 @@ export const Register = () => {
             border="0 0 1px"
             padding="5px 10px"
             radiusFocus="0px"
+            ref={passwordref}
             required></TextInput>
           <Title
             animate={{ scale: [1, .95, 1] }}

@@ -35,6 +35,15 @@ db.sequelize = sequelize;
 //Init models here
 db.user = require('./user.model.js')(sequelize, Sequelize, DataTypes);
 db.guestInformation = require('./guestInformation.model.js')(sequelize, Sequelize, DataTypes)
+db.roomType = require('./roomType.model.js')(sequelize, Sequelize, DataTypes)
+db.amenities = require('./amenities.model.js')(sequelize, Sequelize, DataTypes)
+db.discount = require('./discount.model.js')(sequelize, Sequelize, DataTypes)
+db.paymentMode = require('./paymentMode.model.js')(sequelize, Sequelize, DataTypes)
+db.reservation = require('./reservation.model.js')(sequelize, Sequelize, DataTypes)
+db.room = require('./room.model.js')(sequelize, Sequelize, DataTypes)
+db.reservationSummary = require('./reservationSummary.model.js')(sequelize, Sequelize, DataTypes)
+db.orderedAmenities = require('./orderedAmenities.model.js')(sequelize, Sequelize, DataTypes)
+db.payment = require('./payment.model.js')(sequelize, Sequelize, DataTypes)
 
 
 // RELATIONSHIPS
@@ -49,6 +58,117 @@ db.user.hasOne(db.guestInformation, {
     as: "guest",
     foreignKey: "user_id",
 });
+
+
+// One user has many reservation
+db.reservation.belongsTo(db.guestInformation, {
+    foreignKey: { name: "guest_id", allowNull: false },
+    foreignKeyConstraint: true,
+});
+
+db.guestInformation.hasOne(db.reservation, {
+    as: "guest",
+    foreignKey: "guest_id",
+});
+
+
+// One roomtype has many room
+db.room.belongsTo(db.roomType, {
+    foreignKey: { name: "roomType_id", allowNull: false },
+    foreignKeyConstraint: true,
+});
+
+db.roomType.hasOne(db.room, {
+    as: "room_Type",
+    foreignKey: "roomType_id",
+});
+
+
+// One reservationSummary has many reservation
+db.reservationSummary.belongsTo(db.reservation, {
+    foreignKey: { name: "reservation_id", allowNull: false },
+    foreignKeyConstraint: true,
+});
+
+db.reservation.hasOne(db.reservationSummary, {
+    as: "reservation",
+    foreignKey: "reservation_id",
+});
+
+
+// One reservationSummary has many room
+db.reservationSummary.belongsTo(db.room, {
+    foreignKey: { name: "room_id", allowNull: false },
+    foreignKeyConstraint: true,
+});
+
+db.room.hasOne(db.reservationSummary, {
+    as: "reservation",
+    foreignKey: "room_id",
+});
+
+
+// One orderedAmenities has one amenity
+db.orderedAmenities.belongsTo(db.reservation, {
+    foreignKey: { name: "reservation_id", allowNull: false },
+    foreignKeyConstraint: true,
+});
+
+db.reservation.hasMany(db.orderedAmenities, {
+    as: "amenity",
+    foreignKey: "reservation_id",
+});
+
+
+// One orderedAmenities has one amenity
+db.orderedAmenities.belongsTo(db.amenities, {
+    foreignKey: { name: "amenity_id", allowNull: false },
+    foreignKeyConstraint: true,
+});
+
+db.amenities.hasOne(db.orderedAmenities, {
+    as: "amenity",
+    foreignKey: "amenity_id",
+});
+
+
+
+// One paymentmode has one payment
+db.payment.belongsTo(db.paymentMode, {
+    foreignKey: { name: "paymentMode_id", allowNull: false },
+    foreignKeyConstraint: true,
+});
+
+db.paymentMode.hasOne(db.payment, {
+    as: "payment",
+    foreignKey: "paymentMode_id",
+});
+
+
+// One discount has one payment
+db.payment.belongsTo(db.discount, {
+    foreignKey: { name: "discount_id", allowNull: false },
+    foreignKeyConstraint: true,
+});
+
+db.discount.hasOne(db.payment, {
+    as: "payment",
+    foreignKey: "discount_id",
+});
+
+
+// One reservation has one payment
+db.payment.belongsTo(db.reservation, {
+    foreignKey: { name: "reservation_id", allowNull: false },
+    foreignKeyConstraint: true,
+});
+
+db.reservation.hasOne(db.payment, {
+    as: "payment",
+    foreignKey: "reservation_id",
+});
+
+
 
 
 

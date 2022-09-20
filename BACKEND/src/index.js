@@ -45,6 +45,15 @@ app.listen(PORT, () =>{
 const user = require('./routes/user.route.js');
 const auth = require('./routes/auth.route.js');
 const guest = require('./routes/guestInformation.route.js');
+const roomType = require('./routes/roomType.route.js');
+const amenities = require('./routes/amenities.route.js');
+const discount = require('./routes/discount.route.js');
+const paymentMode = require('./routes/paymentMode.route.js');
+const reservation = require('./routes/reservation.route.js');
+const room = require('./routes/room.route.js');
+const reservationSummary = require('./routes/reservationSummary.route.js');
+const orderedAmenities = require('./routes/orderedAmenities.route.js');
+const payment = require('./routes/payment.route.js');
 
 
 
@@ -52,4 +61,13 @@ const guest = require('./routes/guestInformation.route.js');
 app.use('/api', user);
 app.use('/auth', auth);
 app.use('/api', guest);
+app.use('/api', roomType);
+app.use('/api', amenities);
+app.use('/api', discount);
+app.use('/api', paymentMode);
+app.use('/api', reservation);
+app.use('/api', room);
+app.use('/api', reservationSummary);
+app.use('/api', orderedAmenities);
+app.use('/api', payment);
 

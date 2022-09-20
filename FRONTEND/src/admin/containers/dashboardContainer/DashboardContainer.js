@@ -18,11 +18,11 @@ import ActionButton from '../../components/actionButton/ActionButton';
 const DashboardContainer = () => {
 
     const Dates = new Date(Date.now());
-const DateNow = Dates.toString().split(' ');
+    const DateNow = Dates.toString().split(' ');
     return (
         <Container>
             <HeadContainer>
-            <ContainerGlobal align='center'>
+                <ContainerGlobal align='center'>
                     <ContainerGlobal direction='column'>
                         <Title
                             size='20px'
@@ -56,7 +56,7 @@ const DateNow = Dates.toString().split(' ');
                         align='left'
                         margin='0px 20px 0px auto'
                     >
-                        {DateNow[0] + " " + DateNow[1] +" " + DateNow[2] +" " +DateNow[3] +" " + DateNow[4]  }
+                        {DateNow[0] + " " + DateNow[1] + " " + DateNow[2] + " " + DateNow[3] + " " + DateNow[4]}
                     </Title>
                 </ContainerGlobal>
             </HeadContainer>
@@ -219,13 +219,14 @@ const DateNow = Dates.toString().split(' ');
                 h='auto'
                 overflow='none'
                 justify='space-between'
+                gap='20px'
             >
                 <ContainerGlobal
 
                     whileHover={{ scale: 1.01 }}
                     whileTap={{ scale: 1 }}
-                    w='30%'
-                    h='460px'
+                    w='50%'
+                    h='50vh'
                     bg='white'
                     direction='column'
                     padding='30px'
@@ -242,7 +243,7 @@ const DateNow = Dates.toString().split(' ');
                         weight='600'
                         align='left'
                     >
-                        Reservations <a style={{fontSize: '12px'}} href='admin/report'>(view)</a>
+                        Reservations <a style={{ fontSize: '12px' }} href='admin/report'>(view)</a>
                     </Title>
 
 
@@ -252,7 +253,17 @@ const DateNow = Dates.toString().split(' ');
                         margin='0px'
 
                     ></HorizontalLine>
-                    <Reservation />
+                    
+                    <ContainerGlobal
+
+                        w='100%'
+                        h='100%'
+                        justify='center'
+
+                        align='center'
+                    >
+                        <Reservation />
+                    </ContainerGlobal>
 
 
                 </ContainerGlobal>
@@ -260,8 +271,8 @@ const DateNow = Dates.toString().split(' ');
 
                     whileHover={{ scale: 1.01 }}
                     whileTap={{ scale: 1 }}
-                    w='61%'
-                    h='460px'
+                    w='50%'
+                    h='50vh'
                     bg='white'
                     direction='column'
                     padding='30px'
@@ -276,7 +287,7 @@ const DateNow = Dates.toString().split(' ');
                         weight='600'
                         align='left'
                     >
-                        Occupancy Rate <a style={{fontSize: '12px'}} href='admin/report'>(view)</a>
+                        Occupancy Rate <a style={{ fontSize: '12px' }} href='admin/report'>(view)</a>
                     </Title>
 
 
@@ -292,7 +303,7 @@ const DateNow = Dates.toString().split(' ');
                         h='100%'
                         justify='center'
 
-                        gap='10px'
+                        align='center'
                     >
                         <Occupancy />
                     </ContainerGlobal>
@@ -319,7 +330,7 @@ const DateNow = Dates.toString().split(' ');
                     weight='600'
                     align='left'
                 >
-                    Bookings <a style={{fontSize: '12px'}} href='/admin/booking'>(view)</a>
+                    Bookings <a style={{ fontSize: '12px' }} href='/admin/booking'>(view)</a>
                 </Title>
 
 
@@ -370,10 +381,10 @@ const DateNow = Dates.toString().split(' ');
                                     display='inline'
                                     padding='5px 10px'
                                 >
-                                    Paid    
+                                    Paid
                                 </Title></ContainerGlobal>
                         </Td>
-                        <Td align='center'><ActionButton/></Td>
+                        <Td align='center'><ActionButton /></Td>
                     </Tr>
                     <Tr>
                         <Td align='center'>Hurarric Gaturn</Td>
@@ -406,7 +417,7 @@ const DateNow = Dates.toString().split(' ');
                                 >
                                     Paid
                                 </Title></ContainerGlobal></Td>
-                        <Td align='center'><ActionButton/></Td>
+                        <Td align='center'><ActionButton /></Td>
                     </Tr>
                     <Tr>
 
@@ -440,7 +451,7 @@ const DateNow = Dates.toString().split(' ');
                                 >
                                     Paid
                                 </Title></ContainerGlobal></Td>
-                        <Td align='center'><ActionButton/></Td>
+                        <Td align='center'><ActionButton /></Td>
                     </Tr>
                 </TableContainer>
             </ContainerGlobal>

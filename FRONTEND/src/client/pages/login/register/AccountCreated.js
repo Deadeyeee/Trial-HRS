@@ -36,6 +36,8 @@ const AccountCreated = () => {
     }).catch((err) => {
       window.location.href = '/404';
     });
+    
+    localStorage.clear();
   });
 
   return (
