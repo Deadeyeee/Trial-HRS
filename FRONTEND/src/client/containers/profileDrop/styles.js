@@ -36,8 +36,9 @@ export const DropContainer = styled(motion.div)`
     background-color: #E1DACA;
     border-radius: 5px;
     position: absolute;
-    margin-top: 180px;
+    margin-top: 320px;
     box-shadow: 2px 5px 5px black;
+    padding-right: 10px;
 `;
 
 export const Menu = styled(motion.a)`
@@ -45,9 +46,10 @@ export const Menu = styled(motion.a)`
     align-items: center;
     width: 100%;
     height: 100%;
-    margin-left: auto;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 10px;
     cursor: pointer;
-    justify-content: center;
     padding: 5px 0px;
     &:hover{
         background-color: "#8F805F";
@@ -56,8 +58,8 @@ export const Menu = styled(motion.a)`
 `;
 
 export const ProfilePicture = styled(motion.img)`
-    height: 20px;
-    width: 20px;
+    height: 25px;
+    width: 25px;
     border: 1px solid #8F805F;
     vertical-align:middle;
     border-radius: 360px;

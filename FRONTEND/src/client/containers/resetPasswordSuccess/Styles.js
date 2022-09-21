@@ -1,7 +1,8 @@
 import styled from "styled-components";
 import { motion } from "framer-motion";
 
-export const ChangePasswordHolder = styled(motion.div)`
+
+export const ResetPasswordSuccessHolder = styled(motion.div)`
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -10,12 +11,11 @@ export const ChangePasswordHolder = styled(motion.div)`
     z-index: 1;
     background-color: white;
     border: 2px solid black;
-    padding: 10px 0px;
     border-radius: 5%;
     width: 400px;
     height: auto;
-    margin: 100px;
-    
+    margin: 50px;
+    padding: 0px 15px;
 `;
 
 export const Logo = styled(motion.img)`
@@ -25,3 +25,12 @@ export const Logo = styled(motion.img)`
     margin-top: 10px;
     title: RM Luxe Hotel;
     `;
+
+
+export const ResetPasswordSuccessPhoto = styled(motion.div)`
+    background-color: lightGreen;
+    border: 2px solid black;
+    width: 40px;
+    height: 20px;
+    
+`;

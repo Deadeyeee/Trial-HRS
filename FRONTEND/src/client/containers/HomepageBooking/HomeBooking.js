@@ -18,10 +18,10 @@ export const HomeBooking = ({ title }) => {
       transition={{ duration: .3, type: "tween", delay: .8 }}
     >
       <Title
-        size='3.5vw'
+        size='2.5vw'
         weight='normal'
         margin='2vw 0px 2vw 0px'
-      >{title}</Title>
+      >Check your desired date</Title>
       <DatePickerContainer>
         <DateRangePicker></DateRangePicker>
         <Button
@@ -34,6 +34,8 @@ export const HomeBooking = ({ title }) => {
           border='1px solid black'
           bg='transparent'
           fontsize='1.1vw'
+          fam='Times New Roman'
+          weight='bold'
 
           onClick={() => { window.location.href = '/booking' }}
         >
@@ -72,7 +74,7 @@ export const HomeBooking = ({ title }) => {
           <Poster>
             <ContentDiv>
               <Title
-                family='Lato'
+                family='Roboto Slab'
                 size='25px'
                 margin='0px 0px 30px 0px'
               >
@@ -96,7 +98,7 @@ export const HomeBooking = ({ title }) => {
               border='none'
               fontStyle='normal'
               weight='bold'
-              fam='Lato'
+              fam='Roboto Slab'
               bg='#302B20'
               margin='auto 0px 0px 0px'
 
@@ -108,7 +110,7 @@ export const HomeBooking = ({ title }) => {
           <Poster>
             <ContentDiv>
               <Title
-                family='Lato'
+                family='Roboto Slab'
                 size='25px'
                 margin='0px 0px 30px 0px'
               >
@@ -132,7 +134,7 @@ export const HomeBooking = ({ title }) => {
               border='none'
               fontStyle='normal'
               weight='bold'
-              fam='Lato'
+              fam='Roboto Slab'
               bg='#302B20'
               margin='auto 0px 0px 0px'
               onClick={() => { window.location.href = '/roomRate' }}
@@ -143,7 +145,7 @@ export const HomeBooking = ({ title }) => {
           <Poster>
             <ContentDiv>
               <Title
-                family='Lato'
+                family='Roboto Slab'
                 size='25px'
                 margin='0px 0px 30px 0px'
               >
@@ -166,7 +168,7 @@ export const HomeBooking = ({ title }) => {
               border='none'
               fontStyle='normal'
               weight='bold'
-              fam='Lato'
+              fam='Roboto Slab'
               bg='#302B20'
               margin='auto 0px 0px 0px'
 

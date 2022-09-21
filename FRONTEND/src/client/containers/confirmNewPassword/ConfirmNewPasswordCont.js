@@ -4,6 +4,8 @@ import { TextInput } from '../../components/textBox/style'
 import { Button, FormButton } from '../../components/button/styles'
 import { ChangePasswordNewHolder } from './Styles'
 import Axios from 'axios'
+import logo from '../../images/logo.png';
+import 'font-awesome/css/font-awesome.min.css';
 import { useParams } from 'react-router-dom';
 import { RegistrationForm } from '../../pages/login/style'
 
@@ -46,9 +48,15 @@ function ConfirmNewPasswordCont() {
 
     }
     return (
-        <ChangePasswordNewHolder>
+        <ChangePasswordNewHolder>.
+             <a href="/">
+                <Logo
+                src={logo}
+                ></Logo>
+
+            </a>
             <Title
-                family='Roboto Slab'
+                family='Playfair Display'
                 weight='100'
                 margin='10px 0px 15px 0px'
                 fStyle='Bold'
@@ -57,9 +65,11 @@ function ConfirmNewPasswordCont() {
             </Title>
             <RegistrationForm onSubmit={resetPassword}>
                 <TextInput
-                    background='white'
-                    margins='10px 0px 10px 0px'
-                    placeholder='Enter New Password'
+                    
+                family='FontAwesome'
+                background='white'
+                margins='10px 0px 10px 0px'
+                placeholder='  &#xf023;  Enter new password'
                     onChange={(e) => {
                         setPassword(e.target.value);
                         setMessage("");
@@ -70,9 +80,10 @@ function ConfirmNewPasswordCont() {
                 >
                 </TextInput>
                 <TextInput
+                    family='FontAwesome'
                     background='white'
                     margins='10px 0px 10px 0px'
-                    placeholder='Confirm New Password'
+                    placeholder='  &#xf023;  Confirm new password'
                     type='password'
                     onChange={(e) => {
                         setConfirmPassword(e.target.value);
@@ -93,15 +104,19 @@ function ConfirmNewPasswordCont() {
                 >{message}
                 </Title>
                 <FormButton
-                    bg='#60553F'
-                    w='286px'
+                    whileHover={{
+                        scale: 1.1, backgroundColor: "#8F805F",
+                        border: "2px solid #2E2E2E", color: "rgb(255, 255, 255)"
+                        }}
+                    whileTap={{ scale: 1 }}
+                    type="submit"
+                    w='190px'
                     h='30px'
-                    margin='10px 0px 15px 0px'
-                    padding='0.5px'
-                    fam='Raleway'
-                    fontStyle='normal'
-                    type='submit'
-                    name='Reset Password'
+                    margin='20px 0 30px 0'
+                    textcolor='black'
+                    radius='5px'
+                    weight='bold'
+                    value='Save new password'
                 >
 
                 </FormButton>

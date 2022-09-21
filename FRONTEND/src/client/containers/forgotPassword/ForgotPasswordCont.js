@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import { ChangePasswordHolder } from './Styles'
+import logo from '../../images/logo.png';
+import 'font-awesome/css/font-awesome.min.css';
 import { TextInput } from '../../components/textBox/style'
 import { Button, FormButton } from '../../components/button/styles'
 import { Title } from '../../components/title/styles'
@@ -44,8 +46,14 @@ function ForgotPasswordCont() {
 
     return (
         <ChangePasswordHolder>
+            <a href="/">
+                <Logo
+                src={logo}
+                ></Logo>
+
+            </a>
             <Title
-                family='Roboto Slab'
+                family='Playfair Display'
                 weight='100'
                 margin='10px 0px 0px 0px'
                 fStyle='Bold'
@@ -54,7 +62,7 @@ function ForgotPasswordCont() {
             </Title>
             <p
                 align='center'
-                family='Roboto Slab'
+                family='FontAwesome'
                 margin='0px'
                 size='20px'
             >
@@ -64,9 +72,11 @@ function ForgotPasswordCont() {
                 onSubmit={verifyEmail}
             >
                 <TextInput
-                    background='white'
-                    margins='10px 0px 10px 0px'
-                    placeholder='Email Address'
+                    
+                family='FontAwesome'
+                background='white'
+                margins='10px 0px 10px 0px'
+                placeholder='&#xf0e0;   Email Address'
                     onChange={(e) => {
                         setEmail(e.target.value);
                         setLoginStatus("");
@@ -95,15 +105,19 @@ function ForgotPasswordCont() {
                     w='300px'
                 >{loginStatus2}</Title>
                 <FormButton
-                    bg='#60553F'
-                    w='300px'
+                    whileHover={{
+                        scale: 1.1, backgroundColor: "#8F805F",
+                        border: "2px solid #2E2E2E", color: "rgb(255, 255, 255)"
+                        }}
+                    whileTap={{ scale: 1 }}
+                    type="submit"
+                    w='190px'
                     h='30px'
-                    margin='10px 0px 15px 0px'
-                    padding='0.5px'
-                    fam='Raleway'
-                    fontStyle='normal'
+                    margin='10px 0px 20px 0px'
+                    textcolor='black'
+                    radius='5px'
+                    weight='bold'
                     value='Continue'
-                    type='submit'
 
                 />
             </RegistrationForm>

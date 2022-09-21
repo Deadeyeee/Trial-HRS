@@ -22,6 +22,7 @@ export const Container = styled(motion.div)`
 export const HamburgerMenu = styled.div`
   display: none;
   flex-direction: column;
+  align-items: left;
   cursor: pointer;
   span{
       height: 2px;
@@ -56,6 +57,7 @@ export const Menu = styled.ul`
 export const MenuItems = styled.li`
     display: inline;
     margin: 0px 5px;
+    
 
     @media (max-width: 1000px) {
         display: flex;
@@ -86,7 +88,8 @@ export const Link = styled.a`
     padding: 0px 12px;
     padding-top: 10px;
     text-decoration: none;
-    font-family: Georgia;
+    font-family: Times New Roman;
+    font-size: 17px;
     ${MenuItems}:hover &{
         color: #8F805F;
     }
