@@ -81,7 +81,7 @@ const App = () => {
         <Route path="/forgotPassword" element={<ForgotPasswordPage />} />
         <Route path="/newPassword/:id" element={<ConfirmNewPassword />} />
         <Route path="/verifyEmail" element={<VerificationEmail />} />
-        <Route path="resetPasswordSuccess" element={<ResetPasswordSuccessPage />}/>
+        <Route path="/resetPasswordSuccess" element={<ResetPasswordSuccessPage />}/>
         <Route path="/booking/room" element={<BookingChildPage />} />
         <Route path="/guestInformation" element={<GuestInfoPage />} />
         <Route path="/booking/confirmation" element={<BookingConfirmationPage />} />
