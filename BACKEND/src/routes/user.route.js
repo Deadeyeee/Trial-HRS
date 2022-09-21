@@ -4,6 +4,7 @@ const router = require('express').Router();
 
 router.post('/addUser', controller.create);
 router.post('/resendEmail', controller.resendEmail);
+router.post('/resetPassword', controller.resetPassword);
 router.get('/getAllUsers', controller.findAll);
 router.get('/getUsers/:id', controller.findOne);
 router.patch('/updateUsers/:id', controller.update);
