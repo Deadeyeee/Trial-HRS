@@ -36,8 +36,8 @@ const ResetPasswordSuccessCont = () => {
                 textcolor='black'
                 radius='5px'
                 weight='bold'
-                value='Continue'
-                onClick={()=>{window.location.href=''}}
+                value='Login'
+                onClick={()=>{window.location.href='/login'}}
             ></FormButton>
     </ResetPasswordSuccessHolder>
   )

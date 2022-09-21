@@ -37,8 +37,11 @@ function ConfirmNewPasswordCont() {
                     }).then((res) => {
                         console.log(res.data);
                         console.log("Password Reset SuccessFully!");
+
+                        window.location.href = '/resetPasswordSuccess';
                     }).catch((err) => {
                         console.log(err.res.data);
+                        window.location.href = '/404';
                     });
                 });
             });
@@ -50,10 +53,10 @@ function ConfirmNewPasswordCont() {
     }
     return (
         <ChangePasswordNewHolder>.
-            
-             <a href="/">
+
+            <a href="/">
                 <Logo
-                src={logo}
+                    src={logo}
                 ></Logo>
 
             </a>
@@ -67,11 +70,11 @@ function ConfirmNewPasswordCont() {
             </Title>
             <RegistrationForm onSubmit={resetPassword}>
                 <TextInput
-                    
-                family='FontAwesome'
-                background='white'
-                margins='10px 0px 10px 0px'
-                placeholder='  &#xf023;  Enter new password'
+
+                    family='FontAwesome'
+                    background='white'
+                    margins='10px 0px 10px 0px'
+                    placeholder='  &#xf023;  Enter new password'
                     onChange={(e) => {
                         setPassword(e.target.value);
                         setMessage("");
@@ -109,7 +112,7 @@ function ConfirmNewPasswordCont() {
                     whileHover={{
                         scale: 1.1, backgroundColor: "#8F805F",
                         border: "2px solid #2E2E2E", color: "rgb(255, 255, 255)"
-                        }}
+                    }}
                     whileTap={{ scale: 1 }}
                     type="submit"
                     w='190px'

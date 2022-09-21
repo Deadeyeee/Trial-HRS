@@ -31,10 +31,7 @@ function VerificationEmailCont(props) {
                 Please check your email and verify your account.<br></br> If you don't see our email, check your junk or spam folder.
             </p>
             <FormButton
-                whileHover={{
-                    scale: 1.1, backgroundColor: "#8F805F",
-                    border: "2px solid #2E2E2E", color: "rgb(255, 255, 255)"
-                    }}
+                whileHover={props.whileHover}
                 whileTap={{ scale: 1 }}
                 type="submit"
                 w='190px'
@@ -42,9 +39,11 @@ function VerificationEmailCont(props) {
                 margin='10px 0 20px 0'
                 textcolor='black'
                 radius='5px'
+                title={props.title}
                 weight='bold'
-                value='Resend verification email'
-                onClick={()=>{window.location.href=''}}
+                disabled={props.disabled}
+                value={props.value}
+                onClick={props.onClick}
             ></FormButton>
             
         </EmailVerificationHolder>
