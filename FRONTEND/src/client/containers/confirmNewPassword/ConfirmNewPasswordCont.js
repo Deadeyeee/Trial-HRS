@@ -2,12 +2,13 @@ import React, { useEffect, useState } from 'react'
 import { Title } from '../../components/title/styles'
 import { TextInput } from '../../components/textBox/style'
 import { Button, FormButton } from '../../components/button/styles'
-import { ChangePasswordNewHolder } from './Styles'
+import { ChangePasswordNewHolder, Logo } from './Styles'
 import Axios from 'axios'
 import logo from '../../images/logo.png';
 import 'font-awesome/css/font-awesome.min.css';
 import { useParams } from 'react-router-dom';
 import { RegistrationForm } from '../../pages/login/style'
+
 
 
 function ConfirmNewPasswordCont() {
@@ -49,6 +50,7 @@ function ConfirmNewPasswordCont() {
     }
     return (
         <ChangePasswordNewHolder>.
+            
              <a href="/">
                 <Logo
                 src={logo}

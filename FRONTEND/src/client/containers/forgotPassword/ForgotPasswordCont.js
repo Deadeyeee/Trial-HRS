@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { ChangePasswordHolder } from './Styles'
+import { ChangePasswordHolder, Logo } from './Styles'
 import logo from '../../images/logo.png';
 import 'font-awesome/css/font-awesome.min.css';
 import { TextInput } from '../../components/textBox/style'
