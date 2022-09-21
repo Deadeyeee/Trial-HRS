@@ -18,6 +18,7 @@ import Registered from './client/pages/login/register/AccountCreated';
 import ForgotPasswordPage from './client/pages/login/forgotPasswordPage/ForgotPasswordPage';
 import ConfirmNewPassword from './client/pages/login/confirmNewPasswordPage/ConfirmNewPassword';
 import VerificationEmail from './client/pages/login/verificationEmailPage/VerificationEmail';
+import ResetPasswordSuccessPage from './client/pages/resetPasswordSuccess/ResetPasswordSuccessPage';
 import BookingChildPage from './client/pages/bookingPage/bookingChildPage/BookingChildPage';
 import GuestInfoPage from './client/pages/guestInformationPage/GuestInfoPage';
 import FAmenitiesContent from './client/pages/famenitiesPage/fAmenitiesChild/FAmenitiesContent';
@@ -60,6 +61,7 @@ import FrontReservation from './frontDesk/pages/frontReservation/FrontReservatio
 import FrontAdditional from './frontDesk/pages/frontAdditional/FrontAdditional';
 
 
+
 //frontDesk
 
 const App = () => {
@@ -79,6 +81,7 @@ const App = () => {
         <Route path="/forgotPassword" element={<ForgotPasswordPage />} />
         <Route path="/newPassword" element={<ConfirmNewPassword />} />
         <Route path="/verifyEmail" element={<VerificationEmail />} />
+        <Route path="resetPasswordSuccess" element={<ResetPasswordSuccessPage />}/>
         <Route path="/booking/room" element={<BookingChildPage />} />
         <Route path="/guestInformation" element={<GuestInfoPage />} />
         <Route path="/booking/confirmation" element={<BookingConfirmationPage />} />

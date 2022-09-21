@@ -12,7 +12,15 @@ export const ChangePasswordHolder = styled(motion.div)`
     border: 2px solid black;
     border-radius: 5%;
     width: 400px;
-    height: 200px;
+    height: auto;
     margin: 100px;
     
 `;
+
+export const Logo = styled(motion.img)`
+    height: 100px;
+    width: 100px;
+    padding: 10px;
+    margin-top: 10px;
+    title: RM Luxe Hotel;
+    `;

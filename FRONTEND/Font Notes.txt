@@ -1,0 +1,4 @@
+Roboto Slab = Serif
+Times New Roman = Serif
+Playfair Display = Serif
+Arial = Sans Serif

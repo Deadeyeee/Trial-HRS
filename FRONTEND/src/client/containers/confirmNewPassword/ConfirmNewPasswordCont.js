@@ -1,15 +1,23 @@
 import React from 'react'
+import logo from '../../images/logo.png';
+import 'font-awesome/css/font-awesome.min.css';
 import { Title } from '../../components/title/styles'
 import { TextInput } from '../../components/textBox/style'
-import { Button } from '../../components/button/styles'
-import { ChangePasswordNewHolder } from './Styles'
+import { Button, FormButton } from '../../components/button/styles'
+import { ChangePasswordNewHolder, Logo } from './Styles'
 
 
 function ConfirmNewPasswordCont() {
     return (
-        <ChangePasswordNewHolder>
+        <ChangePasswordNewHolder>.
+             <a href="/">
+                <Logo
+                src={logo}
+                ></Logo>
+
+            </a>
             <Title
-                family='Roboto Slab'
+                family='Playfair Display'
                 weight='100'
                 margin='10px 0px 15px 0px'
                 fStyle='Bold'
@@ -17,28 +25,35 @@ function ConfirmNewPasswordCont() {
                 Forgot Password
             </Title>
             <TextInput
+                family='FontAwesome'
                 background='white'
                 margins='10px 0px 10px 0px'
-                placeholder='Enter New Password'
+                placeholder='  &#xf023;  Enter new password'
             >
             </TextInput>
             <TextInput
+                family='FontAwesome'
                 background='white'
                 margins='10px 0px 10px 0px'
-                placeholder='Confirm New Password'
+                placeholder='  &#xf023;  Confirm new password'
             >
             </TextInput>
-            <Button
-                bg='#60553F'
-                w='286px'
+            <FormButton
+                whileHover={{
+                    scale: 1.1, backgroundColor: "#8F805F",
+                    border: "2px solid #2E2E2E", color: "rgb(255, 255, 255)"
+                    }}
+                whileTap={{ scale: 1 }}
+                type="submit"
+                w='190px'
                 h='30px'
-                margin='10px 0px 15px 0px'
-                padding='0.5px'
-                fam='Raleway'
-                fontStyle='normal'
-            >
-                Save New Password
-            </Button>
+                margin='20px 0 30px 0'
+                textcolor='black'
+                radius='5px'
+                weight='bold'
+                value='Save new password'
+                onClick={()=>{window.location.href=''}}
+            ></FormButton>
         </ChangePasswordNewHolder>
     )
 }

@@ -48,7 +48,7 @@ export const ProfileDrop = (props) => {
                 ></ProfilePicture>
                 <TitleCap>
                     <Title
-                        size="12px"
+                        size="15px"
                         color="#E1DACA"
                         family="georgia"
                         w="100%"

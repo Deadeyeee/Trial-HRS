@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Background from '../../../components/background/Background';
-import { Container, NameContainer, RegisterBorder, RegistrationForm } from './style';
+import { Container, NameContainer, RegisterBorder, RegistrationForm, Logo } from './style';
 import { Title } from '../../../components/title/styles'
 import { TextInput } from '../../../components/textBox/style'
 import { Button, FormButton } from '../../../components/button/styles';

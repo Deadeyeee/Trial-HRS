@@ -107,11 +107,11 @@ export const Contact = () => {
                             </TextInput>
                             <Button
                                 bg='#60553F'
-                                w='60px'
-                                h='30px'
+                                w='70px'
+                                h='35px'
                                 margin='5px 0px 0px 310px'
                                 padding='0.5px'
-                                fam='Raleway'
+                                fam='Roboto Slab'
                                 fontStyle='normal'
                             >
                                 Submit

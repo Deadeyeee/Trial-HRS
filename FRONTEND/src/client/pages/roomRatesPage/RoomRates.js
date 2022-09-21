@@ -30,7 +30,7 @@ export const RoomRates = () => {
                         link={Background2}></FlexboxMainPhotoLeft>
                     <FlexboxContent>
                         <Title
-                            family='playfair display, serif'
+                            family='Roboto Slab, serif'
                             weight='700'
                             size='33px'
                             color='#292929'
@@ -55,7 +55,7 @@ export const RoomRates = () => {
                                 w='125px'
                                 h='40px'
                                 margin='5px 0px 0px 0px'
-                                fam='Playfair Display'
+                                fam='Times New Roman'
                                 weight='-400'
                                 fontStyle='Normal'
                                 radius="0px"
@@ -65,7 +65,7 @@ export const RoomRates = () => {
                                 Book Now!
                             </Button>
                             <Title
-                                family='roboto slab'
+                                family='Roboto Slab'
                                 weight='700'
                                 size='25px'
                                 color='#292929'
@@ -83,7 +83,7 @@ export const RoomRates = () => {
                 <FlexboxContentMain>
                     <FlexboxContent>
                         <Title
-                            family='playfair display, serif'
+                            family='Roboto Slab'
                             weight='700'
                             size='33px'
                             color='#292929'
@@ -108,7 +108,7 @@ export const RoomRates = () => {
                         >
 
                             <Title
-                                family='roboto slab'
+                                family='Roboto Slab'
                                 weight='700'
                                 size='25px'
                                 color='#292929'
@@ -121,7 +121,7 @@ export const RoomRates = () => {
                                 w='125px'
                                 h='40px'
                                 textcolor="black"
-                                fam='Playfair Display'
+                                fam='Times New Roman'
                                 weight='-400'
                                 fontStyle='Normal'
                                 radius="0px"
@@ -143,7 +143,7 @@ export const RoomRates = () => {
                         link={Background3}></FlexboxMainPhotoLeft>
                     <FlexboxContent>
                         <Title
-                            family='playfair display, serif'
+                            family='Roboto Slab'
                             weight='700'
                             size='33px'
                             color='#292929'
@@ -168,7 +168,7 @@ export const RoomRates = () => {
                                 w='125px'
                                 h='40px'
                                 margin='5px 0px 0px 0px'
-                                fam='Playfair Display'
+                                fam='Times New Roman'
                                 weight='-400'
                                 fontStyle='Normal'
                                 radius="0px"

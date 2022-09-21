@@ -8,8 +8,10 @@
     border-width: 0 0 2px;
     border-color: black;
     height: 3vw;
-    font-size: 1.1vw;
+    font-size: 1.2vw;
     font-weight: bold;
+    font-family: Roboto Slab;
+    letter-spacing: 4px;
     background: transparent;
     z-index: 1;
     overflow: visible;

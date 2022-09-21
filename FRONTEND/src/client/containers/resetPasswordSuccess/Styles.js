@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { motion } from "framer-motion";
 
 
-export const EmailVerificationHolder = styled(motion.div)`
+export const ResetPasswordSuccessHolder = styled(motion.div)`
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -18,18 +18,19 @@ export const EmailVerificationHolder = styled(motion.div)`
     padding: 0px 15px;
 `;
 
-export const EmailVerificationPhoto = styled(motion.div)`
-    background-color: lightblue;
+export const Logo = styled(motion.img)`
+    height: 100px;
+    width: 100px;
+    padding: 10px;
+    margin-top: 10px;
+    title: RM Luxe Hotel;
+    `;
+
+
+export const ResetPasswordSuccessPhoto = styled(motion.div)`
+    background-color: lightGreen;
     border: 2px solid black;
     width: 40px;
     height: 20px;
     
 `;
-
-export const Logo = styled(motion.img)`
-    height: 100px;
-    width: 100px;
-    padding: 10px;
-    margin-top: 20px;
-    title: RM Luxe Hotel;
-    `;
