@@ -111,9 +111,6 @@ export const Login = () => {
         });
     }
 
-    useEffect(() => {
-    }, []);
-
 
     const variants = {
         visible: { opacity: 1 },
