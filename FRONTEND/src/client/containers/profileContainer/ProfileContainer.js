@@ -13,7 +13,7 @@ const ProfileContainer = (props) => {
             <HeadContainer>
                 <Title
                 color='white'
-                family='georgia'
+                family='Georgia'
                 fStyle='normal'
                 border='1px solid white'
                 padding='10px 40px'

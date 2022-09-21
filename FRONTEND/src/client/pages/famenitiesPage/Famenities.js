@@ -29,7 +29,7 @@ export const Famenities = () => {
                     <i>
                         <Title
 
-                            family='Cormorant Garamond, Serif'
+                            family='Roboto Slab, Serif'
                             color='white'
                             size='46px'
                             weight='400'
@@ -61,7 +61,7 @@ export const Famenities = () => {
                     <i>
                         <Title
 
-                            family='Cormorant Garamond, Serif'
+                            family='Roboto Slab, Serif'
                             color='white'
                             size='46px'
                             weight='400'
@@ -90,7 +90,7 @@ export const Famenities = () => {
                     <i>
                         <Title
 
-                            family='Cormorant Garamond, Serif'
+                            family='Roboto Slab, Serif'
                             color='white'
                             size='46px'
                             weight='400'

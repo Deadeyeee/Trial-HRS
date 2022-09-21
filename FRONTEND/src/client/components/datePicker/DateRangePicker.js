@@ -32,7 +32,7 @@ const DateRangePicker = () => {
 
         <Title
           size='1.1vw'
-          weight="normal">
+          weight="bold">
           Check-in date
         </Title>
       </DateLabel>
@@ -49,17 +49,17 @@ const DateRangePicker = () => {
         />
         <Title 
           size='1.1vw'
-          weight="normal">
+          weight="bold">
           Check-out date
         </Title>
       </DateLabel>
       <LabelDiv>
 
         <Title
-          family='libre baskerville'
+          family='Roboto Slab'
           size='1.1vw'
           color='#2e2e2e'
-          weight='normal'
+          weight='bold'
           fStyle='normal'
           margin='auto 0px 0px 0px'
         >

@@ -47,8 +47,9 @@ export const Link = styled.a`
     padding: 0px 12px;
     padding-bottom: 10px;
     text-decoration: none;
-    font-family: arial;
-    font-weight: bold;
+    font-family: Roboto Slab;
+    font-weight: 1000;
+    font-size: 18px;
     ${MenuItems}:hover &{
         color: #8F805F;
         border-bottom: 1px solid #2E2E2E;

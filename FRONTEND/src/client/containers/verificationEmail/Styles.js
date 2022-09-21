@@ -13,7 +13,7 @@ export const EmailVerificationHolder = styled(motion.div)`
     border: 2px solid black;
     border-radius: 5%;
     width: 400px;
-    height: 275px;
+    height: auto;
     margin: 50px;
     padding: 0px 15px;
 `;
@@ -25,3 +25,11 @@ export const EmailVerificationPhoto = styled(motion.div)`
     height: 20px;
     
 `;
+
+export const Logo = styled(motion.img)`
+    height: 100px;
+    width: 100px;
+    padding: 10px;
+    margin-top: 20px;
+    title: RM Luxe Hotel;
+    `;

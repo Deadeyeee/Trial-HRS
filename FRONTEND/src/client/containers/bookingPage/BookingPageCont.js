@@ -38,6 +38,7 @@ export const BookingPageCont = () => {
                     <LabelDiv>
                         <TextInput
                             style={{ fontWeight: 'bold', fontSize: '1.1vw' }}
+                            family= 'Roboto Slab'
                             width="5vw"
                             placeholder="No. of Adults"
                             align="center"
@@ -50,7 +51,7 @@ export const BookingPageCont = () => {
                         </TextInput>
                         <Title
                             size='1.1vw'
-                            weight="normal">
+                            weight="Bold">
 
                             Adults
                         </Title>
@@ -59,7 +60,8 @@ export const BookingPageCont = () => {
 
 
                         <TextInput
-                            style={{ fontWeight: 'bold', fontSize: '1.1vw' }}
+                            style={{  fontWeight: 'bold', fontSize: '1.1vw' }}
+                            family= 'Roboto Slab'
                             width="5vw"
                             placeholder="No. of Adults"
                             align="center"
@@ -71,7 +73,7 @@ export const BookingPageCont = () => {
 
                         <Title
                             size='1.1vw'
-                            weight="normal">
+                            weight="bold">
 
                             Kids
                         </Title>
@@ -83,7 +85,7 @@ export const BookingPageCont = () => {
                     h='2vw'
                     textcolor="black"
                     fam='Times New Roman'
-                    weight='-400'
+                    weight='400'
                     fontStyle='Italic'
                     radius="0px"
                     border="1px solid #8F805F"
@@ -122,6 +124,7 @@ export const BookingPageCont = () => {
                             fStyle='Normal'
                             margin='10px 0px 10px 0px'
                             align='left'
+                            family='Roboto Slab'
                         >
                             Premium room 102
                         </Title>
@@ -137,7 +140,7 @@ export const BookingPageCont = () => {
                         </Title>
                         <RatingContainer>
                             <Title
-                                family="Lato"
+                                family='Roboto Slab'
                                 fontStyle="normal"
                                 size="15px"
                                 margin="0px 10px 0px 0px"
@@ -222,9 +225,9 @@ export const BookingPageCont = () => {
                             Occupancy
                         </Title>
                         <Title
-                            family='Noticia Text'
+                            family='Roboto Slab'
                             color='#2e2e2e'
-                            weight='400'
+                            weight='700'
                             size='17px'
                             fStyle='Normal'
                             margin='10px 0px 0px 10px'
@@ -271,6 +274,7 @@ export const BookingPageCont = () => {
                         src={Background2}></RoomContainerContentPhoto>
                     <RoomContainerContentRight>
                         <Title
+                            family='Roboto Slab'
                             color='#292929'
                             weight='700'
                             size='33px'
@@ -292,7 +296,7 @@ export const BookingPageCont = () => {
                         </Title>
                         <RatingContainer>
                             <Title
-                                family="Lato"
+                                family='Roboto Slab'
                                 fontStyle="normal"
                                 size="15px"
                                 margin="0px 10px 0px 0px"
@@ -377,9 +381,9 @@ export const BookingPageCont = () => {
                             Occupancy
                         </Title>
                         <Title
-                            family='Noticia Text'
+                            family='Roboto Slab'
                             color='#2e2e2e'
-                            weight='400'
+                            weight='700'
                             size='17px'
                             fStyle='Normal'
                             margin='10px 0px 0px 10px'

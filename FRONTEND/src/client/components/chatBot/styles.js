@@ -51,12 +51,14 @@ export const headTitle = styled.p`
 export const Title = styled.h1`
     color: #DFD3B9;
     margin: 0px;
+    font-family: Roboto Slab;
     font-size: 20px;
     font-weight: normal;
     `;
 
 export const Status = styled.h2`
     color: white;
+    font-family: Roboto Slab;
     font-size: 13px;
     font-weight: normal;
     letter-spacing: 1px;
@@ -83,6 +85,7 @@ export const User = styled.p`
     padding: 10px 20px; 
     max-width: 55%;
     box-shadow: 3px 5px 7px #5B5B5B;
+    font-family: Roboto Slab;
     `;
 
 export const Bot = styled.p`
@@ -95,6 +98,7 @@ export const Bot = styled.p`
     padding: 10px 20px; 
     max-width: 55%;
     box-shadow: -2px 5px 7px #5B5B5B;
+    font-family: Roboto Slab;
     `;
 
 export const Query = styled.div`

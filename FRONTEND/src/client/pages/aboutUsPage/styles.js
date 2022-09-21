@@ -26,6 +26,7 @@ export const HorizontalLineSmall = styled(motion.div)`
 
 export const FlexboxContainerMain = styled(motion.div)`
     display: flex;
+    margin-bottom: 35px;
 
 `;
 export const FlexboxContainer1 = styled(motion.div)`    

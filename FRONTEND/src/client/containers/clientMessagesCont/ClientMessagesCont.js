@@ -451,15 +451,16 @@ const ClientMessagesCont = () => {
             console.log(option);
           }}
           w='70px'
-          fam='arial'
+          fam='Roboto Slab'
           h='25px'
           textcolor={option == 'inbox' ? 'white' : 'black'}
           bg={option == 'inbox' ? '#302B20' : 'transparent'}
-          weight='-400'
+          weight='700'
           fontStyle='normal'
           radius="0px"
           border="1px solid #8F805F"
-          fontsize='18px'>
+          fontsize='20px'
+          padding='5px'>
 
           Inbox
         </Button2>
@@ -471,13 +472,14 @@ const ClientMessagesCont = () => {
           textcolor={option == 'sent' ? 'white' : 'black'}
           bg={option == 'sent' ? '#302B20' : 'transparent'}
           w='70px'
-          fam='arial'
+          fam='Roboto Slab'
           h='25px'
-          weight='-400'
-          fontStyle='normal'
+          weight='700'
+          fontStyle='bold'
           radius="0px"
           border="1px solid #8F805F"
-          fontsize='18px'>
+          fontsize='20px'
+          padding='5px'>
           Sent
         </Button2>
       </OptionContainer>
@@ -906,13 +908,14 @@ const ClientMessagesCont = () => {
         w='auto'
         h='50px'
         textcolor="white"
-        fam='georgia'
+        fam='Roboto Slab'
         weight='-400'
         fontStyle='normal'
         radius="0px"
+        padding="2px 20px 2px 20px"
         border="1px solid #8F805F"
         margin='30px 0px 0px 0px'
-        fontsize='18px'
+        fontsize='17px'
         bg='#282626'
         onClick={() => setShowComposeMessage(prev => !prev)}
       >

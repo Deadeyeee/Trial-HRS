@@ -1,35 +1,28 @@
 import React from 'react'
-import logo from '../../images/logo.png';
 import 'font-awesome/css/font-awesome.min.css';
+import logo from '../../images/logo.png';
 import { Title } from "../../components/title/styles"
 import { Button, FormButton } from "../../components/button/styles"
-import { EmailVerificationHolder, EmailVerificationPhoto, Logo } from "./Styles"
+import {  ResetPasswordSuccessHolder, ResetPasswordSuccessPhoto, Logo } from "./Styles"
 
-
-function VerificationEmailCont(props) {
-    return (
-        <EmailVerificationHolder>
-           <a href="/">
+const ResetPasswordSuccessCont = () => {
+  return (
+    <ResetPasswordSuccessHolder>   
+            <a href="/">
                 <Logo
                 src={logo}
                 ></Logo>
 
             </a>
-            <Title
+        <Title
                 family='Playfair Display'
                 weight='100'
+                margin='0px 0px 0px 0px'
                 fStyle='Bold'
                 w='450px'
             >
-                We've sent you an Email!
+                Reset password success!
             </Title>
-            <p
-                align='center'
-                family='FontAwesome'
-                size='20px'
-            >
-                Please check your email and verify your account.<br></br> If you don't see our email, check your junk or spam folder.
-            </p>
             <FormButton
                 whileHover={{
                     scale: 1.1, backgroundColor: "#8F805F",
@@ -39,17 +32,15 @@ function VerificationEmailCont(props) {
                 type="submit"
                 w='190px'
                 h='30px'
-                margin='10px 0 20px 0'
+                margin='20px 0 30px 0'
                 textcolor='black'
                 radius='5px'
                 weight='bold'
-                value='Resend verification email'
+                value='Continue'
                 onClick={()=>{window.location.href=''}}
             ></FormButton>
-            
-        </EmailVerificationHolder>
-    )
+    </ResetPasswordSuccessHolder>
+  )
 }
 
-export default VerificationEmailCont
-
+export default ResetPasswordSuccessCont

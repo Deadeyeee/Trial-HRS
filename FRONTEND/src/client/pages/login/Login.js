@@ -189,6 +189,7 @@ export const Login = () => {
                             margin="0px 0px 0px auto"
                             fontsize='12px'
                             align='right'
+                            onClick={()=>{window.location.href='/forgotPassword'}}
                         >Forgot your password?</Button>
 
                         <Title
