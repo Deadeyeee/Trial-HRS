@@ -6,5 +6,8 @@ exports.transporter = nodemailer.createTransport({
       user: 'Rm.LuxeHotel@gmail.com',
       pass: 'niiiphggimclzfax',
     },
+    tls: {
+      rejectUnauthorized: false
+  }
   });
 

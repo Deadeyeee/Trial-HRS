@@ -174,6 +174,8 @@ db.reservation.hasOne(db.payment, {
 
 
 db.sequelize.sync({ force: false }).then(() => {
-    console.log('yes resync done')
+    console.log('\n\nDatabase is Running smoothly!\n\n')
+}).catch((err)=>{
+    console.log("\n\nDATABSE ERROR!!!!: " + err.data + "\n\n")
 });
 module.exports = db;
