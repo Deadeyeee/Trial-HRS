@@ -9,7 +9,7 @@ import 'font-awesome/css/font-awesome.min.css';
 
 export const Register = () => {
   let passwordValidation = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
-  let letters = /^[A-Za-z]+$/;
+  let letters = /^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/;
   let phoneNumberValidation = /^(09|\+639)\d{9}$/;
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -68,8 +68,8 @@ export const Register = () => {
         setCreationStatusNumber("");
         setCreationStatus("");
         setCreationStatusName("");
-        nameRef.current.focus();
-        nameRef.current.select();
+        passwordref.current.focus();
+        passwordref.current.select();
       }
       else {
         
@@ -92,7 +92,7 @@ export const Register = () => {
               setCreationStatus("Account created successfuly");
               console.log(response.data);
               console.log(creationStatus);
-              // window.location.href = '/verifyEmail';
+              window.location.href = '/verifyEmail';
 
             }).catch((error) => {
               console.log(error.response.data)
@@ -143,6 +143,7 @@ export const Register = () => {
           setCreationStatusUsername("");
           setCreationStatusNumber("");
           setCreationStatus("");
+          setCreationStatusName("");
           passwordref.current.focus();
           passwordref.current.select();
 
