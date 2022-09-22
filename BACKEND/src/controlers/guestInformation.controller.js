@@ -9,7 +9,7 @@ exports.create = async (req, res) => {
         const new_guest = await Guest.create(req.body);
         return res.status(200).send({new_guest});
     } catch (error) {
-        return res.status(200).send(error.message);
+        return res.status(400).send(error.message);
     }
 };
 

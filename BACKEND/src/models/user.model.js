@@ -21,7 +21,9 @@ module.exports = (sequelize, DataTypes, Sequelize) => {
         contactNumber: {
             type: DataTypes.STRING(11),
             allowNull: true,
-            validate: {},
+            validate: {
+                isNumeric: true, 
+            },
             unique: {
               args: true,
               msg: "Phone number already in use",

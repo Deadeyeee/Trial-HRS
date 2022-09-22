@@ -58,12 +58,12 @@ function ForgotPasswordCont() {
                     localStorage.setItem('timer', 60);
                     setSeconds(localStorage.getItem('timer'));
                     setSent(true);
-                    setLoginStatus2("Email has sent. Please check your Email to Reset your Password.");
+                    setLoginStatus2("Email has been sent. Please check your Email to reset your Password.");
                     setLoginStatus("");
                     break;
                 }
                 else {
-                    setLoginStatus("Email not found, We don't have account with this Email.");
+                    setLoginStatus("Invalid email. Email is not yet registered or verified.");
                     setLoginStatus2("");
                 }
 

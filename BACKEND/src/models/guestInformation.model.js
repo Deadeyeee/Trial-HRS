@@ -11,10 +11,20 @@ module.exports = (sequelize, DataTypes, Sequelize) => {
         firstName: {
             type: DataTypes.TEXT,
             allowNull: false,
+            validate:{
+                isAlpha: {
+                    msg: "Invalid name. Please type letters only."
+                },
+            },
         },
         lastName: {
             type: DataTypes.TEXT,
             allowNull: false,
+            validate:{
+                isAlpha: {
+                    msg: "Invalid name. Please type letters only."
+                },
+            },
         },
         birthDate: {
             type: DataTypes.DATEONLY,

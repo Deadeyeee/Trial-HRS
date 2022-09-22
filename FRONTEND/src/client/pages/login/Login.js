@@ -74,7 +74,7 @@ export const Login = () => {
                 incorrectPassword.current.focus();
                 incorrectPassword.current.select();
             }
-            else if (err.response.data.message == "Username/Email or Password is Incorrect.") {
+            else if (err.response.data.message == "Username/Email or Password is incorrect. Please try again.") {
 
                 incorrectEmail.current.focus();
                 incorrectEmail.current.select();

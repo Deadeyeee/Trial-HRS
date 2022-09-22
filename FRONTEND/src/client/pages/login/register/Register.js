@@ -9,6 +9,7 @@ import 'font-awesome/css/font-awesome.min.css';
 
 export const Register = () => {
   let passwordValidation = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+  let letters = /^[A-Za-z]+$/;
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [userName, setUserName] = useState("");
@@ -19,90 +20,109 @@ export const Register = () => {
   const [creationStatusUsername, setCreationStatusUsername] = useState("");
   const [creationStatusEmail, setCreationStatusEmail] = useState("");
   const [creationStatusNumber, setCreationStatusNumber] = useState("");
+  const [creationStatusName, setCreationStatusName] = useState("");
   const [creationStatus, setCreationStatus] = useState("");
   const [passwordMatch, setPasswordMatch] = useState("");
   const [passwordValid, setPasswordValid] = useState("");
-  const [emailValid, setEmailValid] = useState("");
   const userNameref = useRef(null);
   const emailref = useRef(null);
   const phoneNumber = useRef(null);
   const passwordref = useRef(null);
+  const nameRef = useRef(null);
 
   const creatAccount = (e) => {
     e.preventDefault();
-    if (!passwordValidation.test(password)) {
-      setPasswordValid("Password must have a minimum of eight characters, at least one letter and one number.");
+    if (!letters.test(firstName) || !letters.test(lastName)) {
+      setCreationStatusName("Invalid name. Please type letters only.");
+      setCreationStatusEmail("");
+      setCreationStatusUsername("");
+      setCreationStatusNumber("");
+      setCreationStatus("");
+      nameRef.current.focus();
+      nameRef.current.select();
+
     }
     else {
-      if (password == confirmPassword) {
-
-        Axios.post('http://localhost:3001/api/addUser', {
-          userName: userName.toLowerCase(),
-          email: email.toLowerCase(),
-          contactNumber: number,
-          password: password,
-        }).then((response) => {
-
-          localStorage.setItem('id', response.data.account.id);
-          localStorage.setItem('email', response.data.account.email);
-          localStorage.setItem('userName', response.data.account.userName);
-          Axios.post('http://localhost:3001/api/addGuest', {
-            firstName: firstName.toLowerCase(),
-            lastName: lastName.toLowerCase(),
-            user_id: response.data.account.id,
-          }).then((response) => {
-            setCreationStatus("Account created successfuly");
-            console.log(response.data);
-            console.log(creationStatus);
-            window.location.href = '/verifyEmail';
-
-          }).catch((error) => {
-            console.log(error.response.data)
-          });
-        }).catch((err) => {
-          console.log(err.response.data)
-          if (err.response.data == "Username already in use!") {
-            setCreationStatusUsername("Username already in use!");
-            setCreationStatusEmail("");
-            setPasswordMatch("");
-            setCreationStatus("");
-            setCreationStatusNumber("");
-            userNameref.current.focus();
-            userNameref.current.select();
-          }
-          else if (err.response.data == "Email address already in use!") {
-            setCreationStatusEmail("Email address already in use!");
-            setCreationStatusUsername("");
-            setPasswordMatch("");
-            setCreationStatus("");
-            setCreationStatusNumber("");
-            emailref.current.focus();
-            emailref.current.select();
-          }
-          else if (err.response.data == "Phone number already in use") {
-            setCreationStatusEmail("");
-            setCreationStatusUsername("");
-            setCreationStatusNumber("Phone number already in use");
-            setPasswordMatch("");
-            setCreationStatus("");
-            phoneNumber.current.focus();
-            phoneNumber.current.select();
-
-          }
-          else {
-            console.log(err.response.data);
-          }
-        });
+      if (!passwordValidation.test(password)) {
+        setPasswordValid("Password must have a minimum of eight characters, at least one letter and one number.");
       }
       else {
-        setPasswordMatch("Password does not match, please try again.");
-        setCreationStatusEmail("");
-        setCreationStatusUsername("");
-        setCreationStatusNumber("");
-        setCreationStatus("");
-        passwordref.current.focus();
-        passwordref.current.select();
+        setPasswordValid("");
+        if (password == confirmPassword) {
 
+          Axios.post('http://localhost:3001/api/addUser', {
+            userName: userName.toLowerCase(),
+            email: email.toLowerCase(),
+            contactNumber: number,
+            password: password,
+          }).then((response) => {
+
+            localStorage.setItem('id', response.data.account.id);
+            localStorage.setItem('email', response.data.account.email);
+            localStorage.setItem('userName', response.data.account.userName);
+            Axios.post('http://localhost:3001/api/addGuest', {
+              firstName: firstName.toLowerCase(),
+              lastName: lastName.toLowerCase(),
+              user_id: response.data.account.id,
+            }).then((response) => {
+              setCreationStatus("Account created successfuly");
+              console.log(response.data);
+              console.log(creationStatus);
+              window.location.href = '/verifyEmail';
+
+            }).catch((error) => {
+              console.log(error.response.data)
+            });
+          }).catch((err) => {
+            console.log(err.response.data)
+
+            if (err.response.data == "Username already in use!") {
+              setCreationStatusUsername("Username already in use!");
+              setCreationStatusEmail("");
+              setPasswordMatch("");
+              setCreationStatus("");
+              setCreationStatusName("");
+              setCreationStatusNumber("");
+              userNameref.current.focus();
+              userNameref.current.select();
+            }
+            else {
+              if (err.response.data == "Email address already in use!") {
+                setCreationStatusEmail("Email address already in use!");
+                setCreationStatusUsername("");
+                setPasswordMatch("");
+                setCreationStatus("");
+                setCreationStatusName("");
+                setCreationStatusNumber("");
+                emailref.current.focus();
+                emailref.current.select();
+              }
+              else {
+                if (err.response.data == "Phone number already in use") {
+                  setCreationStatusEmail("");
+                  setCreationStatusUsername("");
+                  setCreationStatusNumber("Phone number already in use");
+                  setPasswordMatch("");
+                  setCreationStatusName("");
+                  setCreationStatus("");
+                  phoneNumber.current.focus();
+                  phoneNumber.current.select();
+                }
+              }
+            }
+
+          });
+        }
+        else {
+          setPasswordMatch("Password does not match, please try again.");
+          setCreationStatusEmail("");
+          setCreationStatusUsername("");
+          setCreationStatusNumber("");
+          setCreationStatus("");
+          passwordref.current.focus();
+          passwordref.current.select();
+
+        }
       }
     }
   }
@@ -151,6 +171,8 @@ export const Register = () => {
               border="0 0 1px"
               padding="5px 0px"
               radiusFocus="0px"
+              onkeydown="return /[a-z]/i.test(event.key)"
+              ref={nameRef}
               required></TextInput>
             <TextInput
               onChange={(e) => {
@@ -168,22 +190,6 @@ export const Register = () => {
               radiusFocus="0px"
               required></TextInput>
           </NameContainer>
-          <TextInput
-            onChange={(e) => {
-              setUserName(e.target.value);
-            }}
-            placeholder="&#xf007;  Username"
-            family="FontAwesome"
-            type="text"
-            widthFocus="0px"
-            margins="15px 0px"
-            width='100%'
-            border="0 0 1px"
-            indent='10px'
-            padding="5px 0px"
-            radiusFocus="0px"
-            ref={userNameref}
-            required></TextInput>
           <Title
             animate={{ scale: [1, .95, 1] }}
             transition={{ ease: "linear", duration: 2, repeat: Infinity }}
@@ -193,7 +199,7 @@ export const Register = () => {
             color="red"
             weight="normal"
 
-          >{creationStatusUsername}</Title>
+          >{creationStatusName}</Title>
           <TextInput
             onChange={(e) => {
               setEmail(e.target.value);
@@ -220,6 +226,33 @@ export const Register = () => {
             weight="normal"
 
           >{creationStatusEmail}</Title>
+          <TextInput
+            onChange={(e) => {
+              setUserName(e.target.value);
+            }}
+            placeholder="&#xf007;  Username"
+            family="FontAwesome"
+            type="text"
+            widthFocus="0px"
+            margins="15px 0px"
+            width='100%'
+            border="0 0 1px"
+            indent='10px'
+            padding="5px 0px"
+            radiusFocus="0px"
+            ref={userNameref}
+            required></TextInput>
+          <Title
+            animate={{ scale: [1, .95, 1] }}
+            transition={{ ease: "linear", duration: 2, repeat: Infinity }}
+            size="12px"
+            family="arial"
+            margin="5px 0px 0px 0px"
+            color="red"
+            weight="normal"
+
+          >{creationStatusUsername}</Title>
+
           <TextInput
             onChange={(e) => {
               setNumber(e.target.value);
