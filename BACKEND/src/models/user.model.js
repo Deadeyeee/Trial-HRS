@@ -19,10 +19,11 @@ module.exports = (sequelize, DataTypes, Sequelize) => {
             },
         },
         contactNumber: {
-            type: DataTypes.STRING(11),
+            type: DataTypes.STRING,
             allowNull: true,
             validate: {
                 isNumeric: true, 
+                len: [11, 13],
             },
             unique: {
               args: true,

@@ -10,6 +10,7 @@ import 'font-awesome/css/font-awesome.min.css';
 export const Register = () => {
   let passwordValidation = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
   let letters = /^[A-Za-z]+$/;
+  let phoneNumberValidation = /^(09|\+639)\d{9}$/;
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [userName, setUserName] = useState("");
@@ -29,9 +30,17 @@ export const Register = () => {
   const phoneNumber = useRef(null);
   const passwordref = useRef(null);
   const nameRef = useRef(null);
-
+  let formatNumber;
   const creatAccount = (e) => {
+
     e.preventDefault();
+    // console.log(number.slice(0, 3))
+    // console.log(number.slice(3,12))
+    if (number.slice(0, 3) == "+63") {
+
+      formatNumber = number.replace("+63", "0");
+
+    }
     if (!letters.test(firstName) || !letters.test(lastName)) {
       setCreationStatusName("Invalid name. Please type letters only.");
       setCreationStatusEmail("");
@@ -42,21 +51,36 @@ export const Register = () => {
       nameRef.current.select();
 
     }
+    else if (!phoneNumberValidation.test(number)) {
+      setCreationStatusName("");
+      setCreationStatusEmail("");
+      setCreationStatusUsername("");
+      setCreationStatusNumber("Mobile number is invalid. Please follow the correct format provided.");
+      setCreationStatus("");
+      phoneNumber.current.focus();
+      phoneNumber.current.select();
+    }
     else {
       if (!passwordValidation.test(password)) {
         setPasswordValid("Password must have a minimum of eight characters, at least one letter and one number.");
+        setCreationStatusEmail("");
+        setCreationStatusUsername("");
+        setCreationStatusNumber("");
+        setCreationStatus("");
+        setCreationStatusName("");
+        nameRef.current.focus();
+        nameRef.current.select();
       }
       else {
+        
         setPasswordValid("");
         if (password == confirmPassword) {
-
           Axios.post('http://localhost:3001/api/addUser', {
             userName: userName.toLowerCase(),
             email: email.toLowerCase(),
-            contactNumber: number,
+            contactNumber: formatNumber,
             password: password,
           }).then((response) => {
-
             localStorage.setItem('id', response.data.account.id);
             localStorage.setItem('email', response.data.account.email);
             localStorage.setItem('userName', response.data.account.userName);
@@ -68,7 +92,7 @@ export const Register = () => {
               setCreationStatus("Account created successfuly");
               console.log(response.data);
               console.log(creationStatus);
-              window.location.href = '/verifyEmail';
+              // window.location.href = '/verifyEmail';
 
             }).catch((error) => {
               console.log(error.response.data)
@@ -258,10 +282,9 @@ export const Register = () => {
               setNumber(e.target.value);
             }}
             placeholder="&#xf095;  Phone number"
-            pattern="[0-9]{11}"
             title="input valid contact number"
             family="FontAwesome"
-            type="number"
+            type="text"
             ref={phoneNumber}
             widthFocus="0px"
             padding="5px 0px"
@@ -281,7 +304,7 @@ export const Register = () => {
             weight="normal"
             align='left'
           >
-            e.g. 09123456789 or 9123456789
+            e.g. 09123456789 or +639123456789
           </Title>
           <Title
             animate={{ scale: [1, .95, 1] }}
