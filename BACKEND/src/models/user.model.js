@@ -19,7 +19,7 @@ module.exports = (sequelize, DataTypes, Sequelize) => {
             },
         },
         contactNumber: {
-            type: DataTypes.INTEGER(11),
+            type: DataTypes.STRING(11),
             allowNull: true,
             validate: {},
             unique: {

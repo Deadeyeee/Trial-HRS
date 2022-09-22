@@ -14,7 +14,8 @@ export const NameContainer = styled(motion.div)`
     display: flex;
     justify-content: space-around;
     background-color: transparent;
-    width: 330px;
+    width: 100%;
+    gap: 5px;
     overflow: hidden;
 `;
 export const RegisterBorder = styled(motion.div)`
@@ -22,7 +23,7 @@ export const RegisterBorder = styled(motion.div)`
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    width: auto;
+    width: 20%;
     height: auto;
     background: rgba(255, 255, 255, 1);
     border-radius: 20px;
@@ -39,6 +40,8 @@ export const RegistrationForm = styled.form`
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    height: ${(props) => (props.height ? props.height : "auto")};
+    width: ${(props) => (props.width ? props.width : "auto")};
 `;
 
 export const Image = styled(motion.img)`

@@ -8,7 +8,7 @@ import Axios from 'axios';
 import 'font-awesome/css/font-awesome.min.css';
 
 export const Register = () => {
-
+  let passwordValidation = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [userName, setUserName] = useState("");
@@ -21,85 +21,89 @@ export const Register = () => {
   const [creationStatusNumber, setCreationStatusNumber] = useState("");
   const [creationStatus, setCreationStatus] = useState("");
   const [passwordMatch, setPasswordMatch] = useState("");
-  const userNameref = useRef(null); 
-  const emailref = useRef(null); 
-  const phoneNumber = useRef(null); 
+  const [passwordValid, setPasswordValid] = useState("");
+  const [emailValid, setEmailValid] = useState("");
+  const userNameref = useRef(null);
+  const emailref = useRef(null);
+  const phoneNumber = useRef(null);
   const passwordref = useRef(null);
 
   const creatAccount = (e) => {
     e.preventDefault();
-    if (password == confirmPassword) {
-
-
-      Axios.post('http://localhost:3001/api/addUser', {
-        userName: userName.toLowerCase(),
-        email: email.toLowerCase(),
-        contactNumber: number,
-        password: password,
-      }).then((response) => {
-        console.log(response.data)
-
-        localStorage.setItem('id', response.data.account.id);
-        localStorage.setItem('email', response.data.account.email);
-        localStorage.setItem('userName', response.data.account.userName);
-        Axios.post('http://localhost:3001/api/addGuest', {
-          firstName: firstName.toLowerCase(),
-          lastName: lastName.toLowerCase(),
-          user_id: response.data.account.id,
-        }).then((response) => {
-          window.location.href = '/verifyEmail';
-        }).catch((error) => {
-          console.log(error.response.data)
-        });
-        setCreationStatus("Account created successfuly");
-        console.log(response.data);
-
-
-        console.log(creationStatus);
-      }).catch((err) => {
-        console.log(err.response.data)
-        if (err.response.data == "Username already in use!") {
-          setCreationStatusUsername("Username already in use!");
-          setCreationStatusEmail("");
-          setPasswordMatch("");
-          setCreationStatus("");
-          setCreationStatusNumber("");
-          userNameref.current.focus();
-          userNameref.current.select();
-        }
-        else if (err.response.data == "Email address already in use!") {
-          setCreationStatusEmail("Email address already in use!");
-          setCreationStatusUsername("");
-          setPasswordMatch("");
-          setCreationStatus("");
-          setCreationStatusNumber("");
-          emailref.current.focus();
-          emailref.current.select();
-        }
-        else if (err.response.data == "Phone number already in use") {
-          setCreationStatusEmail("");
-          setCreationStatusUsername("");
-          setCreationStatusNumber("Phone number already in use");
-          setPasswordMatch("");
-          setCreationStatus("");
-          phoneNumber.current.focus();
-          phoneNumber.current.select();
-          
-        }
-        else {
-          console.log(err.response.data);
-        }
-      });
+    if (!passwordValidation.test(password)) {
+      setPasswordValid("Password must have a minimum of eight characters, at least one letter and one number.");
     }
     else {
-      setPasswordMatch("Password does not match, please try again.");
-      setCreationStatusEmail("");
-      setCreationStatusUsername("");
-      setCreationStatusNumber("");
-      setCreationStatus("");
-      passwordref.current.focus();
-      passwordref.current.select();
-      
+      if (password == confirmPassword) {
+
+        Axios.post('http://localhost:3001/api/addUser', {
+          userName: userName.toLowerCase(),
+          email: email.toLowerCase(),
+          contactNumber: number,
+          password: password,
+        }).then((response) => {
+
+          localStorage.setItem('id', response.data.account.id);
+          localStorage.setItem('email', response.data.account.email);
+          localStorage.setItem('userName', response.data.account.userName);
+          Axios.post('http://localhost:3001/api/addGuest', {
+            firstName: firstName.toLowerCase(),
+            lastName: lastName.toLowerCase(),
+            user_id: response.data.account.id,
+          }).then((response) => {
+            setCreationStatus("Account created successfuly");
+            console.log(response.data);
+            console.log(creationStatus);
+            window.location.href = '/verifyEmail';
+
+          }).catch((error) => {
+            console.log(error.response.data)
+          });
+        }).catch((err) => {
+          console.log(err.response.data)
+          if (err.response.data == "Username already in use!") {
+            setCreationStatusUsername("Username already in use!");
+            setCreationStatusEmail("");
+            setPasswordMatch("");
+            setCreationStatus("");
+            setCreationStatusNumber("");
+            userNameref.current.focus();
+            userNameref.current.select();
+          }
+          else if (err.response.data == "Email address already in use!") {
+            setCreationStatusEmail("Email address already in use!");
+            setCreationStatusUsername("");
+            setPasswordMatch("");
+            setCreationStatus("");
+            setCreationStatusNumber("");
+            emailref.current.focus();
+            emailref.current.select();
+          }
+          else if (err.response.data == "Phone number already in use") {
+            setCreationStatusEmail("");
+            setCreationStatusUsername("");
+            setCreationStatusNumber("Phone number already in use");
+            setPasswordMatch("");
+            setCreationStatus("");
+            phoneNumber.current.focus();
+            phoneNumber.current.select();
+
+          }
+          else {
+            console.log(err.response.data);
+          }
+        });
+      }
+      else {
+        setPasswordMatch("Password does not match, please try again.");
+        setCreationStatusEmail("");
+        setCreationStatusUsername("");
+        setCreationStatusNumber("");
+        setCreationStatus("");
+        passwordref.current.focus();
+        passwordref.current.select();
+
+      }
     }
   }
   const variants = {
@@ -122,12 +126,16 @@ export const Register = () => {
         variants={variants}
         transition={{ duration: 1.5 }}
       >
-        <Title
-          margin="0px 0px 20px 0px"
-          size="32px"
-          weight="normal"
-        >Create your account</Title>
-        <RegistrationForm onSubmit={creatAccount}>
+        <RegistrationForm onSubmit={creatAccount}
+          height="100%"
+          width="100%"
+        >
+
+          <Title
+            margin="0px 0px 20px 0px"
+            size="4vh"
+            weight="normal"
+          >Create your account</Title>
           <NameContainer>
             <TextInput
               onChange={(e) => {
@@ -138,9 +146,10 @@ export const Register = () => {
               type="text"
               widthFocus="0px"
               width='50%'
-              margins="15px 5px"
+              indent='10px'
+              margins="15px 0px"
               border="0 0 1px"
-              padding="5px 10px"
+              padding="5px 0px"
               radiusFocus="0px"
               required></TextInput>
             <TextInput
@@ -152,9 +161,10 @@ export const Register = () => {
               type="text"
               widthFocus="0px"
               width='50%'
-              margins="15px 5px"
+              indent='10px'
+              margins="15px 0px"
               border="0 0 1px"
-              padding="5px 10px"
+              padding="5px 0px"
               radiusFocus="0px"
               required></TextInput>
           </NameContainer>
@@ -167,8 +177,10 @@ export const Register = () => {
             type="text"
             widthFocus="0px"
             margins="15px 0px"
+            width='100%'
             border="0 0 1px"
-            padding="5px 10px"
+            indent='10px'
+            padding="5px 0px"
             radiusFocus="0px"
             ref={userNameref}
             required></TextInput>
@@ -191,7 +203,9 @@ export const Register = () => {
             type="email"
             ref={emailref}
             widthFocus="0px"
-            padding="5px 10px"
+            padding="5px 0px"
+            width='100%'
+            indent='10px'
             margins="15px 0px"
             radiusFocus="0px"
             border="0 0 1px"
@@ -217,18 +231,22 @@ export const Register = () => {
             type="number"
             ref={phoneNumber}
             widthFocus="0px"
-            padding="5px 10px"
+            padding="5px 0px"
+            indent='10px'
             margins="15px 0px 0px 0px"
             radiusFocus="0px"
+            width='100%'
             border="0 0 1px"
             required></TextInput>
 
           <Title
             size="10px"
             family="arial"
-            margin="5px auto 15px 20px"
+            margin="5px 0px 15px 0px"
             color="gray"
+            w='100%'
             weight="normal"
+            align='left'
           >
             e.g. 09123456789 or 9123456789
           </Title>
@@ -249,12 +267,35 @@ export const Register = () => {
             placeholder="&#xf023;  Password"
             family="FontAwesome"
             type="password"
-            padding="5px 10px"
+            padding="5px 0px"
             widthFocus="0px"
-            margins="15px 0px"
+            indent='10px'
+            margins="15px 0px 5px 0px"
             radiusFocus="0px"
+            width="100%"
             border="0 0 1px"
             required></TextInput>
+          <Title
+            size="1.2vh"
+            family="arial"
+            margin="5px 0px 15px 0px"
+            color="red"
+            w='100%'
+            weight="normal"
+            align='left'
+          >
+            {passwordValid}
+          </Title>
+          {/* <Title
+            animate={{ scale: [1, .95, 1] }}
+            transition={{ ease: "linear", duration: 2, repeat: Infinity }}
+            size="12px"
+            family="arial"
+            margin="5px 0px 0px 0px"
+            color="red"
+            weight="normal"
+
+          >{passwordValid}</Title> */}
           <TextInput
             onChange={(e) => {
               setConfirmPassword(e.target.value);
@@ -265,7 +306,9 @@ export const Register = () => {
             widthFocus="0px"
             margins="15px 0px"
             border="0 0 1px"
-            padding="5px 10px"
+            padding="5px 0px"
+            indent='10px'
+            width="100%"
             radiusFocus="0px"
             ref={passwordref}
             required></TextInput>
@@ -274,7 +317,7 @@ export const Register = () => {
             transition={{ ease: "linear", duration: 2, repeat: Infinity }}
             size="12px"
             family="arial"
-            margin="5px 0px 0px 0px"
+            margin="0px 0px 0px 0px"
             color="red"
             weight="normal"
 
@@ -299,24 +342,25 @@ export const Register = () => {
             padding='5px 5px'
             value="Create account"
           ></FormButton>
+
+          <Title
+            size="10px"
+            margin="20px 0px 10px 0px"
+          >OR</Title>
+
+          <Button
+            whileHover={{ scale: 1.2, color: "rgb(0,0,255)" }}
+            whileTap={{ scale: 1, color: "rgb(220,220,220)" }}
+            w='60px'
+            h='30px'
+            textcolor='black'
+            radius='5px'
+            weight='bold'
+            border='none'
+            href='/login'
+          >Log in</Button>
+
         </RegistrationForm>
-
-        <Title
-          size="10px"
-          margin="20px 0px 10px 0px"
-        >OR</Title>
-
-        <Button
-          whileHover={{ scale: 1.2, color: "rgb(0,0,255)" }}
-          whileTap={{ scale: 1, color: "rgb(220,220,220)" }}
-          w='60px'
-          h='30px'
-          textcolor='black'
-          radius='5px'
-          weight='bold'
-          border='none'
-          href='/login'
-        >Log in</Button>
       </RegisterBorder>
       <Background></Background>
     </Container>

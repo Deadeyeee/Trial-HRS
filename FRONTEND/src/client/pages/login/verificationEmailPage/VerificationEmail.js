@@ -6,9 +6,11 @@ import Axios from 'axios'
 
 function VerificationEmail() {
 
-    const [seconds, setSeconds] = useState(localStorage.getItem('timerEmail'));
+    const [seconds, setSeconds] = useState(sessionStorage.getItem('timerEmail'));
     var timer;
     const [sent, setSent] = useState(false);
+
+
 
     useEffect(() => {
         if (seconds != 0) {
@@ -16,13 +18,13 @@ function VerificationEmail() {
         }
         timer = setInterval(() => {
             setSeconds(seconds - 1);
-            localStorage.setItem('timerEmail', seconds);
+            sessionStorage.setItem('timerEmail', seconds);
             if (seconds === 0) {
                 clearInterval(timer);
             }
         }, 1000)
         if (seconds === 0 || seconds < 0) {
-            localStorage.removeItem('timerEmail');
+            sessionStorage.removeItem('timerEmail');
             clearInterval(timer);
             setSent(false);
         }
@@ -50,15 +52,15 @@ function VerificationEmail() {
             if (localStorage.getItem('id') == null) {
                 window.location = "/login"
             }
-            if (localStorage.getItem('timerEmail') == null) {
+            if (sessionStorage.getItem('timerEmail') == null) {
                 Axios.post('http://localhost:3001/api/resendEmail', {
                     id: localStorage.getItem('id'),
                     email: localStorage.getItem('email'),
                     userName: localStorage.getItem('userName')
                 }).then((res) => {
                     console.log(res.data);
-                    localStorage.setItem('timerEmail', 60);
-                    setSeconds(localStorage.getItem('timerEmail'));
+                    sessionStorage.setItem('timerEmail', 60);
+                    setSeconds(sessionStorage.getItem('timerEmail'));
                     setSent(true);
                 }).catch((err) => {
                     console.log(err.res.data);
@@ -70,6 +72,7 @@ function VerificationEmail() {
             console.log(err.res.data)
         })
     }, [])
+
     const resend = () => {
         if (localStorage.getItem('id') == null) {
             localStorage.removeItem('id');
@@ -83,8 +86,8 @@ function VerificationEmail() {
             userName: localStorage.getItem('userName')
         }).then((res) => {
             console.log(res.data);
-            localStorage.setItem('timerEmail', 60);
-            setSeconds(localStorage.getItem('timerEmail'));
+            sessionStorage.setItem('timerEmail', 60);
+            setSeconds(sessionStorage.getItem('timerEmail'));
             setSent(true);
         }).catch((err) => {
             console.log(err.res.data);
