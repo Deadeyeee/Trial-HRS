@@ -5,6 +5,9 @@ import { Button } from '../../components/button/styles';
 import React from 'react'
 
 function BookingConfirmationCont() {
+
+    
+
   return (
     <Container>
         <Title

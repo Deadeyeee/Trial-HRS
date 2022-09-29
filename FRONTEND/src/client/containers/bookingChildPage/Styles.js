@@ -23,7 +23,7 @@ export const RoomContainer = styled(motion.div)`
     flex-direction: Row;
     margin: 40px;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
     gap: 60px;
     
 `;
@@ -53,7 +53,7 @@ export const Services = styled(motion.div)`
 export const RoomContainerContentRight = styled(motion.div)`
     display: flex;
     flex-direction: column;
-    gap: 10px 0px;
+    gap: 40px 0px;
 `;
 
 export const RoomContainerContentLeft = styled(motion.div)`
@@ -71,11 +71,12 @@ export const RatingContainer = styled(motion.div)`
 `;
 
 export const ServicesContainer = styled(motion.div)`
-    width: auto;
-    height: 70px;
+    width: 400px;
+    height: auto;
     display:flex;
     align-items: center;
     gap: 10px;
+    flex-wrap: wrap;
 `;
 
 export const ButtonHolder = styled(motion.div)`
@@ -86,5 +87,4 @@ export const ButtonHolder = styled(motion.div)`
 export const ContentContainerHolder = styled(motion.div)`
     display: flex;
     width: 600px;
-    margin: 20px 0px 0px 0px;
 `;

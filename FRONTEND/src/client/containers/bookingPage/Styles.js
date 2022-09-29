@@ -25,7 +25,7 @@ export const TitleCalendarContainer = styled(motion.div)`
     height: auto;
     width: 100vw;
     gap: 50px;
-    margin: 5% 0px 10% 0px;
+    margin: 5% 0px 5% 0px;
 
     @media (max-width: 1000px) {
     flex-direction: column;

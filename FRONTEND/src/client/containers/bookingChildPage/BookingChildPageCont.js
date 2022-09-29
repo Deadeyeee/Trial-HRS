@@ -3,17 +3,117 @@ import { Title } from '../../components/title/styles';
 import { Button } from '../../components/button/styles';
 import Rating from '@mui/material/Rating';
 
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Description } from '../../components/paragraph/style';
-import TvIcon from '@mui/icons-material/Tv';
-import ShowerIcon from '@mui/icons-material/Shower';
-import NetworkWifiIcon from '@mui/icons-material/NetworkWifi';
 import Background from '../../images/RoomsIMG/premium.jpg'
 import noimage from '../../images/RoomsIMG/noimage.png'
 import { ContainerGlobal } from '../../../admin/components/container/container';
-
+import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
+import AirIcon from '@mui/icons-material/Air';
+import GroupsIcon from '@mui/icons-material/Groups';
+import SmokingRoomsIcon from '@mui/icons-material/SmokingRooms';
+import SanitizerIcon from '@mui/icons-material/Sanitizer';
+import LiquorIcon from '@mui/icons-material/Liquor';
+import DryCleaningIcon from '@mui/icons-material/DryCleaning';
+import HotelIcon from '@mui/icons-material/Hotel';
+import KingBedIcon from '@mui/icons-material/KingBed';
+import KitchenIcon from '@mui/icons-material/Kitchen';
+import MicrowaveIcon from '@mui/icons-material/Microwave';
+import PendingIcon from '@mui/icons-material/Pending';
+import NetworkWifiIcon from '@mui/icons-material/NetworkWifi';
+import TvIcon from '@mui/icons-material/Tv';
+import ShowerIcon from '@mui/icons-material/Shower';
+import axios from 'axios';
+import { useParams } from 'react-router-dom';
 export const BookingChildPageCont = () => {
+
+    const { id } = useParams();
     const ratingValue = 3.6;
+    const [roomType, setRoomType] = useState([])
+    const [usedServices, setUsedServices] = useState([])
+
+    useEffect(() => {
+        axios.get('http://localhost:3001/api/getRoomType/' + id).then((res) => {
+            setRoomType(res.data)
+            console.log(roomType)
+        }).catch((err) => {
+            console.log(err.data)
+        })
+
+        axios.get('http://localhost:3001/api/getAllUsedServices').then((res) => {
+            setUsedServices([])
+            for (let index = 0; index < res.data.length; index++) {
+                if (res.data[index].roomType_id === id) {
+                    setUsedServices(oldData => [...oldData, res.data[index]])
+                }
+
+
+            }
+        }).catch((err) => {
+            console.log(err.data)
+        })
+
+    }, [])
+
+    const serviceIcon = (service) => {
+        if (service === 'Free Wifi') {
+            return <Services><NetworkWifiIcon style={{ color: "#bfaa7e" }} /><Title family="Arial" size="12px" >{service}</Title></Services>
+        }
+        else if (service === "Car Parking") {
+            return <Services><DirectionsCarIcon style={{ color: "#bfaa7e" }} /><Title family="Arial" size="12px" >{service}</Title></Services>
+        }
+        else if (service === "Television") {
+            return <Services><TvIcon style={{ color: "#bfaa7e" }} /><Title family="Arial" size="12px" >{service}</Title></Services>
+        }
+        else if (service === "Aircondition") {
+            return <Services><AirIcon style={{ color: "#bfaa7e" }} /><Title family="Arial" size="12px" >{service}</Title></Services>
+        }
+        else if (service === "Reception") {
+            return <Services><GroupsIcon style={{ color: "#bfaa7e" }} /><Title family="Arial" size="12px" >{service}</Title></Services>
+        }
+        else if (service === "Smoking") {
+            return <Services><SmokingRoomsIcon style={{ color: "#bfaa7e" }} /><Title family="Arial" size="12px" >{service}</Title></Services>
+        }
+        else if (service === "Toiletries") {
+            return <Services><SanitizerIcon style={{ color: "#bfaa7e" }} /><Title family="Arial" size="12px" >{service}</Title></Services>
+        }
+        else if (service === "Clean Washroom") {
+            return <Services><ShowerIcon style={{ color: "#bfaa7e" }} /><Title family="Arial" size="12px" >{service}</Title></Services>
+        }
+        else if (service === "Water Bottle") {
+            return <Services><LiquorIcon style={{ color: "#bfaa7e" }} /><Title family="Arial" size="12px" >{service}</Title></Services>
+        }
+        else if (service === "Quality Linen") {
+            return <Services><HotelIcon style={{ color: "#bfaa7e" }} /><Title family="Arial" size="12px" >{service}</Title></Services>
+        }
+        else if (service === "Towel") {
+            return <Services><DryCleaningIcon style={{ color: "#bfaa7e" }} /><Title family="Arial" size="12px" >{service}</Title></Services>
+        }
+        else if (service === "Bed") {
+            return <Services><KingBedIcon style={{ color: "#bfaa7e" }} /><Title family="Arial" size="12px" >{service}</Title></Services>
+        }
+        else if (service === "Refrigerator") {
+            return <Services><KitchenIcon style={{ color: "#bfaa7e" }} /><Title family="Arial" size="12px" >{service}</Title></Services>
+        }
+        else if (service === "Oven") {
+            return <Services><MicrowaveIcon style={{ color: "#bfaa7e" }} /><Title family="Arial" size="12px" >{service}</Title></Services>
+        }
+        else {
+            return <Services><PendingIcon style={{ color: "#bfaa7e" }} /><Title family="Arial" size="12px" >{service}</Title></Services>
+        }
+
+
+    }
+
+
+
+    const numberFormat = (value) =>
+        new Intl.NumberFormat('en-IN', {
+            style: 'currency',
+            currency: 'PHP'
+        }).format(value);
+
+
     return (
 
         <Container>
@@ -25,7 +125,7 @@ export const BookingChildPageCont = () => {
                 align='Center'
                 color='#bfaa7e'
             >
-                Premium room 102
+                {roomType.roomType}
             </Title>
             <RoomContainerMain>
                 <RoomContainer>
@@ -35,7 +135,7 @@ export const BookingChildPageCont = () => {
                         align='center'
                         radius='none'
                         w='550px'>
-                        
+
 
                         <RoomContainerContentPhoto
                             link={Background} />
@@ -88,88 +188,15 @@ export const BookingChildPageCont = () => {
                                 weight='400'
                                 size='25px'
                                 fStyle='Normal'
-                                margin='0px 0px 0px 0px'
-                                align='left'
-                            >
-                                Ratings:
-                            </Title>
-                            <RatingContainer>
-                                <Title
-                                    family="Lato"
-                                    fontStyle="normal"
-                                    size="15px"
-                                    margin="0px 10px 0px 0px"
-                                >{ratingValue}</Title>
-
-                                <Rating
-                                    readOnly
-                                    size="large"
-                                    value={ratingValue}
-                                    precision={0.1}
-                                ></Rating>
-
-
-                                <Title
-                                    family="times new roman"
-                                    // weight="normal"
-                                    fontStyle="normal"
-                                    size="15px"
-                                    margin="0px 0px 0px 20px"
-                                >200 People love it!</Title>
-                            </RatingContainer>
-                        </ContentContainerHolder>
-                        <ContentContainerHolder>
-                            <Title
-                                color='#2e2e2e'
-                                weight='400'
-                                size='25px'
-                                fStyle='Normal'
                                 margin='0px 40px 0px 0px'
                                 align='left'
                             >
                                 Services:
                             </Title>
                             <ServicesContainer>
-                                <Services>
-                                    <NetworkWifiIcon
-                                        style={{ color: "#bfaa7e" }}
-                                    />
-                                    <Title
-                                        family="Arial"
-                                        size="12px"
-                                    >
-                                        Free Wifi
-                                    </Title>
-                                </Services>
-
-
-                                <Services>
-                                    <TvIcon
-                                        style={{ color: "#bfaa7e" }}
-                                    />
-                                    <Title
-                                        family="Arial"
-                                        size="12px"
-                                    >
-                                        Television
-                                    </Title>
-                                </Services>
-
-
-                                <Services>
-                                    <ShowerIcon
-                                        style={{ color: "#bfaa7e" }}
-                                    />
-                                    <Title
-                                        family="Arial"
-                                        size="12px"
-                                    >
-                                        Washroom
-                                    </Title>
-                                </Services>
-
-
-
+                                {usedServices.map((item) => (
+                                    serviceIcon(item.service.servicesName)
+                                ))}
                             </ServicesContainer>
                         </ContentContainerHolder>
                         <ContentContainerHolder>
@@ -190,11 +217,7 @@ export const BookingChildPageCont = () => {
                                 size="15"
 
                             >
-
-
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                                Maecenas sed enim ut sem viverra. Rutrum quisque non tellus orci ac.
-                                Elementum eu facilisis sed odio. Eget egestas purus viverra accumsan.
+                                {roomType.roomDescription}
                             </Description>
                         </ContentContainerHolder>
                         <ContentContainerHolder>
@@ -217,7 +240,18 @@ export const BookingChildPageCont = () => {
                                 margin='10px 0px 0px 15px'
                                 align='left'
                             >
-                                <b>2</b> adults
+                                <b>{roomType.maxAdultOccupancy}</b> adults
+                            </Title>
+                            <Title
+                                family='Times New Roman, times, serif'
+                                color='#292929'
+                                weight='normal'
+                                size='25px'
+                                fStyle='Normal'
+                                margin='10px 0px 0px 15px'
+                                align='left'
+                            >
+                                <b>{roomType.maxKidsOccupancy}</b> kids
                             </Title>
                         </ContentContainerHolder>
                         <ContentContainerHolder>
@@ -240,7 +274,7 @@ export const BookingChildPageCont = () => {
                                 margin='8px 0px 0px 83px'
                                 align='left'
                             >
-                                <b>₱2,000</b>/night
+                                <b>{numberFormat(roomType.roomRate)}</b>/night
                             </Title>
 
                         </ContentContainerHolder>

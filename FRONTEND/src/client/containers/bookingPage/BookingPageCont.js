@@ -111,8 +111,8 @@ export const BookingPageCont = () => {
             <Title
                 color='#bfaa7e'
                 weight='normal'
-                size='5vw'
-                margin='4vw 0px 4vw 0px'
+                size='3.5vw'
+                margin='1vw 0px 1vw 0px'
             >
                 Bookings
             </Title>
@@ -276,7 +276,7 @@ export const BookingPageCont = () => {
                                     border="1px solid #8F805F"
                                     margin='30px 0px 0px 0px'
                                     fontsize='15px'
-                                    href='/booking/room'
+                                    href={'/booking/room/'+ item.id}
                                 >
                                     Book now!
                                 </Button>
