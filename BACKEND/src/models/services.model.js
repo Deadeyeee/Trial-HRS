@@ -1,20 +1,19 @@
 module.exports = (sequelize, DataTypes, Sequelize) => {
 
-    const Room = sequelize.define("room", {
+    const Services = sequelize.define("services", {
         id:{
             type: DataTypes.UUID,
             defaultValue: DataTypes.UUIDV4,
             primaryKey: true,
             allowNull: false,
         },
-        roomNumber: {
-            type: DataTypes.INTEGER,
+        servicesName: {
+            type: DataTypes.STRING,
             allowNull: false,
-        },
-        roomStatus: {
-            type: DataTypes.ENUM(['Vacant', 'Occupied', 'Maintenance']),
-            allowNull: false,
-            defaultValue: 'Vacant'
+            unique: {
+                args: true,
+                msg: "This service already exist.",
+              },
         },
     },
     {
@@ -24,5 +23,5 @@ module.exports = (sequelize, DataTypes, Sequelize) => {
         updatedAt: "updated_at",
     },
     )
-    return Room;
+    return Services;
 }

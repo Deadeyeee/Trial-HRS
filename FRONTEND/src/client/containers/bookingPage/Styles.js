@@ -120,12 +120,13 @@ export const RatingContainerRight = styled(motion.div)`
 `;
 
 export const ServicesContainer = styled(motion.div)`
-    width: auto;
-    height: 70px;
+    width: 400px;
+    height: auto;
     margin: 10px 10px;
     display:flex;
+    flex-wrap: wrap;
     align-items: center;
-    gap: 10px;
+    gap: 20px;
 `;
 
 export const Services = styled(motion.div)`
@@ -133,7 +134,7 @@ export const Services = styled(motion.div)`
     justify-content:center;
     flex-direction: column;
     align-items: center;
-    width: 90px;
+    width: auto;
     gap: 10px;
     height: 50px;
 

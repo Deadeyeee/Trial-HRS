@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { HorizontalLine } from '../../../client/components/horizontalLine/HorizontalLine'
 import { Title } from '../../../client/components/title/styles'
 import { ContainerGlobal } from '../../components/container/container'
@@ -26,6 +26,7 @@ import ActionButton from '../../components/actionButton/ActionButton'
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
+import axios from 'axios'
 
 
 const style = {
@@ -67,12 +68,184 @@ const RoomStatusContainer = () => {
     const handleOpen3 = () => setOpen3(true);
     const handleClose3 = () => setOpen3(false);
 
-    const [roomType, setroomType] = React.useState('');
+    const [roomId, setRoomId] = React.useState('');
 
     const handleChange = (event) => {
-        setroomType(event.target.value);
+        setSelectedRoomType(event.target.value);
     };
 
+    const [roomNumber, setRoomNumber] = React.useState('');
+    const [maintenance, setMaintenance] = React.useState('Vacant');
+    const [selectedRoomType, setSelectedRoomType] = React.useState("")
+
+
+    const [roomTypeValue, setRoomTypeValue] = React.useState([])
+    const [roomValue, setRoomValue] = React.useState([])
+
+    useEffect(() => {
+        axios.get('http://localhost:3001/api/getAllRoomType').then((res) => {
+            setRoomTypeValue(res.data)
+            console.log(roomTypeValue)
+        }).catch((err) => {
+            console.log(err.res)
+        })
+
+        axios.get('http://localhost:3001/api/getAllRoom').then((res) => {
+            setRoomValue(res.data)
+            console.log(roomValue)
+        }).catch((err) => {
+            console.log(err.res)
+        })
+    }, [])
+
+    const createRoom = (e) => {
+        e.preventDefault();
+        roomTypeValue.map((item) => {
+            if (selectedRoomType === item.roomType) {
+                axios.post('http://localhost:3001/api/addRoom',
+                    {
+                        roomNumber: roomNumber,
+                        roomStatus: maintenance,
+                        roomType_id: item.id
+
+                    }).then((res) => {
+                        console.log(res.data)
+                        handleClose();
+                        window.location.reload(false);
+                    }).catch((err) => {
+                        console.log(err.res)
+                    })
+            }
+        })
+    }
+
+    const editRoom = (e) => {
+        e.preventDefault();
+        roomTypeValue.map((item) => {
+            if (selectedRoomType === item.roomType) {
+                axios.patch('http://localhost:3001/api/updateRoom/' + roomId,
+                    {
+                        roomNumber: roomNumber,
+                        roomStatus: maintenance,
+                        roomType_id: item.id
+
+                    }).then((res) => {
+                        console.log(res.data)
+                        handleClose3();
+                        window.location.reload(false);
+                    }).catch((err) => {
+                        console.log(err.res)
+                    })
+            }
+        })
+    }
+
+
+    const view = (roomId, roomNumber, roomType, roomStatus) => {
+        setRoomNumber(roomNumber)
+        setSelectedRoomType(roomType)
+        setMaintenance(roomStatus)
+        setRoomId(roomId)
+        handleOpen2();
+    }
+    const edit = (roomId, roomNumber, roomType, roomStatus) => {
+        setRoomNumber(roomNumber)
+        setSelectedRoomType(roomType)
+        setMaintenance(roomStatus)
+        setRoomId(roomId)
+        handleOpen3();
+    }
+
+
+    const roomStatusDesign = (roomStatus) => {
+        if (roomStatus === "Vacant") {
+            return <Td align='center'>
+                <ContainerGlobal
+                    w='100px'
+                    h='auto'
+                    margin='0px auto'
+                    bg='rgb(118, 185, 71, .2)'
+                    direction='row'
+                    padding='2px 0px'
+                    justify='center'
+                    align='center'
+                    border='2px solid rgb(118, 185, 71)'
+                    gap='10px'
+                    borderRadius='.5rem'
+                >
+
+                    <Title
+                        family='Helvetica'
+                        size='12px'
+                        color='BLACK'
+                        fstyle='normal'
+                        display='inline'
+                        padding='5px 10px'
+                    >
+                        {roomStatus}
+                    </Title>
+                </ContainerGlobal>
+            </Td>
+        }
+        else if (roomStatus === "Maintenance") {
+            return <Td align='center'>
+                <ContainerGlobal
+                    w='100px'
+                    h='auto'
+                    margin='0px auto'
+                    bg='rgb(253, 161, 114, .2)'
+                    direction='row'
+                    padding='2px 0px'
+                    justify='center'
+                    align='center'
+                    border='2px solid rgb(255, 215, 0)'
+                    gap='10px'
+                    borderRadius='.5rem'
+                >
+
+                    <Title
+                        family='Helvetica'
+                        size='12px'
+                        color='BLACK'
+                        fstyle='normal'
+                        display='inline'
+                        padding='5px 10px'
+                    >
+                        {roomStatus}
+                    </Title>
+                </ContainerGlobal>
+            </Td>
+        }
+        else if (roomStatus === "Occupied") {
+            return <Td align='center'>
+                <ContainerGlobal
+                    w='100px'
+                    h='auto'
+                    margin='0px auto'
+                    bg='rgb(244,194,194, .2)'
+                    direction='row'
+                    padding='2px 0px'
+                    justify='center'
+                    align='center'
+                    border='2px solid rgb(255, 36, 0)'
+                    gap='10px'
+                    borderRadius='.5rem'
+                >
+
+                    <Title
+                        family='Helvetica'
+                        size='12px'
+                        color='BLACK'
+                        fstyle='normal'
+                        display='inline'
+                        padding='5px 10px'
+                    >
+                        Occupied
+                    </Title>
+                </ContainerGlobal>
+            </Td>
+        }
+    }
     return (
         <Container>
             <HeadContainer>
@@ -254,209 +427,28 @@ const RoomStatusContainer = () => {
                         <Th align='center'>Room Status <ArrowDropDownIcon style={{ color: 'black' }} /></Th>
                         <Th align='center'>Action</Th>
                     </Tr>
-                    <Tr>
-                        <Td align='center'>101</Td>
-                        <Td align='center'>Deluxe</Td>
-                        <Td align='center'>.........</Td>
-                        <Td align='center'>.........</Td>
-                        <Td align='center'>.........</Td>
-                        <Td align='center'>
-                            <ContainerGlobal
-                                w='100px'
-                                h='auto'
-                                margin='0px auto'
-                                bg='rgb(118, 185, 71, .2)'
-                                direction='row'
-                                padding='2px 0px'
-                                justify='center'
-                                align='center'
-                                border='2px solid rgb(118, 185, 71)'
-                                gap='10px'
-                                borderRadius='.5rem'
-                            >
+                    {roomValue.map((item) => (
+                        <Tr>
+                            <Td align='center'>{item.roomNumber}</Td>
+                            <Td align='center'>{item.roomType.roomType}</Td>
+                            <Td align='center'>.........</Td>
+                            <Td align='center'>.........</Td>
+                            <Td align='center'>.........</Td>
+                            {roomStatusDesign(item.roomStatus)}
 
-                                <Title
-                                    family='Helvetica'
-                                    size='12px'
-                                    color='BLACK'
-                                    fstyle='normal'
-                                    display='inline'
-                                    padding='5px 10px'
-                                >
-                                    Vacant
-                                </Title></ContainerGlobal>
-                        </Td>
-                        <Td align='center'><ActionButton 
-                        view={handleOpen2}
-                        edit={handleOpen3}
-                        /></Td>
-                    </Tr>
-                    <Tr>
-                        <Td align='center'>102</Td>
-                        <Td align='center'>Deluxe</Td>
-                        <Td align='center'>.........</Td>
-                        <Td align='center'>.........</Td>
-                        <Td align='center'>.........</Td>
-                        <Td align='center'>
-                            <ContainerGlobal
-                                w='100px'
-                                h='auto'
-                                margin='0px auto'
-                                bg='rgb(118, 185, 71, .2)'
-                                direction='row'
-                                padding='2px 0px'
-                                justify='center'
-                                align='center'
-                                border='2px solid rgb(118, 185, 71)'
-                                gap='10px'
-                                borderRadius='.5rem'
-                            >
+                            <Td align='center'><ActionButton
+                                view={() => {
+                                    view(item.id, item.roomNumber, item.roomType.roomType, item.roomStatus);
 
-                                <Title
-                                    family='Helvetica'
-                                    size='12px'
-                                    color='BLACK'
-                                    fstyle='normal'
-                                    display='inline'
-                                    padding='5px 10px'
-                                >
-                                    Vacant
-                                </Title></ContainerGlobal></Td>
-                        <Td align='center'><ActionButton /></Td>
-                    </Tr>
-                    <Tr>
-                        <Td align='center'>103</Td>
-                        <Td align='center'>Premium</Td>
-                        <Td align='center'>05/20/21</Td>
-                        <Td align='center'>05/25/21</Td>
-                        <Td align='center'>05/29/21</Td>
-                        <Td align='center'>
-                            <ContainerGlobal
-                                w='100px'
-                                h='auto'
-                                margin='0px auto'
-                                bg='rgb(244,194,194, .2)'
-                                direction='row'
-                                padding='2px 0px'
-                                justify='center'
-                                align='center'
-                                border='2px solid rgb(255, 36, 0)'
-                                gap='10px'
-                                borderRadius='.5rem'
-                            >
+                                }}
+                                edit={() => {
+                                    edit(item.id, item.roomNumber, item.roomType.roomType, item.roomStatus);
 
-                                <Title
-                                    family='Helvetica'
-                                    size='12px'
-                                    color='BLACK'
-                                    fstyle='normal'
-                                    display='inline'
-                                    padding='5px 10px'
-                                >
-                                    Occupied
-                                </Title></ContainerGlobal></Td>
-                        <Td align='center'><ActionButton /></Td>
-                    </Tr>
-                    <Tr>
-                        <Td align='center'>104</Td>
-                        <Td align='center'>Deluxe</Td>
-                        <Td align='center'>.........</Td>
-                        <Td align='center'>.........</Td>
-                        <Td align='center'>.........</Td>
-                        <Td align='center'>
-                            <ContainerGlobal
-                                w='100px'
-                                h='auto'
-                                margin='0px auto'
-                                bg='rgb(118, 185, 71, .2)'
-                                direction='row'
-                                padding='2px 0px'
-                                justify='center'
-                                align='center'
-                                border='2px solid rgb(118, 185, 71)'
-                                gap='10px'
-                                borderRadius='.5rem'
-                            >
+                                }}
+                            /></Td>
+                        </Tr>
+                    ))}
 
-                                <Title
-                                    family='Helvetica'
-                                    size='12px'
-                                    color='BLACK'
-                                    fstyle='normal'
-                                    display='inline'
-                                    padding='5px 10px'
-                                >
-                                    Vacant
-                                </Title></ContainerGlobal>
-                        </Td>
-                        <Td align='center'><ActionButton /></Td>
-                    </Tr>
-                    <Tr>
-                        <Td align='center'>105</Td>
-                        <Td align='center'>Premium</Td>
-                        <Td align='center'>.........</Td>
-                        <Td align='center'>.........</Td>
-                        <Td align='center'>.........</Td>
-                        <Td align='center'>
-                            <ContainerGlobal
-                                w='100px'
-                                h='auto'
-                                margin='0px auto'
-                                bg='rgb(253, 161, 114, .2)'
-                                direction='row'
-                                padding='2px 0px'
-                                justify='center'
-                                align='center'
-                                border='2px solid rgb(255, 215, 0)'
-                                gap='10px'
-                                borderRadius='.5rem'
-                            >
-
-                                <Title
-                                    family='Helvetica'
-                                    size='12px'
-                                    color='BLACK'
-                                    fstyle='normal'
-                                    display='inline'
-                                    padding='5px 10px'
-                                >
-                                    Maintenance
-                                </Title></ContainerGlobal></Td>
-                        <Td align='center'><ActionButton /></Td>
-                    </Tr>
-                    <Tr>
-                        <Td align='center'>106</Td>
-                        <Td align='center'>Deluxe</Td>
-                        <Td align='center'>05/20/21</Td>
-                        <Td align='center'>05/25/21</Td>
-                        <Td align='center'>05/29/21</Td>
-                        <Td align='center'>
-                            <ContainerGlobal
-                                w='100px'
-                                h='auto'
-                                margin='0px auto'
-                                bg='rgb(244,194,194, .2)'
-                                direction='row'
-                                padding='2px 0px'
-                                justify='center'
-                                align='center'
-                                border='2px solid rgb(255, 36, 0)'
-                                gap='10px'
-                                borderRadius='.5rem'
-                            >
-
-                                <Title
-                                    family='Helvetica'
-                                    size='12px'
-                                    color='BLACK'
-                                    fstyle='normal'
-                                    display='inline'
-                                    padding='5px 10px'
-                                >
-                                    Occupied
-                                </Title></ContainerGlobal></Td>
-                        <Td align='center'><ActionButton /></Td>
-                    </Tr>
                 </TableContainer>
             </ContainerGlobal>
             <Button
@@ -480,7 +472,10 @@ const RoomStatusContainer = () => {
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
-                <Box sx={style}>
+                <Box sx={style}
+                    component='form'
+                    onSubmit={createRoom}
+                >
                     <Title
                         size='33px'
                         color='black'
@@ -506,6 +501,10 @@ const RoomStatusContainer = () => {
                             placeholder='Room Number'
                             label="Room No."
                             variant="outlined"
+                            value={roomNumber}
+                            onChange={(e) => {
+                                setRoomNumber(e.target.value)
+                            }}
                             style={{ width: '50%', }} />
 
                         <FormControl
@@ -515,13 +514,15 @@ const RoomStatusContainer = () => {
                             <Select
                                 labelId="demo-simple-select-autowidth-label"
                                 id="demo-simple-select-autowidth"
-                                value={roomType}
+                                value={selectedRoomType}
+                                // defaultValue={roomTypeValue[0].roomType}
                                 onChange={handleChange}
                                 label="roomType"
                             >
-                                <MenuItem value={"Family"}>Family</MenuItem>
-                                <MenuItem value={"Premium"}>Premium</MenuItem>
-                                <MenuItem value={"Deluxe"}>Deluxe</MenuItem>
+                                {roomTypeValue.map((item) => (
+
+                                    <MenuItem value={item.roomType}>{item.roomType}</MenuItem>
+                                ))}
                             </Select>
                         </FormControl>
 
@@ -530,7 +531,17 @@ const RoomStatusContainer = () => {
                     <InputContainer>
 
                         <FormGroup>
-                            <FormControlLabel control={<Checkbox size='large' />} label='Mark as Under "Maintenance"' />
+                            <FormControlLabel control={<Checkbox
+                                value={maintenance}
+                                onChange={(e) => {
+                                    if (e.target.checked) {
+                                        setMaintenance("Maintenance")
+                                    }
+                                    else {
+                                        setMaintenance("Vacant")
+                                    }
+                                }}
+                                size='large' />} label='Mark as Under "Maintenance"' />
                         </FormGroup>
                     </InputContainer>
 
@@ -540,7 +551,7 @@ const RoomStatusContainer = () => {
 
                         <Button variant="contained" size="large"
                             style={{ backgroundColor: '#50AA32' }}
-                            onClick={handleClose}>
+                            type='submit'>
                             Add
                         </Button>
                         <Button variant="contained" size="large"
@@ -574,7 +585,7 @@ const RoomStatusContainer = () => {
                         align='left'
                         margin='0px 0px 20px 0px'
                     >
-                        Add Room
+                        View Room
                     </Title>
 
                     <HorizontalLine
@@ -590,10 +601,10 @@ const RoomStatusContainer = () => {
                             placeholder='Room Number'
                             label="Room No."
                             variant="outlined"
-                            defaultValue='101'
-                            style={{ width: '50%', }} 
-                            inputProps={{readOnly: true,}}
-                            />
+                            defaultValue={roomNumber}
+                            style={{ width: '50%', }}
+                            inputProps={{ readOnly: true, }}
+                        />
 
                         <FormControl
                             variant="outlined"
@@ -602,14 +613,15 @@ const RoomStatusContainer = () => {
                             <Select
                                 labelId="demo-simple-select-autowidth-label"
                                 id="demo-simple-select-autowidth"
-                                value='Deluxe'
+                                value={selectedRoomType}
                                 onChange={handleChange}
                                 label="roomType"
                                 disabled
                             >
-                                <MenuItem value={"Family"}>Family</MenuItem>
-                                <MenuItem value={"Premium"}>Premium</MenuItem>
-                                <MenuItem value={"Deluxe"}>Deluxe</MenuItem>
+                                {roomTypeValue.map((item) => (
+
+                                    <MenuItem value={item.roomType}>{item.roomType}</MenuItem>
+                                ))}
                             </Select>
                         </FormControl>
 
@@ -618,8 +630,19 @@ const RoomStatusContainer = () => {
 
                     <InputContainer>
 
-                        <FormGroup >
-                            <FormControlLabel control={<Checkbox size='large' disabled/>} label='Mark as Under "Maintenance"' />
+                        <FormGroup>
+                            <FormControlLabel control={<Checkbox
+                                checked={maintenance == "Maintenance" ? true : false}
+                                value={maintenance}
+                                onChange={(e) => {
+                                    if (e.target.checked) {
+                                        setMaintenance("Maintenance")
+                                    }
+                                    else {
+                                        setMaintenance("Vacant")
+                                    }
+                                }}
+                                size='large' disabled />} label='Mark as Under "Maintenance"' />
                         </FormGroup>
                     </InputContainer>
 
@@ -650,7 +673,9 @@ const RoomStatusContainer = () => {
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
-                <Box sx={style}>
+                <Box sx={style}
+                component='form'
+                onSubmit={editRoom}>
                     <Title
                         size='33px'
                         color='black'
@@ -660,7 +685,7 @@ const RoomStatusContainer = () => {
                         align='left'
                         margin='0px 0px 20px 0px'
                     >
-                        Add Room
+                        Edit Room
                     </Title>
 
                     <HorizontalLine
@@ -676,10 +701,13 @@ const RoomStatusContainer = () => {
                             placeholder='Room Number'
                             label="Room No."
                             variant="outlined"
-                            defaultValue='101'
-                            style={{ width: '50%', }} 
+                            value={roomNumber}
+                            onChange={(e) => {
+                                setRoomNumber(e.target.value);
+                            }}
+                            style={{ width: '50%', }}
                             type='number'
-                            />
+                        />
 
                         <FormControl
                             variant="outlined"
@@ -688,14 +716,15 @@ const RoomStatusContainer = () => {
                             <Select
                                 labelId="demo-simple-select-autowidth-label"
                                 id="demo-simple-select-autowidth"
-                                value='Deluxe'
+                                value={selectedRoomType}
                                 onChange={handleChange}
                                 label="roomType"
-                                
+
                             >
-                                <MenuItem value={"Family"}>Family</MenuItem>
-                                <MenuItem value={"Premium"}>Premium</MenuItem>
-                                <MenuItem value={"Deluxe"}>Deluxe</MenuItem>
+                                {roomTypeValue.map((item) => (
+
+                                    <MenuItem value={item.roomType}>{item.roomType}</MenuItem>
+                                ))}
                             </Select>
                         </FormControl>
 
@@ -704,8 +733,19 @@ const RoomStatusContainer = () => {
 
                     <InputContainer>
 
-                        <FormGroup >
-                            <FormControlLabel control={<Checkbox size='large' />} label='Mark as Under "Maintenance"' />
+                        <FormGroup>
+                            <FormControlLabel control={<Checkbox
+                                checked={maintenance === "Maintenance" ? true : false}
+                                value={maintenance}
+                                onChange={(e) => {
+                                    if (e.target.checked) {
+                                        setMaintenance("Maintenance")
+                                    }
+                                    else {
+                                        setMaintenance("Vacant")
+                                    }
+                                }}
+                                size='large' />} label='Mark as Under "Maintenance"' />
                         </FormGroup>
                     </InputContainer>
 
@@ -714,10 +754,14 @@ const RoomStatusContainer = () => {
 
                         <Button variant="contained" size="large"
                             style={{ backgroundColor: '#50AA32' }}
-                            onClick={handleClose3}>
-                            OK
+                            type='submit'>
+                            Save changes
                         </Button>
-
+                        <Button variant="contained" size="large"
+                            style={{ backgroundColor: '#FF2400' }}
+                            onClick={handleClose}>
+                            Cancel
+                        </Button>
                     </InputContainer>
 
 

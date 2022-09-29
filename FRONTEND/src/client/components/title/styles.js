@@ -22,6 +22,8 @@ border-radius:${(props) => (props.borderRadius ? props.borderRadius : "none")};
 border:${(props) => (props.border ? props.border : "none")};
 cursor:${(props) => (props.cursor ? props.cursor : "auto")};
 overflow: ${(props) => (props.overflow ? props.overflow : "visible")};
+text-overflow: ${(props) => (props.textOverflow ? props.textOverflow : "clip")};
+white-space: ${(props) => (props.whiteSpace ? props.whiteSpace : "normal")};
 &:hover{
     color: ${(props) => (props.hoverColor ? props.hoverColor : "none")};;
   }

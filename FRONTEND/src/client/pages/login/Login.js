@@ -64,21 +64,32 @@ export const Login = () => {
                 console.log(response.data)
             }
         }).catch((err) => {
-            setLoginStatus(err.response.data.message);
-            console.log(err.response.data.message)
-            if (err.response.data.message == "Please verify your email address.") {
-                setverify("Click here to re-send Verification Code to your email")
+            if (verifyCaptcha == false) {
+                e.preventDefault();
+                setLoginStatus("Please Verify that you are not a robot")
+                captcha.current.focus();
             }
-            else if (err.response.data.message == "Password is Incorrect.") {
+            else {
+                setLoginStatus(err.response.data.message);
+                console.log(err.response.data.message)
+                if (err.response.data.message == "Please verify your email address.") {
+                    setverify("Click here to re-send Verification Code to your email")
+                }
+                else if (err.response.data.message == "Password is Incorrect.") {
 
-                incorrectPassword.current.focus();
-                incorrectPassword.current.select();
-            }
-            else if (err.response.data.message == "Username/Email or Password is incorrect. Please try again.") {
+                    incorrectPassword.current.focus();
+                    incorrectPassword.current.select();
+                }
+                else if (err.response.data.message == "Username/Email or Password is incorrect. Please try again.") {
 
-                incorrectEmail.current.focus();
-                incorrectEmail.current.select();
+                    incorrectEmail.current.focus();
+                    incorrectEmail.current.select();
+                }
+                else{
+                    console.log(err.response.data.message)
+                }
             }
+
         });;
 
     };
@@ -189,7 +200,7 @@ export const Login = () => {
                             margin="0px 0px 0px auto"
                             fontsize='12px'
                             align='right'
-                            onClick={()=>{window.location.href='/forgotPassword'}}
+                            onClick={() => { window.location.href = '/forgotPassword' }}
                         >Forgot your password?</Button>
 
                         <Title

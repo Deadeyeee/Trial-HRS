@@ -11,16 +11,8 @@ module.exports = (sequelize, DataTypes, Sequelize) => {
             type: DataTypes.STRING,
             allowNull: false,
         },
-        roomNumber: {
-            type: DataTypes.SMALLINT,
-            allowNull: false,
-        },
-        roomStatus: {
-            type: DataTypes.ENUM(['VACANT', 'OCCUPIED', 'MAINTENANCE']),
-            allowNull: false,
-        },
         roomRate: {
-            type: DataTypes.DECIMAL(19, 4),
+            type: DataTypes.DECIMAL(19, 2),
             allowNull: false,
         },
         maxAdultOccupancy: {
@@ -34,6 +26,10 @@ module.exports = (sequelize, DataTypes, Sequelize) => {
         roomDescription: {
             allowNull: false,
             type: DataTypes.STRING,
+        },
+        roomImages: {
+            allowNull: false,
+            type: DataTypes.JSON,
         },
     },
     {

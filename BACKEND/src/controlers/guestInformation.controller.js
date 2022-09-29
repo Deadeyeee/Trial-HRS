@@ -1,3 +1,4 @@
+const { user, payment } = require("../models");
 const db = require("../models");
 const Guest = db.guestInformation;
 // import Logo from "../../../FRONTEND/src/images/logo.png";
@@ -14,7 +15,11 @@ exports.create = async (req, res) => {
 };
 
 exports.findAll = async (req, res) => {
-    const guest = await Guest.findAll();
+    const guest = await Guest.findAll(
+        {
+            include: user,
+        }
+    );
     return res.status(200).send(guest);
 };
 
