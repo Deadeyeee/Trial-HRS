@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useState, useEffect } from 'react'
+import React, { useLayoutEffect, useState, useEffect, useRef } from 'react'
 import { FormButton, Button } from '../../components/button/styles'
 import { HorizontalLine } from '../../components/horizontalLine/HorizontalLine'
 import { Description } from '../../components/paragraph/style'
@@ -20,6 +20,7 @@ import Link from '@mui/material/Link';
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 import TermsAndConditionsCont from "../termsAndConditionsPage/TermsAndConditionsCont";
+import axios from 'axios'
 
 
 const style = {
@@ -46,13 +47,13 @@ const InformationForm = () => {
         console.log('Done!!!!');
     };
     const [agreement, setAgreement] = useState(false)
-    const [paymentOption, setPaymentOption] = useState("");
-    const [displayBanks, setDisplayBanks] = useState("");
-    const [displayWallets, setDisplayWallets] = useState("");
+    // const [paymentOption, setPaymentOption] = useState("");
+    // const [displayBanks, setDisplayBanks] = useState("");
+    // const [displayWallets, setDisplayWallets] = useState("");
+    // const [value, setValue] = useState(Date.now());
+    // const bday = new Date(2000, 11, 2,);
+    // const color = "#000";
     const [nationality, setNationality] = useState('Filipino');
-    const [value, setValue] = useState(Date.now());
-    const bday = new Date(2000, 11, 2,);
-    const color = "#000";
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
@@ -63,38 +64,119 @@ const InformationForm = () => {
     const [email, setEmail] = useState();
     const [birthday, setBirthDay] = useState(new Date());
     const [nationalityValue, setNationalityValue] = useState();
-    const [gender, setGender] = useState();
+    const [gender, setGender] = useState('male');
     const [address, setAddress] = useState();
     const [userName, setUserName] = useState();
     const [password, setPassword] = useState();
 
-    useLayoutEffect(() => {
-        if (paymentOption === "E-Wallet payment") {
-            setDisplayWallets("flex");
-            setDisplayBanks("none");
-        }
-        else if (paymentOption === "Bank payment") {
-            setDisplayBanks("flex");
-            setDisplayWallets("none");
-        }
-        else {
-            setDisplayBanks("none");
-            setDisplayWallets("none");
-        }
-    }, [paymentOption])
+    const { emailRef, contactNumberRef, userNameRef } = useRef();
+    useEffect(() => {
 
-    let payments = ["Pay at hotel", "Bank payment", "E-Wallet payment"];
-    let banks = ["BDO", "PNB", "BPI"];
-    let eWallets = ["Gcash", "Paymaya"];
+
+        // if (paymentOption === "E-Wallet payment") {
+        //     setDisplayWallets("flex");
+        //     setDisplayBanks("none");
+        // }
+        // else if (paymentOption === "Bank payment") {
+        //     setDisplayBanks("flex");
+        //     setDisplayWallets("none");
+        // }
+        // else {
+        //     setDisplayBanks("none");
+        //     setDisplayWallets("none");
+        // }
+    }, [])
+
+    // let payments = ["Pay at hotel", "Bank payment", "E-Wallet payment"];
+    // let banks = ["BDO", "PNB", "BPI"];
+    // let eWallets = ["Gcash", "Paymaya"];
 
     useEffect(() => {
+        window.sessionStorage.removeItem("email")
+        window.sessionStorage.removeItem("contactNumber")
+        window.sessionStorage.removeItem("userName")
+        window.sessionStorage.removeItem("firstName");
+        window.sessionStorage.removeItem("lastName");
+        window.sessionStorage.removeItem("birthday");
+        window.sessionStorage.removeItem("nationality");
+        window.sessionStorage.removeItem("gender");
+        window.sessionStorage.removeItem("address");
+        window.sessionStorage.removeItem("userName");
+        window.sessionStorage.removeItem("password");
+
+        if (window.sessionStorage.getItem('AvailedRoom') == null || window.sessionStorage.getItem('AvailedRoom') == [] || window.sessionStorage.getItem('AvailedRoom') == "") {
+            window.location = "/booking"
+        }
         document.title = "Guest Information"
     }, [])
+
+
+
+    const createGuestInformation = (e) => {
+        e.preventDefault();
+        axios.get('http://localhost:3001/api/getAllUsers').then((res) => {
+            console.log(res.data)
+            if (res.data.length !== 0) {
+                res.data.map((item) => {
+                    if (item.email == email) {
+                        emailRef.current.focus();
+                    }
+                    else if (item.contactNumber == contactNumber) {
+                        contactNumberRef.current.focus();
+                    }
+                    else if (item.userName == userName) {
+                        userNameRef.current.focus();
+                    }
+                    else {
+                        window.sessionStorage.setItem("email", email)
+                        window.sessionStorage.setItem("contactNumber", contactNumber)
+                        window.sessionStorage.setItem("userName", userName)
+                    }
+
+                })
+            }
+            else {
+                window.sessionStorage.setItem("email", email)
+                window.sessionStorage.setItem("contactNumber", contactNumber)
+                window.sessionStorage.setItem("userName", userName)
+            }
+            if (window.sessionStorage.getItem('email') !== null && window.sessionStorage.getItem('contactNumber') !== null && window.sessionStorage.getItem('userName') !== null) {
+                window.sessionStorage.setItem("firstName", firstName);
+                window.sessionStorage.setItem("lastName", lastName);
+                window.sessionStorage.setItem("birthday", birthday);
+                window.sessionStorage.setItem("nationality", nationality);
+                window.sessionStorage.setItem("gender", gender);
+                window.sessionStorage.setItem("address", address);
+                window.sessionStorage.setItem("userName", userName);
+                window.sessionStorage.setItem("password", password);
+
+                window.location = '/billingSummary'
+            }
+        }).catch((err) => {
+            console.log(err.res)
+        })
+        // axios.post('http://localhost:3001/api/addUser', {
+        //     userName: userName,
+        //     contactNumber: contactNumber,
+        //     email: email,
+        //     password: password,
+        // }).then((res)=>{
+        //     console.log(res.data);
+        //     axios.post('http://localhost:3001/api/addGuest', {
+
+        //     })
+        // }).catch((err)=>{
+        //     console.log(err.res);
+        // })
+
+
+    }
+
     return (
         <Container>
             <ContainerChild>
-                <ContainerForm>
-                    <ContainerFormContent>
+                <ContainerForm onSubmit={createGuestInformation}>
+                    <ContainerFormContent >
 
                         <InputContainer>
                             <TextField
@@ -105,7 +187,8 @@ const InformationForm = () => {
                                 onChange={(e) => {
                                     setFirstName(e.target.value)
                                 }}
-                                style={{ width: '55%', }} />
+                                style={{ width: '55%', }}
+                                required />
 
                             <TextField
                                 placeholder='Last Name'
@@ -115,7 +198,8 @@ const InformationForm = () => {
                                 onChange={(e) => {
                                     setLastName(e.target.value)
                                 }}
-                                style={{ width: '55%', }} />
+                                style={{ width: '55%', }}
+                                required />
                         </InputContainer>
 
 
@@ -129,7 +213,9 @@ const InformationForm = () => {
                                 onChange={(e) => {
                                     setEmail(e.target.value)
                                 }}
-                                style={{ width: '55%', }} />
+                                style={{ width: '55%', }}
+                                ref={emailRef}
+                                required />
 
                             <TextField
                                 placeholder='Contact Number'
@@ -140,7 +226,9 @@ const InformationForm = () => {
                                 onChange={(e) => {
                                     setContactNumber(e.target.value)
                                 }}
-                                style={{ width: '55%', }} />
+                                ref={contactNumberRef}
+                                style={{ width: '55%', }}
+                                required />
                         </InputContainer>
 
 
@@ -161,6 +249,7 @@ const InformationForm = () => {
                                             variant="standard"
                                             style={{ width: "55%", margin: '5px 0px' }}
                                             helperText={null}
+                                            required
                                         />
                                     }
                                 />
@@ -178,6 +267,7 @@ const InformationForm = () => {
                                     onChange={(event) => {
                                         setNationality(event.target.value);
                                     }}
+                                    required
                                 >
 
                                     {nationalities.map(({ nationality }, index) => (
@@ -196,10 +286,12 @@ const InformationForm = () => {
                                     row
                                     aria-labelledby="demo-row-radio-buttons-group-label"
                                     defaultValue="male"
+                                    value={gender}
                                     name="row-radio-buttons-group"
                                     onChange={(e) => {
                                         setGender(e.target.value)
                                     }}
+                                    required
                                 >
                                     <FormControlLabel
                                         value="male"
@@ -233,7 +325,8 @@ const InformationForm = () => {
                                 }}
                                 multiline
                                 rows={4}
-                                style={{ width: '95%', }} />
+                                style={{ width: '95%', }}
+                                required />
 
                             <TextField
                                 placeholder='Special Instruction'
@@ -242,15 +335,16 @@ const InformationForm = () => {
                                 type='textarea'
                                 multiline
                                 rows={4}
-                                style={{ width: '95%', }} />
+                                style={{ width: '95%', }}
+                                required />
                         </InputContainer>
-                        <p><h1 style={{display: 'inline'}}>Create an account </h1>(optional)*</p>
+                        <p><h1 style={{ display: 'inline' }}>Create an account </h1>(optional)*</p>
                         <InputContainer>
                             <TextField
                                 placeholder='Username'
                                 label="Username"
                                 variant="outlined"
-
+                                ref={userNameRef}
                                 value={userName}
                                 onChange={(e) => {
                                     setUserName(e.target.value)
@@ -262,7 +356,7 @@ const InformationForm = () => {
                                 label="Password"
                                 type='password'
                                 variant="outlined"
-                                value={setPassword}
+                                value={password}
                                 onChange={(e) => {
                                     setPassword(e.target.value)
                                 }}
@@ -284,6 +378,7 @@ const InformationForm = () => {
                                             setAgreement(false)
                                         }
                                     }}
+                                    required
                                 />
                             } />
                             <p style={{ fontSize: '14px' }}>Kindly, check the box if you have read and agreed to RM Luxe Hotel's
@@ -312,7 +407,7 @@ const InformationForm = () => {
                         />
 
 
-                        <Button
+                        <FormButton
                             whileHover={{ backgroundColor: "#0C4426", color: "white" }}
                             w='200px'
                             h='60px'
@@ -324,10 +419,12 @@ const InformationForm = () => {
                             border="1px solid #0C4426"
                             margin='30px 0px 0px 0px'
                             fontsize='23px'
-                            href='/billingSummary'
+                            // href='/billingSummary'
+                            type='submit'
+                            value='Continue'
                         >
-                            Continue
-                        </Button>
+
+                        </FormButton>
                         <Button
                             whileHover={{ color: "#0C4426" }}
                             w='100px'

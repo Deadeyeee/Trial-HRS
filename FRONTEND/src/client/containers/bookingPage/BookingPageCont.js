@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useLayoutEffect, useState } from 'react'
 import { ButtonHolder, CalendarContainer, Container, HorizontalLine, RatingContainer, RoomContainer, RoomContainerContentLeft, RoomContainerContentPhoto, RoomContainerContentRight, RoomContainerMain, ServicesContainer, TitleCalendarContainer, RatingContainerRight, BookingLegendsMain, BookingLegendsContainer, BookingLegends, BookingLegendsWhite, BookingLegendsRed, BookingLegendsGreen, BookingLegendsBlue, BookingLegendsDarkJade, LocationPinRed, LocationPinGreen, Services, LabelDiv, Persons } from './Styles'
 import { Title } from '../../components/title/styles';
 import { Button } from '../../components/button/styles';
@@ -35,6 +35,10 @@ export const BookingPageCont = () => {
     const [startDate, setStartDate] = useState(new Date().setHours(0, 0, 0, 0));
     const [endDate, setEndDate] = useState(new Date(new Date().getTime() + 86400000).setHours(0, 0, 0, 0));
     const [nights, setNights] = useState();
+    const [room, setRoom] = useState([]);
+    const [availbleRoomType, setAvailableRoomType] = useState([]);
+
+    let uniqueAvailbleRoomType = [... new Set(availbleRoomType)]
 
     useEffect(() => {
 
@@ -50,11 +54,39 @@ export const BookingPageCont = () => {
         window.sessionStorage.removeItem('checkIn')
         window.sessionStorage.removeItem('checkOut')
         window.sessionStorage.removeItem('nights')
+
+
+        axios.get('http://localhost:3001/api/getAllRoom').then((res) => {
+            setRoom(res.data)
+            setAvailableRoomType([])
+            res.data.map((item) => {
+                setAvailableRoomType((oldData) => [...oldData, item.roomType.id])
+            })
+        }).catch((err) => {
+            console.log(err.data)
+        })
+        
         axios.get('http://localhost:3001/api/getAllRoomType').then((res) => {
             setRoomType(res.data)
         }).catch((err) => {
             console.log(err.data)
         })
+        
+        // for (let i = 0; i < roomType.length; i++) {
+        //     let exist = false;
+        //     uniqueAvailbleRoomType.map((item, index) => {
+        //         if (roomType[i].id == item) {
+        //             exist = true
+        //         }
+        //         console.log(exist)
+        //         console.log(roomType[i].id)
+        //         console.log(item)
+        //     })
+        //     if (exist == false) {
+        //         roomType.splice(i, 1);
+        //     }
+
+        // }
 
         axios.get('http://localhost:3001/api/getAllUsedServices').then((res) => {
             setUsedServices(res.data)
@@ -63,6 +95,14 @@ export const BookingPageCont = () => {
         })
 
     }, [])
+
+    useEffect(() => {
+        roomType.map((item, index)=>{
+            if(uniqueAvailbleRoomType.includes(item.id) == false){
+                roomType.splice(index, 1)
+            }
+        })
+    },[roomType])
 
     const bookRoom = (roomTypeId) => {
         const checkIn = new Date(startDate)
@@ -129,6 +169,8 @@ export const BookingPageCont = () => {
             currency: 'PHP'
         }).format(value);
 
+    let minEndDate = new Date(startDate);
+    minEndDate.setDate(minEndDate.getDate() + 1);
 
     return (
 
@@ -150,7 +192,11 @@ export const BookingPageCont = () => {
                     endDate={endDate}
                     onChangeStartDate={(date) => setStartDate(date)}
                     onChangeEndDate={(date) => setEndDate(date)}
-                    minDate={startDate}
+                    minDateStart={new Date()}
+                    maxDateStart={new Date(endDate)}
+                    minDateEnd={minEndDate}
+
+                // minDate={new Date()}
                 />
 
                 <Persons>
@@ -232,84 +278,85 @@ export const BookingPageCont = () => {
                 w="30%"
             ></HorizontalLine>
 
-            {roomType.map((item, index, arr) => (
-                <RoomContainerMain>
-                    <Title
-                        color='#292929'
-                        weight='700'
-                        size='33px'
-                        fStyle='Normal'
-                        margin='10px 0px 10px 0px'
-                        align='left'
-                        family='Roboto Slab'
-                    >
-                        {item.roomType}
-                    </Title>
-                    <RoomContainer>
-                        <RoomContainerContentPhoto
-                            src={Background}>
+            {
+                roomType.map((item, index, arr) => (
+                    <RoomContainerMain>
+                        <Title
+                            color='#292929'
+                            weight='700'
+                            size='33px'
+                            fStyle='Normal'
+                            margin='10px 0px 10px 0px'
+                            align='left'
+                            family='Roboto Slab'
+                        >
+                            {item.roomType}
+                        </Title>
+                        <RoomContainer>
+                            <RoomContainerContentPhoto
+                                src={Background}>
 
-                        </RoomContainerContentPhoto>
-                        <RoomContainerContentRight>
+                            </RoomContainerContentPhoto>
+                            <RoomContainerContentRight>
 
-                            <Title
-                                color='#8f805f'
-                                weight='700'
-                                size='20px'
-                                fStyle='Normal'
-                                margin='10px 0px 0px 0px'
-                                align='left'
-                            >
-                                Services
-                            </Title>
-                            <ServicesContainer>
-                                {usedServices.map((usedServicesItem) => (
-                                    usedServicesItem.roomType_id === item.id ? serviceIcon(usedServicesItem.service.servicesName) : ""
-                                ))}
-                            </ServicesContainer>
-                            <Title
-                                color='#8f805f'
-                                weight='700'
-                                size='20px'
-                                fStyle='Normal'
-                                margin='10px 0px 0px 0px'
-                                align='left'
-                            >
-                                Occupancy
-                            </Title>
-                            <Title
-                                family='Roboto Slab'
-                                color='#2e2e2e'
-                                weight='700'
-                                size='17px'
-                                fStyle='Normal'
-                                margin='10px 0px 0px 10px'
-                                align='left'
-                            >
-                                {item.maxAdultOccupancy} Adults only
-                            </Title>
-                            <Title
-                                family='Roboto Slab'
-                                color='#2e2e2e'
-                                weight='700'
-                                size='17px'
-                                fStyle='Normal'
-                                margin='10px 0px 0px 10px'
-                                align='left'
-                            >
-                                {item.maxKidsOccupancy} Kids only
-                            </Title>
-                            <Title
-                                color='#8f805f'
-                                weight='700'
-                                size='20px'
-                                fstyle='Normal'
-                                margin='20px 0px 0px 0px'
-                                align='left'
-                            >
-                                Price
-                            </Title>
-                            <Title
+                                <Title
+                                    color='#8f805f'
+                                    weight='700'
+                                    size='20px'
+                                    fStyle='Normal'
+                                    margin='10px 0px 0px 0px'
+                                    align='left'
+                                >
+                                    Services
+                                </Title>
+                                <ServicesContainer>
+                                    {usedServices.map((usedServicesItem) => (
+                                        usedServicesItem.roomType_id === item.id ? serviceIcon(usedServicesItem.service.servicesName) : ""
+                                    ))}
+                                </ServicesContainer>
+                                <Title
+                                    color='#8f805f'
+                                    weight='700'
+                                    size='20px'
+                                    fStyle='Normal'
+                                    margin='10px 0px 0px 0px'
+                                    align='left'
+                                >
+                                    Occupancy
+                                </Title>
+                                <Title
+                                    family='Roboto Slab'
+                                    color='#2e2e2e'
+                                    weight='700'
+                                    size='17px'
+                                    fStyle='Normal'
+                                    margin='10px 0px 0px 10px'
+                                    align='left'
+                                >
+                                    {item.maxAdultOccupancy} Adults only
+                                </Title>
+                                <Title
+                                    family='Roboto Slab'
+                                    color='#2e2e2e'
+                                    weight='700'
+                                    size='17px'
+                                    fStyle='Normal'
+                                    margin='10px 0px 0px 10px'
+                                    align='left'
+                                >
+                                    {item.maxKidsOccupancy} Kids only
+                                </Title>
+                                <Title
+                                    color='#8f805f'
+                                    weight='700'
+                                    size='20px'
+                                    fstyle='Normal'
+                                    margin='20px 0px 0px 0px'
+                                    align='left'
+                                >
+                                    Price
+                                </Title>
+                                <Title
                                     family='Roboto Slab'
                                     color='#2e2e2e'
                                     weight='700'
@@ -320,32 +367,32 @@ export const BookingPageCont = () => {
                                 >
                                     {numberFormat(item.roomRate)}/night
                                 </Title>
-                            <ButtonHolder>
-                                <Button
-                                    whileHover={{ backgroundColor: "#2E2E2E", color: "white" }}
-                                    w='150px'
-                                    h='40px'
-                                    textcolor="black"
-                                    fam='Times New Roman'
-                                    weight='-400'
-                                    radius="0px"
-                                    border="1px solid #8F805F"
-                                    margin='30px 0px 0px 0px'
-                                    fontsize='15px'
-                                    onClick={() => {
-                                        bookRoom(item.id);
-                                    }}
-                                >
-                                    Book now!
-                                </Button>
-                                
-                            </ButtonHolder>
-                        </RoomContainerContentRight>
-                    </RoomContainer>
+                                <ButtonHolder>
+                                    <Button
+                                        whileHover={{ backgroundColor: "#2E2E2E", color: "white" }}
+                                        w='150px'
+                                        h='40px'
+                                        textcolor="black"
+                                        fam='Times New Roman'
+                                        weight='-400'
+                                        radius="0px"
+                                        border="1px solid #8F805F"
+                                        margin='30px 0px 0px 0px'
+                                        fontsize='15px'
+                                        onClick={() => {
+                                            bookRoom(item.id);
+                                        }}
+                                    >
+                                        Book now!
+                                    </Button>
 
-                    {index + 1 == arr.length ? "" : <HorizontalLine w="50%"></HorizontalLine>}
-                </RoomContainerMain>
-            ))}
+                                </ButtonHolder>
+                            </RoomContainerContentRight>
+                        </RoomContainer>
+
+                        {index + 1 == arr.length ? "" : <HorizontalLine w="50%"></HorizontalLine>}
+                    </RoomContainerMain>
+                ))}
 
             {/* <RoomContainerMain>
                 <RoomContainer>

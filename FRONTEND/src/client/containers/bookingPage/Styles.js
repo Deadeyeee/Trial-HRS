@@ -81,7 +81,7 @@ export const RoomContainer = styled(motion.div)`
 
 export const RoomContainerContentPhoto = styled.img`
     object-fit: cover;
-    width: 25%;
+    width: 30%;
     height: auto;
     
     @media (max-width: 1000px) {

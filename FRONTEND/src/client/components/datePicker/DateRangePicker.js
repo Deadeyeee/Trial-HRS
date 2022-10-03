@@ -16,6 +16,8 @@ const DateRangePicker = (props) => {
           selectsStart
           startDate={props.startDate}
           endDate={props.endDate}
+          minDate={props.minDateStart}
+          maxDate={props.maxDateStart}
           placeholderText="Check-in Date"
         />
 
@@ -33,7 +35,9 @@ const DateRangePicker = (props) => {
           selectsEnd
           startDate={props.startDate}
           endDate={props.endDate}
-          minDate={props.minStartDate}
+          minDate={props.minDateEnd}
+          maxDate={props.maxDateEnd}
+
           placeholderText="Check-out Date"
         />
         <Title 

@@ -20,7 +20,7 @@ module.exports = (sequelize, DataTypes, Sequelize) => {
         },
         contactNumber: {
             type: DataTypes.STRING,
-            allowNull: true,
+            allowNull: false,
             validate: {
                 isNumeric: true, 
                 len: [11, 13],
@@ -50,7 +50,7 @@ module.exports = (sequelize, DataTypes, Sequelize) => {
         },
         role: {
             type: DataTypes.ENUM({
-              values: ["ADMIN", "STAFF", "CUSTOMER"], //TODO - ADD MORE TYPES
+              values: ["ADMIN", "STAFF", "CUSTOMER", "NON-USER"], //TODO - ADD MORE TYPES
             }),
             defaultValue: "CUSTOMER",
             allowNull: false,

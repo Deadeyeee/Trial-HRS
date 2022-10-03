@@ -18,25 +18,21 @@ module.exports = (sequelize, DataTypes, Sequelize) => {
         },
         birthDate: {
             type: DataTypes.DATEONLY,
-            allowNull: true,
-        },
-        age: {
-            type: DataTypes.INTEGER(3),
-            allowNull: true,
+            allowNull: false,
         },
         gender: {
             type: DataTypes.ENUM({
-                values: ["MALE", "FEMALE", "PREFFER NOT TO SAY"], //TODO - ADD MORE TYPES
+                values: ["male", "female", "other"], //TODO - ADD MORE TYPES
               }),
-            allowNull: true,
+            allowNull: false,
         },
         address: {
             type: DataTypes.STRING,
-            allowNull: true,
+            allowNull: false,
         },
-        profilePicture: {
+        nationality: {
             type: DataTypes.STRING,
-            allowNull: true,
+            allowNull: false,
         },
     },
     {

@@ -29,6 +29,7 @@ background-color: ${(props) => (props.bg ? props.bg : "transparent")};
 color: ${(props) => (props.textcolor ? props.textcolor : "#F2F2F2")};
 margin: ${(props) => (props.margin ? props.margin : "0px")};
 width: ${(props) => (props.w ? props.w : "10px")};
+    font-family: ${(props) => (props.fam ? props.fam : "auto")};
 height: ${(props) => (props.h ? props.h : "5px")};
 font-weight: ${(props) => (props.weight ? props.weight : "normal")};
 font-style: ${(props) => (props.fontStyle ? props.fontStyle : "italic")}; 

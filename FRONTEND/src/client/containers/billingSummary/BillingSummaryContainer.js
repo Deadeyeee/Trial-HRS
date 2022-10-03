@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Title } from '../../components/title/styles'
 import { BrownTab, Container, FlexboxContainer, HeadContainer, TabContainer, TableColumn, TableContainer, TableRow, Td, Th, Tr } from './Styles'
 import Radio from '@mui/material/Radio';
@@ -11,26 +11,104 @@ import Button from '@mui/material/Button';
 import { styled } from '@mui/material/styles';
 import { HorizontalLine } from '../../components/horizontalLine/HorizontalLine';
 import { Button as Button2 } from '../../components/button/styles';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+import axios from 'axios'
 
 
 const BillingSummaryContainer = () => {
     const [value, setValue] = React.useState('cash');
+    const [grandTotal, setGrandTotal] = useState(0);
+    const [bookingInformation, setBookingInformation] = useState([])
+    const [modeOfPayment, setModeOfPayment] = useState('Pay at the hotel');
+    const [typeOfPayment, setTypeOfPayment] = useState('Down Payment');
+    const [discount, setDiscount] = useState('none');
 
 
-    const Input = styled('input')({
-        display: 'none',
-    });
+    useEffect(() => {
+        setBookingInformation(JSON.parse(window.sessionStorage.getItem("AvailedRoom")))
+        console.log(bookingInformation)
+    }, [])
 
-    const handleChange = (event) => {
-        setValue(event.target.value);
-    };
+    useEffect(() => {
+        setGrandTotal(0);
+        bookingInformation.map((item) => (
+            setGrandTotal((prevValue) => prevValue + (item.roomRate * item.roomQuantity * item.nights))
+        ))
 
 
-    const [valueType, setValueType] = React.useState('installment');
 
-    const handleChangeType = (event) => {
-        setValueType(event.target.valueType);
-    };
+    }, [bookingInformation])
+
+
+    const createReservation = () => {
+        axios.post("http://localhost:3001/api/addUser", {
+            contactNumber: window.sessionStorage.getItem('contactNumber'),
+            email: window.sessionStorage.getItem('email'),
+            role: "NON-USER"
+        }).then((result) => {
+            console.log(result.data)
+            axios.post("http://localhost:3001/api/addGuest", {
+                user_id: result.data.id,
+                firstName: window.sessionStorage.getItem('firstName'),
+                lastName: window.sessionStorage.getItem('lastName'),
+                birthDate: window.sessionStorage.getItem('birthday'),
+                gender: window.sessionStorage.getItem('gender'),
+                address: window.sessionStorage.getItem('address'),
+                nationality: window.sessionStorage.getItem('nationality'),
+            }).then((result) => {
+                console.log(result.data)
+
+                axios.post("http://localhost:3001/api/addReservation", {
+                    reservationDate: reservationDate,
+                    guest_id: result.data.id,
+                }).then((result) => {
+                    console.log(result.data)
+                    bookingInformation.map((item) => {
+                        axios.post("http://localhost:3001/api/addReservationSummary", {
+                            reservation_id: result.id,
+                            room_id: item.id,
+                            checkInDate: item.checkIn,
+                            checkOutDate: item.checkOut,
+                            numberOfNights: item.nights
+                        }).then((result) => {
+                            console.log(result.data)
+                        }).catch((err) => {
+                            console.log(err.result)
+                        });
+                    })
+
+                    axios.post("http://localhost:3001/api/addPayment", {
+
+                    }).then((result) => {
+                        console.log(result.data)
+
+                    }).catch((err) => {
+                        console.log(err.result)
+
+                    });
+
+                }).catch((err) => {
+                    console.log(err.result)
+
+                });
+
+            }).catch((err) => {
+                console.log(err.result)
+            });
+        }).catch((err) => {
+            console.log(err.result)
+        });
+
+    }
+
+
+    const numberFormat = (value) =>
+        new Intl.NumberFormat('en-IN', {
+            style: 'currency',
+            currency: 'PHP'
+        }).format(value);
+
+    let reservationDate = new Date(Date.now())
     return (
         <Container>
             <Title
@@ -76,7 +154,7 @@ const BillingSummaryContainer = () => {
                                 align='left'
                                 margin='20px 30px'
                             >
-                                <b>Name:</b> PEDRO JUAN
+                                <b>Name:</b> {window.sessionStorage.getItem('firstName').toLocaleLowerCase() + " " + window.sessionStorage.getItem('lastName').toLocaleLowerCase()}
                             </Title>
                             <Title
                                 size='18px'
@@ -87,7 +165,7 @@ const BillingSummaryContainer = () => {
                                 align='left'
                                 margin='20px 30px'
                             >
-                                <b>Email Address:</b> PedroJuan@gmail.com
+                                <b>Email Address:</b> {window.sessionStorage.getItem('email').toLocaleLowerCase()}
                             </Title>
                             <Title
                                 size='18px'
@@ -98,7 +176,7 @@ const BillingSummaryContainer = () => {
                                 align='left'
                                 margin='20px 30px'
                             >
-                                <b>Email Address:</b> 09292333312
+                                <b>Contact number:</b> {window.sessionStorage.getItem('contactNumber')}
                             </Title>
 
                             <Title
@@ -110,7 +188,7 @@ const BillingSummaryContainer = () => {
                                 align='left'
                                 margin='20px 30px'
                             >
-                                <b>Birthdate:</b> 2000/12/21
+                                <b>Birthdate:</b> {window.sessionStorage.getItem('birthday')}
                             </Title>
                         </TableContainer>
                         <TableContainer>
@@ -123,18 +201,7 @@ const BillingSummaryContainer = () => {
                                 align='left'
                                 margin='20px 30px'
                             >
-                                <b>Reservation Date:</b> 03/01/2022 2:31PM
-                            </Title>
-                            <Title
-                                size='18px'
-                                color='#2e2e2e'
-                                family='Raleway'
-                                fstyle='normal'
-                                weight='500'
-                                align='left'
-                                margin='20px 30px'
-                            >
-                                <b>Nationality:</b> Filipino
+                                <b>Nationality:</b> {window.sessionStorage.getItem('nationality')}
                             </Title>
                             <Title
                                 size='18px'
@@ -156,18 +223,7 @@ const BillingSummaryContainer = () => {
                                 align='left'
                                 margin='20px 30px'
                             >
-                                <b>Address:</b> Cecilia Chapman 711-2880 Nulla St. Mankato Mississippi 96522 (257) 563-7401
-                            </Title>
-                            <Title
-                                size='18px'
-                                color='#2e2e2e'
-                                family='Raleway'
-                                fstyle='normal'
-                                weight='500'
-                                align='left'
-                                margin='20px 30px'
-                            >
-                                <b>Special Instruction:</b> NaN
+                                <b>Address:</b> {window.sessionStorage.getItem('address')}
                             </Title>
                         </TableContainer>
                     </TabContainer>
@@ -209,11 +265,13 @@ const BillingSummaryContainer = () => {
                             <RadioGroup
                                 aria-labelledby="demo-controlled-radio-buttons-group"
                                 name="controlled-radio-buttons-group"
-                                value='cash'
-                                onChange={handleChange}
+                                value={modeOfPayment}
+                                onChange={(e) => {
+                                    setModeOfPayment(e.target.value)
+                                }}
                                 style={{ margin: '0px 0px 0px 30px' }}
                             >
-                                <FormControlLabel value="cash" control={<Radio />} label="Cash" />
+                                <FormControlLabel value="Pay at the hotel" control={<Radio />} label="Pay at the hotel" />
                                 <FormControlLabel value="bank" control={<Radio />} label="Bank(Metro Bank)" />
                                 <FormControlLabel value="ebank" control={<Radio />} label="E-Payment(Gcash)" />
                             </RadioGroup>
@@ -223,8 +281,10 @@ const BillingSummaryContainer = () => {
                             <RadioGroup
                                 aria-labelledby="demo-controlled-radio-buttons-group"
                                 name="controlled-radio-buttons-group"
-                                value='Down Payment'
-                                onChange={handleChange}
+                                value={typeOfPayment}
+                                onChange={(e) => {
+                                    setTypeOfPayment(e.target.value)
+                                }}
                                 style={{ margin: '0px 0px 0px 30px' }}
                             >
                                 <FormControlLabel value="Down Payment" control={<Radio />} label="Down Payment" />
@@ -256,35 +316,17 @@ const BillingSummaryContainer = () => {
                         <RadioGroup
                             aria-labelledby="demo-controlled-radio-buttons-group"
                             name="controlled-radio-buttons-group"
-                            value='None'
-                            onChange={handleChange}
+                            value={discount}
+                            onChange={(e) => {
+                                setDiscount(e.target.value)
+                            }}
                             style={{ margin: '0px 0px 0px 30px' }}
                         >
-                            <FormControlLabel value="None" control={<Radio />} label="None" />
-                            <ContainerGlobal
-                                align='center'
-                                overflow='visible'
-                            >
-                                <FormControlLabel value="Senior Citizen" control={<Radio />} label="Senior Citizen" />
-                                <label htmlFor="contained-button-file">
-                                    <Input accept="image/*" id="contained-button-file" multiple type="file" />
-                                    <Button variant="contained" component="span" size='small' style={{ backgroundColor: "#2E2E2E" }}>
-                                        Upload
-                                    </Button>
-                                </label>
-                            </ContainerGlobal>
-                            <ContainerGlobal
-                                align='center'
-                                overflow='visible'
-                            >
-                                <FormControlLabel value="PWD" control={<Radio />} label="PWD" />
-                                <label htmlFor="contained-button-file">
-                                    <Input accept="image/*" id="contained-button-file" multiple type="file" />
-                                    <Button variant="contained" component="span" size='small' style={{ backgroundColor: "#2E2E2E" }}>
-                                        Upload
-                                    </Button>
-                                </label>
-                            </ContainerGlobal>
+                            <FormControlLabel value="none" control={<Radio />} label="None" />
+                            <FormControlLabel value="senior citizen" control={<Radio />} label="Senior Citizen" />
+                            <FormControlLabel value="PWD" control={<Radio />} label="Person With Disabilities (PWD)" />
+
+                            <p><b><i>NOTE:</i></b> Discount will only be <b> applied upon check in</b>. Guest <b> must present their Senior citizen / PWD I.D</b>, Thank you!.</p>
                         </RadioGroup>
                     </TabContainer>
 
@@ -313,26 +355,29 @@ const BillingSummaryContainer = () => {
                         cellspacing="0"
                         cellpadding="0">
                         <Tr>
-                            <Th align='center'>Room number</Th>
                             <Th align='center'>Room type</Th>
                             <Th align='center'>Check in</Th>
                             <Th align='center'>Check out</Th>
                             <Th align='center'>Total nights</Th>
+                            <Th align='center'>Room quantity</Th>
                             <Th align='center'>Rate per night</Th>
-                            {/* <Th align='center'>Action</Th> */}
+                            <Th align='center'>Total amout due</Th>
                         </Tr>
-                        <Tr>
-                            <Td align='center'>102</Td>
-                            <Td align='center'>Premium Room</Td>
-                            <Td align='center'>03/04/2022</Td>
-                            <Td align='center'>03/08/20222</Td>
-                            <Td align='center'>4</Td>
-                            <Td align='center'>PHP 2,000.00</Td>
-                            {/* <Td align='center'>
-              <IconButton type="submit" sx={{ p: '8px', backgroundColor: 'rgb(255, 36, 0, 0.7)' }} aria-label="search" title='Delete'>
-                    <DeleteIcon style={{ color: '#2e2e2e', fontSize: '18px' }} title='View' />
-                </IconButton></Td> */}
-                        </Tr>
+                        {bookingInformation.map((item, index) => (
+
+                            <Tr>
+
+                                <Td align='center'>{item.roomName}</Td>
+                                <Td align='center'>{item.checkIn}</Td>
+                                <Td align='center'>{item.checkOut}</Td>
+                                <Td align='center'>{item.nights}</Td>
+                                <Td align='center'>{item.roomQuantity}</Td>
+                                <Td align='center'>{numberFormat(item.roomRate)}</Td>
+                                <Td align='center'>{numberFormat(item.roomRate * item.roomQuantity * item.nights)}</Td>
+
+                            </Tr>
+
+                        ))}
                     </TableContainer>
 
                 </TabContainer>
@@ -350,7 +395,7 @@ const BillingSummaryContainer = () => {
                             align='left'
                             margin='20px 30px'
                         >
-                            Amout Due:
+                            Grand total:
                         </Title>
                     </HeadContainer>
                     <TableContainer>
@@ -363,7 +408,7 @@ const BillingSummaryContainer = () => {
                             align='Right'
                             margin='20px 30px'
                         >
-                            Total Amount: PHP 8,000.00
+                            Grand total: {numberFormat(grandTotal)}
                         </Title>
                     </TableContainer>
                 </TabContainer>

@@ -44,7 +44,7 @@ function BookingConfirmationCont() {
             overflow='visible'
             
         >
-            Your booking is put on <b style={{color: '#c9d81c'}}>HOLD</b> until confirmation of Bank Deposit/Transfer is made
+            Your reservation is put on <b style={{color: '#c9d81c'}}>HOLD</b> until confirmation of Bank Deposit/Transfer is made
         </Title>
         <Title
             family='raleway, sans-serif'
