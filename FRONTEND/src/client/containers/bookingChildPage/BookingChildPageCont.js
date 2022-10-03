@@ -1,4 +1,4 @@
-import { Services, ButtonHolder, Container, ContentContainerHolder, RatingContainer, RoomContainer, RoomContainerContentPhoto, RoomContainerContentRight, RoomContainerMain, ServicesContainer, } from './Styles'
+import { Services, ButtonHolder, Container, ContentContainerHolder, RatingContainer, RoomContainer, RoomContainerContentPhoto, RoomContainerContentRight, RoomContainerMain, ServicesContainer, RoomPicture, } from './Styles'
 import { Title } from '../../components/title/styles';
 import { Button } from '../../components/button/styles';
 import Rating from '@mui/material/Rating';
@@ -25,14 +25,65 @@ import TvIcon from '@mui/icons-material/Tv';
 import ShowerIcon from '@mui/icons-material/Shower';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
+import { TextInput } from '../../components/textBox/style';
+import Slider from "react-slick";
+import ImageSlider from '../../components/imageSlider/ImageSlider.js';
+import { letterSpacing } from '@mui/system';
+
 export const BookingChildPageCont = () => {
 
-    const { id } = useParams();
+    let { id } = useParams();
     const ratingValue = 3.6;
     const [roomType, setRoomType] = useState([])
     const [usedServices, setUsedServices] = useState([])
+    const [roomQuantity, setRoomQuantity] = useState(1)
+    const [availedRooms, setAvailedRooms] = useState([])
+
+    const addRoom = () => {
+
+        if (window.sessionStorage.getItem('AvailedRoom') == null) {
+            let items =
+                [{
+                    "id": id,
+                    "roomName": roomType.roomType,
+                    "roomRate": roomType.roomRate,
+                    "roomQuantity": roomQuantity,
+                    "checkIn": window.sessionStorage.getItem('checkIn'),
+                    "checkOut": window.sessionStorage.getItem('checkOut'),
+                    "nights": window.sessionStorage.getItem('nights'),
+                }]
+            window.sessionStorage.setItem('AvailedRoom', JSON.stringify(items))
+            window.sessionStorage.removeItem('checkIn')
+            window.sessionStorage.removeItem('checkOut')
+            window.sessionStorage.removeItem('nights')
+        }
+        else {
+            let items =
+            {
+                "id": id,
+                "roomName": roomType.roomType,
+                "roomRate": roomType.roomRate,
+                "roomQuantity": roomQuantity,
+                "checkIn": window.sessionStorage.getItem('checkIn'),
+                "checkOut": window.sessionStorage.getItem('checkOut'),
+                "nights": window.sessionStorage.getItem('nights'),
+            }
+            const existingAvailedRooms = JSON.parse(window.sessionStorage.getItem("AvailedRoom"))
+            existingAvailedRooms.push(items)
+            window.sessionStorage.setItem('AvailedRoom', JSON.stringify(existingAvailedRooms))
+            // window.sessionStorage.setItem('AvailedRoom', JSON.stringify())
+            window.sessionStorage.removeItem('checkIn')
+            window.sessionStorage.removeItem('checkOut')
+            window.sessionStorage.removeItem('nights')
+        }
+
+        window.location = '/bookingCart'
+    }
 
     useEffect(() => {
+        if (window.sessionStorage.getItem('checkIn') == null || window.sessionStorage.getItem('checkOut') == null || window.sessionStorage.getItem('nights') == null) {
+            window.location = '/booking'
+        }
         axios.get('http://localhost:3001/api/getRoomType/' + id).then((res) => {
             setRoomType(res.data)
             console.log(roomType)
@@ -113,10 +164,18 @@ export const BookingChildPageCont = () => {
             currency: 'PHP'
         }).format(value);
 
+    var settings = {
+        dots: true,
+        infinite: true,
+        speed: 500,
+        slidesToShow: 1,
+        slidesToScroll: 1
+    };
 
     return (
 
         <Container>
+
             <Title
                 weight='400'
                 size='66px'
@@ -128,60 +187,37 @@ export const BookingChildPageCont = () => {
                 {roomType.roomType}
             </Title>
             <RoomContainerMain>
+
+
                 <RoomContainer>
-                    <ContainerGlobal
-                        direction='column'
-                        justify='center'
-                        align='center'
-                        radius='none'
-                        w='550px'>
 
-
-                        <RoomContainerContentPhoto
-                            link={Background} />
-
-                        <ContainerGlobal
-                            radius='none'
-                            justify='space-around'
-                            w='100%'
-                            align='center'
-                            padding='5px 0px 5px 0px'
-                            bg='rgb(46, 46, 46, 0.2)'>
-                            <RoomContainerContentPhoto
-                                link={Background}
-                                w='80px'
-                                h='80px'
-                                cursor='pointer'
-                                border='5px solid #977535' />
-                            <RoomContainerContentPhoto
-                                link={noimage}
-                                w='80px'
-                                h='80px'
-                                cursor='pointer' />
-                            <RoomContainerContentPhoto
-                                link={noimage}
-                                w='80px'
-                                h='80px'
-                                cursor='pointer' />
-                            <RoomContainerContentPhoto
-                                link={noimage}
-                                w='80px'
-                                h='80px'
-                                cursor='pointer' />
-                            <RoomContainerContentPhoto
-                                link={noimage}
-                                w='80px'
-                                h='80px'
-                                cursor='pointer' />
-                            <RoomContainerContentPhoto
-                                link={noimage}
-                                w='80px'
-                                h='80px'
-                                cursor='pointer' />
-                        </ContainerGlobal>
-
-                    </ContainerGlobal>
+                    <div
+                        style={{ width: '550px', display: 'inline-block', }}
+                    >
+                        <ImageSlider />
+                    </div>
                     <RoomContainerContentRight>
+                        <ContentContainerHolder>
+                            <Title
+                                color='#2e2e2e'
+                                weight='400'
+                                size='25px'
+                                fStyle='Normal'
+                                margin='0px 15px 0px 0px'
+                                align='left'
+
+                            >
+                                Description:
+                            </Title>
+                            <Description
+                                align="left"
+                                width="450px"
+                                size="20px"
+
+                            >
+                                {roomType.roomDescription}
+                            </Description>
+                        </ContentContainerHolder>
                         <ContentContainerHolder>
                             <Title
                                 color='#2e2e2e'
@@ -199,34 +235,13 @@ export const BookingChildPageCont = () => {
                                 ))}
                             </ServicesContainer>
                         </ContentContainerHolder>
+
                         <ContentContainerHolder>
                             <Title
                                 color='#2e2e2e'
                                 weight='400'
                                 size='25px'
                                 fStyle='Normal'
-                                margin='0px 15px 0px 0px'
-                                align='left'
-
-                            >
-                                Description:
-                            </Title>
-                            <Description
-                                align="left"
-                                width="450px"
-                                size="15"
-
-                            >
-                                {roomType.roomDescription}
-                            </Description>
-                        </ContentContainerHolder>
-                        <ContentContainerHolder>
-                            <Title
-                                color='#2e2e2e'
-                                weight='400'
-                                size='25px'
-                                fStyle='Normal'
-                                margin='4px 0px 0px 0px'
                                 align='left'
                             >
                                 Occupancy:
@@ -237,7 +252,7 @@ export const BookingChildPageCont = () => {
                                 weight='normal'
                                 size='25px'
                                 fStyle='Normal'
-                                margin='10px 0px 0px 15px'
+                                margin='0px 0px 0px 15px'
                                 align='left'
                             >
                                 <b>{roomType.maxAdultOccupancy}</b> adults
@@ -248,7 +263,7 @@ export const BookingChildPageCont = () => {
                                 weight='normal'
                                 size='25px'
                                 fStyle='Normal'
-                                margin='10px 0px 0px 15px'
+                                margin='0px 0px 0px 15px'
                                 align='left'
                             >
                                 <b>{roomType.maxKidsOccupancy}</b> kids
@@ -260,7 +275,7 @@ export const BookingChildPageCont = () => {
                                 weight='400'
                                 size='25px'
                                 fStyle='Normal'
-                                margin='10px 0px 0px 0px'
+                                margin='0px 0px 0px 0px'
                                 align='left'
                             >
                                 Price:
@@ -271,11 +286,50 @@ export const BookingChildPageCont = () => {
                                 weight='700'
                                 size='25px'
                                 fStyle='Normal'
-                                margin='8px 0px 0px 83px'
+                                margin='0px 0px 0px 83px'
                                 align='left'
                             >
-                                <b>{numberFormat(roomType.roomRate)}</b>/night
+                                <b>{numberFormat(roomType.roomRate * roomQuantity)}</b>/night
                             </Title>
+
+                        </ContentContainerHolder>
+                        <ContentContainerHolder>
+                            <Title
+                                color='#2e2e2e'
+                                weight='400'
+                                size='25px'
+                                fStyle='Normal'
+                                margin='0px 20px 0px 0px'
+                                align='left'
+                            >
+                                Room quantity:
+                            </Title>
+                            <TextInput
+                                onChange={(e) => {
+                                    setRoomQuantity(e.target.value);
+                                }}
+                                family="Roboto Slab"
+                                type="number"
+                                // ref={emailref}
+                                widthFocus="0px"
+                                width='15%'
+                                fontSize='25px'
+                                indent='5px'
+                                radiusFocus="0px"
+                                border="0 0 1px"
+                                background='white'
+                                align='center'
+                                margins='0px'
+                                defaultValue="1"
+                                weight='bold'
+                                height='100%'
+                                min="1"
+                                max="9"
+                                required
+
+                            >
+
+                            </TextInput>
 
                         </ContentContainerHolder>
                     </RoomContainerContentRight>
@@ -293,7 +347,7 @@ export const BookingChildPageCont = () => {
                 border="1px solid #0C4426"
                 margin='30px 0px 0px 0px'
                 fontsize='23px'
-                href='/bookingCart'
+                onClick={addRoom}
             >
                 Book this now!
             </Button>

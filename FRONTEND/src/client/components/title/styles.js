@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { motion } from "framer-motion";
 export const Title = styled(motion.h1)`
-font-family: ${(props) => (props.family ? props.family : "'Playfair Display', serif")};
+font-family: ${(props) => (props.family ? props.family : "'Playfair Display'")};
 font-size: ${(props) => (props.size ? props.size : "30px")};
 font-weight: ${(props) => (props.weight ? props.weight : "bold")};
 font-style: ${(props) => (props.fstyle ? props.fstyle : "italic")};
@@ -13,7 +13,7 @@ display: ${(props) => (props.display ? props.display : "block")};
 letter-spacing: ${(props) => (props.spacing ? props.spacing : "auto")};
 padding: ${(props) => (props.padding ? props.padding : "0px")};
 align-self: ${(props) => (props.alignSelf ? props.alignSelf : "auto")};
-line-height: ${(props) =>(props.line ? props.line : "auto")};
+line-height: ${(props) =>(props.line ? props.line : "15px")};
 opacity: ${(props) => (props.opc ? props.opc : "100%")};
 text-shadow:  ${(props) => (props.shadow ? props.shadow : "none")};
 width:${(props) => (props.w ? props.w : "auto")};

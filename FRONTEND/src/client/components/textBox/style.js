@@ -17,6 +17,7 @@ export const TextInput = styled.input`
     font-family: ${(props) => (props.family ? props.family : "arial")};
     font-style: ${(props) => (props.fontStyle ? props.fontStyle : "Helvetica")};
     letter-spacing: ${(props) => (props.letterSpacing ? props.letterSpacing : "auto")};
+    font-weight: ${(props) => (props.weight ? props.weight : "normal")};
     &:focus{
         border-radius: ${(props) => (props.radiusFocus ? props.radiusFocus : "0px")};
         border-width: ${(props) => (props.widthFocus ? props.widthFocus : "0 0 2px")};

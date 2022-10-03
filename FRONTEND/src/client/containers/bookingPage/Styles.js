@@ -69,7 +69,7 @@ export const RoomContainerMain = styled(motion.div)`
 export const RoomContainer = styled(motion.div)`
     display: flex;
     flex-direction: Row;
-    align-items: center;
+    /* align-items: center; */
     justify-content: center;
     gap: 50px;
     @media (max-width: 1000px) {
@@ -80,7 +80,7 @@ export const RoomContainer = styled(motion.div)`
 `;
 
 export const RoomContainerContentPhoto = styled.img`
-    
+    object-fit: cover;
     width: 25%;
     height: auto;
     

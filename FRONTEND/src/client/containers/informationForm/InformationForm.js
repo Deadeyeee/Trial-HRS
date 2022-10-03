@@ -45,6 +45,7 @@ const InformationForm = () => {
     var callback = function () {
         console.log('Done!!!!');
     };
+    const [agreement, setAgreement] = useState(false)
     const [paymentOption, setPaymentOption] = useState("");
     const [displayBanks, setDisplayBanks] = useState("");
     const [displayWallets, setDisplayWallets] = useState("");
@@ -55,6 +56,17 @@ const InformationForm = () => {
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+
+    const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
+    const [contactNumber, setContactNumber] = useState();
+    const [email, setEmail] = useState();
+    const [birthday, setBirthDay] = useState(new Date());
+    const [nationalityValue, setNationalityValue] = useState();
+    const [gender, setGender] = useState();
+    const [address, setAddress] = useState();
+    const [userName, setUserName] = useState();
+    const [password, setPassword] = useState();
 
     useLayoutEffect(() => {
         if (paymentOption === "E-Wallet payment") {
@@ -77,7 +89,7 @@ const InformationForm = () => {
 
     useEffect(() => {
         document.title = "Guest Information"
-      }, [])
+    }, [])
     return (
         <Container>
             <ContainerChild>
@@ -89,12 +101,20 @@ const InformationForm = () => {
                                 placeholder='First Name'
                                 label="First Name"
                                 variant="outlined"
+                                value={firstName}
+                                onChange={(e) => {
+                                    setFirstName(e.target.value)
+                                }}
                                 style={{ width: '55%', }} />
 
                             <TextField
                                 placeholder='Last Name'
                                 label="Last Name"
                                 variant="outlined"
+                                value={lastName}
+                                onChange={(e) => {
+                                    setLastName(e.target.value)
+                                }}
                                 style={{ width: '55%', }} />
                         </InputContainer>
 
@@ -105,6 +125,10 @@ const InformationForm = () => {
                                 label="Email"
                                 variant="outlined"
                                 type='email'
+                                value={email}
+                                onChange={(e) => {
+                                    setEmail(e.target.value)
+                                }}
                                 style={{ width: '55%', }} />
 
                             <TextField
@@ -112,7 +136,10 @@ const InformationForm = () => {
                                 label="Contact Number"
                                 variant="outlined"
                                 type='tel'
-                                patter
+                                value={contactNumber}
+                                onChange={(e) => {
+                                    setContactNumber(e.target.value)
+                                }}
                                 style={{ width: '55%', }} />
                         </InputContainer>
 
@@ -124,9 +151,9 @@ const InformationForm = () => {
 
                                     views={['day', 'month', 'year']}
                                     label="Birthday"
-                                    value={bday}
+                                    value={birthday}
                                     onChange={(newValue) => {
-                                        setValue(newValue);
+                                        setBirthDay(newValue);
                                     }}
                                     renderInput={(params) =>
                                         <TextField
@@ -169,7 +196,11 @@ const InformationForm = () => {
                                     row
                                     aria-labelledby="demo-row-radio-buttons-group-label"
                                     defaultValue="male"
-                                    name="row-radio-buttons-group">
+                                    name="row-radio-buttons-group"
+                                    onChange={(e) => {
+                                        setGender(e.target.value)
+                                    }}
+                                >
                                     <FormControlLabel
                                         value="male"
                                         control={<Radio />}
@@ -195,7 +226,11 @@ const InformationForm = () => {
                                 placeholder='Address'
                                 label="Address"
                                 variant="outlined"
-                                type='email'
+                                type='text'
+                                value={address}
+                                onChange={(e) => {
+                                    setAddress(e.target.value)
+                                }}
                                 multiline
                                 rows={4}
                                 style={{ width: '95%', }} />
@@ -209,12 +244,17 @@ const InformationForm = () => {
                                 rows={4}
                                 style={{ width: '95%', }} />
                         </InputContainer>
-
+                        <p><h1 style={{display: 'inline'}}>Create an account </h1>(optional)*</p>
                         <InputContainer>
                             <TextField
                                 placeholder='Username'
                                 label="Username"
                                 variant="outlined"
+
+                                value={userName}
+                                onChange={(e) => {
+                                    setUserName(e.target.value)
+                                }}
                                 style={{ width: '55%', }} />
 
                             <TextField
@@ -222,19 +262,35 @@ const InformationForm = () => {
                                 label="Password"
                                 type='password'
                                 variant="outlined"
+                                value={setPassword}
+                                onChange={(e) => {
+                                    setPassword(e.target.value)
+                                }}
                                 style={{ width: '55%', }} />
                         </InputContainer>
 
                         <InputContainer
                             justify='center'
                             gap='0px'>
-                            <FormControlLabel control={<Checkbox defaultChecked
-                                style={{ padding: '0px', margin: '0px', }}
-                            />} />
+                            <FormControlLabel control={
+                                <Checkbox
+                                    style={{ padding: '0px', margin: '0px', }}
+                                    value={agreement}
+                                    onChange={(e) => {
+                                        if (e.target.checked) {
+                                            setAgreement(true)
+                                        }
+                                        else {
+                                            setAgreement(false)
+                                        }
+                                    }}
+                                />
+                            } />
                             <p style={{ fontSize: '14px' }}>Kindly, check the box if you have read and agreed to RM Luxe Hotel's
                                 <Link
                                     onClick={handleOpen}> Terms and Conditions
-                                </Link></p>
+                                </Link>
+                            </p>
                             <Modal
                                 open={open}
                                 onClose={handleClose}
@@ -290,7 +346,7 @@ const InformationForm = () => {
                         </Button>
                     </ContainerFormContent>
 
-                    
+
 
                 </ContainerForm>
             </ContainerChild>

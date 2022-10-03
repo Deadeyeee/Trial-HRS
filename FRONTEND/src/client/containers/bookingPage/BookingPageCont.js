@@ -32,8 +32,24 @@ export const BookingPageCont = () => {
     const ratingValue = 3.6;
     const [roomType, setRoomType] = useState([])
     const [usedServices, setUsedServices] = useState([])
+    const [startDate, setStartDate] = useState(new Date().setHours(0, 0, 0, 0));
+    const [endDate, setEndDate] = useState(new Date(new Date().getTime() + 86400000).setHours(0, 0, 0, 0));
+    const [nights, setNights] = useState();
 
     useEffect(() => {
+
+        if (startDate !== null && endDate !== null) {
+            setNights(Math.floor((endDate - startDate) / (24 * 60 * 60 * 1000)));
+        }
+        else {
+            setNights(0);
+        }
+    }, [startDate, endDate])
+
+    useEffect(() => {
+        window.sessionStorage.removeItem('checkIn')
+        window.sessionStorage.removeItem('checkOut')
+        window.sessionStorage.removeItem('nights')
         axios.get('http://localhost:3001/api/getAllRoomType').then((res) => {
             setRoomType(res.data)
         }).catch((err) => {
@@ -48,6 +64,14 @@ export const BookingPageCont = () => {
 
     }, [])
 
+    const bookRoom = (roomTypeId) => {
+        const checkIn = new Date(startDate)
+        const checkOut = new Date(endDate)
+        window.sessionStorage.setItem('checkIn', checkIn.toLocaleDateString())
+        window.sessionStorage.setItem('checkOut', checkOut.toLocaleDateString())
+        window.sessionStorage.setItem('nights', nights)
+        window.location = '/booking/room/' + roomTypeId;
+    }
 
     const serviceIcon = (service) => {
         if (service === 'Free Wifi') {
@@ -105,6 +129,7 @@ export const BookingPageCont = () => {
             currency: 'PHP'
         }).format(value);
 
+
     return (
 
         <Container>
@@ -119,7 +144,14 @@ export const BookingPageCont = () => {
             <HorizontalLine
                 w="50%"></HorizontalLine>
             <TitleCalendarContainer>
-                <DateRangePicker></DateRangePicker>
+                <DateRangePicker
+                    startDate={startDate}
+                    nights={nights}
+                    endDate={endDate}
+                    onChangeStartDate={(date) => setStartDate(date)}
+                    onChangeEndDate={(date) => setEndDate(date)}
+                    minDate={startDate}
+                />
 
                 <Persons>
                     <LabelDiv>
@@ -202,25 +234,28 @@ export const BookingPageCont = () => {
 
             {roomType.map((item, index, arr) => (
                 <RoomContainerMain>
+                    <Title
+                        color='#292929'
+                        weight='700'
+                        size='33px'
+                        fStyle='Normal'
+                        margin='10px 0px 10px 0px'
+                        align='left'
+                        family='Roboto Slab'
+                    >
+                        {item.roomType}
+                    </Title>
                     <RoomContainer>
                         <RoomContainerContentPhoto
-                            src={Background}></RoomContainerContentPhoto>
+                            src={Background}>
+
+                        </RoomContainerContentPhoto>
                         <RoomContainerContentRight>
-                            <Title
-                                color='#292929'
-                                weight='700'
-                                size='33px'
-                                fStyle='Normal'
-                                margin='10px 0px 10px 0px'
-                                align='left'
-                                family='Roboto Slab'
-                            >
-                                {item.roomType}
-                            </Title>
+
                             <Title
                                 color='#8f805f'
                                 weight='700'
-                                size='16px'
+                                size='20px'
                                 fStyle='Normal'
                                 margin='10px 0px 0px 0px'
                                 align='left'
@@ -235,7 +270,7 @@ export const BookingPageCont = () => {
                             <Title
                                 color='#8f805f'
                                 weight='700'
-                                size='16px'
+                                size='20px'
                                 fStyle='Normal'
                                 margin='10px 0px 0px 0px'
                                 align='left'
@@ -264,6 +299,27 @@ export const BookingPageCont = () => {
                             >
                                 {item.maxKidsOccupancy} Kids only
                             </Title>
+                            <Title
+                                color='#8f805f'
+                                weight='700'
+                                size='20px'
+                                fstyle='Normal'
+                                margin='20px 0px 0px 0px'
+                                align='left'
+                            >
+                                Price
+                            </Title>
+                            <Title
+                                    family='Roboto Slab'
+                                    color='#2e2e2e'
+                                    weight='700'
+                                    size='25px'
+                                    fStyle='Normal'
+                                    margin='15px 0px 0px 10px'
+                                    align='left'
+                                >
+                                    {numberFormat(item.roomRate)}/night
+                                </Title>
                             <ButtonHolder>
                                 <Button
                                     whileHover={{ backgroundColor: "#2E2E2E", color: "white" }}
@@ -276,21 +332,13 @@ export const BookingPageCont = () => {
                                     border="1px solid #8F805F"
                                     margin='30px 0px 0px 0px'
                                     fontsize='15px'
-                                    href={'/booking/room/'+ item.id}
+                                    onClick={() => {
+                                        bookRoom(item.id);
+                                    }}
                                 >
                                     Book now!
                                 </Button>
-                                <Title
-                                    family='Roboto Slab'
-                                    color='#2e2e2e'
-                                    weight='700'
-                                    size='25px'
-                                    fStyle='Normal'
-                                    margin='35px 0px 0px 10px'
-                                    align='left'
-                                >
-                                    {numberFormat(item.roomRate)}/night
-                                </Title>
+                                
                             </ButtonHolder>
                         </RoomContainerContentRight>
                     </RoomContainer>
@@ -318,7 +366,7 @@ export const BookingPageCont = () => {
                         <Title
                             color='#8f805f'
                             weight='700'
-                            size='16px'
+                            size='20px'
                             fStyle='Normal'
                             margin='10px 0px 0px 0px'
                             align='left'
@@ -352,7 +400,7 @@ export const BookingPageCont = () => {
                         <Title
                             color='#8f805f'
                             weight='700'
-                            size='16px'
+                            size='20px'
                             fStyle='Normal'
                             margin='10px 0px 0px 0px'
                             align='left'
@@ -404,7 +452,7 @@ export const BookingPageCont = () => {
                         <Title
                             color='#8f805f'
                             weight='700'
-                            size='16px'
+                            size='20px'
                             fStyle='Normal'
                             margin='10px 0px 0px 0px'
                             align='left'

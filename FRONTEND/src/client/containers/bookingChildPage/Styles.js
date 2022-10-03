@@ -53,7 +53,7 @@ export const Services = styled(motion.div)`
 export const RoomContainerContentRight = styled(motion.div)`
     display: flex;
     flex-direction: column;
-    gap: 40px 0px;
+    gap: 60px 0px;
 `;
 
 export const RoomContainerContentLeft = styled(motion.div)`
@@ -87,4 +87,9 @@ export const ButtonHolder = styled(motion.div)`
 export const ContentContainerHolder = styled(motion.div)`
     display: flex;
     width: 600px;
+`;
+
+export const RoomPicture = styled.img`
+    width: 100%;
+    height: auto;
 `;
