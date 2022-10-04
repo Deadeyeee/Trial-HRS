@@ -19,15 +19,35 @@ const BillingSummaryContainer = () => {
     const [value, setValue] = React.useState('cash');
     const [grandTotal, setGrandTotal] = useState(0);
     const [bookingInformation, setBookingInformation] = useState([])
-    const [modeOfPayment, setModeOfPayment] = useState('Pay at the hotel');
+    const [modeOfPayment, setModeOfPayment] = useState([]);
+    const [modeOfPaymentValue, setModeOfPaymentValue] = useState();
     const [typeOfPayment, setTypeOfPayment] = useState('Down Payment');
-    const [discount, setDiscount] = useState('none');
+    const [discount, setDiscount] = useState([]);
+    const [discountValue, setDiscountValue] = useState();
+
+
+    const [paymentModeId, setPaymentModeId] = useState();
+    const [discountId, setDiscountId] = useState();
 
 
     useEffect(() => {
         setBookingInformation(JSON.parse(window.sessionStorage.getItem("AvailedRoom")))
         console.log(bookingInformation)
+
+        axios.get('http://localhost:3001/api/getAllPaymentMode').then((result) => {
+            setModeOfPayment(result.data);
+
+        }).catch((err) => {
+            console.log(err.result)
+        });
+
+        axios.get('http://localhost:3001/api/getAllDiscount').then((result) => {
+            setDiscount(result.data);
+        }).catch((err) => {
+            console.log(err.result)
+        });
     }, [])
+
 
     useEffect(() => {
         setGrandTotal(0);
@@ -39,8 +59,31 @@ const BillingSummaryContainer = () => {
 
     }, [bookingInformation])
 
+    useEffect(() => {
+        modeOfPayment.map((value) => {
+            if (value.paymentMode == modeOfPaymentValue) {
+                setPaymentModeId(value.id)
+                console.log(value.paymentMode)
+            }
+        })
+
+        discount.map((value) => {
+            if (value.discountType == discountValue) {
+                setDiscountId(value.id)
+                console.log(value.discountType)
+            }
+        })
+
+
+        console.log(discountId)
+        console.log(paymentModeId)
+    }, [modeOfPaymentValue, discountValue])
+
+
 
     const createReservation = () => {
+        console.log(discountId)
+        console.log(paymentModeId)
         axios.post("http://localhost:3001/api/addUser", {
             contactNumber: window.sessionStorage.getItem('contactNumber'),
             email: window.sessionStorage.getItem('email'),
@@ -48,7 +91,7 @@ const BillingSummaryContainer = () => {
         }).then((result) => {
             console.log(result.data)
             axios.post("http://localhost:3001/api/addGuest", {
-                user_id: result.data.id,
+                user_id: result.data.account.id,
                 firstName: window.sessionStorage.getItem('firstName'),
                 lastName: window.sessionStorage.getItem('lastName'),
                 birthDate: window.sessionStorage.getItem('birthday'),
@@ -57,28 +100,19 @@ const BillingSummaryContainer = () => {
                 nationality: window.sessionStorage.getItem('nationality'),
             }).then((result) => {
                 console.log(result.data)
-
                 axios.post("http://localhost:3001/api/addReservation", {
                     reservationDate: reservationDate,
-                    guest_id: result.data.id,
+                    guest_id: result.data.new_guest.id,
+                    reservationReferenceNumber: Math.random().toString(36).slice(2),
                 }).then((result) => {
                     console.log(result.data)
-                    bookingInformation.map((item) => {
-                        axios.post("http://localhost:3001/api/addReservationSummary", {
-                            reservation_id: result.id,
-                            room_id: item.id,
-                            checkInDate: item.checkIn,
-                            checkOutDate: item.checkOut,
-                            numberOfNights: item.nights
-                        }).then((result) => {
-                            console.log(result.data)
-                        }).catch((err) => {
-                            console.log(err.result)
-                        });
-                    })
+
 
                     axios.post("http://localhost:3001/api/addPayment", {
-
+                        paymentMade: 0,
+                        discount_id: discountId,
+                        paymentMode_id: paymentModeId,
+                        reservation_id: result.data.new_reservation.id,
                     }).then((result) => {
                         console.log(result.data)
 
@@ -86,6 +120,23 @@ const BillingSummaryContainer = () => {
                         console.log(err.result)
 
                     });
+
+
+                    // bookingInformation.map((item) => {
+                    //     axios.post("http://localhost:3001/api/addReservationSummary", {
+                    //         reservation_id: result.id,
+                    //         room_id: item.id,
+                    //         checkInDate: item.checkIn,
+                    //         checkOutDate: item.checkOut,
+                    //         numberOfNights: item.nights
+                    //     }).then((result) => {
+                    //         console.log(result.data)
+                    //     }).catch((err) => {
+                    //         console.log(err.result)
+                    //     });
+                    // })
+
+
 
                 }).catch((err) => {
                     console.log(err.result)
@@ -108,7 +159,7 @@ const BillingSummaryContainer = () => {
             currency: 'PHP'
         }).format(value);
 
-    let reservationDate = new Date(Date.now())
+    let reservationDate = Date.now()
     return (
         <Container>
             <Title
@@ -265,15 +316,15 @@ const BillingSummaryContainer = () => {
                             <RadioGroup
                                 aria-labelledby="demo-controlled-radio-buttons-group"
                                 name="controlled-radio-buttons-group"
-                                value={modeOfPayment}
+                                value={modeOfPaymentValue}
                                 onChange={(e) => {
-                                    setModeOfPayment(e.target.value)
+                                    setModeOfPaymentValue(e.target.value)
                                 }}
                                 style={{ margin: '0px 0px 0px 30px' }}
                             >
-                                <FormControlLabel value="Pay at the hotel" control={<Radio />} label="Pay at the hotel" />
-                                <FormControlLabel value="bank" control={<Radio />} label="Bank(Metro Bank)" />
-                                <FormControlLabel value="ebank" control={<Radio />} label="E-Payment(Gcash)" />
+                                {modeOfPayment.map((item) => (
+                                    item.paymentMode === "Cash" ? <FormControlLabel value={item.paymentMode} control={<Radio />} label={item.paymentMode} disabled={typeOfPayment === "Full Payment" ? true : false} /> : <FormControlLabel value={item.paymentMode} control={<Radio />} label={item.paymentMode} />
+                                ))}
                             </RadioGroup>
                         </TableContainer>
 
@@ -286,9 +337,10 @@ const BillingSummaryContainer = () => {
                                     setTypeOfPayment(e.target.value)
                                 }}
                                 style={{ margin: '0px 0px 0px 30px' }}
+
                             >
                                 <FormControlLabel value="Down Payment" control={<Radio />} label="Down Payment" />
-                                <FormControlLabel value="full" control={<Radio />} label="Full Payment" />
+                                <FormControlLabel value="Full Payment" control={<Radio />} label="Full Payment" disabled={modeOfPaymentValue === "Cash" ? true : false} />
                             </RadioGroup>
                         </TableContainer>
                     </TabContainer>
@@ -316,15 +368,16 @@ const BillingSummaryContainer = () => {
                         <RadioGroup
                             aria-labelledby="demo-controlled-radio-buttons-group"
                             name="controlled-radio-buttons-group"
-                            value={discount}
+                            value={discountValue}
                             onChange={(e) => {
-                                setDiscount(e.target.value)
+                                setDiscountValue(e.target.value)
                             }}
                             style={{ margin: '0px 0px 0px 30px' }}
+
                         >
-                            <FormControlLabel value="none" control={<Radio />} label="None" />
-                            <FormControlLabel value="senior citizen" control={<Radio />} label="Senior Citizen" />
-                            <FormControlLabel value="PWD" control={<Radio />} label="Person With Disabilities (PWD)" />
+                            {discount.map((item) => (
+                                <FormControlLabel value={item.discountType} control={<Radio />} label={item.discountType} />
+                            ))}
 
                             <p><b><i>NOTE:</i></b> Discount will only be <b> applied upon check in</b>. Guest <b> must present their Senior citizen / PWD I.D</b>, Thank you!.</p>
                         </RadioGroup>
@@ -425,7 +478,7 @@ const BillingSummaryContainer = () => {
                 border="1px solid #0C4426"
                 margin='30px 0px 0px 0px'
                 fontsize='23px'
-                href='/booking/confirmation'
+                onClick={createReservation}
             >
                 Continue
             </Button2>

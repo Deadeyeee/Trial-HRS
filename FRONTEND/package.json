@@ -24,6 +24,7 @@
     "font-awesome": "^4.7.0",
     "framer-motion": "^5.5.5",
     "jsonwebtoken": "^8.5.1",
+    "moment": "^2.29.4",
     "react": "^17.0.2",
     "react-chartjs-2": "^4.0.1",
     "react-datepicker": "^4.8.0",

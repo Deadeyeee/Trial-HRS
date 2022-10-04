@@ -27,7 +27,7 @@ import KingBedIcon from '@mui/icons-material/KingBed';
 import KitchenIcon from '@mui/icons-material/Kitchen';
 import MicrowaveIcon from '@mui/icons-material/Microwave';
 import PendingIcon from '@mui/icons-material/Pending';
-
+import * as moment from 'moment';
 export const BookingPageCont = () => {
     const ratingValue = 3.6;
     const [roomType, setRoomType] = useState([])
@@ -57,36 +57,29 @@ export const BookingPageCont = () => {
 
 
         axios.get('http://localhost:3001/api/getAllRoom').then((res) => {
-            setRoom(res.data)
+
             setAvailableRoomType([])
+            setRoom([])
             res.data.map((item) => {
-                setAvailableRoomType((oldData) => [...oldData, item.roomType.id])
+                console.log(item.roomStatus)
+                if (item.roomStatus !== "Maintenance") {
+                    setAvailableRoomType((oldData) => [...oldData, item.roomType.id])
+                    setRoom((oldData) => [...oldData, item])
+                }
             })
         }).catch((err) => {
             console.log(err.data)
         })
-        
+
+
         axios.get('http://localhost:3001/api/getAllRoomType').then((res) => {
             setRoomType(res.data)
         }).catch((err) => {
             console.log(err.data)
         })
-        
-        // for (let i = 0; i < roomType.length; i++) {
-        //     let exist = false;
-        //     uniqueAvailbleRoomType.map((item, index) => {
-        //         if (roomType[i].id == item) {
-        //             exist = true
-        //         }
-        //         console.log(exist)
-        //         console.log(roomType[i].id)
-        //         console.log(item)
-        //     })
-        //     if (exist == false) {
-        //         roomType.splice(i, 1);
-        //     }
 
-        // }
+
+
 
         axios.get('http://localhost:3001/api/getAllUsedServices').then((res) => {
             setUsedServices(res.data)
@@ -96,13 +89,29 @@ export const BookingPageCont = () => {
 
     }, [])
 
-    useEffect(() => {
-        roomType.map((item, index)=>{
-            if(uniqueAvailbleRoomType.includes(item.id) == false){
-                roomType.splice(index, 1)
-            }
-        })
-    },[roomType])
+    roomType.map((item, index) => {
+        if (uniqueAvailbleRoomType.includes(item.id) === false) {
+            roomType.splice(index, 1)
+        }
+
+        console.log("sliced")
+    })
+
+    // useEffect(() => {
+    //     console.log(roomType)
+    //     console.log(room)
+    //     console.log(uniqueAvailbleRoomType)
+    //     if (roomType !== null) {
+    //         roomType.map((item, index) => {
+    //             if (uniqueAvailbleRoomType.includes(item.id) === false) {
+    //                 roomType.splice(index, 1)
+    //             }
+
+    //             console.log("sliced")
+    //         })
+    //     }
+    //     console.log(roomType)
+    // }, [roomType])
 
     const bookRoom = (roomTypeId) => {
         const checkIn = new Date(startDate)
@@ -172,6 +181,17 @@ export const BookingPageCont = () => {
     let minEndDate = new Date(startDate);
     minEndDate.setDate(minEndDate.getDate() + 1);
 
+
+    function getDates(startDate, stopDate) {
+        var dateArray = [];
+        var currentDate = moment(startDate);
+        var stopDate = moment(stopDate);
+        while (currentDate <= stopDate) {
+            dateArray.push(moment(currentDate).format('YYYY-MM-DD'))
+            currentDate = moment(currentDate).add(1, 'days');
+        }
+        return dateArray;
+    }
     return (
 
         <Container>
@@ -256,8 +276,9 @@ export const BookingPageCont = () => {
                     border="1px solid #8F805F"
                     fontsize='1.1vw'
 
-                    onClick={() => { window.location.href = '/booking' }}
+                    onClick={() => { console.log(getDates(startDate, endDate)) }}
                 >
+
                     Book now!!
                 </Button>
             </TitleCalendarContainer>
@@ -708,3 +729,4 @@ export const BookingPageCont = () => {
         </Container>
     )
 }
+

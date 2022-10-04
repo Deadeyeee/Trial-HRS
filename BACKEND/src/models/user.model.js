@@ -13,10 +13,6 @@ module.exports = (sequelize, DataTypes, Sequelize) => {
             type: DataTypes.STRING,
             allowNull: true,
             validate: {},
-            unique: {
-              args: true,
-              msg: "Username already in use!",
-            },
         },
         contactNumber: {
             type: DataTypes.STRING,
@@ -25,19 +21,11 @@ module.exports = (sequelize, DataTypes, Sequelize) => {
                 isNumeric: true, 
                 len: [11, 13],
             },
-            unique: {
-              args: true,
-              msg: "Phone number already in use",
-            },
         },
         email: {
             type: DataTypes.STRING,
             allowNull: false,
             validate: {},
-            unique: {
-                args: true,
-                msg: "Email address already in use!",
-            },
         },
         emailVerified:{
             type: DataTypes.BOOLEAN,

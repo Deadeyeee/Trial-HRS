@@ -7,10 +7,6 @@ module.exports = (sequelize, DataTypes, Sequelize) => {
             primaryKey: true,
             allowNull: false,
         },
-        totalBalance: {
-            type: DataTypes.DECIMAL(19, 4),
-            allowNull: false,
-        },
         paymentMade: {
             type: DataTypes.DECIMAL(19, 4),
             allowNull: false,

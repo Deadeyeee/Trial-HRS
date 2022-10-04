@@ -8,7 +8,7 @@ module.exports = (sequelize, DataTypes, Sequelize) => {
             allowNull: false,
         },
         discountType: {
-            type: DataTypes.ENUM(['PWD', 'SENIOR CITIZEN']),
+            type: DataTypes.ENUM(['Person With Disabilities (PWD)', 'Senior Citizen', 'No discount']),
             allowNull: false,
         },
         discountPercentage: {

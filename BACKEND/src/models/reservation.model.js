@@ -9,7 +9,6 @@ module.exports = (sequelize, DataTypes, Sequelize) => {
         },
         reservationReferenceNumber: {
             type: DataTypes.STRING,
-            defaultValue: Math.random().toString(36).slice(2),
             unique: true,
             allowNull: false,
         },

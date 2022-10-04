@@ -8,7 +8,7 @@ module.exports = (sequelize, DataTypes, Sequelize) => {
             allowNull: false,
         },
         paymentMode: {
-            type: DataTypes.ENUM(['BANK', 'CASH', 'E-WALLET']),
+            type: DataTypes.ENUM(['Bank Deposit (via Metro Bank)', 'Cash', 'E-Payment (Gcash)']),
             allowNull: false,
         },
         billerName: {
@@ -21,6 +21,11 @@ module.exports = (sequelize, DataTypes, Sequelize) => {
         },
         accountNumber: {
             type: DataTypes.INTEGER,
+            allowNull: false,
+        },
+        isActive: {
+            type: DataTypes.BOOLEAN,
+            defaultValue: true,
             allowNull: false,
         },
     },
