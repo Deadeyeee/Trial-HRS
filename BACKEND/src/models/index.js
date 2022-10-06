@@ -192,14 +192,14 @@ db.discount.hasOne(db.payment, {
 
 
 // One reservation has one payment
-db.payment.belongsTo(db.reservation, {
-    foreignKey: { name: "reservation_id", allowNull: false },
+db.reservation.belongsTo(db.payment, {
+    foreignKey: { name: "payment_id", allowNull: false },
     foreignKeyConstraint: true,
 });
 
-db.reservation.hasOne(db.payment, {
-    as: "reservation_",
-    foreignKey: "reservation_id",
+db.payment.hasOne(db.reservation, {
+    as: "payment",
+    foreignKey: "payment_id",
 });
 
 

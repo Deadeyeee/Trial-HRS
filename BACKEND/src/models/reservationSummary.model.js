@@ -19,6 +19,14 @@ module.exports = (sequelize, DataTypes, Sequelize) => {
             type: DataTypes.INTEGER,
             allowNull: false,
         },
+        kids: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+        },
+        adults: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+        },
 
     },
         {

@@ -13,9 +13,14 @@ import { HorizontalLine } from '../../components/horizontalLine/HorizontalLine';
 import { Button as Button2 } from '../../components/button/styles';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import axios from 'axios'
+import * as moment from 'moment';
 
 
 const BillingSummaryContainer = () => {
+    if (window.sessionStorage.getItem("AvailedRoom") == null) {
+        window.location = '/booking'
+    }
+
     const [value, setValue] = React.useState('cash');
     const [grandTotal, setGrandTotal] = useState(0);
     const [bookingInformation, setBookingInformation] = useState([])
@@ -24,14 +29,62 @@ const BillingSummaryContainer = () => {
     const [typeOfPayment, setTypeOfPayment] = useState('Down Payment');
     const [discount, setDiscount] = useState([]);
     const [discountValue, setDiscountValue] = useState();
+    const [notAvailableRoom, setNotAvailableRoom] = useState([]);
 
 
     const [paymentModeId, setPaymentModeId] = useState();
     const [discountId, setDiscountId] = useState();
 
 
+
+    const getNotAvailableRoom = () => {
+
+        axios.get('http://localhost:3001/api/getAllReservationSummary').then((result) => {
+            setNotAvailableRoom([])
+
+            for (let index = 0; index < result.data.length; index++) {
+                if (result.data[index].reservation.reservationStatus == "PENDING" || result.data[index].reservation.reservationStatus == "RESERVED" || result.data[index].reservation.reservationStatus == "BOOKED") {
+                    for (let k = 0; k < bookingInformation.length; k++) {
+                        let systemDates = getDates(bookingInformation[k].checkIn, bookingInformation[k].checkOut);
+                        systemDates.pop()
+                        let dataBaseDates = getDates(result.data[index].checkInDate, result.data[index].checkOutDate);
+                        dataBaseDates.pop()
+                        loop1:
+                        for (let i = 0; i < systemDates.length; i++) {
+                            loop2:
+                            for (let j = 0; j < dataBaseDates.length; j++) {
+                                if (systemDates[i] == dataBaseDates[j]) {
+                                    setNotAvailableRoom((oldData) => [...oldData, result.data[index].room_id])
+                                    break loop1;
+                                }
+                                else {
+                                    console.log(false)
+                                }
+                            }
+
+                        }
+                    }
+                }
+
+            }
+
+
+
+        }).then(() => {
+            console.log(notAvailableRoom)
+        }).catch((error) => {
+            console.log(error)
+        })
+        if (notAvailableRoom != null) {
+            console.log(notAvailableRoom)
+        }
+    }
+
+
     useEffect(() => {
+
         setBookingInformation(JSON.parse(window.sessionStorage.getItem("AvailedRoom")))
+
         console.log(bookingInformation)
 
         axios.get('http://localhost:3001/api/getAllPaymentMode').then((result) => {
@@ -48,7 +101,15 @@ const BillingSummaryContainer = () => {
         });
     }, [])
 
+    useEffect(() => {
+        if (bookingInformation.length != 0) {
+            getNotAvailableRoom();
+        }
+    }, [bookingInformation])
 
+    useEffect(() => {
+        console.log(notAvailableRoom)
+    }, [notAvailableRoom])
     useEffect(() => {
         setGrandTotal(0);
         bookingInformation.map((item) => (
@@ -84,92 +145,121 @@ const BillingSummaryContainer = () => {
     const createReservation = () => {
         console.log(discountId)
         console.log(paymentModeId)
-        axios.post("http://localhost:3001/api/addUser", {
-            contactNumber: window.sessionStorage.getItem('contactNumber'),
-            email: window.sessionStorage.getItem('email'),
-            role: "NON-USER"
-        }).then((result) => {
-            console.log(result.data)
-            axios.post("http://localhost:3001/api/addGuest", {
-                user_id: result.data.account.id,
-                firstName: window.sessionStorage.getItem('firstName'),
-                lastName: window.sessionStorage.getItem('lastName'),
-                birthDate: window.sessionStorage.getItem('birthday'),
-                gender: window.sessionStorage.getItem('gender'),
-                address: window.sessionStorage.getItem('address'),
-                nationality: window.sessionStorage.getItem('nationality'),
-            }).then((result) => {
-                console.log(result.data)
-                axios.post("http://localhost:3001/api/addReservation", {
-                    reservationDate: reservationDate,
-                    guest_id: result.data.new_guest.id,
-                    reservationReferenceNumber: Math.random().toString(36).slice(2),
-                }).then((result) => {
-                    console.log(result.data)
+        getNotAvailableRoom()
 
 
-                    axios.post("http://localhost:3001/api/addPayment", {
-                        paymentMade: 0,
-                        discount_id: discountId,
-                        paymentMode_id: paymentModeId,
-                        reservation_id: result.data.new_reservation.id,
-                    }).then((result) => {
-                        console.log(result.data)
+        for (let l = 0; l < bookingInformation.length; l++) {
 
+            for (let m = 0; m < bookingInformation[l].roomID.length; m++) {
+                if (notAvailableRoom.includes(bookingInformation[l].roomID[m])) {
+                    window.sessionStorage.clear();
+                    window.location = '/booking'
+                }
+                else {
+                    axios.post("http://localhost:3001/api/addUser", {
+                        contactNumber: window.sessionStorage.getItem('contactNumber'),
+                        email: window.sessionStorage.getItem('email'),
+                        role: "NON-USER"
+                    }).then((user) => {
+                        console.log(user.data)
+                        axios.post("http://localhost:3001/api/addGuest", {
+                            user_id: user.data.account.id,
+                            firstName: window.sessionStorage.getItem('firstName'),
+                            lastName: window.sessionStorage.getItem('lastName'),
+                            birthDate: window.sessionStorage.getItem('birthday'),
+                            gender: window.sessionStorage.getItem('gender'),
+                            address: window.sessionStorage.getItem('address'),
+                            nationality: window.sessionStorage.getItem('nationality'),
+                        }).then((guest) => {
+                            console.log(guest.data)
+                            axios.post("http://localhost:3001/api/addPayment", {
+                                paymentMade: 0,
+                                discount_id: discountId,
+                                paymentMode_id: paymentModeId,
+                            }).then((payment) => {
+                                console.log(payment.data)
+                                axios.post("http://localhost:3001/api/addReservation", {
+                                    reservationDate: reservationDate,
+                                    guest_id: guest.data.new_guest.id,
+                                    reservationReferenceNumber: Math.random().toString(36).slice(2),
+                                    payment_id: payment.data.new_payment.id
+                                }).then((reservation) => {
+                                    console.log(reservation.data)
+
+                                    for (let index = 0; index < bookingInformation.length; index++) {
+                                        bookingInformation[index].roomID.map((value) => {
+                                            let items = {
+                                                checkInDate: bookingInformation[index].checkIn,
+                                                checkOutDate: bookingInformation[index].checkOut,
+                                                kids: bookingInformation[index].kid,
+                                                adults: bookingInformation[index].adult,
+                                                numberOfNights: bookingInformation[index].nights,
+                                                reservation_id: reservation.data.new_reservation.id,
+                                                room_id: value,
+                                                // numberOfAdults:
+                                                // numberOfKids:
+                                            }
+                                            axios.post("http://localhost:3001/api/addReservationSummary", items).then((reservationSummary) => {
+
+                                                if (index == bookingInformation.length - 1) {
+                                                    console.log(reservationSummary.data)
+                                                    window.sessionStorage.clear();
+                                                    window.location = '/booking/confirmation/' + reservation.data.new_reservation.id;
+                                                }
+                                            }).catch((err) => {
+                                                console.log(err)
+
+                                            });
+                                        })
+
+
+                                    }
+
+                                    // bookingInformation.map((item) => {
+                                    //     axios.post("http://localhost:3001/api/addReservationSummary", {
+                                    //         reservation_id: result.id,
+                                    //         room_id: item.id,
+                                    //         checkInDate: item.checkIn,
+                                    //         checkOutDate: item.checkOut,
+                                    //         numberOfNights: item.nights
+                                    //     }).then((result) => {
+                                    //         console.log(result.data)
+                                    //     }).catch((err) => {
+                                    //         console.log(err.result)
+                                    //     });
+                                    // })
+
+
+
+                                }).catch((err) => {
+                                    console.log(err)
+
+                                });
+                            }).catch((err) => {
+                                console.log(err)
+
+                            });
+
+
+                        }).catch((err) => {
+                            console.log(err.result)
+                        });
                     }).catch((err) => {
                         console.log(err.result)
-
                     });
 
 
-                    for (let index = 0; index < bookingInformation.length; index++) {
-                        bookingInformation[index].roomID.map((value) => {
-                            let items = {
-                                checkInDate: bookingInformation[index].checkIn,
-                                checkOutDate: bookingInformation[index].checkOut,
-                                numberOfNights: bookingInformation[index].nights,
-                                reservation_id: result.data.new_reservation.id,
-                                room_id: value,
-                                // numberOfAdults:
-                                // numberOfKids:
-                            }
-                            axios.post("http://localhost:3001/api/addReservationSummary", items).then((result) => {
-                                console.log(result.data)
 
-                            }).catch((err) => {
-                                console.log(err.result)
+                }
 
-                            });
-                        })
-                    }
-
-                    // bookingInformation.map((item) => {
-                    //     axios.post("http://localhost:3001/api/addReservationSummary", {
-                    //         reservation_id: result.id,
-                    //         room_id: item.id,
-                    //         checkInDate: item.checkIn,
-                    //         checkOutDate: item.checkOut,
-                    //         numberOfNights: item.nights
-                    //     }).then((result) => {
-                    //         console.log(result.data)
-                    //     }).catch((err) => {
-                    //         console.log(err.result)
-                    //     });
-                    // })
+            }
+        }
 
 
 
-                }).catch((err) => {
-                    console.log(err.result)
 
-                });
 
-            }).catch((err) => {
-                console.log(err.result)
-            });
-        }).catch((err) => {
-            console.log(err.result)
-        });
+
 
     }
 
@@ -181,6 +271,17 @@ const BillingSummaryContainer = () => {
         }).format(value);
 
     let reservationDate = Date.now()
+
+    function getDates(startDate, stopDate) {
+        var dateArray = [];
+        var currentDate = moment(startDate);
+        var stopDate = moment(stopDate);
+        while (currentDate <= stopDate) {
+            dateArray.push(moment(currentDate).format('YYYY-MM-DD'))
+            currentDate = moment(currentDate).add(1, 'days');
+        }
+        return dateArray;
+    }
     return (
         <Container>
             <Title

@@ -1,3 +1,4 @@
+const { payment, paymentMode } = require("../models");
 const db = require("../models");
 const Reservation = db.reservation;
 // import Logo from "../../../FRONTEND/src/images/logo.png";
@@ -14,12 +15,16 @@ exports.create = async (req, res) => {
 };
 
 exports.findAll = async (req, res) => {
-    const reservation = await Reservation.findAll();
+    const reservation = await Reservation.findAll(
+        { include: [{model: payment, include: [paymentMode]}] }
+    );
     return res.status(200).send(reservation);
 };
 
 exports.findOne = async (req, res) => {
-    const reservation = await Reservation.findByPk(req.params.id);
+    const reservation = await Reservation.findByPk(req.params.id, 
+        { include: [{model: payment, include: [paymentMode]}] }
+    );
     return res.status(200).send(reservation);
 };
 

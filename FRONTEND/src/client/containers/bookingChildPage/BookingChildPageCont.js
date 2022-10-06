@@ -37,9 +37,11 @@ export const BookingChildPageCont = () => {
     const [roomType, setRoomType] = useState([])
     const [usedServices, setUsedServices] = useState([])
     const [roomQuantity, setRoomQuantity] = useState(1)
+    const [adult, setAdult] = useState(window.sessionStorage.getItem('adult'))
+    const [kid, setKid] = useState(window.sessionStorage.getItem('kid'))
     const [availedRooms, setAvailedRooms] = useState([])
 
-    const roomquantityRef = useRef();
+    const { roomquantityRef, kidRef, adultRef } = useRef();
     const addRoom = () => {
 
         if (roomQuantity > availedRooms.length) {
@@ -49,29 +51,29 @@ export const BookingChildPageCont = () => {
         else if (roomQuantity < 1) {
             setRoomQuantity(1);
         }
+        else if (kid > roomType.maxKidsOccupancy) {
+            setKid(roomType.maxKidsOccupancy);
+            kidRef.current.focus();
+        }
+        else if (kid < 0) {
+            setKid(0);
+        }
+        else if (adult > roomType.maxAdultOccupancy) {
+            setAdult(roomType.maxAdultOccupancy);
+            adult.current.focus();
+        }
+        else if (adult < 1) {
+            setAdult(1);
+        }
         else {
             let listOfRoomAvail = [];
             for (let index = 0; index < roomQuantity; index++) {
                 listOfRoomAvail.push(availedRooms[index])
             }
 
-                if (window.sessionStorage.getItem('AvailedRoom') == null) {
-                    let items =
-                        [{
-                            "id": id,
-                            "roomName": roomType.roomType,
-                            "roomRate": roomType.roomRate,
-                            "roomQuantity": roomQuantity,
-                            "checkIn": window.sessionStorage.getItem('checkIn'),
-                            "checkOut": window.sessionStorage.getItem('checkOut'),
-                            "nights": window.sessionStorage.getItem('nights'),
-                            "roomID": listOfRoomAvail,
-                        }]
-                    window.sessionStorage.setItem('AvailedRoom', JSON.stringify(items))
-                }
-                else {
-                    let items =
-                    {
+            if (window.sessionStorage.getItem('AvailedRoom') == null) {
+                let items =
+                    [{
                         "id": id,
                         "roomName": roomType.roomType,
                         "roomRate": roomType.roomRate,
@@ -80,17 +82,37 @@ export const BookingChildPageCont = () => {
                         "checkOut": window.sessionStorage.getItem('checkOut'),
                         "nights": window.sessionStorage.getItem('nights'),
                         "roomID": listOfRoomAvail,
-                    }
-                    const existingAvailedRooms = JSON.parse(window.sessionStorage.getItem("AvailedRoom"))
-                    existingAvailedRooms.push(items)
-                    window.sessionStorage.setItem('AvailedRoom', JSON.stringify(existingAvailedRooms))
-                    // window.sessionStorage.setItem('AvailedRoom', JSON.stringify())
-
+                        "kid": kid,
+                        "adult": adult,
+                    }]
+                window.sessionStorage.setItem('AvailedRoom', JSON.stringify(items))
+            }
+            else {
+                let items =
+                {
+                    "id": id,
+                    "roomName": roomType.roomType,
+                    "roomRate": roomType.roomRate,
+                    "roomQuantity": roomQuantity,
+                    "checkIn": window.sessionStorage.getItem('checkIn'),
+                    "checkOut": window.sessionStorage.getItem('checkOut'),
+                    "nights": window.sessionStorage.getItem('nights'),
+                    "roomID": listOfRoomAvail,
+                    "kid": kid,
+                    "adult": adult,
                 }
+                const existingAvailedRooms = JSON.parse(window.sessionStorage.getItem("AvailedRoom"))
+                existingAvailedRooms.push(items)
+                window.sessionStorage.setItem('AvailedRoom', JSON.stringify(existingAvailedRooms))
+                // window.sessionStorage.setItem('AvailedRoom', JSON.stringify())
+
+            }
 
             window.sessionStorage.removeItem('checkIn')
             window.sessionStorage.removeItem('checkOut')
             window.sessionStorage.removeItem('nights')
+            window.sessionStorage.removeItem('kid')
+            window.sessionStorage.removeItem('adult')
             window.location = '/bookingCart'
         }
     }
@@ -261,28 +283,83 @@ export const BookingChildPageCont = () => {
                             >
                                 Occupancy:
                             </Title>
-                            <Title
-                                family='Times New Roman, times, serif'
-                                color='#292929'
-                                weight='normal'
-                                size='25px'
-                                fStyle='Normal'
-                                margin='0px 0px 0px 15px'
-                                align='left'
+                            <ContainerGlobal 
+                            align='flex-end'
                             >
-                                <b>{roomType.maxAdultOccupancy}</b> adults
-                            </Title>
-                            <Title
-                                family='Times New Roman, times, serif'
-                                color='#292929'
-                                weight='normal'
-                                size='25px'
-                                fStyle='Normal'
-                                margin='0px 0px 0px 15px'
-                                align='left'
-                            >
-                                <b>{roomType.maxKidsOccupancy}</b> kids
-                            </Title>
+                                <TextInput
+                                    onChange={(e) => {
+                                        setAdult(e.target.value);
+                                    }}
+                                    value={adult}
+                                    family="Roboto Slab"
+                                    type="number"
+                                    // ref={emailref}
+                                    widthFocus="0px"
+                                    width='10%'
+                                    fontSize='25px'
+                                    indent='5px'
+                                    radiusFocus="0px"
+                                    border="0 0 1px"
+                                    background='white'
+                                    align='center'
+                                    margins='0px 0px 0px 15px'
+                                    // defaultValue="1"
+                                    weight='bold'
+                                    height='100%'
+                                    min="1"
+                                    ref={adultRef}
+                                    max={roomType.maxAdultOccupancy}
+                                    required
+
+                                ></TextInput>
+                                <Title
+                                    family='Times New Roman, times, serif'
+                                    color='#292929'
+                                    weight='normal'
+                                    size='20px'
+                                    fStyle='Normal'
+                                    margin='0px 0px 0px 5px'
+                                    align='left'
+                                >
+                                    <b></b> adult/s (max of {roomType.maxAdultOccupancy})
+                                </Title>
+                                <TextInput
+                                    onChange={(e) => {
+                                        setKid(e.target.value);
+                                    }}
+                                    value={kid}
+                                    family="Roboto Slab"
+                                    type="number"
+                                    // ref={emailref}
+                                    widthFocus="0px"
+                                    width='10%'
+                                    fontSize='25px'
+                                    indent='5px'
+                                    radiusFocus="0px"
+                                    border="0 0 1px"
+                                    background='white'
+                                    align='center'
+                                    margins='0px 0px 0px 15px'
+                                    // defaultValue="1"
+                                    weight='bold'
+                                    min="1"
+                                    ref={kidRef}
+                                    max={roomType.maxKidsOccupancy}
+                                    required
+
+                                ></TextInput>
+                                <Title
+                                    family='Times New Roman, times, serif'
+                                    color='#292929'
+                                    weight='normal'
+                                    size='20px'
+                                    fStyle='Normal'
+                                    margin='0px 0px 0px 5px'
+                                    align='left'
+                                >
+                                    <b></b> kid/s (max of {roomType.maxKidsOccupancy})
+                                </Title>
+                            </ContainerGlobal>
                         </ContentContainerHolder>
                         <ContentContainerHolder>
                             <Title

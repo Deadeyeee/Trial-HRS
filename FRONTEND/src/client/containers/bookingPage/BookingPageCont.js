@@ -186,6 +186,8 @@ export const BookingPageCont = () => {
         window.sessionStorage.removeItem('checkIn')
         window.sessionStorage.removeItem('checkOut')
         window.sessionStorage.removeItem('nights')
+        window.sessionStorage.removeItem('kid')
+        window.sessionStorage.removeItem('adult')
 
         // axios.get('http://localhost:3001/api/getAllReservationSummary').then((result) => {
         //     setNotAvailableRoom([])
@@ -318,6 +320,8 @@ export const BookingPageCont = () => {
         window.sessionStorage.setItem('checkOut', checkOut.toLocaleDateString())
         window.sessionStorage.setItem('nights', nights)
         window.sessionStorage.setItem('rooms', JSON.stringify(roomThatCanBeReserve))
+        window.sessionStorage.setItem('adult', adults)
+        window.sessionStorage.setItem('kid', kids)
 
         window.location = '/booking/room/' + roomTypeId;
     }
