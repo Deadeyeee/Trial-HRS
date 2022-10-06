@@ -31,15 +31,62 @@ import * as moment from 'moment';
 export const BookingPageCont = () => {
     const ratingValue = 3.6;
     const [roomType, setRoomType] = useState([])
+    const [adults, setAdults] = useState(2)
+    const [kids, setKids] = useState(0)
     const [usedServices, setUsedServices] = useState([])
     const [startDate, setStartDate] = useState(new Date().setHours(0, 0, 0, 0));
     const [endDate, setEndDate] = useState(new Date(new Date().getTime() + 86400000).setHours(0, 0, 0, 0));
     const [nights, setNights] = useState();
     const [room, setRoom] = useState([]);
     const [availbleRoomType, setAvailableRoomType] = useState([]);
+    const [notAvailableRoom, setNotAvailableRoom] = useState([]);
+    const [bookedRooms, setBookedRooms] = useState();
+
+    const [bookFilter, setBookFilter] = useState(0)
+
 
     let uniqueAvailbleRoomType = [... new Set(availbleRoomType)]
 
+    useEffect(() => {
+        if (window.sessionStorage.getItem('AvailedRoom') != null) {
+            setBookedRooms(JSON.parse(window.sessionStorage.getItem('AvailedRoom')))
+        }
+
+
+    }, [bookFilter])
+    useEffect(() => {
+        if (bookedRooms != null) {
+            console.log("MASAYANG BUHAY", bookedRooms)
+            for (let index = 0; index < bookedRooms.length; index++) {
+                let systemDates = getDates(startDate, endDate);
+                systemDates.pop()
+                let availedRoomDates = getDates(bookedRooms[index].checkIn, bookedRooms[index].checkOut);
+                availedRoomDates.pop()
+
+
+                loop1:
+                for (let i = 0; i < systemDates.length; i++) {
+                    loop2:
+                    for (let j = 0; j < availedRoomDates.length; j++) {
+                        if (systemDates[i] == availedRoomDates[j]) {
+                            bookedRooms[index].roomID.map((value) => {
+
+                                setNotAvailableRoom((oldData) => [...oldData, value])
+                            })
+                            break loop1;
+                        }
+                        else {
+                            console.log(false)
+                        }
+                    }
+
+                }
+            }
+        }
+        else {
+            console.log("TANIGNANG BUHAY")
+        }
+    }, [bookedRooms])
     useEffect(() => {
 
         if (startDate !== null && endDate !== null) {
@@ -50,75 +97,228 @@ export const BookingPageCont = () => {
         }
     }, [startDate, endDate])
 
+    const getNotAvailableRoom = async () => {
+        try {
+            let result = await axios.get('http://localhost:3001/api/getAllReservationSummary')
+            console.log("ASJDASPDJASOPJADPO", bookedRooms)
+            for (let index = 0; index < result.data.length; index++) {
+                if (result.data[index].reservation.reservationStatus == "PENDING" || result.data[index].reservation.reservationStatus == "RESERVED" || result.data[index].reservation.reservationStatus == "BOOKED") {
+                    let systemDates = getDates(startDate, endDate);
+                    systemDates.pop()
+                    let dataBaseDates = getDates(result.data[index].checkInDate, result.data[index].checkOutDate);
+                    dataBaseDates.pop()
+
+                    loop1:
+                    for (let i = 0; i < systemDates.length; i++) {
+                        loop2:
+                        for (let j = 0; j < dataBaseDates.length; j++) {
+                            if (systemDates[i] == dataBaseDates[j]) {
+                                setNotAvailableRoom((oldData) => [...oldData, result.data[index].room_id])
+                                break loop1;
+                            }
+                            else {
+                                console.log(false)
+                            }
+                        }
+
+                    }
+                }
+
+            }
+
+
+        } catch (error) {
+            console.log(error.data)
+        }
+    }
+
+    const getRooms = async () => {
+        try {
+            let res = await axios.get('http://localhost:3001/api/getAllRoom')
+            setRoom([])
+            res.data.map((item) => {
+                if (item.roomStatus !== "Maintenance") {
+                    setRoom((oldData) => [...oldData, item])
+                }
+            })
+
+            console.log(room)
+
+        } catch (error) {
+            console.log(error.data)
+
+        }
+    }
+
+    const getRoomtypes = async () => {
+        try {
+            let res = await axios.get('http://localhost:3001/api/getAllRoomType')
+            setRoomType([])
+            res.data.map((item) => {
+                if (item.maxAdultOccupancy >= adults && item.maxKidsOccupancy >= kids) {
+                    setRoomType((oldData) => [...oldData, item])
+                }
+            })
+
+            console.log(roomType)
+
+        } catch (error) {
+            console.log(error.data)
+        }
+    }
+
+    const getUsedServices = async () => {
+        try {
+            let res = await axios.get('http://localhost:3001/api/getAllUsedServices')
+            setUsedServices(res.data)
+            console.log(usedServices)
+
+        } catch (error) {
+            console.log(error.data)
+
+        }
+    }
     useEffect(() => {
+        getNotAvailableRoom();
+        getRooms();
+        getRoomtypes();
+        getUsedServices()
         window.sessionStorage.removeItem('checkIn')
         window.sessionStorage.removeItem('checkOut')
         window.sessionStorage.removeItem('nights')
 
+        // axios.get('http://localhost:3001/api/getAllReservationSummary').then((result) => {
+        //     setNotAvailableRoom([])
+        //     for (let index = 0; index < result.data.length; index++) {
+        //         if (result.data[index].reservation.reservationStatus == "PENDING" || result.data[index].reservation.reservationStatus == "RESERVED" || result.data[index].reservation.reservationStatus == "BOOKED") {
+        //             let systemDates = getDates(startDate, endDate);
+        //             systemDates.pop()
+        //             let dataBaseDates = getDates(result.data[index].checkInDate, result.data[index].checkOutDate);
+        //             dataBaseDates.pop()
 
-        axios.get('http://localhost:3001/api/getAllRoom').then((res) => {
+        //             loop1:
+        //             for (let i = 0; i < systemDates.length; i++) {
+        //                 loop2:
+        //                 for (let j = 0; j < dataBaseDates.length; j++) {
+        //                     if (systemDates[i] == dataBaseDates[j]) {
+        //                         setNotAvailableRoom((oldData) => [...oldData, result.data[index].room_id])
+        //                         break loop1;
+        //                     }
+        //                     else {
+        //                         console.log(false)
+        //                     }
+        //                 }
 
-            setAvailableRoomType([])
-            setRoom([])
-            res.data.map((item) => {
-                console.log(item.roomStatus)
-                if (item.roomStatus !== "Maintenance") {
-                    setAvailableRoomType((oldData) => [...oldData, item.roomType.id])
-                    setRoom((oldData) => [...oldData, item])
-                }
-            })
-        }).catch((err) => {
-            console.log(err.data)
+        //             }
+        //         }
+
+        //     }
+        // }).catch((err) => {
+
+        // });
+
+        // axios.get('http://localhost:3001/api/getAllRoom').then((res) => {
+
+        //     setRoom([])
+        //     res.data.map((item) => {
+        //         console.log(item.roomStatus)
+        //         if (item.roomStatus !== "Maintenance") {
+        //             setRoom((oldData) => [...oldData, item])
+        //         }
+        //     })
+        // }).catch((err) => {
+        //     console.log(err.data)
+        // })
+
+
+        // axios.get('http://localhost:3001/api/getAllRoomType').then((res) => {
+        //     setRoomType([])
+        //     res.data.map((item) => {
+        //         if (item.maxAdultOccupancy >= adults && item.maxKidsOccupancy >= kids) {
+        //             setRoomType((oldData) => [...oldData, item])
+        //         }
+        //     })
+        // }).catch((err) => {
+        //     console.log(err.data)
+        // })
+
+        // console.log("roomTypeAvailable1:", roomType)
+
+
+        // axios.get('http://localhost:3001/api/getAllUsedServices').then((res) => {
+        //     setUsedServices(res.data)
+        // }).catch((err) => {
+        //     console.log(err.data)
+        // })
+
+    }, [bookFilter, bookedRooms])
+
+    useEffect(() => {
+        room.map((value, index) => {
+            if (notAvailableRoom.includes(value.id)) {
+                room.splice(index, 1)
+            }
         })
+    }, [room, notAvailableRoom])
+    // setAvailableRoomType([])
 
-
-        axios.get('http://localhost:3001/api/getAllRoomType').then((res) => {
-            setRoomType(res.data)
-        }).catch((err) => {
-            console.log(err.data)
+    useEffect(() => {
+        setAvailableRoomType([])
+        room.map((value) => {
+            // console.log(value.roomType.id)
+            if (value.roomStatus !== "Maintenance") {
+                console.log(value.roomType.id)
+                setAvailableRoomType((oldData) => [...oldData, value.roomType.id])
+            }
         })
+    }, [room])
 
+    const bookFilterDate = () => {
+        setBookFilter(bookFilter + 1)
+        setNotAvailableRoom([])
 
+    }
 
-
-        axios.get('http://localhost:3001/api/getAllUsedServices').then((res) => {
-            setUsedServices(res.data)
-        }).catch((err) => {
-            console.log(err.data)
-        })
-
-    }, [])
-
-    roomType.map((item, index) => {
-        if (uniqueAvailbleRoomType.includes(item.id) === false) {
-            roomType.splice(index, 1)
-        }
-
-        console.log("sliced")
-    })
 
     // useEffect(() => {
-    //     console.log(roomType)
-    //     console.log(room)
-    //     console.log(uniqueAvailbleRoomType)
-    //     if (roomType !== null) {
-    //         roomType.map((item, index) => {
-    //             if (uniqueAvailbleRoomType.includes(item.id) === false) {
-    //                 roomType.splice(index, 1)
-    //             }
+    //     roomType.map((item, index) => {
+    //         if (uniqueAvailbleRoomType.includes(item.id) === false) {
+    //             roomType.splice(index, 1)
+    //         }
 
-    //             console.log("sliced")
-    //         })
-    //     }
-    //     console.log(roomType)
-    // }, [roomType])
+    //     })
+    // }, [roomType, uniqueAvailbleRoomType])
+
+    useEffect(() => {
+        if (roomType !== null) {
+            roomType.map((item, index) => {
+                if (uniqueAvailbleRoomType.includes(item.id) === false) {
+                    roomType.splice(index, 1)
+                }
+
+                console.log("sliced")
+            })
+        }
+        console.log(roomType)
+    }, [roomType])
 
     const bookRoom = (roomTypeId) => {
+        console.log("roomTypeAvailableButton:", roomType)
         const checkIn = new Date(startDate)
         const checkOut = new Date(endDate)
+        let roomThatCanBeReserve = [];
+        room.map((value) => {
+            if (value.roomType.id == roomTypeId) {
+                roomThatCanBeReserve.push(value.id)
+            }
+        })
+        console.log(roomThatCanBeReserve)
+
         window.sessionStorage.setItem('checkIn', checkIn.toLocaleDateString())
         window.sessionStorage.setItem('checkOut', checkOut.toLocaleDateString())
         window.sessionStorage.setItem('nights', nights)
+        window.sessionStorage.setItem('rooms', JSON.stringify(roomThatCanBeReserve))
+
         window.location = '/booking/room/' + roomTypeId;
     }
 
@@ -229,7 +429,13 @@ export const BookingPageCont = () => {
                             align="center"
                             borderColor='black'
                             margins='0px'
-                            value='2'
+                            value={adults}
+                            max={4}
+                            min={1}
+                            type='number'
+                            onChange={(e) => {
+                                setAdults(e.target.value);
+                            }}
                             height='3vw'
                         >
 
@@ -252,7 +458,13 @@ export const BookingPageCont = () => {
                             align="center"
                             borderColor='black'
                             margins='0px'
-                            value='0'
+                            max={2}
+                            min={0}
+                            value={kids}
+                            type='number'
+                            onChange={(e) => {
+                                setKids(e.target.value);
+                            }}
                             height='3vw'
                         ></TextInput>
 
@@ -276,7 +488,7 @@ export const BookingPageCont = () => {
                     border="1px solid #8F805F"
                     fontsize='1.1vw'
 
-                    onClick={() => { console.log(getDates(startDate, endDate)) }}
+                    onClick={() => { bookFilterDate(); }}
                 >
 
                     Book now!!
@@ -300,120 +512,150 @@ export const BookingPageCont = () => {
             ></HorizontalLine>
 
             {
-                roomType.map((item, index, arr) => (
-                    <RoomContainerMain>
+                roomType.length == 0 ?
+                    <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', flexFlow: 'column'}}>
                         <Title
-                            color='#292929'
-                            weight='700'
-                            size='33px'
-                            fStyle='Normal'
-                            margin='10px 0px 10px 0px'
-                            align='left'
-                            family='Roboto Slab'
+                            color='#898585'
+                            weight='normal'
+                            size='3vw'
+                            margin='20px 0px 0px 0px'
+
                         >
-                            {item.roomType}
+                            No rooms available in your preffered dates.
+
                         </Title>
-                        <RoomContainer>
-                            <RoomContainerContentPhoto
-                                src={Background}>
+                        <Button
+                            whileHover={{ backgroundColor: "#0C4426", color: "white" }}
+                            w='200px'
+                            h='60px'
+                            textcolor="#0C4426"
+                            fam='Playfair Display, serif'
+                            weight='-400'
+                            fontStyle='Normal'
+                            radius="0px"
+                            border="1px solid #0C4426"
+                            margin='30px 0px 0px 0px'
+                            fontsize='23px'
+                            href=''
+                        >
+                            Book this now!
+                        </Button>
+                    </div>
+                    :
+                    roomType.map((item, index, arr) => (
+                        <RoomContainerMain>
+                            <Title
+                                color='#292929'
+                                weight='700'
+                                size='33px'
+                                fStyle='Normal'
+                                margin='10px 0px 10px 0px'
+                                align='left'
+                                family='Roboto Slab'
+                            >
+                                {item.roomType}
+                            </Title>
+                            <RoomContainer>
+                                <RoomContainerContentPhoto
+                                    src={Background}>
 
-                            </RoomContainerContentPhoto>
-                            <RoomContainerContentRight>
+                                </RoomContainerContentPhoto>
+                                <RoomContainerContentRight>
 
-                                <Title
-                                    color='#8f805f'
-                                    weight='700'
-                                    size='20px'
-                                    fStyle='Normal'
-                                    margin='10px 0px 0px 0px'
-                                    align='left'
-                                >
-                                    Services
-                                </Title>
-                                <ServicesContainer>
-                                    {usedServices.map((usedServicesItem) => (
-                                        usedServicesItem.roomType_id === item.id ? serviceIcon(usedServicesItem.service.servicesName) : ""
-                                    ))}
-                                </ServicesContainer>
-                                <Title
-                                    color='#8f805f'
-                                    weight='700'
-                                    size='20px'
-                                    fStyle='Normal'
-                                    margin='10px 0px 0px 0px'
-                                    align='left'
-                                >
-                                    Occupancy
-                                </Title>
-                                <Title
-                                    family='Roboto Slab'
-                                    color='#2e2e2e'
-                                    weight='700'
-                                    size='17px'
-                                    fStyle='Normal'
-                                    margin='10px 0px 0px 10px'
-                                    align='left'
-                                >
-                                    {item.maxAdultOccupancy} Adults only
-                                </Title>
-                                <Title
-                                    family='Roboto Slab'
-                                    color='#2e2e2e'
-                                    weight='700'
-                                    size='17px'
-                                    fStyle='Normal'
-                                    margin='10px 0px 0px 10px'
-                                    align='left'
-                                >
-                                    {item.maxKidsOccupancy} Kids only
-                                </Title>
-                                <Title
-                                    color='#8f805f'
-                                    weight='700'
-                                    size='20px'
-                                    fstyle='Normal'
-                                    margin='20px 0px 0px 0px'
-                                    align='left'
-                                >
-                                    Price
-                                </Title>
-                                <Title
-                                    family='Roboto Slab'
-                                    color='#2e2e2e'
-                                    weight='700'
-                                    size='25px'
-                                    fStyle='Normal'
-                                    margin='15px 0px 0px 10px'
-                                    align='left'
-                                >
-                                    {numberFormat(item.roomRate)}/night
-                                </Title>
-                                <ButtonHolder>
-                                    <Button
-                                        whileHover={{ backgroundColor: "#2E2E2E", color: "white" }}
-                                        w='150px'
-                                        h='40px'
-                                        textcolor="black"
-                                        fam='Times New Roman'
-                                        weight='-400'
-                                        radius="0px"
-                                        border="1px solid #8F805F"
-                                        margin='30px 0px 0px 0px'
-                                        fontsize='15px'
-                                        onClick={() => {
-                                            bookRoom(item.id);
-                                        }}
+                                    <Title
+                                        color='#8f805f'
+                                        weight='700'
+                                        size='20px'
+                                        fStyle='Normal'
+                                        margin='10px 0px 0px 0px'
+                                        align='left'
                                     >
-                                        Book now!
-                                    </Button>
+                                        Services
+                                    </Title>
+                                    <ServicesContainer>
+                                        {usedServices.map((usedServicesItem) => (
+                                            usedServicesItem.roomType_id === item.id ? serviceIcon(usedServicesItem.service.servicesName) : ""
+                                        ))}
+                                    </ServicesContainer>
+                                    <Title
+                                        color='#8f805f'
+                                        weight='700'
+                                        size='20px'
+                                        fStyle='Normal'
+                                        margin='10px 0px 0px 0px'
+                                        align='left'
+                                    >
+                                        Occupancy
+                                    </Title>
+                                    <Title
+                                        family='Roboto Slab'
+                                        color='#2e2e2e'
+                                        weight='700'
+                                        size='17px'
+                                        fStyle='Normal'
+                                        margin='10px 0px 0px 10px'
+                                        align='left'
+                                    >
+                                        {item.maxAdultOccupancy} Adults only
+                                    </Title>
+                                    <Title
+                                        family='Roboto Slab'
+                                        color='#2e2e2e'
+                                        weight='700'
+                                        size='17px'
+                                        fStyle='Normal'
+                                        margin='10px 0px 0px 10px'
+                                        align='left'
+                                    >
+                                        {item.maxKidsOccupancy} Kids only
+                                    </Title>
+                                    <Title
+                                        color='#8f805f'
+                                        weight='700'
+                                        size='20px'
+                                        fstyle='Normal'
+                                        margin='20px 0px 0px 0px'
+                                        align='left'
+                                    >
+                                        Price
+                                    </Title>
+                                    <Title
+                                        family='Roboto Slab'
+                                        color='#2e2e2e'
+                                        weight='700'
+                                        size='25px'
+                                        fStyle='Normal'
+                                        margin='15px 0px 0px 10px'
+                                        align='left'
+                                    >
+                                        {numberFormat(item.roomRate)}/night
+                                    </Title>
+                                    <ButtonHolder>
+                                        <Button
+                                            whileHover={{ backgroundColor: "#2E2E2E", color: "white" }}
+                                            w='150px'
+                                            h='40px'
+                                            textcolor="black"
+                                            fam='Times New Roman'
+                                            weight='-400'
+                                            radius="0px"
+                                            border="1px solid #8F805F"
+                                            margin='30px 0px 0px 0px'
+                                            fontsize='15px'
+                                            onClick={() => {
+                                                bookRoom(item.id);
+                                            }}
+                                        >
+                                            Book now!
+                                        </Button>
 
-                                </ButtonHolder>
-                            </RoomContainerContentRight>
-                        </RoomContainer>
+                                    </ButtonHolder>
+                                </RoomContainerContentRight>
+                            </RoomContainer>
 
-                        {index + 1 == arr.length ? "" : <HorizontalLine w="50%"></HorizontalLine>}
-                    </RoomContainerMain>
-                ))}
+                            {index + 1 == arr.length ? "" : <HorizontalLine w="50%"></HorizontalLine>}
+                        </RoomContainerMain>
+                    ))}
 
             {/* <RoomContainerMain>
                 <RoomContainer>

@@ -122,6 +122,27 @@ const BillingSummaryContainer = () => {
                     });
 
 
+                    for (let index = 0; index < bookingInformation.length; index++) {
+                        bookingInformation[index].roomID.map((value) => {
+                            let items = {
+                                checkInDate: bookingInformation[index].checkIn,
+                                checkOutDate: bookingInformation[index].checkOut,
+                                numberOfNights: bookingInformation[index].nights,
+                                reservation_id: result.data.new_reservation.id,
+                                room_id: value,
+                                // numberOfAdults:
+                                // numberOfKids:
+                            }
+                            axios.post("http://localhost:3001/api/addReservationSummary", items).then((result) => {
+                                console.log(result.data)
+
+                            }).catch((err) => {
+                                console.log(err.result)
+
+                            });
+                        })
+                    }
+
                     // bookingInformation.map((item) => {
                     //     axios.post("http://localhost:3001/api/addReservationSummary", {
                     //         reservation_id: result.id,

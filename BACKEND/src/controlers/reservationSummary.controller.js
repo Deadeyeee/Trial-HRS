@@ -7,14 +7,16 @@ const ReservationSummary = db.reservationSummary;
 exports.create = async (req, res) => {
     try {
         const new_reservationSummary = await ReservationSummary.create(req.body);
-        return res.status(200).send({new_reservationSummary});
+        return res.status(200).send({ new_reservationSummary });
     } catch (error) {
         return res.status(200).send(error.message);
     }
 };
 
 exports.findAll = async (req, res) => {
-    const reservationSummary = await ReservationSummary.findAll();
+    const reservationSummary = await ReservationSummary.findAll(
+        { include: { all: true, nested: true } }
+    );
     return res.status(200).send(reservationSummary);
 };
 

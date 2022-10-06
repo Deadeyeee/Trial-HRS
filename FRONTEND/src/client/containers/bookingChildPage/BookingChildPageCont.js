@@ -3,7 +3,7 @@ import { Title } from '../../components/title/styles';
 import { Button } from '../../components/button/styles';
 import Rating from '@mui/material/Rating';
 
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Description } from '../../components/paragraph/style';
 import Background from '../../images/RoomsIMG/premium.jpg'
 import noimage from '../../images/RoomsIMG/noimage.png'
@@ -39,45 +39,60 @@ export const BookingChildPageCont = () => {
     const [roomQuantity, setRoomQuantity] = useState(1)
     const [availedRooms, setAvailedRooms] = useState([])
 
+    const roomquantityRef = useRef();
     const addRoom = () => {
 
-        if (window.sessionStorage.getItem('AvailedRoom') == null) {
-            let items =
-                [{
-                    "id": id,
-                    "roomName": roomType.roomType,
-                    "roomRate": roomType.roomRate,
-                    "roomQuantity": roomQuantity,
-                    "checkIn": window.sessionStorage.getItem('checkIn'),
-                    "checkOut": window.sessionStorage.getItem('checkOut'),
-                    "nights": window.sessionStorage.getItem('nights'),
-                }]
-            window.sessionStorage.setItem('AvailedRoom', JSON.stringify(items))
-            window.sessionStorage.removeItem('checkIn')
-            window.sessionStorage.removeItem('checkOut')
-            window.sessionStorage.removeItem('nights')
+        if (roomQuantity > availedRooms.length) {
+            setRoomQuantity(availedRooms.length);
+            roomquantityRef.current.focus();
+        }
+        else if (roomQuantity < 1) {
+            setRoomQuantity(1);
         }
         else {
-            let items =
-            {
-                "id": id,
-                "roomName": roomType.roomType,
-                "roomRate": roomType.roomRate,
-                "roomQuantity": roomQuantity,
-                "checkIn": window.sessionStorage.getItem('checkIn'),
-                "checkOut": window.sessionStorage.getItem('checkOut'),
-                "nights": window.sessionStorage.getItem('nights'),
+            let listOfRoomAvail = [];
+            for (let index = 0; index < roomQuantity; index++) {
+                listOfRoomAvail.push(availedRooms[index])
             }
-            const existingAvailedRooms = JSON.parse(window.sessionStorage.getItem("AvailedRoom"))
-            existingAvailedRooms.push(items)
-            window.sessionStorage.setItem('AvailedRoom', JSON.stringify(existingAvailedRooms))
-            // window.sessionStorage.setItem('AvailedRoom', JSON.stringify())
+
+                if (window.sessionStorage.getItem('AvailedRoom') == null) {
+                    let items =
+                        [{
+                            "id": id,
+                            "roomName": roomType.roomType,
+                            "roomRate": roomType.roomRate,
+                            "roomQuantity": roomQuantity,
+                            "checkIn": window.sessionStorage.getItem('checkIn'),
+                            "checkOut": window.sessionStorage.getItem('checkOut'),
+                            "nights": window.sessionStorage.getItem('nights'),
+                            "roomID": listOfRoomAvail,
+                        }]
+                    window.sessionStorage.setItem('AvailedRoom', JSON.stringify(items))
+                }
+                else {
+                    let items =
+                    {
+                        "id": id,
+                        "roomName": roomType.roomType,
+                        "roomRate": roomType.roomRate,
+                        "roomQuantity": roomQuantity,
+                        "checkIn": window.sessionStorage.getItem('checkIn'),
+                        "checkOut": window.sessionStorage.getItem('checkOut'),
+                        "nights": window.sessionStorage.getItem('nights'),
+                        "roomID": listOfRoomAvail,
+                    }
+                    const existingAvailedRooms = JSON.parse(window.sessionStorage.getItem("AvailedRoom"))
+                    existingAvailedRooms.push(items)
+                    window.sessionStorage.setItem('AvailedRoom', JSON.stringify(existingAvailedRooms))
+                    // window.sessionStorage.setItem('AvailedRoom', JSON.stringify())
+
+                }
+
             window.sessionStorage.removeItem('checkIn')
             window.sessionStorage.removeItem('checkOut')
             window.sessionStorage.removeItem('nights')
+            window.location = '/bookingCart'
         }
-
-        window.location = '/bookingCart'
     }
 
     useEffect(() => {
@@ -103,7 +118,7 @@ export const BookingChildPageCont = () => {
         }).catch((err) => {
             console.log(err.data)
         })
-
+        setAvailedRooms(JSON.parse(window.sessionStorage.getItem('rooms')));
     }, [])
 
     const serviceIcon = (service) => {
@@ -308,6 +323,7 @@ export const BookingChildPageCont = () => {
                                 onChange={(e) => {
                                     setRoomQuantity(e.target.value);
                                 }}
+                                value={roomQuantity}
                                 family="Roboto Slab"
                                 type="number"
                                 // ref={emailref}
@@ -319,18 +335,25 @@ export const BookingChildPageCont = () => {
                                 border="0 0 1px"
                                 background='white'
                                 align='center'
-                                margins='0px'
-                                defaultValue="1"
+                                margins='0px 10px 0px 0px'
+                                // defaultValue="1"
                                 weight='bold'
                                 height='100%'
                                 min="1"
-                                max="9"
+                                ref={roomquantityRef}
+                                max={availedRooms.length}
                                 required
 
                             >
-
                             </TextInput>
+                            <Description
+                                align="left"
+                                width="auto"
+                                size="20px"
+                                line="50px"
 
+
+                            >{availedRooms.length} room left</Description>
                         </ContentContainerHolder>
                     </RoomContainerContentRight>
                 </RoomContainer>

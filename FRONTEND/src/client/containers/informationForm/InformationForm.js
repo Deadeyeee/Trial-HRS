@@ -114,26 +114,31 @@ const InformationForm = () => {
 
     const createGuestInformation = (e) => {
         e.preventDefault();
+
         axios.get('http://localhost:3001/api/getAllUsers').then((res) => {
             console.log(res.data)
-            if (res.data.length !== 0) {
-                res.data.map((item) => {
-                    if (item.email == email) {
-                        emailRef.current.focus();
-                    }
-                    else if (item.contactNumber == contactNumber) {
-                        contactNumberRef.current.focus();
-                    }
-                    else if (item.userName == userName) {
-                        userNameRef.current.focus();
-                    }
-                    else {
-                        window.sessionStorage.setItem("email", email)
-                        window.sessionStorage.setItem("contactNumber", contactNumber)
-                        window.sessionStorage.setItem("userName", userName)
-                    }
 
-                })
+            if (res.data.length != 0) {
+                // res.data.map((item) => {
+                //     if (item.email == email) {
+                //         emailRef.current.focus();
+                //     }
+                //     else if (item.contactNumber == contactNumber) {
+                //         contactNumberRef.current.focus();
+                //     }
+                //     else if (item.userName == userName) {
+                //         userNameRef.current.focus();
+                //     }
+                //     else {
+                //         window.sessionStorage.setItem("email", email)
+                //         window.sessionStorage.setItem("contactNumber", contactNumber)
+                //         window.sessionStorage.setItem("userName", userName)
+                //     }
+
+                // })
+                window.sessionStorage.setItem("email", email)
+                window.sessionStorage.setItem("contactNumber", contactNumber)
+                window.sessionStorage.setItem("userName", userName)
             }
             else {
                 window.sessionStorage.setItem("email", email)
