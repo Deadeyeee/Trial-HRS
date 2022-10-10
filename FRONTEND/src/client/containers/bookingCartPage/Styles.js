@@ -42,7 +42,6 @@ export const TableContainer = styled(motion.table)`
   width: 100%;
   margin: 0px 10px;
   
-
 `;
 
 export const Tr = styled(motion.tr)`
@@ -50,12 +49,13 @@ export const Tr = styled(motion.tr)`
   padding: 0px 10px;
   background-color: #F2F2F2;
   padding: 30px 0px;
+  
 `;
 
 export const Th = styled(motion.th)`
   border: none;
-  background-color: #323232;
-  color: #FFFFFF;
+  background-color: ${(props) => (props.bg ? props.bg : "#323232")};
+  color: ${(props) => (props.color ? props.color : "#FFFFFF")};
   text-align: ${(props) => (props.align ? props.align : "center")};
   font-family: Arial, Helvetica, sans-serif;
   width: 250px;
@@ -65,7 +65,7 @@ export const Td = styled(motion.td)`
   border: none;
   text-align: ${(props) => (props.align ? props.align : "left")};
   font-family: Arial, Helvetica, sans-serif;
-  font-weight: bold;
+  font-weight: normal;
   color: #605f5f;
   padding: 15px 0px;
 `;
@@ -84,4 +84,3 @@ export const BrownTab = styled(motion.td)`
   margin-top: 10px;
  
 `;
-

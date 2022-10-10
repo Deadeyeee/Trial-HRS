@@ -14,14 +14,7 @@ module.exports = (sequelize, DataTypes, Sequelize) => {
         roomStatus: {
             type: DataTypes.ENUM(['Vacant', 'Occupied', 'Maintenance']),
             allowNull: false,
-        },
-        maxOccupancyAdult: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
-        },
-        maxOccupancyKids: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
+            defaultValue: 'Vacant'
         },
     },
     {

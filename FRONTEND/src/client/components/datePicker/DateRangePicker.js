@@ -4,29 +4,20 @@ import { Container, DateLabel } from './styles';
 import './style.css';
 import { Title } from '../title/styles';
 import { LabelDiv } from '../../containers/bookingPage/Styles';
-const DateRangePicker = () => {
-  const [startDate, setStartDate] = useState(new Date().setHours(0, 0, 0, 0));
-  const [endDate, setEndDate] = useState(new Date(new Date().getTime() + 86400000).setHours(0, 0, 0, 0));
-  const [nights, setNights] = useState();
-
-  useEffect(() => {
-    if (startDate !== null && endDate !== null) {
-      setNights(Math.floor((endDate - startDate) / (24 * 60 * 60 * 1000)));
-    }
-    else {
-      setNights(0);
-    }
-  }, [startDate, endDate])
+const DateRangePicker = (props) => {
+  
   return (
     <Container>
 
       <DateLabel>
         <DatePicker
-          selected={startDate}
-          onChange={(date) => setStartDate(date)}
+          selected={props.startDate}
+          onChange={props.onChangeStartDate}
           selectsStart
-          startDate={startDate}
-          endDate={endDate}
+          startDate={props.startDate}
+          endDate={props.endDate}
+          minDate={props.minDateStart}
+          maxDate={props.maxDateStart}
           placeholderText="Check-in Date"
         />
 
@@ -39,12 +30,14 @@ const DateRangePicker = () => {
 
       <DateLabel>
         <DatePicker
-          selected={endDate}
-          onChange={(date) => setEndDate(date)}
+          selected={props.endDate}
+          onChange={props.onChangeEndDate}
           selectsEnd
-          startDate={startDate}
-          endDate={endDate}
-          minDate={startDate}
+          startDate={props.startDate}
+          endDate={props.endDate}
+          minDate={props.minDateEnd}
+          maxDate={props.maxDateEnd}
+
           placeholderText="Check-out Date"
         />
         <Title 
@@ -63,7 +56,7 @@ const DateRangePicker = () => {
           fStyle='normal'
           margin='auto 0px 0px 0px'
         >
-          <b>{nights}</b> {nights == 1 || nights == 0 ? "night" : "night(s)"}
+          <b>{props.nights}</b> {props.nights == 1 || props.nights == 0 ? "night" : "night(s)"}
         </Title>
 
       </LabelDiv>

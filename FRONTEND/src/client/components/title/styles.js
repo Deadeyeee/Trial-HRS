@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { motion } from "framer-motion";
 export const Title = styled(motion.h1)`
-font-family: ${(props) => (props.family ? props.family : "'Playfair Display', serif")};
+font-family: ${(props) => (props.family ? props.family : "'Playfair Display'")};
 font-size: ${(props) => (props.size ? props.size : "30px")};
 font-weight: ${(props) => (props.weight ? props.weight : "bold")};
 font-style: ${(props) => (props.fstyle ? props.fstyle : "italic")};
@@ -22,6 +22,8 @@ border-radius:${(props) => (props.borderRadius ? props.borderRadius : "none")};
 border:${(props) => (props.border ? props.border : "none")};
 cursor:${(props) => (props.cursor ? props.cursor : "auto")};
 overflow: ${(props) => (props.overflow ? props.overflow : "visible")};
+text-overflow: ${(props) => (props.textOverflow ? props.textOverflow : "clip")};
+white-space: ${(props) => (props.whiteSpace ? props.whiteSpace : "normal")};
 &:hover{
     color: ${(props) => (props.hoverColor ? props.hoverColor : "none")};;
   }

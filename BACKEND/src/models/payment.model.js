@@ -7,12 +7,27 @@ module.exports = (sequelize, DataTypes, Sequelize) => {
             primaryKey: true,
             allowNull: false,
         },
-        totalBalance: {
+        paymentMade: {
             type: DataTypes.DECIMAL(19, 4),
             allowNull: false,
         },
-        paymentMade: {
+        grandTotal: {
             type: DataTypes.DECIMAL(19, 4),
+            allowNull: false,
+        },
+        
+        balance: {
+            type: DataTypes.DECIMAL(19, 4),
+            allowNull: false,
+        },
+        discountValid: {
+            type: DataTypes.BOOLEAN,
+            allowNull: false,
+            defaultValue: false,
+        },
+        paymentType: {
+            type: DataTypes.ENUM(['Full Payment', 'Down Payment']),
+            defaultValue: 'Down Payment',
             allowNull: false,
         },
         paymentStatus: {

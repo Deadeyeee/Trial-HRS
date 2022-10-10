@@ -13,28 +13,19 @@ module.exports = (sequelize, DataTypes, Sequelize) => {
             type: DataTypes.STRING,
             allowNull: true,
             validate: {},
-            unique: {
-              args: true,
-              msg: "Username already in use!",
-            },
         },
         contactNumber: {
-            type: DataTypes.STRING(11),
-            allowNull: true,
-            validate: {},
-            unique: {
-              args: true,
-              msg: "Phone number already in use",
+            type: DataTypes.STRING,
+            allowNull: false,
+            validate: {
+                isNumeric: true, 
+                len: [11, 13],
             },
         },
         email: {
             type: DataTypes.STRING,
             allowNull: false,
             validate: {},
-            unique: {
-                args: true,
-                msg: "Email address already in use!",
-            },
         },
         emailVerified:{
             type: DataTypes.BOOLEAN,
@@ -47,7 +38,7 @@ module.exports = (sequelize, DataTypes, Sequelize) => {
         },
         role: {
             type: DataTypes.ENUM({
-              values: ["ADMIN", "STAFF", "CUSTOMER"], //TODO - ADD MORE TYPES
+              values: ["ADMIN", "STAFF", "CUSTOMER", "NON-USER"], //TODO - ADD MORE TYPES
             }),
             defaultValue: "CUSTOMER",
             allowNull: false,

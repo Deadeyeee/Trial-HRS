@@ -1,11 +1,11 @@
-const controller  = require('../controlers/reservationSummary.controller.js');
+const controller  = require('../controlers/room.controller.js');
 
 const router = require('express').Router();
 
-router.post('/addReservationSummary', controller.create);
-router.get('/getAllReservationSummary', controller.findAll);
-router.get('/getReservationSummary/:id', controller.findOne);
-router.patch('/updateReservationSummary/:id', controller.update);
-router.delete('/deleteReservationSummary/:id', controller.delete);
+router.post('/addRoom', controller.create);
+router.get('/getAllRoom', controller.findAll);
+router.get('/getRoom/:id', controller.findOne);
+router.patch('/updateRoom/:id', controller.update);
+router.delete('/deleteRoom/:id', controller.delete);
 
 module.exports = router;

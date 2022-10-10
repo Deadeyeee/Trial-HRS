@@ -25,7 +25,7 @@ export const TitleCalendarContainer = styled(motion.div)`
     height: auto;
     width: 100vw;
     gap: 50px;
-    margin: 5% 0px 10% 0px;
+    margin: 5% 0px 5% 0px;
 
     @media (max-width: 1000px) {
     flex-direction: column;
@@ -69,7 +69,7 @@ export const RoomContainerMain = styled(motion.div)`
 export const RoomContainer = styled(motion.div)`
     display: flex;
     flex-direction: Row;
-    align-items: center;
+    /* align-items: center; */
     justify-content: center;
     gap: 50px;
     @media (max-width: 1000px) {
@@ -80,8 +80,8 @@ export const RoomContainer = styled(motion.div)`
 `;
 
 export const RoomContainerContentPhoto = styled.img`
-    
-    width: 25%;
+    object-fit: cover;
+    width: 30%;
     height: auto;
     
     @media (max-width: 1000px) {
@@ -120,12 +120,13 @@ export const RatingContainerRight = styled(motion.div)`
 `;
 
 export const ServicesContainer = styled(motion.div)`
-    width: auto;
-    height: 70px;
+    width: 400px;
+    height: auto;
     margin: 10px 10px;
     display:flex;
+    flex-wrap: wrap;
     align-items: center;
-    gap: 10px;
+    gap: 20px;
 `;
 
 export const Services = styled(motion.div)`
@@ -133,7 +134,7 @@ export const Services = styled(motion.div)`
     justify-content:center;
     flex-direction: column;
     align-items: center;
-    width: 90px;
+    width: auto;
     gap: 10px;
     height: 50px;
 

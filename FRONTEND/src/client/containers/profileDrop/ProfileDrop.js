@@ -50,12 +50,15 @@ export const ProfileDrop = (props) => {
                     <Title
                         size="15px"
                         color="#E1DACA"
-                        family="georgia"
+                        family="Times New Roman;"
                         w="100%"
+                        fstyle='normal'
                         overflow="hidden"
                         align="left"
                         cursor='pointer'
-                    >{props.userName} Pedro</Title>
+                        textOverflow='ellipsis'
+                        whiteSpace='nowrap'
+                    >{props.userName}</Title>
                 </TitleCap>
                 <DropDown src={Dropdown}></DropDown>
             </Container>

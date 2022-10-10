@@ -11,47 +11,8 @@ const bcrypt = require('bcrypt');
 exports.create = async (req, res) => {
     try {
         const new_user = await User.create(req.body);
-
-        let token = jwt.sign(
-            { id: new_user.id },
-            config.auth.secret,
-            {
-                expiresIn: 43200,
-            }
-        );
-        const url = 'http://localhost:3000/registered/' + token;
-
-
-        EmailAuto.transporter.use('compile', hbs({
-            viewEngine:{
-                extName: ".handlebars",
-                parialsDir: path.resolve('./src/views'),
-                defaultLayout: false,
-              },
-              viewPath: path.resolve('./src/views'),
-              extName: ".handlebars",
-        }));
-
-        let info = {
-            from: '"RM Luxe Hotel" "<Rm.LuxeHotel@gmail.com>"', // sender address
-            to: new_user.email,
-            subject: "Email Confirmation", // Subject line
-            template: 'email',
-            context: {
-                userName: new_user.userName,
-                link: url,
-                logo: "cid:logo",
-            },
-            attachments: [{
-                filename: 'logo.png',
-                path: './src/controlers/logo.png',
-                cid: 'logo' }]
-        };
-        EmailAuto.transporter.sendMail(info);
-
         return res.status(200).send({
             account: new_user,
-            email: "Email Sent: " + info.messageId,
         });
     } catch (error) {
         return res.status(400).send(error.message);

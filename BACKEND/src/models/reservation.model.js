@@ -7,25 +7,20 @@ module.exports = (sequelize, DataTypes, Sequelize) => {
             primaryKey: true,
             allowNull: false,
         },
-        reservationNumber: {
-            type: DataTypes.INTEGER,
+        reservationReferenceNumber: {
+            type: DataTypes.STRING,
+            unique: true,
             allowNull: false,
         },
         reservationDate: {
             type: DataTypes.DATE,
             allowNull: false,
         },
-        checkInDate: {
-            type: DataTypes.DATE,
-            allowNull: false,
-        },
-        checkOutDate: {
-            type: DataTypes.DATE,
-            allowNull: false,
-        },
         reservationStatus: {
-            type: DataTypes.ENUM(['PENDING', 'PAID', 'UNSETTLED']),
+            type: DataTypes.ENUM(['PENDING', 'RESERVED', 'UNSETTLED', 'BOOKED', 'DEPARTED', 'NO SHOW']),
             allowNull: false,
+            defaultValue: 'PENDING',
+            
         },
     },
     {

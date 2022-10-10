@@ -1,0 +1,339 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+
+    <style>
+        body {
+            background-color: #2e2e2e;
+        }
+
+        .boxParent {
+            width: 100%;
+            height: auto;
+            background-color: #2e2e2e;
+        }
+
+        .box {
+            width: 100%;
+            height: auto;
+            background-color: #f2f2f2;
+            padding: 20px 30px;
+            flex-direction: column;
+        }
+
+        img {
+            width: 150px;
+            height: 150px;
+            margin: auto;
+        }
+
+        h1 {
+            font-family: arial;
+            text-align: center;
+        }
+
+
+
+        button {
+            padding: 15px 200px;
+            cursor: pointer;
+            background-color: #2e2e2e;
+            border: 1px solid #E1DACA;
+            border-radius: 5px;
+            margin: 30px 0px 0px 0px;
+            color: #E1DACA;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #8F805F;
+            box-shadow: 5px 5px 5px gray;
+            border: 1px solid black;
+        }
+
+        p {
+            color: #2e2e2e;
+            text-align: left;
+            size: 18px;
+        }
+
+        address {
+            text-align: left;
+        }
+
+        th {
+            text-align: left;
+        }
+
+        .roomTable tr:nth-child(even) td {
+            background-color: #f2f2f2;
+        }
+
+        .roomTable td {
+            height: 40px;
+        }
+
+        .roomTable th {
+            border-bottom: 1px solid black;
+            padding-bottom: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="boxParent">
+        <div class="box">
+            <center>
+                <img src={{logo}}>
+                <h1>Booking Reservation</h1>
+            </center>
+
+            <address>
+                68 Cenacle Dr,<br />
+                Quezon City, Metro Manila<br />
+                <a href="Rm.LuxeHotel@gmail.com">Rm.LuxeHotel@gmail.com</a><br />
+                Tel: 123-456-7890<br />
+                Fax: 123-456-7890<br />
+            </address>
+
+            <p>
+                Hi <b>{{firstName}}</b>,
+                <br><br>
+                Thank you for reserving your stay with Remile Luxe Hotel. We are looking forward to your visit.
+                <br /><br />
+
+                Your reservation is <b>PENDING</b> until confirmation of Bank Deposit/Transfer is made.
+                <br /><br /><br />
+
+                <b>Instructions on how to make the payment:</b>
+                <br /><br />
+
+                Deposit your payment through our {{bankAccount}} account:
+                <br /><br />
+                <table>
+                    <tr>
+                        <td><b>BANK / E-Payment:</b></td>
+                        <td>{{bankAccount}}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Bank Address:</b></td>
+                        <td>Quezon City</td>
+                    </tr>
+                    <tr>
+                        <td><b>Account Name:</b></td>
+                        <td>{{accountName}}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Account Number:</b></td>
+                        <td>{{accountNumber}}</td>
+                    </tr>
+                </table>
+
+                <br /><br />
+
+                <b>To confirm your reservation, please make your deposit amounting {{payment}} within the next 24 hours.</b>
+                <br>
+                Please email your proof of payment to Rm.LuxeHotel@gmail.com or upload it to your user account by
+                logging in to our website and going to the PAYMENT SECTION so we can verify the payment.
+                <br><b>Once your payment has been verified, you will receive a booking confirmation message/email.</b>
+                <br />
+                <br />
+                <b>NOTE:</b> Unpaid fees within the given time period will result to <b>CANCELATION</b> of reservation.
+
+            </p>
+            <br />
+            <center>
+                <h2 style="color: red;">***IMPORTANT***</h2>
+                <h3>Please see your log in Information below:</h3>
+                <div style="border: 3px solid red; padding: 5px;">
+                    <b>userName/email:</b> {{reservationNumber}}<br /><br />
+                    <b>password:</b> {{reservationNumber}+{lastName}}
+                    <br /><br />
+                    <b>PLEASE USE THIS ACCOUNT TO LOG IN TO OUR WEBSITE. </b>
+                </div>
+
+                <br />
+                <br />
+            </center>
+
+            <b>Reservation Information:</b><br />
+            <br />
+            <table>
+                <tr>
+                    <td>Reservation Date: </td>
+
+                    <td>{{reservationDate}} </td>
+                </tr>
+                <tr>
+                    <td>Payment Mode: </td>
+
+                    <td>{{paymentMode}} </td>
+                </tr>
+
+                <tr>
+                    <td>Payment Type: </td>
+
+                    <td>{{paymentType}} </td>
+                </tr>
+                <tr>
+                    <td>Guest Name: </td>
+
+                    <td>{{guestName}} </td>
+                </tr>
+                <tr>
+                    <td>Birthdate: </td>
+
+                    <td>{{birthDay}} </td>
+                </tr>
+
+                <tr>
+                    <td>Nationality: </td>
+
+                    <td>{{nationality}} </td>
+                </tr>
+                <tr>
+                    <td>Email Address: </td>
+
+                    <td>{{emailAddress}} </td>
+                </tr>
+                <tr>
+                    <td>Complete Address: </td>
+
+                    <td>{{address}} </td>
+                </tr>
+                <tr>
+                    <td>Contact Number: </td>
+
+                    <td>{{contactNumber}} </td>
+                </tr>
+            </table>
+
+            <br />
+            <br />
+            <b>Charge Summary:</b><br /><br />
+            <table style="width: 100%;" class="roomTable">
+                <tr>
+                    <th>Room Type</th>
+                    <th>Check in</th>
+                    <th>Check out</th>
+                    <th>Total nights</th>
+                    <th>Rate per night</th>
+                    <th>Total amout due</th>
+                </tr>
+                <tr>
+                    <td>{{roomType}}</td>
+                    <td>{{checkIn}}</td>
+                    <td>{{checkOut}}</td>
+                    <td>{{nights}}</td>
+                    <td>{{ratePerNight}}</td>
+                    <td>{{totalAmountdue}}</td>
+                </tr>
+            </table>
+
+            <br />
+            <table>
+
+                <tr>
+                    <td><b>Discount:</b></td>
+                    <td style="color: black;"><b>{{discountType}}</b></td>
+                </tr>
+                <tr>
+                    <td><b>Full Payment:</b></td>
+                    <td style="color: black;"><b>{{fullPayment}}</b></td>
+                </tr>
+                <tr>
+                    <td><b>Down Payment:</b></td>
+                    <td style="color: red;"><b>{{downPayment}}</b></td>
+                </tr>
+                <tr style="height: 90px;">
+                    <td>
+                        <h2><b>Grand Total:</b></h2>
+                    </td>
+                    <td style="color: green;">
+                        <h2><b>{{grandTotal}}</b></h2>
+                    </td>
+                </tr>
+            </table>
+            <br />
+            <b>NOTE!: </b>Discount will only take effect upon check-in. Please present your valid id to our frontdesk to confirm your discount. Thank you.
+            <br />
+            <br />
+            <h3>House policy:</h3>
+            <ol>
+                <li>Check in time starts at 2:00pm and standard check-out is at 12:00NN.(Hotel management has the right to remove guest belongings from the room after check out time if room is already reserved). </li>
+                <br>
+                <li>Early check-in or late check-out is subject to room availability. </li>
+                <br>
+                <li>The hotel is not liable for the safety of any valuables left in the guest rooms as governed by the civil code of the Philippines.</li>
+                <br>
+                <li>Visitors are required to register at the Front Desk in compliance with the Philippine Hotel Code.</li>
+                <br>
+                <li>Strictly NO DRINKING of alcoholic beverages, use of narcotics and toxic substances, Hotel management has the right to remove guest/s or not to allow the guest from entering the premises if the guest is under the influence of these things. </li>
+                <br>
+                <li>The hotel reserves the right to charge a fee should be there be stained linens, foul odor,losses and breakages in the room for the duration of the guest's stay. A certain amount of fee will depend on the Hotel Policies. </li>
+                <br>
+                <li>The hotel reserves the right to institute necessary actins under any of the following cases:
+                    <ul>
+                        <li>Failure to pay upon demand of an outsatnding amount. </li>
+                        <li>self-check-out.</li>
+                        <li>Guest refuses to conform to the hotel's rules and policies.</li>
+                    </ul>
+                </li>
+                <br>
+                <li>Strictly no smoking inside the hotel premises as per the Executive Order no. 26. </li>
+                <br>
+                <li>Emergency contact numbers must be present in the Front office Desk/ Lobby. </li>
+            </ol>
+
+            <br />
+            <h3>Terms and Conditions:</h3>
+            <ol>
+                <li>Check Out time is <b>12:00NN</b> and Check in time is <b>2:00PM.</b> </li>
+                <br>
+                <li>Strictly <b><u>NO SMOKING/DRINKING</u></b> policy inside the hotel's premises. </li>
+                <br>
+                <li>The hotel is not responsible for the safety of any valuables left in the guest Rooms as governed by the <b>Civil Code of the Philippines.</b> Visitors are required to register at the Front Desk in compliance with the <b>Philippine Hotel Code. Extra Person charge of <u>PHP 500.00 </u></b> will be added to the bill of the guest if the visitor remains overnight. Visiting hours are from 9:00H to 22:00H</li>
+                <br>
+                <li>Possesion of the following are strictly not allowed within the hotel premises. The hotel reserves the right to report any such activity to the Government.<b>*ILLEGAL DRUGS* *GAMBLING* *FIREARMS* *HEATING ELEMENTS* *SHARP OBJECTS* and *PETS* is not allowed</b></li>
+                <br>
+                <li>The Hotel Reserves the <b>the right of charge a fee</b> should be there be <b>stained linens, foul odor, losses and breakages in the room</b> for the duration of the guest'stay</li>
+                <br>
+
+                <li><b>THE ROOM KEY must be surrendered upon check-out</b> Lost or damaged room key will be charged <b>PHP 500.00</b> </li>
+                <br>
+                <li>The hotel reserves the right to institute necessary actions under the following cases:
+                    <ul>
+                        <li>Failure to pay upon demand of an outsatnding amount. </li>
+                        <li>Self-check-out.</li>
+                        <li>Guest refuses to conform to the hotel's rules and policies.</li>
+                    </ul>
+                </li>
+                <br>
+                <li><b>CHARGES FOR DAMAGED/MISSING ITEMS:</b>
+                    <ul>
+                        <li>SMOKING/DRINKING - PHP 10,000.00</li>
+                        <li>Tables - PHP 3,000.00</li>
+                        <li>Stained Linen - PHP 1,000.00</li>
+                        <li>Foul Odor - PHP 1,000.00</li>
+                        <li>Bed Runner / Throw Pillow - PHP 500.00</li>
+                        <li>Room Key - PHP 500.00</li>
+                        <li>Kitchen Wares - PHP 500.00</li>
+                        <li>Towel - PHP 500.00</li>
+                        <li>Slippers - PHP 200.00</li>
+                        <li>Room Key - PHP 500.00</li>
+                    </ul>
+                </li>
+                <br>
+
+            </ol>
+            <center style="color: red;"><b>----------------------- This is an auto-generated message please do not reply -----------------------</b></center>
+        </div>
+    </div>
+</body>
+
+</html>

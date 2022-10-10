@@ -14,7 +14,7 @@ export const Container = styled(motion.div)`
 export const ContainerForm = styled.form`
   display: flex;
   justify-content: center;
-  align-items: flex-start;
+  align-items: ${(props) => (props.align ? props.align : "flex-start")};
   gap: 50px;
 `;
 export const ContainerFormContent = styled.div`

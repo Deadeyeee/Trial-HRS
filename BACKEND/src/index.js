@@ -4,7 +4,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
-
+const path = require('path')
 //import routes here
 
 //create routes
@@ -54,6 +54,8 @@ const room = require('./routes/room.route.js');
 const reservationSummary = require('./routes/reservationSummary.route.js');
 const orderedAmenities = require('./routes/orderedAmenities.route.js');
 const payment = require('./routes/payment.route.js');
+const services = require('./routes/services.route.js');
+const usedServices = require('./routes/usedServices.route.js');
 
 
 
@@ -70,4 +72,10 @@ app.use('/api', room);
 app.use('/api', reservationSummary);
 app.use('/api', orderedAmenities);
 app.use('/api', payment);
+app.use('/api', services);
+app.use('/api', usedServices);
+
+
+//static image 
+app.use('/src/Images/Rooms',express.static('src/Images/Rooms'))
 

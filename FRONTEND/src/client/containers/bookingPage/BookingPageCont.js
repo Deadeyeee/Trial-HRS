@@ -1,9 +1,8 @@
-import React from 'react'
-import { ButtonHolder, CalendarContainer, Container, HorizontalLine, RatingContainer, RoomContainer, RoomContainerContentLeft, RoomContainerContentPhoto, RoomContainerContentRight, RoomContainerMain, ServicesContainer, TitleCalendarContainer, RatingContainerRight, BookingLegendsMain, BookingLegendsContainer, BookingLegends, BookingLegendsWhite, BookingLegendsRed, BookingLegendsGreen, BookingLegendsBlue, BookingLegendsDarkJade, LocationPinRed, LocationPinGreen, Services, LabelDiv, Persons } from './Styles'
+import React, { useEffect, useLayoutEffect, useState } from 'react'
+import { ButtonHolder, Container, HorizontalLine, RatingContainer, RoomContainer, RoomContainerContentLeft, RoomContainerContentPhoto, RoomContainerContentRight, RoomContainerMain, ServicesContainer, TitleCalendarContainer, RatingContainerRight, BookingLegendsMain, BookingLegendsContainer, BookingLegends, BookingLegendsWhite, BookingLegendsRed, BookingLegendsGreen, BookingLegendsBlue, BookingLegendsDarkJade, LocationPinRed, Services, LabelDiv, Persons } from './Styles'
 import { Title } from '../../components/title/styles';
 import { Button } from '../../components/button/styles';
 import { TextInput } from '../../components/textBox/style';
-import Rating from '@mui/material/Rating';
 import NetworkWifiIcon from '@mui/icons-material/NetworkWifi';
 import TvIcon from '@mui/icons-material/Tv';
 import ShowerIcon from '@mui/icons-material/Shower';
@@ -12,39 +11,436 @@ import TimeToLeaveIcon from '@mui/icons-material/TimeToLeave';
 import PersonIcon from '@mui/icons-material/Person';
 import DateRangePicker from '../../components/datePicker/DateRangePicker'
 import Background from '../../images/RoomsIMG/premium.jpg'
-import Background2 from '../../images/RoomsIMG/delux.jpg'
 import { ContainerGlobal } from '../../../admin/components/container/container';
-
+import axios from 'axios';
+import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
+import AirIcon from '@mui/icons-material/Air';
+import GroupsIcon from '@mui/icons-material/Groups';
+import SmokingRoomsIcon from '@mui/icons-material/SmokingRooms';
+import SanitizerIcon from '@mui/icons-material/Sanitizer';
+import LiquorIcon from '@mui/icons-material/Liquor';
+import DryCleaningIcon from '@mui/icons-material/DryCleaning';
+import HotelIcon from '@mui/icons-material/Hotel';
+import KingBedIcon from '@mui/icons-material/KingBed';
+import KitchenIcon from '@mui/icons-material/Kitchen';
+import MicrowaveIcon from '@mui/icons-material/Microwave';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import PendingIcon from '@mui/icons-material/Pending';
+import * as moment from 'moment';
+import { Badge } from '@mui/material';
+import { borderRadius } from '@mui/system';
 export const BookingPageCont = () => {
     const ratingValue = 3.6;
+    const [roomType, setRoomType] = useState([])
+    const [adults, setAdults] = useState(2)
+    const [kids, setKids] = useState(0)
+    const [usedServices, setUsedServices] = useState([])
+    const [startDate, setStartDate] = useState(new Date().setHours(0, 0, 0, 0));
+    const [endDate, setEndDate] = useState(new Date(new Date().getTime() + 86400000).setHours(0, 0, 0, 0));
+    const [nights, setNights] = useState();
+    const [room, setRoom] = useState([]);
+    const [availbleRoomType, setAvailableRoomType] = useState([]);
+    const [notAvailableRoom, setNotAvailableRoom] = useState([]);
+    const [bookedRooms, setBookedRooms] = useState([]);
+    const [bookFilter, setBookFilter] = useState(0)
 
+
+    let uniqueAvailbleRoomType = [... new Set(availbleRoomType)]
+
+    useEffect(() => {
+        if (window.sessionStorage.getItem('AvailedRoom') != null) {
+            setBookedRooms(JSON.parse(window.sessionStorage.getItem('AvailedRoom')))
+        }
+
+
+    }, [bookFilter])
+    useEffect(() => {
+        if (bookedRooms != null) {
+            console.log("MASAYANG BUHAY", bookedRooms)
+            for (let index = 0; index < bookedRooms.length; index++) {
+                let systemDates = getDates(startDate, endDate);
+                systemDates.pop()
+                let availedRoomDates = getDates(bookedRooms[index].checkIn, bookedRooms[index].checkOut);
+                availedRoomDates.pop()
+
+
+                loop1:
+                for (let i = 0; i < systemDates.length; i++) {
+                    loop2:
+                    for (let j = 0; j < availedRoomDates.length; j++) {
+                        if (systemDates[i] == availedRoomDates[j]) {
+                            bookedRooms[index].roomID.map((value) => {
+
+                                setNotAvailableRoom((oldData) => [...oldData, value])
+                            })
+                            break loop1;
+                        }
+                        else {
+                            console.log(false)
+                        }
+                    }
+
+                }
+            }
+        }
+        else {
+            console.log("TANIGNANG BUHAY")
+        }
+    }, [bookedRooms])
+    useEffect(() => {
+
+        if (startDate !== null && endDate !== null) {
+            setNights(Math.floor((endDate - startDate) / (24 * 60 * 60 * 1000)));
+        }
+        else {
+            setNights(0);
+        }
+    }, [startDate, endDate])
+
+    const getNotAvailableRoom = async () => {
+        try {
+            let result = await axios.get('http://localhost:3001/api/getAllReservationSummary')
+            console.log("ASJDASPDJASOPJADPO", bookedRooms)
+            for (let index = 0; index < result.data.length; index++) {
+                if (result.data[index].reservation.reservationStatus == "PENDING" || result.data[index].reservation.reservationStatus == "RESERVED" || result.data[index].reservation.reservationStatus == "BOOKED") {
+                    let systemDates = getDates(startDate, endDate);
+                    systemDates.pop()
+                    let dataBaseDates = getDates(result.data[index].checkInDate, result.data[index].checkOutDate);
+                    dataBaseDates.pop()
+
+                    loop1:
+                    for (let i = 0; i < systemDates.length; i++) {
+                        loop2:
+                        for (let j = 0; j < dataBaseDates.length; j++) {
+                            if (systemDates[i] == dataBaseDates[j]) {
+                                setNotAvailableRoom((oldData) => [...oldData, result.data[index].room_id])
+                                break loop1;
+                            }
+                            else {
+                                console.log(false)
+                            }
+                        }
+
+                    }
+                }
+
+            }
+
+
+        } catch (error) {
+            console.log(error.data)
+        }
+    }
+
+    const getRooms = async () => {
+        try {
+            let res = await axios.get('http://localhost:3001/api/getAllRoom')
+            setRoom([])
+            res.data.map((item) => {
+                if (item.roomStatus !== "Maintenance") {
+                    setRoom((oldData) => [...oldData, item])
+                }
+            })
+
+            console.log(room)
+
+        } catch (error) {
+            console.log(error.data)
+
+        }
+    }
+
+    const getRoomtypes = async () => {
+        try {
+            let res = await axios.get('http://localhost:3001/api/getAllRoomType')
+            setRoomType([])
+            res.data.map((item) => {
+                if (item.maxAdultOccupancy >= adults && item.maxKidsOccupancy >= kids) {
+                    setRoomType((oldData) => [...oldData, item])
+                }
+            })
+
+            console.log(roomType)
+
+        } catch (error) {
+            console.log(error.data)
+        }
+    }
+
+    const getUsedServices = async () => {
+        try {
+            let res = await axios.get('http://localhost:3001/api/getAllUsedServices')
+            setUsedServices(res.data)
+            console.log(usedServices)
+
+        } catch (error) {
+            console.log(error.data)
+
+        }
+    }
+    useEffect(() => {
+        getNotAvailableRoom();
+        getRooms();
+        getRoomtypes();
+        getUsedServices()
+        window.sessionStorage.removeItem('checkIn')
+        window.sessionStorage.removeItem('checkOut')
+        window.sessionStorage.removeItem('nights')
+        window.sessionStorage.removeItem('kid')
+        window.sessionStorage.removeItem('adult')
+        window.sessionStorage.removeItem('rooms')
+
+        // axios.get('http://localhost:3001/api/getAllReservationSummary').then((result) => {
+        //     setNotAvailableRoom([])
+        //     for (let index = 0; index < result.data.length; index++) {
+        //         if (result.data[index].reservation.reservationStatus == "PENDING" || result.data[index].reservation.reservationStatus == "RESERVED" || result.data[index].reservation.reservationStatus == "BOOKED") {
+        //             let systemDates = getDates(startDate, endDate);
+        //             systemDates.pop()
+        //             let dataBaseDates = getDates(result.data[index].checkInDate, result.data[index].checkOutDate);
+        //             dataBaseDates.pop()
+
+        //             loop1:
+        //             for (let i = 0; i < systemDates.length; i++) {
+        //                 loop2:
+        //                 for (let j = 0; j < dataBaseDates.length; j++) {
+        //                     if (systemDates[i] == dataBaseDates[j]) {
+        //                         setNotAvailableRoom((oldData) => [...oldData, result.data[index].room_id])
+        //                         break loop1;
+        //                     }
+        //                     else {
+        //                         console.log(false)
+        //                     }
+        //                 }
+
+        //             }
+        //         }
+
+        //     }
+        // }).catch((err) => {
+
+        // });
+
+        // axios.get('http://localhost:3001/api/getAllRoom').then((res) => {
+
+        //     setRoom([])
+        //     res.data.map((item) => {
+        //         console.log(item.roomStatus)
+        //         if (item.roomStatus !== "Maintenance") {
+        //             setRoom((oldData) => [...oldData, item])
+        //         }
+        //     })
+        // }).catch((err) => {
+        //     console.log(err.data)
+        // })
+
+
+        // axios.get('http://localhost:3001/api/getAllRoomType').then((res) => {
+        //     setRoomType([])
+        //     res.data.map((item) => {
+        //         if (item.maxAdultOccupancy >= adults && item.maxKidsOccupancy >= kids) {
+        //             setRoomType((oldData) => [...oldData, item])
+        //         }
+        //     })
+        // }).catch((err) => {
+        //     console.log(err.data)
+        // })
+
+        // console.log("roomTypeAvailable1:", roomType)
+
+
+        // axios.get('http://localhost:3001/api/getAllUsedServices').then((res) => {
+        //     setUsedServices(res.data)
+        // }).catch((err) => {
+        //     console.log(err.data)
+        // })
+
+    }, [bookFilter, bookedRooms])
+
+    useEffect(() => {
+        room.map((value, index) => {
+            if (notAvailableRoom.includes(value.id)) {
+                room.splice(index, 1)
+            }
+        })
+    }, [room, notAvailableRoom])
+    // setAvailableRoomType([])
+
+    useEffect(() => {
+        setAvailableRoomType([])
+        room.map((value) => {
+            // console.log(value.roomType.id)
+            if (value.roomStatus !== "Maintenance") {
+                console.log(value.roomType.id)
+                setAvailableRoomType((oldData) => [...oldData, value.roomType.id])
+            }
+        })
+    }, [room])
+
+    const bookFilterDate = () => {
+        setBookFilter(bookFilter + 1)
+        setNotAvailableRoom([])
+
+    }
+
+
+    // useEffect(() => {
+    //     roomType.map((item, index) => {
+    //         if (uniqueAvailbleRoomType.includes(item.id) === false) {
+    //             roomType.splice(index, 1)
+    //         }
+
+    //     })
+    // }, [roomType, uniqueAvailbleRoomType])
+
+    useEffect(() => {
+        if (roomType !== null) {
+            roomType.map((item, index) => {
+                if (uniqueAvailbleRoomType.includes(item.id) === false) {
+                    roomType.splice(index, 1)
+                }
+
+                console.log("sliced")
+            })
+        }
+        console.log(roomType)
+    }, [roomType])
+
+    const bookRoom = (roomTypeId) => {
+        console.log("roomTypeAvailableButton:", roomType)
+        const checkIn = new Date(startDate)
+        const checkOut = new Date(endDate)
+        let roomThatCanBeReserve = [];
+        room.map((value) => {
+            if (value.roomType.id == roomTypeId) {
+                roomThatCanBeReserve.push(value.id)
+            }
+        })
+        console.log(roomThatCanBeReserve)
+
+        window.sessionStorage.setItem('checkIn', checkIn.toLocaleDateString())
+        window.sessionStorage.setItem('checkOut', checkOut.toLocaleDateString())
+        window.sessionStorage.setItem('nights', nights)
+        window.sessionStorage.setItem('rooms', JSON.stringify(roomThatCanBeReserve))
+        window.sessionStorage.setItem('adult', adults)
+        window.sessionStorage.setItem('kid', kids)
+
+        window.location = '/booking/room/' + roomTypeId;
+    }
+
+    const serviceIcon = (service) => {
+        if (service === 'Free Wifi') {
+            return <Services><NetworkWifiIcon style={{ color: "#bfaa7e" }} /><Title family="Arial" size="12px" >{service}</Title></Services>
+        }
+        else if (service === "Car Parking") {
+            return <Services><DirectionsCarIcon style={{ color: "#bfaa7e" }} /><Title family="Arial" size="12px" >{service}</Title></Services>
+        }
+        else if (service === "Television") {
+            return <Services><TvIcon style={{ color: "#bfaa7e" }} /><Title family="Arial" size="12px" >{service}</Title></Services>
+        }
+        else if (service === "Aircondition") {
+            return <Services><AirIcon style={{ color: "#bfaa7e" }} /><Title family="Arial" size="12px" >{service}</Title></Services>
+        }
+        else if (service === "Reception") {
+            return <Services><GroupsIcon style={{ color: "#bfaa7e" }} /><Title family="Arial" size="12px" >{service}</Title></Services>
+        }
+        else if (service === "Smoking") {
+            return <Services><SmokingRoomsIcon style={{ color: "#bfaa7e" }} /><Title family="Arial" size="12px" >{service}</Title></Services>
+        }
+        else if (service === "Toiletries") {
+            return <Services><SanitizerIcon style={{ color: "#bfaa7e" }} /><Title family="Arial" size="12px" >{service}</Title></Services>
+        }
+        else if (service === "Clean Washroom") {
+            return <Services><ShowerIcon style={{ color: "#bfaa7e" }} /><Title family="Arial" size="12px" >{service}</Title></Services>
+        }
+        else if (service === "Water Bottle") {
+            return <Services><LiquorIcon style={{ color: "#bfaa7e" }} /><Title family="Arial" size="12px" >{service}</Title></Services>
+        }
+        else if (service === "Quality Linen") {
+            return <Services><HotelIcon style={{ color: "#bfaa7e" }} /><Title family="Arial" size="12px" >{service}</Title></Services>
+        }
+        else if (service === "Towel") {
+            return <Services><DryCleaningIcon style={{ color: "#bfaa7e" }} /><Title family="Arial" size="12px" >{service}</Title></Services>
+        }
+        else if (service === "Bed") {
+            return <Services><KingBedIcon style={{ color: "#bfaa7e" }} /><Title family="Arial" size="12px" >{service}</Title></Services>
+        }
+        else if (service === "Refrigerator") {
+            return <Services><KitchenIcon style={{ color: "#bfaa7e" }} /><Title family="Arial" size="12px" >{service}</Title></Services>
+        }
+        else if (service === "Oven") {
+            return <Services><MicrowaveIcon style={{ color: "#bfaa7e" }} /><Title family="Arial" size="12px" >{service}</Title></Services>
+        }
+        else {
+            return <Services><PendingIcon style={{ color: "#bfaa7e" }} /><Title family="Arial" size="12px" >{service}</Title></Services>
+        }
+
+
+    }
+
+    const numberFormat = (value) =>
+        new Intl.NumberFormat('en-IN', {
+            style: 'currency',
+            currency: 'PHP'
+        }).format(value);
+
+    let minEndDate = new Date(startDate);
+    minEndDate.setDate(minEndDate.getDate() + 1);
+
+
+    function getDates(startDate, stopDate) {
+        var dateArray = [];
+        var currentDate = moment(startDate);
+        var stopDate = moment(stopDate);
+        while (currentDate <= stopDate) {
+            dateArray.push(moment(currentDate).format('YYYY-MM-DD'))
+            currentDate = moment(currentDate).add(1, 'days');
+        }
+        return dateArray;
+    }
     return (
 
         <Container>
             <Title
                 color='#bfaa7e'
                 weight='normal'
-                size='5vw'
-                margin='4vw 0px 4vw 0px'
+                size='3.5vw'
+                margin='1vw 0px 1vw 0px'
             >
                 Bookings
             </Title>
             <HorizontalLine
                 w="50%"></HorizontalLine>
             <TitleCalendarContainer>
-                <DateRangePicker></DateRangePicker>
+                <DateRangePicker
+                    startDate={startDate}
+                    nights={nights}
+                    endDate={endDate}
+                    onChangeStartDate={(date) => setStartDate(date)}
+                    onChangeEndDate={(date) => setEndDate(date)}
+                    minDateStart={new Date()}
+                    maxDateStart={new Date(endDate)}
+                    minDateEnd={minEndDate}
+
+                // minDate={new Date()}
+                />
 
                 <Persons>
                     <LabelDiv>
                         <TextInput
                             style={{ fontWeight: 'bold', fontSize: '1.1vw' }}
-                            family= 'Roboto Slab'
+                            family='Roboto Slab'
                             width="5vw"
                             placeholder="No. of Adults"
                             align="center"
                             borderColor='black'
                             margins='0px'
-                            value='2'
+                            value={adults}
+                            max={4}
+                            min={1}
+                            type='number'
+                            onChange={(e) => {
+                                setAdults(e.target.value);
+                            }}
                             height='3vw'
                         >
 
@@ -60,14 +456,20 @@ export const BookingPageCont = () => {
 
 
                         <TextInput
-                            style={{  fontWeight: 'bold', fontSize: '1.1vw' }}
-                            family= 'Roboto Slab'
+                            style={{ fontWeight: 'bold', fontSize: '1.1vw' }}
+                            family='Roboto Slab'
                             width="5vw"
                             placeholder="No. of Adults"
                             align="center"
                             borderColor='black'
                             margins='0px'
-                            value='0'
+                            max={2}
+                            min={0}
+                            value={kids}
+                            type='number'
+                            onChange={(e) => {
+                                setKids(e.target.value);
+                            }}
                             height='3vw'
                         ></TextInput>
 
@@ -91,184 +493,198 @@ export const BookingPageCont = () => {
                     border="1px solid #8F805F"
                     fontsize='1.1vw'
 
-                    onClick={() => { window.location.href = '/booking' }}
+                    onClick={() => { bookFilterDate(); }}
                 >
+
                     Book now!!
                 </Button>
             </TitleCalendarContainer>
 
 
 
-            <Title
-                color='#2e2e2e'
-                weight='normal'
-                size='3vw'
+            <div>
+                <Title
+                    color='#2e2e2e'
+                    weight='normal'
+                    size='3vw'
 
-            >
-                Available Rooms
+                >
+                    Available Rooms
+                    {bookedRooms.length != 0 ?
+                        <Badge
+                            badgeContent={bookedRooms.length} color="primary"
+                            style={
+                                {
+                                    cursor: 'pointer',
+                                    margin: '0px 0px 0px 20px',
+                                    padding: '10px',
+                                    backgroundColor: '#bfaa7e',
+                                    borderRadius: '100%'
+                                }
+                            }
+                            onClick={() => {
+                                window.location = '/bookingCart'
+                            }}
+                        >
+                            <ShoppingCartIcon color="action" />
+                        </Badge>
+                        :
+                        ""}
+                </Title>
+            </div>
 
-            </Title>
 
             <HorizontalLine
                 w="30%"
             ></HorizontalLine>
-            <RoomContainerMain>
-                <RoomContainer>
-                    <RoomContainerContentPhoto
-                        src={Background}></RoomContainerContentPhoto>
-                    <RoomContainerContentRight>
+
+            {
+                roomType.length == 0 ?
+                    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexFlow: 'column' }}>
                         <Title
-                            color='#292929'
-                            weight='700'
-                            size='33px'
-                            fStyle='Normal'
-                            margin='10px 0px 10px 0px'
-                            align='left'
-                            family='Roboto Slab'
+                            color='#898585'
+                            weight='normal'
+                            size='3vw'
+                            margin='20px 0px 0px 0px'
+
                         >
-                            Premium room 102
+                            No rooms available in your preffered dates.
+
                         </Title>
-                        <Title
-                            color='#8f805f'
-                            weight='700'
-                            size='16px'
-                            fStyle='Normal'
-                            margin='10px 0px 0px 0px'
-                            align='left'
+                        {/* <Button
+                            whileHover={{ backgroundColor: "#0C4426", color: "white" }}
+                            w='200px'
+                            h='60px'
+                            textcolor="#0C4426"
+                            fam='Playfair Display, serif'
+                            weight='-400'
+                            fontStyle='Normal'
+                            radius="0px"
+                            border="1px solid #0C4426"
+                            margin='30px 0px 0px 0px'
+                            fontsize='23px'
+                            href=''
                         >
-                            Ratings
-                        </Title>
-                        <RatingContainer>
+                            Book this now!
+                        </Button> */}
+                    </div>
+                    :
+                    roomType.map((item, index, arr) => (
+                        <RoomContainerMain>
                             <Title
-                                family='Roboto Slab'
-                                fontStyle="normal"
-                                size="15px"
-                                margin="0px 10px 0px 0px"
-                            >{ratingValue}</Title>
-
-                            <Rating
-                                readOnly
-                                size="large"
-                                value={ratingValue}
-                                precision={0.1}
-                            ></Rating>
-
-
-                            <Title
-                                family="times new roman"
-                                // weight="normal"
-                                fontStyle="normal"
-                                size="15px"
-                                margin="0px 0px 0px 20px"
-                            >200 People love it!</Title>
-                        </RatingContainer>
-                        <Title
-                            color='#8f805f'
-                            weight='700'
-                            size='16px'
-                            fStyle='Normal'
-                            margin='10px 0px 0px 0px'
-                            align='left'
-                        >
-                            Services
-                        </Title>
-                        <ServicesContainer>
-                            <Services>
-                                <NetworkWifiIcon
-                                    style={{ color: "#bfaa7e" }}
-                                />
-                                <Title
-                                    family="Arial"
-                                    size="12px"
-                                >
-                                    Free Wifi
-                                </Title>
-                            </Services>
-
-
-                            <Services>
-                                <TvIcon
-                                    style={{ color: "#bfaa7e" }}
-                                />
-                                <Title
-                                    family="Arial"
-                                    size="12px"
-                                >
-                                    Television
-                                </Title>
-                            </Services>
-
-
-                            <Services>
-                                <ShowerIcon
-                                    style={{ color: "#bfaa7e" }}
-                                />
-                                <Title
-                                    family="Arial"
-                                    size="12px"
-                                >
-                                    Washroom
-                                </Title>
-                            </Services>
-
-
-
-                        </ServicesContainer>
-                        <Title
-                            color='#8f805f'
-                            weight='700'
-                            size='16px'
-                            fStyle='Normal'
-                            margin='10px 0px 0px 0px'
-                            align='left'
-                        >
-                            Occupancy
-                        </Title>
-                        <Title
-                            family='Roboto Slab'
-                            color='#2e2e2e'
-                            weight='700'
-                            size='17px'
-                            fStyle='Normal'
-                            margin='10px 0px 0px 10px'
-                            align='left'
-                        >
-                            2 Adults only
-                        </Title>
-                        <ButtonHolder>
-                            <Button
-                                whileHover={{ backgroundColor: "#2E2E2E", color: "white" }}
-                                w='150px'
-                                h='40px'
-                                textcolor="black"
-                                fam='Times New Roman'
-                                weight='-400'
-                                radius="0px"
-                                border="1px solid #8F805F"
-                                margin='30px 0px 0px 0px'
-                                fontsize='15px'
-                                href='/booking/room'
-                            >
-                                Book now!
-                            </Button>
-                            <Title
-                                family='Roboto Slab'
-                                color='#2e2e2e'
+                                color='#292929'
                                 weight='700'
-                                size='25px'
+                                size='33px'
                                 fStyle='Normal'
-                                margin='35px 0px 0px 10px'
+                                margin='10px 0px 10px 0px'
                                 align='left'
+                                family='Roboto Slab'
                             >
-                                ₱2,000/night
+                                {item.roomType}
                             </Title>
-                        </ButtonHolder>
-                    </RoomContainerContentRight>
-                </RoomContainer>
-            </RoomContainerMain>
-            <HorizontalLine
-                w="50%"></HorizontalLine>
-            <RoomContainerMain>
+                            <RoomContainer>
+                                <RoomContainerContentPhoto
+                                    src={Background}>
+
+                                </RoomContainerContentPhoto>
+                                <RoomContainerContentRight>
+
+                                    <Title
+                                        color='#8f805f'
+                                        weight='700'
+                                        size='20px'
+                                        fStyle='Normal'
+                                        margin='10px 0px 0px 0px'
+                                        align='left'
+                                    >
+                                        Services
+                                    </Title>
+                                    <ServicesContainer>
+                                        {usedServices.map((usedServicesItem) => (
+                                            usedServicesItem.roomType_id === item.id ? serviceIcon(usedServicesItem.service.servicesName) : ""
+                                        ))}
+                                    </ServicesContainer>
+                                    <Title
+                                        color='#8f805f'
+                                        weight='700'
+                                        size='20px'
+                                        fStyle='Normal'
+                                        margin='10px 0px 0px 0px'
+                                        align='left'
+                                    >
+                                        Occupancy
+                                    </Title>
+                                    <Title
+                                        family='Roboto Slab'
+                                        color='#2e2e2e'
+                                        weight='700'
+                                        size='17px'
+                                        fStyle='Normal'
+                                        margin='10px 0px 0px 10px'
+                                        align='left'
+                                    >
+                                        {item.maxAdultOccupancy} Adults only
+                                    </Title>
+                                    <Title
+                                        family='Roboto Slab'
+                                        color='#2e2e2e'
+                                        weight='700'
+                                        size='17px'
+                                        fStyle='Normal'
+                                        margin='10px 0px 0px 10px'
+                                        align='left'
+                                    >
+                                        {item.maxKidsOccupancy} Kids only
+                                    </Title>
+                                    <Title
+                                        color='#8f805f'
+                                        weight='700'
+                                        size='20px'
+                                        fstyle='Normal'
+                                        margin='20px 0px 0px 0px'
+                                        align='left'
+                                    >
+                                        Price
+                                    </Title>
+                                    <Title
+                                        family='Roboto Slab'
+                                        color='#2e2e2e'
+                                        weight='700'
+                                        size='25px'
+                                        fStyle='Normal'
+                                        margin='15px 0px 0px 10px'
+                                        align='left'
+                                    >
+                                        {numberFormat(item.roomRate)}/night
+                                    </Title>
+                                    <ButtonHolder>
+                                        <Button
+                                            whileHover={{ backgroundColor: "#2E2E2E", color: "white" }}
+                                            w='150px'
+                                            h='40px'
+                                            textcolor="black"
+                                            fam='Times New Roman'
+                                            weight='-400'
+                                            radius="0px"
+                                            border="1px solid #8F805F"
+                                            margin='30px 0px 0px 0px'
+                                            fontsize='15px'
+                                            onClick={() => {
+                                                bookRoom(item.id);
+                                            }}
+                                        >
+                                            Book now!
+                                        </Button>
+
+                                    </ButtonHolder>
+                                </RoomContainerContentRight>
+                            </RoomContainer>
+
+                            {index + 1 == arr.length ? "" : <HorizontalLine w="50%"></HorizontalLine>}
+                        </RoomContainerMain>
+                    ))}
+
+            {/* <RoomContainerMain>
                 <RoomContainer>
                     <RoomContainerContentPhoto
                         src={Background2}></RoomContainerContentPhoto>
@@ -287,7 +703,7 @@ export const BookingPageCont = () => {
                         <Title
                             color='#8f805f'
                             weight='700'
-                            size='16px'
+                            size='20px'
                             fStyle='Normal'
                             margin='10px 0px 0px 0px'
                             align='left'
@@ -301,15 +717,12 @@ export const BookingPageCont = () => {
                                 size="15px"
                                 margin="0px 10px 0px 0px"
                             >{ratingValue}</Title>
-
                             <Rating
                                 readOnly
                                 size="large"
                                 value={ratingValue}
                                 precision={0.1}
                             ></Rating>
-
-
                             <Title
                                 family="times new roman"
                                 // weight="normal"
@@ -321,7 +734,7 @@ export const BookingPageCont = () => {
                         <Title
                             color='#8f805f'
                             weight='700'
-                            size='16px'
+                            size='20px'
                             fStyle='Normal'
                             margin='10px 0px 0px 0px'
                             align='left'
@@ -340,8 +753,6 @@ export const BookingPageCont = () => {
                                     Free Wifi
                                 </Title>
                             </Services>
-
-
                             <Services>
                                 <TvIcon
                                     style={{ color: "#bfaa7e" }}
@@ -353,8 +764,6 @@ export const BookingPageCont = () => {
                                     Television
                                 </Title>
                             </Services>
-
-
                             <Services>
                                 <ShowerIcon
                                     style={{ color: "#bfaa7e" }}
@@ -366,14 +775,11 @@ export const BookingPageCont = () => {
                                     Washroom
                                 </Title>
                             </Services>
-
-
-
                         </ServicesContainer>
                         <Title
                             color='#8f805f'
                             weight='700'
-                            size='16px'
+                            size='20px'
                             fStyle='Normal'
                             margin='10px 0px 0px 0px'
                             align='left'
@@ -420,7 +826,7 @@ export const BookingPageCont = () => {
                         </ButtonHolder>
                     </RoomContainerContentRight>
                 </RoomContainer>
-            </RoomContainerMain>
+            </RoomContainerMain> */}
             <BookingLegendsMain>
                 <Title
                     color='#2e2e2e'

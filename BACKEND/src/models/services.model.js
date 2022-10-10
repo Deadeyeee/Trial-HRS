@@ -1,19 +1,19 @@
 module.exports = (sequelize, DataTypes, Sequelize) => {
 
-    const Discount = sequelize.define("discount", {
+    const Services = sequelize.define("services", {
         id:{
             type: DataTypes.UUID,
             defaultValue: DataTypes.UUIDV4,
             primaryKey: true,
             allowNull: false,
         },
-        discountType: {
-            type: DataTypes.ENUM(['Person With Disabilities (PWD)', 'Senior Citizen', 'No discount']),
+        servicesName: {
+            type: DataTypes.STRING,
             allowNull: false,
-        },
-        discountPercentage: {
-            type: DataTypes.DECIMAL(5, 2),
-            allowNull: false,
+            unique: {
+                args: true,
+                msg: "This service already exist.",
+              },
         },
     },
     {
@@ -23,5 +23,5 @@ module.exports = (sequelize, DataTypes, Sequelize) => {
         updatedAt: "updated_at",
     },
     )
-    return Discount;
+    return Services;
 }

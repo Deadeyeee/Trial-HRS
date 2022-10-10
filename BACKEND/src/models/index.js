@@ -44,6 +44,40 @@ db.room = require('./room.model.js')(sequelize, Sequelize, DataTypes)
 db.reservationSummary = require('./reservationSummary.model.js')(sequelize, Sequelize, DataTypes)
 db.orderedAmenities = require('./orderedAmenities.model.js')(sequelize, Sequelize, DataTypes)
 db.payment = require('./payment.model.js')(sequelize, Sequelize, DataTypes)
+db.services = require('./services.model.js')(sequelize, Sequelize, DataTypes)
+db.usedServices = require('./usedServices.model.js')(sequelize, Sequelize, DataTypes)
+
+
+
+// db.services.bulkCreate([
+//     { servicesName: "Free Wifi" },
+//     { servicesName: "Television" },
+//     { servicesName: "Car Parking" },
+//     { servicesName: "Aircondition" },
+//     { servicesName: "Reception" },
+//     { servicesName: "Smoking" },
+//     { servicesName: "Toiletries" },
+//     { servicesName: "Clean Washroom" },
+//     { servicesName: "Water Bottle" },
+//     { servicesName: "Quality Linen" },
+//     { servicesName: "Towel" },
+//     { servicesName: "Bed" },
+//     { servicesName: "Refrigerator" },
+//     { servicesName: "Oven" },
+//   ]).then(() => console.log("Users data have been saved"));
+
+// db.discount.bulkCreate([
+//     { discountType: "Person With Disabilities (PWD)", discountPercentage: 0.2},
+//     { discountType: "Senior Citizen", discountPercentage: 0.2},
+//     { discountType: "No Discount", discountPercentage:  0},
+// ]).then(() => console.log("Discount data have been saved"));
+// // // 
+// db.paymentMode.bulkCreate([
+//     { paymentMode: "Bank Deposit (via Metro Bank)", billerName: "Metro Bank", accountName: "Elbert Egot", accountNumber: "23423849234298"},
+//     { paymentMode: "E-Payment (Gcash)", billerName: "Gcash", accountName: "Elbert Egot", accountNumber: "09566728906"},
+//     { paymentMode: "Cash", billerName: "Gcash", accountName: "Elbert Egot", accountNumber: "09566728906"},
+// ]).then(() => console.log("Payment Mode data have been saved"));
+
 
 
 // RELATIONSHIPS
@@ -140,7 +174,7 @@ db.payment.belongsTo(db.paymentMode, {
 });
 
 db.paymentMode.hasOne(db.payment, {
-    as: "payment",
+    as: "paymentMode_",
     foreignKey: "paymentMode_id",
 });
 
@@ -152,21 +186,49 @@ db.payment.belongsTo(db.discount, {
 });
 
 db.discount.hasOne(db.payment, {
-    as: "payment",
+    as: "discount_",
     foreignKey: "discount_id",
 });
 
 
 // One reservation has one payment
-db.payment.belongsTo(db.reservation, {
-    foreignKey: { name: "reservation_id", allowNull: false },
+db.reservation.belongsTo(db.payment, {
+    foreignKey: { name: "payment_id", allowNull: false },
     foreignKeyConstraint: true,
 });
 
-db.reservation.hasOne(db.payment, {
+db.payment.hasOne(db.reservation, {
     as: "payment",
-    foreignKey: "reservation_id",
+    foreignKey: "payment_id",
 });
+
+
+
+
+
+//usedservices has many services
+db.usedServices.belongsTo(db.services, {
+    foreignKey: { name: "services_id", allowNull: false },
+    foreignKeyConstraint: true,
+});
+
+db.services.hasMany(db.usedServices, {
+    as: "services",
+    foreignKey: "services_id",
+});
+
+
+// One reservation has one payment
+db.usedServices.belongsTo(db.roomType, {
+    foreignKey: { name: "roomType_id", allowNull: false },
+    foreignKeyConstraint: true,
+});
+
+db.room.hasMany(db.usedServices, {
+    as: "usedServices",
+    foreignKey: "roomType_id",
+});
+
 
 
 
@@ -175,7 +237,8 @@ db.reservation.hasOne(db.payment, {
 
 db.sequelize.sync({ force: false }).then(() => {
     console.log('\n\nDatabase is Running smoothly!\n\n')
-}).catch((err)=>{
+}).catch((err) => {
     console.log("\n\nDATABSE ERROR!!!!: " + err.data + "\n\n")
 });
+
 module.exports = db;

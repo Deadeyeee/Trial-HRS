@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useState, useEffect } from 'react'
+import React, { useLayoutEffect, useState, useEffect, useRef } from 'react'
 import { FormButton, Button } from '../../components/button/styles'
 import { HorizontalLine } from '../../components/horizontalLine/HorizontalLine'
 import { Description } from '../../components/paragraph/style'
@@ -20,6 +20,7 @@ import Link from '@mui/material/Link';
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 import TermsAndConditionsCont from "../termsAndConditionsPage/TermsAndConditionsCont";
+import axios from 'axios'
 
 
 const style = {
@@ -40,80 +41,316 @@ const style = {
 };
 
 const InformationForm = () => {
+    let passwordValidation = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+    let letters = /^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/;
+    let phoneNumberValidation = /^(09|\+639)\d{9}$/;
     var Recaptcha = require('react-recaptcha');
 
     var callback = function () {
         console.log('Done!!!!');
     };
-    const [paymentOption, setPaymentOption] = useState("");
-    const [displayBanks, setDisplayBanks] = useState("");
-    const [displayWallets, setDisplayWallets] = useState("");
+    const [agreement, setAgreement] = useState(false)
+    
     const [nationality, setNationality] = useState('Filipino');
-    const [value, setValue] = useState(Date.now());
-    const bday = new Date(2000, 11, 2,);
-    const color = "#000";
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
-    useLayoutEffect(() => {
-        if (paymentOption === "E-Wallet payment") {
-            setDisplayWallets("flex");
-            setDisplayBanks("none");
-        }
-        else if (paymentOption === "Bank payment") {
-            setDisplayBanks("flex");
-            setDisplayWallets("none");
-        }
-        else {
-            setDisplayBanks("none");
-            setDisplayWallets("none");
-        }
-    }, [paymentOption])
+    const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
+    const [contactNumber, setContactNumber] = useState("");
+    const [email, setEmail] = useState("");
+    const [birthday, setBirthDay] = useState(new Date());
+    const [gender, setGender] = useState('male');
+    const [address, setAddress] = useState("");
+    const [userName, setUserName] = useState("");
+    const [password, setPassword] = useState("");
 
-    let payments = ["Pay at hotel", "Bank payment", "E-Wallet payment"];
-    let banks = ["BDO", "PNB", "BPI"];
-    let eWallets = ["Gcash", "Paymaya"];
+
+
+    const [firstNameError, setFirstNameError] = useState("");
+    const [lastNameError, setLastNameError] = useState("");
+    const [contactNumberError, setContactNumberError] = useState("");
+    const [emailError, setEmailError] = useState("");
+    const [genderError, setGenderError] = useState('male');
+    const [addressError, setAddressError] = useState("");
+    const [userNameError, setUserNameError] = useState("");
+    const [passwordError, setPasswordError] = useState("");
+
+    const emailRef = useRef();
+    const contactNumberRef = useRef();
+    const userNameRef = useRef();
+    const firstNameRef = useRef();
+    const lastNameRef = useRef();
+    let formatNumber;
+    useEffect(() => {
+
+
+        // if (paymentOption === "E-Wallet payment") {
+        //     setDisplayWallets("flex");
+        //     setDisplayBanks("none");
+        // }
+        // else if (paymentOption === "Bank payment") {
+        //     setDisplayBanks("flex");
+        //     setDisplayWallets("none");
+        // }
+        // else {
+        //     setDisplayBanks("none");
+        //     setDisplayWallets("none");
+        // }
+    }, [])
+
+    // let payments = ["Pay at hotel", "Bank payment", "E-Wallet payment"];
+    // let banks = ["BDO", "PNB", "BPI"];
+    // let eWallets = ["Gcash", "Paymaya"];
 
     useEffect(() => {
+        axios.get('http://localhost:3001/auth/verify-token').then((result) => {
+            window.location = '/billingSummary'
+        }).catch((err) => {
+
+        });
+        window.sessionStorage.removeItem("email")
+        window.sessionStorage.removeItem("contactNumber")
+        window.sessionStorage.removeItem("userName")
+        window.sessionStorage.removeItem("firstName");
+        window.sessionStorage.removeItem("lastName");
+        window.sessionStorage.removeItem("birthday");
+        window.sessionStorage.removeItem("nationality");
+        window.sessionStorage.removeItem("gender");
+        window.sessionStorage.removeItem("address");
+        window.sessionStorage.removeItem("userName");
+        window.sessionStorage.removeItem("password");
+
+        if (window.sessionStorage.getItem('AvailedRoom') == null || window.sessionStorage.getItem('AvailedRoom') == [] || window.sessionStorage.getItem('AvailedRoom') == "") {
+            window.location = "/booking"
+        }
         document.title = "Guest Information"
-      }, [])
+
+    }, [])
+
+
+
+    const createGuestInformation = (e) => {
+        e.preventDefault();
+        if (contactNumber.slice(0, 3) == "+63") {
+
+            formatNumber = contactNumber.replace("+63", "0");
+
+        }
+
+        if (firstNameError.length != 0) {
+            firstNameRef.current.focus()
+        }
+        else if (lastNameError.length != 0) {
+            lastNameRef.current.focus()
+
+        }
+        else if (contactNumberError.length != 0) {
+            contactNumberRef.current.focus()
+
+        }
+        else if (userNameError.length != 0) {
+            userNameRef.current.focus()
+        }
+        else {
+            axios.get('http://localhost:3001/api/getAllUsers').then((res) => {
+                if (userName.length != 0 && password.length != 0) {
+                    if (emailError.length == 0 && contactNumberError.length == 0 && userNameError.length == 0) {
+                        axios.post('http://localhost:3001/api/addUser', {
+                            userName: userName,
+                            contactNumber: formatNumber,
+                            email: email,
+                            password: password,
+                        }).then((user) => {
+                            console.log(user.data);
+                            axios.post('http://localhost:3001/api/addGuest', {
+                                firstName: firstName,
+                                lastName: lastName,
+                                birthDate: birthday,
+                                gender: gender,
+                                address: address,
+                                nationality: nationality,
+                                user_id: user.data.account.id,
+                            }).then((guest) => {
+                                console.log(guest.data);
+                                axios.post('http://localhost:3001/auth/login',
+                                    {
+                                        userName: userName,
+                                        password: password,
+                                        email: email,
+                                    },
+                                ).then((result) => {
+                                    window.location.reload();
+                                }).catch((err) => {
+                                    axios.delete('http://localhost:3001/api/deleteGuest/' + guest.data.new_guest.id).then((result) => {
+                                        console.log(result)
+                                        axios.delete('http://localhost:3001/api/deleteUser/' + user.data.account.id).then((result) => {
+                                            console.log(result)
+                                        }).catch((err) => {
+                                            console.log(err)
+                                        });
+                                    }).catch((err) => {
+                                        console.log(err)
+                                    });
+                                });
+                            }).catch((err) => {
+                                axios.delete('http://localhost:3001/api/deleteUser/' + user.data.account.id).then((result) => {
+                                    console.log(result)
+                                }).catch((err) => {
+                                    console.log(err)
+                                });
+                            });
+                        }).catch((err) => {
+                            console.log(err)
+                        });
+                    }
+
+                }
+                else {
+                    window.sessionStorage.setItem("email", email);
+                    window.sessionStorage.setItem("contactNumber", contactNumber);
+                    window.sessionStorage.setItem("userName", userName);
+                    window.sessionStorage.setItem("firstName", firstName);
+                    window.sessionStorage.setItem("lastName", lastName);
+                    window.sessionStorage.setItem("birthday", birthday);
+                    window.sessionStorage.setItem("nationality", nationality);
+                    window.sessionStorage.setItem("gender", gender);
+                    window.sessionStorage.setItem("address", address);
+                    window.location = '/billingSummary'
+                }
+            }).catch((err) => {
+                console.log(err)
+            })
+        }
+        // axios.post('http://localhost:3001/api/addUser', {
+        //     userName: userName,
+        //     contactNumber: contactNumber,
+        //     email: email,
+        //     password: password,
+        // }).then((res)=>{
+        //     console.log(res.data);
+        //     axios.post('http://localhost:3001/api/addGuest', {
+
+        //     })
+        // }).catch((err)=>{
+        //     console.log(err.res);
+        // })
+
+    }
+
+    useEffect(() => {
+        axios.get('http://localhost:3001/api/getAllUsers').then((res) => {
+            if (res.data.length != 0) {
+                res.data.map((item) => {
+                    if (item.role != 'NON-USER') {
+                        if (item.email.toLowerCase() == email.toLowerCase()) {
+                            setEmailError("This email is already taken.")
+                        }
+                        else if (item.contactNumber == contactNumber) {
+                            setContactNumberError("This number is already taken.")
+
+                        }
+                        else if (item.userName.toLowerCase() == userName.toLowerCase()) {
+                            setUserNameError("This userName is already taken.")
+
+                        }
+                    }
+
+                })
+            }
+        }).catch((err) => {
+
+        });
+    }, [userName, email, contactNumber])
     return (
         <Container>
             <ContainerChild>
-                <ContainerForm>
-                    <ContainerFormContent>
+                <ContainerForm onSubmit={createGuestInformation}>
+                    <ContainerFormContent >
 
                         <InputContainer>
                             <TextField
+                                error={firstNameError.length != 0 ? true : false}
+                                helperText={firstNameError.length != 0 ? firstNameError : ""}
                                 placeholder='First Name'
                                 label="First Name"
+                                inputRef={firstNameRef}
                                 variant="outlined"
-                                style={{ width: '55%', }} />
+                                value={firstName}
+                                onChange={(e) => {
+                                    setFirstName(e.target.value)
+                                    if (!letters.test(e.target.value) && e.target.value.length != 0) {
+                                        setFirstNameError("Invalid first name. Please type letters only.")
+                                    }
+                                    else {
+                                        setFirstNameError("")
+                                    }
+                                }}
+                                style={{ width: '55%', }}
+                                required />
 
                             <TextField
+                                error={lastNameError.length != 0 ? true : false}
+                                helperText={lastNameError.length != 0 ? lastNameError : ""}
                                 placeholder='Last Name'
                                 label="Last Name"
                                 variant="outlined"
-                                style={{ width: '55%', }} />
+                                inputRef={lastNameRef}
+                                value={lastName}
+                                onChange={(e) => {
+                                    setLastName(e.target.value)
+                                    if (!letters.test(e.target.value) && e.target.value.length != 0) {
+                                        setLastNameError("Invalid last name. Please type letters only.")
+                                    }
+                                    else {
+                                        setLastNameError("")
+                                    }
+
+                                }}
+                                style={{ width: '55%', }}
+                                required />
                         </InputContainer>
 
 
                         <InputContainer>
                             <TextField
+                                error={emailError.length != 0 ? true : false}
+                                helperText={emailError.length != 0 ? emailError : ""}
                                 placeholder='Email'
                                 label="Email"
                                 variant="outlined"
                                 type='email'
-                                style={{ width: '55%', }} />
+                                value={email}
+                                onChange={(e) => {
+                                    setEmail(e.target.value)
+
+                                    setEmailError("")
+                                }}
+                                style={{ width: '55%', }}
+                                inputRef={emailRef}
+                                required />
 
                             <TextField
-                                placeholder='Contact Number'
+                                error={contactNumberError.length != 0 ? true : false}
+                                helperText={contactNumberError.length != 0 ? contactNumberError : ""}
+                                placeholder='Contact Number e.g. 09123456789 or +639123456789'
                                 label="Contact Number"
                                 variant="outlined"
-                                type='tel'
-                                patter
-                                style={{ width: '55%', }} />
+                                value={contactNumber}
+                                onChange={(e) => {
+                                    setContactNumber(e.target.value)
+
+                                    if (!phoneNumberValidation.test(e.target.value) && e.target.value.length != 0) {
+                                        setContactNumberError("Contact number is invalid. Please provide a valid contact number.")
+                                    }
+                                    else {
+                                        setContactNumberError("")
+                                    }
+                                }}
+                                inputRef={contactNumberRef}
+                                style={{ width: '55%', }}
+                                required />
                         </InputContainer>
 
 
@@ -124,9 +361,9 @@ const InformationForm = () => {
 
                                     views={['day', 'month', 'year']}
                                     label="Birthday"
-                                    value={bday}
+                                    value={birthday}
                                     onChange={(newValue) => {
-                                        setValue(newValue);
+                                        setBirthDay(newValue);
                                     }}
                                     renderInput={(params) =>
                                         <TextField
@@ -134,6 +371,7 @@ const InformationForm = () => {
                                             variant="standard"
                                             style={{ width: "55%", margin: '5px 0px' }}
                                             helperText={null}
+                                            required
                                         />
                                     }
                                 />
@@ -151,6 +389,7 @@ const InformationForm = () => {
                                     onChange={(event) => {
                                         setNationality(event.target.value);
                                     }}
+                                    required
                                 >
 
                                     {nationalities.map(({ nationality }, index) => (
@@ -167,9 +406,18 @@ const InformationForm = () => {
                                     style={{ textAlign: 'center', }} >Gender</FormLabel>
                                 <RadioGroup
                                     row
+
+                                    error={genderError.length != 0 ? true : false}
+                                    helperText={genderError.length != 0 ? genderError : ""}
                                     aria-labelledby="demo-row-radio-buttons-group-label"
                                     defaultValue="male"
-                                    name="row-radio-buttons-group">
+                                    value={gender}
+                                    name="row-radio-buttons-group"
+                                    onChange={(e) => {
+                                        setGender(e.target.value)
+                                    }}
+                                    required
+                                >
                                     <FormControlLabel
                                         value="male"
                                         control={<Radio />}
@@ -192,49 +440,85 @@ const InformationForm = () => {
 
                         <InputContainer>
                             <TextField
-                                placeholder='Address'
-                                label="Address"
+                                error={addressError.length != 0 ? true : false}
+                                helperText={addressError.length != 0 ? addressError : ""}
+                                placeholder='Complete Address'
+                                label="Complete Address"
                                 variant="outlined"
-                                type='email'
+                                type='text'
+                                value={address}
+                                onChange={(e) => {
+                                    setAddress(e.target.value)
+                                }}
                                 multiline
                                 rows={4}
-                                style={{ width: '95%', }} />
+                                style={{ width: '95%', }}
+                                required />
 
-                            <TextField
-                                placeholder='Special Instruction'
-                                label="Special Instruction"
-                                variant="outlined"
-                                type='textarea'
-                                multiline
-                                rows={4}
-                                style={{ width: '95%', }} />
                         </InputContainer>
-
+                        <p><h1 style={{ display: 'inline' }}>Create an account </h1>(optional)*</p>
                         <InputContainer>
                             <TextField
+
+                                error={userNameError.length != 0 ? true : false}
+                                helperText={userNameError.length != 0 ? userNameError : ""}
                                 placeholder='Username'
                                 label="Username"
                                 variant="outlined"
+                                inputRef={userNameRef}
+                                value={userName}
+                                onChange={(e) => {
+                                    setUserName(e.target.value)
+                                    setUserNameError("")
+                                }}
+                                required={password.length != 0 ? true : false}
                                 style={{ width: '55%', }} />
 
                             <TextField
+                                error={passwordError.length != 0 ? true : false}
+                                helperText={passwordError.length != 0 ? passwordError : ""}
                                 placeholder='Password'
                                 label="Password"
                                 type='password'
                                 variant="outlined"
-                                style={{ width: '55%', }} />
+                                value={password}
+                                onChange={(e) => {
+                                    setPassword(e.target.value)
+                                    if (!passwordValidation.test(e.target.value) && e.target.value.length != 0) {
+                                        setPasswordError("Password must have a minimum of eight characters, at least one letter and one number.")
+                                    }
+                                    else {
+                                        setPasswordError("")
+                                    }
+                                }}
+                                style={{ width: '55%', }}
+                                required={userName.length != 0 ? true : false}
+                            />
                         </InputContainer>
 
                         <InputContainer
                             justify='center'
                             gap='0px'>
-                            <FormControlLabel control={<Checkbox defaultChecked
-                                style={{ padding: '0px', margin: '0px', }}
-                            />} />
+                            <FormControlLabel control={
+                                <Checkbox
+                                    style={{ padding: '0px', margin: '0px', }}
+                                    value={agreement}
+                                    onChange={(e) => {
+                                        if (e.target.checked) {
+                                            setAgreement(true)
+                                        }
+                                        else {
+                                            setAgreement(false)
+                                        }
+                                    }}
+                                    required
+                                />
+                            } />
                             <p style={{ fontSize: '14px' }}>Kindly, check the box if you have read and agreed to RM Luxe Hotel's
                                 <Link
                                     onClick={handleOpen}> Terms and Conditions
-                                </Link></p>
+                                </Link>
+                            </p>
                             <Modal
                                 open={open}
                                 onClose={handleClose}
@@ -256,7 +540,7 @@ const InformationForm = () => {
                         />
 
 
-                        <Button
+                        <FormButton
                             whileHover={{ backgroundColor: "#0C4426", color: "white" }}
                             w='200px'
                             h='60px'
@@ -268,10 +552,12 @@ const InformationForm = () => {
                             border="1px solid #0C4426"
                             margin='30px 0px 0px 0px'
                             fontsize='23px'
-                            href='/billingSummary'
+                            // href='/billingSummary'
+                            type='submit'
+                            value='Continue'
                         >
-                            Continue
-                        </Button>
+
+                        </FormButton>
                         <Button
                             whileHover={{ color: "#0C4426" }}
                             w='100px'
@@ -290,7 +576,7 @@ const InformationForm = () => {
                         </Button>
                     </ContainerFormContent>
 
-                    
+
 
                 </ContainerForm>
             </ContainerChild>

@@ -28,7 +28,7 @@ exports.Login = async (req, res) => {
             }
     
             //our login secured authentication token
-            if(user_login.emailVerified === true){
+            if(user_login.emailVerified === true ||  user_login.emailVerified === false){
                 let token = jwt.sign(
                     { id: user_login.id, userName: user_login.userName, email: user_login.email, role: user_login.role },
                     config.auth.secret,

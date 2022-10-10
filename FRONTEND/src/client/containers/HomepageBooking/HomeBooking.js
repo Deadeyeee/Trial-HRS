@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Container, ContentDiv, DatePickerContainer, FlexItems, HorizontalLine, HorizontalLineMini, Poster, WelcomeDiv } from './styles.js';
 import DateRangePicker from '../../components/datePicker/DateRangePicker.js';
 import { Button } from '../../components/button/styles.js';
@@ -6,6 +6,20 @@ import { Title } from '../../components/title/styles.js';
 import { Description } from '../../components/paragraph/style.js';
 import image from '../../images/backgroundImages/homeBackgroundImage.jpg'
 export const HomeBooking = ({ title }) => {
+  const [startDate, setStartDate] = useState(new Date().setHours(0, 0, 0, 0));
+  const [endDate, setEndDate] = useState(new Date(new Date().getTime() + 86400000).setHours(0, 0, 0, 0));
+  const [nights, setNights] = useState();
+
+  useEffect(() => {
+    if (startDate !== null && endDate !== null) {
+      setNights(Math.floor((endDate - startDate) / (24 * 60 * 60 * 1000)));
+    }
+    else {
+      setNights(0);
+    }
+  }, [startDate, endDate])
+  
+
   const variants = {
     visible: { opacity: 1 },
     hidden: { opacity: 0 },
@@ -23,7 +37,14 @@ export const HomeBooking = ({ title }) => {
         margin='2vw 0px 2vw 0px'
       >Check your desired date</Title>
       <DatePickerContainer>
-        <DateRangePicker></DateRangePicker>
+        <DateRangePicker
+          startDate={startDate}
+          nights={nights}
+          endDate={endDate}
+          onChangeStartDate={(date) => setStartDate(date)}
+          onChangeEndDate={(date) => setEndDate(date)}
+          minDate={startDate}
+        />
         <Button
           whileHover={{ scale: 1.05, backgroundColor: "#2e2e2e", color: "white" }}
           whileTap={{ scale: 1, color: "rgb(220,220,220)" }}
@@ -67,7 +88,7 @@ export const HomeBooking = ({ title }) => {
           color='white'
           fontStyle='italic'
           margin='30px 0px'
-          >
+        >
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
         </Description>
         <FlexItems>
