@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Button from '@mui/material/Button';
 import { HorizontalLine } from '../../../client/components/horizontalLine/HorizontalLine'
 import { Title } from '../../../client/components/title/styles'
@@ -33,6 +33,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import ActionButton from '../../components/actionButton/ActionButton';
+import axios from 'axios';
 
 
 
@@ -147,6 +148,36 @@ const AdditionalsContainer = () => {
             typeof value === 'string' ? value.split(',') : value,
         );
     };
+
+    const [additionaItems, setAdditionalItems] = useState([]);
+    useEffect(()=>{
+        axios.get('http://localhost:3001/api/getAllAmenities').then((response)=>{
+        console.log(response.data)
+    }).catch((err)=>{
+        console.log(err)
+    })
+    },[])
+
+    const [additionalName, setAdditionalName] = useState("");
+
+
+    const [price, setPrice] = useState("");
+
+    const addAdditional = (e)=>{
+        e.preventDefault()
+        axios.post('http://localhost:3001/api/addAmenities', {
+            amenityName: additionalName,
+            amenityRate: price,
+        }).then((amenity)=>{
+            console.log(amenity.data)
+            handleClose()
+        }).catch((err)=>{
+            console.log(err)
+        })
+    }
+    
+
+
     return (
 
         <Container>
@@ -278,7 +309,9 @@ const AdditionalsContainer = () => {
                 aria-describedby="modal-modal-description"
                 style={{ overflow: 'scroll' }}
             >
-                <Box sx={style}>
+                <Box component="form"
+                     onSubmit={addAdditional}
+                     sx={style}>
                     <Title
                         size='33px'
                         color='black'
@@ -301,19 +334,33 @@ const AdditionalsContainer = () => {
                         w='90%'
                     >
                         <TextField
+                            value = {additionalName}
+                            onChange = {(e)=>{
+                                setAdditionalName(e.target.value)
+
+                            }}
                             placeholder='Additional Name'
                             label="Additional Name"
                             variant="outlined"
-                            style={{ width: '55%', }} />
+                            style={{ width: '55%', }} 
+                            required
+                            />
 
                         <TextField
+                            value = {price}
+                            onChange = {(e)=>{
+                                setPrice(e.target.value)
+
+                            }}
                             placeholder='Price'
                             label="Price"
                             variant="outlined"
                             InputProps={{
                                 startAdornment: <InputAdornment position="start">PHP</InputAdornment>,
                             }}
-                            style={{ width: '55%', }} />
+                            style={{ width: '55%', }} 
+                            required
+                            />
                     </InputContainer>
 
                     <InputContainer
@@ -321,7 +368,7 @@ const AdditionalsContainer = () => {
 
                         <Button variant="contained" size="large"
                             style={{ backgroundColor: '#50AA32' }}
-                            onClick={handleClose}>
+                            type="submit">
                             Add
                         </Button>
                         <Button variant="contained" size="large"
