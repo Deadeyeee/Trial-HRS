@@ -27,7 +27,7 @@ import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import { TextInput } from '../../components/textBox/style';
 import Slider from "react-slick";
-import ImageSlider from '../../components/imageSlider/ImageSlider.js';
+import ImageSlider from '../../components/imageSlider/ImageSlider';
 import { letterSpacing } from '@mui/system';
 import { TextField } from '@mui/material';
 
