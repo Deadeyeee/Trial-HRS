@@ -431,6 +431,7 @@ const RoomDetailsContainer = () => {
             //     maxAdultOccupancy: roomTypeValue,
             //     maxKidsOccupancy: roomTypeValue,
             //     roomDescription: roomTypeValue,
+            //     roomImages: roomImageUpload,
             // }
         ).then((res1) => {
             Axios.get('http://localhost:3001/api/getAllServices').then((services) => {
@@ -902,7 +903,7 @@ const RoomDetailsContainer = () => {
                                     onChange={
                                         uploadImages
                                     }
-                                    required
+                                    // required
                                 />
                             </Button>
                             <ImageList sx={{ width: '100%', height: 'auto' }} cols={4} rowHeight={164}>
@@ -915,7 +916,6 @@ const RoomDetailsContainer = () => {
                                             alignItems: 'center',
                                             backgroundImage: `url(${item.img})`,
                                             backgroundSize: 'cover',
-
                                         }}>
                                     </ImageListItem>
                                 ))} */}
@@ -1369,13 +1369,11 @@ const RoomDetailsContainer = () => {
                         >
                             Edit Room Type
                         </Title>
-
                         <HorizontalLine
                             bg='gray'
                             w='100%'
                             margin='0px 0px 40px 0px'
                         ></HorizontalLine>
-
                         <InputContainer
                             w='90%'
                         >
@@ -1388,7 +1386,6 @@ const RoomDetailsContainer = () => {
                                 InputProps={{
                                     readOnly: false,
                                 }} />
-
                             <TextField
                                 placeholder='Rate per Night'
                                 label="Rate per Night"
@@ -1400,7 +1397,6 @@ const RoomDetailsContainer = () => {
                                 }}
                                 style={{ width: '55%', }} />
                         </InputContainer>
-
                         <InputContainer
                             w='90%'
                             style={{ marginTop: '40px', }}>
@@ -1413,7 +1409,6 @@ const RoomDetailsContainer = () => {
                                     defaultValue={names}
                                     value={personName}
                                     onChange={handleChange}
-
                                     input={<OutlinedInput id="select-multiple-chip" label="Services" />}
                                     renderValue={(selected) => (
                                         <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
@@ -1435,7 +1430,6 @@ const RoomDetailsContainer = () => {
                                     ))}
                                 </Select>
                             </FormControl>
-
                             <TextField
                                 placeholder='Room Type'
                                 label="Room Description"
@@ -1460,7 +1454,6 @@ const RoomDetailsContainer = () => {
                                 type='number'
                                 defaultValue={maxAdultOccupancy}
                                 style={{ width: '55%', }} />
-
                             <TextField
                                 placeholder='Maximum number of kids'
                                 label="Maximum number of kids"
@@ -1469,14 +1462,11 @@ const RoomDetailsContainer = () => {
                                 defaultValue={maxKidsOccupancy}
                                 style={{ width: '55%', }} />
                         </InputContainer>
-
                         <Typography id="modal-modal-title" variant="h5" component="h2"
                             style={{ textAlign: 'center', margin: '20px 0px 0px 0px', }}>
                             Upload Photo
                         </Typography>
-
                         <InputContainer>
-
                             <ImageList sx={{ width: '100%', height: 360 }} cols={1} rowHeight={164}>
                                 {roomImage.map((item) => (
                                     <ImageListItem
@@ -1486,9 +1476,7 @@ const RoomDetailsContainer = () => {
                                             alignItems: 'center',
                                             backgroundImage: `url(http://localhost:3001/${item.path.replaceAll("\\", "/")})`,
                                             backgroundSize: 'cover',
-
                                         }}>
-
                                         <label htmlFor="icon-button-file">
                                             <Input accept="image/*" id="icon-button-file" type="file" />
                                             <IconButton aria-label="upload picture" component="span"
@@ -1501,12 +1489,8 @@ const RoomDetailsContainer = () => {
                                 ))}
                             </ImageList>
                         </InputContainer>
-
-
                         <InputContainer
                             style={{ marginTop: '40px', }}>
-
-
                             <Button variant="contained" size="large"
                                 style={{ backgroundColor: '#50AA32' }}
                                 onClick={handleClose3}>
@@ -1517,7 +1501,6 @@ const RoomDetailsContainer = () => {
                                 onClick={handleClose3}>
                                 Cancel
                             </Button>
-
                         </InputContainer>
                     </Box>
                 </Box>

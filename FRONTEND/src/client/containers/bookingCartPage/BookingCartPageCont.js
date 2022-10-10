@@ -13,8 +13,11 @@ const BookingCartPageCont = () => {
 
   
   useEffect(() => {
+    
+    if(JSON.parse(window.sessionStorage.getItem("AvailedRoom")).length == 0 || window.sessionStorage.getItem("AvailedRoom") == null){
+      window.location = "/booking"
+    }
     setBookingInformation(JSON.parse(window.sessionStorage.getItem("AvailedRoom")))
-    console.log(bookingInformation)
   }, [])
 
   useEffect(() => {

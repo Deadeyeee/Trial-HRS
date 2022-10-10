@@ -1,16 +1,19 @@
+import React, { useEffect, useState } from 'react'
 import { BankContentContainer, BankDetailsContainer, BankTitleContainer, BrokenHorizontalLine, ButtonHolder, ChargeSummaryContainer, ChargeSummaryContentContainer, Container, GeneratedAccountContainer, GeneratedAccountContentContainer, GeneratedAccountContents, HorizontalLine, ReservationInformationContainer, ReservationInformationContentsContainer } from './Styles'
 import { Title } from '../../components/title/styles';
 import { Button } from '../../components/button/styles';
-
-import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import { ContainerGlobal } from '../../../admin/components/container/container';
+import { TableContainer, Td, Th, Tr } from '../bookingCartPage/Styles'
 
 function BookingConfirmationCont() {
+
     const [reservedBooking, setReservationBooking] = useState([]);
     const { id } = useParams();
+    const [grandTotal, setGrandTotal] = useState(0);
     const [reservationInfo, setReservationInfo] = useState([]);
+
     useEffect(() => {
         axios.get('http://localhost:3001/api/getAllReservationSummary').then((result) => {
             setReservationBooking([])
@@ -26,7 +29,7 @@ function BookingConfirmationCont() {
         });
 
         axios.get('http://localhost:3001/api/getReservation/' + id).then((result) => {
-            setReservationBooking([])
+            setReservationInfo([])
             setReservationInfo((oldData) => [...oldData, result.data])
         }).catch((err) => {
             console.log(err)
@@ -35,8 +38,25 @@ function BookingConfirmationCont() {
     }, [])
 
     useEffect(() => {
+        setGrandTotal(0);
+        reservedBooking.map((item) => (
+            setGrandTotal((prevValue) => prevValue + (item.room.roomType.roomRate * item.numberOfNights))
+        ))
+    }, [reservedBooking])
+
+
+
+    useEffect(() => {
         console.log(reservedBooking)
     }, [reservedBooking])
+
+
+
+    const numberFormat = (value) =>
+        new Intl.NumberFormat('en-IN', {
+            style: 'currency',
+            currency: 'PHP'
+        }).format(value);
 
 
     const reservationStatus = (value) => {
@@ -266,7 +286,7 @@ function BookingConfirmationCont() {
                     align='center'
                     margin='25px 200px'
                 >
-                    For further information, please send an email to Company email, or <a href='/login'>message us</a> through your account. You will find the details of your reservation made below.
+                    For further information, please send an email to Company email, or <a href='/login'>message us</a> through your account. You will find the details of your reservation made below.
                 </Title>
             </BankContentContainer>
             <Title
@@ -281,7 +301,7 @@ function BookingConfirmationCont() {
                 <b>***IMPORTANT***</b>
             </Title>
             <GeneratedAccountContainer>
-                <Title
+                {/* <Title
                     family='raleway, sans-serif'
                     weight='700'
                     fstyle='Normal'
@@ -341,7 +361,7 @@ function BookingConfirmationCont() {
                             <b>: ********</b>
                         </Title>
                     </GeneratedAccountContents>
-                </GeneratedAccountContentContainer>
+                </GeneratedAccountContentContainer> */}
                 <Title
                     family='raleway, sans-serif'
                     weight='700'
@@ -349,10 +369,9 @@ function BookingConfirmationCont() {
                     size='25px'
                     color='#2e2e2e'
                     align='Center'
-                    margin='50px 60px 10px 60px'
+                    margin='10px 60px 10px 60px'
                 >
-                    <b>You can use this account to sign in to our website for you to be able to see the status of your
-                        bookings and you may also use this user account to send your proof of payment here on our website.</b>
+                    <b>Please Check your email for your log in information to check your reservation status. Send your proof of payment, Check your informations, and message us.</b>
                 </Title>
             </GeneratedAccountContainer>
             <Title
@@ -367,11 +386,12 @@ function BookingConfirmationCont() {
                 <b>Reservation Information</b>
             </Title>
             <ReservationInformationContainer>
-                <ReservationInformationContentsContainer>
-                    <ContainerGlobal
-                        justify='space-between'
-                    >
-                        <Title
+                {reservationInfo.map((value) => (
+                    <ReservationInformationContentsContainer>
+                        <ContainerGlobal
+                            justify='space-between'
+                        >
+                            {/* <Title
                             family='raleway, sans-serif'
                             weight='400'
                             fstyle='Normal'
@@ -390,227 +410,228 @@ function BookingConfirmationCont() {
                             align='left'
                         >
                             <b>: 091234568</b>
-                        </Title>
-                    </ContainerGlobal>
-                    <ContainerGlobal
-                        justify='space-between'
-                    >
-                        <Title
-                            family='raleway, sans-serif'
-                            weight='400'
-                            fstyle='Normal'
-                            size='25px'
-                            color='#2e2e2e'
-                            align='left'
+                        </Title> */}
+                        </ContainerGlobal>
+                        <ContainerGlobal
+                            justify='space-between'
                         >
-                            Reservation Date.
-                        </Title>
-                        <Title
-                            family='raleway, sans-serif'
-                            weight='700'
-                            fstyle='Normal'
-                            size='25px'
-                            color='#2e2e2e'
-                            align='left'
+                            <Title
+                                family='raleway, sans-serif'
+                                weight='400'
+                                fstyle='Normal'
+                                size='25px'
+                                color='#2e2e2e'
+                                align='left'
+                            >
+                                Reservation Date.
+                            </Title>
+                            <Title
+                                family='raleway, sans-serif'
+                                weight='700'
+                                fstyle='Normal'
+                                size='25px'
+                                color='#2e2e2e'
+                                align='left'
+                            >
+                                <b>: {new Date(value.reservationDate).toLocaleDateString()}</b>
+                            </Title>
+                        </ContainerGlobal>
+                        <ContainerGlobal
+                            justify='space-between'
                         >
-                            <b>: 03/01/2022</b>
-                        </Title>
-                    </ContainerGlobal>
-                    <ContainerGlobal
-                        justify='space-between'
-                    >
-                        <Title
-                            family='raleway, sans-serif'
-                            weight='400'
-                            fstyle='Normal'
-                            size='25px'
-                            color='#2e2e2e'
-                            align='left'
+                            <Title
+                                family='raleway, sans-serif'
+                                weight='400'
+                                fstyle='Normal'
+                                size='25px'
+                                color='#2e2e2e'
+                                align='left'
+                            >
+                                Payment Mode
+                            </Title>
+                            <Title
+                                family='raleway, sans-serif'
+                                weight='700'
+                                fstyle='Normal'
+                                size='25px'
+                                color='#2e2e2e'
+                                align='left'
+                            >
+                                <b>: {value.payment.paymentMode.paymentMode}</b>
+                            </Title>
+                        </ContainerGlobal>
+                        <ContainerGlobal
+                            justify='space-between'
                         >
-                            Payment Mode
-                        </Title>
-                        <Title
-                            family='raleway, sans-serif'
-                            weight='700'
-                            fstyle='Normal'
-                            size='25px'
-                            color='#2e2e2e'
-                            align='left'
+                            <Title
+                                family='raleway, sans-serif'
+                                weight='400'
+                                fstyle='Normal'
+                                size='25px'
+                                color='#2e2e2e'
+                                align='left'
+                            >
+                                Payment Type
+                            </Title>
+                            <Title
+                                family='raleway, sans-serif'
+                                weight='700'
+                                fstyle='Normal'
+                                size='25px'
+                                color='#2e2e2e'
+                                align='left'
+                            >
+                                <b>:  Down Payment</b>
+                            </Title>
+                        </ContainerGlobal>
+                        <ContainerGlobal
+                            justify='space-between'
                         >
-                            <b>: Bank (MetroBank)</b>
-                        </Title>
-                    </ContainerGlobal>
-                    <ContainerGlobal
-                        justify='space-between'
-                    >
-                        <Title
-                            family='raleway, sans-serif'
-                            weight='400'
-                            fstyle='Normal'
-                            size='25px'
-                            color='#2e2e2e'
-                            align='left'
+                            <Title
+                                family='raleway, sans-serif'
+                                weight='400'
+                                fstyle='Normal'
+                                size='25px'
+                                color='#2e2e2e'
+                                align='left'
+                            >
+                                Guest Name
+                            </Title>
+                            <Title
+                                family='raleway, sans-serif'
+                                weight='700'
+                                fstyle='Normal'
+                                size='25px'
+                                color='#2e2e2e'
+                                align='left'
+                            >
+                                <b>: {value.guestInformation.firstName.toLowerCase()}  {value.guestInformation.lastName.toLowerCase()}</b>
+                            </Title>
+                        </ContainerGlobal>
+                        <ContainerGlobal
+                            justify='space-between'
                         >
-                            Payment Type
-                        </Title>
-                        <Title
-                            family='raleway, sans-serif'
-                            weight='700'
-                            fstyle='Normal'
-                            size='25px'
-                            color='#2e2e2e'
-                            align='left'
+                            <Title
+                                family='raleway, sans-serif'
+                                weight='400'
+                                fstyle='Normal'
+                                size='25px'
+                                color='#2e2e2e'
+                                align='left'
+                            >
+                                Birthdate
+                            </Title>
+                            <Title
+                                family='raleway, sans-serif'
+                                weight='700'
+                                fstyle='Normal'
+                                size='25px'
+                                color='#2e2e2e'
+                                align='left'
+                            >
+                                <b>: {new Date(value.guestInformation.birthDate).toLocaleDateString()}</b>
+                            </Title>
+                        </ContainerGlobal>
+                        <ContainerGlobal
+                            justify='space-between'
                         >
-                            <b>: Down Payment</b>
-                        </Title>
-                    </ContainerGlobal>
-                    <ContainerGlobal
-                        justify='space-between'
-                    >
-                        <Title
-                            family='raleway, sans-serif'
-                            weight='400'
-                            fstyle='Normal'
-                            size='25px'
-                            color='#2e2e2e'
-                            align='left'
+                            <Title
+                                family='raleway, sans-serif'
+                                weight='400'
+                                fstyle='Normal'
+                                size='25px'
+                                color='#2e2e2e'
+                                align='left'
+                            >
+                                Nationality
+                            </Title>
+                            <Title
+                                family='raleway, sans-serif'
+                                weight='700'
+                                fstyle='Normal'
+                                size='25px'
+                                color='#2e2e2e'
+                                align='left'
+                            >
+                                <b>: {value.guestInformation.nationality.toLowerCase()}</b>
+                            </Title>
+                        </ContainerGlobal>
+                        <ContainerGlobal
+                            justify='space-between'
                         >
-                            Guest Name
-                        </Title>
-                        <Title
-                            family='raleway, sans-serif'
-                            weight='700'
-                            fstyle='Normal'
-                            size='25px'
-                            color='#2e2e2e'
-                            align='left'
+                            <Title
+                                family='raleway, sans-serif'
+                                weight='400'
+                                fstyle='Normal'
+                                size='25px'
+                                color='#2e2e2e'
+                                align='left'
+                            >
+                                Email Address
+                            </Title>
+                            <Title
+                                family='raleway, sans-serif'
+                                weight='700'
+                                fstyle='Normal'
+                                size='25px'
+                                color='#2e2e2e'
+                                align='left'
+                            >
+                                <b>: {value.guestInformation.user.email.toLowerCase()}</b>
+                            </Title>
+                        </ContainerGlobal>
+                        <ContainerGlobal
+                            justify='space-between'
                         >
-                            <b>: Pedro Juan</b>
-                        </Title>
-                    </ContainerGlobal>
-                    <ContainerGlobal
-                        justify='space-between'
-                    >
-                        <Title
-                            family='raleway, sans-serif'
-                            weight='400'
-                            fstyle='Normal'
-                            size='25px'
-                            color='#2e2e2e'
-                            align='left'
+                            <Title
+                                family='raleway, sans-serif'
+                                weight='400'
+                                fstyle='Normal'
+                                size='25px'
+                                color='#2e2e2e'
+                                align='left'
+                            >
+                                Address
+                            </Title>
+                            <Title
+                                family='raleway, sans-serif'
+                                weight='700'
+                                fstyle='Normal'
+                                size='25px'
+                                color='#2e2e2e'
+                                align='left'
+                                width=''
+                            >
+                                <b>: {value.guestInformation.address.toLowerCase()}</b>
+                            </Title>
+                        </ContainerGlobal>
+                        <ContainerGlobal
+                            justify='space-between'
                         >
-                            Birthdate
-                        </Title>
-                        <Title
-                            family='raleway, sans-serif'
-                            weight='700'
-                            fstyle='Normal'
-                            size='25px'
-                            color='#2e2e2e'
-                            align='left'
-                        >
-                            <b>: 2000/12/21</b>
-                        </Title>
-                    </ContainerGlobal>
-                    <ContainerGlobal
-                        justify='space-between'
-                    >
-                        <Title
-                            family='raleway, sans-serif'
-                            weight='400'
-                            fstyle='Normal'
-                            size='25px'
-                            color='#2e2e2e'
-                            align='left'
-                        >
-                            Nationality
-                        </Title>
-                        <Title
-                            family='raleway, sans-serif'
-                            weight='700'
-                            fstyle='Normal'
-                            size='25px'
-                            color='#2e2e2e'
-                            align='left'
-                        >
-                            <b>: Filipino</b>
-                        </Title>
-                    </ContainerGlobal>
-                    <ContainerGlobal
-                        justify='space-between'
-                    >
-                        <Title
-                            family='raleway, sans-serif'
-                            weight='400'
-                            fstyle='Normal'
-                            size='25px'
-                            color='#2e2e2e'
-                            align='left'
-                        >
-                            Email Address
-                        </Title>
-                        <Title
-                            family='raleway, sans-serif'
-                            weight='700'
-                            fstyle='Normal'
-                            size='25px'
-                            color='#2e2e2e'
-                            align='left'
-                        >
-                            <b>: PedroJuan@gmail.com</b>
-                        </Title>
-                    </ContainerGlobal>
-                    <ContainerGlobal
-                        justify='space-between'
-                    >
-                        <Title
-                            family='raleway, sans-serif'
-                            weight='400'
-                            fstyle='Normal'
-                            size='25px'
-                            color='#2e2e2e'
-                            align='left'
-                        >
-                            Address
-                        </Title>
-                        <Title
-                            family='raleway, sans-serif'
-                            weight='700'
-                            fstyle='Normal'
-                            size='25px'
-                            color='#2e2e2e'
-                            align='left'
-                            width=''
-                        >
-                            <b>: Cecilia Chapman 711...</b>
-                        </Title>
-                    </ContainerGlobal>
-                    <ContainerGlobal
-                        justify='space-between'
-                    >
-                        <Title
-                            family='raleway, sans-serif'
-                            weight='400'
-                            fstyle='Normal'
-                            size='25px'
-                            color='#2e2e2e'
-                            align='left'
-                        >
-                            Contact Number
-                        </Title>
-                        <Title
-                            family='raleway, sans-serif'
-                            weight='700'
-                            fstyle='Normal'
-                            size='25px'
-                            color='#2e2e2e'
-                            align='left'
-                        >
-                            <b>: 09292333312</b>
-                        </Title>
-                    </ContainerGlobal>
+                            <Title
+                                family='raleway, sans-serif'
+                                weight='400'
+                                fstyle='Normal'
+                                size='25px'
+                                color='#2e2e2e'
+                                align='left'
+                            >
+                                Contact Number
+                            </Title>
+                            <Title
+                                family='raleway, sans-serif'
+                                weight='700'
+                                fstyle='Normal'
+                                size='25px'
+                                color='#2e2e2e'
+                                align='left'
+                            >
+                                <b>: {value.guestInformation.user.contactNumber.toLowerCase()}</b>
+                            </Title>
+                        </ContainerGlobal>
 
-                </ReservationInformationContentsContainer>
+                    </ReservationInformationContentsContainer>
+                ))}
 
 
             </ReservationInformationContainer>
@@ -620,81 +641,37 @@ function BookingConfirmationCont() {
                 fstyle='Normal'
                 size='36px'
                 color='#2e2e2e'
+                margin='0px 0px 30px 0px'
                 align='Center'
             >
                 <b>Charge Summary</b>
             </Title>
             <ChargeSummaryContainer>
-                <ChargeSummaryContentContainer>
-                    <Title
-                        family='raleway, sans-serif'
-                        weight='400'
-                        fstyle='Normal'
-                        size='25px'
-                        color='#2e2e2e'
-                        align='left'
-                        margin='0px 100px 0px 0px'
-                    >
-                        Room Rate
-                    </Title>
-                    <Title
-                        family='raleway, sans-serif'
-                        weight='400'
-                        fstyle='Normal'
-                        size='25px'
-                        color='#2e2e2e'
-                        align='left'
-                        margin='0px 100px 0px 0px'
-                    >
-                        Total Night(s)
-                    </Title>
-                    <Title
-                        family='raleway, sans-serif'
-                        weight='400'
-                        fstyle='Normal'
-                        size='25px'
-                        color='#2e2e2e'
-                        align='left'
-                        margin='0px 100px 0px 0px'
-                    >
-                        Discount
-                    </Title>
-                </ChargeSummaryContentContainer>
-                <ChargeSummaryContentContainer>
-                    <Title
-                        family='raleway, sans-serif'
-                        weight='400'
-                        fstyle='Normal'
-                        size='25px'
-                        color='#2e2e2e'
-                        align='left'
-                        margin='0px 0px 0px 100px'
-                    >
-                        : ₱2,000
-                    </Title>
-                    <Title
-                        family='raleway, sans-serif'
-                        weight='400'
-                        fstyle='Normal'
-                        size='25px'
-                        color='#2e2e2e'
-                        align='left'
-                        margin='0px 0px 0px 100px'
-                    >
-                        : 4
-                    </Title>
-                    <Title
-                        family='raleway, sans-serif'
-                        weight='400'
-                        fstyle='Normal'
-                        size='25px'
-                        color='#2e2e2e'
-                        align='left'
-                        margin='0px 0px 0px 100px'
-                    >
-                        : None
-                    </Title>
-                </ChargeSummaryContentContainer>
+                <TableContainer
+                    cellspacing="0"
+                    cellpadding="0">
+                    <Tr bg="transparent">
+                        <Th bg='transparent' color='#2e2e2e' align='center'>Room type</Th>
+                        <Th bg='transparent' color='#2e2e2e' align='center'>Check in</Th>
+                        <Th bg='transparent' color='#2e2e2e' align='center'>Check out</Th>
+                        <Th bg='transparent' color='#2e2e2e' align='center'>Total nights</Th>
+                        <Th bg='transparent' color='#2e2e2e' align='center'>Rate per night</Th>
+                        <Th bg='transparent' color='#2e2e2e' align='center'>Total amout due</Th>
+                    </Tr>
+                    {reservedBooking.map((item, index) => (
+
+                        <Tr style={index % 2 == 0 ? {backgroundColor: 'rgb(0,0,0,.1)'} : {backgroundColor: 'transparent'}}>
+
+                            <Td align='center'>{item.room.roomType.roomType}</Td>
+                            <Td align='center'>{new Date(item.checkInDate).toLocaleDateString()}</Td>
+                            <Td align='center'>{new Date(item.checkOutDate).toLocaleDateString()}</Td>
+                            <Td align='center'>{item.numberOfNights}</Td>
+                            <Td align='center'>{numberFormat(item.room.roomType.roomRate)}</Td>
+                            <Td align='center' style={{ color: 'red' }}>{numberFormat(item.room.roomType.roomRate * item.numberOfNights)}</Td>
+                        </Tr>
+
+                    ))}
+                </TableContainer>
             </ChargeSummaryContainer>
             <BrokenHorizontalLine></BrokenHorizontalLine>
             <ChargeSummaryContainer>
@@ -721,7 +698,7 @@ function BookingConfirmationCont() {
                         align='left'
                         margin='0px 0px 0px 100px'
                     >
-                        : ₱8,000
+                        : {numberFormat(grandTotal)}
                     </Title>
                 </ChargeSummaryContentContainer>
             </ChargeSummaryContainer>

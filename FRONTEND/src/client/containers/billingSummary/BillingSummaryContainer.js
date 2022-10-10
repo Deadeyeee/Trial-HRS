@@ -21,19 +21,18 @@ const BillingSummaryContainer = () => {
         window.location = '/booking'
     }
 
-    const [value, setValue] = React.useState('cash');
     const [grandTotal, setGrandTotal] = useState(0);
     const [bookingInformation, setBookingInformation] = useState([])
     const [modeOfPayment, setModeOfPayment] = useState([]);
-    const [modeOfPaymentValue, setModeOfPaymentValue] = useState();
+    const [modeOfPaymentValue, setModeOfPaymentValue] = useState("");
     const [typeOfPayment, setTypeOfPayment] = useState('Down Payment');
     const [discount, setDiscount] = useState([]);
-    const [discountValue, setDiscountValue] = useState();
+    const [discountValue, setDiscountValue] = useState("");
     const [notAvailableRoom, setNotAvailableRoom] = useState([]);
+    const [userInformation, setUserInformation] = useState([])
 
-
-    const [paymentModeId, setPaymentModeId] = useState();
-    const [discountId, setDiscountId] = useState();
+    const [paymentModeId, setPaymentModeId] = useState("");
+    const [discountId, setDiscountId] = useState("");
 
 
 
@@ -82,8 +81,42 @@ const BillingSummaryContainer = () => {
 
 
     useEffect(() => {
+        axios.get("http://localhost:3001/auth/verify-token").then((response) => {
+            console.log(response.data)
+            window.sessionStorage.removeItem('contactNumber');
+            window.sessionStorage.removeItem('email');
+            window.sessionStorage.removeItem('firstName');
+            window.sessionStorage.removeItem('lastName');
+            window.sessionStorage.removeItem('birthday');
+            window.sessionStorage.removeItem('gender');
+            window.sessionStorage.removeItem('address');
+            window.sessionStorage.removeItem('nationality');
 
-        setBookingInformation(JSON.parse(window.sessionStorage.getItem("AvailedRoom")))
+            axios.get('http://localhost:3001/api/getAllGuest').then((guest) => {
+                console.log(guest.data)
+                guest.data.map((item) => {
+                    if (response.data.id == item.user_id) {
+                        setUserInformation(item);
+                    }
+                })
+            }).catch((err) => {
+                console.log(err)
+
+            });
+
+        }).catch((err) => {
+            if (window.sessionStorage.getItem('firstName') == null) {
+                window.location = '/guestInformation';
+            }
+
+        });
+
+        if (JSON.parse(window.sessionStorage.getItem("AvailedRoom")).length != 0 || window.sessionStorage.getItem("AvailedRoom") != null) {
+            setBookingInformation(JSON.parse(window.sessionStorage.getItem("AvailedRoom")))
+        }
+        else {
+            window.location = '/booking';
+        }
 
         console.log(bookingInformation)
 
@@ -99,7 +132,37 @@ const BillingSummaryContainer = () => {
         }).catch((err) => {
             console.log(err.result)
         });
+
+
     }, [])
+
+    useEffect(() => {
+        if (userInformation != 0) {
+            console.log(userInformation)
+        }
+    }, [userInformation])
+
+    useEffect(() => {
+        if (modeOfPayment.length != 0) {
+            modeOfPayment.map((item) => {
+                if (item.paymentMode == "Cash") {
+                    setModeOfPaymentValue(item.paymentMode);
+                }
+            })
+        }
+
+    }, [modeOfPayment])
+
+    useEffect(() => {
+
+        if (discount.length != 0) {
+            discount.map((item) => {
+                if (item.discountType == "No discount") {
+                    setDiscountValue(item.discountType);
+                }
+            })
+        }
+    }, [discount])
 
     useEffect(() => {
         if (bookingInformation.length != 0) {
@@ -110,6 +173,7 @@ const BillingSummaryContainer = () => {
     useEffect(() => {
         console.log(notAvailableRoom)
     }, [notAvailableRoom])
+
     useEffect(() => {
         setGrandTotal(0);
         bookingInformation.map((item) => (
@@ -128,6 +192,7 @@ const BillingSummaryContainer = () => {
             }
         })
 
+
         discount.map((value) => {
             if (value.discountType == discountValue) {
                 setDiscountId(value.id)
@@ -139,8 +204,6 @@ const BillingSummaryContainer = () => {
         console.log(discountId)
         console.log(paymentModeId)
     }, [modeOfPaymentValue, discountValue])
-
-
 
     const createReservation = () => {
         console.log(discountId)
@@ -196,6 +259,8 @@ const BillingSummaryContainer = () => {
                                                 numberOfNights: bookingInformation[index].nights,
                                                 reservation_id: reservation.data.new_reservation.id,
                                                 room_id: value,
+                                                specialInstrcution: bookingInformation[index].specialInstruction,
+
                                                 // numberOfAdults:
                                                 // numberOfKids:
                                             }
@@ -282,6 +347,91 @@ const BillingSummaryContainer = () => {
         }
         return dateArray;
     }
+
+
+    const output = (value) => {
+        if (value == 'name') {
+            if (window.sessionStorage.getItem('firstName') != null && window.sessionStorage.getItem('lastName') != null) {
+                return window.sessionStorage.getItem('firstName').toLocaleLowerCase() + " " + window.sessionStorage.getItem('lastName').toLocaleLowerCase();
+            }
+            else if (userInformation.length != 0) {
+                return userInformation.firstName.toLocaleLowerCase() + " " + userInformation.lastName.toLocaleLowerCase();
+            }
+            else {
+                return " ";
+            }
+        }
+        else if (value == 'email') {
+            if (window.sessionStorage.getItem('email') != null) {
+                return window.sessionStorage.getItem('email').toLocaleLowerCase()
+            }
+            else if (userInformation.length != 0) {
+                return userInformation.user.email.toLocaleLowerCase()
+            }
+            else {
+                return " "
+            }
+        }
+        else if (value == 'contact') {
+            if (window.sessionStorage.getItem('contactNumber') != null) {
+                return window.sessionStorage.getItem('contactNumber')
+            }
+            else if (userInformation.length != 0) {
+                return userInformation.user.contactNumber
+            }
+            else {
+                return " "
+            }
+        }
+        else if (value == 'birthday') {
+            if (window.sessionStorage.getItem('birthday') != null) {
+                return window.sessionStorage.getItem('birthday')
+            }
+            else if (userInformation.length != 0) {
+                return userInformation.birthDate
+            }
+            else {
+                return " "
+            }
+        }
+        else if (value == 'nationality') {
+            if (window.sessionStorage.getItem('nationality') != null) {
+                return window.sessionStorage.getItem('nationality')
+            }
+            else if (userInformation.length != 0) {
+                return userInformation.nationality
+            }
+            else {
+                return " "
+            }
+        }
+        else if(value == 'gender'){
+            if (window.sessionStorage.getItem('gender') != null) {
+                return window.sessionStorage.getItem('gender')
+            }
+            else if (userInformation.length != 0) {
+                return userInformation.gender.toLocaleLowerCase()
+            }
+            else {
+                return " "
+            }
+        }
+        else if(value == 'address'){
+            if (window.sessionStorage.getItem('address') != null) {
+                return window.sessionStorage.getItem('address') 
+            }
+            else if (userInformation.length != 0) {
+                return userInformation.address
+            }
+            else {
+                return " "
+            }
+        }
+    }
+
+
+
+
     return (
         <Container>
             <Title
@@ -327,7 +477,7 @@ const BillingSummaryContainer = () => {
                                 align='left'
                                 margin='20px 30px'
                             >
-                                <b>Name:</b> {window.sessionStorage.getItem('firstName').toLocaleLowerCase() + " " + window.sessionStorage.getItem('lastName').toLocaleLowerCase()}
+                                <b>Name:</b> {output('name')}
                             </Title>
                             <Title
                                 size='18px'
@@ -338,7 +488,7 @@ const BillingSummaryContainer = () => {
                                 align='left'
                                 margin='20px 30px'
                             >
-                                <b>Email Address:</b> {window.sessionStorage.getItem('email').toLocaleLowerCase()}
+                                <b>Email Address:</b> {output('email')}
                             </Title>
                             <Title
                                 size='18px'
@@ -349,7 +499,7 @@ const BillingSummaryContainer = () => {
                                 align='left'
                                 margin='20px 30px'
                             >
-                                <b>Contact number:</b> {window.sessionStorage.getItem('contactNumber')}
+                                <b>Contact number:</b>{output('contact')}
                             </Title>
 
                             <Title
@@ -361,7 +511,7 @@ const BillingSummaryContainer = () => {
                                 align='left'
                                 margin='20px 30px'
                             >
-                                <b>Birthdate:</b> {window.sessionStorage.getItem('birthday')}
+                                <b>Birthdate:</b> {output('birthday')}
                             </Title>
                         </TableContainer>
                         <TableContainer>
@@ -374,7 +524,7 @@ const BillingSummaryContainer = () => {
                                 align='left'
                                 margin='20px 30px'
                             >
-                                <b>Nationality:</b> {window.sessionStorage.getItem('nationality')}
+                                <b>Nationality:</b> {output('nationality')}
                             </Title>
                             <Title
                                 size='18px'
@@ -385,7 +535,7 @@ const BillingSummaryContainer = () => {
                                 align='left'
                                 margin='20px 30px'
                             >
-                                <b>Gender:</b> Male
+                                <b>Gender:</b> {output('gender')}
                             </Title>
                             <Title
                                 size='18px'
@@ -396,7 +546,7 @@ const BillingSummaryContainer = () => {
                                 align='left'
                                 margin='20px 30px'
                             >
-                                <b>Address:</b> {window.sessionStorage.getItem('address')}
+                                <b>Address:</b> {output('address')}
                             </Title>
                         </TableContainer>
                     </TabContainer>
@@ -442,6 +592,7 @@ const BillingSummaryContainer = () => {
                                 onChange={(e) => {
                                     setModeOfPaymentValue(e.target.value)
                                 }}
+                                defaultValue={modeOfPaymentValue}
                                 style={{ margin: '0px 0px 0px 30px' }}
                             >
                                 {modeOfPayment.map((item) => (

@@ -72,6 +72,7 @@ export const ChargeSummaryContainer = styled(motion.div)`
     display: flex;
     flex-direction: row;
     align-items: center;
+    justify-content: center;
 `;
 
 export const ChargeSummaryContentContainer = styled(motion.div)`
@@ -83,7 +84,7 @@ export const ChargeSummaryContentContainer = styled(motion.div)`
 export const BrokenHorizontalLine =styled(motion.div)`
     border-top: 2px dashed #CEA692;
     width: 60%;
-
+    margin-top: 20px;
 `;
 
 export const ButtonHolder = styled(motion.div)`

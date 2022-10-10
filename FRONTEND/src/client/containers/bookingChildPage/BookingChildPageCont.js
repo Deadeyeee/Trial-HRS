@@ -29,16 +29,17 @@ import { TextInput } from '../../components/textBox/style';
 import Slider from "react-slick";
 import ImageSlider from '../../components/imageSlider/ImageSlider.js';
 import { letterSpacing } from '@mui/system';
+import { TextField } from '@mui/material';
 
 export const BookingChildPageCont = () => {
 
     let { id } = useParams();
-    const ratingValue = 3.6;
     const [roomType, setRoomType] = useState([])
     const [usedServices, setUsedServices] = useState([])
     const [roomQuantity, setRoomQuantity] = useState(1)
     const [adult, setAdult] = useState(window.sessionStorage.getItem('adult'))
     const [kid, setKid] = useState(window.sessionStorage.getItem('kid'))
+    const [specialInstruction, setSpecialInstruction] = useState("")
     const [availedRooms, setAvailedRooms] = useState([])
 
     const { roomquantityRef, kidRef, adultRef } = useRef();
@@ -84,6 +85,7 @@ export const BookingChildPageCont = () => {
                         "roomID": listOfRoomAvail,
                         "kid": kid,
                         "adult": adult,
+                        "specialInstruction": specialInstruction,
                     }]
                 window.sessionStorage.setItem('AvailedRoom', JSON.stringify(items))
             }
@@ -100,6 +102,7 @@ export const BookingChildPageCont = () => {
                     "roomID": listOfRoomAvail,
                     "kid": kid,
                     "adult": adult,
+                    "specialInstruction": specialInstruction,
                 }
                 const existingAvailedRooms = JSON.parse(window.sessionStorage.getItem("AvailedRoom"))
                 existingAvailedRooms.push(items)
@@ -118,7 +121,8 @@ export const BookingChildPageCont = () => {
     }
 
     useEffect(() => {
-        if (window.sessionStorage.getItem('checkIn') == null || window.sessionStorage.getItem('checkOut') == null || window.sessionStorage.getItem('nights') == null) {
+        console.log("asd : ",window.sessionStorage.getItem('rooms'))
+        if (window.sessionStorage.getItem('checkIn') == null || window.sessionStorage.getItem('checkOut') == null || window.sessionStorage.getItem('nights') == null || window.sessionStorage.getItem('rooms') == null || window.sessionStorage.getItem('rooms') == "[]") {
             window.location = '/booking'
         }
         axios.get('http://localhost:3001/api/getRoomType/' + id).then((res) => {
@@ -141,8 +145,11 @@ export const BookingChildPageCont = () => {
             console.log(err.data)
         })
         setAvailedRooms(JSON.parse(window.sessionStorage.getItem('rooms')));
-    }, [])
 
+        
+
+    }, [])
+    
     const serviceIcon = (service) => {
         if (service === 'Free Wifi') {
             return <Services><NetworkWifiIcon style={{ color: "#bfaa7e" }} /><Title family="Arial" size="12px" >{service}</Title></Services>
@@ -283,8 +290,8 @@ export const BookingChildPageCont = () => {
                             >
                                 Occupancy:
                             </Title>
-                            <ContainerGlobal 
-                            align='flex-end'
+                            <ContainerGlobal
+                                align='flex-end'
                             >
                                 <TextInput
                                     onChange={(e) => {
@@ -432,6 +439,32 @@ export const BookingChildPageCont = () => {
 
                             >{availedRooms.length} room left</Description>
                         </ContentContainerHolder>
+                        <ContentContainerHolder>
+                            <Title
+                                color='#2e2e2e'
+                                weight='400'
+                                size='25px'
+                                fStyle='Normal'
+                                margin='0px 20px 0px 0px'
+                                align='left'
+                            >
+                                Special Instruction:
+                            </Title>
+                            <TextField
+                                placeholder='Special Instruction'
+                                label="Special Instruction"
+                                variant="outlined"
+                                type='textarea'
+                                multiline
+                                rows={4}
+                                value={specialInstruction}
+                                onChange={(e) => {
+                                    setSpecialInstruction(e.target.value)
+                                }}
+                                style={{ width: '95%', }}
+                            />
+
+                        </ContentContainerHolder>
                     </RoomContainerContentRight>
                 </RoomContainer>
             </RoomContainerMain>
@@ -467,6 +500,6 @@ export const BookingChildPageCont = () => {
             >
                 Cancel
             </Button>
-        </Container>
+        </Container >
     )
 }

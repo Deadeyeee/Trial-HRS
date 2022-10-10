@@ -1,9 +1,8 @@
 import React, { useEffect, useLayoutEffect, useState } from 'react'
-import { ButtonHolder, CalendarContainer, Container, HorizontalLine, RatingContainer, RoomContainer, RoomContainerContentLeft, RoomContainerContentPhoto, RoomContainerContentRight, RoomContainerMain, ServicesContainer, TitleCalendarContainer, RatingContainerRight, BookingLegendsMain, BookingLegendsContainer, BookingLegends, BookingLegendsWhite, BookingLegendsRed, BookingLegendsGreen, BookingLegendsBlue, BookingLegendsDarkJade, LocationPinRed, LocationPinGreen, Services, LabelDiv, Persons } from './Styles'
+import { ButtonHolder, Container, HorizontalLine, RatingContainer, RoomContainer, RoomContainerContentLeft, RoomContainerContentPhoto, RoomContainerContentRight, RoomContainerMain, ServicesContainer, TitleCalendarContainer, RatingContainerRight, BookingLegendsMain, BookingLegendsContainer, BookingLegends, BookingLegendsWhite, BookingLegendsRed, BookingLegendsGreen, BookingLegendsBlue, BookingLegendsDarkJade, LocationPinRed, Services, LabelDiv, Persons } from './Styles'
 import { Title } from '../../components/title/styles';
 import { Button } from '../../components/button/styles';
 import { TextInput } from '../../components/textBox/style';
-import Rating from '@mui/material/Rating';
 import NetworkWifiIcon from '@mui/icons-material/NetworkWifi';
 import TvIcon from '@mui/icons-material/Tv';
 import ShowerIcon from '@mui/icons-material/Shower';
@@ -12,7 +11,6 @@ import TimeToLeaveIcon from '@mui/icons-material/TimeToLeave';
 import PersonIcon from '@mui/icons-material/Person';
 import DateRangePicker from '../../components/datePicker/DateRangePicker'
 import Background from '../../images/RoomsIMG/premium.jpg'
-import Background2 from '../../images/RoomsIMG/delux.jpg'
 import { ContainerGlobal } from '../../../admin/components/container/container';
 import axios from 'axios';
 import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
@@ -26,8 +24,11 @@ import HotelIcon from '@mui/icons-material/Hotel';
 import KingBedIcon from '@mui/icons-material/KingBed';
 import KitchenIcon from '@mui/icons-material/Kitchen';
 import MicrowaveIcon from '@mui/icons-material/Microwave';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import PendingIcon from '@mui/icons-material/Pending';
 import * as moment from 'moment';
+import { Badge } from '@mui/material';
+import { borderRadius } from '@mui/system';
 export const BookingPageCont = () => {
     const ratingValue = 3.6;
     const [roomType, setRoomType] = useState([])
@@ -40,8 +41,7 @@ export const BookingPageCont = () => {
     const [room, setRoom] = useState([]);
     const [availbleRoomType, setAvailableRoomType] = useState([]);
     const [notAvailableRoom, setNotAvailableRoom] = useState([]);
-    const [bookedRooms, setBookedRooms] = useState();
-
+    const [bookedRooms, setBookedRooms] = useState([]);
     const [bookFilter, setBookFilter] = useState(0)
 
 
@@ -188,6 +188,7 @@ export const BookingPageCont = () => {
         window.sessionStorage.removeItem('nights')
         window.sessionStorage.removeItem('kid')
         window.sessionStorage.removeItem('adult')
+        window.sessionStorage.removeItem('rooms')
 
         // axios.get('http://localhost:3001/api/getAllReservationSummary').then((result) => {
         //     setNotAvailableRoom([])
@@ -501,15 +502,37 @@ export const BookingPageCont = () => {
 
 
 
-            <Title
-                color='#2e2e2e'
-                weight='normal'
-                size='3vw'
+            <div>
+                <Title
+                    color='#2e2e2e'
+                    weight='normal'
+                    size='3vw'
 
-            >
-                Available Rooms
+                >
+                    Available Rooms
+                    {bookedRooms.length != 0 ?
+                        <Badge
+                            badgeContent={bookedRooms.length} color="primary"
+                            style={
+                                {
+                                    cursor: 'pointer',
+                                    margin: '0px 0px 0px 20px',
+                                    padding: '10px',
+                                    backgroundColor: '#bfaa7e',
+                                    borderRadius: '100%'
+                                }
+                            }
+                            onClick={() => {
+                                window.location = '/bookingCart'
+                            }}
+                        >
+                            <ShoppingCartIcon color="action" />
+                        </Badge>
+                        :
+                        ""}
+                </Title>
+            </div>
 
-            </Title>
 
             <HorizontalLine
                 w="30%"
@@ -517,7 +540,7 @@ export const BookingPageCont = () => {
 
             {
                 roomType.length == 0 ?
-                    <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', flexFlow: 'column'}}>
+                    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexFlow: 'column' }}>
                         <Title
                             color='#898585'
                             weight='normal'
@@ -528,7 +551,7 @@ export const BookingPageCont = () => {
                             No rooms available in your preffered dates.
 
                         </Title>
-                        <Button
+                        {/* <Button
                             whileHover={{ backgroundColor: "#0C4426", color: "white" }}
                             w='200px'
                             h='60px'
@@ -543,7 +566,7 @@ export const BookingPageCont = () => {
                             href=''
                         >
                             Book this now!
-                        </Button>
+                        </Button> */}
                     </div>
                     :
                     roomType.map((item, index, arr) => (
@@ -694,15 +717,12 @@ export const BookingPageCont = () => {
                                 size="15px"
                                 margin="0px 10px 0px 0px"
                             >{ratingValue}</Title>
-
                             <Rating
                                 readOnly
                                 size="large"
                                 value={ratingValue}
                                 precision={0.1}
                             ></Rating>
-
-
                             <Title
                                 family="times new roman"
                                 // weight="normal"
@@ -733,8 +753,6 @@ export const BookingPageCont = () => {
                                     Free Wifi
                                 </Title>
                             </Services>
-
-
                             <Services>
                                 <TvIcon
                                     style={{ color: "#bfaa7e" }}
@@ -746,8 +764,6 @@ export const BookingPageCont = () => {
                                     Television
                                 </Title>
                             </Services>
-
-
                             <Services>
                                 <ShowerIcon
                                     style={{ color: "#bfaa7e" }}
@@ -759,9 +775,6 @@ export const BookingPageCont = () => {
                                     Washroom
                                 </Title>
                             </Services>
-
-
-
                         </ServicesContainer>
                         <Title
                             color='#8f805f'
@@ -975,4 +988,3 @@ export const BookingPageCont = () => {
         </Container>
     )
 }
-

@@ -41,6 +41,9 @@ const style = {
 };
 
 const InformationForm = () => {
+    let passwordValidation = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+    let letters = /^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/;
+    let phoneNumberValidation = /^(09|\+639)\d{9}$/;
     var Recaptcha = require('react-recaptcha');
 
     var callback = function () {
@@ -60,16 +63,31 @@ const InformationForm = () => {
 
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
-    const [contactNumber, setContactNumber] = useState();
-    const [email, setEmail] = useState();
+    const [contactNumber, setContactNumber] = useState("");
+    const [email, setEmail] = useState("");
     const [birthday, setBirthDay] = useState(new Date());
-    const [nationalityValue, setNationalityValue] = useState();
     const [gender, setGender] = useState('male');
-    const [address, setAddress] = useState();
-    const [userName, setUserName] = useState();
-    const [password, setPassword] = useState();
+    const [address, setAddress] = useState("");
+    const [userName, setUserName] = useState("");
+    const [password, setPassword] = useState("");
 
-    const { emailRef, contactNumberRef, userNameRef } = useRef();
+
+
+    const [firstNameError, setFirstNameError] = useState("");
+    const [lastNameError, setLastNameError] = useState("");
+    const [contactNumberError, setContactNumberError] = useState("");
+    const [emailError, setEmailError] = useState("");
+    const [genderError, setGenderError] = useState('male');
+    const [addressError, setAddressError] = useState("");
+    const [userNameError, setUserNameError] = useState("");
+    const [passwordError, setPasswordError] = useState("");
+
+    const emailRef = useRef();
+    const contactNumberRef = useRef();
+    const userNameRef = useRef();
+    const firstNameRef = useRef();
+    const lastNameRef = useRef();
+    let formatNumber;
     useEffect(() => {
 
 
@@ -92,6 +110,11 @@ const InformationForm = () => {
     // let eWallets = ["Gcash", "Paymaya"];
 
     useEffect(() => {
+        axios.get('http://localhost:3001/auth/verify-token').then((result) => {
+            window.location = '/billingSummary'
+        }).catch((err) => {
+
+        });
         window.sessionStorage.removeItem("email")
         window.sessionStorage.removeItem("contactNumber")
         window.sessionStorage.removeItem("userName")
@@ -108,58 +131,103 @@ const InformationForm = () => {
             window.location = "/booking"
         }
         document.title = "Guest Information"
+
     }, [])
 
 
 
     const createGuestInformation = (e) => {
         e.preventDefault();
+        if (contactNumber.slice(0, 3) == "+63") {
 
-        axios.get('http://localhost:3001/api/getAllUsers').then((res) => {
-            console.log(res.data)
+            formatNumber = contactNumber.replace("+63", "0");
 
-            if (res.data.length != 0) {
-                // res.data.map((item) => {
-                //     if (item.email == email) {
-                //         emailRef.current.focus();
-                //     }
-                //     else if (item.contactNumber == contactNumber) {
-                //         contactNumberRef.current.focus();
-                //     }
-                //     else if (item.userName == userName) {
-                //         userNameRef.current.focus();
-                //     }
-                //     else {
-                //         window.sessionStorage.setItem("email", email)
-                //         window.sessionStorage.setItem("contactNumber", contactNumber)
-                //         window.sessionStorage.setItem("userName", userName)
-                //     }
+        }
 
-                // })
-                window.sessionStorage.setItem("email", email)
-                window.sessionStorage.setItem("contactNumber", contactNumber)
-                window.sessionStorage.setItem("userName", userName)
-            }
-            else {
-                window.sessionStorage.setItem("email", email)
-                window.sessionStorage.setItem("contactNumber", contactNumber)
-                window.sessionStorage.setItem("userName", userName)
-            }
-            if (window.sessionStorage.getItem('email') !== null && window.sessionStorage.getItem('contactNumber') !== null && window.sessionStorage.getItem('userName') !== null) {
-                window.sessionStorage.setItem("firstName", firstName);
-                window.sessionStorage.setItem("lastName", lastName);
-                window.sessionStorage.setItem("birthday", birthday);
-                window.sessionStorage.setItem("nationality", nationality);
-                window.sessionStorage.setItem("gender", gender);
-                window.sessionStorage.setItem("address", address);
-                window.sessionStorage.setItem("userName", userName);
-                window.sessionStorage.setItem("password", password);
+        if (firstNameError.length != 0) {
+            firstNameRef.current.focus()
+        }
+        else if (lastNameError.length != 0) {
+            lastNameRef.current.focus()
 
-                window.location = '/billingSummary'
-            }
-        }).catch((err) => {
-            console.log(err.res)
-        })
+        }
+        else if (contactNumberError.length != 0) {
+            contactNumberRef.current.focus()
+
+        }
+        else if (userNameError.length != 0) {
+            userNameRef.current.focus()
+        }
+        else {
+            axios.get('http://localhost:3001/api/getAllUsers').then((res) => {
+                if (userName.length != 0 && password.length != 0) {
+                    if (emailError.length == 0 && contactNumberError.length == 0 && userNameError.length == 0) {
+                        axios.post('http://localhost:3001/api/addUser', {
+                            userName: userName,
+                            contactNumber: formatNumber,
+                            email: email,
+                            password: password,
+                        }).then((user) => {
+                            console.log(user.data);
+                            axios.post('http://localhost:3001/api/addGuest', {
+                                firstName: firstName,
+                                lastName: lastName,
+                                birthDate: birthday,
+                                gender: gender,
+                                address: address,
+                                nationality: nationality,
+                                user_id: user.data.account.id,
+                            }).then((guest) => {
+                                console.log(guest.data);
+                                axios.post('http://localhost:3001/auth/login',
+                                    {
+                                        userName: userName,
+                                        password: password,
+                                        email: email,
+                                    },
+                                ).then((result) => {
+                                    window.location.reload();
+                                }).catch((err) => {
+                                    axios.delete('http://localhost:3001/api/deleteGuest/' + guest.data.new_guest.id).then((result) => {
+                                        console.log(result)
+                                        axios.delete('http://localhost:3001/api/deleteUser/' + user.data.account.id).then((result) => {
+                                            console.log(result)
+                                        }).catch((err) => {
+                                            console.log(err)
+                                        });
+                                    }).catch((err) => {
+                                        console.log(err)
+                                    });
+                                });
+                            }).catch((err) => {
+                                axios.delete('http://localhost:3001/api/deleteUser/' + user.data.account.id).then((result) => {
+                                    console.log(result)
+                                }).catch((err) => {
+                                    console.log(err)
+                                });
+                            });
+                        }).catch((err) => {
+                            console.log(err)
+                        });
+                    }
+
+                }
+                else {
+                    window.sessionStorage.setItem("email", email);
+                    window.sessionStorage.setItem("contactNumber", contactNumber);
+                    window.sessionStorage.setItem("userName", userName);
+                    window.sessionStorage.setItem("firstName", firstName);
+                    window.sessionStorage.setItem("lastName", lastName);
+                    window.sessionStorage.setItem("birthday", birthday);
+                    window.sessionStorage.setItem("nationality", nationality);
+                    window.sessionStorage.setItem("gender", gender);
+                    window.sessionStorage.setItem("address", address);
+                    window.location = '/billingSummary'
+                }
+            }).catch((err) => {
+                console.log(err)
+            })
+        }
         // axios.post('http://localhost:3001/api/addUser', {
         //     userName: userName,
         //     contactNumber: contactNumber,
@@ -174,9 +242,32 @@ const InformationForm = () => {
         //     console.log(err.res);
         // })
 
-
     }
 
+    useEffect(() => {
+        axios.get('http://localhost:3001/api/getAllUsers').then((res) => {
+            if (res.data.length != 0) {
+                res.data.map((item) => {
+                    if (item.role != 'NON-USER') {
+                        if (item.email.toLowerCase() == email.toLowerCase()) {
+                            setEmailError("This email is already taken.")
+                        }
+                        else if (item.contactNumber == contactNumber) {
+                            setContactNumberError("This number is already taken.")
+
+                        }
+                        else if (item.userName.toLowerCase() == userName.toLowerCase()) {
+                            setUserNameError("This userName is already taken.")
+
+                        }
+                    }
+
+                })
+            }
+        }).catch((err) => {
+
+        });
+    }, [userName, email, contactNumber])
     return (
         <Container>
             <ContainerChild>
@@ -185,23 +276,42 @@ const InformationForm = () => {
 
                         <InputContainer>
                             <TextField
+                                error={firstNameError.length != 0 ? true : false}
+                                helperText={firstNameError.length != 0 ? firstNameError : ""}
                                 placeholder='First Name'
                                 label="First Name"
+                                inputRef={firstNameRef}
                                 variant="outlined"
                                 value={firstName}
                                 onChange={(e) => {
                                     setFirstName(e.target.value)
+                                    if (!letters.test(e.target.value) && e.target.value.length != 0) {
+                                        setFirstNameError("Invalid first name. Please type letters only.")
+                                    }
+                                    else {
+                                        setFirstNameError("")
+                                    }
                                 }}
                                 style={{ width: '55%', }}
                                 required />
 
                             <TextField
+                                error={lastNameError.length != 0 ? true : false}
+                                helperText={lastNameError.length != 0 ? lastNameError : ""}
                                 placeholder='Last Name'
                                 label="Last Name"
                                 variant="outlined"
+                                inputRef={lastNameRef}
                                 value={lastName}
                                 onChange={(e) => {
                                     setLastName(e.target.value)
+                                    if (!letters.test(e.target.value) && e.target.value.length != 0) {
+                                        setLastNameError("Invalid last name. Please type letters only.")
+                                    }
+                                    else {
+                                        setLastNameError("")
+                                    }
+
                                 }}
                                 style={{ width: '55%', }}
                                 required />
@@ -210,6 +320,8 @@ const InformationForm = () => {
 
                         <InputContainer>
                             <TextField
+                                error={emailError.length != 0 ? true : false}
+                                helperText={emailError.length != 0 ? emailError : ""}
                                 placeholder='Email'
                                 label="Email"
                                 variant="outlined"
@@ -217,21 +329,31 @@ const InformationForm = () => {
                                 value={email}
                                 onChange={(e) => {
                                     setEmail(e.target.value)
+
+                                    setEmailError("")
                                 }}
                                 style={{ width: '55%', }}
-                                ref={emailRef}
+                                inputRef={emailRef}
                                 required />
 
                             <TextField
-                                placeholder='Contact Number'
+                                error={contactNumberError.length != 0 ? true : false}
+                                helperText={contactNumberError.length != 0 ? contactNumberError : ""}
+                                placeholder='Contact Number e.g. 09123456789 or +639123456789'
                                 label="Contact Number"
                                 variant="outlined"
-                                type='tel'
                                 value={contactNumber}
                                 onChange={(e) => {
                                     setContactNumber(e.target.value)
+
+                                    if (!phoneNumberValidation.test(e.target.value) && e.target.value.length != 0) {
+                                        setContactNumberError("Contact number is invalid. Please provide a valid contact number.")
+                                    }
+                                    else {
+                                        setContactNumberError("")
+                                    }
                                 }}
-                                ref={contactNumberRef}
+                                inputRef={contactNumberRef}
                                 style={{ width: '55%', }}
                                 required />
                         </InputContainer>
@@ -289,6 +411,9 @@ const InformationForm = () => {
                                     style={{ textAlign: 'center', }} >Gender</FormLabel>
                                 <RadioGroup
                                     row
+
+                                    error={genderError.length != 0 ? true : false}
+                                    helperText={genderError.length != 0 ? genderError : ""}
                                     aria-labelledby="demo-row-radio-buttons-group-label"
                                     defaultValue="male"
                                     value={gender}
@@ -320,8 +445,10 @@ const InformationForm = () => {
 
                         <InputContainer>
                             <TextField
-                                placeholder='Address'
-                                label="Address"
+                                error={addressError.length != 0 ? true : false}
+                                helperText={addressError.length != 0 ? addressError : ""}
+                                placeholder='Complete Address'
+                                label="Complete Address"
                                 variant="outlined"
                                 type='text'
                                 value={address}
@@ -333,30 +460,28 @@ const InformationForm = () => {
                                 style={{ width: '95%', }}
                                 required />
 
-                            <TextField
-                                placeholder='Special Instruction'
-                                label="Special Instruction"
-                                variant="outlined"
-                                type='textarea'
-                                multiline
-                                rows={4}
-                                style={{ width: '95%', }}
-                                required />
                         </InputContainer>
                         <p><h1 style={{ display: 'inline' }}>Create an account </h1>(optional)*</p>
                         <InputContainer>
                             <TextField
+
+                                error={userNameError.length != 0 ? true : false}
+                                helperText={userNameError.length != 0 ? userNameError : ""}
                                 placeholder='Username'
                                 label="Username"
                                 variant="outlined"
-                                ref={userNameRef}
+                                inputRef={userNameRef}
                                 value={userName}
                                 onChange={(e) => {
                                     setUserName(e.target.value)
+                                    setUserNameError("")
                                 }}
+                                required={password.length != 0 ? true : false}
                                 style={{ width: '55%', }} />
 
                             <TextField
+                                error={passwordError.length != 0 ? true : false}
+                                helperText={passwordError.length != 0 ? passwordError : ""}
                                 placeholder='Password'
                                 label="Password"
                                 type='password'
@@ -364,8 +489,16 @@ const InformationForm = () => {
                                 value={password}
                                 onChange={(e) => {
                                     setPassword(e.target.value)
+                                    if (!passwordValidation.test(e.target.value) && e.target.value.length != 0) {
+                                        setPasswordError("Password must have a minimum of eight characters, at least one letter and one number.")
+                                    }
+                                    else {
+                                        setPasswordError("")
+                                    }
                                 }}
-                                style={{ width: '55%', }} />
+                                style={{ width: '55%', }}
+                                required={userName.length != 0 ? true : false}
+                            />
                         </InputContainer>
 
                         <InputContainer
