@@ -50,12 +50,7 @@ const InformationForm = () => {
         console.log('Done!!!!');
     };
     const [agreement, setAgreement] = useState(false)
-    // const [paymentOption, setPaymentOption] = useState("");
-    // const [displayBanks, setDisplayBanks] = useState("");
-    // const [displayWallets, setDisplayWallets] = useState("");
-    // const [value, setValue] = useState(Date.now());
-    // const bday = new Date(2000, 11, 2,);
-    // const color = "#000";
+    
     const [nationality, setNationality] = useState('Filipino');
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
