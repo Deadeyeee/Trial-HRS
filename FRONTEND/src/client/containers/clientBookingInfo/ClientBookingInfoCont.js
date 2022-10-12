@@ -232,7 +232,7 @@ const ClientBookingInfoCont = () => {
                         </ContainerGlobal>
 
                     </BankTitleContainer>
-                    <BankContentContainer>
+                    <BankContentContainer >
                         <Title
                             family='raleway, sans-serif'
                             weight='400'
@@ -240,7 +240,7 @@ const ClientBookingInfoCont = () => {
                             size='25px'
                             color='#2e2e2e'
                             align='center'
-                            margin='0px 200px'
+                            margin='0px 20px'
                         >
 
                             To confirm your reservation, please make your deposit amounting within the next 24 hours. Please email your proof of payment to <b>(COMPANY EMAIL)</b> or upload it in the PAYMENT TAB section so we can verify the payment. Once your payment has been verified, you will receive a booking confirmation.
@@ -252,7 +252,7 @@ const ClientBookingInfoCont = () => {
                             size='25px'
                             color='#2e2e2e'
                             align='center'
-                            margin='25px 200px'
+                            margin='25px 20px'
                         >
                             For further information, please send an email to (Company email), or <a href='/login'>message us</a> through your account. You will find the details of your reservation made below.
                         </Title>
@@ -558,6 +558,50 @@ const ClientBookingInfoCont = () => {
                                     align='left'
                                 >
                                     : {activeReservation.payment.discount.discountType}
+                                </Title>
+                            </ContainerGlobal>
+                            <ContainerGlobal justify='space-between' gap='70px'>
+                                <Title
+                                    family='raleway, sans-serif'
+                                    weight='700'
+                                    fstyle='Normal'
+                                    size='26px'
+                                    color='#2e2e2e'
+                                    align='left'
+                                >
+                                    <b>Down Payment</b>
+                                </Title>
+                                <Title
+                                    family='raleway, sans-serif'
+                                    weight='700'
+                                    fstyle='Normal'
+                                    size='26px'
+                                    color='red'
+                                    align='left'
+                                >
+                                    : {numberFormat(grandTotal/2)}
+                                </Title>
+                            </ContainerGlobal>
+                            <ContainerGlobal justify='space-between' gap='70px'>
+                                <Title
+                                    family='raleway, sans-serif'
+                                    weight='700'
+                                    fstyle='Normal'
+                                    size='26px'
+                                    color='#2e2e2e'
+                                    align='left'
+                                >
+                                    <b>Full Payment</b>
+                                </Title>
+                                <Title
+                                    family='raleway, sans-serif'
+                                    weight='700'
+                                    fstyle='Normal'
+                                    size='26px'
+                                    color='red'
+                                    align='left'
+                                >
+                                    : {numberFormat(grandTotal)}
                                 </Title>
                             </ContainerGlobal>
                             <ContainerGlobal justify='space-between' gap='70px'>
