@@ -39,10 +39,37 @@ exports.findOne = async (req, res) => {
     return res.status(200).send(payment);
 };
 
-exports.update = async (req, res) => {
+exports.updatePhoto = async (req, res) => {
     try {
+        
         let info = {
             paymentImage: req.file.path,
+            // paymentMade: req.body.paymentMade,
+            // grandTotal: req.body.grandTotal,
+            // balance: req.body.balance,
+            // discountValid: req.body.discountValid,
+            // paymentType: req.body.paymentType,
+            // paymentStatus: req.body.paymentStatus,
+            // paymentMode_id: req.body.paymentMode_id,
+            // discount_id: req.body.discount_id,
+
+        }
+        await Payment.update(info, {
+            where: {
+                id: req.params.id,
+            },
+        });
+        return res.status(200).send("Payment information updated successfully");
+    } catch (error) {
+        return res.status(400).send(error.message);
+    }
+};
+
+exports.update = async (req, res) => {
+    try {
+        
+        let info = {
+            // paymentImage: req.file.path,
             paymentMade: req.body.paymentMade,
             grandTotal: req.body.grandTotal,
             balance: req.body.balance,

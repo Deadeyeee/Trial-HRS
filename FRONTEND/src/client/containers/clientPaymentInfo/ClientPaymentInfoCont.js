@@ -84,7 +84,7 @@ const ClientPaymentInfoCont = () => {
                     filePath: activeReservation.payment.paymentImage,
                 }).then((result) => {
                     console.log(result.data)
-                    axios.patch('http://localhost:3001/api/updatePayment/' + activeReservation.payment.id, formData).then((result) => {
+                    axios.patch('http://localhost:3001/api/updatePaymentPhoto/' + activeReservation.payment.id, formData).then((result) => {
                         console.log(result.data)
                         window.location.reload()
                     }).catch((err) => {
@@ -98,7 +98,7 @@ const ClientPaymentInfoCont = () => {
             }
             else {
                 console.log(activeReservation.payment.paymentImage)
-                axios.patch('http://localhost:3001/api/updatePayment/' + activeReservation.payment.id, formData).then((result) => {
+                axios.patch('http://localhost:3001/api/updatePaymentPhoto/' + activeReservation.payment.id, formData).then((result) => {
                     console.log(result.data)
                     window.location.reload()
                 }).catch((err) => {
