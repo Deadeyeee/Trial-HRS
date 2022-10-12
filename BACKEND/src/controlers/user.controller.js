@@ -6,7 +6,15 @@ const config = require('../../config/auth.config');
 const jwt = require('jsonwebtoken');
 const path = require('path')
 const bcrypt = require('bcrypt');
+const ReservationSummary = db.reservationSummary;
+
 // import Logo from "../../../FRONTEND/src/images/logo.png";
+const numberFormat = (value) =>
+    new Intl.NumberFormat('en-IN', {
+        style: 'currency',
+        currency: 'PHP'
+    }).format(value);
+
 
 exports.create = async (req, res) => {
     try {
@@ -21,9 +29,9 @@ exports.create = async (req, res) => {
 };
 
 
-exports.resendEmail = async(req, res) =>{
+exports.resendEmail = async (req, res) => {
     try {
-        
+
         let token = jwt.sign(
             { id: req.body.id },
             config.auth.secret,
@@ -31,49 +39,124 @@ exports.resendEmail = async(req, res) =>{
                 expiresIn: 200,
             }
         );
-            const url = 'http://localhost:3000/registered/' + token;
+        const url = 'http://localhost:3000/registered/' + token;
 
-            EmailAuto.transporter.use('compile', hbs({
-                viewEngine:{
-                    extName: ".handlebars",
-                    parialsDir: path.resolve('./src/views'),
-                    defaultLayout: false,
-                  },
-                  viewPath: path.resolve('./src/views'),
-                  extName: ".handlebars",
-            }));
-    
-            let info = {
-                from: '"RM Luxe Hotel" "<Rm.LuxeHotel@gmail.com>"', // sender address
-                to: req.body.email,
-                subject: "Email Confirmation", // Subject line
-                template: 'email',
-                context: {
-                    userName: req.body.userName,
-                    link: url,
-                    logo: "cid:logo",
-                },
-                attachments: [{
-                    filename: 'logo.png',
-                    path: './src/controlers/logo.png',
-                    cid: 'logo' }]
-            };
-            EmailAuto.transporter.sendMail(info);
+        EmailAuto.transporter.use('compile', hbs({
+            viewEngine: {
+                extName: ".handlebars",
+                parialsDir: path.resolve('./src/views'),
+                defaultLayout: false,
+            },
+            viewPath: path.resolve('./src/views'),
+            extName: ".handlebars",
+        }));
 
-            return res.status(200).send("mail sent");
-        
-        
+        let info = {
+            from: '"RM Luxe Hotel" "<Rm.LuxeHotel@gmail.com>"', // sender address
+            to: req.body.email,
+            subject: "Email Confirmation", // Subject line
+            template: 'email',
+            context: {
+                userName: req.body.userName,
+                link: url,
+                logo: "cid:logo",
+            },
+            attachments: [{
+                filename: 'logo.png',
+                path: './src/controlers/logo.png',
+                cid: 'logo'
+            }]
+        };
+        EmailAuto.transporter.sendMail(info);
+
+        return res.status(200).send("mail sent");
+
+
     } catch (error) {
-        
+
         return res.status(400).send(error.message);
     }
 }
 
+exports.sendReservationEmail = async (req, res) => {
 
-
-exports.resetPassword = async(req, res) =>{
     try {
-        
+        EmailAuto.transporter.use('compile', hbs({
+            viewEngine: {
+                extName: ".handlebars",
+                parialsDir: path.resolve('./src/views'),
+                defaultLayout: false,
+                helpers: {
+                    amountDue: (nights, amount) => numberFormat(nights * amount),
+                    dateFormat: (date) => new Date(date).toLocaleDateString(),
+                    timeFormat: (date) => new Date(date).toLocaleTimeString(),
+                    numberFormat: (value) => numberFormat(value),
+                }
+            },
+            viewPath: path.resolve('./src/views'),
+            extName: ".handlebars",
+        }));
+
+        let info;
+
+        if (req.body.reservationStatus == 'PENDING') {
+
+            const reservationSummary = await ReservationSummary.findAll(
+                {
+                    where: { reservation_id: req.body.reservationId },
+                    include: { all: true, nested: true },
+                }
+            );
+            // console.log("reservationSummary", reservationSummary)
+            info = {
+                from: '"RM Luxe Hotel" "<Rm.LuxeHotel@gmail.com>"', // sender address
+                to: req.body.email,
+                subject: "Reservation Update", // Subject line
+                template: 'reservationConfirmation',
+                context: {
+                    firstName: req.body.firstName,
+                    accountName: req.body.accountName,
+                    accountNumber: req.body.accountNumber,
+                    payment: req.body.payment,
+                    reservationNumber: req.body.reservationNumber,
+                    paymentType: req.body.paymentType,
+                    lastName: req.body.lastName,
+                    reservationDate: req.body.reservationDate,
+                    paymentMode: req.body.paymentMode,
+                    birthDay: req.body.birthDay,
+                    nationality: req.body.nationality,
+                    emailAddress: req.body.emailAddress,
+                    address: req.body.address,
+                    contactNumber: req.body.contactNumber,
+                    reservedRooms: reservationSummary,
+                    isNonUser: req.body.role == 'NON-USER' ? true : false,
+                    isDownPayment: req.body.paymentType == 'Down Payment' ? true : false,
+
+                    logo: "cid:logo",
+                },
+                attachments: [{
+                    filename: 'logo.png',
+                    path: './src/controlers/logo.png',
+                    cid: 'logo'
+                }]
+            };
+        }
+
+        EmailAuto.transporter.sendMail(info);
+
+        return res.status(200).send("mail sent");
+    } catch (error) {
+        return res.status(400).send(error.message);
+    }
+
+
+
+}
+
+
+exports.resetPassword = async (req, res) => {
+    try {
+
         let token = jwt.sign(
             { id: req.body.id },
             config.auth.secret,
@@ -81,40 +164,42 @@ exports.resetPassword = async(req, res) =>{
                 expiresIn: 200,
             }
         );
-            const url = 'http://localhost:3000/newPassword/' + token;
 
-            EmailAuto.transporter.use('compile', hbs({
-                viewEngine:{
-                    extName: ".handlebars",
-                    parialsDir: path.resolve('./src/views'),
-                    defaultLayout: false,
-                  },
-                  viewPath: path.resolve('./src/views'),
-                  extName: ".handlebars",
-            }));
-    
-            let info = {
-                from: '"RM Luxe Hotel" "<Rm.LuxeHotel@gmail.com>"', // sender address
-                to: req.body.email,
-                subject: "REQ: Password Reset", // Subject line
-                template: 'resetPassword',
-                context: {
-                    userName: req.body.userName,
-                    link: url,
-                    logo: "cid:logo",
-                },
-                attachments: [{
-                    filename: 'logo.png',
-                    path: './src/controlers/logo.png',
-                    cid: 'logo' }]
-            };
-            EmailAuto.transporter.sendMail(info);
+        const url = 'http://localhost:3000/newPassword/' + token;
 
-            return res.status(200).send("mail sent");
-        
-        
+        EmailAuto.transporter.use('compile', hbs({
+            viewEngine: {
+                extName: ".handlebars",
+                parialsDir: path.resolve('./src/views'),
+                defaultLayout: false,
+            },
+            viewPath: path.resolve('./src/views'),
+            extName: ".handlebars",
+        }));
+
+        let info = {
+            from: '"RM Luxe Hotel" "<Rm.LuxeHotel@gmail.com>"', // sender address
+            to: req.body.email,
+            subject: "REQ: Password Reset", // Subject line
+            template: 'resetPassword',
+            context: {
+                userName: req.body.userName,
+                link: url,
+                logo: "cid:logo",
+            },
+            attachments: [{
+                filename: 'logo.png',
+                path: './src/controlers/logo.png',
+                cid: 'logo'
+            }]
+        };
+        EmailAuto.transporter.sendMail(info);
+
+        return res.status(200).send("mail sent");
+
+
     } catch (error) {
-        
+
         return res.status(400).send(error.message);
     }
 }
@@ -131,9 +216,12 @@ exports.findOne = async (req, res) => {
 
 exports.update = async (req, res) => {
     try {
-        let user = req.body;
-        const hash = await bcrypt.hash(user.password, 10);
-        user.password = hash;
+        // let user = req.body;
+        // if (user.password != null) {
+        //     const hash = await bcrypt.hash(user.password, 10);
+        //     user.password = hash;
+        // }
+        // console.log(user.password)
         await User.update(req.body, {
             where: {
                 id: req.params.id,

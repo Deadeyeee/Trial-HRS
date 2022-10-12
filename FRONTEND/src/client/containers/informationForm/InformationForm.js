@@ -50,7 +50,7 @@ const InformationForm = () => {
         console.log('Done!!!!');
     };
     const [agreement, setAgreement] = useState(false)
-    
+
     const [nationality, setNationality] = useState('Filipino');
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
@@ -106,7 +106,9 @@ const InformationForm = () => {
 
     useEffect(() => {
         axios.get('http://localhost:3001/auth/verify-token').then((result) => {
-            window.location = '/billingSummary'
+            if(result.data.role != 'NON-USER'){
+                window.location = '/billingSummary'
+            }
         }).catch((err) => {
 
         });
@@ -240,29 +242,37 @@ const InformationForm = () => {
     }
 
     useEffect(() => {
-        axios.get('http://localhost:3001/api/getAllUsers').then((res) => {
-            if (res.data.length != 0) {
-                res.data.map((item) => {
-                    if (item.role != 'NON-USER') {
-                        if (item.email.toLowerCase() == email.toLowerCase()) {
-                            setEmailError("This email is already taken.")
+        if (userName.length != 0 || password.length != 0) {
+            axios.get('http://localhost:3001/api/getAllUsers').then((res) => {
+                if (res.data.length != 0) {
+                    res.data.map((item) => {
+                        if (item.role != 'NON-USER') {
+                            if (item.email.toLowerCase() == email.toLowerCase()) {
+                                setEmailError("This email is already taken.")
+                            }
+                            else if (item.contactNumber == contactNumber) {
+                                setContactNumberError("This number is already taken.")
+
+                            }
+                            else if (item.userName.toLowerCase() == userName.toLowerCase()) {
+                                setUserNameError("This userName is already taken.")
+
+                            }
                         }
-                        else if (item.contactNumber == contactNumber) {
-                            setContactNumberError("This number is already taken.")
 
-                        }
-                        else if (item.userName.toLowerCase() == userName.toLowerCase()) {
-                            setUserNameError("This userName is already taken.")
+                    })
+                }
+            }).catch((err) => {
 
-                        }
-                    }
+            });
+        }
+        else{
+                                setContactNumberError("")
+                                setUserNameError("")
+                                setEmailError("")
 
-                })
-            }
-        }).catch((err) => {
-
-        });
-    }, [userName, email, contactNumber])
+        }
+    }, [userName, email, contactNumber, password])
     return (
         <Container>
             <ContainerChild>
@@ -279,7 +289,7 @@ const InformationForm = () => {
                                 variant="outlined"
                                 value={firstName}
                                 onChange={(e) => {
-                                    setFirstName(e.target.value)
+                                    setFirstName(e.target.value.toLocaleLowerCase())
                                     if (!letters.test(e.target.value) && e.target.value.length != 0) {
                                         setFirstNameError("Invalid first name. Please type letters only.")
                                     }
@@ -299,7 +309,7 @@ const InformationForm = () => {
                                 inputRef={lastNameRef}
                                 value={lastName}
                                 onChange={(e) => {
-                                    setLastName(e.target.value)
+                                    setLastName(e.target.value.toLocaleLowerCase())
                                     if (!letters.test(e.target.value) && e.target.value.length != 0) {
                                         setLastNameError("Invalid last name. Please type letters only.")
                                     }

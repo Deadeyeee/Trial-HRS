@@ -78,4 +78,5 @@ app.use('/api', usedServices);
 
 //static image 
 app.use('/src/Images/Rooms',express.static('src/Images/Rooms'))
+app.use('/src/Images/PaymentReciept',express.static('src/Images/PaymentReciept'))
 

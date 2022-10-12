@@ -31,9 +31,13 @@ module.exports = (sequelize, DataTypes, Sequelize) => {
             allowNull: false,
         },
         paymentStatus: {
-            type: DataTypes.ENUM(['paid', 'reserved', 'pending', 'cancelled']),
+            type: DataTypes.ENUM(['fully paid', 'partial', 'pending', 'cancelled']),
             defaultValue: 'pending',
             allowNull: false,
+        },
+        paymentImage: {
+            type: DataTypes.STRING,
+            allowNull: true,
         },
     },
     {

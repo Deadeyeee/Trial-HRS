@@ -6,6 +6,7 @@ export const Container = styled(motion.div)`
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    margin-bottom: 30px;
 `;
 
 export const PhotoBox = styled(motion.div)`

@@ -44,7 +44,7 @@ function ForgotPasswordCont() {
         Axios.get('http://localhost:3001/api/getAllUsers/').then((res) => {
 
             for (let i = 0; i < res.data.length; i++) {
-                if (res.data[i].email == email) {
+                if (res.data[i].email == email && res.data.role != 'NON-USER') {
 
                     Axios.post('http://localhost:3001/api/resetPassword', {
                         id: res.data[i].id,

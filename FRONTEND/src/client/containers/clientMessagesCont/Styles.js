@@ -25,8 +25,8 @@ export const MainContainer = styled(motion.div)`
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
-    width: 75%;
-    background-color: #DFD3B9;
+    width: 95%;
+    /* background-color: #DFD3B9; */
     border: 2px solid #8B8B8B;
     height: ${(props) => (props.height ? props.height : "500px")};;
 `;

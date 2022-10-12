@@ -21,7 +21,8 @@ exports.findAll = async (req, res) => {
 };
 
 exports.findOne = async (req, res) => {
-    const reservationSummary = await ReservationSummary.findByPk(req.params.id);
+    const reservationSummary = await ReservationSummary.findByPk(req.params.id, 
+        { include: { all: true, nested: true } });
     return res.status(200).send(reservationSummary);
 };
 
