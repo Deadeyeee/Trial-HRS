@@ -18,7 +18,7 @@ export const ProfileContent = styled(motion.div)`
     display: flex;
     flex-direction: column;
     margin: 40px 50px;
-    gap: 5px;
+    gap: 30px;
 `;
 
 export const ProfileInformationContent = styled(motion.div)`

@@ -1,3 +1,4 @@
+const { paymentMode, discount } = require("../models");
 const db = require("../models");
 const Payment = db.payment;
 // import Logo from "../../../FRONTEND/src/images/logo.png";
@@ -14,12 +15,20 @@ exports.create = async (req, res) => {
 };
 
 exports.findAll = async (req, res) => {
-    const payment = await Payment.findAll();
+    const payment = await Payment.findAll(
+        { include: [
+            {model: paymentMode},
+            {model: discount}
+        ] });
     return res.status(200).send(payment);
 };
 
 exports.findOne = async (req, res) => {
-    const payment = await Payment.findByPk(req.params.id);
+    const payment = await Payment.findByPk(req.params.id, 
+        { include: [
+            {model: paymentMode},
+            {model: discount}
+        ] });
     return res.status(200).send(payment);
 };
 

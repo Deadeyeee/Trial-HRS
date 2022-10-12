@@ -54,6 +54,13 @@ export const BookingPageCont = () => {
 
 
     }, [bookFilter])
+
+    useEffect(() => {
+        if (window.sessionStorage.getItem('AvailedRoom') != null) {
+            setBookedRooms(JSON.parse(window.sessionStorage.getItem('AvailedRoom')))
+        }
+    },[])
+
     useEffect(() => {
         if (bookedRooms != null) {
             console.log("MASAYANG BUHAY", bookedRooms)

@@ -35,6 +35,10 @@ module.exports = (sequelize, DataTypes, Sequelize) => {
             defaultValue: 'pending',
             allowNull: false,
         },
+        paymentImage: {
+            type: DataTypes.STRING,
+            allowNull: true,
+        },
     },
     {
         timestamps: true,

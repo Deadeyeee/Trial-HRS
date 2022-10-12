@@ -10,7 +10,7 @@ import { ContainerGlobal } from '../../../admin/components/container/container';
 import Button from '@mui/material/Button';
 import { styled } from '@mui/material/styles';
 import { HorizontalLine } from '../../components/horizontalLine/HorizontalLine';
-import { Button as Button2 } from '../../components/button/styles';
+import { Button2 } from '../../components/button/styles';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import axios from 'axios'
 import * as moment from 'moment';
@@ -95,7 +95,7 @@ const BillingSummaryContainer = () => {
             axios.get('http://localhost:3001/api/getAllGuest').then((guest) => {
                 console.log(guest.data)
                 guest.data.map((item) => {
-                    if (response.data.id == item.user_id) {
+                    if (response.data.id == item.user_id && response.data.role != 'NON-USER') {
                         setUserInformation(item);
                     }
                 })
@@ -208,117 +208,518 @@ const BillingSummaryContainer = () => {
     const createReservation = () => {
         console.log(discountId)
         console.log(paymentModeId)
-        getNotAvailableRoom()
+        getNotAvailableRoom();
 
 
-        for (let l = 0; l < bookingInformation.length; l++) {
 
-            for (let m = 0; m < bookingInformation[l].roomID.length; m++) {
-                if (notAvailableRoom.includes(bookingInformation[l].roomID[m])) {
-                    window.sessionStorage.clear();
-                    window.location = '/booking'
-                }
-                else {
-                    axios.post("http://localhost:3001/api/addUser", {
-                        contactNumber: window.sessionStorage.getItem('contactNumber'),
-                        email: window.sessionStorage.getItem('email'),
-                        role: "NON-USER"
-                    }).then((user) => {
-                        console.log(user.data)
-                        axios.post("http://localhost:3001/api/addGuest", {
-                            user_id: user.data.account.id,
-                            firstName: window.sessionStorage.getItem('firstName'),
-                            lastName: window.sessionStorage.getItem('lastName'),
-                            birthDate: window.sessionStorage.getItem('birthday'),
-                            gender: window.sessionStorage.getItem('gender'),
-                            address: window.sessionStorage.getItem('address'),
-                            nationality: window.sessionStorage.getItem('nationality'),
-                        }).then((guest) => {
-                            console.log(guest.data)
-                            axios.post("http://localhost:3001/api/addPayment", {
-                                paymentMade: 0,
-                                discount_id: discountId,
-                                paymentMode_id: paymentModeId,
-                            }).then((payment) => {
-                                console.log(payment.data)
-                                axios.post("http://localhost:3001/api/addReservation", {
-                                    reservationDate: reservationDate,
-                                    guest_id: guest.data.new_guest.id,
-                                    reservationReferenceNumber: Math.random().toString(36).slice(2),
-                                    payment_id: payment.data.new_payment.id
-                                }).then((reservation) => {
-                                    console.log(reservation.data)
+        if (userInformation.length == 0) {
+            axios.post("http://localhost:3001/api/addUser", {
 
-                                    for (let index = 0; index < bookingInformation.length; index++) {
-                                        bookingInformation[index].roomID.map((value) => {
-                                            let items = {
-                                                checkInDate: bookingInformation[index].checkIn,
-                                                checkOutDate: bookingInformation[index].checkOut,
-                                                kids: bookingInformation[index].kid,
-                                                adults: bookingInformation[index].adult,
-                                                numberOfNights: bookingInformation[index].nights,
-                                                reservation_id: reservation.data.new_reservation.id,
-                                                room_id: value,
-                                                specialInstrcution: bookingInformation[index].specialInstruction,
+                contactNumber: window.sessionStorage.getItem('contactNumber'),
+                email: window.sessionStorage.getItem('email').toLocaleLowerCase(),
+                role: "NON-USER",
 
-                                                // numberOfAdults:
-                                                // numberOfKids:
-                                            }
-                                            axios.post("http://localhost:3001/api/addReservationSummary", items).then((reservationSummary) => {
+            }).then((user) => {
+                console.log(user.data)
+                axios.post("http://localhost:3001/api/addGuest", {
+                    user_id: user.data.account.id,
+                    firstName: window.sessionStorage.getItem('firstName').toLocaleLowerCase(),
+                    lastName: window.sessionStorage.getItem('lastName').toLocaleLowerCase(),
+                    birthDate: window.sessionStorage.getItem('birthday'),
+                    gender: window.sessionStorage.getItem('gender'),
+                    address: window.sessionStorage.getItem('address'),
+                    nationality: window.sessionStorage.getItem('nationality').toLocaleLowerCase(),
+                }).then((guest) => {
+                    console.log(guest.data)
+                    axios.post("http://localhost:3001/api/addPayment", {
+                        paymentMade: 0,
+                        discount_id: discountId,
+                        paymentMode_id: paymentModeId,
+                        paymentType: typeOfPayment,
+                        grandTotal: 0,
+                        balance: 0,
+                    }).then((payment) => {
+                        console.log(payment.data)
+                        axios.post("http://localhost:3001/api/addReservation", {
+                            reservationDate: reservationDate,
+                            guest_id: guest.data.new_guest.id,
+                            reservationReferenceNumber: Math.random().toString(36).slice(2),
+                            payment_id: payment.data.new_payment.id
+                        }).then((reservation) => {
+                            console.log(reservation.data.new_reservation.reservationReferenceNumber + guest.data.new_guest.lastName)
+                            axios.patch('http://localhost:3001/api/updateUsers/' + user.data.account.id, {
+                                password: reservation.data.new_reservation.reservationReferenceNumber + guest.data.new_guest.lastName,
+                                userName: reservation.data.new_reservation.reservationReferenceNumber,
+                            }).then((patchUser) => {
+                                console.log(patchUser.data)
+                            }).catch((err) => {
+                                console.log(err)
+                            });
+                            console.log(reservation.data)
+                            for (let index = 0; index < bookingInformation.length; index++) {
+                                bookingInformation[index].roomID.map((value) => {
+                                    if (notAvailableRoom.includes(value)) {
+                                        axios.delete('http://localhost:3001/api/deleteReservation/' + reservation.data.new_reservation.id).then((result) => {
+                                            console.log(result)
+                                            axios.delete('http://localhost:3001/api/deletePayment/' + payment.data.new_payment.id).then((result) => {
+                                                console.log(result)
+                                                axios.delete('http://localhost:3001/api/deleteGuest/' + guest.data.new_guest.id).then((result) => {
+                                                    console.log(result)
+                                                    axios.delete('http://localhost:3001/api/deleteUser/' + user.data.account.id).then((result) => {
+                                                        console.log(result)
+                                                        window.sessionStorage.clear();
+                                                        window.location = '/booking'
+                                                    }).catch((err) => {
+                                                        console.log(err)
+                                                    });
+                                                }).catch((err) => {
+                                                    console.log(err)
+                                                });
+                                            }).catch((err) => {
+                                                console.log(err)
+                                            });
+                                        }).catch((err) => {
+                                            console.log(err)
+                                        });
+                                    }
+                                    else {
+                                        let items = {
+                                            checkInDate: bookingInformation[index].checkIn,
+                                            checkOutDate: bookingInformation[index].checkOut,
+                                            kids: bookingInformation[index].kid,
+                                            adults: bookingInformation[index].adult,
+                                            numberOfNights: bookingInformation[index].nights,
+                                            reservation_id: reservation.data.new_reservation.id,
+                                            room_id: value,
+                                            specialInstrcution: bookingInformation[index].specialInstruction,
 
+                                            // numberOfAdults:
+                                            // numberOfKids:
+                                        }
+                                        axios.post("http://localhost:3001/api/addReservationSummary", items).then((reservationSummary) => {
+
+                                            axios.get("http://localhost:3001/api/getReservationSummary/" + reservationSummary.data.new_reservationSummary.id).then((getreservationSummary) => {
+
+                                                axios.get('http://localhost:3001/api/getPayment/' + payment.data.new_payment.id).then((getPayment) => {
+
+                                                    console.log(getPayment.data)
+
+                                                    axios.patch('http://localhost:3001/api/updatePayment/' + payment.data.new_payment.id, {
+
+                                                        grandTotal: parseFloat(getPayment.data.grandTotal) + parseFloat(getreservationSummary.data.numberOfNights * getreservationSummary.data.room.roomType.roomRate),
+                                                        balance: (parseFloat(getPayment.data.grandTotal) + parseFloat(getreservationSummary.data.numberOfNights * getreservationSummary.data.room.roomType.roomRate)) - parseFloat(getPayment.data.paymentMade),
+                                                    }).then((result) => {
+                                                        console.log(result)
+                                                        if (index == bookingInformation.length - 1) {
+                                                            axios.post('http://localhost:3001/api/sendReservationEmail', {
+                                                                email: user.data.account.email.toLocaleLowerCase(),
+                                                                birthDay: guest.data.new_guest.birthDate,
+                                                                nationality: guest.data.new_guest.nationality.toLocaleLowerCase(),
+                                                                emailAddress: user.data.account.email.toLocaleLowerCase(),
+                                                                address: guest.data.new_guest.address,
+                                                                contactNumber: user.data.account.contactNumber,
+                                                                firstName: guest.data.new_guest.firstName.toLocaleLowerCase(),
+                                                                lastName: guest.data.new_guest.lastName.toLocaleLowerCase(),
+                                                                reservationStatus: reservation.data.new_reservation.reservationStatus,
+                                                                accountName: getPayment.data.paymentMode.accountName,
+                                                                accountNumber: getPayment.data.paymentMode.accountNumber,
+                                                                paymentType: getPayment.data.paymentType,
+                                                                paymentMode: getPayment.data.paymentMode.paymentMode,
+                                                                reservationNumber: reservation.data.new_reservation.reservationReferenceNumber,
+                                                                reservationDate: new Date(reservation.data.new_reservation.reservationDate).toLocaleDateString() + " " + new Date(reservation.data.new_reservation.reservationDate).toLocaleTimeString(),
+                                                                reservationId: reservation.data.new_reservation.id,
+                                                                role: user.data.account.role,
+                                                                // payment: ,
+                                                                // reservedRooms: ,
+                                                            }).then((result) => {
+                                                                console.log(result)
+                                                                console.log(reservationSummary.data)
+                                                                window.sessionStorage.clear();
+                                                                window.location = '/booking/confirmation/' + reservation.data.new_reservation.id;
+                                                            }).catch((err) => {
+                                                                console.log(err)
+
+                                                            });
+                                                        }
+
+                                                    }).catch((err) => {
+                                                        axios.delete('http://localhost:3001/api/deleteReservationSummary/' + reservationSummary.data.new_reservationSummary.id).then((result) => {
+                                                            console.log(result)
+                                                            axios.delete('http://localhost:3001/api/deleteReservation/' + reservation.data.new_reservation.id).then((result) => {
+                                                                console.log(result)
+                                                                axios.delete('http://localhost:3001/api/deletePayment/' + payment.data.new_payment.id).then((result) => {
+                                                                    console.log(result)
+                                                                    axios.delete('http://localhost:3001/api/deleteGuest/' + guest.data.new_guest.id).then((result) => {
+                                                                        console.log(result)
+                                                                        axios.delete('http://localhost:3001/api/deleteUser/' + user.data.account.id).then((result) => {
+
+                                                                            console.log(result)
+
+                                                                        }).catch((err) => {
+                                                                            console.log(err)
+                                                                        });
+                                                                    }).catch((err) => {
+                                                                        console.log(err)
+                                                                    });
+                                                                }).catch((err) => {
+                                                                    console.log(err)
+                                                                });
+                                                            }).catch((err) => {
+                                                                console.log(err)
+                                                            });
+                                                        }).catch((err) => {
+                                                            console.log(err)
+                                                        });
+
+
+                                                    });
+                                                }).catch((err) => {
+                                                    console.log(err)
+                                                    axios.delete('http://localhost:3001/api/deleteReservationSummary/' + reservationSummary.data.new_reservationSummary.id).then((result) => {
+                                                        console.log(result)
+                                                        axios.delete('http://localhost:3001/api/deleteReservation/' + reservation.data.new_reservation.id).then((result) => {
+                                                            console.log(result)
+                                                            axios.delete('http://localhost:3001/api/deletePayment/' + payment.data.new_payment.id).then((result) => {
+                                                                console.log(result)
+                                                                axios.delete('http://localhost:3001/api/deleteGuest/' + guest.data.new_guest.id).then((result) => {
+                                                                    console.log(result)
+                                                                    axios.delete('http://localhost:3001/api/deleteUser/' + user.data.account.id).then((result) => {
+
+                                                                        console.log(result)
+
+                                                                    }).catch((err) => {
+                                                                        console.log(err)
+                                                                    });
+                                                                }).catch((err) => {
+                                                                    console.log(err)
+                                                                });
+                                                            }).catch((err) => {
+                                                                console.log(err)
+                                                            });
+                                                        }).catch((err) => {
+                                                            console.log(err)
+                                                        });
+                                                    }).catch((err) => {
+                                                        console.log(err)
+                                                    });
+                                                });
+                                            }).catch((err) => {
+                                                axios.delete('http://localhost:3001/api/deleteReservationSummary/' + reservationSummary.data.new_reservationSummary.id).then((result) => {
+                                                    console.log(result)
+                                                    axios.delete('http://localhost:3001/api/deleteReservation/' + reservation.data.new_reservation.id).then((result) => {
+                                                        console.log(result)
+                                                        axios.delete('http://localhost:3001/api/deletePayment/' + payment.data.new_payment.id).then((result) => {
+                                                            console.log(result)
+                                                            axios.delete('http://localhost:3001/api/deleteGuest/' + guest.data.new_guest.id).then((result) => {
+                                                                console.log(result)
+                                                                axios.delete('http://localhost:3001/api/deleteUser/' + user.data.account.id).then((result) => {
+
+                                                                    console.log(result)
+
+                                                                }).catch((err) => {
+                                                                    console.log(err)
+                                                                });
+                                                            }).catch((err) => {
+                                                                console.log(err)
+                                                            });
+                                                        }).catch((err) => {
+                                                            console.log(err)
+                                                        });
+                                                    }).catch((err) => {
+                                                        console.log(err)
+                                                    });
+                                                }).catch((err) => {
+                                                    console.log(err)
+                                                });
+                                            });
+
+                                        }).catch((err) => {
+                                            console.log(err)
+                                            axios.delete('http://localhost:3001/api/deleteReservation/' + reservation.data.new_reservation.id).then((result) => {
+                                                console.log(result)
+                                                axios.delete('http://localhost:3001/api/deletePayment/' + payment.data.new_payment.id).then((result) => {
+                                                    console.log(result)
+                                                    axios.delete('http://localhost:3001/api/deleteGuest/' + guest.data.new_guest.id).then((result) => {
+                                                        console.log(result)
+                                                        axios.delete('http://localhost:3001/api/deleteUser/' + user.data.account.id).then((result) => {
+                                                            console.log(result)
+                                                        }).catch((err) => {
+                                                            console.log(err)
+                                                        });
+                                                    }).catch((err) => {
+                                                        console.log(err)
+                                                    });
+                                                }).catch((err) => {
+                                                    console.log(err)
+                                                });
+                                            }).catch((err) => {
+                                                console.log(err)
+                                            });
+
+                                        });
+                                    }
+                                })
+
+
+                            }
+
+                        }).catch((err) => {
+                            console.log(err)
+                            axios.delete('http://localhost:3001/api/deletePayment/' + payment.data.new_payment.id).then((result) => {
+                                console.log(result)
+                                axios.delete('http://localhost:3001/api/deleteGuest/' + guest.data.new_guest.id).then((result) => {
+                                    console.log(result)
+                                    axios.delete('http://localhost:3001/api/deleteUser/' + user.data.account.id).then((result) => {
+                                        console.log(result)
+                                    }).catch((err) => {
+                                        console.log(err)
+                                    });
+                                }).catch((err) => {
+                                    console.log(err)
+                                });
+                            }).catch((err) => {
+                                console.log(err)
+                            });
+
+                        });
+                    }).catch((err) => {
+                        console.log(err)
+                        axios.delete('http://localhost:3001/api/deleteGuest/' + guest.data.new_guest.id).then((result) => {
+                            console.log(result)
+                            axios.delete('http://localhost:3001/api/deleteUser/' + user.data.account.id).then((result) => {
+                                console.log(result)
+                            }).catch((err) => {
+                                console.log(err)
+                            });
+                        }).catch((err) => {
+                            console.log(err)
+                        });
+
+                    });
+
+
+                }).catch((err) => {
+                    console.log(err.result)
+                    axios.delete('ttp://localhost:3001/api/deleteUser/' + user.data.account.id)
+                });
+            }).catch((err) => {
+                console.log(err.result)
+            });
+
+
+        }
+        else {
+
+            axios.post("http://localhost:3001/api/addPayment", {
+                paymentMade: 0,
+                discount_id: discountId,
+                paymentMode_id: paymentModeId,
+                paymentType: typeOfPayment,
+                grandTotal: 0,
+                balance: 0,
+            }).then((payment) => {
+                console.log(payment.data)
+                axios.post("http://localhost:3001/api/addReservation", {
+                    reservationDate: reservationDate,
+                    guest_id: userInformation.id,
+                    reservationReferenceNumber: Math.random().toString(36).slice(2),
+                    payment_id: payment.data.new_payment.id,
+                }).then((reservation) => {
+                    console.log(reservation.data)
+                    for (let index = 0; index < bookingInformation.length; index++) {
+                        bookingInformation[index].roomID.map((value) => {
+                            if (notAvailableRoom.includes(value)) {
+                                axios.delete('http://localhost:3001/api/deleteReservation/' + reservation.data.new_reservation.id).then((result) => {
+                                    console.log(result)
+                                    axios.delete('http://localhost:3001/api/deletePayment/' + payment.data.new_payment.id).then((result) => {
+                                        console.log(result)
+                                        window.sessionStorage.clear();
+                                        window.location = '/booking'
+                                    }).catch((err) => {
+                                        console.log(err)
+                                    });
+                                }).catch((err) => {
+                                    console.log(err)
+                                });
+                            }
+                            else {
+                                let items = {
+                                    checkInDate: bookingInformation[index].checkIn,
+                                    checkOutDate: bookingInformation[index].checkOut,
+                                    kids: bookingInformation[index].kid,
+                                    adults: bookingInformation[index].adult,
+                                    numberOfNights: bookingInformation[index].nights,
+                                    reservation_id: reservation.data.new_reservation.id,
+                                    room_id: value,
+                                    specialInstrcution: bookingInformation[index].specialInstruction,
+
+                                    // numberOfAdults:
+                                    // numberOfKids:
+                                }
+                                axios.post("http://localhost:3001/api/addReservationSummary", items).then((reservationSummary) => {
+                                    console.log(reservationSummary.data)
+
+
+                                    axios.get("http://localhost:3001/api/getReservationSummary/" + reservationSummary.data.new_reservationSummary.id).then((getreservationSummary) => {
+                                        console.log(getreservationSummary.data)
+
+                                        axios.get('http://localhost:3001/api/getPayment/' + payment.data.new_payment.id).then((getPayment) => {
+                                            console.log('grandTotal', getPayment.data.grandTotal)
+                                            axios.patch('http://localhost:3001/api/updatePayment/' + payment.data.new_payment.id, {
+                                                grandTotal: parseFloat(getPayment.data.grandTotal) + parseFloat(getreservationSummary.data.numberOfNights * getreservationSummary.data.room.roomType.roomRate),
+                                                balance: (parseFloat(getPayment.data.grandTotal) + parseFloat(getreservationSummary.data.numberOfNights * getreservationSummary.data.room.roomType.roomRate)) - parseFloat(getPayment.data.paymentMade),
+                                            }).then((result) => {
+                                                console.log(result)
                                                 if (index == bookingInformation.length - 1) {
-                                                    console.log(reservationSummary.data)
-                                                    window.sessionStorage.clear();
-                                                    window.location = '/booking/confirmation/' + reservation.data.new_reservation.id;
+                                                    axios.post('http://localhost:3001/api/sendReservationEmail', {
+                                                        email: userInformation.user.email.toLocaleLowerCase(),
+                                                        birthDay: userInformation.birthDate,
+                                                        nationality: userInformation.nationality.toLocaleLowerCase(),
+                                                        emailAddress: userInformation.user.email.toLocaleLowerCase(),
+                                                        address: userInformation.address,
+                                                        contactNumber: userInformation.user.contactNumber,
+                                                        firstName: userInformation.firstName.toLocaleLowerCase(),
+                                                        lastName: userInformation.lastName.toLocaleLowerCase(),
+                                                        reservationStatus: reservation.data.new_reservation.reservationStatus,
+                                                        accountName: getPayment.data.paymentMode.accountName,
+                                                        accountNumber: getPayment.data.paymentMode.accountNumber,
+                                                        paymentType: getPayment.data.paymentType,
+                                                        paymentMode: getPayment.data.paymentMode.paymentMode,
+                                                        reservationNumber: reservation.data.new_reservation.reservationReferenceNumber,
+                                                        reservationDate: new Date(reservation.data.new_reservation.reservationDate).toLocaleDateString() + " " + new Date(reservation.data.new_reservation.reservationDate).toLocaleTimeString(),
+                                                        reservationId: reservation.data.new_reservation.id,
+                                                        role: userInformation.user.role,
+                                                        // payment: ,
+                                                        // reservedRooms: ,
+                                                    }).then((result) => {
+                                                        console.log(result)
+                                                        console.log(reservationSummary.data)
+                                                        window.sessionStorage.clear();
+                                                        window.location = '/booking/confirmation/' + reservation.data.new_reservation.id;
+                                                    }).catch((err) => {
+                                                        console.log(err)
+
+                                                    });
+
                                                 }
+
                                             }).catch((err) => {
                                                 console.log(err)
 
+                                                axios.delete('http://localhost:3001/api/deleteReservationSummary/' + reservationSummary.data.new_reservationSummary.id).then((result) => {
+
+                                                    console.log(result)
+
+                                                    axios.delete('http://localhost:3001/api/deleteReservation/' + reservation.data.new_reservation.id).then((result) => {
+
+                                                        console.log(result)
+
+
+                                                        axios.delete('http://localhost:3001/api/deletePayment/' + payment.data.new_payment.id).then((result) => {
+                                                            console.log(result)
+
+                                                        }).catch((err) => {
+                                                            console.log(err)
+                                                        });
+                                                    }).catch((err) => {
+                                                        console.log(err)
+                                                    });
+                                                }).catch((err) => {
+                                                    console.log(err)
+                                                });
+
                                             });
-                                        })
+                                        }).catch((err) => {
+                                            console.log(err)
+                                            axios.delete('http://localhost:3001/api/deleteReservationSummary/' + reservationSummary.data.new_reservationSummary.id).then((result) => {
+
+                                                console.log(result)
+
+                                                axios.delete('http://localhost:3001/api/deleteReservation/' + reservation.data.new_reservation.id).then((result) => {
+
+                                                    console.log(result)
 
 
-                                    }
+                                                    axios.delete('http://localhost:3001/api/deletePayment/' + payment.data.new_payment.id).then((result) => {
+                                                        console.log(result)
 
-                                    // bookingInformation.map((item) => {
-                                    //     axios.post("http://localhost:3001/api/addReservationSummary", {
-                                    //         reservation_id: result.id,
-                                    //         room_id: item.id,
-                                    //         checkInDate: item.checkIn,
-                                    //         checkOutDate: item.checkOut,
-                                    //         numberOfNights: item.nights
-                                    //     }).then((result) => {
-                                    //         console.log(result.data)
-                                    //     }).catch((err) => {
-                                    //         console.log(err.result)
-                                    //     });
-                                    // })
+                                                    }).catch((err) => {
+                                                        console.log(err)
+                                                    });
+                                                }).catch((err) => {
+                                                    console.log(err)
+                                                });
+                                            }).catch((err) => {
+                                                console.log(err)
+                                            });
+                                        });
+                                    }).catch((err) => {
+                                        console.log(err)
+                                        axios.delete('http://localhost:3001/api/deleteReservationSummary/' + reservationSummary.data.new_reservationSummary.id).then((result) => {
 
+                                            console.log(result)
+
+                                            axios.delete('http://localhost:3001/api/deleteReservation/' + reservation.data.new_reservation.id).then((result) => {
+
+                                                console.log(result)
+
+
+                                                axios.delete('http://localhost:3001/api/deletePayment/' + payment.data.new_payment.id).then((result) => {
+                                                    console.log(result)
+
+                                                }).catch((err) => {
+                                                    console.log(err)
+                                                });
+                                            }).catch((err) => {
+                                                console.log(err)
+                                            });
+                                        }).catch((err) => {
+                                            console.log(err)
+                                        });
+                                    });
 
 
                                 }).catch((err) => {
                                     console.log(err)
+                                    axios.delete('http://localhost:3001/api/deleteReservation/' + reservation.data.new_reservation.id).then((result) => {
+                                        console.log(result)
+                                        axios.delete('http://localhost:3001/api/deletePayment/' + payment.data.new_payment.id).then((result) => {
+                                            console.log(result)
+                                        }).catch((err) => {
+                                            console.log(err)
+                                        });
+                                    }).catch((err) => {
+                                        console.log(err)
+                                    });
+
 
                                 });
-                            }).catch((err) => {
-                                console.log(err)
+                            }
 
-                            });
+                        })
 
 
-                        }).catch((err) => {
-                            console.log(err.result)
-                        });
+                    }
+
+                }).catch((err) => {
+                    console.log(err)
+                    axios.delete('http://localhost:3001/api/deletePayment/' + payment.data.new_payment.id).then((result) => {
+                        console.log(result)
                     }).catch((err) => {
-                        console.log(err.result)
+                        console.log(err)
                     });
+                });
+            }).catch((err) => {
+                console.log(err)
+
+            });
 
 
 
-                }
 
-            }
+
         }
+
 
 
 
@@ -405,7 +806,7 @@ const BillingSummaryContainer = () => {
                 return " "
             }
         }
-        else if(value == 'gender'){
+        else if (value == 'gender') {
             if (window.sessionStorage.getItem('gender') != null) {
                 return window.sessionStorage.getItem('gender')
             }
@@ -416,9 +817,9 @@ const BillingSummaryContainer = () => {
                 return " "
             }
         }
-        else if(value == 'address'){
+        else if (value == 'address') {
             if (window.sessionStorage.getItem('address') != null) {
-                return window.sessionStorage.getItem('address') 
+                return window.sessionStorage.getItem('address')
             }
             else if (userInformation.length != 0) {
                 return userInformation.address

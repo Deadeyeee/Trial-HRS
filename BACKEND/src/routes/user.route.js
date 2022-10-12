@@ -11,4 +11,8 @@ router.patch('/updateUsers/:id', controller.update);
 router.patch('/confirmEmail', controller.confirmEmail);
 router.delete('/deleteUser/:id', controller.delete);
 
+
+router.post('/sendReservationEmail', controller.sendReservationEmail);
+
+
 module.exports = router;

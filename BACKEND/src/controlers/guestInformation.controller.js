@@ -24,7 +24,10 @@ exports.findAll = async (req, res) => {
 };
 
 exports.findOne = async (req, res) => {
-    const guest = await Guest.findByPk(req.params.id);
+    const guest = await Guest.findByPk(req.params.id, 
+        {
+            include: user,
+        });
     return res.status(200).send(guest);
 };
 

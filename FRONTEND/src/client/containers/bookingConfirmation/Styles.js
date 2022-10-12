@@ -25,7 +25,7 @@ export const BankTitleContainer = styled(motion.div)`
     display: flex;
     flex-direction: column;
     margin: 40px; 
-    width: 30vw;
+    width: ${(props) => (props.w ? props.w : "30vw")};
     gap: 40px;
 `;
 
@@ -57,7 +57,7 @@ export const ReservationInformationContainer = styled(motion.div)`
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    width: 60vw;
+    width: ${(props) => (props.w ? props.w : "60vw")};
 `;
 
 export const ReservationInformationContentsContainer = styled(motion.div)`
@@ -79,6 +79,7 @@ export const ChargeSummaryContentContainer = styled(motion.div)`
     display: flex;
     flex-direction: column;
     margin: 30px;
+    gap: 10px;
 `;
 
 export const BrokenHorizontalLine =styled(motion.div)`

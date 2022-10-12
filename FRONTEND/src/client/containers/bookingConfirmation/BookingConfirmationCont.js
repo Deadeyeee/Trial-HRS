@@ -163,105 +163,106 @@ function BookingConfirmationCont() {
                 Deposit payment through our bank account:
             </Title>
             <BankDetailsContainer>
-                {reservationInfo.map((item) => (<BankTitleContainer>
-                    <ContainerGlobal
-                        justify='space-between'>
-                        <Title
-                            family='raleway, sans-serif'
-                            weight='700'
-                            fstyle='Normal'
-                            overflow='visible'
-                            size='25px'
-                            color='#2e2e2e'
-                            align='left'
-                        >
-                            <b>BANK / E-Payment: </b>
-                        </Title>
-                        <Title
-                            family='raleway, sans-serif'
-                            weight='400'
-                            fstyle='Normal'
-                            size='25px'
-                            color='#2e2e2e'
-                            align='left'
-                        >
-                            {item.payment.paymentMode.billerName}
-                        </Title>
-                    </ContainerGlobal>
+                {reservationInfo.map((item) => (
+                    <BankTitleContainer>
+                        <ContainerGlobal
+                            justify='space-between'>
+                            <Title
+                                family='raleway, sans-serif'
+                                weight='700'
+                                fstyle='Normal'
+                                overflow='visible'
+                                size='25px'
+                                color='#2e2e2e'
+                                align='left'
+                            >
+                                <b>BANK / E-Payment: </b>
+                            </Title>
+                            <Title
+                                family='raleway, sans-serif'
+                                weight='400'
+                                fstyle='Normal'
+                                size='25px'
+                                color='#2e2e2e'
+                                align='left'
+                            >
+                                {item.payment.paymentMode.billerName}
+                            </Title>
+                        </ContainerGlobal>
 
-                    <ContainerGlobal
-                        justify='space-between'>
-                        <Title
-                            family='raleway, sans-serif'
-                            weight='700'
-                            fstyle='Normal'
-                            size='25px'
-                            color='#2e2e2e'
-                            align='left'
-                        >
-                            <b>Bank Address: </b>
-                        </Title>
-                        <Title
-                            family='raleway, sans-serif'
-                            weight='400'
-                            fstyle='Normal'
-                            size='25px'
-                            color='#2e2e2e'
-                            align='left'
-                        >
-                            Quezon City
-                        </Title>
-                    </ContainerGlobal>
+                        <ContainerGlobal
+                            justify='space-between'>
+                            <Title
+                                family='raleway, sans-serif'
+                                weight='700'
+                                fstyle='Normal'
+                                size='25px'
+                                color='#2e2e2e'
+                                align='left'
+                            >
+                                <b>Bank Address: </b>
+                            </Title>
+                            <Title
+                                family='raleway, sans-serif'
+                                weight='400'
+                                fstyle='Normal'
+                                size='25px'
+                                color='#2e2e2e'
+                                align='left'
+                            >
+                                Quezon City
+                            </Title>
+                        </ContainerGlobal>
 
-                    <ContainerGlobal
-                        justify='space-between'>
-                        <Title
-                            family='raleway, sans-serif'
-                            weight='700'
-                            fstyle='Normal'
-                            size='25px'
-                            color='#2e2e2e'
-                            align='left'
-                        >
-                            <b>Account Name: </b>
-                        </Title>
-                        <Title
-                            family='raleway, sans-serif'
-                            weight='400'
-                            fstyle='Normal'
-                            size='25px'
-                            color='#2e2e2e'
-                            align='left'
-                        >
-                            {item.payment.paymentMode.accountName}
-                        </Title>
-                    </ContainerGlobal>
+                        <ContainerGlobal
+                            justify='space-between'>
+                            <Title
+                                family='raleway, sans-serif'
+                                weight='700'
+                                fstyle='Normal'
+                                size='25px'
+                                color='#2e2e2e'
+                                align='left'
+                            >
+                                <b>Account Name: </b>
+                            </Title>
+                            <Title
+                                family='raleway, sans-serif'
+                                weight='400'
+                                fstyle='Normal'
+                                size='25px'
+                                color='#2e2e2e'
+                                align='left'
+                            >
+                                {item.payment.paymentMode.accountName}
+                            </Title>
+                        </ContainerGlobal>
 
-                    <ContainerGlobal
-                        justify='space-between'>
-                        <Title
-                            family='raleway, sans-serif'
-                            weight='700'
-                            fstyle='Normal'
-                            size='25px'
-                            color='#2e2e2e'
-                            align='left'
-                        >
-                            <b>Account Number: </b>
-                        </Title>
-                        <Title
-                            family='raleway, sans-serif'
-                            weight='400'
-                            fstyle='Normal'
-                            size='25px'
-                            color='#2e2e2e'
-                            align='left'
-                        >
-                            {item.payment.paymentMode.accountNumber}
-                        </Title>
-                    </ContainerGlobal>
+                        <ContainerGlobal
+                            justify='space-between'>
+                            <Title
+                                family='raleway, sans-serif'
+                                weight='700'
+                                fstyle='Normal'
+                                size='25px'
+                                color='#2e2e2e'
+                                align='left'
+                            >
+                                <b>Account Number: </b>
+                            </Title>
+                            <Title
+                                family='raleway, sans-serif'
+                                weight='400'
+                                fstyle='Normal'
+                                size='25px'
+                                color='#2e2e2e'
+                                align='left'
+                            >
+                                {item.payment.paymentMode.accountNumber}
+                            </Title>
+                        </ContainerGlobal>
 
-                </BankTitleContainer>
+                    </BankTitleContainer>
                 ))}
 
             </BankDetailsContainer>
@@ -660,7 +661,7 @@ function BookingConfirmationCont() {
                     </Tr>
                     {reservedBooking.map((item, index) => (
 
-                        <Tr style={index % 2 == 0 ? {backgroundColor: 'rgb(0,0,0,.1)'} : {backgroundColor: 'transparent'}}>
+                        <Tr style={index % 2 == 0 ? { backgroundColor: 'rgb(0,0,0,.1)' } : { backgroundColor: 'transparent' }}>
 
                             <Td align='center'>{item.room.roomType.roomType}</Td>
                             <Td align='center'>{new Date(item.checkInDate).toLocaleDateString()}</Td>
@@ -701,7 +702,11 @@ function BookingConfirmationCont() {
                         : {numberFormat(grandTotal)}
                     </Title>
                 </ChargeSummaryContentContainer>
+
             </ChargeSummaryContainer>
+            <center style={{ marginBottom: '40px', }}>
+                <b>NOTE!:</b> Discount will only take effect upon check-in. Please present your valid id to our frontdesk to confirm your discount. Thank you
+            </center>
             <ButtonHolder>
                 <Button
                     whileHover={{ backgroundColor: "#302B20", color: "white" }}
