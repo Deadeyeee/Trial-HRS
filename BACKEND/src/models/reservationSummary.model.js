@@ -31,6 +31,11 @@ module.exports = (sequelize, DataTypes, Sequelize) => {
             type: DataTypes.STRING,
             allowNull: true,
         },
+        bookingStatus: {
+            type: DataTypes.ENUM(['PENDING','RESERVED', 'CHECKED-IN', 'CHECKED-OUT', 'NO-SHOW']),
+            allowNull: false,
+            defaultValue: 'PENDING',
+        },
 
     },
         {

@@ -37,6 +37,7 @@ export const HeadContainerSmall = styled(motion.div)`
 export const TableContainer = styled(motion.table)`
   border: none;
   width: 100%;
+  font-size: ${(props) => (props.fontsize ? props.fontsize : "16px")};
 `;
 
 export const Tr = styled(motion.tr)`
@@ -45,7 +46,7 @@ export const Tr = styled(motion.tr)`
 
 export const Th = styled(motion.th)`
   border: none;
-  color: #b2b2b2;
+  color: rgb(0, 0, 0, 0.4);
   text-align: ${(props) => (props.align ? props.align : "left")};
   font-family: Arial, Helvetica, sans-serif;
   width: 250px;

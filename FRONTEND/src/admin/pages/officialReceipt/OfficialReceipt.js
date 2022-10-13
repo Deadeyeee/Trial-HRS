@@ -110,6 +110,7 @@ const OfficialReceipt = () => {
             <table
               style={{
                 width: "100%",
+                fontSize: '1.5vw',
               }}
             >
               <tr>

@@ -45,7 +45,7 @@ const ClientPaymentInfoCont = () => {
             new Date(Math.max.apply(null, reservation.map(function (items, index, arr) {
                 console.log("filter", index)
 
-                if (index == 1) {
+                if (index == 0) {
                     setActiveReservation(items)
                 }
             })));
@@ -292,7 +292,7 @@ const ClientPaymentInfoCont = () => {
                     // onClick={uploadImage}
                     type='submit'
                 >
-                    Save
+                    Upload
                 </Button2>
             </Box>
 

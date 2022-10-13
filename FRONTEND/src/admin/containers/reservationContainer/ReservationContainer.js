@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { BlackTab, Container, ContainerGlobalColumn, ContainerGlobalRow, GrayTab, HeadContainer, TabContainer, TableContainer, Td, Th, Tr } from './style'
 import { Title } from '../../../client/components/title/styles'
 import { ContainerGlobal } from '../../components/container/container'
@@ -27,6 +27,7 @@ import { Badge, FormControlLabel, Radio, RadioGroup, TextareaAutosize, FormContr
 import { nationalities } from '../../../nationalities'
 import { Global } from '@emotion/react'
 import ActionButtonReservation from '../../components/actionButton/ActionButtonReservation'
+import axios from 'axios'
 
 
 export const ReservationContainer = () => {
@@ -43,6 +44,13 @@ export const ReservationContainer = () => {
     const [discount, setDiscount] = React.useState('none');
     const [roomNumber, setRoomNumber] = React.useState('R101');
 
+    const [reservation, setReservation] = useState([]);
+
+    const numberFormat = (value) =>
+        new Intl.NumberFormat('en-IN', {
+            style: 'currency',
+            currency: 'PHP'
+        }).format(value);
 
     const [nationality, setNationality] = useState('Filipino')
     console.log(outValue)
@@ -54,6 +62,163 @@ export const ReservationContainer = () => {
 
     const [showDetails, setShowDetails] = useState(false);
     const [showEditDetails, setShowEditDetails] = useState(false);
+
+
+    const [reservationSummary, setReservationSummary] = useState([]);
+
+
+    useEffect(() => {
+        axios.get('http://localhost:3001/api/getAllReservation').then((result) => {
+            setReservation(result.data)
+        }).catch((err) => {
+            console.log(err)
+        });
+    }, [])
+
+    const getRoomQuantity = (value) => {
+        // axios.get('http://localhost:3001/api/getAllReservationSummary').then((result) => {
+        //     for (let i = 0; i < result.data.length; i++) {
+        //         if (result.data[i].reservation_id == value) {
+        //             setReservationSummary((oldData)=> [...oldData, result])
+        //         }
+        //     }
+        // }).then((res)=>{console.log(roomQuantity)}).catch((err) => {
+
+        // });
+    }
+
+    const reservationStatusStyle = (value) => {
+        if (value == 'RESERVED') {
+            return <ContainerGlobal
+                w='100px'
+                h='auto'
+                margin='0px auto'
+                bg='rgb(0, 0, 255, .2)'
+                direction='row'
+                padding='2px 0px'
+                justify='center'
+                align='center'
+                border='2px solid rgb(0, 0, 255)'
+                gap='10px'
+                borderRadius='.5rem'
+            >
+                <Title
+                    family='Helvetica'
+                    size='12px'
+                    color='BLACK'
+                    fstyle='normal'
+                    display='inline'
+                    padding='5px 10px'
+                >
+                    {value.toLowerCase()}
+                </Title>
+            </ContainerGlobal>
+        }
+        else if (value == 'PENDING') {
+            return <ContainerGlobal
+                w='100px'
+                h='auto'
+                margin='0px auto'
+                bg='rgb(253, 161, 114, .2)'
+                direction='row'
+                padding='2px 0px'
+                justify='center'
+                align='center'
+                border='2px solid rgb(255, 215, 0)'
+                gap='10px'
+                borderRadius='.5rem'
+            >
+                <Title
+                    family='Helvetica'
+                    size='12px'
+                    color='BLACK'
+                    fstyle='normal'
+                    display='inline'
+                    padding='5px 10px'
+                >
+                    {value.toLowerCase()}
+                </Title>
+            </ContainerGlobal>
+        }
+        else if (value == 'DEPARTED') {
+            return <ContainerGlobal
+                w='100px'
+                h='auto'
+                margin='0px auto'
+                bg='rgb(0, 255, 0, .2)'
+                direction='row'
+                padding='2px 0px'
+                justify='center'
+                align='center'
+                border='2px solid rgb(0, 255, 0)'
+                gap='10px'
+                borderRadius='.5rem'
+            >
+                <Title
+                    family='Helvetica'
+                    size='12px'
+                    color='BLACK'
+                    fstyle='normal'
+                    display='inline'
+                    padding='5px 10px'
+                >
+                    {value.toLowerCase()}
+                </Title>
+            </ContainerGlobal>
+        }
+        else if (value == 'UNSETTLED') {
+            return <ContainerGlobal
+                w='100px'
+                h='auto'
+                margin='0px auto'
+                bg='rgb(255, 0, 0, .2)'
+                direction='row'
+                padding='2px 0px'
+                justify='center'
+                align='center'
+                border='2px solid rgb(255, 0, 0)'
+                gap='10px'
+                borderRadius='.5rem'
+            >
+                <Title
+                    family='Helvetica'
+                    size='12px'
+                    color='BLACK'
+                    fstyle='normal'
+                    display='inline'
+                    padding='5px 10px'
+                >
+                    {value.toLowerCase()}
+                </Title>
+            </ContainerGlobal>
+        }
+        else if (value == 'NO SHOW') {
+            return <ContainerGlobal
+                w='100px'
+                h='auto'
+                margin='0px auto'
+                bg='rgb(0, 0, 0, .2)'
+                direction='row'
+                padding='2px 0px'
+                justify='center'
+                align='center'
+                border='2px solid rgb(0, 0, 0)'
+                gap='10px'
+                borderRadius='.5rem'
+            >
+                <Title
+                    family='Helvetica'
+                    size='12px'
+                    color='BLACK'
+                    fstyle='normal'
+                    display='inline'
+                    padding='5px 10px'
+                >
+                    {value.toLowerCase()}
+                </Title>
+            </ContainerGlobal>
+        }
+    }
 
     const WalkinModal = (
         <ContainerGlobal
@@ -3375,54 +3540,36 @@ export const ReservationContainer = () => {
                 </HorizontalLine>
                 <TableContainer>
                     <Tr>
+                        <Th align='center'>Reservation Date <ArrowDropUpIcon style={{ color: 'black' }} /></Th>
                         <Th align='center'>Reservation Number <ArrowDropDownIcon style={{ color: 'black' }} /> </Th>
                         <Th align='center'>Guest's Name  <ArrowDropDownIcon style={{ color: 'black' }} /></Th>
-                        <Th align='center'>Reservation Date <ArrowDropUpIcon style={{ color: 'black' }} /></Th>
-                        <Th align='center'>Check in <ArrowDropDownIcon style={{ color: 'black' }} /></Th>
-                        <Th align='center'>Check out <ArrowDropDownIcon style={{ color: 'black' }} /></Th>
-                        <Th align='center'>Payment Status  <ArrowDropDownIcon style={{ color: 'black' }} /></Th>
+                        <Th align='center'>Room Quantity <ArrowDropDownIcon style={{ color: 'black' }} /></Th>
+                        <Th align='center'>Remaining Balance<ArrowDropDownIcon style={{ color: 'black' }} /></Th>
+                        <Th align='center'>Reservation Status  <ArrowDropDownIcon style={{ color: 'black' }} /></Th>
                         <Th align='center'>Action</Th>
                     </Tr>
-                    <Tr>
-                        <Td align='center'>091234568</Td>
-                        <Td align='center'>Pedro Juan</Td>
-                        <Td align='center'>03/01/22</Td>
-                        <Td align='center'>03/04/22</Td>
-                        <Td align='center'>03/08/22</Td>
-                        <Td align='center'>
-                            <ContainerGlobal
-                                w='100px'
-                                h='auto'
-                                margin='0px auto'
-                                bg='rgb(253, 161, 114, .2)'
-                                direction='row'
-                                padding='2px 0px'
-                                justify='center'
-                                align='center'
-                                border='2px solid rgb(255, 215, 0)'
-                                gap='10px'
-                                borderRadius='.5rem'
-                            >
-                                <Title
-                                    family='Helvetica'
-                                    size='12px'
-                                    color='BLACK'
-                                    fstyle='normal'
-                                    display='inline'
-                                    padding='5px 10px'
-                                >
-                                    Pending
-                                </Title>
-                            </ContainerGlobal>
-                        </Td>
+                    {reservation.length != 0 ?
+                        reservation.map((item) => (
+                            <Tr>
+                                <Td align='center'>{new Date(item.reservationDate).toLocaleDateString()}</Td>
+                                <Td align='center'>{item.reservationReferenceNumber}</Td>
+                                <Td align='center'>{item.guestInformation.firstName}, {item.guestInformation.lastName}</Td>
+                                <Td align='center'>{getRoomQuantity(item.id)}</Td>
+                                <Td align='center'>{numberFormat(item.payment.balance)}</Td>
+                                <Td align='center'>
+                                    {reservationStatusStyle(item.reservationStatus)}
 
-                        <Td align='center'><ActionButtonReservation
+                                </Td>
 
-                            view={() => setShowDetails(prev => !prev)}
-                            edit={() => setShowEditDetails(prev => !prev)}
-                        /></Td>
-                    </Tr>
-                    <Tr>
+                                <Td align='center'><ActionButtonReservation
+
+                                    view={() => setShowDetails(prev => !prev)}
+                                    edit={() => setShowEditDetails(prev => !prev)}
+                                /></Td>
+                            </Tr>
+                        ))
+                        : ""}
+                    {/* <Tr>
                         <Td align='center'>091243568</Td>
                         <Td align='center'>Berna Boddit</Td>
                         <Td align='center'>05/20/21</Td>
@@ -3566,7 +3713,7 @@ export const ReservationContainer = () => {
                         </Td>
 
                         <Td align='center'><ActionButtonReservation paid /></Td>
-                    </Tr>
+                    </Tr> */}
 
 
                 </TableContainer>

@@ -101,7 +101,7 @@
         <div class="box">
             <center>
                 <img width="150px" height="150px" src={{logo}}>
-                <h1>Booking Reservation</h1>
+                <h1>Reservation Confirmed</h1>
             </center>
 
             <address>
@@ -112,57 +112,22 @@
                 Fax: 123-456-7890<br />
             </address>
 
-            <p>
-                Hi <b>{{firstName}}</b>,
-                <br><br>
-                Thank you for reserving your stay with Remile Luxe Hotel. We are looking forward to your visit.
-                <br /><br />
 
-                Your reservation is <b>PENDING</b> until confirmation of Bank Deposit/Transfer is made.
-                <br /><br /><br />
+            Hi <b>{{firstName}}</b>,
+            <br><br>
 
-                <b>Instructions on how to make the payment:</b>
-                <br /><br />
+            Thank you for choosing RM Luxe Hotel. Your reservation has been <b>CONFIRMED!</b> Please read the necessary
+            <b> Terms and Conditions </b> applied to the hotel premises.
+            <br />
+            You can check your booking details by logging in to our website and going to the payment section.
+            <br />
+            <br />
+            If you have further questions, you may contact us via the number and email provided above. You may also
+            approach the front desk for assistance during your stay at the hotel.
+            <br />
+            <br />
+            <b>Thank you.</b>
 
-                Deposit your payment through our {{paymentMode}} account:
-                <br /><br />
-                <table>
-                    <tr>
-                        <td><b>BANK / E-Payment:</b></td>
-                        <td>{{paymentMode}}</td>
-                    </tr>
-                    <tr>
-                        <td><b>Bank Address:</b></td>
-                        <td>Quezon City</td>
-                    </tr>
-                    <tr>
-                        <td><b>Account Name:</b></td>
-                        <td>{{accountName}}</td>
-                    </tr>
-                    <tr>
-                        <td><b>Account Number:</b></td>
-                        <td>{{accountNumber}}</td>
-                    </tr>
-                </table>
-
-                <br /><br />
-
-                {{#if isDownPayment}}
-                <b>To confirm your reservation, please make your deposit amounting {{downPayment grandTotal}} until
-                    {{expirationDate}}.</b>
-                {{else}}
-                <b>To confirm your reservation, please make your deposit amounting {{numberFormat grandTotal}} within the
-                    next 24 hours.</b>
-                {{/if}}
-                <br>
-                Please email your proof of payment to Rm.LuxeHotel@gmail.com or upload it to your user account by
-                logging in to our website and going to the PAYMENT SECTION so we can verify the payment.
-                <br><b>Once your payment has been verified, you will receive a booking confirmation message/email.</b>
-                <br />
-                <br />
-                <b>NOTE:</b> Unpaid fees within the given time period will result to <b>CANCELATION</b> of reservation.
-
-            </p>
             <br />
             <center>
                 {{#if isNonUser}}
@@ -269,7 +234,7 @@
                         <td><b>Discount:</b></td>
                         <td style="color: black;"><b>{{discountType}}</b></td>
                     </tr>
-                    {{#if isDownPayment}}
+                    {{!-- {{#if isDownPayment}}
                     <tr>
                         <td><b>Down Payment:</b></td>
                         <td style="color: red;"><b>{{downPayment grandTotal}}</b></td>
@@ -277,16 +242,25 @@
                     {{else}}
                     <tr>
                         <td><b>Full Payment:</b></td>
-                        <td style="color: red;"><b>{{numberFormat grandTotal}}</b></td>
+                        <td style="color: black;"><b>{{numberFormat grandTotal}}</b></td>
                     </tr>
-                    {{/if}}
+
+                    {{/if}} --}}
+                    <tr>
+                        <td><b>Amount Paid:</b></td>
+                        <td style="color: green;"><b>{{numberFormat amountPaid}}</b></td>
+                    </tr>
                     <tr style="height: 90px;">
                         <td>
-                            <h2><b>Grand Total:</b></h2>
+                            <b>Grand Total:</b>
                         </td>
-                        <td style="color: green;">
-                            <h2><b>{{numberFormat grandTotal}}</b></h2>
+                        <td style="color: black;">
+                            <b>{{numberFormat grandTotal}}</b>
                         </td>
+                    </tr>
+                    <tr style="height: 90px;">
+                        <td><h2><b>Remaining Balance:</b></h2></td>
+                        <td style="color: red;"><h2><b>{{remainingBalance grandTotal amountPaid}}</b></h2></td>
                     </tr>
                 </table>
             </div>

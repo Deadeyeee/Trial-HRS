@@ -99,20 +99,33 @@ exports.updateGrandTotal = async (req, res) => {
         const getTotal = await reservationSummary.findAll(
             { include: { all: true, nested: true } }
         );
-        let grandTotal = 0
+        let grandTotal = 0;
+        let paymentStatus = '';
 
+        
         getTotal.map((item) => {
             if (req.params.id == item.dataValues.reservation.payment.id) {
                 grandTotal += (item.dataValues.room.roomType.roomRate * item.dataValues.numberOfNights);
                 // console.log(item.dataValues.room.roomType.roomRate * item.Values.numberOfNights)
             }
         })
+        if(grandTotal - req.body.paymentMade == 0){
+            paymentStatus = 'fully paid'
+        }
+        else if (grandTotal - req.body.paymentMade == grandTotal/2) {
+            paymentStatus = 'partial'
+        }
+        else{
+            paymentStatus = 'pending'
+        }
         console.log(grandTotal)
 
         let info = {
             // paymentImage: req.file.path,
             grandTotal: grandTotal,
             balance: grandTotal - req.body.paymentMade,
+            paymentMade: req.body.paymentMade,
+            paymentStatus: paymentStatus,
 
         }
 

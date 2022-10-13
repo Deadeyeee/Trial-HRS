@@ -92,6 +92,7 @@ exports.sendReservationEmail = async (req, res) => {
                     timeFormat: (date) => new Date(date).toLocaleTimeString(),
                     numberFormat: (value) => numberFormat(value),
                     downPayment: (grand) => numberFormat(grand/2),
+                    remainingBalance: (total, paid) => numberFormat(total - paid),
                 }
             },
             viewPath: path.resolve('./src/views'),
@@ -134,6 +135,54 @@ exports.sendReservationEmail = async (req, res) => {
                     isDownPayment: req.body.paymentType == 'Down Payment' ? true : false,
                     grandTotal: req.body.grandTotal,
                     discountType: req.body.discountType,
+                    expirationDate: req.body.expirationDate,
+                    amountPaid: req.body.amountPaid,
+
+                    logo: "cid:logo",
+                },
+                attachments: [{
+                    filename: 'logo.png',
+                    path: './src/controlers/logo.png',
+                    cid: 'logo'
+                }]
+            };
+        }
+        else if (req.body.reservationStatus == 'RESERVED') {
+
+            const reservationSummary = await ReservationSummary.findAll(
+                {
+                    where: { reservation_id: req.body.reservationId },
+                    include: { all: true, nested: true },
+                }
+            );
+            console.log("reservationSummary", req.body)
+            info = {
+                from: '"RM Luxe Hotel" "<Rm.LuxeHotel@gmail.com>"', // sender address
+                to: req.body.email,
+                subject: "Reservation Confirmed", // Subject line
+                template: 'reservationConfirmed',
+                context: {
+                    firstName: req.body.firstName,
+                    accountName: req.body.accountName,
+                    accountNumber: req.body.accountNumber,
+                    payment: req.body.payment,
+                    reservationNumber: req.body.reservationNumber,
+                    paymentType: req.body.paymentType,
+                    lastName: req.body.lastName,
+                    reservationDate: req.body.reservationDate,
+                    paymentMode: req.body.paymentMode,
+                    birthDay: req.body.birthDay,
+                    nationality: req.body.nationality,
+                    emailAddress: req.body.emailAddress,
+                    address: req.body.address,
+                    contactNumber: req.body.contactNumber,
+                    reservedRooms: reservationSummary,
+                    isNonUser: req.body.role == 'NON-USER' ? true : false,
+                    isDownPayment: req.body.paymentType == 'Down Payment' ? true : false,
+                    grandTotal: req.body.grandTotal,
+                    discountType: req.body.discountType,
+                    expirationDate: req.body.expirationDate,
+                    amountPaid: req.body.amountPaid,
 
                     logo: "cid:logo",
                 },
