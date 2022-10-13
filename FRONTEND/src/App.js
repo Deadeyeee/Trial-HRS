@@ -59,6 +59,8 @@ import FrontMessages from './frontDesk/pages/frontMessages/FrontMessages';
 import ProfileFront from './frontDesk/pages/frontProfile/ProfileFront';
 import FrontReservation from './frontDesk/pages/frontReservation/FrontReservation';
 import FrontAdditional from './frontDesk/pages/frontAdditional/FrontAdditional';
+import OfficialReceipt from './admin/pages/officialReceipt/OfficialReceipt';
+import AcknowledgementReceipt from './admin/pages/acknowledgementReceipt/AcknowledgementReceipt';
 
 
 
@@ -94,7 +96,6 @@ const App = () => {
         <Route path="/client/messages" element={<ClientMessagesPage />} />
       
 
-
         <Route path="/admin" element={<AdminProfile />} />
         <Route path="/admin/status" element={<Status />} />
         <Route path="/admin/payments" element={<Payment/>} />
@@ -109,6 +110,9 @@ const App = () => {
         <Route path="/admin/messages" element={<Messages />}/>
         <Route path="/admin/report" element={<Reports />}/>
         <Route path="/admin/additionals" element={<Additional />}/>
+        
+        <Route path="/admin/officialReceipt" element={<OfficialReceipt />}/>
+        <Route path="/admin/acknowledgementReceipt" element={<AcknowledgementReceipt />}/>
 
 
 
