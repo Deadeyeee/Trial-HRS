@@ -110,6 +110,7 @@ const App = () => {
         <Route path="/admin/messages" element={<Messages />}/>
         <Route path="/admin/report" element={<Reports />}/>
         <Route path="/admin/additionals" element={<Additional />}/>
+        
         <Route path="/admin/officialReceipt" element={<OfficialReceipt />}/>
         <Route path="/admin/acknowledgementReceipt" element={<AcknowledgementReceipt />}/>
 
