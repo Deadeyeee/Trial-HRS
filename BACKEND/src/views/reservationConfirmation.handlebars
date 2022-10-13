@@ -147,7 +147,11 @@
 
             <br /><br />
 
-            <b>To confirm your reservation, please make your deposit amounting {{payment}} within the next 24 hours.</b>
+            {{#if isDownPayment}}
+            <b>To confirm your reservation, please make your deposit amounting {{downPayment grandTotal}} within the next 24 hours.</b>
+            {{else}}
+            <b>To confirm your reservation, please make your deposit amounting {{numberFormat grandTotal}} within the next 24 hours.</b>
+            {{/if}}
             <br>
             Please email your proof of payment to Rm.LuxeHotel@gmail.com or upload it to your user account by
             logging in to our website and going to the PAYMENT SECTION so we can verify the payment.
@@ -266,12 +270,12 @@
                     {{#if isDownPayment}}
                     <tr>
                         <td><b>Down Payment:</b></td>
-                        <td style="color: red;"><b>{{downPayment}}</b></td>
+                        <td style="color: red;"><b>{{downPayment grandTotal}}</b></td>
                     </tr>
                     {{else}}
                     <tr>
                         <td><b>Full Payment:</b></td>
-                        <td style="color: red;"><b>{{fullPayment}}</b></td>
+                        <td style="color: red;"><b>{{numberFormat grandTotal}}</b></td>
                     </tr>
                     {{/if}}
                     <tr style="height: 90px;">
@@ -279,7 +283,7 @@
                             <h2><b>Grand Total:</b></h2>
                         </td>
                         <td style="color: green;">
-                            <h2><b>{{grandTotal}}</b></h2>
+                            <h2><b>{{numberFormat grandTotal}}</b></h2>
                         </td>
                     </tr>
                 </table>

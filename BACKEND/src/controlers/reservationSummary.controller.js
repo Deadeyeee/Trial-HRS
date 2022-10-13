@@ -6,7 +6,8 @@ const ReservationSummary = db.reservationSummary;
 
 exports.create = async (req, res) => {
     try {
-        const new_reservationSummary = await ReservationSummary.create(req.body);
+        const new_reservationSummary = await ReservationSummary.create(req.body, 
+            { include: { all: true, nested: true } });
         return res.status(200).send({ new_reservationSummary });
     } catch (error) {
         return res.status(200).send(error.message);

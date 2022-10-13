@@ -1,5 +1,5 @@
 import Axios from 'axios'
-import React, { useEffect, useLayoutEffect } from 'react'
+import React, { useEffect, useLayoutEffect, useState } from 'react'
 import { HorizontalLine } from '../../components/horizontalLine/HorizontalLine'
 import { Title } from '../../components/title/styles'
 import { Link, MenuItems, Container, HeadContainer, MainContainer, Navigations, } from './style'
@@ -9,6 +9,7 @@ const ProfileContainer = (props) => {
     document.title = "Profile"
   }, [])
 
+  const [getUser, setGetUser] = useState([]);
   useLayoutEffect(() => {
     Axios.get("http://localhost:3001/auth/verify-token").then((response1) => {
       console.log(response1.data.id)
@@ -16,7 +17,9 @@ const ProfileContainer = (props) => {
       Axios.get("http://localhost:3001/api/getAllGuest/").then((response2) =>{
         console.log(response1.data)
         for (let i = 0; i < response2.data.length; i++) {
-          if (response2.data[i].user_id == response1.data.id) {}
+          if (response2.data[i].user_id == response1.data.id) {
+            setGetUser(response2.data[i]);
+          }
         }
       }).catch((err)=>{
         console.log(err)
@@ -24,7 +27,7 @@ const ProfileContainer = (props) => {
     }).catch((err)=>{
       console.log(err)
     });
-}, );
+}, []);
   return (
     <Container>
         <MainContainer>
@@ -37,7 +40,7 @@ const ProfileContainer = (props) => {
                 padding='10px 40px'
                 borderRadius='5px'
                 weight='normal'
-                >Pedro Juan</Title>
+                >{getUser.length != 0 ? getUser.firstName.toLowerCase() + " " + getUser.lastName.toLowerCase(): ""}</Title>
             </HeadContainer>
             <Navigations>
             

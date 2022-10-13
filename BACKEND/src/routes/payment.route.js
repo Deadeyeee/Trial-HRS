@@ -9,6 +9,9 @@ router.patch('/updatePayment/:id',  controller.update);
 router.patch('/updatePaymentPhoto/:id', controller.upload, controller.updatePhoto);
 router.delete('/deletePayment/:id', controller.delete);
 
+
+router.patch('/updateGrandTotal/:id', controller.updateGrandTotal);
+
 router.post('/deleteImage', controller.ImageDelete);
 
 module.exports = router;
