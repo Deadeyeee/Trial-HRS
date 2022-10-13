@@ -16,6 +16,11 @@ const ClientPaymentInfoCont = () => {
     const [previewImage, setPreviewImage] = useState('')
     const [previewImageError, setPreviewImageError] = useState('')
     const [imageToUpload, setImageToUpload] = useState([])
+    const numberFormat = (value) =>
+    new Intl.NumberFormat('en-IN', {
+        style: 'currency',
+        currency: 'PHP'
+    }).format(value);
 
     useEffect(() => {
         axios.get('http://localhost:3001/auth/verify-token').then((authUser) => {
@@ -113,7 +118,37 @@ const ClientPaymentInfoCont = () => {
         if (value == 'PENDING') {
             return <Title
             family='raleway, sans-serif'
-            color='yellow'
+            color='#CDA141'
+            weight='700'
+            size='24px'
+            fstyle='Normal'
+            align='Center'
+        >{value}</Title>
+        }
+        else if (value == 'FULLY PAID'){
+            return <Title
+            family='raleway, sans-serif'
+            color='green'
+            weight='700'
+            size='24px'
+            fstyle='Normal'
+            align='Center'
+        >{value}</Title>
+        }
+        else if (value == 'PARTIAL'){
+            return <Title
+            family='raleway, sans-serif'
+            color='blue'
+            weight='700'
+            size='24px'
+            fstyle='Normal'
+            align='Center'
+        >{value}</Title>
+        }
+        else if (value == 'CANCELLED'){
+            return <Title
+            family='raleway, sans-serif'
+            color='red'
             weight='700'
             size='24px'
             fstyle='Normal'
@@ -176,12 +211,12 @@ const ClientPaymentInfoCont = () => {
                 family='poppins, sans-serif'
                 weight='700'
                 fstyle='Normal'
-                size='15px'
-                color='#ff4040'
+                size='20px'
+                color='black'
                 align='center'
                 margin='10px 0px 20px 0px'
             >
-                <b>***Please make your deposit. Three days before your Check-In Date to confirm your reservation***</b>
+                <p style={{fontWeight: 'normal'}}>To confirm your reservation please make your deposit amounting <b>{activeReservation.length != 0 ? activeReservation.payment.paymentType == 'Down Payment' ? numberFormat(activeReservation.payment.grandTotal / 2) : numberFormat(activeReservation.payment.grandTotal) : ""}</b> within the next 24 hours.<br></br> <i>"{activeReservation.length != 0 ? new Date(new Date(activeReservation.reservationDate).getTime() + 60 * 60 * 24 * 1000).toLocaleDateString() + " " + new Date(activeReservation.reservationDate).toLocaleTimeString() : ''  }"</i></p>
             </Title>
             <Title
                 padding='15px 80px 15px 80px'
@@ -303,9 +338,9 @@ const ClientPaymentInfoCont = () => {
 
                                     <Td style={item.id == activeReservation.id ? { backgroundColor: 'green', color: 'black' } : { backgroundColor: 'transparent' }} align='center'>{item.reservationReferenceNumber}</Td>
                                     <Td style={item.id == activeReservation.id ? { backgroundColor: 'green', color: 'black' } : { backgroundColor: 'transparent' }} align='center'>{item.payment.paymentType}</Td>
-                                    <Td style={item.id == activeReservation.id ? { backgroundColor: 'green', color: 'black' } : { backgroundColor: 'transparent' }} align='center'>{item.payment.paymentMade}</Td>
-                                    <Td style={item.id == activeReservation.id ? { backgroundColor: 'green', color: 'black' } : { backgroundColor: 'transparent' }} align='center'>{item.payment.balance}</Td>
-                                    <Td style={item.id == activeReservation.id ? { backgroundColor: 'green', color: 'black' } : { backgroundColor: 'transparent' }} align='center'>{item.payment.grandTotal}</Td>
+                                    <Td style={item.id == activeReservation.id ? { backgroundColor: 'green', color: 'black' } : { backgroundColor: 'transparent' }} align='center'>{numberFormat(item.payment.paymentMade)}</Td>
+                                    <Td style={item.id == activeReservation.id ? { backgroundColor: 'green', color: 'black' } : { backgroundColor: 'transparent' }} align='center'>{numberFormat(item.payment.balance)}</Td>
+                                    <Td style={item.id == activeReservation.id ? { backgroundColor: 'green', color: 'black' } : { backgroundColor: 'transparent' }} align='center'>{numberFormat(item.payment.grandTotal)}</Td>
                                     <Td style={item.id == activeReservation.id ? { backgroundColor: 'green', color: 'black' } : { backgroundColor: 'transparent' }} align='center'>{item.payment.paymentStatus}</Td>
                                     <Td style={item.id == activeReservation.id ? { backgroundColor: 'green', color: 'black' } : { backgroundColor: 'transparent' }} align='center'>{item.payment.paymentImage != null ? "Uploaded" : "Not uploaded"}</Td>
                                     <Td style={item.id == activeReservation.id ? { backgroundColor: 'green', color: 'black' } : { backgroundColor: 'transparent' }} align='center'><a style={item.id == activeReservation.id ? { cursor: 'normal', color: 'black' } : { cursor: 'pointer', color: 'blue' }} onClick={() => { view(item.id); document.getElementById("upload").value = ""; setPreviewImage('') }}>view</a></Td>

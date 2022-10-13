@@ -149,6 +149,7 @@ export const Login = () => {
                     <Title
                         margin="0px 0px 20px 0px"
                         fontSize='100%'
+                        fstyle='none'
                     >Welcome to RM Luxe Hotel</Title>
 
                     <RegistrationForm
@@ -237,36 +238,37 @@ export const Login = () => {
                         <FormButton
 
                             whileHover={{
-                                scale: 1.1, backgroundColor: "#8F805F",
-                                border: "2px solid #2E2E2E", color: "rgb(255, 255, 255)"
+                                scale: 1, backgroundColor: "#8F805F",
                             }}
                             whileTap={{ scale: 1 }}
                             type="submit"
-                            w='190px'
-                            h='30px'
-                            margin='20px 0 0 0'
-                            textcolor='black'
-                            radius='5px'
-                            weight='bold'
+                            w='150px'
+                            h='35px'
+                            textcolor='white'
+                            radius='20px'
+                            weight='400'
+                            border='none'
                             value='Log in'
+                            bg='#2E2E2E'
+                            fontStyle='none'
+                            fontsize='1vw'
+                            margin='0px 0px 10px 0px'                            
+                            fam='Roboto'
                         ></FormButton>
                     </RegistrationForm>
-
-                    <Title
-                        size="10px"
-                        margin="20px 0px 10px 0px"
-                    >OR</Title>
-
                     <Button
-                        whileHover={{ scale: 1.2, color: "rgb(0,0,255)" }}
+                        whileHover={{ scale: 1, color: "white", backgroundColor:"#757575", border:"2px solid white"}}
                         whileTap={{ scale: 1, color: "rgb(220,220,220)" }}
                         href='/register'
-                        w='60px'
+                        w='140px'
                         h='30px'
-                        textcolor='black'
-                        radius='5px'
-                        weight='bold'
-                        border='none'
+                        radius='20px'
+                        weight='500'   
+                        border='2px solid #2E2E2E'
+                        fontStyle='none'
+                        textcolor='#2E2E2E'
+                        fontsize="1vw"
+                        fam='Roboto'
                     >Sign Up</Button>
 
                 </LoginBorder>
