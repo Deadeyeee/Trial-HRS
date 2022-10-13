@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { HorizontalLine } from '../../../client/components/horizontalLine/HorizontalLine'
 import { TextInput } from '../../../client/components/textBox/style'
 import { Title } from '../../../client/components/title/styles'
@@ -29,6 +29,7 @@ import { nationalities } from '../../../nationalities'
 import { Global } from '@emotion/react'
 import ActionButtonReservation from '../../components/actionButton/ActionButtonReservation'
 import ActionButtonPayment from '../../components/actionButton/ActionButtonPayment'
+import axios from 'axios'
 
 
 
@@ -59,6 +60,35 @@ const PaymentContainer = () => {
     const [showDetails, setShowDetails] = useState(false);
     const [showEditDetails, setShowEditDetails] = useState(false);
     const [showReceipt, setShowReceipt] = useState(false);
+
+
+    const [reservations, setReservations] = useState([]);
+
+const getRoomQuantity = (value) =>{
+    let count = 0;
+    axios.get('http://localhost:3001/api/getAllReservationSummary').then(result => console.log(result.data.length) ).catch((err) => {
+        
+    });
+}
+    useEffect(() => {
+        axios.get('http://localhost:3001/api/getAllReservation').then((result) => {
+            setReservations(result.data)
+        }).catch((err) => {
+
+        });
+    }, [])
+
+
+
+    const numberFormat = (value) =>
+        new Intl.NumberFormat('en-IN', {
+            style: 'currency',
+            currency: 'PHP'
+        }).format(value);
+
+    useEffect(()=>{
+        console.log(reservations)
+    }, [reservations])
 
     const viewDetails = (
         <ContainerGlobal
@@ -99,7 +129,7 @@ const PaymentContainer = () => {
                     margin='0px'
                 ></HorizontalLine>
                 <ContainerGlobal
-                gap='60px'>
+                    gap='60px'>
                     <ContainerGlobalColumn>
                         <ContainerGlobal
                             w='420px'
@@ -879,7 +909,7 @@ const PaymentContainer = () => {
 
 
                 <ContainerGlobal
-                gap='60px'>
+                    gap='60px'>
                     <ContainerGlobalColumn>
                         <ContainerGlobal
                             w='420px'
@@ -1256,7 +1286,7 @@ const PaymentContainer = () => {
                     margin='0px'
                 ></HorizontalLine>
                 <ContainerGlobal
-                gap='60px'>
+                    gap='60px'>
                     <ContainerGlobalColumn>
                         <ContainerGlobal
                             w='420px'
@@ -2070,7 +2100,7 @@ const PaymentContainer = () => {
 
 
                 <ContainerGlobal
-                gap='60px'>
+                    gap='60px'>
                     <ContainerGlobalColumn>
                         <ContainerGlobal
                             w='420px'
@@ -2432,8 +2462,8 @@ const PaymentContainer = () => {
         >
 
             <ContainerGlobal
-                
-                
+
+
                 w='80%'
                 h='auto'
                 bg='white'
@@ -2455,41 +2485,41 @@ const PaymentContainer = () => {
                         Official Receipt
                     </Title>
                 </HeadContainer>
-                
+
                 <Title
-                        size='30px'
-                        family='Helvetica'
-                        fstyle='normal'
-                        weight='600'
-                        align='left'
-                    >
-                        RMC REALTY AND REAL ESTATE DEVELOPMENT CORPORATION
-                    </Title>
-                    <Title
-                        size='16px'
-                        family='Helvetica'
-                        fstyle='italic'
-                        weight='400'
-                        align='left'
-                        margin='0px 0px 0px 0px'
-                    >
-                        68 Cenacle Drive Sanville 5 Culiat Quezon City
-                    </Title>
-                    <Title
-                        size='16px'
-                        family='Helvetica'
-                        fstyle='italic'
-                        weight='400'
-                        align='left'
-                        margin='0px 0px 50px 0px'
-                    >
-                       VAT Reg. TIN: 009-988-067-000
-                    </Title>
+                    size='30px'
+                    family='Helvetica'
+                    fstyle='normal'
+                    weight='600'
+                    align='left'
+                >
+                    RMC REALTY AND REAL ESTATE DEVELOPMENT CORPORATION
+                </Title>
+                <Title
+                    size='16px'
+                    family='Helvetica'
+                    fstyle='italic'
+                    weight='400'
+                    align='left'
+                    margin='0px 0px 0px 0px'
+                >
+                    68 Cenacle Drive Sanville 5 Culiat Quezon City
+                </Title>
+                <Title
+                    size='16px'
+                    family='Helvetica'
+                    fstyle='italic'
+                    weight='400'
+                    align='left'
+                    margin='0px 0px 50px 0px'
+                >
+                    VAT Reg. TIN: 009-988-067-000
+                </Title>
                 <ContainerGlobal
                     gap='60px'>
                     <ContainerGlobal
-                        
-                        
+
+
                         w='100%'
                         h='auto'
                         // bg='white'
@@ -2657,8 +2687,8 @@ const PaymentContainer = () => {
                     </ContainerGlobal>
 
                     <ContainerGlobal
-                        
-                        
+
+
                         w='100%'
                         h='auto'
                         // bg='white'
@@ -3144,56 +3174,65 @@ const PaymentContainer = () => {
                 ></HorizontalLine>
                 <TableContainer>
                     <Tr>
-                        <Th align='center'>Reservation Number <ArrowDropDownIcon style={{ color: 'black' }} /></Th>
-                        <Th align='center'>Guest's Name <ArrowDropDownIcon style={{ color: 'black' }} /></Th>
-                        <Th align='center'>Room Type <ArrowDropDownIcon style={{ color: 'black' }} /></Th>
-                        <Th align='center'>Room Number <ArrowDropDownIcon style={{ color: 'black' }} /></Th>
-                        <Th align='center'>Check in <ArrowDropDownIcon style={{ color: 'black' }} /></Th>
-                        <Th align='center'>Check out <ArrowDropDownIcon style={{ color: 'black' }} /></Th>
-                        <Th align='center'>Balance <ArrowDropDownIcon style={{ color: 'black' }} /></Th>
-                        <Th align='center'>Status <ArrowDropDownIcon style={{ color: 'black' }} /></Th>
+                        <Th align='center' style={{ fontSize: '' }}>Reservation Number</Th>
+                        <Th align='center'>Guest's Name </Th>
+                        <Th align='center'>Payment Type</Th>
+                        <Th align='center'>Discount Type</Th>
+                        <Th align='center'>Payment Made</Th>
+                        <Th align='center'>Remaining Balance</Th>
+                        <Th align='center'>Grand Total</Th>
+                        <Th align='center'>Proof of Payment</Th>
+                        <Th align='center'>Payment Status</Th>
                         <Th align='center'>Action</Th>
                     </Tr>
-                    <Tr>
-                        <Td align='center'>091234568</Td>
-                        <Td align='center'>Pedro Juan</Td>
-                        <Td align='center'>Premium Room</Td>
-                        <Td align='center'>102</Td>
-                        <Td align='center'>03/04/2022</Td>
-                        <Td align='center'>03/08/2022</Td>
-                        <Td align='center'>600.00 PHP</Td>
-                        <Td align='center'>
-                            <ContainerGlobal
-                                w='100px'
-                                h='auto'
-                                margin='0px auto'
-                                bg='rgb(253, 161, 114, .2)'
-                                direction='row'
-                                padding='2px 0px'
-                                justify='center'
-                                align='center'
-                                border='2px solid rgb(255, 215, 0)'
-                                gap='10px'
-                                borderRadius='.5rem'
-                            >
-                                <Title
-                                    family='Helvetica'
-                                    size='12px'
-                                    color='BLACK'
-                                    fstyle='normal'
-                                    display='inline'
-                                    padding='5px 10px'
-                                >
-                                    Pending
-                                </Title>
-                            </ContainerGlobal>
-                        </Td>
-                        <Td align='center'><ActionButtonPayment
-                            view={() => setShowDetails(prev => !prev)}
-                            pay={() => setShowEditDetails(prev => !prev)}
-                        /></Td>
-                    </Tr>
-                    <Tr>
+
+
+                    {reservations.length != 0 ?
+                        reservations.map((item) => (
+                            <Tr>
+                                <Td align='center'>{item.reservationReferenceNumber}</Td>
+                                <Td align='center'>{item.guestInformation.firstName.toLowerCase()} {item.guestInformation.lastName.toLowerCase()}</Td>
+                                <Td align='center'>{item.payment.paymentType}</Td>
+                                <Td align='center'>{item.payment.discount.discountType}</Td>
+                                <Td align='center'>{numberFormat(item.payment.paymentMade)}</Td>
+                                <Td align='center'>{numberFormat(item.payment.balance)}</Td>
+                                <Td align='center'>{numberFormat(item.payment.grandTotal)}</Td>
+                                <Td align='center'>{item.payment.paymentImage != null ? "Uploaded" : "Empty"}</Td>
+                                <Td align='center'>
+                                    <ContainerGlobal
+                                        w='100px'
+                                        h='auto'
+                                        margin='0px auto'
+                                        bg='rgb(253, 161, 114, .2)'
+                                        direction='row'
+                                        padding='2px 0px'
+                                        justify='center'
+                                        align='center'
+                                        border='2px solid rgb(255, 215, 0)'
+                                        gap='10px'
+                                        borderRadius='.5rem'
+                                    >
+                                        <Title
+                                            family='Helvetica'
+                                            size='12px'
+                                            color='BLACK'
+                                            fstyle='normal'
+                                            display='inline'
+                                            padding='5px 10px'
+                                        >
+                                            {item.payment.paymentStatus}
+                                        </Title>
+                                    </ContainerGlobal>
+                                </Td>
+                                <Td align='center'><ActionButtonPayment
+                                    view={() => setShowDetails(prev => !prev)}
+                                    pay={() => setShowEditDetails(prev => !prev)}
+                                /></Td>
+                            </Tr>
+                        ))
+                        :
+                        ""}
+                    {/* <Tr>
                         <Td align='center'>094534568</Td>
                         <Td align='center'>Berna Boddit</Td>
                         <Td align='center'>Deluxe Room</Td>
@@ -3370,7 +3409,7 @@ const PaymentContainer = () => {
                                 </Title>
                             </ContainerGlobal></Td>
                         <Td align='center'><ActionButtonPayment /></Td>
-                    </Tr>
+                    </Tr> */}
                 </TableContainer>
 
             </ContainerGlobal>

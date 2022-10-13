@@ -1,4 +1,4 @@
-const { payment, paymentMode, guestInformation, user, discount } = require("../models");
+const { payment, paymentMode, guestInformation, user, discount, reservationSummary } = require("../models");
 const db = require("../models");
 const Reservation = db.reservation;
 // import Logo from "../../../FRONTEND/src/images/logo.png";

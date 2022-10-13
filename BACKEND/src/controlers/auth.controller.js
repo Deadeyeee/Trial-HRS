@@ -24,6 +24,16 @@ exports.Login = async (req, res) => {
 
         if (!user_login) {
 
+            user_login = await User.findOne({
+                where: {
+                    [Op.or]: [
+                        { email: req.body.email },
+                        { userName: req.body.userName }
+                    ],
+
+                    role: 'NON-USER' 
+                },
+            });
             //nonuser
 
             if (!user_login) {
@@ -44,7 +54,7 @@ exports.Login = async (req, res) => {
             });
 
             passwordIsValid = bcrypt.compareSync(req.body.password, user_login.password);
-            
+
             if (!passwordIsValid) {
                 return res.status(400).send({
                     accessToken: null,

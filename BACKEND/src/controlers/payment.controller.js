@@ -1,4 +1,4 @@
-const { paymentMode, discount } = require("../models");
+const { paymentMode, discount, reservationSummary } = require("../models");
 const db = require("../models");
 const Payment = db.payment;
 // import Logo from "../../../FRONTEND/src/images/logo.png";
@@ -41,7 +41,7 @@ exports.findOne = async (req, res) => {
 
 exports.updatePhoto = async (req, res) => {
     try {
-        
+
         let info = {
             paymentImage: req.file.path,
             // paymentMade: req.body.paymentMade,
@@ -67,12 +67,12 @@ exports.updatePhoto = async (req, res) => {
 
 exports.update = async (req, res) => {
     try {
-        
+
         let info = {
             // paymentImage: req.file.path,
             paymentMade: req.body.paymentMade,
             grandTotal: req.body.grandTotal,
-            balance: req.body.balance,
+            balance: req.body.grandTotal - req.body.balance,
             discountValid: req.body.discountValid,
             paymentType: req.body.paymentType,
             paymentStatus: req.body.paymentStatus,
@@ -80,12 +80,58 @@ exports.update = async (req, res) => {
             discount_id: req.body.discount_id,
 
         }
-        await Payment.update(info, {
+        const update_payment = await Payment.update(info, {
             where: {
                 id: req.params.id,
             },
         });
-        return res.status(200).send("Payment information updated successfully");
+        return res.status(200).send({ update_payment });
+    } catch (error) {
+        return res.status(400).send(error.message);
+    }
+};
+
+
+
+exports.updateGrandTotal = async (req, res) => {
+    try {
+
+        const getTotal = await reservationSummary.findAll(
+            { include: { all: true, nested: true } }
+        );
+        let grandTotal = 0
+
+        getTotal.map((item) => {
+            if (req.params.id == item.dataValues.reservation.payment.id) {
+                grandTotal += (item.dataValues.room.roomType.roomRate * item.dataValues.numberOfNights);
+                // console.log(item.dataValues.room.roomType.roomRate * item.Values.numberOfNights)
+            }
+        })
+        console.log(grandTotal)
+
+        let info = {
+            // paymentImage: req.file.path,
+            grandTotal: grandTotal,
+            balance: grandTotal - req.body.paymentMade,
+
+        }
+
+        const update_payment = await Payment.update(info, {
+            where: {
+                id: req.params.id,
+            },
+            returning: true,
+            plain: true,
+        });
+
+        const updated_payment = await Payment.findByPk(req.params.id,
+            {
+                include: [
+                    { model: paymentMode },
+                    { model: discount }
+                ]
+            });
+        return res.status(200).send(updated_payment);
     } catch (error) {
         return res.status(400).send(error.message);
     }
@@ -134,14 +180,14 @@ exports.delete = async (req, res) => {
 
 exports.ImageDelete = async (req, res) => {
     let filePath = req.body.filePath;
-        fs.unlink(filePath, handleCallback);
-        function handleCallback(error){
-            if(error){
-                return res.status(400).send(error.message);
-            }
-            else{
-                return res.status(200).send("Successfully deleted");
-
-            }
+    fs.unlink(filePath, handleCallback);
+    function handleCallback(error) {
+        if (error) {
+            return res.status(400).send(error.message);
         }
+        else {
+            return res.status(200).send("Successfully deleted");
+
+        }
+    }
 }

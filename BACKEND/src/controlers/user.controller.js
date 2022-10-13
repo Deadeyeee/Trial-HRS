@@ -91,6 +91,7 @@ exports.sendReservationEmail = async (req, res) => {
                     dateFormat: (date) => new Date(date).toLocaleDateString(),
                     timeFormat: (date) => new Date(date).toLocaleTimeString(),
                     numberFormat: (value) => numberFormat(value),
+                    downPayment: (grand) => numberFormat(grand/2),
                 }
             },
             viewPath: path.resolve('./src/views'),
@@ -131,6 +132,8 @@ exports.sendReservationEmail = async (req, res) => {
                     reservedRooms: reservationSummary,
                     isNonUser: req.body.role == 'NON-USER' ? true : false,
                     isDownPayment: req.body.paymentType == 'Down Payment' ? true : false,
+                    grandTotal: req.body.grandTotal,
+                    discountType: req.body.discountType,
 
                     logo: "cid:logo",
                 },
@@ -216,11 +219,11 @@ exports.findOne = async (req, res) => {
 
 exports.update = async (req, res) => {
     try {
-        // let user = req.body;
-        // if (user.password != null) {
-        //     const hash = await bcrypt.hash(user.password, 10);
-        //     user.password = hash;
-        // }
+        let user = req.body;
+        if (user.password != null) {
+            const hash = await bcrypt.hash(user.password, 10);
+            user.password = hash;
+        }
         // console.log(user.password)
         await User.update(req.body, {
             where: {
