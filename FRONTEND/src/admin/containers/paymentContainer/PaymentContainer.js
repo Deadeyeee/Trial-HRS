@@ -24,7 +24,7 @@ import ActionButton from '../../components/actionButton/ActionButton'
 import Grow from '@mui/material/Grow';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
-import { Badge, FormControlLabel, Radio, RadioGroup, TextareaAutosize, FormControl } from '@mui/material'
+import { Badge, FormControlLabel, Radio, RadioGroup, TextareaAutosize, FormControl, Modal, Box, Typography } from '@mui/material'
 import { nationalities } from '../../../nationalities'
 import { Global } from '@emotion/react'
 import ActionButtonReservation from '../../components/actionButton/ActionButtonReservation'
@@ -33,6 +33,17 @@ import axios from 'axios'
 
 
 
+const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: '50%',
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 4,
+};
 
 const PaymentContainer = () => {
     const [value, setValue] = useState(Date.now());
@@ -60,16 +71,18 @@ const PaymentContainer = () => {
     const [showDetails, setShowDetails] = useState(false);
     const [showEditDetails, setShowEditDetails] = useState(false);
     const [showReceipt, setShowReceipt] = useState(false);
+    const [openUpload, setOpenUpload] = useState(false);
+    const [uploadLink, setUploadLink] = useState('');
 
 
     const [reservations, setReservations] = useState([]);
 
-const getRoomQuantity = (value) =>{
-    let count = 0;
-    axios.get('http://localhost:3001/api/getAllReservationSummary').then(result => console.log(result.data.length) ).catch((err) => {
-        
-    });
-}
+    const getRoomQuantity = (value) => {
+        let count = 0;
+        axios.get('http://localhost:3001/api/getAllReservationSummary').then(result => console.log(result.data.length)).catch((err) => {
+
+        });
+    }
     useEffect(() => {
         axios.get('http://localhost:3001/api/getAllReservation').then((result) => {
             setReservations(result.data)
@@ -86,7 +99,7 @@ const getRoomQuantity = (value) =>{
             currency: 'PHP'
         }).format(value);
 
-    useEffect(()=>{
+    useEffect(() => {
         console.log(reservations)
     }, [reservations])
 
@@ -3002,6 +3015,17 @@ const getRoomQuantity = (value) =>{
 
         </ContainerGlobal>
     );
+
+
+    const handleOpenUpload = (value) => {
+        setOpenUpload(true);
+        setUploadLink(value);
+    }
+
+    const handleCloseUpload = (value) => {
+        setOpenUpload(false);
+        setUploadLink('');
+    }
     return (
         <Container>
 
@@ -3174,13 +3198,14 @@ const getRoomQuantity = (value) =>{
                 ></HorizontalLine>
                 <TableContainer>
                     <Tr>
+                        <Th align='center' style={{ fontSize: '' }}>Reservation Date</Th>
                         <Th align='center' style={{ fontSize: '' }}>Reservation Number</Th>
                         <Th align='center'>Guest's Name </Th>
                         <Th align='center'>Payment Type</Th>
                         <Th align='center'>Discount Type</Th>
+                        <Th align='center'>Grand Total</Th>
                         <Th align='center'>Payment Made</Th>
                         <Th align='center'>Remaining Balance</Th>
-                        <Th align='center'>Grand Total</Th>
                         <Th align='center'>Proof of Payment</Th>
                         <Th align='center'>Payment Status</Th>
                         <Th align='center'>Action</Th>
@@ -3190,14 +3215,16 @@ const getRoomQuantity = (value) =>{
                     {reservations.length != 0 ?
                         reservations.map((item) => (
                             <Tr>
+                                <Td align='center'>{new Date(item.reservationDate).toLocaleDateString()}</Td>
                                 <Td align='center'>{item.reservationReferenceNumber}</Td>
                                 <Td align='center'>{item.guestInformation.firstName.toLowerCase()} {item.guestInformation.lastName.toLowerCase()}</Td>
                                 <Td align='center'>{item.payment.paymentType}</Td>
                                 <Td align='center'>{item.payment.discount.discountType}</Td>
+
+                                <Td align='center'>{numberFormat(item.payment.grandTotal)}</Td>
                                 <Td align='center'>{numberFormat(item.payment.paymentMade)}</Td>
                                 <Td align='center'>{numberFormat(item.payment.balance)}</Td>
-                                <Td align='center'>{numberFormat(item.payment.grandTotal)}</Td>
-                                <Td align='center'>{item.payment.paymentImage != null ? "Uploaded" : "Empty"}</Td>
+                                <Td align='center'>{item.payment.paymentImage != null ? <a style={{ color: 'blue', cursor: 'pointer' }} onClick={() => { handleOpenUpload(item.payment.paymentImage) }}>Uploaded</a> : "Empty"}</Td>
                                 <Td align='center'>
                                     <ContainerGlobal
                                         w='100px'
@@ -3419,7 +3446,30 @@ const getRoomQuantity = (value) =>{
             <Grow in={showReceipt}>{receipt}</Grow>
 
 
+            <Modal
+                open={openUpload}
+                onClose={handleCloseUpload}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+            >
+                <Box sx={style}>
+                    <ContainerGlobal direction='column' align='center' justify='center' gap='40px'>
+                        <Title
+                        family='arial'
+                        fstyle='normal'
+                        >
+                            Uploaded proof of payment.
+                        </Title>
+                        <img src={'http://localhost:3001/' + uploadLink} width="auto" height='500px' />
+                        
+                        <ContainerGlobal gap='20px'>
+                        <Button variant="contained" color="success">Approve</Button>
+                        <Button variant="contained" color="error">Decline</Button>
+                        </ContainerGlobal>
+                    </ContainerGlobal>
+                </Box>
 
+            </Modal>
 
 
         </Container>
