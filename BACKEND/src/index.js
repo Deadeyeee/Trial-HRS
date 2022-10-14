@@ -5,6 +5,9 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const path = require('path')
+const schedules = require('node-schedule')
+const controller  = require('./controlers/user.controller.js');
+
 //import routes here
 
 //create routes
@@ -80,3 +83,14 @@ app.use('/api', usedServices);
 app.use('/src/Images/Rooms',express.static('src/Images/Rooms'))
 app.use('/src/Images/PaymentReciept',express.static('src/Images/PaymentReciept'))
 
+
+
+
+
+//SCHEDULE CANCELATION OF BOOKING 
+
+
+// schedules.scheduleJob('*/2 * * * * *', async ()=>{
+//     const result = await controller.findAll;
+//     console.log(result)
+// })

@@ -75,7 +75,7 @@ db.usedServices = require('./usedServices.model.js')(sequelize, Sequelize, DataT
 // db.paymentMode.bulkCreate([
 //     { paymentMode: "Bank Deposit (via Metro Bank)", billerName: "Metro Bank", accountName: "Elbert Egot", accountNumber: "23423849234298"},
 //     { paymentMode: "E-Payment (Gcash)", billerName: "Gcash", accountName: "Elbert Egot", accountNumber: "09566728906"},
-//     { paymentMode: "Cash", billerName: "Gcash", accountName: "Elbert Egot", accountNumber: "09566728906"},
+//     { paymentMode: "Pay at The Hotel", billerName: "Gcash", accountName: "Elbert Egot", accountNumber: "09566728906"},
 // ]).then(() => console.log("Payment Mode data have been saved"));
 
 

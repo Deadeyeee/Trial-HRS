@@ -3155,24 +3155,37 @@ const ClientBookingInfoCont = () => {
     }
     return (
         <Container>
+
+
+
+            {activeReservation.length != 0 ? 
             <Title
-                padding='15px 80px 15px 80px'
-                bg='#272727'
-                family='raleway, sans-serif'
-                color='white'
-                weight='400'
-                size='25px'
-                fstyle='Normal'
-                margin='50px 0px 10px 0px'
-                align='Center'
-            >
-                Booking Status
-            </Title>
-
-
+            padding='15px 80px 15px 80px'
+            bg='#272727'
+            family='raleway, sans-serif'
+            color='white'
+            weight='400'
+            size='25px'
+            fstyle='Normal'
+            margin='50px 0px 10px 0px'
+            align='Center'
+        >
+            Reservation Status
+        </Title>
+        :
+        ""}
             {activeReservation.length != 0 ?
-                reservationStatus(activeReservation.reservationStatus)
-                : ""}
+                <div>
+                    {reservationStatus(activeReservation.reservationStatus)}
+                </div>
+                :
+                <Title
+                    margin='100px'
+                >
+                    Sorry but you don't have any reservations.
+                </Title>
+
+            }
 
 
 
@@ -3211,10 +3224,10 @@ const ClientBookingInfoCont = () => {
 
                             <Tr style={index % 2 == 0 ? { backgroundColor: 'transparent' } : { backgroundColor: 'rgb(0,0,0,.1)' }}>
 
-                                <Td align='center'>{item.reservationReferenceNumber}</Td>
-                                <Td align='center'>{new Date(item.reservationDate).toLocaleDateString()} {new Date(item.reservationDate).toLocaleTimeString()}</Td>
-                                <Td align='center'>{reservationStatusStyle(item.reservationStatus)}</Td>
-                                <Td align='center'><a style={{ cursor: 'pointer', color: 'blue' }} onClick={() => { view(item.id) }}>view</a></Td>
+                                <Td style={item.id == activeReservation.id ? { backgroundColor: 'green', color: 'black' } : { backgroundColor: 'transparent' }} align='center'>{item.reservationReferenceNumber}</Td>
+                                <Td style={item.id == activeReservation.id ? { backgroundColor: 'green', color: 'black' } : { backgroundColor: 'transparent' }} align='center'>{new Date(item.reservationDate).toLocaleDateString()} {new Date(item.reservationDate).toLocaleTimeString()}</Td>
+                                <Td style={item.id == activeReservation.id ? { backgroundColor: 'green', color: 'black', fontWeight: 'bold' } : { backgroundColor: 'transparent' }} align='center'>{reservationStatusStyle(item.reservationStatus)}</Td>
+                                <Td style={item.id == activeReservation.id ? { backgroundColor: 'green', color: 'black' } : { backgroundColor: 'transparent' }} align='center'><a style={{ cursor: 'pointer', color: 'blue' }} onClick={() => { view(item.id) }}>view</a></Td>
                                 {/* <Td align='center'>{item.numberOfNights}</Td>
                             <Td align='center'>{numberFormat(item.room.roomType.roomRate)}</Td>
                             <Td align='center' style={{ color: 'red' }}>{numberFormat(item.room.roomType.roomRate * item.numberOfNights)}</Td> */}

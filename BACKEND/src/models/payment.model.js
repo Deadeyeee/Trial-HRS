@@ -15,7 +15,6 @@ module.exports = (sequelize, DataTypes, Sequelize) => {
             type: DataTypes.DECIMAL(19, 4),
             allowNull: false,
         },
-        
         balance: {
             type: DataTypes.DECIMAL(19, 4),
             allowNull: false,
@@ -31,7 +30,7 @@ module.exports = (sequelize, DataTypes, Sequelize) => {
             allowNull: false,
         },
         paymentStatus: {
-            type: DataTypes.ENUM(['fully paid', 'partial', 'pending', 'cancelled']),
+            type: DataTypes.ENUM(['fully paid', 'partial', 'pending', 'cancelled', 'reciept declined']),
             defaultValue: 'pending',
             allowNull: false,
         },

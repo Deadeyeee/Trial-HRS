@@ -145,7 +145,7 @@ const BillingSummaryContainer = () => {
     useEffect(() => {
         if (modeOfPayment.length != 0) {
             modeOfPayment.map((item) => {
-                if (item.paymentMode == "Cash") {
+                if (item.paymentMode == "Pay at The Hotel") {
                     setModeOfPaymentValue(item.paymentMode);
                 }
             })
@@ -1085,7 +1085,7 @@ const BillingSummaryContainer = () => {
 
                             >
                                 <FormControlLabel value="Down Payment" control={<Radio />} label="Down Payment" />
-                                <FormControlLabel value="Full Payment" control={<Radio />} label="Full Payment" disabled={modeOfPaymentValue === "Cash" ? true : false} />
+                                <FormControlLabel value="Full Payment" control={<Radio />} label="Full Payment" disabled={modeOfPaymentValue === "Pay at The Hotel" ? true : false} />
                             </RadioGroup>
                         </TableContainer>
                     </TabContainer>
