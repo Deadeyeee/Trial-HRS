@@ -33,7 +33,7 @@ export const Tr = styled(motion.tr)`
 
 export const Th = styled(motion.th)`
   border: none;
-  color: #b2b2b2;
+  color: ${(props) => (props.color ? props.color : "#b2b2b2")};;
   text-align: ${(props) => (props.align ? props.align : "left")};
   font-family: Arial, Helvetica, sans-serif;
   width: 250px;
