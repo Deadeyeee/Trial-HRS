@@ -62,6 +62,10 @@ export const ReservationContainer = () => {
     const [nights, setNights] = useState();
 
 
+    const [downPaymentValue, setDownPaymentValue] = useState(0)
+    const [paymentMadeValue, setPaymentMadeValue] = useState(0)
+    const [grandTotalValue, setGrandTotalValue] = useState(0)
+    const [remainingBalanceValue, setRemainingBalanceValue] = useState(0)
 
     const [firstNameError, setFirstNameError] = useState("");
     const [lastNameError, setLastNameError] = useState("");
@@ -130,6 +134,7 @@ export const ReservationContainer = () => {
 
 
     const [availableRooms, setAvailableRooms] = useState([]);
+    const [reservationStatus, setReservationStatus] = useState('');
 
     const [roomTypeDb, setRoomTypeDb] = useState([]);
     const [openCreate, setOpenCreate] = useState(false);
@@ -213,9 +218,26 @@ export const ReservationContainer = () => {
     const handleOpenEdit = (value) => {
         setOpenEdit(true)
         axios.get('http://localhost:3001/api/getReservation/' + value).then((result) => {
-            setReservationInfo(result.data)
-        }).catch((err) => {
+            // setReservationInfo(result.data)
 
+            setGrandTotalValue(result.data.payment.grandTotal)
+            setPaymentMadeValue(result.data.payment.paymentMade)
+            setRemainingBalanceValue(result.data.payment.balance)
+            setPaymentMethod(result.data.payment.paymentMode.paymentMode)
+            setDiscount(result.data.payment.discount.discountType)
+            setPaymentType(result.data.payment.paymentType)
+            setFirstName(result.data.guestInformation.firstName)
+            setLastName(result.data.guestInformation.lastName)
+            setEmail(result.data.guestInformation.user.email)
+            setContactNumber(result.data.guestInformation.user.contactNumber)
+            setBirthDay(result.data.guestInformation.birthDate)
+            setNationality(result.data.guestInformation.nationality)
+            setGender(result.data.guestInformation.gender)
+            setAddress(result.data.guestInformation.address)
+            setUserName(result.data.guestInformation.user.userName)
+            setReservationStatus(result.data.reservationStatus)
+        }).catch((err) => {
+            console.log(err)
         });
 
         axios.get('http://localhost:3001/api/getAllReservationSummary').then((result) => {
@@ -3575,21 +3597,27 @@ export const ReservationContainer = () => {
                                         style={{ color: 'black', textAlign: 'left' }}
                                         labelId="demo-select-small"
                                         id="demo-select-small"
-                                        value={roomNumber}
+                                        value={reservationStatus}
                                         label="Menu"
                                         onChange={(event) => {
-                                            setRoomNumber(event.target.value);
+                                            setReservationStatus(event.target.value);
                                         }}
                                     >
 
-                                        {availableRooms.length != 0 || roomType != '' ?
-                                            availableRooms.map((item) => (
-                                                item.roomType.roomType == roomType ? <MenuItem value={item.roomNumber}>
-                                                    Room {item.roomNumber}
-                                                </MenuItem> : <MenuItem style={{ display: 'none' }}></MenuItem>
-                                            ))
-                                            : ""}
-                                            
+                                        <MenuItem value='PENDING'>
+                                            Pending
+                                        </MenuItem>
+                                        <MenuItem value='RESERVED'>
+                                            Reserved
+                                        </MenuItem>
+                                        <MenuItem value='UNSETTLED'>
+                                            Unsettled
+                                        </MenuItem>
+                                        <MenuItem value='DEPARTED'>
+                                            Departed
+                                        </MenuItem>
+                                        
+
                                     </Select>
                                 </FormControl>
 
@@ -3597,79 +3625,7 @@ export const ReservationContainer = () => {
                             <Button variant="contained" onClick={() => { addToCart() }} disabled={roomType != '' && roomNumber != '' && roomRate != 0 ? false : true} >Add</Button>
 
 
-                            {/* 
-                            <ContainerGlobal
-                                w='420px'
-                                h='auto'
-                                direction='row'
-                                gap='10px'
-                                justify='space-between'
-                                align='center'
-                                overflow='auto'
 
-                            >
-
-                                <Title
-                                    size='20px'
-                                    color='Black'
-                                    family='Helvetica'
-                                    fstyle='Normal'
-                                    weight='400'
-                                    align='left'
-                                    margin='15px 0px 20px 0px'
-                                >
-                                    Extra Bed:
-                                </Title>
-                                <TextField defaultValue='0' id="outlined-basic" label="" variant="standard" style={{ width: 200, margin: '5px 0px' }} />
-                            </ContainerGlobal>
-                            <ContainerGlobal
-                                w='420px'
-                                h='auto'
-                                direction='row'
-                                gap='10px'
-                                justify='space-between'
-                                align='center'
-                                overflow='auto'
-
-                            >
-
-                                <Title
-                                    size='20px'
-                                    color='Black'
-                                    family='Helvetica'
-                                    fstyle='Normal'
-                                    weight='400'
-                                    align='left'
-                                    margin='15px 0px 20px 0px'
-                                >
-                                    Extra Pillow:
-                                </Title>
-                                <TextField defaultValue='0' id="outlined-basic" label="" variant="standard" style={{ width: 200, margin: '5px 0px' }} />
-                            </ContainerGlobal>
-                            <ContainerGlobal
-                                w='420px'
-                                h='auto'
-                                direction='row'
-                                gap='10px'
-                                justify='space-between'
-                                align='center'
-                                overflow='auto'
-
-                            >
-
-                                <Title
-                                    size='20px'
-                                    color='Black'
-                                    family='Helvetica'
-                                    fstyle='Normal'
-                                    weight='400'
-                                    align='left'
-                                    margin='15px 0px 20px 0px'
-                                >
-                                    Extra Blanket:
-                                </Title>
-                                <TextField defaultValue='0' id="outlined-basic" label="" variant="standard" style={{ width: 200, margin: '5px 0px' }} />
-                            </ContainerGlobal> */}
                         </ContainerGlobalColumn>
 
 
@@ -3711,7 +3667,7 @@ export const ReservationContainer = () => {
                                 backgroundColor: 'transparent',
                             }}>
 
-                            <TableContainer
+<TableContainer
                                 cellspacing="0"
                                 cellpadding="0">
                                 <Tr>
@@ -3719,27 +3675,27 @@ export const ReservationContainer = () => {
                                     <Th align='center' color='black'>Room type</Th>
                                     <Th align='center' color='black'>Check in</Th>
                                     <Th align='center' color='black'>Check out</Th>
+                                    <Th align='center' color='black'>Adults</Th>
+                                    <Th align='center' color='black'>Kids</Th>
                                     <Th align='center' color='black'>Total nights</Th>
                                     <Th align='center' color='black'>Rate per night</Th>
                                     <Th align='center' color='black'>Total amout due</Th>
-                                    <Th align='center' color='black'>Action</Th>
                                 </Tr>
-                                {availedRoom.length != 0 ?
+                                {reservationSummaryInfo.length != 0 ?
 
-                                    availedRoom.map((item, index) => (
+                                    reservationSummaryInfo.map((item, index) => (
                                         <Tr>
 
-                                            <Td align='center'>{item.roomNumber}</Td>
-                                            <Td align='center'>{item.roomType}</Td>
-                                            <Td align='center'>{new Date(item.checkIn).toLocaleDateString()}</Td>
-                                            <Td align='center'>{new Date(item.checkOut).toLocaleDateString()}</Td>
-                                            <Td align='center'>{item.totalNights}</Td>
-                                            <Td align='center'>{numberFormat(item.roomRate)}</Td>
-                                            <Td align='center' style={{ color: 'red' }}>{numberFormat(item.roomRate * item.totalNights)}</Td>
-                                            <Td align='center'>
-                                                <IconButton type="submit" sx={{ p: '8px', backgroundColor: 'rgb(255, 36, 0, 0.7)' }} aria-label="search" title='Delete' onClick={() => { DeleteRoom(item.id) }}>
-                                                    <DeleteIcon style={{ color: '#2e2e2e', fontSize: '18px' }} title='View' />
-                                                </IconButton></Td>
+                                            <Td align='center'>{item.room.roomNumber}</Td>
+                                            <Td align='center'>{item.room.roomType.roomType}</Td>
+                                            <Td align='center'>{new Date(item.checkInDate).toLocaleDateString()}</Td>
+                                            <Td align='center'>{new Date(item.checkOutDate).toLocaleDateString()}</Td>
+                                            <Td align='center'>{item.adults}</Td>
+                                            <Td align='center'>{item.kids}</Td>
+                                            <Td align='center'>{item.numberOfNights}</Td>
+                                            <Td align='center'>{numberFormat(item.room.roomType.roomRate)}</Td>
+                                            <Td align='center' style={{ color: 'red' }}>{numberFormat(item.room.roomType.roomRate * item.numberOfNights)}</Td>
+
                                         </Tr>
 
                                     ))
@@ -3991,7 +3947,7 @@ export const ReservationContainer = () => {
                                             Full payment:
                                         </Title>
                                         <TextField id="outlined-basic" label="" variant="standard" style={{ width: 200, margin: '5px 0px' }}
-                                            value={numberFormat(grandTotal)}
+                                            value={numberFormat(grandTotalValue)}
                                             type="text"
                                             InputProps={{
                                                 readOnly: true,
@@ -4020,7 +3976,7 @@ export const ReservationContainer = () => {
                                             Down payment:
                                         </Title>
                                         <TextField id="outlined-basic" label="" variant="standard" style={{ width: 200, margin: '5px 0px' }}
-                                            value={numberFormat(grandTotal / 2)}
+                                            value={numberFormat(grandTotalValue / 2)}
                                             type="text"
                                             InputProps={{
                                                 readOnly: true,
@@ -4050,7 +4006,7 @@ export const ReservationContainer = () => {
                                     Payment Made:
                                 </Title>
                                 <TextField id="outlined-basic" label="" variant="standard" style={{ width: 200, margin: '5px 0px' }}
-                                    value={numberFormat(0)}
+                                    value={numberFormat(paymentMadeValue)}
                                     type="text"
                                     InputProps={{
                                         readOnly: true,
@@ -4084,7 +4040,7 @@ export const ReservationContainer = () => {
                                     id="outlined-basic"
                                     label=""
                                     type="text"
-                                    value={numberFormat(grandTotal)}
+                                    value={numberFormat(grandTotalValue)}
                                     variant="standard"
                                     style={{ width: 200, margin: '5px 0px', fontWeight: 600 }}
                                     InputProps={{
@@ -4118,7 +4074,7 @@ export const ReservationContainer = () => {
                                     id="outlined-basic"
                                     label=""
                                     type="text"
-                                    value={numberFormat(grandTotal)}
+                                    value={numberFormat(remainingBalanceValue)}
                                     variant="standard"
                                     style={{ width: 200, margin: '5px 0px', fontWeight: 600 }}
                                     InputProps={{
@@ -4337,7 +4293,6 @@ export const ReservationContainer = () => {
                                     required />
 
                             </InputContainer>
-                            <p><h1 style={{ display: 'inline' }}>Create an account </h1>(optional)*</p>
                             <InputContainer>
                                 <TextField
 
@@ -4355,26 +4310,6 @@ export const ReservationContainer = () => {
                                     required={password.length != 0 ? true : false}
                                     style={{ width: '55%', }} />
 
-                                <TextField
-                                    error={passwordError.length != 0 ? true : false}
-                                    helperText={passwordError.length != 0 ? passwordError : ""}
-                                    placeholder='Password'
-                                    label="Password"
-                                    type='password'
-                                    variant="outlined"
-                                    value={password}
-                                    onChange={(e) => {
-                                        setPassword(e.target.value)
-                                        if (!passwordValidation.test(e.target.value) && e.target.value.length != 0) {
-                                            setPasswordError("Password must have a minimum of eight characters, at least one letter and one number.")
-                                        }
-                                        else {
-                                            setPasswordError("")
-                                        }
-                                    }}
-                                    style={{ width: '55%', }}
-                                    required={userName.length != 0 ? true : false}
-                                />
                             </InputContainer>
 
 
