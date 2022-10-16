@@ -44,7 +44,7 @@ exports.updatePhoto = async (req, res) => {
         // console.log(req.file.path)
         let info = {
             paymentStatus: req.body.paymentStatus,
-            paymentImage: req.body.paymentImage ?  null : req.file.path,
+            paymentImage: req.body.paymentImage ? null : req.file.path,
             // paymentMade: req.body.paymentMade,
             // grandTotal: req.body.grandTotal,
             // balance: req.body.balance,
@@ -67,7 +67,7 @@ exports.updatePhoto = async (req, res) => {
 
 exports.update = async (req, res) => {
     try {
-        
+
         let info = {
             paymentImage: req.body.paymentImage,
             paymentMade: req.body.paymentMade,
@@ -99,6 +99,14 @@ exports.updateGrandTotal = async (req, res) => {
         const getTotal = await reservationSummary.findAll(
             { include: { all: true, nested: true } }
         );
+
+        const getpayment = await Payment.findByPk(req.params.id,
+            {
+                include: [
+                    { model: paymentMode },
+                    { model: discount }
+                ]
+            });
         let grandTotal = 0;
         let paymentStatus = '';
 
@@ -109,15 +117,20 @@ exports.updateGrandTotal = async (req, res) => {
                 // console.log(item.dataValues.room.roomType.roomRate * item.Values.numberOfNights)
             }
         })
-        if (grandTotal - req.body.paymentMade == 0) {
-            paymentStatus = 'fully paid'
+
+        if (getpayment.discountValid == true){
+            grandTotal = grandTotal * .80;
         }
-        else if (grandTotal - req.body.paymentMade == grandTotal / 2) {
-            paymentStatus = 'partial'
-        }
-        else {
-            paymentStatus = 'pending'
-        }
+
+            if (grandTotal - req.body.paymentMade == 0) {
+                paymentStatus = 'fully paid'
+            }
+            else if (grandTotal - req.body.paymentMade == grandTotal / 2) {
+                paymentStatus = 'partial'
+            }
+            else {
+                paymentStatus = 'pending'
+            }
         console.log(grandTotal)
 
         let info = {
@@ -199,7 +212,7 @@ exports.ImageDelete = async (req, res) => {
             return res.status(400).send(error.message);
         }
         else {
-            
+
             return res.status(200).send("Successfully deleted");
 
         }

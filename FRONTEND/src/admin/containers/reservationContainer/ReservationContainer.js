@@ -104,7 +104,7 @@ export const ReservationContainer = () => {
     const [reservation, setReservation] = useState([]);
 
     const numberFormat = (value) =>
-        new Intl.NumberFormat('en-IN', {
+        new Intl.NumberFormat('en-CA', {
             style: 'currency',
             currency: 'PHP'
         }).format(value);
@@ -112,7 +112,7 @@ export const ReservationContainer = () => {
     // const [nationality, setNationality] = useState('Filipino')
     // console.log(outValue)
     const bday = new Date(2000, 11, 2,)
-
+    let reservationDate = Date.now()
 
     // console.log(outValue)
     const [show, setShow] = useState(false);
@@ -132,13 +132,22 @@ export const ReservationContainer = () => {
     const [availableRooms, setAvailableRooms] = useState([]);
 
     const [roomTypeDb, setRoomTypeDb] = useState([]);
+    const [openCreate, setOpenCreate] = useState(false);
+    const [openView, setOpenView] = useState(false);
+    const [openEdit, setOpenEdit] = useState(false);
 
     const [paymentMode, setPaymentMode] = useState([]);
     const [discountDb, setDiscountDb] = useState([]);
+    const [discountValid, setDiscountValid] = useState(false);
 
-
+    const [paymentModeId, setPaymentModeId] = useState("");
+    const [discountId, setDiscountId] = useState("");
     const [grandTotal, setGrandTotal] = useState(0);
 
+
+    const [reservationInfo, setReservationInfo] = useState([])
+    const [reservationSummaryInfo, setReservationSummaryInfo] = useState([])
+    let formatNumber;
 
     const [availedRoomId, setAvailedRoomId] = useState(0)
     function getDates(startDate, stopDate) {
@@ -152,6 +161,109 @@ export const ReservationContainer = () => {
         return dateArray;
     }
 
+
+    //Close events
+    const handleCloseCreate = () => {
+        setOpenCreate(false)
+        setAvailedRoom([])
+    }
+
+    const handleCloseView = () => {
+        setOpenView(false)
+        setReservationInfo([])
+        setReservationSummaryInfo([])
+
+    }
+
+    const handleCloseEdit = () => {
+        setOpenEdit(false)
+
+
+
+    }
+
+
+    //open Events
+    const handleOpenCreate = () => {
+        setOpenCreate(true)
+    }
+
+    const handleOpenView = (value) => {
+        setOpenView(true)
+        axios.get('http://localhost:3001/api/getReservation/' + value).then((result) => {
+            setReservationInfo(result.data)
+        }).catch((err) => {
+
+        });
+
+        axios.get('http://localhost:3001/api/getAllReservationSummary').then((result) => {
+            setReservationSummaryInfo([])
+            for (let index = 0; index < result.data.length; index++) {
+                if (result.data[index].reservation_id == value) {
+                    setReservationSummaryInfo((oldData) => [...oldData, result.data[index]])
+                }
+
+            }
+        }).catch((err) => {
+
+        });
+
+    }
+
+    const handleOpenEdit = (value) => {
+        setOpenEdit(true)
+        axios.get('http://localhost:3001/api/getReservation/' + value).then((result) => {
+            setReservationInfo(result.data)
+        }).catch((err) => {
+
+        });
+
+        axios.get('http://localhost:3001/api/getAllReservationSummary').then((result) => {
+            setReservationSummaryInfo([])
+            for (let index = 0; index < result.data.length; index++) {
+                if (result.data[index].reservation_id == value) {
+                    setReservationSummaryInfo((oldData) => [...oldData, result.data[index]])
+                }
+
+            }
+        }).catch((err) => {
+
+        });
+
+    }
+
+    useEffect(() => {
+        if (userName.length != '' || password.length != '') {
+            axios.get('http://localhost:3001/api/getAllUsers').then((res) => {
+                if (res.data.length != 0) {
+                    res.data.map((item) => {
+                        if (item.role != 'NON-USER') {
+                            if (item.email.toLowerCase() == email.toLowerCase()) {
+                                setEmailError("This email is already taken.")
+                            }
+                            else if (item.contactNumber == contactNumber) {
+                                setContactNumberError("This number is already taken.")
+
+                            }
+                            else if (item.userName.toLowerCase() == userName.toLowerCase()) {
+                                setUserNameError("This userName is already taken.")
+
+                            }
+                        }
+
+                    })
+                }
+            }).catch((err) => {
+
+            });
+        }
+        else {
+            setContactNumberError("")
+            setUserNameError("")
+            setEmailError("")
+
+        }
+    }, [userName, email, contactNumber])
 
     useEffect(() => {
         axios.get('http://localhost:3001/api/getAllReservation').then((result) => {
@@ -193,19 +305,33 @@ export const ReservationContainer = () => {
     const addToCart = () => {
         setAvailedRoomId(availedRoomId + 1)
 
-        let roomDetails = {
-            id: availedRoomId,
-            roomNumber: roomNumber,
-            roomType: roomType,
-            checkIn: startDate,
-            checkOut: endDate,
-            totalNights: nights,
-            roomRate: roomRate,
-        }
+        axios.get('http://localhost:3001/api/getAllRoom').then((result) => {
+            for (let index = 0; index < result.data.length; index++) {
+                if (result.data[index].roomNumber == roomNumber) {
+                    let roomDetails = {
+                        id: result.data[index].id,
+                        roomNumber: roomNumber,
+                        roomType: roomType,
+                        checkIn: startDate,
+                        checkOut: endDate,
+                        totalNights: nights,
+                        roomRate: roomRate,
+                        kids: kids,
+                        adults: adults,
+                    }
 
-        setAvailedRoom((oldData) => [...oldData, roomDetails])
+                    setAvailedRoom((oldData) => [...oldData, roomDetails])
+                    setRoomNumber('');
+                    break;
+                }
 
-        setRoomNumber('');
+            }
+        }).catch((err) => {
+
+        });
+
+
+
     }
 
     // useEffect(()=>{
@@ -224,7 +350,7 @@ export const ReservationContainer = () => {
 
     useEffect(() => {
 
-        // setRoomType('')
+
         setRoomNumber('')
 
         if (roomType != '') {
@@ -235,8 +361,8 @@ export const ReservationContainer = () => {
 
 
         if (discountDb.length != 0) {
-            discountDb.map((item, index) => {
-                if (index.discountType == 'No discount') {
+            discountDb.map((item) => {
+                if (item.discountType == 'No discount') {
                     setDiscount(item.discountType)
                 }
             })
@@ -250,17 +376,49 @@ export const ReservationContainer = () => {
                 }
             })
         }
+
     }, [roomType, discountDb, paymentMode])
 
 
     useEffect(() => {
-        setGrandTotal(0)
+
         if (availedRoom.length != 0) {
             availedRoom.map((item) => {
-                setGrandTotal(grandTotal + (item.roomRate * item.totalNights))
+                console.log("item.id", item.id)
+            })
+            if (discountValid == false) {
+                availedRoom.map((item) => {
+                    setGrandTotal(0)
+                    setGrandTotal(grandTotal + (item.roomRate * item.totalNights))
+                })
+            }
+            else {
+
+                availedRoom.map((item) => {
+                    setGrandTotal(grandTotal + ((item.roomRate * item.totalNights) * .80))
+                })
+            }
+        }
+    }, [availedRoom, discountValid])
+
+
+    useEffect(() => {
+        if (discount != '') {
+            discountDb.map((item) => {
+                if (discount == item.discountType) {
+                    setDiscountId(item.id)
+                }
             })
         }
-    }, [availedRoom])
+
+        if (paymentMethod != '') {
+            paymentMode.map((item) => {
+                if (paymentMethod == item.paymentMode) {
+                    setPaymentModeId(item.id)
+                }
+            })
+        }
+    }, [discount, paymentMode])
 
     useEffect(() => {
 
@@ -277,7 +435,7 @@ export const ReservationContainer = () => {
         setNotAvailableRoom([])
         axios.get('http://localhost:3001/api/getAllReservationSummary').then((result) => {
             for (let index = 0; index < result.data.length; index++) {
-                if (result.data[index].reservation.reservationStatus == "PENDING" || result.data[index].reservation.reservationStatus == "RESERVED" || result.data[index].reservation.reservationStatus == "BOOKED") {
+                if (result.data[index].bookingStatus == "PENDING" || result.data[index].bookingStatus == "RESERVED" || result.data[index].bookingStatus == "CHECKED-IN") {
                     let systemDates = getDates(startDate, endDate);
                     systemDates.pop()
                     let dataBaseDates = getDates(result.data[index].checkInDate, result.data[index].checkOutDate);
@@ -544,3143 +702,7 @@ export const ReservationContainer = () => {
         }
     }
 
-    // const WalkinModal = (
-    //     <ContainerGlobal
-    //         w='100%'
-    //         h='100%'
-    //         radius='none'
-    //         justify='center'
-    //         align='center'
-    //         bg='rgb(46, 46, 46, 0.9)'
-    //         index='1'
-    //         overflow='auto'
-    //         active
-    //     >
-    //         <ContainerGlobal
-    //             w='auto'
-    //             h='auto'
-    //             bg='white'
-    //             direction='column'
-    //             padding='30px'
-    //             gap='10px'
-    //             justify='center'
-    //             align='center'
-    //             margin='400px 0px 40px 0px'
-    //         >
-    //             <Title
-    //                 size='26px'
-    //                 color='black'
-    //                 family='Helvetica'
-    //                 fstyle='normal'
-    //                 weight='600'
-    //                 align='left'
-    //             >
-    //                 Bookings details
-    //             </Title>
-    //             <HorizontalLine
-    //                 bg='gray'
-    //                 w='100%'
-    //                 margin='0px'
-    //             ></HorizontalLine>
-    //             <ContainerGlobalRow>
-    //                 <ContainerGlobalColumn>
-    //                     <ContainerGlobal
-    //                         w='420px'
-    //                         h='auto'
-    //                         direction='row'
-    //                         gap='10px'
-    //                         justify='space-between'
-    //                         align='center'
 
-    //                     >
-    //                         <Title
-    //                             size='20px'
-    //                             color='Black'
-    //                             family='Helvetica'
-    //                             fstyle='Normal'
-    //                             weight='400'
-    //                             align='left'
-    //                             margin='15px 0px 20px 0px'
-    //                         >
-    //                             Check In:
-    //                         </Title>
-    //                         <LocalizationProvider dateAdapter={AdapterDateFns}>
-    //                             <DatePicker
-
-    //                                 views={['day', 'month', 'year']}
-    //                                 label="Check In"
-    //                                 value={value}
-    //                                 onChange={(newValue) => {
-    //                                     setValue(newValue);
-    //                                 }}
-    //                                 renderInput={(params) =>
-    //                                     <TextField
-    //                                         {...params}
-    //                                         sx={{
-    //                                             svg: { color: 'black' },
-    //                                             input: { color },
-    //                                             label: { color },
-    //                                             color: { color },
-    //                                             input: { color: 'black', fontWeight: 'bold' },
-
-    //                                         }}
-    //                                         variant="standard"
-    //                                         style={{ width: 200, margin: '5px 0px' }}
-    //                                         helperText={null}
-    //                                     />
-    //                                 }
-    //                             />
-
-    //                         </LocalizationProvider>
-    //                     </ContainerGlobal>
-    //                     <ContainerGlobal
-    //                         w='420px'
-    //                         h='auto'
-    //                         direction='row'
-    //                         gap='10px'
-    //                         justify='space-between'
-    //                         align='center'
-    //                         overflow='auto'
-
-    //                     >
-
-    //                         <Title
-    //                             size='20px'
-    //                             color='Black'
-    //                             family='Helvetica'
-    //                             fstyle='Normal'
-    //                             weight='400'
-    //                             align='left'
-    //                             margin='15px 0px 20px 0px'
-    //                         >
-    //                             Reservation No.:
-    //                         </Title>
-    //                         <TextField label="" variant="standard" style={{ width: 200, margin: '5px 0px' }} value="2012127"
-    //                             InputProps={{
-    //                                 readOnly: true,
-    //                             }}
-    //                         />
-    //                     </ContainerGlobal>
-    //                     <ContainerGlobal
-    //                         w='420px'
-    //                         h='auto'
-    //                         direction='row'
-    //                         gap='10px'
-    //                         justify='space-between'
-    //                         align='center'
-    //                         overflow='auto'
-
-    //                     >
-
-    //                         <Title
-    //                             size='20px'
-    //                             color='Black'
-    //                             family='Helvetica'
-    //                             fstyle='Normal'
-    //                             weight='400'
-    //                             align='left'
-    //                             margin='15px 0px 20px 0px'
-    //                         >
-    //                             Room Type:
-    //                         </Title>
-    //                         <FormControl sx={{ width: 200, margin: '5px 0px' }} size="large" variant="standard">
-    //                             <InputLabel id="demo-select-small" >Room Type</InputLabel>
-    //                             <Select
-    //                                 style={{ color: 'black', textAlign: 'left' }}
-    //                                 labelId="demo-select-small"
-    //                                 id="demo-select-small"
-    //                                 value={roomType}
-    //                                 label="Menu"
-    //                                 onChange={(event) => {
-    //                                     setRoomType(event.target.value);
-    //                                 }}
-
-    //                             >
-    //                                 <MenuItem value={'Family'}>
-    //                                     <Badge badgeContent={9} color="success" style={{ marginTop: 10 }} title='40 Available rooms'>
-    //                                         <ContainerGlobal
-    //                                             margin='0px 15px 0px 0px'>
-    //                                             Family Room
-    //                                         </ContainerGlobal>
-    //                                     </Badge>
-    //                                 </MenuItem>
-    //                                 <MenuItem value={'Deluxe'} >
-    //                                     <Badge badgeContent={4} color="success" style={{ marginTop: 10 }} title='10 Available rooms'>
-    //                                         <ContainerGlobal
-    //                                             margin='0px 15px 0px 0px'>
-    //                                             Deluxe Room
-    //                                         </ContainerGlobal>
-    //                                     </Badge></MenuItem>
-    //                                 <MenuItem value={'Premium'} selected>
-    //                                     <Badge badgeContent={5} color="success" style={{ marginTop: 10 }} title='5 Available rooms'>
-    //                                         <ContainerGlobal
-    //                                             margin='0px 15px 0px 0px'>
-    //                                             Premium Room
-    //                                         </ContainerGlobal>
-    //                                     </Badge></MenuItem>
-    //                             </Select>
-    //                         </FormControl>
-    //                     </ContainerGlobal>
-    //                     <ContainerGlobal
-    //                         w='420px'
-    //                         h='auto'
-    //                         direction='row'
-    //                         gap='10px'
-    //                         justify='space-between'
-    //                         align='center'
-    //                         overflow='auto'
-
-    //                     >
-
-    //                         <Title
-    //                             size='20px'
-    //                             color='Black'
-    //                             family='Helvetica'
-    //                             fstyle='Normal'
-    //                             weight='400'
-    //                             align='left'
-    //                             margin='15px 0px 20px 0px'
-    //                         >
-    //                             Room Number:
-    //                         </Title>
-    //                         <FormControl sx={{ width: 200, margin: '5px 0px' }} size="large" variant="standard">
-    //                             <InputLabel id="demo-select-small" >Room Number</InputLabel>
-    //                             <Select
-    //                                 style={{ color: 'black', textAlign: 'left' }}
-    //                                 labelId="demo-select-small"
-    //                                 id="demo-select-small"
-    //                                 value={roomNumber}
-    //                                 label="Menu"
-    //                                 onChange={(event) => {
-    //                                     setRoomNumber(event.target.value);
-    //                                 }}
-
-    //                             >
-    //                                 <MenuItem value={'R101'} selected>
-    //                                     Room 101
-    //                                 </MenuItem>
-    //                                 <MenuItem value={'R102'} >
-    //                                     Room 102
-    //                                 </MenuItem>
-    //                                 <MenuItem value={'R103'} disabled>
-    //                                     Room 103
-    //                                 </MenuItem>
-    //                                 <MenuItem value={'R104'} >
-    //                                     Room 104
-    //                                 </MenuItem>
-    //                                 <MenuItem value={'R105'} >
-    //                                     Room 105
-    //                                 </MenuItem>
-    //                             </Select>
-    //                         </FormControl>
-    //                     </ContainerGlobal>
-    //                     <ContainerGlobal
-    //                         w='420px'
-    //                         h='auto'
-    //                         direction='row'
-    //                         gap='10px'
-    //                         justify='space-between'
-    //                         align='center'
-    //                         overflow='auto'
-
-    //                     >
-
-    //                         <Title
-    //                             size='20px'
-    //                             color='Black'
-    //                             family='Helvetica'
-    //                             fstyle='Normal'
-    //                             weight='400'
-    //                             align='left'
-    //                             margin='15px 0px 20px 0px'
-    //                         >
-    //                             Number of Adult:
-    //                         </Title>
-    //                         <TextField id="outlined-basic" label="" variant="standard" style={{ width: 200, margin: '5px 0px' }} />
-    //                     </ContainerGlobal>
-    //                     <ContainerGlobal
-    //                         w='420px'
-    //                         h='auto'
-    //                         direction='row'
-    //                         gap='10px'
-    //                         justify='space-between'
-    //                         align='center'
-    //                         overflow='auto'
-
-    //                     >
-
-    //                         <Title
-    //                             size='20px'
-    //                             color='Black'
-    //                             family='Helvetica'
-    //                             fstyle='Normal'
-    //                             weight='400'
-    //                             align='left'
-    //                             margin='15px 0px 20px 0px'
-    //                         >
-    //                             Number of Kids:
-    //                         </Title>
-    //                         <TextField id="outlined-basic" label="" variant="standard" style={{ width: 200, margin: '5px 0px' }} />
-    //                     </ContainerGlobal>
-
-    //                     <ContainerGlobal
-    //                         w='420px'
-    //                         h='auto'
-    //                         direction='row'
-    //                         gap='10px'
-    //                         justify='space-between'
-    //                         align='center'
-    //                         overflow='auto'
-
-    //                     >
-
-    //                         <Title
-    //                             size='20px'
-    //                             color='Black'
-    //                             family='Helvetica'
-    //                             fstyle='Normal'
-    //                             weight='400'
-    //                             align='left'
-    //                             margin='15px 0px 20px 0px'
-    //                         >
-    //                             Extra Bed:
-    //                         </Title>
-    //                         <TextField defaultValue='0' id="outlined-basic" label="" variant="standard" style={{ width: 200, margin: '5px 0px' }} />
-    //                     </ContainerGlobal>
-    //                     <ContainerGlobal
-    //                         w='420px'
-    //                         h='auto'
-    //                         direction='row'
-    //                         gap='10px'
-    //                         justify='space-between'
-    //                         align='center'
-    //                         overflow='auto'
-
-    //                     >
-
-    //                         <Title
-    //                             size='20px'
-    //                             color='Black'
-    //                             family='Helvetica'
-    //                             fstyle='Normal'
-    //                             weight='400'
-    //                             align='left'
-    //                             margin='15px 0px 20px 0px'
-    //                         >
-    //                             Extra Pillow:
-    //                         </Title>
-    //                         <TextField defaultValue='0' id="outlined-basic" label="" variant="standard" style={{ width: 200, margin: '5px 0px' }} />
-    //                     </ContainerGlobal>
-    //                     <ContainerGlobal
-    //                         w='420px'
-    //                         h='auto'
-    //                         direction='row'
-    //                         gap='10px'
-    //                         justify='space-between'
-    //                         align='center'
-    //                         overflow='auto'
-
-    //                     >
-
-    //                         <Title
-    //                             size='20px'
-    //                             color='Black'
-    //                             family='Helvetica'
-    //                             fstyle='Normal'
-    //                             weight='400'
-    //                             align='left'
-    //                             margin='15px 0px 20px 0px'
-    //                         >
-    //                             Extra Blanket:
-    //                         </Title>
-    //                         <TextField defaultValue='0' id="outlined-basic" label="" variant="standard" style={{ width: 200, margin: '5px 0px' }} />
-    //                     </ContainerGlobal>
-    //                 </ContainerGlobalColumn>
-    //                 <ContainerGlobalColumn>
-    //                     <ContainerGlobal
-    //                         w='420px'
-    //                         h='auto'
-    //                         direction='row'
-    //                         gap='10px'
-    //                         justify='space-between'
-    //                         align='center'
-
-    //                     >
-    //                         <Title
-    //                             size='20px'
-    //                             color='Black'
-    //                             family='Helvetica'
-    //                             fstyle='Normal'
-    //                             weight='400'
-    //                             align='left'
-    //                             margin='15px 0px 20px 0px'
-    //                         >
-    //                             Check out:
-    //                         </Title>
-    //                         <LocalizationProvider dateAdapter={AdapterDateFns}>
-    //                             <DatePicker
-
-    //                                 views={['day', 'month', 'year']}
-    //                                 label="Check out"
-    //                                 value={outValue}
-    //                                 onChange={(newValue) => {
-    //                                     setOutValue(newValue);
-    //                                 }}
-    //                                 renderInput={(params) =>
-    //                                     <TextField
-    //                                         {...params}
-    //                                         sx={{
-    //                                             svg: { color: 'black' },
-    //                                             input: { color },
-    //                                             label: { color },
-    //                                             color: { color },
-    //                                             input: { color: 'black', fontWeight: 'bold' },
-
-    //                                         }}
-    //                                         variant="standard"
-    //                                         style={{ width: 200, margin: '5px 0px' }}
-    //                                         helperText={null}
-    //                                     />
-    //                                 }
-    //                             />
-
-    //                         </LocalizationProvider>
-    //                     </ContainerGlobal>
-    //                     <ContainerGlobal
-    //                         w='420px'
-    //                         h='auto'
-    //                         direction='row'
-    //                         gap='10px'
-    //                         justify='space-between'
-    //                         align='center'
-    //                         overflow='auto'
-
-    //                     >
-
-    //                         <Title
-    //                             size='20px'
-    //                             color='Black'
-    //                             family='Helvetica'
-    //                             fstyle='Normal'
-    //                             weight='400'
-    //                             align='left'
-    //                             margin='15px 0px 20px 0px'
-    //                         >
-    //                             Total Nights:
-    //                         </Title>
-    //                         <TextField InputProps={{
-    //                             readOnly: true,
-    //                         }} value={nights}
-    //                             id="outlined-basic" label="" variant="standard" style={{ width: 200, margin: '5px 0px' }} />
-    //                     </ContainerGlobal>
-    //                     <ContainerGlobal
-    //                         w='420px'
-    //                         h='auto'
-    //                         direction='row'
-    //                         gap='10px'
-    //                         justify='space-between'
-    //                         align='center'
-    //                         overflow='auto'
-
-    //                     >
-
-    //                         <Title
-    //                             size='20px'
-    //                             color='Black'
-    //                             family='Helvetica'
-    //                             fstyle='Normal'
-    //                             weight='400'
-    //                             align='left'
-    //                             margin='15px 0px 20px 0px'
-    //                         >
-    //                             Payment Method:
-    //                         </Title>
-    //                         <FormControl sx={{ width: 200, margin: '5px 0px' }} size="small" variant="standard">
-    //                             <InputLabel id="demo-select-small" >Payment method</InputLabel>
-    //                             <Select
-    //                                 style={{ color: 'black', textAlign: 'left' }}
-    //                                 labelId="demo-select-small"
-    //                                 id="demo-select-small"
-    //                                 value={paymentMethod}
-    //                                 label="Menu"
-    //                                 onChange={(event) => {
-    //                                     setPaymentMethod(event.target.value);
-    //                                 }
-    //                                 }
-
-    //                             >
-    //                                 <MenuItem value={'Cash'} selected>Cash (pay at the hotel)</MenuItem>
-    //                                 <MenuItem value={'Bank'} >Bank (Metro Bank)</MenuItem>
-    //                                 <MenuItem value={'E-Payment'} selected>E-Payment (Gcash)</MenuItem>
-    //                             </Select>
-    //                         </FormControl>
-    //                     </ContainerGlobal>
-    //                     <ContainerGlobal
-    //                         w='420px'
-    //                         h='auto'
-    //                         direction='row'
-    //                         gap='10px'
-    //                         justify='space-between'
-    //                         align='center'
-    //                         overflow='auto'
-
-    //                     >
-
-    //                         <Title
-    //                             size='20px'
-    //                             color='Black'
-    //                             family='Helvetica'
-    //                             fstyle='Normal'
-    //                             weight='400'
-    //                             align='left'
-    //                             margin='15px 0px 20px 0px'
-    //                         >
-    //                             Payment Type:
-    //                         </Title>
-    //                         <FormControl sx={{ width: 200, margin: '5px 0px' }} size="small" variant="standard">
-    //                             <InputLabel id="demo-select-small" >Payment Type</InputLabel>
-    //                             <Select
-    //                                 style={{ color: 'black', textAlign: 'left' }}
-    //                                 labelId="demo-select-small"
-    //                                 id="demo-select-small"
-    //                                 value={paymentType}
-    //                                 label="Menu"
-    //                                 onChange={(event) => {
-    //                                     setPaymentType(event.target.value);
-    //                                 }}
-
-    //                             >
-
-    //                                 <MenuItem value={'Full'} >Full payment</MenuItem>
-    //                                 <MenuItem value={'Down Payment'} selected>Down Payment</MenuItem>
-    //                             </Select>
-    //                         </FormControl>
-    //                     </ContainerGlobal>
-    //                     <ContainerGlobal
-    //                         w='420px'
-    //                         h='auto'
-    //                         direction='row'
-    //                         gap='10px'
-    //                         justify='space-between'
-    //                         align='center'
-    //                         overflow='auto'
-
-    //                     >
-
-    //                         <Title
-    //                             size='20px'
-    //                             color='Black'
-    //                             family='Helvetica'
-    //                             fstyle='Normal'
-    //                             weight='400'
-    //                             align='left'
-    //                             margin='15px 0px 20px 0px'
-    //                         >
-    //                             Discount:
-    //                         </Title>
-    //                         <FormControl sx={{ width: 200, margin: '5px 0px' }} size="small" variant="standard">
-    //                             <InputLabel id="demo-select-small" >Discount</InputLabel>
-    //                             <Select
-    //                                 style={{ color: 'black', textAlign: 'left' }}
-    //                                 labelId="demo-select-small"
-    //                                 id="demo-select-small"
-    //                                 value={discount}
-    //                                 label="Menu"
-    //                                 onChange={(event) => {
-    //                                     setDiscount(event.target.value);
-    //                                 }}
-
-    //                             >
-
-    //                                 <MenuItem value={'none'} >None</MenuItem>
-    //                                 <MenuItem value={'senior'}>Senior Citizen</MenuItem>
-    //                                 <MenuItem value={'pwd'}>PWD</MenuItem>
-    //                             </Select>
-    //                         </FormControl>
-    //                     </ContainerGlobal>
-    //                     <ContainerGlobal
-    //                         w='420px'
-    //                         h='auto'
-    //                         direction='row'
-    //                         gap='10px'
-    //                         justify='space-between'
-    //                         align='center'
-    //                         overflow='auto'
-
-    //                     >
-
-    //                         <Title
-    //                             size='20px'
-    //                             color='Black'
-    //                             family='Helvetica'
-    //                             fstyle='Normal'
-    //                             weight='400'
-    //                             align='left'
-    //                             margin='15px 0px 20px 0px'
-    //                         >
-    //                             Downpayment:
-    //                         </Title>
-    //                         <TextField id="outlined-basic" label="" variant="standard" style={{ width: 200, margin: '5px 0px' }}
-    //                             value='0.00'
-    //                             type='number'
-    //                             InputProps={{
-    //                                 readOnly: true,
-    //                                 endAdornment: <InputAdornment position="end">PHP</InputAdornment>,
-    //                             }}
-    //                         />
-    //                     </ContainerGlobal>
-
-    //                     <ContainerGlobal
-    //                         w='420px'
-    //                         h='auto'
-    //                         direction='row'
-    //                         gap='10px'
-    //                         justify='space-between'
-    //                         align='center'
-    //                         overflow='auto'
-
-    //                     >
-
-    //                         <Title
-    //                             size='20px'
-    //                             color='Black'
-    //                             family='Helvetica'
-    //                             fstyle='Normal'
-    //                             weight='600'
-    //                             align='left'
-    //                             margin='15px 0px 20px 0px'
-    //                         >
-    //                             Grand Total:
-    //                         </Title>
-    //                         <TextField
-    //                             id="outlined-basic"
-    //                             label=""
-    //                             type="number"
-    //                             value='0.00'
-    //                             variant="standard"
-    //                             style={{ width: 200, margin: '5px 0px', fontWeight: 600 }}
-    //                             InputProps={{
-    //                                 readOnly: true,
-    //                                 endAdornment: <InputAdornment position="end">PHP</InputAdornment>,
-    //                             }}
-    //                         />
-    //                     </ContainerGlobal>
-    //                     <ContainerGlobal
-    //                         w='420px'
-    //                         h='auto'
-    //                         direction='row'
-    //                         gap='10px'
-    //                         justify='space-between'
-    //                         align='center'
-    //                         overflow='auto'
-
-    //                     >
-
-    //                         <Title
-    //                             size='20px'
-    //                             color='Black'
-    //                             family='Helvetica'
-    //                             fstyle='Normal'
-    //                             weight='600'
-    //                             align='left'
-    //                             margin='15px 0px 20px 0px'
-    //                         >
-    //                             Remaining Balance:
-    //                         </Title>
-    //                         <TextField
-    //                             id="outlined-basic"
-    //                             label=""
-    //                             type="number"
-    //                             value='0.00'
-    //                             variant="standard"
-    //                             style={{ width: 200, margin: '5px 0px', fontWeight: 600 }}
-    //                             InputProps={{
-    //                                 readOnly: true,
-    //                                 endAdornment: <InputAdornment position="end">PHP</InputAdornment>,
-    //                             }}
-    //                         />
-    //                     </ContainerGlobal>
-    //                 </ContainerGlobalColumn>
-
-
-    //             </ContainerGlobalRow>
-    //             <Title
-    //                 size='26px'
-    //                 color='black'
-    //                 family='Helvetica'
-    //                 fstyle='normal'
-    //                 weight='600'
-    //                 align='left'
-    //                 margin='50px 0px 0px 0px'
-    //             >
-    //                 Client details
-    //             </Title>
-    //             <HorizontalLine
-    //                 bg='gray'
-    //                 w='100%'
-    //                 margin='0px'
-    //             ></HorizontalLine>
-
-
-    //             <ContainerGlobalRow>
-    //                 <ContainerGlobalColumn>
-    //                     <ContainerGlobal
-    //                         w='420px'
-    //                         h='auto'
-    //                         direction='row'
-    //                         gap='10px'
-    //                         justify='space-between'
-    //                         align='center'
-    //                         overflow='auto'
-
-    //                     >
-
-    //                         <Title
-    //                             size='20px'
-    //                             color='Black'
-    //                             family='Helvetica'
-    //                             fstyle='Normal'
-    //                             weight='400'
-    //                             align='left'
-    //                             margin='15px 0px 20px 0px'
-    //                         >
-    //                             First Name:
-    //                         </Title>
-    //                         <TextField id="outlined-basic" label=""
-    //                             value=''
-    //                             variant="standard" style={{ width: 200, margin: '5px 0px' }} />
-    //                     </ContainerGlobal>
-    //                     <ContainerGlobal
-    //                         w='420px'
-    //                         h='auto'
-    //                         direction='row'
-    //                         gap='10px'
-    //                         justify='space-between'
-    //                         align='center'
-
-    //                     >
-    //                         <Title
-    //                             size='20px'
-    //                             color='Black'
-    //                             family='Helvetica'
-    //                             fstyle='Normal'
-    //                             weight='400'
-    //                             align='left'
-    //                             margin='15px 0px 20px 0px'
-    //                         >
-    //                             Birthday:
-    //                         </Title>
-    //                         <LocalizationProvider dateAdapter={AdapterDateFns}>
-    //                             <DatePicker
-
-    //                                 views={['day', 'month', 'year']}
-    //                                 label="Birthday"
-    //                                 value={bday}
-    //                                 onChange={(newValue) => {
-    //                                     setValue(newValue);
-    //                                 }}
-    //                                 renderInput={(params) =>
-    //                                     <TextField
-    //                                         {...params}
-    //                                         sx={{
-    //                                             svg: { color: 'black' },
-    //                                             input: { color },
-    //                                             label: { color },
-    //                                             color: { color },
-    //                                             input: { color: 'black', fontWeight: 'bold' },
-
-    //                                         }}
-
-    //                                         variant="standard"
-    //                                         style={{ width: 200, margin: '5px 0px' }}
-    //                                         helperText={null}
-    //                                     />
-    //                                 }
-    //                             />
-
-    //                         </LocalizationProvider>
-    //                     </ContainerGlobal>
-    //                     <ContainerGlobal
-    //                         w='420px'
-    //                         h='auto'
-    //                         direction='row'
-    //                         gap='10px'
-    //                         justify='space-between'
-    //                         align='center'
-    //                         overflow='auto'
-
-    //                     >
-
-    //                         <Title
-    //                             size='20px'
-    //                             color='Black'
-    //                             family='Helvetica'
-    //                             fstyle='Normal'
-    //                             weight='400'
-    //                             align='left'
-    //                             margin='15px 0px 20px 0px'
-    //                         >
-    //                             Contact Number:
-    //                         </Title>
-    //                         <TextField id="outlined-basic"
-    //                             value=''
-    //                             label="" variant="standard" style={{ width: 200, margin: '5px 0px' }} type='number' />
-    //                     </ContainerGlobal>
-    //                     <ContainerGlobal
-    //                         w='420px'
-    //                         h='auto'
-    //                         direction='row'
-    //                         gap='10px'
-    //                         justify='space-between'
-    //                         align='center'
-    //                         overflow='auto'
-
-    //                     >
-    //                         <Title
-    //                             size='20px'
-    //                             color='Black'
-    //                             family='Helvetica'
-    //                             fstyle='Normal'
-    //                             weight='400'
-    //                             align='left'
-    //                             margin='15px 0px 20px 0px'
-    //                         >
-    //                             Gender:
-    //                         </Title>
-
-    //                         <RadioGroup
-    //                             aria-labelledby="demo-radio-buttons-group-label"
-    //                             defaultValue="male"
-    //                             name="radio-buttons-group"
-    //                             style={{ width: 200 }}
-    //                         >
-    //                             <FormControlLabel value="female" control={<Radio />} label="Female" />
-    //                             <FormControlLabel value="male" control={<Radio />} label="Male" />
-    //                             <FormControlLabel value="other" control={<Radio />} label="Other" />
-    //                         </RadioGroup>
-    //                     </ContainerGlobal>
-    //                     <ContainerGlobal
-    //                         w='420px'
-    //                         h='auto'
-    //                         direction='row'
-    //                         gap='10px'
-    //                         justify='space-between'
-    //                         align='center'
-    //                         overflow='auto'
-
-    //                     >
-
-    //                         <Title
-    //                             size='20px'
-    //                             color='Black'
-    //                             family='Helvetica'
-    //                             fstyle='Normal'
-    //                             weight='400'
-    //                             align='left'
-    //                             margin='15px 0px 20px 0px'
-    //                         >
-    //                             Address:
-    //                         </Title>
-    //                         <TextField id="outlined-basic"
-    //                             value=''
-    //                             multiline
-    //                             rows={4}
-    //                             label="" variant="standard" style={{ width: 200, margin: '5px 0px' }} />
-    //                     </ContainerGlobal>
-
-    //                 </ContainerGlobalColumn>
-
-    //                 <ContainerGlobalColumn>
-    //                     <ContainerGlobal
-    //                         w='420px'
-    //                         h='auto'
-    //                         direction='row'
-    //                         gap='10px'
-    //                         justify='space-between'
-    //                         align='center'
-    //                         overflow='auto'
-
-    //                     >
-
-    //                         <Title
-    //                             size='20px'
-    //                             color='Black'
-    //                             family='Helvetica'
-    //                             fstyle='Normal'
-    //                             weight='400'
-    //                             align='left'
-    //                             margin='15px 0px 20px 0px'
-    //                         >
-    //                             Last Name:
-    //                         </Title>
-    //                         <TextField id="outlined-basic" label=""
-    //                             value=''
-    //                             variant="standard" style={{ width: 200, margin: '5px 0px' }} />
-    //                     </ContainerGlobal>
-    //                     <ContainerGlobal
-    //                         w='420px'
-    //                         h='auto'
-    //                         direction='row'
-    //                         gap='10px'
-    //                         justify='space-between'
-    //                         align='center'
-    //                         overflow='auto'
-
-    //                     >
-
-    //                         <Title
-    //                             size='20px'
-    //                             color='Black'
-    //                             family='Helvetica'
-    //                             fstyle='Normal'
-    //                             weight='400'
-    //                             align='left'
-    //                             margin='15px 0px 20px 0px'
-    //                         >
-    //                             Email:
-    //                         </Title>
-    //                         <TextField id="outlined-basic"
-    //                             value=''
-    //                             label="" variant="standard" style={{ width: 200, margin: '5px 0px' }} />
-    //                     </ContainerGlobal>
-    //                     <ContainerGlobal
-    //                         w='420px'
-    //                         h='auto'
-    //                         direction='row'
-    //                         gap='10px'
-    //                         justify='space-between'
-    //                         align='center'
-    //                         overflow='auto'
-
-    //                     >
-
-    //                         <Title
-    //                             size='20px'
-    //                             color='Black'
-    //                             family='Helvetica'
-    //                             fstyle='Normal'
-    //                             weight='400'
-    //                             align='left'
-    //                             margin='15px 0px 20px 0px'
-    //                         >
-    //                             Nationality:
-    //                         </Title>
-    //                         <FormControl sx={{ width: 200, margin: '5px 0px' }} size="small" variant="standard">
-    //                             <InputLabel id="demo-select-small" >Nationality</InputLabel>
-    //                             <Select
-    //                                 style={{ color: 'black', textAlign: 'left' }}
-    //                                 labelId="demo-select-small"
-    //                                 id="demo-select-small"
-    //                                 value={nationality}
-    //                                 label="Menu"
-    //                                 onChange={(event) => {
-    //                                     setNationality(event.target.value);
-    //                                 }}
-    //                             >
-
-    //                                 {nationalities.map(({ nationality }, index) => (
-    //                                     <MenuItem value={nationality} >{nationality}</MenuItem>
-    //                                 ))}
-    //                             </Select>
-    //                         </FormControl>
-    //                     </ContainerGlobal>
-    //                     <ContainerGlobal
-    //                         w='420px'
-    //                         h='auto'
-    //                         direction='row'
-    //                         gap='10px'
-    //                         justify='space-between'
-    //                         align='center'
-    //                         overflow='hidden'
-
-    //                     >
-
-    //                         <Title
-    //                             size='20px'
-    //                             color='Black'
-    //                             family='Helvetica'
-    //                             fstyle='Normal'
-    //                             weight='400'
-    //                             align='left'
-    //                             margin='15px 0px 20px 0px'
-    //                         >
-    //                             Special Instructions:
-    //                         </Title>
-    //                         <TextField id="outlined-basic" label="" variant="standard" style={{ width: 200, margin: '5px 0px' }}
-    //                             multiline
-    //                             rows={4}
-    //                         />
-    //                     </ContainerGlobal>
-    //                 </ContainerGlobalColumn>
-
-    //             </ContainerGlobalRow>
-
-    //             <ContainerGlobal
-    //                 w='auto'
-    //                 h='auto'
-    //                 bg='none'
-    //                 direction='row'
-    //                 gap='10px'
-    //                 justify='center'
-    //                 align='center'
-    //             >
-    //                 <Button variant="contained" size="large"
-    //                     style={{ backgroundColor: '#50AA32' }}
-    //                     onClick={() => setShow(prev => !prev)}>
-    //                     Confirm
-    //                 </Button>
-    //                 <Button variant="contained" size="large"
-    //                     style={{ backgroundColor: '#FF2400' }}
-    //                     onClick={() => setShow(prev => !prev)}>
-    //                     Cancel
-    //                 </Button>
-    //             </ContainerGlobal>
-    //         </ContainerGlobal>
-    //     </ContainerGlobal>);
-
-
-    // const viewDetails = (
-    //     <ContainerGlobal
-    //         w='100%'
-    //         h='100%'
-    //         radius='none'
-    //         justify='center'
-    //         align='center'
-    //         bg='rgb(46, 46, 46, 0.9)'
-    //         index='1'
-    //         overflow='auto'
-    //         active
-    //     >
-    //         <ContainerGlobal
-    //             w='auto'
-    //             h='auto'
-    //             bg='white'
-    //             direction='column'
-    //             padding='30px'
-    //             gap='10px'
-    //             justify='center'
-    //             align='center'
-    //             margin='400px 0px 40px 0px'
-    //         >
-    //             <Title
-    //                 size='26px'
-    //                 color='black'
-    //                 family='Helvetica'
-    //                 fstyle='normal'
-    //                 weight='600'
-    //                 align='left'
-    //             >
-    //                 Bookings details
-    //             </Title>
-    //             <HorizontalLine
-    //                 bg='gray'
-    //                 w='100%'
-    //                 margin='0px'
-    //             ></HorizontalLine>
-    //             <ContainerGlobalRow>
-    //                 <ContainerGlobalColumn>
-    //                     <ContainerGlobal
-    //                         w='420px'
-    //                         h='auto'
-    //                         direction='row'
-    //                         gap='10px'
-    //                         justify='space-between'
-    //                         align='center'
-
-    //                     >
-    //                         <Title
-    //                             size='20px'
-    //                             color='Black'
-    //                             family='Helvetica'
-    //                             fstyle='Normal'
-    //                             weight='400'
-    //                             align='left'
-    //                             margin='15px 0px 20px 0px'
-    //                         >
-    //                             Check In:
-    //                         </Title>
-    //                         <LocalizationProvider dateAdapter={AdapterDateFns}>
-    //                             <DatePicker
-
-    //                                 views={['day', 'month', 'year']}
-    //                                 label="Check In"
-    //                                 value={value}
-    //                                 onChange={(newValue) => {
-    //                                     setValue(newValue);
-    //                                 }}
-    //                                 renderInput={(params) =>
-    //                                     <TextField
-    //                                         {...params}
-    //                                         sx={{
-    //                                             svg: { color: 'black' },
-    //                                             input: { color },
-    //                                             label: { color },
-    //                                             color: { color },
-    //                                             input: { color: 'black', fontWeight: 'bold' },
-
-    //                                         }}
-
-    //                                         variant="standard"
-    //                                         style={{ width: 200, margin: '5px 0px' }}
-    //                                         helperText={null}
-    //                                     />
-    //                                 }
-    //                                 disabled
-    //                             />
-
-    //                         </LocalizationProvider>
-    //                     </ContainerGlobal>
-    //                     <ContainerGlobal
-    //                         w='420px'
-    //                         h='auto'
-    //                         direction='row'
-    //                         gap='10px'
-    //                         justify='space-between'
-    //                         align='center'
-    //                         overflow='auto'
-
-    //                     >
-
-    //                         <Title
-    //                             size='20px'
-    //                             color='Black'
-    //                             family='Helvetica'
-    //                             fstyle='Normal'
-    //                             weight='400'
-    //                             align='left'
-    //                             margin='15px 0px 20px 0px'
-    //                         >
-    //                             Reservation No.:
-    //                         </Title>
-    //                         <TextField id="outlined-basic" label="" variant="standard" style={{ width: 200, margin: '5px 0px' }} value="2012127"
-    //                             InputProps={{
-    //                                 readOnly: true,
-    //                             }}
-    //                         />
-    //                     </ContainerGlobal>
-    //                     <ContainerGlobal
-    //                         w='420px'
-    //                         h='auto'
-    //                         direction='row'
-    //                         gap='10px'
-    //                         justify='space-between'
-    //                         align='center'
-    //                         overflow='auto'
-
-    //                     >
-
-    //                         <Title
-    //                             size='20px'
-    //                             color='Black'
-    //                             family='Helvetica'
-    //                             fstyle='Normal'
-    //                             weight='400'
-    //                             align='left'
-    //                             margin='15px 0px 20px 0px'
-    //                         >
-    //                             Room Type:
-    //                         </Title>
-    //                         <FormControl sx={{ width: 200, margin: '5px 0px' }} size="large" variant="standard">
-    //                             <InputLabel id="demo-select-small" >Room Type</InputLabel>
-    //                             <Select
-    //                                 style={{ color: 'black', textAlign: 'left' }}
-    //                                 labelId="demo-select-small"
-    //                                 id="demo-select-small"
-    //                                 value={roomType}
-    //                                 label="Menu"
-    //                                 onChange={(event) => {
-    //                                     setRoomType(event.target.value);
-    //                                 }}
-    //                                 disabled
-    //                             >
-    //                                 <MenuItem value={'Family'}>
-    //                                     <Badge badgeContent={9} color="success" style={{ marginTop: 10 }} title='40 Available rooms'>
-    //                                         <ContainerGlobal
-    //                                             margin='0px 15px 0px 0px'>
-    //                                             Family Room
-    //                                         </ContainerGlobal>
-    //                                     </Badge>
-    //                                 </MenuItem>
-    //                                 <MenuItem value={'Deluxe'} >
-    //                                     <Badge badgeContent={4} color="success" style={{ marginTop: 10 }} title='10 Available rooms'>
-    //                                         <ContainerGlobal
-    //                                             margin='0px 15px 0px 0px'>
-    //                                             Deluxe Room
-    //                                         </ContainerGlobal>
-    //                                     </Badge></MenuItem>
-    //                                 <MenuItem value={'Premium'} selected>
-    //                                     <Badge badgeContent={5} color="success" style={{ marginTop: 10 }} title='5 Available rooms'>
-    //                                         <ContainerGlobal
-    //                                             margin='0px 15px 0px 0px'>
-    //                                             Premium Room
-    //                                         </ContainerGlobal>
-    //                                     </Badge></MenuItem>
-    //                             </Select>
-    //                         </FormControl>
-    //                     </ContainerGlobal>
-    //                     <ContainerGlobal
-    //                         w='420px'
-    //                         h='auto'
-    //                         direction='row'
-    //                         gap='10px'
-    //                         justify='space-between'
-    //                         align='center'
-    //                         overflow='auto'
-
-    //                     >
-
-    //                         <Title
-    //                             size='20px'
-    //                             color='Black'
-    //                             family='Helvetica'
-    //                             fstyle='Normal'
-    //                             weight='400'
-    //                             align='left'
-    //                             margin='15px 0px 20px 0px'
-    //                         >
-    //                             Room Number:
-    //                         </Title>
-    //                         <FormControl sx={{ width: 200, margin: '5px 0px' }} size="large" variant="standard">
-    //                             <InputLabel id="demo-select-small" >Room Number</InputLabel>
-    //                             <Select
-    //                                 style={{ color: 'black', textAlign: 'left' }}
-    //                                 labelId="demo-select-small"
-    //                                 id="demo-select-small"
-    //                                 value={roomNumber}
-    //                                 label="Menu"
-    //                                 onChange={(event) => {
-    //                                     setRoomNumber(event.target.value);
-    //                                 }}
-    //                                 disabled
-    //                             >
-    //                                 <MenuItem value={'R101'} selected>
-    //                                     Room 101
-    //                                 </MenuItem>
-    //                                 <MenuItem value={'R102'} >
-    //                                     Room 102
-    //                                 </MenuItem>
-    //                                 <MenuItem value={'R103'} disabled>
-    //                                     Room 103
-    //                                 </MenuItem>
-    //                                 <MenuItem value={'R104'} >
-    //                                     Room 104
-    //                                 </MenuItem>
-    //                                 <MenuItem value={'R105'} >
-    //                                     Room 105
-    //                                 </MenuItem>
-    //                             </Select>
-    //                         </FormControl>
-    //                     </ContainerGlobal>
-    //                     <ContainerGlobal
-    //                         w='420px'
-    //                         h='auto'
-    //                         direction='row'
-    //                         gap='10px'
-    //                         justify='space-between'
-    //                         align='center'
-    //                         overflow='auto'
-
-    //                     >
-
-    //                         <Title
-    //                             size='20px'
-    //                             color='Black'
-    //                             family='Helvetica'
-    //                             fstyle='Normal'
-    //                             weight='400'
-    //                             align='left'
-    //                             margin='15px 0px 20px 0px'
-    //                         >
-    //                             Number of Adult:
-    //                         </Title>
-    //                         <TextField id="outlined-basic" label="" variant="standard" style={{ width: 200, margin: '5px 0px' }}
-    //                             InputProps={{
-    //                                 readOnly: true,
-    //                             }}
-    //                             value='2'
-    //                         />
-    //                     </ContainerGlobal>
-    //                     <ContainerGlobal
-    //                         w='420px'
-    //                         h='auto'
-    //                         direction='row'
-    //                         gap='10px'
-    //                         justify='space-between'
-    //                         align='center'
-    //                         overflow='auto'
-
-    //                     >
-
-    //                         <Title
-    //                             size='20px'
-    //                             color='Black'
-    //                             family='Helvetica'
-    //                             fstyle='Normal'
-    //                             weight='400'
-    //                             align='left'
-    //                             margin='15px 0px 20px 0px'
-    //                         >
-    //                             Number of Kids:
-    //                         </Title>
-    //                         <TextField id="outlined-basic" label="" variant="standard" style={{ width: 200, margin: '5px 0px' }}
-    //                             InputProps={{
-    //                                 readOnly: true,
-    //                             }}
-    //                             value='0' />
-    //                     </ContainerGlobal>
-    //                     <ContainerGlobal
-    //                         w='420px'
-    //                         h='auto'
-    //                         direction='row'
-    //                         gap='10px'
-    //                         justify='space-between'
-    //                         align='center'
-    //                         overflow='auto'
-
-    //                     >
-
-    //                         <Title
-    //                             size='20px'
-    //                             color='Black'
-    //                             family='Helvetica'
-    //                             fstyle='Normal'
-    //                             weight='400'
-    //                             align='left'
-    //                             margin='15px 0px 20px 0px'
-    //                         >
-    //                             Extra Bed:
-    //                         </Title>
-    //                         <TextField
-    //                             InputProps={{
-    //                                 readOnly: true,
-    //                             }}
-    //                             defaultValue='0' id="outlined-basic" label="" variant="standard" style={{ width: 200, margin: '5px 0px' }} />
-    //                     </ContainerGlobal>
-    //                     <ContainerGlobal
-    //                         w='420px'
-    //                         h='auto'
-    //                         direction='row'
-    //                         gap='10px'
-    //                         justify='space-between'
-    //                         align='center'
-    //                         overflow='auto'
-
-    //                     >
-
-    //                         <Title
-    //                             size='20px'
-    //                             color='Black'
-    //                             family='Helvetica'
-    //                             fstyle='Normal'
-    //                             weight='400'
-    //                             align='left'
-    //                             margin='15px 0px 20px 0px'
-    //                         >
-    //                             Extra Pillow:
-    //                         </Title>
-    //                         <TextField
-    //                             InputProps={{
-    //                                 readOnly: true,
-    //                             }}
-    //                             defaultValue='0' id="outlined-basic" label="" variant="standard" style={{ width: 200, margin: '5px 0px' }} />
-    //                     </ContainerGlobal>
-    //                     <ContainerGlobal
-    //                         w='420px'
-    //                         h='auto'
-    //                         direction='row'
-    //                         gap='10px'
-    //                         justify='space-between'
-    //                         align='center'
-    //                         overflow='auto'
-
-    //                     >
-
-    //                         <Title
-    //                             size='20px'
-    //                             color='Black'
-    //                             family='Helvetica'
-    //                             fstyle='Normal'
-    //                             weight='400'
-    //                             align='left'
-    //                             margin='15px 0px 20px 0px'
-    //                         >
-    //                             Extra Blanket:
-    //                         </Title>
-    //                         <TextField
-    //                             InputProps={{
-    //                                 readOnly: true,
-    //                             }}
-    //                             defaultValue='0' id="outlined-basic" label="" variant="standard" style={{ width: 200, margin: '5px 0px' }} />
-    //                     </ContainerGlobal>
-    //                 </ContainerGlobalColumn>
-    //                 <ContainerGlobalColumn>
-    //                     <ContainerGlobal
-    //                         w='420px'
-    //                         h='auto'
-    //                         direction='row'
-    //                         gap='10px'
-    //                         justify='space-between'
-    //                         align='center'
-
-    //                     >
-    //                         <Title
-    //                             size='20px'
-    //                             color='Black'
-    //                             family='Helvetica'
-    //                             fstyle='Normal'
-    //                             weight='400'
-    //                             align='left'
-    //                             margin='15px 0px 20px 0px'
-    //                         >
-    //                             Check out:
-    //                         </Title>
-    //                         <LocalizationProvider dateAdapter={AdapterDateFns}>
-    //                             <DatePicker
-
-    //                                 views={['day', 'month', 'year']}
-    //                                 label="Check out"
-    //                                 value={outValue}
-    //                                 onChange={(newValue) => {
-    //                                     setOutValue(newValue);
-    //                                 }}
-    //                                 renderInput={(params) =>
-    //                                     <TextField
-    //                                         {...params}
-    //                                         sx={{
-    //                                             svg: { color: 'black' },
-    //                                             input: { color },
-    //                                             label: { color },
-    //                                             color: { color },
-    //                                             input: { color: 'black', fontWeight: 'bold' },
-
-    //                                         }}
-    //                                         variant="standard"
-    //                                         style={{ width: 200, margin: '5px 0px' }}
-    //                                         helperText={null}
-    //                                     />
-    //                                 }
-    //                                 disabled
-    //                             />
-
-    //                         </LocalizationProvider>
-    //                     </ContainerGlobal>
-
-    //                     <ContainerGlobal
-    //                         w='420px'
-    //                         h='auto'
-    //                         direction='row'
-    //                         gap='10px'
-    //                         justify='space-between'
-    //                         align='center'
-    //                         overflow='auto'
-
-    //                     >
-
-    //                         <Title
-    //                             size='20px'
-    //                             color='Black'
-    //                             family='Helvetica'
-    //                             fstyle='Normal'
-    //                             weight='400'
-    //                             align='left'
-    //                             margin='15px 0px 20px 0px'
-    //                         >
-    //                             Total Nights:
-    //                         </Title>
-    //                         <TextField id="outlined-basic" label="" variant="standard" style={{ width: 200, margin: '5px 0px' }}
-    //                             InputProps={{
-    //                                 readOnly: true,
-    //                             }}
-    //                             value={nights} />
-    //                     </ContainerGlobal>
-    //                     <ContainerGlobal
-    //                         w='420px'
-    //                         h='auto'
-    //                         direction='row'
-    //                         gap='10px'
-    //                         justify='space-between'
-    //                         align='center'
-    //                         overflow='auto'
-
-    //                     >
-
-    //                         <Title
-    //                             size='20px'
-    //                             color='Black'
-    //                             family='Helvetica'
-    //                             fstyle='Normal'
-    //                             weight='400'
-    //                             align='left'
-    //                             margin='15px 0px 20px 0px'
-    //                         >
-    //                             Payment Method:
-    //                         </Title>
-    //                         <FormControl sx={{ width: 200, margin: '5px 0px' }} size="small" variant="standard">
-    //                             <InputLabel id="demo-select-small" >Payment method</InputLabel>
-    //                             <Select
-    //                                 style={{ color: 'black', textAlign: 'left' }}
-    //                                 labelId="demo-select-small"
-    //                                 id="demo-select-small"
-    //                                 value={paymentMethod}
-    //                                 label="Menu"
-    //                                 onChange={(event) => {
-    //                                     setPaymentMethod(event.target.value);
-    //                                 }
-    //                                 }
-    //                                 disabled
-    //                             >
-    //                                 <MenuItem value={'Cash'} selected>Cash (pay at the hotel)</MenuItem>
-    //                                 <MenuItem value={'Bank'} >Bank (Metro Bank)</MenuItem>
-    //                                 <MenuItem value={'E-Payment'}>E-Payment (Gcash)</MenuItem>
-    //                             </Select>
-    //                         </FormControl>
-    //                     </ContainerGlobal>
-    //                     <ContainerGlobal
-    //                         w='420px'
-    //                         h='auto'
-    //                         direction='row'
-    //                         gap='10px'
-    //                         justify='space-between'
-    //                         align='center'
-    //                         overflow='auto'
-
-    //                     >
-
-    //                         <Title
-    //                             size='20px'
-    //                             color='Black'
-    //                             family='Helvetica'
-    //                             fstyle='Normal'
-    //                             weight='400'
-    //                             align='left'
-    //                             margin='15px 0px 20px 0px'
-    //                         >
-    //                             Payment Type:
-    //                         </Title>
-    //                         <FormControl sx={{ width: 200, margin: '5px 0px' }} size="small" variant="standard">
-    //                             <InputLabel id="demo-select-small" >Payment Type</InputLabel>
-    //                             <Select
-    //                                 style={{ color: 'black', textAlign: 'left' }}
-    //                                 labelId="demo-select-small"
-    //                                 id="demo-select-small"
-    //                                 value={paymentType}
-    //                                 label="Menu"
-    //                                 onChange={(event) => {
-    //                                     setPaymentType(event.target.value);
-    //                                 }}
-    //                                 disabled
-    //                             >
-
-    //                                 <MenuItem value={'Full'} >Full payment</MenuItem>
-    //                                 <MenuItem value={'Down Payment'} selected>Down Payment</MenuItem>
-    //                             </Select>
-    //                         </FormControl>
-    //                     </ContainerGlobal>
-    //                     <ContainerGlobal
-    //                         w='420px'
-    //                         h='auto'
-    //                         direction='row'
-    //                         gap='10px'
-    //                         justify='space-between'
-    //                         align='center'
-    //                         overflow='auto'
-
-    //                     >
-
-    //                         <Title
-    //                             size='20px'
-    //                             color='Black'
-    //                             family='Helvetica'
-    //                             fstyle='Normal'
-    //                             weight='400'
-    //                             align='left'
-    //                             margin='15px 0px 20px 0px'
-    //                         >
-    //                             Discount:
-    //                         </Title>
-    //                         <FormControl sx={{ width: 200, margin: '5px 0px' }} size="small" variant="standard">
-    //                             <InputLabel id="demo-select-small" >Discount</InputLabel>
-    //                             <Select
-    //                                 style={{ color: 'black', textAlign: 'left' }}
-    //                                 labelId="demo-select-small"
-    //                                 id="demo-select-small"
-    //                                 value={discount}
-    //                                 label="Menu"
-    //                                 onChange={(event) => {
-    //                                     setDiscount(event.target.value);
-    //                                 }}
-    //                                 disabled
-
-    //                             >
-
-    //                                 <MenuItem value={'none'} >None</MenuItem>
-    //                                 <MenuItem value={'senior'}>Senior Citizen</MenuItem>
-    //                                 <MenuItem value={'pwd'}>PWD</MenuItem>
-    //                             </Select>
-    //                         </FormControl>
-    //                     </ContainerGlobal>
-    //                     <ContainerGlobal
-    //                         w='420px'
-    //                         h='auto'
-    //                         direction='row'
-    //                         gap='10px'
-    //                         justify='space-between'
-    //                         align='center'
-    //                         overflow='auto'
-
-    //                     >
-
-    //                         <Title
-    //                             size='20px'
-    //                             color='Black'
-    //                             family='Helvetica'
-    //                             fstyle='Normal'
-    //                             weight='400'
-    //                             align='left'
-    //                             margin='15px 0px 20px 0px'
-    //                         >
-    //                             Downpayment:
-    //                         </Title>
-    //                         <TextField id="outlined-basic" label="" variant="standard" style={{ width: 200, margin: '5px 0px' }}
-    //                             value='600.00'
-    //                             type='number'
-    //                             InputProps={{
-    //                                 readOnly: true,
-    //                                 endAdornment: <InputAdornment position="end">PHP</InputAdornment>,
-    //                             }}
-
-    //                         />
-    //                     </ContainerGlobal>
-
-    //                     <ContainerGlobal
-    //                         w='420px'
-    //                         h='auto'
-    //                         direction='row'
-    //                         gap='10px'
-    //                         justify='space-between'
-    //                         align='center'
-    //                         overflow='auto'
-
-    //                     >
-
-    //                         <Title
-    //                             size='20px'
-    //                             color='Black'
-    //                             family='Helvetica'
-    //                             fstyle='Normal'
-    //                             weight='600'
-    //                             align='left'
-    //                             margin='15px 0px 20px 0px'
-    //                         >
-    //                             Grand Total:
-    //                         </Title>
-    //                         <TextField
-    //                             id="outlined-basic"
-    //                             label=""
-    //                             type="number"
-    //                             value='1200.00'
-    //                             variant="standard"
-    //                             style={{ width: 200, margin: '5px 0px', fontWeight: 600 }}
-    //                             InputProps={{
-    //                                 readOnly: true,
-    //                                 endAdornment: <InputAdornment position="end">PHP</InputAdornment>,
-    //                             }}
-    //                         />
-    //                     </ContainerGlobal>
-    //                     <ContainerGlobal
-    //                         w='420px'
-    //                         h='auto'
-    //                         direction='row'
-    //                         gap='10px'
-    //                         justify='space-between'
-    //                         align='center'
-    //                         overflow='auto'
-
-    //                     >
-
-    //                         <Title
-    //                             size='20px'
-    //                             color='Black'
-    //                             family='Helvetica'
-    //                             fstyle='Normal'
-    //                             weight='600'
-    //                             align='left'
-    //                             margin='15px 0px 20px 0px'
-    //                         >
-    //                             Remaining Balance:
-    //                         </Title>
-    //                         <TextField
-    //                             id="outlined-basic"
-    //                             label=""
-    //                             type="number"
-    //                             value='1200.00'
-    //                             variant="standard"
-    //                             style={{ width: 200, margin: '5px 0px', fontWeight: 600 }}
-    //                             InputProps={{
-    //                                 readOnly: true,
-    //                                 endAdornment: <InputAdornment position="end">PHP</InputAdornment>,
-    //                             }}
-    //                         />
-    //                     </ContainerGlobal>
-    //                     <ContainerGlobal
-    //                         w='420px'
-    //                         h='auto'
-    //                         direction='row'
-    //                         gap='10px'
-    //                         justify='space-between'
-    //                         align='center'
-    //                         overflow='auto'
-
-    //                     >
-    //                         <Title
-    //                             size='20px'
-    //                             color='Black'
-    //                             family='Helvetica'
-    //                             fstyle='Normal'
-    //                             weight='600'
-    //                             align='left'
-    //                             margin='15px 0px 20px 0px'
-    //                         >
-    //                             Reservation status:
-    //                         </Title>
-
-    //                         <RadioGroup
-    //                             row
-    //                             aria-labelledby="demo-radio-buttons-group-label"
-    //                             defaultValue="Pending"
-    //                             name="radio-buttons-group"
-    //                             style={{ width: 'auto', margin: '10px 0px 0px 0px' }}
-
-    //                         >
-    //                             <ContainerGlobal>
-    //                                 <ContainerGlobal
-    //                                     direction='column'>
-    //                                     <FormControlLabel value="Booked" control={<Radio />} label="Booked" disabled />
-    //                                     <FormControlLabel value="Pending" control={<Radio />} label="Pending" disabled />
-    //                                 </ContainerGlobal>
-    //                                 <ContainerGlobal
-    //                                     direction='column'>
-    //                                     <FormControlLabel value="Unsettled" control={<Radio />} label="Unsettled" disabled />
-
-    //                                 </ContainerGlobal>
-    //                             </ContainerGlobal>
-    //                         </RadioGroup>
-    //                     </ContainerGlobal>
-    //                 </ContainerGlobalColumn>
-
-
-    //             </ContainerGlobalRow>
-    //             <Title
-    //                 size='26px'
-    //                 color='black'
-    //                 family='Helvetica'
-    //                 fstyle='normal'
-    //                 weight='600'
-    //                 align='left'
-    //                 margin='50px 0px 0px 0px'
-    //             >
-    //                 Client details
-    //             </Title>
-    //             <HorizontalLine
-    //                 bg='gray'
-    //                 w='100%'
-    //                 margin='0px'
-    //             ></HorizontalLine>
-
-
-    //             <ContainerGlobalRow>
-    //                 <ContainerGlobalColumn>
-    //                     <ContainerGlobal
-    //                         w='420px'
-    //                         h='auto'
-    //                         direction='row'
-    //                         gap='10px'
-    //                         justify='space-between'
-    //                         align='center'
-    //                         overflow='auto'
-
-    //                     >
-
-    //                         <Title
-    //                             size='20px'
-    //                             color='Black'
-    //                             family='Helvetica'
-    //                             fstyle='Normal'
-    //                             weight='400'
-    //                             align='left'
-    //                             margin='15px 0px 20px 0px'
-    //                         >
-    //                             First Name:
-    //                         </Title>
-    //                         <TextField id="outlined-basic" label=""
-    //                             InputProps={{
-    //                                 readOnly: true,
-    //                             }}
-    //                             value='Pedro'
-    //                             variant="standard" style={{ width: 200, margin: '5px 0px' }} />
-    //                     </ContainerGlobal>
-    //                     <ContainerGlobal
-    //                         w='420px'
-    //                         h='auto'
-    //                         direction='row'
-    //                         gap='10px'
-    //                         justify='space-between'
-    //                         align='center'
-
-    //                     >
-    //                         <Title
-    //                             size='20px'
-    //                             color='Black'
-    //                             family='Helvetica'
-    //                             fstyle='Normal'
-    //                             weight='400'
-    //                             align='left'
-    //                             margin='15px 0px 20px 0px'
-    //                         >
-    //                             Birthday:
-    //                         </Title>
-    //                         <LocalizationProvider dateAdapter={AdapterDateFns}>
-    //                             <DatePicker
-
-    //                                 views={['day', 'month', 'year']}
-    //                                 label="Birthday"
-    //                                 value={bday}
-    //                                 onChange={(newValue) => {
-    //                                     setValue(newValue);
-    //                                 }}
-    //                                 renderInput={(params) =>
-    //                                     <TextField
-    //                                         {...params}
-    //                                         sx={{
-    //                                             svg: { color: 'black' },
-    //                                             input: { color },
-    //                                             label: { color },
-    //                                             color: { color },
-    //                                             input: { color: 'black', fontWeight: 'bold' },
-
-    //                                         }}
-
-    //                                         variant="standard"
-    //                                         style={{ width: 200, margin: '5px 0px' }}
-    //                                         helperText={null}
-    //                                     />
-    //                                 }
-    //                                 disabled
-    //                             />
-
-    //                         </LocalizationProvider>
-    //                     </ContainerGlobal>
-    //                     <ContainerGlobal
-    //                         w='420px'
-    //                         h='auto'
-    //                         direction='row'
-    //                         gap='10px'
-    //                         justify='space-between'
-    //                         align='center'
-    //                         overflow='auto'
-
-    //                     >
-
-    //                         <Title
-    //                             size='20px'
-    //                             color='Black'
-    //                             family='Helvetica'
-    //                             fstyle='Normal'
-    //                             weight='400'
-    //                             align='left'
-    //                             margin='15px 0px 20px 0px'
-    //                         >
-    //                             Contact Number:
-    //                         </Title>
-
-    //                         <TextField id="outlined-basic"
-    //                             InputProps={{
-    //                                 readOnly: true,
-    //                             }}
-    //                             value='09291234567'
-    //                             label="" variant="standard" style={{ width: 200, margin: '5px 0px' }} type='number' />
-    //                     </ContainerGlobal>
-    //                     <ContainerGlobal
-    //                         w='420px'
-    //                         h='auto'
-    //                         direction='row'
-    //                         gap='10px'
-    //                         justify='space-between'
-    //                         align='center'
-    //                         overflow='auto'
-
-    //                     >
-    //                         <Title
-    //                             size='20px'
-    //                             color='Black'
-    //                             family='Helvetica'
-    //                             fstyle='Normal'
-    //                             weight='400'
-    //                             align='left'
-    //                             margin='15px 0px 20px 0px'
-    //                         >
-    //                             Gender:
-    //                         </Title>
-
-    //                         <RadioGroup
-    //                             aria-labelledby="demo-radio-buttons-group-label"
-    //                             defaultValue="male"
-    //                             name="radio-buttons-group"
-    //                             style={{ width: 200 }}
-    //                             disabled
-    //                         >
-    //                             <FormControlLabel value="female" control={<Radio />} label="Female" disabled />
-    //                             <FormControlLabel value="male" control={<Radio />} label="Male" disabled />
-    //                             <FormControlLabel value="other" control={<Radio />} label="Other" disabled />
-    //                         </RadioGroup>
-    //                     </ContainerGlobal>
-    //                     <ContainerGlobal
-    //                         w='420px'
-    //                         h='auto'
-    //                         direction='row'
-    //                         gap='10px'
-    //                         justify='space-between'
-    //                         align='center'
-    //                         overflow='auto'
-
-    //                     >
-
-    //                         <Title
-    //                             size='20px'
-    //                             color='Black'
-    //                             family='Helvetica'
-    //                             fstyle='Normal'
-    //                             weight='400'
-    //                             align='left'
-    //                             margin='15px 0px 20px 0px'
-    //                         >
-    //                             Address:
-    //                         </Title>
-    //                         <TextField id="outlined-basic"
-    //                             value='Cecilia Chapman 711-2880 Nulla St. Mankato Mississippi 96522 (257) 563-7401'
-    //                             multiline
-    //                             rows={4}
-    //                             InputProps={{
-    //                                 readOnly: true,
-    //                             }}
-    //                             label="" variant="standard" style={{ width: 200, margin: '5px 0px' }} />
-    //                     </ContainerGlobal>
-
-    //                 </ContainerGlobalColumn>
-
-    //                 <ContainerGlobalColumn>
-    //                     <ContainerGlobal
-    //                         w='420px'
-    //                         h='auto'
-    //                         direction='row'
-    //                         gap='10px'
-    //                         justify='space-between'
-    //                         align='center'
-    //                         overflow='auto'
-
-    //                     >
-
-    //                         <Title
-    //                             size='20px'
-    //                             color='Black'
-    //                             family='Helvetica'
-    //                             fstyle='Normal'
-    //                             weight='400'
-    //                             align='left'
-    //                             margin='15px 0px 20px 0px'
-    //                         >
-    //                             Last Name:
-    //                         </Title>
-    //                         <TextField id="outlined-basic" label=""
-    //                             InputProps={{
-    //                                 readOnly: true,
-    //                             }}
-    //                             value='penduco'
-    //                             variant="standard" style={{ width: 200, margin: '5px 0px' }} />
-    //                     </ContainerGlobal>
-    //                     <ContainerGlobal
-    //                         w='420px'
-    //                         h='auto'
-    //                         direction='row'
-    //                         gap='10px'
-    //                         justify='space-between'
-    //                         align='center'
-    //                         overflow='auto'
-
-    //                     >
-
-    //                         <Title
-    //                             size='20px'
-    //                             color='Black'
-    //                             family='Helvetica'
-    //                             fstyle='Normal'
-    //                             weight='400'
-    //                             align='left'
-    //                             margin='15px 0px 20px 0px'
-    //                         >
-    //                             Email:
-    //                         </Title>
-    //                         <TextField id="outlined-basic"
-    //                             InputProps={{
-    //                                 readOnly: true,
-    //                             }}
-    //                             value='pedropenduco@gmail.com'
-    //                             label="" variant="standard" style={{ width: 200, margin: '5px 0px' }} />
-    //                     </ContainerGlobal>
-    //                     <ContainerGlobal
-    //                         w='420px'
-    //                         h='auto'
-    //                         direction='row'
-    //                         gap='10px'
-    //                         justify='space-between'
-    //                         align='center'
-    //                         overflow='auto'
-
-    //                     >
-
-    //                         <Title
-    //                             size='20px'
-    //                             color='Black'
-    //                             family='Helvetica'
-    //                             fstyle='Normal'
-    //                             weight='400'
-    //                             align='left'
-    //                             margin='15px 0px 20px 0px'
-    //                         >
-    //                             Nationality:
-    //                         </Title>
-    //                         <FormControl sx={{ width: 200, margin: '5px 0px' }} size="small" variant="standard">
-    //                             <InputLabel id="demo-select-small" >Nationality</InputLabel>
-    //                             <Select
-    //                                 style={{ color: 'black', textAlign: 'left' }}
-    //                                 labelId="demo-select-small"
-    //                                 id="demo-select-small"
-    //                                 value={nationality}
-    //                                 label="Menu"
-    //                                 onChange={(event) => {
-    //                                     setNationality(event.target.value);
-    //                                 }}
-    //                                 disabled
-    //                             >
-
-    //                                 {nationalities.map(({ nationality }, index) => (
-    //                                     <MenuItem value={nationality} >{nationality}</MenuItem>
-    //                                 ))}
-    //                             </Select>
-    //                         </FormControl>
-    //                     </ContainerGlobal>
-
-    //                     <ContainerGlobal
-    //                         w='420px'
-    //                         h='auto'
-    //                         direction='row'
-    //                         gap='10px'
-    //                         justify='space-between'
-    //                         align='center'
-    //                         overflow='hidden'
-
-    //                     >
-
-    //                         <Title
-    //                             size='20px'
-    //                             color='Black'
-    //                             family='Helvetica'
-    //                             fstyle='Normal'
-    //                             weight='400'
-    //                             align='left'
-    //                             margin='15px 0px 20px 0px'
-    //                         >
-    //                             Special Instructions:
-    //                         </Title>
-    //                         <TextField id="outlined-basic" label="" variant="standard" style={{ width: 200, margin: '5px 0px' }}
-    //                             multiline
-    //                             InputProps={{
-    //                                 readOnly: true,
-    //                             }}
-    //                             rows={4}
-    //                         />
-    //                     </ContainerGlobal>
-
-    //                 </ContainerGlobalColumn>
-
-    //             </ContainerGlobalRow>
-
-    //             <ContainerGlobal
-    //                 w='auto'
-    //                 h='auto'
-    //                 bg='none'
-    //                 direction='row'
-    //                 gap='10px'
-    //                 justify='center'
-    //                 align='center'
-    //             >
-    //                 <Button variant="contained" size="large"
-    //                     style={{ backgroundColor: '#50AA32' }}
-    //                     onClick={() => setShowDetails(prev2 => !prev2)}>
-    //                     Ok
-    //                 </Button>
-    //             </ContainerGlobal>
-    //         </ContainerGlobal>
-    //     </ContainerGlobal>);
-
-
-    // const EditDetails = (
-    //     <ContainerGlobal
-    //         w='100%'
-    //         h='100%'
-    //         radius='none'
-    //         justify='center'
-    //         align='center'
-    //         bg='rgb(46, 46, 46, 0.9)'
-    //         index='1'
-    //         overflow='auto'
-    //         active
-    //     >
-    //         <ContainerGlobal
-    //             w='auto'
-    //             h='auto'
-    //             bg='white'
-    //             direction='column'
-    //             padding='30px'
-    //             gap='10px'
-    //             justify='center'
-    //             align='center'
-    //             margin='400px 0px 40px 0px'
-    //         >
-    //             <Title
-    //                 size='26px'
-    //                 color='black'
-    //                 family='Helvetica'
-    //                 fstyle='normal'
-    //                 weight='600'
-    //                 align='left'
-    //             >
-    //                 Bookings details
-    //             </Title>
-    //             <HorizontalLine
-    //                 bg='gray'
-    //                 w='100%'
-    //                 margin='0px'
-    //             ></HorizontalLine>
-    //             <ContainerGlobalRow>
-    //                 <ContainerGlobalColumn>
-    //                     <ContainerGlobal
-    //                         w='420px'
-    //                         h='auto'
-    //                         direction='row'
-    //                         gap='10px'
-    //                         justify='space-between'
-    //                         align='center'
-
-    //                     >
-    //                         <Title
-    //                             size='20px'
-    //                             color='Black'
-    //                             family='Helvetica'
-    //                             fstyle='Normal'
-    //                             weight='400'
-    //                             align='left'
-    //                             margin='15px 0px 20px 0px'
-    //                         >
-    //                             Check In:
-    //                         </Title>
-    //                         <LocalizationProvider dateAdapter={AdapterDateFns}>
-    //                             <DatePicker
-
-    //                                 views={['day', 'month', 'year']}
-    //                                 label="Check In"
-    //                                 value={value}
-    //                                 onChange={(newValue) => {
-    //                                     setValue(newValue);
-    //                                 }}
-    //                                 renderInput={(params) =>
-    //                                     <TextField
-    //                                         {...params}
-    //                                         sx={{
-    //                                             svg: { color: 'black' },
-    //                                             input: { color },
-    //                                             label: { color },
-    //                                             color: { color },
-    //                                             input: { color: 'black', fontWeight: 'bold' },
-
-    //                                         }}
-
-    //                                         variant="standard"
-    //                                         style={{ width: 200, margin: '5px 0px' }}
-    //                                         helperText={null}
-    //                                     />
-    //                                 }
-    //                             />
-
-    //                         </LocalizationProvider>
-    //                     </ContainerGlobal>
-    //                     <ContainerGlobal
-    //                         w='420px'
-    //                         h='auto'
-    //                         direction='row'
-    //                         gap='10px'
-    //                         justify='space-between'
-    //                         align='center'
-    //                         overflow='auto'
-
-    //                     >
-
-    //                         <Title
-    //                             size='20px'
-    //                             color='Black'
-    //                             family='Helvetica'
-    //                             fstyle='Normal'
-    //                             weight='400'
-    //                             align='left'
-    //                             margin='15px 0px 20px 0px'
-    //                         >
-    //                             Reservation No.:
-    //                         </Title>
-    //                         <TextField id="outlined-basic" label="" variant="standard" style={{ width: 200, margin: '5px 0px' }} value="2012127"
-    //                             InputProps={{
-    //                                 readOnly: true,
-    //                             }}
-    //                         />
-    //                     </ContainerGlobal>
-    //                     <ContainerGlobal
-    //                         w='420px'
-    //                         h='auto'
-    //                         direction='row'
-    //                         gap='10px'
-    //                         justify='space-between'
-    //                         align='center'
-    //                         overflow='auto'
-
-    //                     >
-
-    //                         <Title
-    //                             size='20px'
-    //                             color='Black'
-    //                             family='Helvetica'
-    //                             fstyle='Normal'
-    //                             weight='400'
-    //                             align='left'
-    //                             margin='15px 0px 20px 0px'
-    //                         >
-    //                             Room Type:
-    //                         </Title>
-    //                         <FormControl sx={{ width: 200, margin: '5px 0px' }} size="large" variant="standard">
-    //                             <InputLabel id="demo-select-small" >Room Type</InputLabel>
-    //                             <Select
-    //                                 style={{ color: 'black', textAlign: 'left' }}
-    //                                 labelId="demo-select-small"
-    //                                 id="demo-select-small"
-    //                                 value={roomType}
-    //                                 label="Menu"
-    //                                 onChange={(event) => {
-    //                                     setRoomType(event.target.value);
-    //                                 }}
-
-    //                             >
-    //                                 <MenuItem value={'Family'}>
-    //                                     <Badge badgeContent={9} color="success" style={{ marginTop: 10 }} title='40 Available rooms'>
-    //                                         <ContainerGlobal
-    //                                             margin='0px 15px 0px 0px'>
-    //                                             Family Room
-    //                                         </ContainerGlobal>
-    //                                     </Badge>
-    //                                 </MenuItem>
-    //                                 <MenuItem value={'Deluxe'} >
-    //                                     <Badge badgeContent={4} color="success" style={{ marginTop: 10 }} title='10 Available rooms'>
-    //                                         <ContainerGlobal
-    //                                             margin='0px 15px 0px 0px'>
-    //                                             Deluxe Room
-    //                                         </ContainerGlobal>
-    //                                     </Badge></MenuItem>
-    //                                 <MenuItem value={'Premium'} selected>
-    //                                     <Badge badgeContent={5} color="success" style={{ marginTop: 10 }} title='5 Available rooms'>
-    //                                         <ContainerGlobal
-    //                                             margin='0px 15px 0px 0px'>
-    //                                             Premium Room
-    //                                         </ContainerGlobal>
-    //                                     </Badge></MenuItem>
-    //                             </Select>
-    //                         </FormControl>
-    //                     </ContainerGlobal>
-    //                     <ContainerGlobal
-    //                         w='420px'
-    //                         h='auto'
-    //                         direction='row'
-    //                         gap='10px'
-    //                         justify='space-between'
-    //                         align='center'
-    //                         overflow='auto'
-
-    //                     >
-
-    //                         <Title
-    //                             size='20px'
-    //                             color='Black'
-    //                             family='Helvetica'
-    //                             fstyle='Normal'
-    //                             weight='400'
-    //                             align='left'
-    //                             margin='15px 0px 20px 0px'
-    //                         >
-    //                             Room Number:
-    //                         </Title>
-    //                         <FormControl sx={{ width: 200, margin: '5px 0px' }} size="large" variant="standard">
-    //                             <InputLabel id="demo-select-small" >Room Number</InputLabel>
-    //                             <Select
-    //                                 style={{ color: 'black', textAlign: 'left' }}
-    //                                 labelId="demo-select-small"
-    //                                 id="demo-select-small"
-    //                                 value={roomNumber}
-    //                                 label="Menu"
-    //                                 onChange={(event) => {
-    //                                     setRoomNumber(event.target.value);
-    //                                 }}
-
-    //                             >
-    //                                 <MenuItem value={'R101'} selected>
-    //                                     Room 101
-    //                                 </MenuItem>
-    //                                 <MenuItem value={'R102'} >
-    //                                     Room 102
-    //                                 </MenuItem>
-    //                                 <MenuItem value={'R103'} disabled>
-    //                                     Room 103
-    //                                 </MenuItem>
-    //                                 <MenuItem value={'R104'} >
-    //                                     Room 104
-    //                                 </MenuItem>
-    //                                 <MenuItem value={'R105'} >
-    //                                     Room 105
-    //                                 </MenuItem>
-    //                             </Select>
-    //                         </FormControl>
-    //                     </ContainerGlobal>
-    //                     <ContainerGlobal
-    //                         w='420px'
-    //                         h='auto'
-    //                         direction='row'
-    //                         gap='10px'
-    //                         justify='space-between'
-    //                         align='center'
-    //                         overflow='auto'
-
-    //                     >
-
-    //                         <Title
-    //                             size='20px'
-    //                             color='Black'
-    //                             family='Helvetica'
-    //                             fstyle='Normal'
-    //                             weight='400'
-    //                             align='left'
-    //                             margin='15px 0px 20px 0px'
-    //                         >
-    //                             Number of Adult:
-    //                         </Title>
-    //                         <TextField id="outlined-basic" label="" variant="standard" style={{ width: 200, margin: '5px 0px' }}
-
-    //                             value='2'
-    //                         />
-    //                     </ContainerGlobal>
-    //                     <ContainerGlobal
-    //                         w='420px'
-    //                         h='auto'
-    //                         direction='row'
-    //                         gap='10px'
-    //                         justify='space-between'
-    //                         align='center'
-    //                         overflow='auto'
-
-    //                     >
-
-    //                         <Title
-    //                             size='20px'
-    //                             color='Black'
-    //                             family='Helvetica'
-    //                             fstyle='Normal'
-    //                             weight='400'
-    //                             align='left'
-    //                             margin='15px 0px 20px 0px'
-    //                         >
-    //                             Number of Kids:
-    //                         </Title>
-    //                         <TextField id="outlined-basic" label="" variant="standard" style={{ width: 200, margin: '5px 0px' }}
-
-    //                             value='0' />
-    //                     </ContainerGlobal>
-    //                     <ContainerGlobal
-    //                         w='420px'
-    //                         h='auto'
-    //                         direction='row'
-    //                         gap='10px'
-    //                         justify='space-between'
-    //                         align='center'
-    //                         overflow='auto'
-
-    //                     >
-
-    //                         <Title
-    //                             size='20px'
-    //                             color='Black'
-    //                             family='Helvetica'
-    //                             fstyle='Normal'
-    //                             weight='400'
-    //                             align='left'
-    //                             margin='15px 0px 20px 0px'
-    //                         >
-    //                             Extra Bed:
-    //                         </Title>
-    //                         <TextField
-    //                             InputProps={{
-    //                                 readOnly: true,
-    //                             }}
-    //                             defaultValue='0' id="outlined-basic" label="" variant="standard" style={{ width: 200, margin: '5px 0px' }} />
-    //                     </ContainerGlobal>
-    //                     <ContainerGlobal
-    //                         w='420px'
-    //                         h='auto'
-    //                         direction='row'
-    //                         gap='10px'
-    //                         justify='space-between'
-    //                         align='center'
-    //                         overflow='auto'
-
-    //                     >
-
-    //                         <Title
-    //                             size='20px'
-    //                             color='Black'
-    //                             family='Helvetica'
-    //                             fstyle='Normal'
-    //                             weight='400'
-    //                             align='left'
-    //                             margin='15px 0px 20px 0px'
-    //                         >
-    //                             Extra Pillow:
-    //                         </Title>
-    //                         <TextField
-    //                             InputProps={{
-    //                                 readOnly: true,
-    //                             }}
-    //                             defaultValue='0' id="outlined-basic" label="" variant="standard" style={{ width: 200, margin: '5px 0px' }} />
-    //                     </ContainerGlobal>
-    //                     <ContainerGlobal
-    //                         w='420px'
-    //                         h='auto'
-    //                         direction='row'
-    //                         gap='10px'
-    //                         justify='space-between'
-    //                         align='center'
-    //                         overflow='auto'
-
-    //                     >
-
-    //                         <Title
-    //                             size='20px'
-    //                             color='Black'
-    //                             family='Helvetica'
-    //                             fstyle='Normal'
-    //                             weight='400'
-    //                             align='left'
-    //                             margin='15px 0px 20px 0px'
-    //                         >
-    //                             Extra Blanket:
-    //                         </Title>
-    //                         <TextField
-    //                             InputProps={{
-    //                                 readOnly: true,
-    //                             }}
-    //                             defaultValue='0' id="outlined-basic" label="" variant="standard" style={{ width: 200, margin: '5px 0px' }} />
-    //                     </ContainerGlobal>
-    //                 </ContainerGlobalColumn>
-    //                 <ContainerGlobalColumn>
-    //                     <ContainerGlobal
-    //                         w='420px'
-    //                         h='auto'
-    //                         direction='row'
-    //                         gap='10px'
-    //                         justify='space-between'
-    //                         align='center'
-
-    //                     >
-    //                         <Title
-    //                             size='20px'
-    //                             color='Black'
-    //                             family='Helvetica'
-    //                             fstyle='Normal'
-    //                             weight='400'
-    //                             align='left'
-    //                             margin='15px 0px 20px 0px'
-    //                         >
-    //                             Check out:
-    //                         </Title>
-    //                         <LocalizationProvider dateAdapter={AdapterDateFns}>
-    //                             <DatePicker
-
-    //                                 views={['day', 'month', 'year']}
-    //                                 label="Check out"
-    //                                 value={outValue}
-    //                                 onChange={(newValue) => {
-    //                                     setOutValue(newValue);
-    //                                 }}
-    //                                 renderInput={(params) =>
-    //                                     <TextField
-    //                                         {...params}
-    //                                         sx={{
-    //                                             svg: { color: 'black' },
-    //                                             input: { color },
-    //                                             label: { color },
-    //                                             color: { color },
-    //                                             input: { color: 'black', fontWeight: 'bold' },
-
-    //                                         }}
-    //                                         variant="standard"
-    //                                         style={{ width: 200, margin: '5px 0px' }}
-    //                                         helperText={null}
-    //                                     />
-    //                                 }
-    //                             />
-
-    //                         </LocalizationProvider>
-    //                     </ContainerGlobal>
-    //                     <ContainerGlobal
-    //                         w='420px'
-    //                         h='auto'
-    //                         direction='row'
-    //                         gap='10px'
-    //                         justify='space-between'
-    //                         align='center'
-    //                         overflow='auto'
-
-    //                     >
-
-    //                         <Title
-    //                             size='20px'
-    //                             color='Black'
-    //                             family='Helvetica'
-    //                             fstyle='Normal'
-    //                             weight='400'
-    //                             align='left'
-    //                             margin='15px 0px 20px 0px'
-    //                         >
-    //                             Total Nights:
-    //                         </Title>
-    //                         <TextField id="outlined-basic" label="" variant="standard" style={{ width: 200, margin: '5px 0px' }}
-    //                             InputProps={{
-    //                                 readOnly: true,
-    //                             }}
-    //                             value={nights} />
-    //                     </ContainerGlobal>
-
-    //                     <ContainerGlobal
-    //                         w='420px'
-    //                         h='auto'
-    //                         direction='row'
-    //                         gap='10px'
-    //                         justify='space-between'
-    //                         align='center'
-    //                         overflow='auto'
-
-    //                     >
-
-    //                         <Title
-    //                             size='20px'
-    //                             color='Black'
-    //                             family='Helvetica'
-    //                             fstyle='Normal'
-    //                             weight='400'
-    //                             align='left'
-    //                             margin='15px 0px 20px 0px'
-    //                         >
-    //                             Payment Method:
-    //                         </Title>
-    //                         <FormControl sx={{ width: 200, margin: '5px 0px' }} size="small" variant="standard">
-    //                             <InputLabel id="demo-select-small" >Payment method</InputLabel>
-    //                             <Select
-    //                                 style={{ color: 'black', textAlign: 'left' }}
-    //                                 labelId="demo-select-small"
-    //                                 id="demo-select-small"
-    //                                 value={paymentMethod}
-    //                                 label="Menu"
-    //                                 onChange={(event) => {
-    //                                     setPaymentMethod(event.target.value);
-    //                                 }
-    //                                 }
-    //                             >
-    //                                 <MenuItem value={'Cash'} selected>Cash (pay at the hotel)</MenuItem>
-    //                                 <MenuItem value={'Bank'} >Bank (Metro Bank)</MenuItem>
-    //                                 <MenuItem value={'E-Payment'}>E-Payment (Gcash)</MenuItem>
-    //                             </Select>
-    //                         </FormControl>
-    //                     </ContainerGlobal>
-    //                     <ContainerGlobal
-    //                         w='420px'
-    //                         h='auto'
-    //                         direction='row'
-    //                         gap='10px'
-    //                         justify='space-between'
-    //                         align='center'
-    //                         overflow='auto'
-
-    //                     >
-
-    //                         <Title
-    //                             size='20px'
-    //                             color='Black'
-    //                             family='Helvetica'
-    //                             fstyle='Normal'
-    //                             weight='400'
-    //                             align='left'
-    //                             margin='15px 0px 20px 0px'
-    //                         >
-    //                             Payment Type:
-    //                         </Title>
-    //                         <FormControl sx={{ width: 200, margin: '5px 0px' }} size="small" variant="standard">
-    //                             <InputLabel id="demo-select-small" >Payment Type</InputLabel>
-    //                             <Select
-    //                                 style={{ color: 'black', textAlign: 'left' }}
-    //                                 labelId="demo-select-small"
-    //                                 id="demo-select-small"
-    //                                 value={paymentType}
-    //                                 label="Menu"
-    //                                 onChange={(event) => {
-    //                                     setPaymentType(event.target.value);
-    //                                 }}
-    //                             >
-
-    //                                 <MenuItem value={'Full'} >Full payment</MenuItem>
-    //                                 <MenuItem value={'Down Payment'} selected>Down Payment</MenuItem>
-    //                             </Select>
-    //                         </FormControl>
-    //                     </ContainerGlobal>
-
-    //                     <ContainerGlobal
-    //                         w='420px'
-    //                         h='auto'
-    //                         direction='row'
-    //                         gap='10px'
-    //                         justify='space-between'
-    //                         align='center'
-    //                         overflow='auto'
-
-    //                     >
-
-    //                         <Title
-    //                             size='20px'
-    //                             color='Black'
-    //                             family='Helvetica'
-    //                             fstyle='Normal'
-    //                             weight='400'
-    //                             align='left'
-    //                             margin='15px 0px 20px 0px'
-    //                         >
-    //                             Discount:
-    //                         </Title>
-    //                         <FormControl sx={{ width: 200, margin: '5px 0px' }} size="small" variant="standard">
-    //                             <InputLabel id="demo-select-small" >Discount</InputLabel>
-    //                             <Select
-    //                                 style={{ color: 'black', textAlign: 'left' }}
-    //                                 labelId="demo-select-small"
-    //                                 id="demo-select-small"
-    //                                 value={discount}
-    //                                 label="Menu"
-    //                                 onChange={(event) => {
-    //                                     setDiscount(event.target.value);
-    //                                 }}
-    //                                 disabled
-    //                             >
-
-    //                                 <MenuItem value={'none'} >None</MenuItem>
-    //                                 <MenuItem value={'senior'}>Senior Citizen</MenuItem>
-    //                                 <MenuItem value={'pwd'}>PWD</MenuItem>
-    //                             </Select>
-    //                         </FormControl>
-    //                     </ContainerGlobal>
-    //                     <ContainerGlobal
-    //                         w='420px'
-    //                         h='auto'
-    //                         direction='row'
-    //                         gap='10px'
-    //                         justify='space-between'
-    //                         align='center'
-    //                         overflow='auto'
-
-    //                     >
-
-    //                         <Title
-    //                             size='20px'
-    //                             color='Black'
-    //                             family='Helvetica'
-    //                             fstyle='Normal'
-    //                             weight='400'
-    //                             align='left'
-    //                             margin='15px 0px 20px 0px'
-    //                         >
-    //                             Downpayment:
-    //                         </Title>
-    //                         <TextField id="outlined-basic" label="" variant="standard" style={{ width: 200, margin: '5px 0px' }}
-    //                             value='600.00'
-    //                             type='number'
-    //                             InputProps={{
-    //                                 readOnly: true,
-    //                                 endAdornment: <InputAdornment position="end">PHP</InputAdornment>,
-    //                             }}
-
-    //                         />
-    //                     </ContainerGlobal>
-
-    //                     <ContainerGlobal
-    //                         w='420px'
-    //                         h='auto'
-    //                         direction='row'
-    //                         gap='10px'
-    //                         justify='space-between'
-    //                         align='center'
-    //                         overflow='auto'
-
-    //                     >
-
-    //                         <Title
-    //                             size='20px'
-    //                             color='Black'
-    //                             family='Helvetica'
-    //                             fstyle='Normal'
-    //                             weight='600'
-    //                             align='left'
-    //                             margin='15px 0px 20px 0px'
-    //                         >
-    //                             Grand Total:
-    //                         </Title>
-    //                         <TextField
-    //                             id="outlined-basic"
-    //                             label=""
-    //                             type="number"
-    //                             value='1200.00'
-    //                             variant="standard"
-    //                             style={{ width: 200, margin: '5px 0px', fontWeight: 600 }}
-    //                             InputProps={{
-    //                                 readOnly: true,
-    //                                 endAdornment: <InputAdornment position="end">PHP</InputAdornment>,
-    //                             }}
-    //                         />
-    //                     </ContainerGlobal>
-    //                     <ContainerGlobal
-    //                         w='420px'
-    //                         h='auto'
-    //                         direction='row'
-    //                         gap='10px'
-    //                         justify='space-between'
-    //                         align='center'
-    //                         overflow='auto'
-
-    //                     >
-
-    //                         <Title
-    //                             size='20px'
-    //                             color='Black'
-    //                             family='Helvetica'
-    //                             fstyle='Normal'
-    //                             weight='600'
-    //                             align='left'
-    //                             margin='15px 0px 20px 0px'
-    //                         >
-    //                             Remaining Balance:
-    //                         </Title>
-    //                         <TextField
-    //                             id="outlined-basic"
-    //                             label=""
-    //                             type="number"
-    //                             value='1200.00'
-    //                             variant="standard"
-    //                             style={{ width: 200, margin: '5px 0px', fontWeight: 600 }}
-    //                             InputProps={{
-    //                                 readOnly: true,
-    //                                 endAdornment: <InputAdornment position="end">PHP</InputAdornment>,
-    //                             }}
-    //                         />
-    //                     </ContainerGlobal>
-    //                     <ContainerGlobal
-    //                         w='420px'
-    //                         h='auto'
-    //                         direction='row'
-    //                         gap='10px'
-    //                         justify='space-between'
-    //                         align='center'
-    //                         overflow='auto'
-
-    //                     >
-    //                         <Title
-    //                             size='20px'
-    //                             color='Black'
-    //                             family='Helvetica'
-    //                             fstyle='Normal'
-    //                             weight='600'
-    //                             align='left'
-    //                             margin='15px 0px 20px 0px'
-    //                         >
-    //                             Reservation status:
-    //                         </Title>
-
-    //                         <RadioGroup
-    //                             row
-    //                             aria-labelledby="demo-radio-buttons-group-label"
-    //                             defaultValue="Pending"
-    //                             name="radio-buttons-group"
-    //                             style={{ width: 'auto', margin: '10px 0px 0px 0px' }}
-
-    //                         >
-    //                             <ContainerGlobal>
-    //                                 <ContainerGlobal
-    //                                     direction='column'>
-    //                                     <FormControlLabel value="Booked" control={<Radio />} label="Booked" />
-    //                                     <FormControlLabel value="Pending" control={<Radio />} label="Pending" />
-    //                                 </ContainerGlobal>
-    //                                 <ContainerGlobal
-    //                                     direction='column'>
-    //                                     <FormControlLabel value="Unsettled" control={<Radio />} label="Unsettled" />
-
-    //                                 </ContainerGlobal>
-    //                             </ContainerGlobal>
-    //                         </RadioGroup>
-    //                     </ContainerGlobal>
-    //                 </ContainerGlobalColumn>
-
-
-    //             </ContainerGlobalRow>
-    //             <Title
-    //                 size='26px'
-    //                 color='black'
-    //                 family='Helvetica'
-    //                 fstyle='normal'
-    //                 weight='600'
-    //                 align='left'
-    //                 margin='50px 0px 0px 0px'
-    //             >
-    //                 Client details
-    //             </Title>
-    //             <HorizontalLine
-    //                 bg='gray'
-    //                 w='100%'
-    //                 margin='0px'
-    //             ></HorizontalLine>
-
-
-    //             <ContainerGlobalRow>
-    //                 <ContainerGlobalColumn>
-    //                     <ContainerGlobal
-    //                         w='420px'
-    //                         h='auto'
-    //                         direction='row'
-    //                         gap='10px'
-    //                         justify='space-between'
-    //                         align='center'
-    //                         overflow='auto'
-
-    //                     >
-
-    //                         <Title
-    //                             size='20px'
-    //                             color='Black'
-    //                             family='Helvetica'
-    //                             fstyle='Normal'
-    //                             weight='400'
-    //                             align='left'
-    //                             margin='15px 0px 20px 0px'
-    //                         >
-    //                             First Name:
-    //                         </Title>
-    //                         <TextField id="outlined-basic" label=""
-    //                             value='Pedro'
-    //                             variant="standard" style={{ width: 200, margin: '5px 0px' }} />
-    //                     </ContainerGlobal>
-    //                     <ContainerGlobal
-    //                         w='420px'
-    //                         h='auto'
-    //                         direction='row'
-    //                         gap='10px'
-    //                         justify='space-between'
-    //                         align='center'
-
-    //                     >
-    //                         <Title
-    //                             size='20px'
-    //                             color='Black'
-    //                             family='Helvetica'
-    //                             fstyle='Normal'
-    //                             weight='400'
-    //                             align='left'
-    //                             margin='15px 0px 20px 0px'
-    //                         >
-    //                             Birthday:
-    //                         </Title>
-    //                         <LocalizationProvider dateAdapter={AdapterDateFns}>
-    //                             <DatePicker
-
-    //                                 views={['day', 'month', 'year']}
-    //                                 label="Birthday"
-    //                                 value={bday}
-    //                                 onChange={(newValue) => {
-    //                                     setValue(newValue);
-    //                                 }}
-    //                                 renderInput={(params) =>
-    //                                     <TextField
-    //                                         {...params}
-    //                                         sx={{
-    //                                             svg: { color: 'black' },
-    //                                             input: { color },
-    //                                             label: { color },
-    //                                             color: { color },
-    //                                             input: { color: 'black', fontWeight: 'bold' },
-
-    //                                         }}
-
-    //                                         variant="standard"
-    //                                         style={{ width: 200, margin: '5px 0px' }}
-    //                                         helperText={null}
-    //                                     />
-    //                                 }
-    //                             />
-
-    //                         </LocalizationProvider>
-    //                     </ContainerGlobal>
-    //                     <ContainerGlobal
-    //                         w='420px'
-    //                         h='auto'
-    //                         direction='row'
-    //                         gap='10px'
-    //                         justify='space-between'
-    //                         align='center'
-    //                         overflow='auto'
-
-    //                     >
-
-    //                         <Title
-    //                             size='20px'
-    //                             color='Black'
-    //                             family='Helvetica'
-    //                             fstyle='Normal'
-    //                             weight='400'
-    //                             align='left'
-    //                             margin='15px 0px 20px 0px'
-    //                         >
-    //                             Contact Number:
-    //                         </Title>
-    //                         <TextField id="outlined-basic"
-    //                             value='09291234567'
-    //                             label="" variant="standard" style={{ width: 200, margin: '5px 0px' }} type='number' />
-    //                     </ContainerGlobal>
-    //                     <ContainerGlobal
-    //                         w='420px'
-    //                         h='auto'
-    //                         direction='row'
-    //                         gap='10px'
-    //                         justify='space-between'
-    //                         align='center'
-    //                         overflow='auto'
-
-    //                     >
-    //                         <Title
-    //                             size='20px'
-    //                             color='Black'
-    //                             family='Helvetica'
-    //                             fstyle='Normal'
-    //                             weight='400'
-    //                             align='left'
-    //                             margin='15px 0px 20px 0px'
-    //                         >
-    //                             Gender:
-    //                         </Title>
-
-    //                         <RadioGroup
-    //                             aria-labelledby="demo-radio-buttons-group-label"
-    //                             defaultValue="male"
-    //                             name="radio-buttons-group"
-    //                             style={{ width: 200 }}
-    //                             disabled
-    //                         >
-    //                             <FormControlLabel value="female" control={<Radio />} label="Female" />
-    //                             <FormControlLabel value="male" control={<Radio />} label="Male" />
-    //                             <FormControlLabel value="other" control={<Radio />} label="Other" />
-    //                         </RadioGroup>
-    //                     </ContainerGlobal>
-    //                     <ContainerGlobal
-    //                         w='420px'
-    //                         h='auto'
-    //                         direction='row'
-    //                         gap='10px'
-    //                         justify='space-between'
-    //                         align='center'
-    //                         overflow='auto'
-
-    //                     >
-
-    //                         <Title
-    //                             size='20px'
-    //                             color='Black'
-    //                             family='Helvetica'
-    //                             fstyle='Normal'
-    //                             weight='400'
-    //                             align='left'
-    //                             margin='15px 0px 20px 0px'
-    //                         >
-    //                             Address:
-    //                         </Title>
-    //                         <TextField id="outlined-basic"
-    //                             value='Cecilia Chapman 711-2880 Nulla St. Mankato Mississippi 96522 (257) 563-7401'
-    //                             multiline
-    //                             rows={4}
-    //                             label="" variant="standard" style={{ width: 200, margin: '5px 0px' }} />
-    //                     </ContainerGlobal>
-
-    //                 </ContainerGlobalColumn>
-
-    //                 <ContainerGlobalColumn>
-    //                     <ContainerGlobal
-    //                         w='420px'
-    //                         h='auto'
-    //                         direction='row'
-    //                         gap='10px'
-    //                         justify='space-between'
-    //                         align='center'
-    //                         overflow='auto'
-
-    //                     >
-
-    //                         <Title
-    //                             size='20px'
-    //                             color='Black'
-    //                             family='Helvetica'
-    //                             fstyle='Normal'
-    //                             weight='400'
-    //                             align='left'
-    //                             margin='15px 0px 20px 0px'
-    //                         >
-    //                             Last Name:
-    //                         </Title>
-    //                         <TextField id="outlined-basic" label=""
-    //                             value='penduco'
-    //                             variant="standard" style={{ width: 200, margin: '5px 0px' }} />
-    //                     </ContainerGlobal>
-    //                     <ContainerGlobal
-    //                         w='420px'
-    //                         h='auto'
-    //                         direction='row'
-    //                         gap='10px'
-    //                         justify='space-between'
-    //                         align='center'
-    //                         overflow='auto'
-
-    //                     >
-
-    //                         <Title
-    //                             size='20px'
-    //                             color='Black'
-    //                             family='Helvetica'
-    //                             fstyle='Normal'
-    //                             weight='400'
-    //                             align='left'
-    //                             margin='15px 0px 20px 0px'
-    //                         >
-    //                             Email:
-    //                         </Title>
-    //                         <TextField id="outlined-basic"
-    //                             value='pedropenduco@gmail.com'
-    //                             label="" variant="standard" style={{ width: 200, margin: '5px 0px' }} />
-    //                     </ContainerGlobal>
-    //                     <ContainerGlobal
-    //                         w='420px'
-    //                         h='auto'
-    //                         direction='row'
-    //                         gap='10px'
-    //                         justify='space-between'
-    //                         align='center'
-    //                         overflow='auto'
-
-    //                     >
-
-    //                         <Title
-    //                             size='20px'
-    //                             color='Black'
-    //                             family='Helvetica'
-    //                             fstyle='Normal'
-    //                             weight='400'
-    //                             align='left'
-    //                             margin='15px 0px 20px 0px'
-    //                         >
-    //                             Nationality:
-    //                         </Title>
-    //                         <FormControl sx={{ width: 200, margin: '5px 0px' }} size="small" variant="standard">
-    //                             <InputLabel id="demo-select-small" >Nationality</InputLabel>
-    //                             <Select
-    //                                 style={{ color: 'black', textAlign: 'left' }}
-    //                                 labelId="demo-select-small"
-    //                                 id="demo-select-small"
-    //                                 value={nationality}
-    //                                 label="Menu"
-    //                                 onChange={(event) => {
-    //                                     setNationality(event.target.value);
-    //                                 }}
-    //                             >
-
-    //                                 {nationalities.map(({ nationality }, index) => (
-    //                                     <MenuItem value={nationality} >{nationality}</MenuItem>
-    //                                 ))}
-    //                             </Select>
-    //                         </FormControl>
-    //                     </ContainerGlobal>
-    //                     <ContainerGlobal
-    //                         w='420px'
-    //                         h='auto'
-    //                         direction='row'
-    //                         gap='10px'
-    //                         justify='space-between'
-    //                         align='center'
-    //                         overflow='hidden'
-
-    //                     >
-
-    //                         <Title
-    //                             size='20px'
-    //                             color='Black'
-    //                             family='Helvetica'
-    //                             fstyle='Normal'
-    //                             weight='400'
-    //                             align='left'
-    //                             margin='15px 0px 20px 0px'
-    //                         >
-    //                             Special Instructions:
-    //                         </Title>
-    //                         <TextField id="outlined-basic" label="" variant="standard" style={{ width: 200, margin: '5px 0px' }}
-    //                             multiline
-    //                             rows={4}
-    //                         />
-    //                     </ContainerGlobal>
-    //                 </ContainerGlobalColumn>
-
-    //             </ContainerGlobalRow>
-
-    //             <ContainerGlobal
-    //                 w='auto'
-    //                 h='auto'
-    //                 bg='none'
-    //                 direction='row'
-    //                 gap='10px'
-    //                 justify='center'
-    //                 align='center'
-    //             >
-    //                 <Button variant="contained" size="large"
-    //                     style={{ backgroundColor: '#50AA32' }}
-    //                     onClick={() => setShowEditDetails(prev2 => !prev2)}>
-    //                     Save changes
-    //                 </Button>
-    //                 <Button variant="contained" size="large"
-    //                     style={{ backgroundColor: '#FF2400' }}
-    //                     onClick={() => setShowEditDetails(prev2 => !prev2)}>
-    //                     Cancel
-    //                 </Button>
-    //             </ContainerGlobal>
-    //         </ContainerGlobal>
-    //     </ContainerGlobal>);
 
 
 
@@ -3696,6 +718,414 @@ export const ReservationContainer = () => {
         }));
     }
 
+
+
+    const addReservation = async (e) => {
+
+        e.preventDefault();
+        axios.post('http://localhost:3001/api/validateAvailedDates', {
+            availedRoomData: availedRoom,
+        }).then((result) => {
+            if (result.data == true) {
+                if (contactNumber.slice(0, 3) == "+63") {
+
+                    formatNumber = contactNumber.replace("+63", "0");
+                }
+                else {
+                    formatNumber = contactNumber;
+                }
+
+                if (firstNameError.length != 0) {
+                    firstNameRef.current.focus()
+                }
+                else if (lastNameError.length != 0) {
+                    lastNameRef.current.focus()
+
+                }
+                else if (contactNumberError.length != 0) {
+                    contactNumberRef.current.focus()
+
+                }
+                else if (userNameError.length != 0) {
+                    userNameRef.current.focus()
+                }
+                else if (emailError.length != 0) {
+                    emailRef.current.focus()
+                }
+                else {
+                    if (userName != '' || password != '') {
+                        if (emailError.length == 0 && contactNumberError.length == 0 && userNameError.length == 0) {
+                            axios.post('http://localhost:3001/api/addUser', {
+                                userName: userName,
+                                contactNumber: formatNumber,
+                                email: email,
+                                password: password,
+                            }).then((user) => {
+                                console.log(user.data);
+                                axios.post('http://localhost:3001/api/addGuest', {
+                                    firstName: firstName,
+                                    lastName: lastName,
+                                    birthDate: birthday,
+                                    gender: gender,
+                                    address: address,
+                                    nationality: nationality,
+                                    user_id: user.data.account.id,
+                                }).then((guest) => {
+                                    console.log(guest.data);
+                                    axios.post("http://localhost:3001/api/addPayment", {
+                                        paymentMade: 0,
+                                        discount_id: discountId,
+                                        paymentMode_id: paymentModeId,
+                                        paymentType: paymentType,
+                                        grandTotal: 0,
+                                        balance: 0,
+                                        discountValid: discountValid
+                                    }).then((payment) => {
+                                        console.log(payment.data)
+                                        axios.post("http://localhost:3001/api/addReservation", {
+                                            reservationDate: reservationDate,
+                                            guest_id: guest.data.new_guest.id,
+                                            payment_id: payment.data.new_payment.id
+                                        }).then((reservation) => {
+                                            console.log(reservation.data)
+                                            for (let index = 0; index < availedRoom.length; index++) {
+                                                let items = {
+                                                    checkInDate: availedRoom[index].checkIn,
+                                                    checkOutDate: availedRoom[index].checkOut,
+                                                    kids: availedRoom[index].kids,
+                                                    adults: availedRoom[index].adults,
+                                                    numberOfNights: availedRoom[index].totalNights,
+                                                    reservation_id: reservation.data.new_reservation.id,
+                                                    room_id: availedRoom[index].id,
+                                                    specialInstrcution: null,
+
+                                                    // numberOfAdults:
+                                                    // numberOfKids:
+                                                }
+                                                axios.post("http://localhost:3001/api/addReservationSummary", items).then((reservationSummary) => {
+                                                    console.log(reservationSummary.data)
+                                                    axios.get('http://localhost:3001/api/getPayment/' + payment.data.new_payment.id).then((getPayment) => {
+
+                                                        if (index == availedRoom.length - 1) {
+                                                            axios.patch('http://localhost:3001/api/updateGrandTotal/' + payment.data.new_payment.id, {
+                                                                paymentMade: getPayment.data.paymentMade,
+                                                            }).then((result) => {
+                                                                console.log(result.data)
+                                                                axios.post('http://localhost:3001/api/sendReservationEmail', {
+                                                                    email: user.data.account.email.toLocaleLowerCase(),
+                                                                    birthDay: guest.data.new_guest.birthDate,
+                                                                    nationality: guest.data.new_guest.nationality.toLocaleLowerCase(),
+                                                                    emailAddress: user.data.account.email.toLocaleLowerCase(),
+                                                                    address: guest.data.new_guest.address,
+                                                                    contactNumber: user.data.account.contactNumber,
+                                                                    firstName: guest.data.new_guest.firstName.toLocaleLowerCase(),
+                                                                    lastName: guest.data.new_guest.lastName.toLocaleLowerCase(),
+                                                                    reservationStatus: reservation.data.new_reservation.reservationStatus,
+                                                                    accountName: getPayment.data.paymentMode.accountName,
+                                                                    accountNumber: getPayment.data.paymentMode.accountNumber,
+                                                                    paymentType: getPayment.data.paymentType,
+                                                                    paymentMode: getPayment.data.paymentMode.paymentMode,
+                                                                    reservationNumber: reservation.data.new_reservation.reservationReferenceNumber,
+                                                                    reservationDate: new Date(reservation.data.new_reservation.reservationDate).toLocaleDateString() + " " + new Date(reservation.data.new_reservation.reservationDate).toLocaleTimeString(),
+                                                                    reservationId: reservation.data.new_reservation.id,
+                                                                    role: user.data.account.role,
+                                                                    grandTotal: result.data.grandTotal,
+                                                                    discountType: result.data.discount.discountType,
+                                                                    expirationDate: new Date(new Date(reservation.data.new_reservation.reservationDate).getTime() + 60 * 60 * 24 * 1000).toLocaleDateString() + " " + new Date(reservation.data.new_reservation.reservationDate).toLocaleTimeString(),
+
+                                                                    // payment: ,
+                                                                    // reservedRooms: ,
+                                                                }).then((result) => {
+                                                                    console.log(result)
+                                                                    console.log(reservationSummary.data)
+                                                                    window.location.reload()
+                                                                }).catch((err) => {
+                                                                    console.log(err)
+
+                                                                });
+                                                            }).catch((err) => {
+                                                                axios.delete('http://localhost:3001/api/deleteReservationSummary/' + reservationSummary.data.new_reservationSummary.id).then((result) => {
+                                                                    console.log(result)
+                                                                    axios.delete('http://localhost:3001/api/deleteReservation/' + reservation.data.new_reservation.id).then((result) => {
+                                                                        console.log(result)
+                                                                        axios.delete('http://localhost:3001/api/deletePayment/' + payment.data.new_payment.id).then((result) => {
+                                                                            console.log(result)
+                                                                            axios.delete('http://localhost:3001/api/deleteGuest/' + guest.data.new_guest.id).then((result) => {
+                                                                                console.log(result)
+                                                                                axios.delete('http://localhost:3001/api/deleteUser/' + user.data.account.id).then((result) => {
+
+                                                                                    console.log(result)
+
+                                                                                }).catch((err) => {
+                                                                                    console.log(err)
+                                                                                });
+                                                                            }).catch((err) => {
+                                                                                console.log(err)
+                                                                            });
+                                                                        }).catch((err) => {
+                                                                            console.log(err)
+                                                                        });
+                                                                    }).catch((err) => {
+                                                                        console.log(err)
+                                                                    });
+                                                                }).catch((err) => {
+                                                                    console.log(err)
+                                                                });
+
+
+                                                            });
+                                                        }
+                                                    }).catch((err) => {
+                                                        console.log(err)
+
+                                                    })
+                                                }).catch((err) => {
+                                                    console.log(err)
+
+                                                });
+                                            }
+                                        }).catch((err) => {
+                                            console.log(err)
+                                            axios.delete('http://localhost:3001/api/deletePayment/' + payment.data.new_payment.id).then((result) => {
+                                                console.log(result)
+                                                axios.delete('http://localhost:3001/api/deleteGuest/' + guest.data.new_guest.id).then((result) => {
+                                                    console.log(result)
+                                                    axios.delete('http://localhost:3001/api/deleteUser/' + user.data.account.id).then((result) => {
+                                                        console.log(result)
+                                                    }).catch((err) => {
+                                                        console.log(err)
+                                                    });
+                                                }).catch((err) => {
+                                                    console.log(err)
+                                                });
+                                            }).catch((err) => {
+                                                console.log(err)
+                                            });
+
+                                        });
+                                    }).catch((err) => {
+                                        console.log(err)
+                                        axios.delete('http://localhost:3001/api/deleteGuest/' + guest.data.new_guest.id).then((result) => {
+                                            console.log(result)
+                                            axios.delete('http://localhost:3001/api/deleteUser/' + user.data.account.id).then((result) => {
+                                                console.log(result)
+                                            }).catch((err) => {
+                                                console.log(err)
+                                            });
+                                        }).catch((err) => {
+                                            console.log(err)
+                                        });
+
+                                    });
+                                }).catch((err) => {
+                                    axios.delete('http://localhost:3001/api/deleteUser/' + user.data.account.id).then((result) => {
+                                        console.log(result)
+                                    }).catch((err) => {
+                                        console.log(err)
+                                    });
+                                });
+                            }).catch((err) => {
+                                console.log(err.res)
+                            });
+                        }
+
+                    }
+                    else {
+                        if (emailError.length == 0 && contactNumberError.length == 0 && userNameError.length == 0) {
+                            axios.post('http://localhost:3001/api/addUser', {
+                                userName: null,
+                                contactNumber: formatNumber,
+                                email: email,
+                                password: null,
+                            }).then((user) => {
+                                console.log(user.data);
+                                axios.post('http://localhost:3001/api/addGuest', {
+                                    firstName: firstName,
+                                    lastName: lastName,
+                                    birthDate: birthday,
+                                    gender: gender,
+                                    address: address,
+                                    nationality: nationality,
+                                    user_id: user.data.account.id,
+                                }).then((guest) => {
+                                    console.log(guest.data);
+                                    axios.post("http://localhost:3001/api/addPayment", {
+                                        paymentMade: 0,
+                                        discount_id: discountId,
+                                        paymentMode_id: paymentModeId,
+                                        paymentType: paymentType,
+                                        grandTotal: 0,
+                                        balance: 0,
+                                        discountValid: discountValid
+                                    }).then((payment) => {
+                                        console.log(payment.data)
+                                        axios.post("http://localhost:3001/api/addReservation", {
+                                            reservationDate: reservationDate,
+                                            guest_id: guest.data.new_guest.id,
+                                            payment_id: payment.data.new_payment.id
+                                        }).then((reservation) => {
+                                            console.log(reservation.data)
+                                            axios.patch('http://localhost:3001/api/updateUsers/' + user.data.account.id, {
+                                                password: reservation.data.new_reservation.reservationReferenceNumber + guest.data.new_guest.lastName,
+                                                userName: reservation.data.new_reservation.reservationReferenceNumber,
+                                            }).then((patchUser) => {
+                                                console.log(patchUser.data)
+                                            }).catch((err) => {
+                                                console.log(err)
+                                            });
+                                            for (let index = 0; index < availedRoom.length; index++) {
+                                                let items = {
+                                                    checkInDate: availedRoom[index].checkIn,
+                                                    checkOutDate: availedRoom[index].checkOut,
+                                                    kids: availedRoom[index].kids,
+                                                    adults: availedRoom[index].adults,
+                                                    numberOfNights: availedRoom[index].totalNights,
+                                                    reservation_id: reservation.data.new_reservation.id,
+                                                    room_id: availedRoom[index].id,
+                                                    specialInstrcution: null,
+
+                                                    // numberOfAdults:
+                                                    // numberOfKids:
+                                                }
+                                                axios.post("http://localhost:3001/api/addReservationSummary", items).then((reservationSummary) => {
+                                                    console.log(reservationSummary.data)
+                                                    axios.get('http://localhost:3001/api/getPayment/' + payment.data.new_payment.id).then((getPayment) => {
+
+                                                        if (index == availedRoom.length - 1) {
+                                                            axios.patch('http://localhost:3001/api/updateGrandTotal/' + payment.data.new_payment.id, {
+                                                                paymentMade: getPayment.data.paymentMade,
+                                                            }).then((result) => {
+                                                                console.log(result.data)
+                                                                axios.post('http://localhost:3001/api/sendReservationEmail', {
+                                                                    email: user.data.account.email.toLocaleLowerCase(),
+                                                                    birthDay: guest.data.new_guest.birthDate,
+                                                                    nationality: guest.data.new_guest.nationality.toLocaleLowerCase(),
+                                                                    emailAddress: user.data.account.email.toLocaleLowerCase(),
+                                                                    address: guest.data.new_guest.address,
+                                                                    contactNumber: user.data.account.contactNumber,
+                                                                    firstName: guest.data.new_guest.firstName.toLocaleLowerCase(),
+                                                                    lastName: guest.data.new_guest.lastName.toLocaleLowerCase(),
+                                                                    reservationStatus: reservation.data.new_reservation.reservationStatus,
+                                                                    accountName: getPayment.data.paymentMode.accountName,
+                                                                    accountNumber: getPayment.data.paymentMode.accountNumber,
+                                                                    paymentType: getPayment.data.paymentType,
+                                                                    paymentMode: getPayment.data.paymentMode.paymentMode,
+                                                                    reservationNumber: reservation.data.new_reservation.reservationReferenceNumber,
+                                                                    reservationDate: new Date(reservation.data.new_reservation.reservationDate).toLocaleDateString() + " " + new Date(reservation.data.new_reservation.reservationDate).toLocaleTimeString(),
+                                                                    reservationId: reservation.data.new_reservation.id,
+                                                                    role: user.data.account.role,
+                                                                    grandTotal: result.data.grandTotal,
+                                                                    discountType: result.data.discount.discountType,
+                                                                    expirationDate: new Date(new Date(reservation.data.new_reservation.reservationDate).getTime() + 60 * 60 * 24 * 1000).toLocaleDateString() + " " + new Date(reservation.data.new_reservation.reservationDate).toLocaleTimeString(),
+
+                                                                    // payment: ,
+                                                                    // reservedRooms: ,
+                                                                }).then((result) => {
+                                                                    console.log(result)
+                                                                    console.log(reservationSummary.data)
+                                                                    window.location.reload()
+                                                                }).catch((err) => {
+                                                                    console.log(err)
+
+                                                                });
+                                                            }).catch((err) => {
+                                                                axios.delete('http://localhost:3001/api/deleteReservationSummary/' + reservationSummary.data.new_reservationSummary.id).then((result) => {
+                                                                    console.log(result)
+                                                                    axios.delete('http://localhost:3001/api/deleteReservation/' + reservation.data.new_reservation.id).then((result) => {
+                                                                        console.log(result)
+                                                                        axios.delete('http://localhost:3001/api/deletePayment/' + payment.data.new_payment.id).then((result) => {
+                                                                            console.log(result)
+                                                                            axios.delete('http://localhost:3001/api/deleteGuest/' + guest.data.new_guest.id).then((result) => {
+                                                                                console.log(result)
+                                                                                axios.delete('http://localhost:3001/api/deleteUser/' + user.data.account.id).then((result) => {
+
+                                                                                    console.log(result)
+
+                                                                                }).catch((err) => {
+                                                                                    console.log(err)
+                                                                                });
+                                                                            }).catch((err) => {
+                                                                                console.log(err)
+                                                                            });
+                                                                        }).catch((err) => {
+                                                                            console.log(err)
+                                                                        });
+                                                                    }).catch((err) => {
+                                                                        console.log(err)
+                                                                    });
+                                                                }).catch((err) => {
+                                                                    console.log(err)
+                                                                });
+
+
+                                                            });
+                                                        }
+                                                    }).catch((err) => {
+                                                        console.log(err)
+
+                                                    })
+                                                }).catch((err) => {
+                                                    console.log(err)
+
+                                                });
+                                            }
+                                        }).catch((err) => {
+                                            console.log(err)
+                                            axios.delete('http://localhost:3001/api/deletePayment/' + payment.data.new_payment.id).then((result) => {
+                                                console.log(result)
+                                                axios.delete('http://localhost:3001/api/deleteGuest/' + guest.data.new_guest.id).then((result) => {
+                                                    console.log(result)
+                                                    axios.delete('http://localhost:3001/api/deleteUser/' + user.data.account.id).then((result) => {
+                                                        console.log(result)
+                                                    }).catch((err) => {
+                                                        console.log(err)
+                                                    });
+                                                }).catch((err) => {
+                                                    console.log(err)
+                                                });
+                                            }).catch((err) => {
+                                                console.log(err)
+                                            });
+
+                                        });
+                                    }).catch((err) => {
+                                        console.log(err)
+                                        axios.delete('http://localhost:3001/api/deleteGuest/' + guest.data.new_guest.id).then((result) => {
+                                            console.log(result)
+                                            axios.delete('http://localhost:3001/api/deleteUser/' + user.data.account.id).then((result) => {
+                                                console.log(result)
+                                            }).catch((err) => {
+                                                console.log(err)
+                                            });
+                                        }).catch((err) => {
+                                            console.log(err)
+                                        });
+
+                                    });
+                                }).catch((err) => {
+                                    axios.delete('http://localhost:3001/api/deleteUser/' + user.data.account.id).then((result) => {
+                                        console.log(result)
+                                    }).catch((err) => {
+                                        console.log(err)
+                                    });
+                                });
+                            }).catch((err) => {
+                                console.log(err.res)
+                            });
+                        }
+                    }
+                }
+            }
+            else {
+                setAvailableRooms([])
+                window.alert('Sorry your rooms have been reserved.')
+            }
+        }).catch((err) => {
+
+        });
+
+
+    }
     return (
         <Container>
 
@@ -3894,157 +1324,13 @@ export const ReservationContainer = () => {
 
                                 <Td align='center'><ActionButtonReservation
 
-                                    view={() => setShowDetails(prev => !prev)}
-                                    edit={() => setShowEditDetails(prev => !prev)}
+                                    view={() => handleOpenView(item.id)}
+                                    edit={() => handleOpenEdit(item.id)}
                                 /></Td>
                             </Tr>
                         ))
                         : ""}
-                    {/* <Tr>
-                        <Td align='center'>091243568</Td>
-                        <Td align='center'>Berna Boddit</Td>
-                        <Td align='center'>05/20/21</Td>
-                        <Td align='center'>05/25/21</Td>
-                        <Td align='center'>05/26/21</Td>
-                        <Td align='center'>
-                            <ContainerGlobal
-                                w='100px'
-                                h='auto'
-                                margin='0px auto'
-                                bg='rgb(118, 185, 71, .2)'
-                                direction='row'
-                                padding='2px 0px'
-                                justify='center'
-                                align='center'
-                                border='2px solid rgb(118, 185, 71)'
-                                gap='10px'
-                                borderRadius='.5rem'
-                            >
 
-                                <Title
-                                    family='Helvetica'
-                                    size='12px'
-                                    color='BLACK'
-                                    fstyle='normal'
-                                    display='inline'
-                                    padding='5px 10px'
-                                >
-                                    Booked
-                                </Title></ContainerGlobal></Td>
-
-                        <Td align='center'>
-                            <ActionButtonReservation
-                                paid
-                                view={() => setShowDetails(prev => !prev)}
-                                edit={() => setShowEditDetails(prev => !prev)}
-                            />
-                        </Td>
-                    </Tr>
-                    <Tr>
-                        <Td align='center'>093224568</Td>
-                        <Td align='center'>Hurarric Gaturn</Td>
-                        <Td align='center'>05/20/21</Td>
-                        <Td align='center'>05/25/21</Td>
-                        <Td align='center'>05/29/21</Td>
-                        <Td align='center'>
-                            <ContainerGlobal
-                                w='100px'
-                                h='auto'
-                                margin='0px auto'
-                                bg='rgb(118, 185, 71, .2)'
-                                direction='row'
-                                padding='2px 0px'
-                                justify='center'
-                                align='center'
-                                border='2px solid rgb(118, 185, 71)'
-                                gap='10px'
-                                borderRadius='.5rem'
-                            >
-
-                                <Title
-                                    family='Helvetica'
-                                    size='12px'
-                                    color='BLACK'
-                                    fstyle='normal'
-                                    display='inline'
-                                    padding='5px 10px'
-                                >
-                                    Booked
-                                </Title></ContainerGlobal>
-                        </Td>
-
-                        <Td align='center'><ActionButtonReservation paid /></Td>
-                    </Tr>
-                    <Tr>
-                        <Td align='center'>091212568</Td>
-                        <Td align='center'>Kiehl Jam</Td>
-                        <Td align='center'>05/20/21</Td>
-                        <Td align='center'>05/25/21</Td>
-                        <Td align='center'>05/27/21</Td>
-                        <Td align='center'>
-                            <ContainerGlobal
-                                w='100px'
-                                h='auto'
-                                margin='0px auto'
-                                bg='rgb(244,194,194, .2)'
-                                direction='row'
-                                padding='2px 0px'
-                                justify='center'
-                                align='center'
-                                border='2px solid rgb(255, 36, 0)'
-                                gap='10px'
-                                borderRadius='.5rem'
-                            >
-                                <Title
-                                    family='Helvetica'
-                                    size='12px'
-                                    color='BLACK'
-                                    fstyle='normal'
-                                    display='inline'
-                                    padding='5px 10px'
-                                >
-                                    Unsettled
-                                </Title>
-                            </ContainerGlobal>
-                        </Td>
-
-                        <Td align='center'><ActionButtonReservation unsettled /></Td>
-                    </Tr>
-                    <Tr>
-                        <Td align='center'>095434568</Td>
-                        <Td align='center'>Hadjustim Karas</Td>
-                        <Td align='center'>05/20/21</Td>
-                        <Td align='center'>05/25/21</Td>
-                        <Td align='center'>05/29/21</Td>
-                        <Td align='center'>
-                            <ContainerGlobal
-                                w='100px'
-                                h='auto'
-                                margin='0px auto'
-                                bg='rgb(118, 185, 71, .2)'
-                                direction='row'
-                                padding='2px 0px'
-                                justify='center'
-                                align='center'
-                                border='2px solid rgb(118, 185, 71)'
-                                gap='10px'
-                                borderRadius='.5rem'
-                            >
-
-                                <Title
-                                    family='Helvetica'
-                                    size='12px'
-                                    color='BLACK'
-                                    fstyle='normal'
-                                    display='inline'
-                                    padding='5px 10px'
-                                >
-                                    Booked
-                                </Title></ContainerGlobal>
-                        </Td>
-
-                        <Td align='center'><ActionButtonReservation paid /></Td>
-                    </Tr> */}
 
 
                 </TableContainer>
@@ -4053,7 +1339,9 @@ export const ReservationContainer = () => {
 
             <Button variant="contained" size="large"
                 style={{ backgroundColor: '#2E2E2E' }}
-                onClick={() => setShow(prev => !prev)}>
+                onClick={() => {
+                    handleOpenCreate()
+                }}>
                 Walk-in / Reservation
             </Button>
 
@@ -4063,14 +1351,17 @@ export const ReservationContainer = () => {
             <Grow in={show}>{WalkinModal}</Grow> */}
 
             <Modal
-                open={true}
+                open={openCreate}
+                onClose={handleCloseCreate}
                 style={{
                     display: 'flex',
                     justifyContent: 'center',
                     alignItems: 'center',
                 }}>
                 <Box
-                    component='div' style={{
+                    component='form'
+                    onSubmit={addReservation}
+                    style={{
                         height: '75vh',
                         width: '80vw',
                         backgroundColor: 'white',
@@ -4098,11 +1389,13 @@ export const ReservationContainer = () => {
                         zIndex: '1',
 
                     }}>
-                        <CloseIcon style={{
-                            color: 'white',
-                            cursor: 'pointer',
-                            margin: '10px',
-                        }} />
+                        <CloseIcon
+                            onClick={handleCloseCreate}
+                            style={{
+                                color: 'white',
+                                cursor: 'pointer',
+                                margin: '10px',
+                            }} />
                     </div>
 
 
@@ -4153,7 +1446,15 @@ export const ReservationContainer = () => {
                                     min={1}
                                     type='number'
                                     onChange={(e) => {
-                                        setAdults(e.target.value);
+                                        if (e.target.value <= 0) {
+                                            setAdults(1);
+                                        }
+                                        else if (e.target.value >= 5) {
+                                            setAdults(4);
+                                        }
+                                        else {
+                                            setAdults(e.target.value);
+                                        }
                                     }}
                                     height='3vw'
                                 >
@@ -4182,7 +1483,15 @@ export const ReservationContainer = () => {
                                     value={kids}
                                     type='number'
                                     onChange={(e) => {
-                                        setKids(e.target.value);
+                                        if (e.target.value <= 0) {
+                                            setKids(0);
+                                        }
+                                        else if (e.target.value >= 3) {
+                                            setKids(2);
+                                        }
+                                        else {
+                                            setKids(e.target.value);
+                                        }
                                     }}
                                     height='3vw'
                                 ></TextInput>
@@ -4300,7 +1609,6 @@ export const ReservationContainer = () => {
                                         onChange={(event) => {
                                             setRoomNumber(event.target.value);
                                         }}
-                                        required
                                     >
 
                                         {availableRooms.length != 0 || roomType != '' ?
@@ -4659,6 +1967,10 @@ export const ReservationContainer = () => {
                                         label="Menu"
                                         onChange={(event) => {
                                             setDiscount(event.target.value);
+
+                                            if (event.target.value == "No discount") {
+                                                setDiscountValid(false)
+                                            }
                                         }}
 
                                     >
@@ -4672,6 +1984,50 @@ export const ReservationContainer = () => {
                                         <MenuItem value={'pwd'}>PWD</MenuItem> */}
                                     </Select>
                                 </FormControl>
+                            </ContainerGlobal>
+
+                            <ContainerGlobal
+                                w='420px'
+                                h='auto'
+                                direction='row'
+                                gap='10px'
+                                justify='space-between'
+                                align='center'
+                                overflow='auto'
+
+                            >
+
+                                <Title
+                                    size='20px'
+                                    color='Black'
+                                    family='Helvetica'
+                                    fstyle='Normal'
+                                    weight='400'
+                                    align='left'
+                                    margin='15px 0px 20px 0px'
+                                >
+
+                                </Title>
+                                <FormControlLabel
+                                    disabled={discount == "No discount" ? true : false}
+                                    style={{ width: 200, margin: '5px 0px' }}
+                                    control={
+                                        <Checkbox
+                                            checked={discountValid === true ? true : false}
+                                            value={discountValid}
+                                            onChange={(e) => {
+                                                if (e.target.checked) {
+                                                    setDiscountValid(true)
+                                                    setGrandTotal(0)
+                                                }
+                                                else {
+                                                    setDiscountValid(false)
+                                                    setGrandTotal(0)
+                                                }
+                                            }}
+                                        />
+                                    }
+                                    label="Discount valid?" />
                             </ContainerGlobal>
 
                         </ContainerGlobalColumn>
@@ -5134,11 +2490,1943 @@ export const ReservationContainer = () => {
                         </ContainerFormContent>
                     </ContainerGlobalRow>
                     <br></br>
-                    <Button variant="contained" color='success'>Create reservation</Button>
-                    <Button variant="contained" color='error'>Close</Button>
+                    <Button variant="contained" color='success' type='submit' disabled={availedRoom.length == 0 ? true : false}>Create reservation</Button>
+                    <Button variant="contained" color='error' >Close</Button>
                 </Box>
             </Modal>
 
+            <Modal
+                open={openView}
+                onClose={handleCloseView}
+                style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                }}>
+                <Box
+                    component='form'
+                    // onSubmit={addReservation}
+                    style={{
+                        height: '75vh',
+                        width: '80vw',
+                        backgroundColor: 'white',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        padding: '0px 0px 30px 0px',
+                        gap: '10px',
+                        justifyContent: 'flex-start',
+                        alignItems: 'center',
+                        overflowY: 'overlay',
+                        overflowX: 'hidden',
+                        borderRadius: '.5rem',
+                        position: 'relative'
+                        // margin: '50px 0px',
+
+                    }}>
+                    <div style={{
+                        width: '100%',
+                        height: '50px',
+                        position: 'sticky',
+                        top: 0,
+                        display: 'flex',
+                        justifyContent: 'flex-end',
+                        backgroundColor: 'black',
+                        zIndex: '1',
+
+                    }}>
+                        <CloseIcon
+                            onClick={handleCloseView}
+                            style={{
+                                color: 'white',
+                                cursor: 'pointer',
+                                margin: '10px',
+                            }} />
+                    </div>
+
+
+                    <Title
+                        size='26px'
+                        color='white'
+                        family='Helvetica'
+                        fstyle='normal'
+                        weight='600'
+                        align='left'
+                        bg='#2E2E2E'
+                        margin='40px 0px 0px 0px'
+                        padding='10px 15px'
+                        borderRadius='.5rem'
+                    >
+                        Reservation Reference Number
+                    </Title>
+
+                    <ContainerGlobalRow
+                        style={{ marginTop: '10px' }}>
+
+                        <ContainerGlobalColumn>
+
+                            <ContainerGlobal
+                                w='auto'
+                                h='auto'
+                                direction='column'
+                                gap='10px'
+                                justify='space-between'
+                                align='center'
+                                overflow='auto'
+
+                            >
+
+
+                                <Title
+                                    size='26px'
+                                    color='Black'
+                                    family='Helvetica'
+                                    fstyle='Normal'
+                                    weight='bold'
+                                    align='left'
+                                    margin='15px 0px 20px 0px'
+                                >
+                                    {reservationInfo.length != 0 ? reservationInfo.reservationReferenceNumber : ""}
+                                </Title>
+                            </ContainerGlobal>
+
+
+
+                        </ContainerGlobalColumn>
+
+
+                    </ContainerGlobalRow>
+
+                    <hr style={{ width: '100%' }}></hr>
+                    <Title
+                        size='26px'
+                        color='white'
+                        family='Helvetica'
+                        fstyle='normal'
+                        weight='600'
+                        align='left'
+                        bg='#2E2E2E'
+                        margin='40px 0px 0px 0px'
+                        padding='10px 15px'
+                        borderRadius='.5rem'
+                    >
+                        Reservation cart
+                    </Title>
+
+
+                    <ContainerGlobalRow
+                        style={{
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            width: '100%'
+                        }}
+                    >
+                        <FlexboxContainer
+                            w='100%'
+                            margin='0px'
+                            padding='0px'
+                            style={{
+                                backgroundColor: 'transparent',
+                            }}>
+
+                            <TableContainer
+                                cellspacing="0"
+                                cellpadding="0">
+                                <Tr>
+                                    <Th align='center' color='black'>Room number</Th>
+                                    <Th align='center' color='black'>Room type</Th>
+                                    <Th align='center' color='black'>Check in</Th>
+                                    <Th align='center' color='black'>Check out</Th>
+                                    <Th align='center' color='black'>Adults</Th>
+                                    <Th align='center' color='black'>Kids</Th>
+                                    <Th align='center' color='black'>Total nights</Th>
+                                    <Th align='center' color='black'>Rate per night</Th>
+                                    <Th align='center' color='black'>Total amout due</Th>
+                                </Tr>
+                                {reservationSummaryInfo.length != 0 ?
+
+                                    reservationSummaryInfo.map((item, index) => (
+                                        <Tr>
+
+                                            <Td align='center'>{item.room.roomNumber}</Td>
+                                            <Td align='center'>{item.room.roomType.roomType}</Td>
+                                            <Td align='center'>{new Date(item.checkInDate).toLocaleDateString()}</Td>
+                                            <Td align='center'>{new Date(item.checkOutDate).toLocaleDateString()}</Td>
+                                            <Td align='center'>{item.adults}</Td>
+                                            <Td align='center'>{item.kids}</Td>
+                                            <Td align='center'>{item.numberOfNights}</Td>
+                                            <Td align='center'>{numberFormat(item.room.roomType.roomRate)}</Td>
+                                            <Td align='center' style={{ color: 'red' }}>{numberFormat(item.room.roomType.roomRate * item.numberOfNights)}</Td>
+
+                                        </Tr>
+
+                                    ))
+                                    :
+
+                                    ""}
+                                {/* <Tr rowSpan={2} style={{ backgroundColor: 'transparent' }}>
+                                    <Td align='center' ></Td>
+                                    <Td align='center'></Td>
+                                    <Td align='center'></Td>
+                                    <Td align='center'></Td>
+                                    <Td colSpan={2} align='center' style={{ fontSize: '16px' }}>Grand Total:</Td>
+                                    <Td align='center' style={{ fontSize: '16px', fontWeight: 'normal', color: 'red' }}>{numberFormat(grandTotal)}</Td>
+                                    <Td align='center'></Td>
+                                </Tr> */}
+                            </TableContainer>
+
+
+                        </FlexboxContainer>
+                    </ContainerGlobalRow>
+
+                    <hr style={{ width: '100%' }}></hr>
+                    <Title
+                        size='26px'
+                        color='white'
+                        family='Helvetica'
+                        fstyle='normal'
+                        weight='600'
+                        align='left'
+                        bg='#2E2E2E'
+                        margin='40px 0px 10px 0px'
+                        padding='10px 15px'
+                        borderRadius='.5rem'
+                    >
+                        Payment details
+                    </Title>
+
+
+                    <ContainerGlobalRow>
+                        <ContainerGlobalColumn>
+
+                            <ContainerGlobal
+                                w='420px'
+                                h='auto'
+                                direction='row'
+                                gap='10px'
+                                justify='space-between'
+                                align='center'
+                                overflow='auto'
+
+                            >
+
+                                <Title
+                                    size='20px'
+                                    color='Black'
+                                    family='Helvetica'
+                                    fstyle='Normal'
+                                    weight='400'
+                                    align='left'
+                                    margin='15px 0px 20px 0px'
+                                >
+                                    Payment Mode:
+                                </Title>
+                                <Title
+                                    size='20px'
+                                    color='Black'
+                                    family='Helvetica'
+                                    fstyle='Normal'
+                                    weight='bold'
+                                    align='left'
+                                    margin='15px 0px 20px 0px'
+                                >
+                                    {reservationInfo.length != 0 ? reservationInfo.payment.paymentMode.paymentMode : ""}
+                                </Title>
+
+                            </ContainerGlobal>
+                            <ContainerGlobal
+                                w='420px'
+                                h='auto'
+                                direction='row'
+                                gap='10px'
+                                justify='space-between'
+                                align='center'
+                                overflow='auto'
+
+                            >
+
+                                <Title
+                                    size='20px'
+                                    color='Black'
+                                    family='Helvetica'
+                                    fstyle='Normal'
+                                    weight='400'
+                                    align='left'
+                                    margin='15px 0px 20px 0px'
+                                >
+                                    Payment Type:
+                                </Title>
+                                <Title
+                                    size='20px'
+                                    color='Black'
+                                    family='Helvetica'
+                                    fstyle='Normal'
+                                    weight='bold'
+                                    align='left'
+                                    margin='15px 0px 20px 0px'
+                                >
+                                    {reservationInfo.length != 0 ? reservationInfo.payment.paymentType : ""}
+                                </Title>
+
+                            </ContainerGlobal>
+                            <ContainerGlobal
+                                w='420px'
+                                h='auto'
+                                direction='row'
+                                gap='10px'
+                                justify='space-between'
+                                align='center'
+                                overflow='auto'
+
+                            >
+
+                                <Title
+                                    size='20px'
+                                    color='Black'
+                                    family='Helvetica'
+                                    fstyle='Normal'
+                                    weight='400'
+                                    align='left'
+                                    margin='15px 0px 20px 0px'
+                                >
+                                    Discount:
+                                </Title>
+
+                                <Title
+                                    size='20px'
+                                    color='Black'
+                                    family='Helvetica'
+                                    fstyle='Normal'
+                                    weight='bold'
+                                    align='left'
+                                    margin='15px 0px 20px 0px'
+                                >
+                                    {reservationInfo.length != 0 ? reservationInfo.payment.discount.discountType : ""}
+                                </Title>
+
+                            </ContainerGlobal>
+
+                            <ContainerGlobal
+                                w='420px'
+                                h='auto'
+                                direction='row'
+                                gap='10px'
+                                justify='space-between'
+                                align='center'
+                                overflow='auto'
+
+                            >
+
+                                <Title
+                                    size='20px'
+                                    color='Black'
+                                    family='Helvetica'
+                                    fstyle='Normal'
+                                    weight='400'
+                                    align='left'
+                                    margin='15px 0px 20px 0px'
+                                >
+
+                                </Title>
+                                <FormControlLabel
+                                    disabled
+                                    control={
+                                        <Checkbox
+                                            checked={reservationInfo.length != 0 ? reservationInfo.payment.discountValid == true ? true : false : ""}
+                                            disabled
+                                        />
+                                    }
+                                    label="Discount Verified?" />
+                            </ContainerGlobal>
+
+                        </ContainerGlobalColumn>
+                        <ContainerGlobalColumn>
+                            {reservationInfo.length != 0 ?
+                                reservationInfo.payment.paymentType == 'Full Payment' ? <ContainerGlobal
+                                    w='420px'
+                                    h='auto'
+                                    direction='row'
+                                    gap='10px'
+                                    justify='space-between'
+                                    align='center'
+                                    overflow='auto'
+
+                                >
+                                    <Title
+                                        size='20px'
+                                        color='Black'
+                                        family='Helvetica'
+                                        fstyle='Normal'
+                                        weight='400'
+                                        align='left'
+                                        margin='15px 0px 20px 0px'
+                                    >
+                                        Full payment:
+                                    </Title>
+                                    <TextField id="outlined-basic" label="" variant="standard" style={{ width: 200, margin: '5px 0px' }}
+                                        value={reservationInfo.length != 0 ? numberFormat(reservationInfo.payment.grandTotal) : ""}
+                                        type="text"
+                                        InputProps={{
+                                            readOnly: true,
+                                        }}
+                                    /> </ContainerGlobal>
+                                    :
+                                    <ContainerGlobal
+                                        w='420px'
+                                        h='auto'
+                                        direction='row'
+                                        gap='10px'
+                                        justify='space-between'
+                                        align='center'
+                                        overflow='auto'
+
+                                    >
+                                        <Title
+                                            size='20px'
+                                            color='Black'
+                                            family='Helvetica'
+                                            fstyle='Normal'
+                                            weight='400'
+                                            align='left'
+                                            margin='15px 0px 20px 0px'
+                                        >
+                                            Down payment:
+                                        </Title>
+                                        <TextField id="outlined-basic" label="" variant="standard" style={{ width: 200, margin: '5px 0px' }}
+                                            value={reservationInfo.length != 0 ? numberFormat(reservationInfo.payment.grandTotal / 2) : ""}
+                                            type="text"
+                                            InputProps={{
+                                                readOnly: true,
+                                            }}
+                                        /> </ContainerGlobal>
+                                : ""}
+
+
+                            <ContainerGlobal
+                                w='420px'
+                                h='auto'
+                                direction='row'
+                                gap='10px'
+                                justify='space-between'
+                                align='center'
+                                overflow='auto'
+
+                            >
+
+                                <Title
+                                    size='20px'
+                                    color='Black'
+                                    family='Helvetica'
+                                    fstyle='Normal'
+                                    weight='400'
+                                    align='left'
+                                    margin='15px 0px 20px 0px'
+                                >
+                                    Payment Made:
+                                </Title>
+                                <TextField id="outlined-basic" label="" variant="standard" style={{ width: 200, margin: '5px 0px' }}
+                                    value={reservationInfo.length != 0 ? numberFormat(reservationInfo.payment.paymentMade) : ""}
+                                    type="text"
+                                    InputProps={{
+                                        readOnly: true,
+                                    }}
+                                />
+                            </ContainerGlobal>
+
+                            <ContainerGlobal
+                                w='420px'
+                                h='auto'
+                                direction='row'
+                                gap='10px'
+                                justify='space-between'
+                                align='center'
+                                overflow='auto'
+
+                            >
+
+                                <Title
+                                    size='20px'
+                                    color='Black'
+                                    family='Helvetica'
+                                    fstyle='Normal'
+                                    weight='600'
+                                    align='left'
+                                    margin='15px 0px 20px 0px'
+                                >
+                                    Grand Total:
+                                </Title>
+                                <TextField
+                                    id="outlined-basic"
+                                    label=""
+                                    type="text"
+                                    value={reservationInfo.length != 0 ? numberFormat(reservationInfo.payment.grandTotal) : ""}
+                                    variant="standard"
+                                    style={{ width: 200, margin: '5px 0px', fontWeight: 600 }}
+                                    InputProps={{
+                                        readOnly: true,
+                                    }}
+                                />
+                            </ContainerGlobal>
+                            <ContainerGlobal
+                                w='420px'
+                                h='auto'
+                                direction='row'
+                                gap='10px'
+                                justify='space-between'
+                                align='center'
+                                overflow='auto'
+
+                            >
+
+                                <Title
+                                    size='20px'
+                                    color='Black'
+                                    family='Helvetica'
+                                    fstyle='Normal'
+                                    weight='600'
+                                    align='left'
+                                    margin='15px 0px 20px 0px'
+                                >
+                                    Remaining Balance:
+                                </Title>
+                                <TextField
+                                    id="outlined-basic"
+                                    label=""
+                                    type="text"
+                                    value={reservationInfo.length != 0 ? numberFormat(reservationInfo.payment.balance) : ""}
+                                    variant="standard"
+                                    style={{ width: 200, margin: '5px 0px', fontWeight: 600 }}
+                                    InputProps={{
+                                        readOnly: true,
+                                    }}
+                                />
+                            </ContainerGlobal>
+                        </ContainerGlobalColumn>
+                    </ContainerGlobalRow>
+
+                    <hr style={{ width: '100%' }}></hr>
+                    <Title
+                        size='26px'
+                        color='white'
+                        family='Helvetica'
+                        fstyle='normal'
+                        weight='600'
+                        align='left'
+                        bg='#2E2E2E'
+                        margin='40px 0px 10px 0px'
+                        padding='10px 15px'
+                        borderRadius='.5rem'
+                    >
+                        Guest details
+                    </Title>
+
+
+
+                    <ContainerGlobalRow>
+                        <ContainerFormContent >
+
+                            <InputContainer>
+                                <TextField
+                                    error={firstNameError.length != 0 ? true : false}
+                                    helperText={firstNameError.length != 0 ? firstNameError : ""}
+                                    placeholder='First Name'
+                                    label="First Name"
+                                    inputRef={firstNameRef}
+                                    variant="outlined"
+                                    value={reservationInfo.length != 0 ? reservationInfo.guestInformation.firstName.toLocaleLowerCase() : ""}
+                                    onChange={(e) => {
+                                        setFirstName(e.target.value.toLocaleLowerCase())
+                                        if (!letters.test(e.target.value) && e.target.value.length != 0) {
+                                            setFirstNameError("Invalid first name. Please type letters only.")
+                                        }
+                                        else {
+                                            setFirstNameError("")
+                                        }
+                                    }}
+                                    style={{ width: '55%', }}
+                                    disabled
+                                    required />
+
+                                <TextField
+                                    error={lastNameError.length != 0 ? true : false}
+                                    helperText={lastNameError.length != 0 ? lastNameError : ""}
+                                    placeholder='Last Name'
+                                    label="Last Name"
+                                    variant="outlined"
+                                    inputRef={lastNameRef}
+                                    value={reservationInfo.length != 0 ? reservationInfo.guestInformation.lastName.toLocaleLowerCase() : ""}
+                                    onChange={(e) => {
+                                        setLastName(e.target.value.toLocaleLowerCase())
+                                        if (!letters.test(e.target.value) && e.target.value.length != 0) {
+                                            setLastNameError("Invalid last name. Please type letters only.")
+                                        }
+                                        else {
+                                            setLastNameError("")
+                                        }
+
+                                    }}
+                                    style={{ width: '55%', }}
+                                    disabled
+                                    required />
+                            </InputContainer>
+
+
+                            <InputContainer>
+                                <TextField
+                                    error={emailError.length != 0 ? true : false}
+                                    helperText={emailError.length != 0 ? emailError : ""}
+                                    placeholder='Email'
+                                    label="Email"
+                                    variant="outlined"
+                                    type='email'
+                                    value={reservationInfo.length != 0 ? reservationInfo.guestInformation.user.email.toLocaleLowerCase() : ""}
+                                    onChange={(e) => {
+                                        setEmail(e.target.value)
+
+                                        setEmailError("")
+                                    }}
+                                    style={{ width: '55%', }}
+                                    inputRef={emailRef}
+                                    disabled
+                                    required />
+
+                                <TextField
+                                    error={contactNumberError.length != 0 ? true : false}
+                                    helperText={contactNumberError.length != 0 ? contactNumberError : ""}
+                                    placeholder='Contact Number e.g. 09123456789 or +639123456789'
+                                    label="Contact Number"
+                                    variant="outlined"
+                                    value={reservationInfo.length != 0 ? reservationInfo.guestInformation.user.contactNumber : ""}
+                                    onChange={(e) => {
+                                        setContactNumber(e.target.value)
+
+                                        if (!phoneNumberValidation.test(e.target.value) && e.target.value.length != 0) {
+                                            setContactNumberError("Contact number is invalid. Please provide a valid contact number.")
+                                        }
+                                        else {
+                                            setContactNumberError("")
+                                        }
+                                    }}
+                                    inputRef={contactNumberRef}
+                                    style={{ width: '55%', }}
+                                    disabled
+                                    required />
+                            </InputContainer>
+
+
+                            <InputContainer>
+
+                                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                    <DatePicker
+
+                                        views={['day', 'month', 'year']}
+                                        label="Birthday"
+                                        value={reservationInfo.length != 0 ? reservationInfo.guestInformation.birthDate : ""}
+                                        onChange={(newValue) => {
+                                            setBirthDay(newValue);
+                                        }}
+                                        renderInput={(params) =>
+                                            <TextField
+                                                {...params}
+                                                variant="standard"
+                                                style={{ width: "55%", margin: '5px 0px' }}
+                                                helperText={null}
+                                                disabled
+                                                required
+                                            />
+                                        }
+                                    />
+
+                                </LocalizationProvider>
+
+                                <FormControl sx={{ width: "55%", margin: '5px 0px' }} size="small" variant="standard">
+                                    <InputLabel id="demo-select-small" >Nationality</InputLabel>
+                                    <Select
+                                        style={{ color: 'black', textAlign: 'left' }}
+                                        labelId="demo-select-small"
+                                        id="demo-select-small"
+                                        value={reservationInfo.length != 0 ? reservationInfo.guestInformation.nationality : ""}
+                                        label="Menu"
+                                        onChange={(event) => {
+                                            setNationality(event.target.value);
+                                        }}
+                                        disabled
+                                        required
+                                    >
+
+                                        {nationalities.map(({ nationality }, index) => (
+                                            <MenuItem value={nationality} >{nationality}</MenuItem>
+                                        ))}
+                                    </Select>
+                                </FormControl>
+                            </InputContainer>
+
+                            <InputContainer
+                                justify='center'>
+                                <FormControl>
+                                    <FormLabel id="demo-row-radio-buttons-group-label"
+                                        style={{ textAlign: 'center', color: 'black' }} >Gender</FormLabel>
+                                    <RadioGroup
+                                        row
+
+                                        error={genderError.length != 0 ? true : false}
+                                        helperText={genderError.length != 0 ? genderError : ""}
+                                        aria-labelledby="demo-row-radio-buttons-group-label"
+                                        defaultValue="male"
+                                        value={reservationInfo.length != 0 ? reservationInfo.guestInformation.gender : ""}
+                                        name="row-radio-buttons-group"
+                                        onChange={(e) => {
+                                            setGender(e.target.value)
+                                        }}
+                                        required
+                                    >
+                                        <FormControlLabel
+                                            value="male"
+                                            control={<Radio
+                                                disabled />}
+                                            label="Male"
+                                        />
+                                        <FormControlLabel
+                                            value="female"
+                                            control={<Radio
+                                                disabled />}
+                                            label="Female"
+                                        />
+                                        <FormControlLabel
+                                            value="other"
+                                            control={<Radio
+                                                disabled />}
+                                            label="Other"
+                                        />
+                                    </RadioGroup>
+                                </FormControl>
+                            </InputContainer>
+
+
+                            <InputContainer>
+                                <TextField
+                                    error={addressError.length != 0 ? true : false}
+                                    helperText={addressError.length != 0 ? addressError : ""}
+                                    placeholder='Complete Address'
+                                    label="Complete Address"
+                                    variant="outlined"
+                                    type='text'
+                                    value={reservationInfo.length != 0 ? reservationInfo.guestInformation.address : ""}
+                                    onChange={(e) => {
+                                        setAddress(e.target.value)
+                                    }}
+                                    multiline
+                                    rows={4}
+                                    style={{ width: '95%', }}
+                                    disabled
+                                    required />
+
+                            </InputContainer>
+
+
+
+
+                        </ContainerFormContent>
+                    </ContainerGlobalRow>
+                    <br></br>
+                    <Button variant="contained" color='error' onClick={() => {
+                        handleCloseView()
+                    }}>Close</Button>
+                </Box>
+            </Modal>
+
+
+            <Modal
+                open={openEdit}
+                onClose={handleCloseEdit}
+                style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                }}>
+                <Box
+                    component='form'
+                    onSubmit={addReservation}
+                    style={{
+                        height: '75vh',
+                        width: '80vw',
+                        backgroundColor: 'white',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        padding: '0px 0px 30px 0px',
+                        gap: '10px',
+                        justifyContent: 'flex-start',
+                        alignItems: 'center',
+                        overflowY: 'overlay',
+                        overflowX: 'hidden',
+                        borderRadius: '.5rem',
+                        position: 'relative'
+                        // margin: '50px 0px',
+
+                    }}>
+                    <div style={{
+                        width: '100%',
+                        height: '50px',
+                        position: 'sticky',
+                        top: 0,
+                        display: 'flex',
+                        justifyContent: 'flex-end',
+                        backgroundColor: 'black',
+                        zIndex: '1',
+
+                    }}>
+                        <CloseIcon
+                            onClick={handleCloseEdit}
+                            style={{
+                                color: 'white',
+                                cursor: 'pointer',
+                                margin: '10px',
+                            }} />
+                    </div>
+
+
+                    <Title
+                        size='26px'
+                        color='white'
+                        family='Helvetica'
+                        fstyle='normal'
+                        weight='600'
+                        align='left'
+                        bg='#2E2E2E'
+                        margin='40px 0px 0px 0px'
+                        padding='10px 15px'
+                        borderRadius='.5rem'
+                    >
+                        Reservation details
+                    </Title>
+                    <TitleCalendarContainer
+                        style={{
+                            width: '100%',
+                            margin: '0px'
+                        }}
+                    >
+                        <DateRangePicker
+                            startDate={startDate}
+                            nights={nights}
+                            endDate={endDate}
+                            onChangeStartDate={(date) => setStartDate(date)}
+                            onChangeEndDate={(date) => setEndDate(date)}
+                            minDateStart={new Date()}
+                            maxDateStart={new Date(endDate)}
+                            minDateEnd={minEndDate}
+
+                        // minDate={new Date()}
+                        />
+                        <Persons>
+                            <LabelDiv>
+                                <TextInput
+                                    style={{ fontWeight: 'bold', fontSize: '1.1vw' }}
+                                    family='Roboto Slab'
+                                    width="5vw"
+                                    placeholder="No. of Adults"
+                                    align="center"
+                                    borderColor='black'
+                                    margins='0px'
+                                    value={adults}
+                                    max={4}
+                                    min={1}
+                                    type='number'
+                                    onChange={(e) => {
+                                        if (e.target.value <= 0) {
+                                            setAdults(1);
+                                        }
+                                        else if (e.target.value >= 5) {
+                                            setAdults(4);
+                                        }
+                                        else {
+                                            setAdults(e.target.value);
+                                        }
+                                    }}
+                                    height='3vw'
+                                >
+
+                                </TextInput>
+                                <Title
+                                    size='1.1vw'
+                                    weight="Bold">
+
+                                    Adults
+                                </Title>
+                            </LabelDiv>
+                            <LabelDiv>
+
+
+                                <TextInput
+                                    style={{ fontWeight: 'bold', fontSize: '1.1vw' }}
+                                    family='Roboto Slab'
+                                    width="5vw"
+                                    placeholder="No. of Adults"
+                                    align="center"
+                                    borderColor='black'
+                                    margins='0px'
+                                    max={2}
+                                    min={0}
+                                    value={kids}
+                                    type='number'
+                                    onChange={(e) => {
+                                        if (e.target.value <= 0) {
+                                            setKids(0);
+                                        }
+                                        else if (e.target.value >= 3) {
+                                            setKids(2);
+                                        }
+                                        else {
+                                            setKids(e.target.value);
+                                        }
+                                    }}
+                                    height='3vw'
+                                ></TextInput>
+
+                                <Title
+                                    size='1.1vw'
+                                    weight="bold">
+
+                                    Kids
+                                </Title>
+                            </LabelDiv>
+                        </Persons>
+                    </TitleCalendarContainer>
+                    <ContainerGlobalRow
+                        style={{ marginTop: '50px' }}>
+
+                        <ContainerGlobalColumn>
+
+                            <ContainerGlobal
+                                w='420px'
+                                h='auto'
+                                direction='row'
+                                gap='10px'
+                                justify='space-between'
+                                align='center'
+                                overflow='auto'
+
+                            >
+
+                                <Title
+                                    size='20px'
+                                    color='Black'
+                                    family='Helvetica'
+                                    fstyle='Normal'
+                                    weight='400'
+                                    align='left'
+                                    margin='15px 0px 20px 0px'
+                                >
+                                    Room Type:
+                                </Title>
+                                <FormControl sx={{ width: 200, margin: '5px 0px' }} size="large" variant="standard">
+                                    <InputLabel id="demo-select-small" >Room Type</InputLabel>
+                                    <Select
+                                        style={{ color: 'black', textAlign: 'left' }}
+                                        labelId="demo-select-small"
+                                        id="demo-select-small"
+                                        value={roomType}
+                                        label="Menu"
+                                        onChange={(event) => {
+                                            setRoomType(event.target.value);
+                                        }}
+
+                                    >
+                                        {roomTypeDb.length != 0 ? roomTypeDb.map((item) => (
+                                            <MenuItem value={item.roomType}
+                                                disabled={badgeCount(item.roomType) == null ? true : false}
+                                            >
+                                                <Badge badgeContent={badgeCount(item.roomType)} color="success" style={{ marginTop: 10 }} title='40 Available rooms'>
+                                                    <ContainerGlobal
+                                                        margin='0px 15px 0px 0px'>
+                                                        {item.roomType}
+                                                    </ContainerGlobal>
+                                                </Badge>
+                                            </MenuItem>))
+                                            :
+                                            ""}
+                                        {/* <MenuItem value={'Deluxe'} >
+                                        <Badge badgeContent={4} color="success" style={{ marginTop: 10 }} title='10 Available rooms'>
+                                            <ContainerGlobal
+                                                margin='0px 15px 0px 0px'>
+                                                Deluxe Room
+                                            </ContainerGlobal>
+                                        </Badge></MenuItem>
+                                    <MenuItem value={'Premium'} selected>
+                                        <Badge badgeContent={5} color="success" style={{ marginTop: 10 }} title='5 Available rooms'>
+                                            <ContainerGlobal
+                                                margin='0px 15px 0px 0px'>
+                                                Premium Room
+                                            </ContainerGlobal>
+                                        </Badge></MenuItem> */}
+                                    </Select>
+                                </FormControl>
+                            </ContainerGlobal>
+                            <ContainerGlobal
+                                w='420px'
+                                h='auto'
+                                direction='row'
+                                gap='10px'
+                                justify='space-between'
+                                align='center'
+                                overflow='auto'
+                                margin='0px 0px 20px 0px'
+
+                            >
+
+                                <Title
+                                    size='20px'
+                                    color='Black'
+                                    family='Helvetica'
+                                    fstyle='Normal'
+                                    weight='400'
+                                    align='left'
+                                    margin='15px 0px 20px 0px'
+                                >
+                                    Room Number:
+                                </Title>
+                                <FormControl sx={{ width: 200, margin: '5px 0px' }} size="large" variant="standard">
+                                    <InputLabel id="demo-select-small" >Room Number</InputLabel>
+                                    <Select
+                                        style={{ color: 'black', textAlign: 'left' }}
+                                        labelId="demo-select-small"
+                                        id="demo-select-small"
+                                        value={roomNumber}
+                                        label="Menu"
+                                        onChange={(event) => {
+                                            setRoomNumber(event.target.value);
+                                        }}
+                                    >
+
+                                        {availableRooms.length != 0 || roomType != '' ?
+                                            availableRooms.map((item) => (
+                                                item.roomType.roomType == roomType ? <MenuItem value={item.roomNumber}>
+                                                    Room {item.roomNumber}
+                                                </MenuItem> : <MenuItem style={{ display: 'none' }}></MenuItem>
+                                            ))
+                                            : ""}
+                                        {/* <MenuItem value={'R101'} selected>
+                                            Room 101
+                                        </MenuItem> */}
+                                        {/* <MenuItem value={'R102'} >
+                                            Room 102
+                                        </MenuItem>
+                                        <MenuItem value={'R103'} disabled>
+                                            Room 103
+                                        </MenuItem>
+                                        <MenuItem value={'R104'} >
+                                            Room 104
+                                        </MenuItem>
+                                        <MenuItem value={'R105'} >
+                                            Room 105
+                                        </MenuItem> */}
+                                    </Select>
+                                </FormControl>
+                            </ContainerGlobal>
+                            <ContainerGlobal
+                                w='420px'
+                                h='auto'
+                                direction='row'
+                                gap='10px'
+                                justify='space-between'
+                                align='center'
+                                overflow='auto'
+
+                            >
+
+                                <Title
+                                    size='20px'
+                                    color='Black'
+                                    family='Helvetica'
+                                    fstyle='Normal'
+                                    weight='400'
+                                    align='left'
+                                    margin='15px 0px 20px 0px'
+                                >
+                                    Room rate per night:
+                                </Title>
+                                <TextField value={numberFormat(roomRate)} id="outlined-basic" label="" variant="standard" style={{ width: 200, margin: '5px 0px' }} />
+
+                            </ContainerGlobal>
+                            <ContainerGlobal
+                                w='420px'
+                                h='auto'
+                                direction='row'
+                                gap='10px'
+                                justify='space-between'
+                                align='center'
+                                overflow='auto'
+
+                            >
+
+                                <Title
+                                    size='20px'
+                                    color='Black'
+                                    family='Helvetica'
+                                    fstyle='Normal'
+                                    weight='400'
+                                    align='left'
+                                    margin='15px 0px 20px 0px'
+                                >
+                                    Reservation Status:
+                                </Title>
+
+                                <FormControl sx={{ width: 200, margin: '5px 0px' }} size="large" variant="standard">
+                                    <InputLabel id="demo-select-small" >Reservation Status</InputLabel>
+                                    <Select
+                                        style={{ color: 'black', textAlign: 'left' }}
+                                        labelId="demo-select-small"
+                                        id="demo-select-small"
+                                        value={roomNumber}
+                                        label="Menu"
+                                        onChange={(event) => {
+                                            setRoomNumber(event.target.value);
+                                        }}
+                                    >
+
+                                        {availableRooms.length != 0 || roomType != '' ?
+                                            availableRooms.map((item) => (
+                                                item.roomType.roomType == roomType ? <MenuItem value={item.roomNumber}>
+                                                    Room {item.roomNumber}
+                                                </MenuItem> : <MenuItem style={{ display: 'none' }}></MenuItem>
+                                            ))
+                                            : ""}
+                                            
+                                    </Select>
+                                </FormControl>
+
+                            </ContainerGlobal>
+                            <Button variant="contained" onClick={() => { addToCart() }} disabled={roomType != '' && roomNumber != '' && roomRate != 0 ? false : true} >Add</Button>
+
+
+                            {/* 
+                            <ContainerGlobal
+                                w='420px'
+                                h='auto'
+                                direction='row'
+                                gap='10px'
+                                justify='space-between'
+                                align='center'
+                                overflow='auto'
+
+                            >
+
+                                <Title
+                                    size='20px'
+                                    color='Black'
+                                    family='Helvetica'
+                                    fstyle='Normal'
+                                    weight='400'
+                                    align='left'
+                                    margin='15px 0px 20px 0px'
+                                >
+                                    Extra Bed:
+                                </Title>
+                                <TextField defaultValue='0' id="outlined-basic" label="" variant="standard" style={{ width: 200, margin: '5px 0px' }} />
+                            </ContainerGlobal>
+                            <ContainerGlobal
+                                w='420px'
+                                h='auto'
+                                direction='row'
+                                gap='10px'
+                                justify='space-between'
+                                align='center'
+                                overflow='auto'
+
+                            >
+
+                                <Title
+                                    size='20px'
+                                    color='Black'
+                                    family='Helvetica'
+                                    fstyle='Normal'
+                                    weight='400'
+                                    align='left'
+                                    margin='15px 0px 20px 0px'
+                                >
+                                    Extra Pillow:
+                                </Title>
+                                <TextField defaultValue='0' id="outlined-basic" label="" variant="standard" style={{ width: 200, margin: '5px 0px' }} />
+                            </ContainerGlobal>
+                            <ContainerGlobal
+                                w='420px'
+                                h='auto'
+                                direction='row'
+                                gap='10px'
+                                justify='space-between'
+                                align='center'
+                                overflow='auto'
+
+                            >
+
+                                <Title
+                                    size='20px'
+                                    color='Black'
+                                    family='Helvetica'
+                                    fstyle='Normal'
+                                    weight='400'
+                                    align='left'
+                                    margin='15px 0px 20px 0px'
+                                >
+                                    Extra Blanket:
+                                </Title>
+                                <TextField defaultValue='0' id="outlined-basic" label="" variant="standard" style={{ width: 200, margin: '5px 0px' }} />
+                            </ContainerGlobal> */}
+                        </ContainerGlobalColumn>
+
+
+                    </ContainerGlobalRow>
+
+                    <hr style={{ width: '100%' }}></hr>
+                    <Title
+                        size='26px'
+                        color='white'
+                        family='Helvetica'
+                        fstyle='normal'
+                        weight='600'
+                        align='left'
+                        bg='#2E2E2E'
+                        margin='40px 0px 0px 0px'
+                        padding='10px 15px'
+                        borderRadius='.5rem'
+                    >
+                        Reservation cart
+                    </Title>
+                    {/* <HorizontalLine
+                        bg='gray'
+                        w='100%'
+                        margin='0px'
+                    ></HorizontalLine> */}
+
+                    <ContainerGlobalRow
+                        style={{
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            width: '100%'
+                        }}
+                    >
+                        <FlexboxContainer
+                            w='100%'
+                            margin='0px'
+                            padding='0px'
+                            style={{
+                                backgroundColor: 'transparent',
+                            }}>
+
+                            <TableContainer
+                                cellspacing="0"
+                                cellpadding="0">
+                                <Tr>
+                                    <Th align='center' color='black'>Room number</Th>
+                                    <Th align='center' color='black'>Room type</Th>
+                                    <Th align='center' color='black'>Check in</Th>
+                                    <Th align='center' color='black'>Check out</Th>
+                                    <Th align='center' color='black'>Total nights</Th>
+                                    <Th align='center' color='black'>Rate per night</Th>
+                                    <Th align='center' color='black'>Total amout due</Th>
+                                    <Th align='center' color='black'>Action</Th>
+                                </Tr>
+                                {availedRoom.length != 0 ?
+
+                                    availedRoom.map((item, index) => (
+                                        <Tr>
+
+                                            <Td align='center'>{item.roomNumber}</Td>
+                                            <Td align='center'>{item.roomType}</Td>
+                                            <Td align='center'>{new Date(item.checkIn).toLocaleDateString()}</Td>
+                                            <Td align='center'>{new Date(item.checkOut).toLocaleDateString()}</Td>
+                                            <Td align='center'>{item.totalNights}</Td>
+                                            <Td align='center'>{numberFormat(item.roomRate)}</Td>
+                                            <Td align='center' style={{ color: 'red' }}>{numberFormat(item.roomRate * item.totalNights)}</Td>
+                                            <Td align='center'>
+                                                <IconButton type="submit" sx={{ p: '8px', backgroundColor: 'rgb(255, 36, 0, 0.7)' }} aria-label="search" title='Delete' onClick={() => { DeleteRoom(item.id) }}>
+                                                    <DeleteIcon style={{ color: '#2e2e2e', fontSize: '18px' }} title='View' />
+                                                </IconButton></Td>
+                                        </Tr>
+
+                                    ))
+                                    :
+
+                                    ""}
+                                {/* <Tr rowSpan={2} style={{ backgroundColor: 'transparent' }}>
+                                    <Td align='center' ></Td>
+                                    <Td align='center'></Td>
+                                    <Td align='center'></Td>
+                                    <Td align='center'></Td>
+                                    <Td colSpan={2} align='center' style={{ fontSize: '16px' }}>Grand Total:</Td>
+                                    <Td align='center' style={{ fontSize: '16px', fontWeight: 'normal', color: 'red' }}>{numberFormat(grandTotal)}</Td>
+                                    <Td align='center'></Td>
+                                </Tr> */}
+                            </TableContainer>
+
+
+                        </FlexboxContainer>
+                    </ContainerGlobalRow>
+
+                    <hr style={{ width: '100%' }}></hr>
+                    <Title
+                        size='26px'
+                        color='white'
+                        family='Helvetica'
+                        fstyle='normal'
+                        weight='600'
+                        align='left'
+                        bg='#2E2E2E'
+                        margin='40px 0px 10px 0px'
+                        padding='10px 15px'
+                        borderRadius='.5rem'
+                    >
+                        Payment details
+                    </Title>
+
+
+                    <ContainerGlobalRow>
+                        <ContainerGlobalColumn>
+
+                            <ContainerGlobal
+                                w='420px'
+                                h='auto'
+                                direction='row'
+                                gap='10px'
+                                justify='space-between'
+                                align='center'
+                                overflow='auto'
+
+                            >
+
+                                <Title
+                                    size='20px'
+                                    color='Black'
+                                    family='Helvetica'
+                                    fstyle='Normal'
+                                    weight='400'
+                                    align='left'
+                                    margin='15px 0px 20px 0px'
+                                >
+                                    Payment Mode:
+                                </Title>
+                                <FormControl sx={{ width: 200, margin: '5px 0px' }} size="small" variant="standard">
+                                    <InputLabel id="demo-select-small" >Payment method</InputLabel>
+                                    <Select
+                                        style={{ color: 'black', textAlign: 'left' }}
+                                        labelId="demo-select-small"
+                                        id="demo-select-small"
+                                        value={paymentMethod}
+                                        label="Menu"
+                                        onChange={(event) => {
+                                            setPaymentMethod(event.target.value);
+                                        }
+                                        }
+
+                                    >
+                                        {paymentMode.length != 0 ? paymentMode.map((item) => (
+                                            <MenuItem value={item.paymentMode} selected>{item.paymentMode}</MenuItem>
+
+                                        )) : ""}
+                                        {/* <MenuItem value={'Cash'} selected>Cash (pay at the hotel)</MenuItem>
+                                        <MenuItem value={'Bank'} >Bank (Metro Bank)</MenuItem>
+                                        <MenuItem value={'E-Payment'} selected>E-Payment (Gcash)</MenuItem> */}
+                                    </Select>
+                                </FormControl>
+                            </ContainerGlobal>
+                            <ContainerGlobal
+                                w='420px'
+                                h='auto'
+                                direction='row'
+                                gap='10px'
+                                justify='space-between'
+                                align='center'
+                                overflow='auto'
+
+                            >
+
+                                <Title
+                                    size='20px'
+                                    color='Black'
+                                    family='Helvetica'
+                                    fstyle='Normal'
+                                    weight='400'
+                                    align='left'
+                                    margin='15px 0px 20px 0px'
+                                >
+                                    Payment Type:
+                                </Title>
+                                <FormControl sx={{ width: 200, margin: '5px 0px' }} size="small" variant="standard">
+                                    <InputLabel id="demo-select-small" >Payment Type</InputLabel>
+                                    <Select
+                                        style={{ color: 'black', textAlign: 'left' }}
+                                        labelId="demo-select-small"
+                                        id="demo-select-small"
+                                        value={paymentType}
+                                        label="Menu"
+                                        onChange={(event) => {
+                                            setPaymentType(event.target.value);
+                                        }}
+
+                                    >
+
+                                        <MenuItem value={'Full Payment'} >Full payment</MenuItem>
+                                        <MenuItem value={'Down Payment'} selected>Down Payment</MenuItem>
+                                    </Select>
+                                </FormControl>
+                            </ContainerGlobal>
+                            <ContainerGlobal
+                                w='420px'
+                                h='auto'
+                                direction='row'
+                                gap='10px'
+                                justify='space-between'
+                                align='center'
+                                overflow='auto'
+
+                            >
+
+                                <Title
+                                    size='20px'
+                                    color='Black'
+                                    family='Helvetica'
+                                    fstyle='Normal'
+                                    weight='400'
+                                    align='left'
+                                    margin='15px 0px 20px 0px'
+                                >
+                                    Discount:
+                                </Title>
+                                <FormControl sx={{ width: 200, margin: '5px 0px' }} size="small" variant="standard">
+                                    <InputLabel id="demo-select-small" >Discount</InputLabel>
+                                    <Select
+                                        style={{ color: 'black', textAlign: 'left' }}
+                                        labelId="demo-select-small"
+                                        id="demo-select-small"
+                                        value={discount}
+                                        label="Menu"
+                                        onChange={(event) => {
+                                            setDiscount(event.target.value);
+
+                                            if (event.target.value == "No discount") {
+                                                setDiscountValid(false)
+                                            }
+                                        }}
+
+                                    >
+                                        {discountDb.length != 0 ? discountDb.map((item, index) => (
+                                            <MenuItem value={item.discountType} >{item.discountType}</MenuItem>
+
+                                        )) : ""}
+
+                                        {/* <MenuItem value={'none'} >None</MenuItem>
+                                        <MenuItem value={'senior'}>Senior Citizen</MenuItem>
+                                        <MenuItem value={'pwd'}>PWD</MenuItem> */}
+                                    </Select>
+                                </FormControl>
+                            </ContainerGlobal>
+
+                            <ContainerGlobal
+                                w='420px'
+                                h='auto'
+                                direction='row'
+                                gap='10px'
+                                justify='space-between'
+                                align='center'
+                                overflow='auto'
+
+                            >
+
+                                <Title
+                                    size='20px'
+                                    color='Black'
+                                    family='Helvetica'
+                                    fstyle='Normal'
+                                    weight='400'
+                                    align='left'
+                                    margin='15px 0px 20px 0px'
+                                >
+
+                                </Title>
+                                <FormControlLabel
+                                    disabled={discount == "No discount" ? true : false}
+                                    style={{ width: 200, margin: '5px 0px' }}
+                                    control={
+                                        <Checkbox
+                                            checked={discountValid === true ? true : false}
+                                            value={discountValid}
+                                            onChange={(e) => {
+                                                if (e.target.checked) {
+                                                    setDiscountValid(true)
+                                                    setGrandTotal(0)
+                                                }
+                                                else {
+                                                    setDiscountValid(false)
+                                                    setGrandTotal(0)
+                                                }
+                                            }}
+                                        />
+                                    }
+                                    label="Discount valid?" />
+                            </ContainerGlobal>
+
+                        </ContainerGlobalColumn>
+                        <ContainerGlobalColumn>
+
+
+                            {paymentType != '' || paymentType != null ?
+                                paymentType == 'Full Payment' ?
+                                    <ContainerGlobal
+                                        w='420px'
+                                        h='auto'
+                                        direction='row'
+                                        gap='10px'
+                                        justify='space-between'
+                                        align='center'
+                                        overflow='auto'
+
+                                    >
+                                        <Title
+                                            size='20px'
+                                            color='Black'
+                                            family='Helvetica'
+                                            fstyle='Normal'
+                                            weight='400'
+                                            align='left'
+                                            margin='15px 0px 20px 0px'
+                                        >
+                                            Full payment:
+                                        </Title>
+                                        <TextField id="outlined-basic" label="" variant="standard" style={{ width: 200, margin: '5px 0px' }}
+                                            value={numberFormat(grandTotal)}
+                                            type="text"
+                                            InputProps={{
+                                                readOnly: true,
+                                            }}
+                                        /> </ContainerGlobal>
+                                    :
+                                    <ContainerGlobal
+                                        w='420px'
+                                        h='auto'
+                                        direction='row'
+                                        gap='10px'
+                                        justify='space-between'
+                                        align='center'
+                                        overflow='auto'
+
+                                    >
+                                        <Title
+                                            size='20px'
+                                            color='Black'
+                                            family='Helvetica'
+                                            fstyle='Normal'
+                                            weight='400'
+                                            align='left'
+                                            margin='15px 0px 20px 0px'
+                                        >
+                                            Down payment:
+                                        </Title>
+                                        <TextField id="outlined-basic" label="" variant="standard" style={{ width: 200, margin: '5px 0px' }}
+                                            value={numberFormat(grandTotal / 2)}
+                                            type="text"
+                                            InputProps={{
+                                                readOnly: true,
+                                            }}
+                                        /> </ContainerGlobal> : ""
+                            }
+                            <ContainerGlobal
+                                w='420px'
+                                h='auto'
+                                direction='row'
+                                gap='10px'
+                                justify='space-between'
+                                align='center'
+                                overflow='auto'
+
+                            >
+
+                                <Title
+                                    size='20px'
+                                    color='Black'
+                                    family='Helvetica'
+                                    fstyle='Normal'
+                                    weight='400'
+                                    align='left'
+                                    margin='15px 0px 20px 0px'
+                                >
+                                    Payment Made:
+                                </Title>
+                                <TextField id="outlined-basic" label="" variant="standard" style={{ width: 200, margin: '5px 0px' }}
+                                    value={numberFormat(0)}
+                                    type="text"
+                                    InputProps={{
+                                        readOnly: true,
+                                    }}
+                                />
+                            </ContainerGlobal>
+
+                            <ContainerGlobal
+                                w='420px'
+                                h='auto'
+                                direction='row'
+                                gap='10px'
+                                justify='space-between'
+                                align='center'
+                                overflow='auto'
+
+                            >
+
+                                <Title
+                                    size='20px'
+                                    color='Black'
+                                    family='Helvetica'
+                                    fstyle='Normal'
+                                    weight='600'
+                                    align='left'
+                                    margin='15px 0px 20px 0px'
+                                >
+                                    Grand Total:
+                                </Title>
+                                <TextField
+                                    id="outlined-basic"
+                                    label=""
+                                    type="text"
+                                    value={numberFormat(grandTotal)}
+                                    variant="standard"
+                                    style={{ width: 200, margin: '5px 0px', fontWeight: 600 }}
+                                    InputProps={{
+                                        readOnly: true,
+                                    }}
+                                />
+                            </ContainerGlobal>
+                            <ContainerGlobal
+                                w='420px'
+                                h='auto'
+                                direction='row'
+                                gap='10px'
+                                justify='space-between'
+                                align='center'
+                                overflow='auto'
+
+                            >
+
+                                <Title
+                                    size='20px'
+                                    color='Black'
+                                    family='Helvetica'
+                                    fstyle='Normal'
+                                    weight='600'
+                                    align='left'
+                                    margin='15px 0px 20px 0px'
+                                >
+                                    Remaining Balance:
+                                </Title>
+                                <TextField
+                                    id="outlined-basic"
+                                    label=""
+                                    type="text"
+                                    value={numberFormat(grandTotal)}
+                                    variant="standard"
+                                    style={{ width: 200, margin: '5px 0px', fontWeight: 600 }}
+                                    InputProps={{
+                                        readOnly: true,
+                                    }}
+                                />
+                            </ContainerGlobal>
+                        </ContainerGlobalColumn>
+                    </ContainerGlobalRow>
+
+                    <hr style={{ width: '100%' }}></hr>
+                    <Title
+                        size='26px'
+                        color='white'
+                        family='Helvetica'
+                        fstyle='normal'
+                        weight='600'
+                        align='left'
+                        bg='#2E2E2E'
+                        margin='40px 0px 10px 0px'
+                        padding='10px 15px'
+                        borderRadius='.5rem'
+                    >
+                        Guest details
+                    </Title>
+
+
+
+                    <ContainerGlobalRow>
+                        <ContainerFormContent >
+
+                            <InputContainer>
+                                <TextField
+                                    error={firstNameError.length != 0 ? true : false}
+                                    helperText={firstNameError.length != 0 ? firstNameError : ""}
+                                    placeholder='First Name'
+                                    label="First Name"
+                                    inputRef={firstNameRef}
+                                    variant="outlined"
+                                    value={firstName}
+                                    onChange={(e) => {
+                                        setFirstName(e.target.value.toLocaleLowerCase())
+                                        if (!letters.test(e.target.value) && e.target.value.length != 0) {
+                                            setFirstNameError("Invalid first name. Please type letters only.")
+                                        }
+                                        else {
+                                            setFirstNameError("")
+                                        }
+                                    }}
+                                    style={{ width: '55%', }}
+                                    required />
+
+                                <TextField
+                                    error={lastNameError.length != 0 ? true : false}
+                                    helperText={lastNameError.length != 0 ? lastNameError : ""}
+                                    placeholder='Last Name'
+                                    label="Last Name"
+                                    variant="outlined"
+                                    inputRef={lastNameRef}
+                                    value={lastName}
+                                    onChange={(e) => {
+                                        setLastName(e.target.value.toLocaleLowerCase())
+                                        if (!letters.test(e.target.value) && e.target.value.length != 0) {
+                                            setLastNameError("Invalid last name. Please type letters only.")
+                                        }
+                                        else {
+                                            setLastNameError("")
+                                        }
+
+                                    }}
+                                    style={{ width: '55%', }}
+                                    required />
+                            </InputContainer>
+
+
+                            <InputContainer>
+                                <TextField
+                                    error={emailError.length != 0 ? true : false}
+                                    helperText={emailError.length != 0 ? emailError : ""}
+                                    placeholder='Email'
+                                    label="Email"
+                                    variant="outlined"
+                                    type='email'
+                                    value={email}
+                                    onChange={(e) => {
+                                        setEmail(e.target.value)
+
+                                        setEmailError("")
+                                    }}
+                                    style={{ width: '55%', }}
+                                    inputRef={emailRef}
+                                    required />
+
+                                <TextField
+                                    error={contactNumberError.length != 0 ? true : false}
+                                    helperText={contactNumberError.length != 0 ? contactNumberError : ""}
+                                    placeholder='Contact Number e.g. 09123456789 or +639123456789'
+                                    label="Contact Number"
+                                    variant="outlined"
+                                    value={contactNumber}
+                                    onChange={(e) => {
+                                        setContactNumber(e.target.value)
+
+                                        if (!phoneNumberValidation.test(e.target.value) && e.target.value.length != 0) {
+                                            setContactNumberError("Contact number is invalid. Please provide a valid contact number.")
+                                        }
+                                        else {
+                                            setContactNumberError("")
+                                        }
+                                    }}
+                                    inputRef={contactNumberRef}
+                                    style={{ width: '55%', }}
+                                    required />
+                            </InputContainer>
+
+
+                            <InputContainer>
+
+                                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                    <DatePicker
+
+                                        views={['day', 'month', 'year']}
+                                        label="Birthday"
+                                        value={birthday}
+                                        onChange={(newValue) => {
+                                            setBirthDay(newValue);
+                                        }}
+                                        renderInput={(params) =>
+                                            <TextField
+                                                {...params}
+                                                variant="standard"
+                                                style={{ width: "55%", margin: '5px 0px' }}
+                                                helperText={null}
+                                                required
+                                            />
+                                        }
+                                    />
+
+                                </LocalizationProvider>
+
+                                <FormControl sx={{ width: "55%", margin: '5px 0px' }} size="small" variant="standard">
+                                    <InputLabel id="demo-select-small" >Nationality</InputLabel>
+                                    <Select
+                                        style={{ color: 'black', textAlign: 'left' }}
+                                        labelId="demo-select-small"
+                                        id="demo-select-small"
+                                        value={nationality}
+                                        label="Menu"
+                                        onChange={(event) => {
+                                            setNationality(event.target.value);
+                                        }}
+                                        required
+                                    >
+
+                                        {nationalities.map(({ nationality }, index) => (
+                                            <MenuItem value={nationality} >{nationality}</MenuItem>
+                                        ))}
+                                    </Select>
+                                </FormControl>
+                            </InputContainer>
+
+                            <InputContainer
+                                justify='center'>
+                                <FormControl>
+                                    <FormLabel id="demo-row-radio-buttons-group-label"
+                                        style={{ textAlign: 'center', }} >Gender</FormLabel>
+                                    <RadioGroup
+                                        row
+
+                                        error={genderError.length != 0 ? true : false}
+                                        helperText={genderError.length != 0 ? genderError : ""}
+                                        aria-labelledby="demo-row-radio-buttons-group-label"
+                                        defaultValue="male"
+                                        value={gender}
+                                        name="row-radio-buttons-group"
+                                        onChange={(e) => {
+                                            setGender(e.target.value)
+                                        }}
+                                        required
+                                    >
+                                        <FormControlLabel
+                                            value="male"
+                                            control={<Radio />}
+                                            label="Male"
+                                        />
+                                        <FormControlLabel
+                                            value="female"
+                                            control={<Radio />}
+                                            label="Female"
+                                        />
+                                        <FormControlLabel
+                                            value="other"
+                                            control={<Radio />}
+                                            label="Other"
+                                        />
+                                    </RadioGroup>
+                                </FormControl>
+                            </InputContainer>
+
+
+                            <InputContainer>
+                                <TextField
+                                    error={addressError.length != 0 ? true : false}
+                                    helperText={addressError.length != 0 ? addressError : ""}
+                                    placeholder='Complete Address'
+                                    label="Complete Address"
+                                    variant="outlined"
+                                    type='text'
+                                    value={address}
+                                    onChange={(e) => {
+                                        setAddress(e.target.value)
+                                    }}
+                                    multiline
+                                    rows={4}
+                                    style={{ width: '95%', }}
+                                    required />
+
+                            </InputContainer>
+                            <p><h1 style={{ display: 'inline' }}>Create an account </h1>(optional)*</p>
+                            <InputContainer>
+                                <TextField
+
+                                    error={userNameError.length != 0 ? true : false}
+                                    helperText={userNameError.length != 0 ? userNameError : ""}
+                                    placeholder='Username'
+                                    label="Username"
+                                    variant="outlined"
+                                    inputRef={userNameRef}
+                                    value={userName}
+                                    onChange={(e) => {
+                                        setUserName(e.target.value)
+                                        setUserNameError("")
+                                    }}
+                                    required={password.length != 0 ? true : false}
+                                    style={{ width: '55%', }} />
+
+                                <TextField
+                                    error={passwordError.length != 0 ? true : false}
+                                    helperText={passwordError.length != 0 ? passwordError : ""}
+                                    placeholder='Password'
+                                    label="Password"
+                                    type='password'
+                                    variant="outlined"
+                                    value={password}
+                                    onChange={(e) => {
+                                        setPassword(e.target.value)
+                                        if (!passwordValidation.test(e.target.value) && e.target.value.length != 0) {
+                                            setPasswordError("Password must have a minimum of eight characters, at least one letter and one number.")
+                                        }
+                                        else {
+                                            setPasswordError("")
+                                        }
+                                    }}
+                                    style={{ width: '55%', }}
+                                    required={userName.length != 0 ? true : false}
+                                />
+                            </InputContainer>
+
+
+
+                            {/* <Recaptcha
+                                sitekey="6LdJnrkeAAAAAOt5k6Gz1_Op5iBm0Jm75Sl4PME_"
+                                render="explicit"
+                                onloadCallback={callback}
+                            /> */}
+
+
+                            {/* <FormButton
+                                whileHover={{ backgroundColor: "#0C4426", color: "white" }}
+                                w='200px'
+                                h='60px'
+                                textcolor="#0C4426"
+                                fam='Playfair Display, serif'
+                                weight='-400'
+                                fontStyle='Normal'
+                                radius="0px"
+                                border="1px solid #0C4426"
+                                margin='30px 0px 0px 0px'
+                                fontsize='23px'
+                                // href='/billingSummary'
+                                type='submit'
+                                value='Continue'
+                            >
+
+                            </FormButton>
+                            <Button
+                                whileHover={{ color: "#0C4426" }}
+                                w='100px'
+                                h='40px'
+                                textcolor='#FFFFFF'
+                                fam='Times New Roman, serif'
+                                weight='-400'
+                                fontStyle='Italic'
+                                radius="0px"
+                                margin='20px 0px 40px 0px'
+                                fontsize='16px'
+                                bg='#FF9292'
+                                href='/bookingCart'
+                            >
+                                Cancel
+                            </Button> */}
+                        </ContainerFormContent>
+                    </ContainerGlobalRow>
+                    <br></br>
+                    <Button variant="contained" color='success' type='submit' disabled={availedRoom.length == 0 ? true : false}>Create reservation</Button>
+                    <Button variant="contained" color='error' >Close</Button>
+                </Box>
+            </Modal>
         </Container>
     )
 }

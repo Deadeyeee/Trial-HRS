@@ -18,6 +18,7 @@ const DateRangePicker = (props) => {
           endDate={props.endDate}
           minDate={props.minDateStart}
           maxDate={props.maxDateStart}
+          disabled={props.startDateDisabled}
           placeholderText="Check-in Date"
         />
 
@@ -37,6 +38,7 @@ const DateRangePicker = (props) => {
           endDate={props.endDate}
           minDate={props.minDateEnd}
           maxDate={props.maxDateEnd}
+          disabled={props.endDateDisabled}
 
           placeholderText="Check-out Date"
         />

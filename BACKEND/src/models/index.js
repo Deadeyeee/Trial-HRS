@@ -232,13 +232,10 @@ db.room.hasMany(db.usedServices, {
 
 
 
-
-
-
 db.sequelize.sync({ force: false }).then(() => {
     console.log('\n\nDatabase is Running smoothly!\n\n')
 }).catch((err) => {
-    console.log("\n\nDATABSE ERROR!!!!: " + err.data + "\n\n")
+    console.log("\n\nDATABSE ERROR!!!!: " + err + "\n\n")
 });
 
 module.exports = db;

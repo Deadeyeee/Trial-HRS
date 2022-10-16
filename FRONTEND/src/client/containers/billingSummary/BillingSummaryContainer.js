@@ -243,7 +243,6 @@ const BillingSummaryContainer = () => {
                         axios.post("http://localhost:3001/api/addReservation", {
                             reservationDate: reservationDate,
                             guest_id: guest.data.new_guest.id,
-                            reservationReferenceNumber: Math.random().toString(36).slice(2),
                             payment_id: payment.data.new_payment.id
                         }).then((reservation) => {
                             console.log(reservation.data.new_reservation.reservationReferenceNumber + guest.data.new_guest.lastName)
@@ -560,7 +559,6 @@ const BillingSummaryContainer = () => {
                 axios.post("http://localhost:3001/api/addReservation", {
                     reservationDate: reservationDate,
                     guest_id: userInformation.id,
-                    reservationReferenceNumber: Math.random().toString(36).slice(2),
                     payment_id: payment.data.new_payment.id,
                 }).then((reservation) => {
                     console.log(reservation.data)

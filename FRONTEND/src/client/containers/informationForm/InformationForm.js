@@ -140,6 +140,9 @@ const InformationForm = () => {
             formatNumber = contactNumber.replace("+63", "0");
 
         }
+        else{
+            formatNumber = contactNumber;
+        }
 
         if (firstNameError.length != 0) {
             firstNameRef.current.focus()
