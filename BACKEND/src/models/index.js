@@ -46,6 +46,7 @@ db.orderedAmenities = require('./orderedAmenities.model.js')(sequelize, Sequeliz
 db.payment = require('./payment.model.js')(sequelize, Sequelize, DataTypes)
 db.services = require('./services.model.js')(sequelize, Sequelize, DataTypes)
 db.usedServices = require('./usedServices.model.js')(sequelize, Sequelize, DataTypes)
+db.roomTypeImages = require('./roomTypeImages.model.js')(sequelize, Sequelize, DataTypes)
 
 
 
@@ -226,6 +227,18 @@ db.usedServices.belongsTo(db.roomType, {
 
 db.room.hasMany(db.usedServices, {
     as: "usedServices",
+    foreignKey: "roomType_id",
+});
+
+
+//roomTypeImages has many roomType
+db.roomTypeImages.belongsTo(db.roomType, {
+    foreignKey: { name: "roomType_id", allowNull: false },
+    foreignKeyConstraint: true,
+});
+
+db.roomType.hasMany(db.roomTypeImages, {
+    as: "roomTypeImages",
     foreignKey: "roomType_id",
 });
 

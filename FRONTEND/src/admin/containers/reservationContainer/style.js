@@ -45,7 +45,7 @@ export const Td = styled(motion.td)`
   font-family: Arial, Helvetica, sans-serif;
   font-weight: bold;
   color: #605f5f;
-  padding-top: 20px;
+  padding: 10px 0px;
 `;
 
 

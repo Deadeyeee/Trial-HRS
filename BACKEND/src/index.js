@@ -59,6 +59,7 @@ const orderedAmenities = require('./routes/orderedAmenities.route.js');
 const payment = require('./routes/payment.route.js');
 const services = require('./routes/services.route.js');
 const usedServices = require('./routes/usedServices.route.js');
+const roomTypeImages = require('./routes/roomTypeImages.route.js');
 
 
 
@@ -77,6 +78,7 @@ app.use('/api', orderedAmenities);
 app.use('/api', payment);
 app.use('/api', services);
 app.use('/api', usedServices);
+app.use('/api', roomTypeImages);
 
 
 //static image 

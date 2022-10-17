@@ -213,9 +213,16 @@ const BillingSummaryContainer = () => {
 
 
         if (userInformation.length == 0) {
+            let formatNumber;
+            if (window.sessionStorage.getItem('contactNumber').slice(0, 3) == "+63") {
+                formatNumber = window.sessionStorage.getItem('contactNumber').replace("+63", "0");
+            }
+            else {
+                formatNumber = window.sessionStorage.getItem('contactNumber');
+            }
             axios.post("http://localhost:3001/api/addUser", {
 
-                contactNumber: window.sessionStorage.getItem('contactNumber'),
+                contactNumber: formatNumber,
                 email: window.sessionStorage.getItem('email').toLocaleLowerCase(),
                 role: "NON-USER",
 
@@ -228,7 +235,7 @@ const BillingSummaryContainer = () => {
                     birthDate: window.sessionStorage.getItem('birthday'),
                     gender: window.sessionStorage.getItem('gender'),
                     address: window.sessionStorage.getItem('address'),
-                    nationality: window.sessionStorage.getItem('nationality').toLocaleLowerCase(),
+                    nationality: window.sessionStorage.getItem('nationality'),
                 }).then((guest) => {
                     console.log(guest.data)
                     axios.post("http://localhost:3001/api/addPayment", {
@@ -316,7 +323,7 @@ const BillingSummaryContainer = () => {
                                                             axios.post('http://localhost:3001/api/sendReservationEmail', {
                                                                 email: user.data.account.email.toLocaleLowerCase(),
                                                                 birthDay: guest.data.new_guest.birthDate,
-                                                                nationality: guest.data.new_guest.nationality.toLocaleLowerCase(),
+                                                                nationality: guest.data.new_guest.nationality,
                                                                 emailAddress: user.data.account.email.toLocaleLowerCase(),
                                                                 address: guest.data.new_guest.address,
                                                                 contactNumber: user.data.account.contactNumber,
@@ -614,7 +621,7 @@ const BillingSummaryContainer = () => {
                                                     axios.post('http://localhost:3001/api/sendReservationEmail', {
                                                         email: userInformation.user.email.toLocaleLowerCase(),
                                                         birthDay: userInformation.birthDate,
-                                                        nationality: userInformation.nationality.toLocaleLowerCase(),
+                                                        nationality: userInformation.nationality,
                                                         emailAddress: userInformation.user.email.toLocaleLowerCase(),
                                                         address: userInformation.address,
                                                         contactNumber: userInformation.user.contactNumber,

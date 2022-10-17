@@ -30,6 +30,21 @@ exports.findAll = async (req, res) => {
     return res.status(200).send(reservationSummary);
 };
 
+
+exports.countReservedRooms = async (req, res) => {
+    const reservationSummary = await ReservationSummary.findAll(
+        {
+            where: {
+                reservation_id: req.params.id,
+            },
+            include: { all: true, nested: true }
+        },
+
+    );
+    return res.status(200).send(reservationSummary);
+};
+
+
 exports.findOne = async (req, res) => {
     const reservationSummary = await ReservationSummary.findByPk(req.params.id,
         { include: { all: true, nested: true } });

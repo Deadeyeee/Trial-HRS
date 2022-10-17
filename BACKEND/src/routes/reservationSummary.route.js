@@ -9,4 +9,7 @@ router.patch('/updateReservationSummary/:id', controller.update);
 router.delete('/deleteReservationSummary/:id', controller.delete);
 router.post('/validateAvailedDates', controller.checkUnavailableRoom);
 
+
+router.get('/getNumberOfRooms/:id', controller.countReservedRooms);
+
 module.exports = router;

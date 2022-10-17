@@ -35,6 +35,7 @@ import { LabelDiv, Persons, TitleCalendarContainer } from '../../../client/conta
 import { ContainerFormContent, InputContainer } from '../../../client/containers/informationForm/style'
 import TermsAndConditionsCont from '../../../client/containers/termsAndConditionsPage/TermsAndConditionsCont'
 import * as moment from 'moment';
+import EditIcon from '@mui/icons-material/Edit';
 
 
 export const ReservationContainer = () => {
@@ -104,6 +105,7 @@ export const ReservationContainer = () => {
     const [roomType, setRoomType] = React.useState('');
     const [discount, setDiscount] = React.useState('');
     const [roomNumber, setRoomNumber] = React.useState('');
+    const [specialInstrcution, setSpecialInstruction] = React.useState('');
 
     const [reservation, setReservation] = useState([]);
 
@@ -150,6 +152,13 @@ export const ReservationContainer = () => {
     const [grandTotal, setGrandTotal] = useState(0);
 
 
+    const [editPaymentId, setEditPaymentId] = useState('');
+
+
+
+    const [editReservationId, setEditReservationId] = useState('');
+
+
     const [reservationInfo, setReservationInfo] = useState([])
     const [reservationSummaryInfo, setReservationSummaryInfo] = useState([])
     let formatNumber;
@@ -182,7 +191,23 @@ export const ReservationContainer = () => {
 
     const handleCloseEdit = () => {
         setOpenEdit(false)
-
+        setGrandTotalValue('')
+        setPaymentMadeValue('')
+        setRemainingBalanceValue('')
+        setPaymentMethod('')
+        setDiscount('')
+        setPaymentType('')
+        setFirstName('')
+        setLastName('')
+        setEmail('')
+        setContactNumber('')
+        setBirthDay(new Date())
+        setNationality('Filipino')
+        setGender('')
+        setAddress('')
+        setUserName('')
+        setReservationStatus('')
+        setEditReservationId('')
 
 
     }
@@ -215,6 +240,7 @@ export const ReservationContainer = () => {
 
     }
 
+    const [editReservationInfo, setEditReservationInfo] = useState([]);
     const handleOpenEdit = (value) => {
         setOpenEdit(true)
         axios.get('http://localhost:3001/api/getReservation/' + value).then((result) => {
@@ -236,6 +262,8 @@ export const ReservationContainer = () => {
             setAddress(result.data.guestInformation.address)
             setUserName(result.data.guestInformation.user.userName)
             setReservationStatus(result.data.reservationStatus)
+            setEditPaymentId(result.data.payment.id)
+            setEditReservationInfo(result.data)
         }).catch((err) => {
             console.log(err)
         });
@@ -314,14 +342,15 @@ export const ReservationContainer = () => {
         });
     }, [])
 
+
     useEffect(() => {
-        if (roomTypeDb.length != 0) {
-            roomTypeDb.map((item, index) => {
-                if (index == 0) {
-                    setRoomType(item.roomType);
-                }
-            })
-        }
+        // if (roomTypeDb.length != 0) {
+        //     roomTypeDb.map((item, index) => {
+        //         if (index == 0) {
+        //             setRoomType(item.roomType);
+        //         }
+        //     })
+        // }
     }, [roomTypeDb])
 
     const addToCart = () => {
@@ -454,80 +483,120 @@ export const ReservationContainer = () => {
 
     useEffect(() => {
 
-        setNotAvailableRoom([])
-        axios.get('http://localhost:3001/api/getAllReservationSummary').then((result) => {
-            for (let index = 0; index < result.data.length; index++) {
-                if (result.data[index].bookingStatus == "PENDING" || result.data[index].bookingStatus == "RESERVED" || result.data[index].bookingStatus == "CHECKED-IN") {
-                    let systemDates = getDates(startDate, endDate);
-                    systemDates.pop()
-                    let dataBaseDates = getDates(result.data[index].checkInDate, result.data[index].checkOutDate);
-                    dataBaseDates.pop()
+        if (editReservationId == '') {
+            axios.get('http://localhost:3001/api/getAllReservationSummary').then((result) => {
+                setNotAvailableRoom([])
+                for (let index = 0; index < result.data.length; index++) {
+                    if (result.data[index].bookingStatus == "PENDING" || result.data[index].bookingStatus == "RESERVED" || result.data[index].bookingStatus == "CHECKED-IN") {
+                        let systemDates = getDates(startDate, endDate);
+                        systemDates.pop()
+                        let dataBaseDates = getDates(result.data[index].checkInDate, result.data[index].checkOutDate);
+                        dataBaseDates.pop()
 
-                    loop1:
-                    for (let i = 0; i < systemDates.length; i++) {
-                        loop2:
-                        for (let j = 0; j < dataBaseDates.length; j++) {
-                            if (systemDates[i] == dataBaseDates[j]) {
-                                setNotAvailableRoom((oldData) => [...oldData, result.data[index].room_id])
-                                break loop1;
+                        loop1:
+                        for (let i = 0; i < systemDates.length; i++) {
+                            loop2:
+                            for (let j = 0; j < dataBaseDates.length; j++) {
+                                if (systemDates[i] == dataBaseDates[j]) {
+                                    setNotAvailableRoom((oldData) => [...oldData, result.data[index].room_id])
+                                    break loop1;
+                                }
+                                else {
+                                    console.log(false)
+                                }
                             }
-                            else {
-                                console.log(false)
-                            }
+
                         }
+
 
                     }
 
-
                 }
 
-            }
+                if (availedRoom.length != 0) {
 
-            if (availedRoom.length != 0) {
+                    for (let k = 0; k < availedRoom.length; k++) {
+                        let systemDates = getDates(startDate, endDate);
+                        systemDates.pop()
+                        let availedRoomDate = getDates(availedRoom[k].checkIn, availedRoom[k].checkOut)
+                        availedRoomDate.pop()
 
-                for (let k = 0; k < availedRoom.length; k++) {
-                    let systemDates = getDates(startDate, endDate);
-                    systemDates.pop()
-                    let availedRoomDate = getDates(availedRoom[k].checkIn, availedRoom[k].checkOut)
-                    availedRoomDate.pop()
+                        axios.get('http://localhost:3001/api/getAllRoom').then((result) => {
+                            for (let index = 0; index < result.data.length; index++) {
+                                loop1:
+                                for (let l = 0; l < systemDates.length; l++) {
+                                    loop2:
+                                    for (let j = 0; j < availedRoomDate.length; j++) {
 
-                    axios.get('http://localhost:3001/api/getAllRoom').then((result) => {
-                        for (let index = 0; index < result.data.length; index++) {
-                            loop1:
-                            for (let l = 0; l < systemDates.length; l++) {
-                                loop2:
-                                for (let j = 0; j < availedRoomDate.length; j++) {
-
-                                    console.log("availedRoom[k].roomNumber", availedRoom[k].roomNumber)
-                                    console.log("result.data[index].roomNumber", result.data[index].roomNumber)
-                                    if (systemDates[l] == availedRoomDate[j]) {
-                                        if (availedRoom[k].roomNumber == result.data[index].roomNumber) {
-                                            setNotAvailableRoom((oldData) => [...oldData, result.data[index].id])
-                                            break loop1;
+                                        console.log("availedRoom[k].roomNumber", availedRoom[k].roomNumber)
+                                        console.log("result.data[index].roomNumber", result.data[index].roomNumber)
+                                        if (systemDates[l] == availedRoomDate[j]) {
+                                            if (availedRoom[k].roomNumber == result.data[index].roomNumber) {
+                                                setNotAvailableRoom((oldData) => [...oldData, result.data[index].id])
+                                                break loop1;
+                                            }
+                                        }
+                                        else {
+                                            console.log(false)
                                         }
                                     }
-                                    else {
-                                        console.log(false)
-                                    }
+
                                 }
 
                             }
+                        }).catch((err) => {
+                            console.log(err)
+                        });
+                    }
+                }
+
+            }).catch((err) => {
+                console.log(err)
+            });
+        }
+        else {
+
+            axios.get('http://localhost:3001/api/getAllReservationSummary').then((result) => {
+                setNotAvailableRoom([])
+                for (let index = 0; index < result.data.length; index++) {
+                    if ((result.data[index].bookingStatus == "PENDING" || result.data[index].bookingStatus == "RESERVED" || result.data[index].bookingStatus == "CHECKED-IN") && result.data[index].id != editReservationId) {
+                        let systemDates = getDates(startDate, endDate);
+                        systemDates.pop()
+                        let dataBaseDates = getDates(result.data[index].checkInDate, result.data[index].checkOutDate);
+                        dataBaseDates.pop()
+
+                        loop1:
+                        for (let i = 0; i < systemDates.length; i++) {
+                            loop2:
+                            for (let j = 0; j < dataBaseDates.length; j++) {
+                                if (systemDates[i] == dataBaseDates[j]) {
+                                    setNotAvailableRoom((oldData) => [...oldData, result.data[index].room_id])
+                                    break loop1;
+                                }
+                                else {
+                                    console.log(false)
+                                }
+                            }
 
                         }
-                    }).catch((err) => {
-                        console.log(err)
-                    });
-                }
-            }
 
-        }).catch((err) => {
-            console.log(err)
-        });
-    }, [startDate, endDate, availedRoom])
+
+                    }
+
+                }
+
+
+            }).catch((err) => {
+                console.log(err)
+            });
+        }
+    }, [startDate, endDate, availedRoom, editReservationId])
 
 
     useEffect(() => {
-        setRoomNumber('')
+        if (editReservationId == '') {
+            setRoomNumber('')
+        }
         axios.get('http://localhost:3001/api/getAllRoom').then((result) => {
 
 
@@ -562,17 +631,8 @@ export const ReservationContainer = () => {
         }
     }, [notAvailableRoom])
 
-
     const getRoomQuantity = (value) => {
-        // axios.get('http://localhost:3001/api/getAllReservationSummary').then((result) => {
-        //     for (let i = 0; i < result.data.length; i++) {
-        //         if (result.data[i].reservation_id == value) {
-        //             setReservationSummary((oldData)=> [...oldData, result])
-        //         }
-        //     }
-        // }).then((res)=>{console.log(roomQuantity)}).catch((err) => {
-
-        // });
+        
     }
 
     const badgeCount = (value) => {
@@ -739,8 +799,46 @@ export const ReservationContainer = () => {
             return obj.id !== index;
         }));
     }
+    const EditRoom = (value) => {
+        // setAvailedRoom(availedRoom.filter((o, i) => index !== i));
+        setEditReservationId(value)
+        axios.get('http://localhost:3001/api/getReservationSummary/' + value).then((result) => {
+            console.log("result.data.room.roomNumber", result.data.room.roomNumber)
+            setStartDate(new Date(result.data.checkInDate))
+            setEndDate(new Date(result.data.checkOutDate))
+            setNights(result.data.numberOfNights)
+            setKids(result.data.kids)
+            setAdults(result.data.adults)
+            setRoomType(result.data.room.roomType.roomType)
+            setRoomNumber(result.data.room.roomNumber)
+            setRoomRate(result.data.roomType.roomRate)
+            setSpecialInstruction(result.data.specialInstrcution)
+        }).catch((err) => {
+
+        });
+    }
 
 
+    const deleteBooking = (id, paymentId, paymentMade) => {
+        if (window.confirm('are you sure you want to delete this?')) {
+            axios.delete('http://localhost:3001/api/deleteReservationSummary/' + id).then((result) => {
+                console.log(result.data)
+                axios.patch('http://localhost:3001/api/updateGrandTotal/' + editPaymentId, {
+                    paymentMade: paymentMadeValue,
+                }).then((result) => {
+                    console.log(result.data)
+                    window.location.reload();
+                }).catch((err) => {
+                    console.log(err)
+                })
+            }).catch((err) => {
+                console.log(err)
+
+            });
+            setEditReservationId('')
+        }
+
+    }
 
     const addReservation = async (e) => {
 
@@ -836,7 +934,7 @@ export const ReservationContainer = () => {
                                                                 axios.post('http://localhost:3001/api/sendReservationEmail', {
                                                                     email: user.data.account.email.toLocaleLowerCase(),
                                                                     birthDay: guest.data.new_guest.birthDate,
-                                                                    nationality: guest.data.new_guest.nationality.toLocaleLowerCase(),
+                                                                    nationality: guest.data.new_guest.nationality,
                                                                     emailAddress: user.data.account.email.toLocaleLowerCase(),
                                                                     address: guest.data.new_guest.address,
                                                                     contactNumber: user.data.account.contactNumber,
@@ -1021,7 +1119,7 @@ export const ReservationContainer = () => {
                                                                 axios.post('http://localhost:3001/api/sendReservationEmail', {
                                                                     email: user.data.account.email.toLocaleLowerCase(),
                                                                     birthDay: guest.data.new_guest.birthDate,
-                                                                    nationality: guest.data.new_guest.nationality.toLocaleLowerCase(),
+                                                                    nationality: guest.data.new_guest.nationality,
                                                                     emailAddress: user.data.account.email.toLocaleLowerCase(),
                                                                     address: guest.data.new_guest.address,
                                                                     contactNumber: user.data.account.contactNumber,
@@ -1148,6 +1246,116 @@ export const ReservationContainer = () => {
 
 
     }
+
+    const saveReservationSummary = () => {
+        axios.get('http://localhost:3001/api/getAllRoom').then((room) => {
+            for (let index = 0; index < room.data.length; index++) {
+                if (room.data[index].roomNumber == roomNumber) {
+                    axios.patch('http://localhost:3001/api/updateReservationSummary/' + editReservationId, {
+                        checkInDate: startDate,
+                        checkOutDate: endDate,
+                        numberOfNights: nights,
+                        kids: kids,
+                        adults: adults,
+                        specialInstrcution: specialInstrcution,
+                        room_id: room.data[index].id,
+                    }).then((result) => {
+                        console.log(result.data)
+                        axios.patch('http://localhost:3001/api/updateGrandTotal/' + editPaymentId, {
+                            paymentMade: paymentMadeValue,
+                        }).then((result) => {
+                            console.log(result.data)
+                            //partial
+                            window.location.reload()
+                        }).catch((err) => {
+                            console.log(err)
+
+                        })
+                    }).catch((err) => {
+                        console.log(err)
+                    });
+                }
+
+            }
+        }).catch((err) => {
+            console.log(err)
+
+        });
+    }
+
+    const addReservationSummary = () => {
+        axios.get('http://localhost:3001/api/getAllRoom').then((room) => {
+            for (let index = 0; index < room.data.length; index++) {
+                if (room.data[index].roomNumber == roomNumber) {
+                    let items = {
+                        checkInDate: startDate,
+                        checkOutDate: endDate,
+                        kids: kids,
+                        adults: adults,
+                        numberOfNights: nights,
+                        reservation_id: editReservationId,
+                        room_id: room.data[index].id,
+                        specialInstrcution: specialInstrcution,
+                        reservation_id: editReservationInfo.id,
+
+                        // numberOfAdults:
+                        // numberOfKids:
+                    }
+                    axios.post("http://localhost:3001/api/addReservationSummary", items).then((reservationSummary) => {
+                        console.log(reservationSummary.data)
+                        axios.patch('http://localhost:3001/api/updateGrandTotal/' + editPaymentId, {
+                            paymentMade: paymentMadeValue,
+                        }).then((result) => {
+                            console.log(result.data)
+                            //partial
+                            window.location.reload()
+                        }).catch((err) => {
+                            console.log(err)
+
+                        })
+                    }).catch((err) => {
+                        console.log(err)
+
+                    })
+                }
+
+            }
+        }).catch((err) => {
+            console.log(err)
+
+        });
+
+    }
+
+    const deleteReservation = (value) => {
+        if (window.confirm('are you sure you want to delete this?')) {
+            axios.get('http://localhost:3001/api/getNumberOfRooms/' + value).then((rooms) => {
+                console.log(rooms.data)
+                for (let index = 0; index < rooms.data.length; index++) {
+                    axios.delete('http://localhost:3001/api/deleteReservationSummary/' + rooms.data[index].id).then((result) => {
+                        console.log(rooms.data.length - 1)
+                        console.log(index)
+                        if (index == rooms.data.length - 1) {
+                            console.log('PASOK')
+                            axios.delete('http://localhost:3001/api/deleteReservation/' + value).then((result) => {
+                                console.log(result.data)
+                                window.localtion.reload();
+                            }).catch((err) => {
+                                console.log(err)
+                            });
+                        }
+                    }).catch((err) => {
+                        console.log(err)
+                    });
+
+                }
+            }).catch((err) => {
+                console.log(err)
+
+            });
+        }
+    }
+
     return (
         <Container>
 
@@ -1326,7 +1534,7 @@ export const ReservationContainer = () => {
                         <Th align='center'>Reservation Date <ArrowDropUpIcon style={{ color: 'black' }} /></Th>
                         <Th align='center'>Reservation Number <ArrowDropDownIcon style={{ color: 'black' }} /> </Th>
                         <Th align='center'>Guest's Name  <ArrowDropDownIcon style={{ color: 'black' }} /></Th>
-                        <Th align='center'>Room Quantity <ArrowDropDownIcon style={{ color: 'black' }} /></Th>
+                        <Th align='center'>No. of Rooms <ArrowDropDownIcon style={{ color: 'black' }} /></Th>
                         <Th align='center'>Remaining Balance<ArrowDropDownIcon style={{ color: 'black' }} /></Th>
                         <Th align='center'>Reservation Status  <ArrowDropDownIcon style={{ color: 'black' }} /></Th>
                         <Th align='center'>Action</Th>
@@ -1345,7 +1553,7 @@ export const ReservationContainer = () => {
                                 </Td>
 
                                 <Td align='center'><ActionButtonReservation
-
+                                    delete={() => deleteReservation(item.id)}
                                     view={() => handleOpenView(item.id)}
                                     edit={() => handleOpenEdit(item.id)}
                                 /></Td>
@@ -1407,10 +1615,22 @@ export const ReservationContainer = () => {
                         top: 0,
                         display: 'flex',
                         justifyContent: 'flex-end',
+                        alignItems: 'center',
                         backgroundColor: 'black',
                         zIndex: '1',
 
                     }}>
+                        <Title
+                            size='16px'
+                            color='white'
+                            family='Helvetica'
+                            fstyle='normal'
+                            weight='bold'
+                            align='left'
+                            margin='0px auto 0px 10px'
+                        >
+                            Create Walk-In / Reservation
+                        </Title>
                         <CloseIcon
                             onClick={handleCloseCreate}
                             style={{
@@ -2031,7 +2251,7 @@ export const ReservationContainer = () => {
 
                                 </Title>
                                 <FormControlLabel
-                                    disabled={discount == "No discount" ? true : false}
+                                    disabled
                                     style={{ width: 200, margin: '5px 0px' }}
                                     control={
                                         <Checkbox
@@ -2049,7 +2269,7 @@ export const ReservationContainer = () => {
                                             }}
                                         />
                                     }
-                                    label="Discount valid?" />
+                                    label="Discount Verified?" />
                             </ContainerGlobal>
 
                         </ContainerGlobalColumn>
@@ -2552,10 +2772,22 @@ export const ReservationContainer = () => {
                         top: 0,
                         display: 'flex',
                         justifyContent: 'flex-end',
+                        alignItems: 'center',
                         backgroundColor: 'black',
                         zIndex: '1',
 
                     }}>
+                        <Title
+                            size='16px'
+                            color='white'
+                            family='Helvetica'
+                            fstyle='normal'
+                            weight='bold'
+                            align='left'
+                            margin='0px auto 0px 10px'
+                        >
+                            View Reservation
+                        </Title>
                         <CloseIcon
                             onClick={handleCloseView}
                             style={{
@@ -3048,8 +3280,6 @@ export const ReservationContainer = () => {
 
                             <InputContainer>
                                 <TextField
-                                    error={firstNameError.length != 0 ? true : false}
-                                    helperText={firstNameError.length != 0 ? firstNameError : ""}
                                     placeholder='First Name'
                                     label="First Name"
                                     inputRef={firstNameRef}
@@ -3064,13 +3294,14 @@ export const ReservationContainer = () => {
                                             setFirstNameError("")
                                         }
                                     }}
+
+                                    InputProps={{
+                                        readOnly: true,
+                                    }}
                                     style={{ width: '55%', }}
-                                    disabled
                                     required />
 
                                 <TextField
-                                    error={lastNameError.length != 0 ? true : false}
-                                    helperText={lastNameError.length != 0 ? lastNameError : ""}
                                     placeholder='Last Name'
                                     label="Last Name"
                                     variant="outlined"
@@ -3087,15 +3318,15 @@ export const ReservationContainer = () => {
 
                                     }}
                                     style={{ width: '55%', }}
-                                    disabled
+                                    InputProps={{
+                                        readOnly: true,
+                                    }}
                                     required />
                             </InputContainer>
 
 
                             <InputContainer>
                                 <TextField
-                                    error={emailError.length != 0 ? true : false}
-                                    helperText={emailError.length != 0 ? emailError : ""}
                                     placeholder='Email'
                                     label="Email"
                                     variant="outlined"
@@ -3108,12 +3339,12 @@ export const ReservationContainer = () => {
                                     }}
                                     style={{ width: '55%', }}
                                     inputRef={emailRef}
-                                    disabled
+                                    InputProps={{
+                                        readOnly: true,
+                                    }}
                                     required />
 
                                 <TextField
-                                    error={contactNumberError.length != 0 ? true : false}
-                                    helperText={contactNumberError.length != 0 ? contactNumberError : ""}
                                     placeholder='Contact Number e.g. 09123456789 or +639123456789'
                                     label="Contact Number"
                                     variant="outlined"
@@ -3130,7 +3361,9 @@ export const ReservationContainer = () => {
                                     }}
                                     inputRef={contactNumberRef}
                                     style={{ width: '55%', }}
-                                    disabled
+                                    InputProps={{
+                                        readOnly: true,
+                                    }}
                                     required />
                             </InputContainer>
 
@@ -3152,7 +3385,9 @@ export const ReservationContainer = () => {
                                                 variant="standard"
                                                 style={{ width: "55%", margin: '5px 0px' }}
                                                 helperText={null}
-                                                disabled
+                                                InputProps={{
+                                                    readOnly: true,
+                                                }}
                                                 required
                                             />
                                         }
@@ -3171,7 +3406,9 @@ export const ReservationContainer = () => {
                                         onChange={(event) => {
                                             setNationality(event.target.value);
                                         }}
-                                        disabled
+                                        InputProps={{
+                                            readOnly: true,
+                                        }}
                                         required
                                     >
 
@@ -3190,8 +3427,6 @@ export const ReservationContainer = () => {
                                     <RadioGroup
                                         row
 
-                                        error={genderError.length != 0 ? true : false}
-                                        helperText={genderError.length != 0 ? genderError : ""}
                                         aria-labelledby="demo-row-radio-buttons-group-label"
                                         defaultValue="male"
                                         value={reservationInfo.length != 0 ? reservationInfo.guestInformation.gender : ""}
@@ -3204,19 +3439,31 @@ export const ReservationContainer = () => {
                                         <FormControlLabel
                                             value="male"
                                             control={<Radio
-                                                disabled />}
+
+                                                InputProps={{
+                                                    readOnly: true,
+                                                }}
+                                            />}
                                             label="Male"
                                         />
                                         <FormControlLabel
                                             value="female"
                                             control={<Radio
-                                                disabled />}
+
+                                                InputProps={{
+                                                    readOnly: true,
+                                                }}
+                                            />}
                                             label="Female"
                                         />
                                         <FormControlLabel
                                             value="other"
                                             control={<Radio
-                                                disabled />}
+
+                                                InputProps={{
+                                                    readOnly: true,
+                                                }}
+                                            />}
                                             label="Other"
                                         />
                                     </RadioGroup>
@@ -3226,8 +3473,6 @@ export const ReservationContainer = () => {
 
                             <InputContainer>
                                 <TextField
-                                    error={addressError.length != 0 ? true : false}
-                                    helperText={addressError.length != 0 ? addressError : ""}
                                     placeholder='Complete Address'
                                     label="Complete Address"
                                     variant="outlined"
@@ -3239,7 +3484,10 @@ export const ReservationContainer = () => {
                                     multiline
                                     rows={4}
                                     style={{ width: '95%', }}
-                                    disabled
+
+                                    InputProps={{
+                                        readOnly: true,
+                                    }}
                                     required />
 
                             </InputContainer>
@@ -3292,10 +3540,22 @@ export const ReservationContainer = () => {
                         top: 0,
                         display: 'flex',
                         justifyContent: 'flex-end',
+                        alignItems: 'center',
                         backgroundColor: 'black',
                         zIndex: '1',
 
                     }}>
+                        <Title
+                            size='16px'
+                            color='white'
+                            family='Helvetica'
+                            fstyle='normal'
+                            weight='bold'
+                            align='left'
+                            margin='0px auto 0px 10px'
+                        >
+                            Edit Reservation
+                        </Title>
                         <CloseIcon
                             onClick={handleCloseEdit}
                             style={{
@@ -3320,6 +3580,66 @@ export const ReservationContainer = () => {
                     >
                         Reservation details
                     </Title>
+                    <ContainerGlobalRow
+                        style={{
+                            margin: '50px 0px'
+                        }}
+                    >
+                        <ContainerGlobal
+                            w='420px'
+                            h='auto'
+                            direction='row'
+                            gap='10px'
+                            justify='space-between'
+                            align='center'
+                            overflow='auto'
+
+                        >
+
+                            <Title
+                                size='20px'
+                                color='Black'
+                                family='Helvetica'
+                                fstyle='Normal'
+                                weight='400'
+                                align='left'
+                                margin='15px 0px 20px 0px'
+                            >
+                                Reservation Status:
+                            </Title>
+
+                            <FormControl sx={{ width: 200, margin: '5px 0px' }} size="large" variant="standard">
+                                <InputLabel id="demo-select-small" >Reservation Status</InputLabel>
+                                <Select
+                                    style={{ color: 'black', textAlign: 'left', fontWeight: 'bold' }}
+                                    labelId="demo-select-small"
+                                    id="demo-select-small"
+                                    value={reservationStatus}
+                                    label="Menu"
+                                    onChange={(event) => {
+                                        setReservationStatus(event.target.value);
+                                    }}
+                                >
+
+                                    <MenuItem value='PENDING'>
+                                        Pending
+                                    </MenuItem>
+                                    <MenuItem value='RESERVED'>
+                                        Reserved
+                                    </MenuItem>
+                                    <MenuItem value='UNSETTLED'>
+                                        Unsettled
+                                    </MenuItem>
+                                    <MenuItem value='DEPARTED'>
+                                        Departed
+                                    </MenuItem>
+
+
+                                </Select>
+                            </FormControl>
+
+                        </ContainerGlobal>
+                    </ContainerGlobalRow>
                     <TitleCalendarContainer
                         style={{
                             width: '100%',
@@ -3568,64 +3888,29 @@ export const ReservationContainer = () => {
                                 <TextField value={numberFormat(roomRate)} id="outlined-basic" label="" variant="standard" style={{ width: 200, margin: '5px 0px' }} />
 
                             </ContainerGlobal>
-                            <ContainerGlobal
-                                w='420px'
-                                h='auto'
-                                direction='row'
-                                gap='10px'
-                                justify='space-between'
-                                align='center'
-                                overflow='auto'
-
-                            >
-
-                                <Title
-                                    size='20px'
-                                    color='Black'
-                                    family='Helvetica'
-                                    fstyle='Normal'
-                                    weight='400'
-                                    align='left'
-                                    margin='15px 0px 20px 0px'
-                                >
-                                    Reservation Status:
-                                </Title>
-
-                                <FormControl sx={{ width: 200, margin: '5px 0px' }} size="large" variant="standard">
-                                    <InputLabel id="demo-select-small" >Reservation Status</InputLabel>
-                                    <Select
-                                        style={{ color: 'black', textAlign: 'left' }}
-                                        labelId="demo-select-small"
-                                        id="demo-select-small"
-                                        value={reservationStatus}
-                                        label="Menu"
-                                        onChange={(event) => {
-                                            setReservationStatus(event.target.value);
-                                        }}
-                                    >
-
-                                        <MenuItem value='PENDING'>
-                                            Pending
-                                        </MenuItem>
-                                        <MenuItem value='RESERVED'>
-                                            Reserved
-                                        </MenuItem>
-                                        <MenuItem value='UNSETTLED'>
-                                            Unsettled
-                                        </MenuItem>
-                                        <MenuItem value='DEPARTED'>
-                                            Departed
-                                        </MenuItem>
-                                        
-
-                                    </Select>
-                                </FormControl>
-
-                            </ContainerGlobal>
-                            <Button variant="contained" onClick={() => { addToCart() }} disabled={roomType != '' && roomNumber != '' && roomRate != 0 ? false : true} >Add</Button>
 
 
 
+                            {editReservationId != '' ?
+                                <ContainerGlobal
+                                    margin='20px 0px 0px 0px'
+                                    direction='column'
+                                    align='center'
+                                    justify='center'
+                                    gap='20px'>
+                                    <ContainerGlobal
+                                        align='center'
+                                        justify='center'
+                                        gap='20px'>
+                                        <Button style={{ width: '100px' }} color='success' variant="contained" onClick={() => { saveReservationSummary() }} disabled={roomType != '' && roomNumber != '' && roomRate != 0 ? false : true} >Save</Button>
+                                        <Button style={{ width: '100px' }} variant="contained" color='error' onClick={() => { setEditReservationId('') }} disabled={roomType != '' && roomNumber != '' && roomRate != 0 ? false : true} >Cancel</Button>
+
+                                    </ContainerGlobal>
+
+                                </ContainerGlobal>
+                                :
+                                <Button style={editReservationId != '' ? { display: 'none' } : { display: '' }} variant="contained" onClick={() => { addReservationSummary() }} disabled={roomType != '' && roomNumber != '' && roomRate != 0 ? false : true} >Add</Button>
+                            }
                         </ContainerGlobalColumn>
 
 
@@ -3667,7 +3952,8 @@ export const ReservationContainer = () => {
                                 backgroundColor: 'transparent',
                             }}>
 
-<TableContainer
+                            <TableContainer
+                                style={{ padding: '0px 10px' }}
                                 cellspacing="0"
                                 cellpadding="0">
                                 <Tr>
@@ -3680,22 +3966,53 @@ export const ReservationContainer = () => {
                                     <Th align='center' color='black'>Total nights</Th>
                                     <Th align='center' color='black'>Rate per night</Th>
                                     <Th align='center' color='black'>Total amout due</Th>
+                                    <Th align='center' color='black'>Action</Th>
                                 </Tr>
                                 {reservationSummaryInfo.length != 0 ?
 
                                     reservationSummaryInfo.map((item, index) => (
                                         <Tr>
 
-                                            <Td align='center'>{item.room.roomNumber}</Td>
-                                            <Td align='center'>{item.room.roomType.roomType}</Td>
-                                            <Td align='center'>{new Date(item.checkInDate).toLocaleDateString()}</Td>
-                                            <Td align='center'>{new Date(item.checkOutDate).toLocaleDateString()}</Td>
-                                            <Td align='center'>{item.adults}</Td>
-                                            <Td align='center'>{item.kids}</Td>
-                                            <Td align='center'>{item.numberOfNights}</Td>
-                                            <Td align='center'>{numberFormat(item.room.roomType.roomRate)}</Td>
-                                            <Td align='center' style={{ color: 'red' }}>{numberFormat(item.room.roomType.roomRate * item.numberOfNights)}</Td>
+                                            <Td align='center' style={item.id == editReservationId ? { backgroundColor: 'green', color: 'white' } : { backgroundColor: '', color: '' }}>{item.room.roomNumber}</Td>
+                                            <Td align='center' style={item.id == editReservationId ? { backgroundColor: 'green', color: 'white' } : { backgroundColor: '', color: '' }}>{item.room.roomType.roomType}</Td>
+                                            <Td align='center' style={item.id == editReservationId ? { backgroundColor: 'green', color: 'white' } : { backgroundColor: '', color: '' }}>{new Date(item.checkInDate).toLocaleDateString()}</Td>
+                                            <Td align='center' style={item.id == editReservationId ? { backgroundColor: 'green', color: 'white' } : { backgroundColor: '', color: '' }}>{new Date(item.checkOutDate).toLocaleDateString()}</Td>
+                                            <Td align='center' style={item.id == editReservationId ? { backgroundColor: 'green', color: 'white' } : { backgroundColor: '', color: '' }}>{item.adults}</Td>
+                                            <Td align='center' style={item.id == editReservationId ? { backgroundColor: 'green', color: 'white' } : { backgroundColor: '', color: '' }}>{item.kids}</Td>
+                                            <Td align='center' style={item.id == editReservationId ? { backgroundColor: 'green', color: 'white' } : { backgroundColor: '', color: '' }}>{item.numberOfNights}</Td>
+                                            <Td align='center' style={item.id == editReservationId ? { backgroundColor: 'green', color: 'white' } : { backgroundColor: '', color: '' }}>{numberFormat(item.room.roomType.roomRate)}</Td>
+                                            <Td align='center' style={item.id == editReservationId ? { backgroundColor: 'green', color: 'white' } : { backgroundColor: '', color: 'red' }}>{numberFormat(item.room.roomType.roomRate * item.numberOfNights)}</Td>
 
+                                            <Td align='center' style={item.id == editReservationId ? { backgroundColor: 'green', color: 'white' } : { backgroundColor: '', color: '' }}>
+
+
+                                                {item.id == editReservationId ?
+                                                    <ContainerGlobal
+                                                        justify='center'
+                                                        gap='20px'
+                                                    >
+                                                        <IconButton sx={{ p: '8px', backgroundColor: '#D2C3A4' }} aria-label="search" title='Edit' onClick={() => { setEditReservationId('') }}>
+                                                            <CloseIcon style={{ color: '#2e2e2e', fontSize: '18px' }} title='View' />
+                                                        </IconButton>
+                                                        <IconButton sx={{ p: '8px', backgroundColor: '#FF664D' }} aria-label="search" title='Edit' onClick={() => { deleteBooking(item.id, item.reservation.payment.id, item.reservation.payment.paymentMade) }}>
+                                                            <DeleteIcon style={{ color: '#2e2e2e', fontSize: '18px' }} title='View' />
+                                                        </IconButton>
+                                                    </ContainerGlobal>
+                                                    :
+                                                    <ContainerGlobal
+                                                        justify='center'
+                                                        gap='20px'
+                                                    >
+                                                        <IconButton sx={{ p: '8px', backgroundColor: '#D2C3A4' }} aria-label="search" title='Edit' onClick={() => { EditRoom(item.id) }}>
+                                                            <EditIcon style={{ color: '#2e2e2e', fontSize: '18px' }} title='View' />
+                                                        </IconButton>
+                                                        <IconButton sx={{ p: '8px', backgroundColor: '#FF664D' }} aria-label="search" title='Edit' onClick={() => { deleteBooking(item.id, item.reservation.payment.id, item.reservation.payment.paymentMade) }}>
+                                                            <DeleteIcon style={{ color: '#2e2e2e', fontSize: '18px' }} title='View' />
+                                                        </IconButton>
+                                                    </ContainerGlobal>}
+
+
+                                            </Td>
                                         </Tr>
 
                                     ))
@@ -3759,29 +4076,18 @@ export const ReservationContainer = () => {
                                 >
                                     Payment Mode:
                                 </Title>
-                                <FormControl sx={{ width: 200, margin: '5px 0px' }} size="small" variant="standard">
-                                    <InputLabel id="demo-select-small" >Payment method</InputLabel>
-                                    <Select
-                                        style={{ color: 'black', textAlign: 'left' }}
-                                        labelId="demo-select-small"
-                                        id="demo-select-small"
-                                        value={paymentMethod}
-                                        label="Menu"
-                                        onChange={(event) => {
-                                            setPaymentMethod(event.target.value);
-                                        }
-                                        }
+                                <Title
+                                    size='20px'
+                                    color='Black'
+                                    family='Helvetica'
+                                    fstyle='Normal'
+                                    weight='bold'
+                                    align='left'
+                                    margin='15px 0px 20px 0px'
+                                >
+                                    {paymentMethod}
+                                </Title>
 
-                                    >
-                                        {paymentMode.length != 0 ? paymentMode.map((item) => (
-                                            <MenuItem value={item.paymentMode} selected>{item.paymentMode}</MenuItem>
-
-                                        )) : ""}
-                                        {/* <MenuItem value={'Cash'} selected>Cash (pay at the hotel)</MenuItem>
-                                        <MenuItem value={'Bank'} >Bank (Metro Bank)</MenuItem>
-                                        <MenuItem value={'E-Payment'} selected>E-Payment (Gcash)</MenuItem> */}
-                                    </Select>
-                                </FormControl>
                             </ContainerGlobal>
                             <ContainerGlobal
                                 w='420px'
@@ -3805,24 +4111,18 @@ export const ReservationContainer = () => {
                                 >
                                     Payment Type:
                                 </Title>
-                                <FormControl sx={{ width: 200, margin: '5px 0px' }} size="small" variant="standard">
-                                    <InputLabel id="demo-select-small" >Payment Type</InputLabel>
-                                    <Select
-                                        style={{ color: 'black', textAlign: 'left' }}
-                                        labelId="demo-select-small"
-                                        id="demo-select-small"
-                                        value={paymentType}
-                                        label="Menu"
-                                        onChange={(event) => {
-                                            setPaymentType(event.target.value);
-                                        }}
+                                <Title
+                                    size='20px'
+                                    color='Black'
+                                    family='Helvetica'
+                                    fstyle='Normal'
+                                    weight='bold'
+                                    align='left'
+                                    margin='15px 0px 20px 0px'
+                                >
+                                    {paymentType}
+                                </Title>
 
-                                    >
-
-                                        <MenuItem value={'Full Payment'} >Full payment</MenuItem>
-                                        <MenuItem value={'Down Payment'} selected>Down Payment</MenuItem>
-                                    </Select>
-                                </FormControl>
                             </ContainerGlobal>
                             <ContainerGlobal
                                 w='420px'
@@ -3846,33 +4146,18 @@ export const ReservationContainer = () => {
                                 >
                                     Discount:
                                 </Title>
-                                <FormControl sx={{ width: 200, margin: '5px 0px' }} size="small" variant="standard">
-                                    <InputLabel id="demo-select-small" >Discount</InputLabel>
-                                    <Select
-                                        style={{ color: 'black', textAlign: 'left' }}
-                                        labelId="demo-select-small"
-                                        id="demo-select-small"
-                                        value={discount}
-                                        label="Menu"
-                                        onChange={(event) => {
-                                            setDiscount(event.target.value);
+                                <Title
+                                    size='20px'
+                                    color='Black'
+                                    family='Helvetica'
+                                    fstyle='Normal'
+                                    weight='bold'
+                                    align='left'
+                                    margin='15px 0px 20px 0px'
+                                >
+                                    {discount}
+                                </Title>
 
-                                            if (event.target.value == "No discount") {
-                                                setDiscountValid(false)
-                                            }
-                                        }}
-
-                                    >
-                                        {discountDb.length != 0 ? discountDb.map((item, index) => (
-                                            <MenuItem value={item.discountType} >{item.discountType}</MenuItem>
-
-                                        )) : ""}
-
-                                        {/* <MenuItem value={'none'} >None</MenuItem>
-                                        <MenuItem value={'senior'}>Senior Citizen</MenuItem>
-                                        <MenuItem value={'pwd'}>PWD</MenuItem> */}
-                                    </Select>
-                                </FormControl>
                             </ContainerGlobal>
 
                             <ContainerGlobal
@@ -3898,7 +4183,7 @@ export const ReservationContainer = () => {
 
                                 </Title>
                                 <FormControlLabel
-                                    disabled={discount == "No discount" ? true : false}
+                                    disabled
                                     style={{ width: 200, margin: '5px 0px' }}
                                     control={
                                         <Checkbox
@@ -3916,7 +4201,7 @@ export const ReservationContainer = () => {
                                             }}
                                         />
                                     }
-                                    label="Discount valid?" />
+                                    label="Discount Verified?" />
                             </ContainerGlobal>
 
                         </ContainerGlobalColumn>
@@ -4108,8 +4393,6 @@ export const ReservationContainer = () => {
 
                             <InputContainer>
                                 <TextField
-                                    error={firstNameError.length != 0 ? true : false}
-                                    helperText={firstNameError.length != 0 ? firstNameError : ""}
                                     placeholder='First Name'
                                     label="First Name"
                                     inputRef={firstNameRef}
@@ -4125,11 +4408,12 @@ export const ReservationContainer = () => {
                                         }
                                     }}
                                     style={{ width: '55%', }}
-                                    required />
+
+                                    InputProps={{
+                                        readOnly: true,
+                                    }} />
 
                                 <TextField
-                                    error={lastNameError.length != 0 ? true : false}
-                                    helperText={lastNameError.length != 0 ? lastNameError : ""}
                                     placeholder='Last Name'
                                     label="Last Name"
                                     variant="outlined"
@@ -4146,14 +4430,15 @@ export const ReservationContainer = () => {
 
                                     }}
                                     style={{ width: '55%', }}
-                                    required />
+
+                                    InputProps={{
+                                        readOnly: true,
+                                    }} />
                             </InputContainer>
 
 
                             <InputContainer>
                                 <TextField
-                                    error={emailError.length != 0 ? true : false}
-                                    helperText={emailError.length != 0 ? emailError : ""}
                                     placeholder='Email'
                                     label="Email"
                                     variant="outlined"
@@ -4166,11 +4451,12 @@ export const ReservationContainer = () => {
                                     }}
                                     style={{ width: '55%', }}
                                     inputRef={emailRef}
-                                    required />
+
+                                    InputProps={{
+                                        readOnly: true,
+                                    }} />
 
                                 <TextField
-                                    error={contactNumberError.length != 0 ? true : false}
-                                    helperText={contactNumberError.length != 0 ? contactNumberError : ""}
                                     placeholder='Contact Number e.g. 09123456789 or +639123456789'
                                     label="Contact Number"
                                     variant="outlined"
@@ -4187,7 +4473,10 @@ export const ReservationContainer = () => {
                                     }}
                                     inputRef={contactNumberRef}
                                     style={{ width: '55%', }}
-                                    required />
+
+                                    InputProps={{
+                                        readOnly: true,
+                                    }} />
                             </InputContainer>
 
 
@@ -4208,7 +4497,10 @@ export const ReservationContainer = () => {
                                                 variant="standard"
                                                 style={{ width: "55%", margin: '5px 0px' }}
                                                 helperText={null}
-                                                required
+
+                                                InputProps={{
+                                                    readOnly: true,
+                                                }}
                                             />
                                         }
                                     />
@@ -4226,7 +4518,7 @@ export const ReservationContainer = () => {
                                         onChange={(event) => {
                                             setNationality(event.target.value);
                                         }}
-                                        required
+                                        disabled
                                     >
 
                                         {nationalities.map(({ nationality }, index) => (
@@ -4244,8 +4536,6 @@ export const ReservationContainer = () => {
                                     <RadioGroup
                                         row
 
-                                        error={genderError.length != 0 ? true : false}
-                                        helperText={genderError.length != 0 ? genderError : ""}
                                         aria-labelledby="demo-row-radio-buttons-group-label"
                                         defaultValue="male"
                                         value={gender}
@@ -4253,7 +4543,10 @@ export const ReservationContainer = () => {
                                         onChange={(e) => {
                                             setGender(e.target.value)
                                         }}
-                                        required
+
+                                        InputProps={{
+                                            readOnly: true,
+                                        }}
                                     >
                                         <FormControlLabel
                                             value="male"
@@ -4277,8 +4570,6 @@ export const ReservationContainer = () => {
 
                             <InputContainer>
                                 <TextField
-                                    error={addressError.length != 0 ? true : false}
-                                    helperText={addressError.length != 0 ? addressError : ""}
                                     placeholder='Complete Address'
                                     label="Complete Address"
                                     variant="outlined"
@@ -4290,14 +4581,15 @@ export const ReservationContainer = () => {
                                     multiline
                                     rows={4}
                                     style={{ width: '95%', }}
-                                    required />
+
+                                    InputProps={{
+                                        readOnly: true,
+                                    }} />
 
                             </InputContainer>
                             <InputContainer>
                                 <TextField
 
-                                    error={userNameError.length != 0 ? true : false}
-                                    helperText={userNameError.length != 0 ? userNameError : ""}
                                     placeholder='Username'
                                     label="Username"
                                     variant="outlined"
@@ -4307,7 +4599,10 @@ export const ReservationContainer = () => {
                                         setUserName(e.target.value)
                                         setUserNameError("")
                                     }}
-                                    required={password.length != 0 ? true : false}
+
+                                    InputProps={{
+                                        readOnly: true,
+                                    }}
                                     style={{ width: '55%', }} />
 
                             </InputContainer>
@@ -4358,10 +4653,9 @@ export const ReservationContainer = () => {
                         </ContainerFormContent>
                     </ContainerGlobalRow>
                     <br></br>
-                    <Button variant="contained" color='success' type='submit' disabled={availedRoom.length == 0 ? true : false}>Create reservation</Button>
-                    <Button variant="contained" color='error' >Close</Button>
+                    <Button variant="contained" color='error' onClick={handleCloseEdit}>Close</Button>
                 </Box>
             </Modal>
-        </Container>
+        </Container >
     )
 }

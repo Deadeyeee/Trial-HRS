@@ -63,6 +63,7 @@ const ClientPaymentInfoCont = () => {
     const imgTypes = ['image/png', 'image/jpeg',]
     const handleUpload = (e) => {
         setImageToUpload(e.target.files[0])
+        console.log(e.target.files[0])
         let selectedFile = e.target.files[0];
         if (selectedFile) {
             if (selectedFile && imgTypes.includes(selectedFile.type)) {
