@@ -31,6 +31,7 @@ import ActionButtonReservation from '../../components/actionButton/ActionButtonR
 import ActionButtonPayment from '../../components/actionButton/ActionButtonPayment'
 import axios from 'axios'
 import OfficialReceipt from '../../pages/officialReceipt/OfficialReceipt'
+import { apiKey } from '../../../apiKey'
 
 
 
@@ -81,12 +82,12 @@ const PaymentContainer = () => {
 
     const getRoomQuantity = (value) => {
         let count = 0;
-        axios.get('http://localhost:3001/api/getAllReservationSummary').then(result => console.log(result.data.length)).catch((err) => {
+        axios.get(apiKey+'api/getAllReservationSummary').then(result => console.log(result.data.length)).catch((err) => {
 
         });
     }
     useEffect(() => {
-        axios.get('http://localhost:3001/api/getAllReservation').then((result) => {
+        axios.get(apiKey+'api/getAllReservation').then((result) => {
             setReservations(result.data)
         }).catch((err) => {
 
@@ -3040,20 +3041,20 @@ const PaymentContainer = () => {
         else if (reservationSelected.payment.paymentType == "Full Payment") {
             paymentMade = reservationSelected.payment.grandTotal;
         }
-        axios.patch('http://localhost:3001/api/updateGrandTotal/' + reservationSelected.payment.id, {
+        axios.patch(apiKey+'api/updateGrandTotal/' + reservationSelected.payment.id, {
             paymentMade: paymentMade,
         }).then((result) => {
             console.log(result.data)
 
-            axios.patch('http://localhost:3001/api/updateReservation/' + reservationSelected.id, {
+            axios.patch(apiKey+'api/updateReservation/' + reservationSelected.id, {
                 reservationStatus: 'RESERVED',
             }).then((result) => {
                 console.log(result.data)
-                axios.get('http://localhost:3001/api/getAllReservationSummary').then((result) => {
+                axios.get(apiKey+'api/getAllReservationSummary').then((result) => {
                     console.log(result.data)
                     result.data.map((item, index, arr) => {
                         if (item.reservation_id == reservationSelected.id) {
-                            axios.patch('http://localhost:3001/api/updateReservationSummary/' + item.id, {
+                            axios.patch(apiKey+'api/updateReservationSummary/' + item.id, {
                                 bookingStatus: 'RESERVED'
                             }).then((result) => {
                                 console.log(result.data)
@@ -3067,7 +3068,7 @@ const PaymentContainer = () => {
                             });
                         }
                         if (index == arr.length - 1) {
-                            axios.post('http://localhost:3001/api/sendReservationEmail', {
+                            axios.post(apiKey+'api/sendReservationEmail', {
                                 email: item.reservation.guestInformation.user.email.toLocaleLowerCase(),
                                 birthDay: item.reservation.guestInformation.birthDate,
                                 nationality: item.reservation.guestInformation.nationality.toLocaleLowerCase(),
@@ -3125,14 +3126,14 @@ const PaymentContainer = () => {
 
         formData.append('paymentImage', 'asdsa');
         formData.append('paymentStatus', 'reciept declined');
-        axios.post('http://localhost:3001/api/deleteImage', {
+        axios.post(apiKey+'api/deleteImage', {
             filePath: reservationSelected.payment.paymentImage
         }).then((result) => {
             console.log(result.data)
-            axios.patch('http://localhost:3001/api/updatePaymentPhoto/' + reservationSelected.payment.id, formData).then((result) => {
+            axios.patch(apiKey+'api/updatePaymentPhoto/' + reservationSelected.payment.id, formData).then((result) => {
                 console.log(result.data)
                 
-                axios.post('http://localhost:3001/api/sendReservationEmail', {
+                axios.post(apiKey+'api/sendReservationEmail', {
                     email: reservationSelected.guestInformation.user.email.toLocaleLowerCase(),
                     birthDay: reservationSelected.guestInformation.birthDate,
                     nationality: reservationSelected.guestInformation.nationality.toLocaleLowerCase(),
@@ -3180,20 +3181,20 @@ const PaymentContainer = () => {
         // else if (reservationSelected.payment.paymentType == "Full Payment") {
         //     paymentMade = reservationSelected.payment.grandTotal;
         // }
-        // axios.patch('http://localhost:3001/api/updateGrandTotal/' + reservationSelected.payment.id, {
+        // axios.patch(apiKey+'api/updateGrandTotal/' + reservationSelected.payment.id, {
         //     paymentMade: paymentMade,
         // }).then((result) => {
         //     console.log(result.data)
 
-        //     axios.patch('http://localhost:3001/api/updateReservation/' + reservationSelected.id, {
+        //     axios.patch(apiKey+'api/updateReservation/' + reservationSelected.id, {
         //         reservationStatus: 'RESERVED',
         //     }).then((result) => {
         //         console.log(result.data)
-        //         axios.get('http://localhost:3001/api/getAllReservationSummary').then((result) => {
+        //         axios.get(apiKey+'api/getAllReservationSummary').then((result) => {
         //             console.log(result.data)
         //             result.data.map((item, index, arr) => {
         //                 if (item.reservation_id == reservationSelected.id) {
-        //                     axios.patch('http://localhost:3001/api/updateReservationSummary/' + item.id, {
+        //                     axios.patch(apiKey+'api/updateReservationSummary/' + item.id, {
         //                         bookingStatus: 'RESERVED'
         //                     }).then((result) => {
         //                         console.log(result.data)
@@ -3207,7 +3208,7 @@ const PaymentContainer = () => {
         //                     });
         //                 }
         //                 if (index == arr.length - 1) {
-        //                     axios.post('http://localhost:3001/api/sendReservationEmail', {
+        //                     axios.post(apiKey+'api/sendReservationEmail', {
         //                         email: item.reservation.guestInformation.user.email.toLocaleLowerCase(),
         //                         birthDay: item.reservation.guestInformation.birthDate,
         //                         nationality: item.reservation.guestInformation.nationality.toLocaleLowerCase(),
@@ -3806,7 +3807,7 @@ const PaymentContainer = () => {
                         >
                             Uploaded proof of payment.
                         </Title>
-                        <img src={'http://localhost:3001/' + uploadLink} width="auto" height='500px' />
+                        <img src={apiKey+'' + uploadLink} width="auto" height='500px' />
 
                         <ContainerGlobal gap='20px'>
                             <Button disabled={reservationSelected.length != 0 ? reservationSelected.payment.paymentStatus == 'pending' ? false : true : ""} variant="contained" color="success" onClick={() => { approveReceipt() }}>Approve</Button>

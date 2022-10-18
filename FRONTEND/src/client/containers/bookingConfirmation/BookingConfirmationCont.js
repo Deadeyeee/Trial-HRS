@@ -6,6 +6,7 @@ import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import { ContainerGlobal } from '../../../admin/components/container/container';
 import { TableContainer, Td, Th, Tr } from '../bookingCartPage/Styles'
+import { apiKey } from '../../../apiKey';
 
 function BookingConfirmationCont() {
 
@@ -15,7 +16,7 @@ function BookingConfirmationCont() {
     const [reservationInfo, setReservationInfo] = useState([]);
 
     useEffect(() => {
-        axios.get('http://localhost:3001/api/getAllReservationSummary').then((result) => {
+        axios.get(apiKey+'api/getAllReservationSummary').then((result) => {
             setReservationBooking([])
             for (let index = 0; index < result.data.length; index++) {
                 if (id == result.data[index].reservation_id) {
@@ -28,7 +29,7 @@ function BookingConfirmationCont() {
 
         });
 
-        axios.get('http://localhost:3001/api/getReservation/' + id).then((result) => {
+        axios.get(apiKey+'api/getReservation/' + id).then((result) => {
             setReservationInfo([])
             setReservationInfo((oldData) => [...oldData, result.data])
         }).catch((err) => {

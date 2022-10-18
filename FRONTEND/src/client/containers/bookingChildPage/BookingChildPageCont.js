@@ -30,6 +30,7 @@ import Slider from "react-slick";
 import ImageSlider from '../../components/imageSlider/ImageSlider';
 import { letterSpacing } from '@mui/system';
 import { TextField } from '@mui/material';
+import { apiKey } from '../../../apiKey';
 
 export const BookingChildPageCont = () => {
 
@@ -42,7 +43,25 @@ export const BookingChildPageCont = () => {
     const [specialInstruction, setSpecialInstruction] = useState("")
     const [availedRooms, setAvailedRooms] = useState([])
 
+    const [roomTypeImagesDb, setRoomTypeImagesDb] = useState([])
+    
     const { roomquantityRef, kidRef, adultRef } = useRef();
+
+
+    useEffect(()=>{
+        axios.get(apiKey+'api/getAllRoomTypeImages').then((result) => {
+            console.log(result.data)
+            for (let index = 0; index < result.data.length; index++) {
+                if(result.data[index].roomType_id == id){
+                    setRoomTypeImagesDb((oldData)=> [...oldData, result.data[index].roomImages])
+                }
+                
+            }
+        }).catch((err) => {
+            console.lot(err)
+        });
+    },[])
+
     const addRoom = () => {
 
         if (roomQuantity > availedRooms.length) {
@@ -104,6 +123,7 @@ export const BookingChildPageCont = () => {
                     "adult": adult,
                     "specialInstruction": specialInstruction,
                 }
+                
                 const existingAvailedRooms = JSON.parse(window.sessionStorage.getItem("AvailedRoom"))
                 existingAvailedRooms.push(items)
                 window.sessionStorage.setItem('AvailedRoom', JSON.stringify(existingAvailedRooms))
@@ -125,14 +145,14 @@ export const BookingChildPageCont = () => {
         if (window.sessionStorage.getItem('checkIn') == null || window.sessionStorage.getItem('checkOut') == null || window.sessionStorage.getItem('nights') == null || window.sessionStorage.getItem('rooms') == null || window.sessionStorage.getItem('rooms') == "[]") {
             window.location = '/booking'
         }
-        axios.get('http://localhost:3001/api/getRoomType/' + id).then((res) => {
+        axios.get(apiKey+'api/getRoomType/' + id).then((res) => {
             setRoomType(res.data)
             console.log(roomType)
         }).catch((err) => {
             console.log(err.data)
         })
 
-        axios.get('http://localhost:3001/api/getAllUsedServices').then((res) => {
+        axios.get(apiKey+'api/getAllUsedServices').then((res) => {
             setUsedServices([])
             for (let index = 0; index < res.data.length; index++) {
                 if (res.data[index].roomType_id === id) {
@@ -238,7 +258,7 @@ export const BookingChildPageCont = () => {
                     <div
                         style={{ width: '550px', display: 'inline-block', }}
                     >
-                        <ImageSlider />
+                        <ImageSlider roomImages={roomTypeImagesDb.length != 0 ? roomTypeImagesDb : null}/>
                     </div>
                     <RoomContainerContentRight>
                         <ContentContainerHolder>

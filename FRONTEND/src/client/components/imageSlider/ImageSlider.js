@@ -3,14 +3,16 @@ import Slider from "react-slick";
 import { Container, RoomPicture } from './style';
 import Background from '../../images/RoomsIMG/premium.jpg'
 import './indicator.css'
+import { apiKey } from '../../../apiKey';
 // import Background from '../../images/RoomsIMG/premium.jpg'
-const ImageSlider = (fetchImages) => {
+const ImageSlider = (props) => {
 
+    const roomImages = props.roomImages;
     var settings = {
         customPaging: function (i) {
             return (
                 <a>
-                    <img style={{width: '50px', height: '50px', objectFit: "cover"}} src={`${Background}`} />
+                    <img style={{ width: '50px', height: '50px', objectFit: "cover" }} src={`${apiKey + roomImages[i]}`} />
                 </a>
             );
         },
@@ -27,14 +29,23 @@ const ImageSlider = (fetchImages) => {
         pauseOnHover: true,
         slidesToScroll: 1,
         autoplay: true,
-        centerMode: true,
+        // centerMode: true,
     };
 
+    console.log('roomImages', roomImages)
+    roomImages.map((item)=>console.log(item))
     return (
 
         <div>
             <Slider {...settings}>
-                <div>
+                {roomImages != null ?
+                    roomImages.map((item) => (
+                        <div>
+                            <a target='_blank' href={apiKey + item}><RoomPicture src={apiKey + item} /></a>
+                        </div>
+                    ))
+                    : ''}
+                {/* <div>
                     <RoomPicture src={Background} />
                 </div>
                 <div>
@@ -60,7 +71,7 @@ const ImageSlider = (fetchImages) => {
                 </div>
                 <div>
                     <RoomPicture src={Background} />
-                </div>
+                </div> */}
             </Slider>
         </div>
     )

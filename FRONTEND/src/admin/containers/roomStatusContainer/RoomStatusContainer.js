@@ -27,6 +27,7 @@ import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import axios from 'axios'
+import { apiKey } from '../../../apiKey'
 
 
 const style = {
@@ -83,14 +84,14 @@ const RoomStatusContainer = () => {
     const [roomValue, setRoomValue] = React.useState([])
 
     useEffect(() => {
-        axios.get('http://localhost:3001/api/getAllRoomType').then((res) => {
+        axios.get(apiKey+'api/getAllRoomType').then((res) => {
             setRoomTypeValue(res.data)
             console.log(roomTypeValue)
         }).catch((err) => {
             console.log(err.res)
         })
 
-        axios.get('http://localhost:3001/api/getAllRoom').then((res) => {
+        axios.get(apiKey+'api/getAllRoom').then((res) => {
             setRoomValue(res.data)
             console.log(roomValue)
         }).catch((err) => {
@@ -102,7 +103,7 @@ const RoomStatusContainer = () => {
         e.preventDefault();
         roomTypeValue.map((item) => {
             if (selectedRoomType === item.roomType) {
-                axios.post('http://localhost:3001/api/addRoom',
+                axios.post(apiKey+'api/addRoom',
                     {
                         roomNumber: roomNumber,
                         roomStatus: maintenance,
@@ -123,7 +124,7 @@ const RoomStatusContainer = () => {
         e.preventDefault();
         roomTypeValue.map((item) => {
             if (selectedRoomType === item.roomType) {
-                axios.patch('http://localhost:3001/api/updateRoom/' + roomId,
+                axios.patch(apiKey+'api/updateRoom/' + roomId,
                     {
                         roomNumber: roomNumber,
                         roomStatus: maintenance,

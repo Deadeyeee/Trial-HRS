@@ -8,6 +8,7 @@ import 'font-awesome/css/font-awesome.min.css';
 import Background from '../../components/background/Background';
 import { TextInput } from '../../components/textBox/style';
 import ReCAPTCHA from "react-google-recaptcha";
+import { apiKey } from '../../../apiKey';
 
 export const Login = () => {
     useEffect(() => {
@@ -46,7 +47,7 @@ export const Login = () => {
 
 
         e.preventDefault();
-        Axios.post('http://localhost:3001/auth/login',
+        Axios.post(apiKey+'auth/login',
             {
                 userName: userName,
                 email: email,
@@ -95,7 +96,7 @@ export const Login = () => {
     };
 
     useEffect(() => {
-        Axios.get("http://localhost:3001/auth/verify-token").then((response) => {
+        Axios.get(apiKey+"auth/verify-token").then((response) => {
             if (response.status === 200) {
                 window.location.href = '/';
             }
@@ -107,7 +108,7 @@ export const Login = () => {
     })
 
     const verifyEmail = () => {
-        Axios.get('http://localhost:3001/api/getAllUsers/').then((res) => {
+        Axios.get(apiKey+'api/getAllUsers/').then((res) => {
 
             for (let i = 0; i < res.data.length; i++) {
                 if (res.data[i].email == email || res.data[i].userName == userName) {

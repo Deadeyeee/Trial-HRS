@@ -7,6 +7,7 @@ import { Button, FormButton } from '../../components/button/styles'
 import { Title } from '../../components/title/styles'
 import Axios from 'axios'
 import { RegistrationForm } from '../../pages/login/style'
+import { apiKey } from '../../../apiKey';
 
 function ForgotPasswordCont() {
 
@@ -41,12 +42,12 @@ function ForgotPasswordCont() {
 
     const verifyEmail = (e) => {
         e.preventDefault();
-        Axios.get('http://localhost:3001/api/getAllUsers/').then((res) => {
+        Axios.get(apiKey+'api/getAllUsers/').then((res) => {
 
             for (let i = 0; i < res.data.length; i++) {
                 if (res.data[i].email == email && res.data.role != 'NON-USER') {
 
-                    Axios.post('http://localhost:3001/api/resetPassword', {
+                    Axios.post(apiKey+'api/resetPassword', {
                         id: res.data[i].id,
                         email: res.data[i].email,
                         userName: res.data[i].userName

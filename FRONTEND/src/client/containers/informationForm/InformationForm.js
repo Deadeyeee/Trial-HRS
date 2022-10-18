@@ -21,6 +21,7 @@ import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 import TermsAndConditionsCont from "../termsAndConditionsPage/TermsAndConditionsCont";
 import axios from 'axios'
+import { apiKey } from '../../../apiKey'
 
 
 const style = {
@@ -105,7 +106,7 @@ const InformationForm = () => {
     // let eWallets = ["Gcash", "Paymaya"];
 
     useEffect(() => {
-        axios.get('http://localhost:3001/auth/verify-token').then((result) => {
+        axios.get(apiKey+'auth/verify-token').then((result) => {
             if(result.data.role != 'NON-USER'){
                 window.location = '/billingSummary'
             }
@@ -159,17 +160,17 @@ const InformationForm = () => {
             userNameRef.current.focus()
         }
         else {
-            axios.get('http://localhost:3001/api/getAllUsers').then((res) => {
+            axios.get(apiKey+'api/getAllUsers').then((res) => {
                 if (userName.length != 0 && password.length != 0) {
                     if (emailError.length == 0 && contactNumberError.length == 0 && userNameError.length == 0) {
-                        axios.post('http://localhost:3001/api/addUser', {
+                        axios.post(apiKey+'api/addUser', {
                             userName: userName,
                             contactNumber: formatNumber,
                             email: email,
                             password: password,
                         }).then((user) => {
                             console.log(user.data);
-                            axios.post('http://localhost:3001/api/addGuest', {
+                            axios.post(apiKey+'api/addGuest', {
                                 firstName: firstName,
                                 lastName: lastName,
                                 birthDate: birthday,
@@ -179,7 +180,7 @@ const InformationForm = () => {
                                 user_id: user.data.account.id,
                             }).then((guest) => {
                                 console.log(guest.data);
-                                axios.post('http://localhost:3001/auth/login',
+                                axios.post(apiKey+'auth/login',
                                     {
                                         userName: userName,
                                         password: password,
@@ -188,9 +189,9 @@ const InformationForm = () => {
                                 ).then((result) => {
                                     window.location.reload();
                                 }).catch((err) => {
-                                    axios.delete('http://localhost:3001/api/deleteGuest/' + guest.data.new_guest.id).then((result) => {
+                                    axios.delete(apiKey+'api/deleteGuest/' + guest.data.new_guest.id).then((result) => {
                                         console.log(result)
-                                        axios.delete('http://localhost:3001/api/deleteUser/' + user.data.account.id).then((result) => {
+                                        axios.delete(apiKey+'api/deleteUser/' + user.data.account.id).then((result) => {
                                             console.log(result)
                                         }).catch((err) => {
                                             console.log(err)
@@ -200,7 +201,7 @@ const InformationForm = () => {
                                     });
                                 });
                             }).catch((err) => {
-                                axios.delete('http://localhost:3001/api/deleteUser/' + user.data.account.id).then((result) => {
+                                axios.delete(apiKey+'api/deleteUser/' + user.data.account.id).then((result) => {
                                     console.log(result)
                                 }).catch((err) => {
                                     console.log(err)
@@ -228,14 +229,14 @@ const InformationForm = () => {
                 console.log(err)
             })
         }
-        // axios.post('http://localhost:3001/api/addUser', {
+        // axios.post(apiKey+'api/addUser', {
         //     userName: userName,
         //     contactNumber: contactNumber,
         //     email: email,
         //     password: password,
         // }).then((res)=>{
         //     console.log(res.data);
-        //     axios.post('http://localhost:3001/api/addGuest', {
+        //     axios.post(apiKey+'api/addGuest', {
 
         //     })
         // }).catch((err)=>{
@@ -246,7 +247,7 @@ const InformationForm = () => {
 
     useEffect(() => {
         if (userName.length != 0 || password.length != 0) {
-            axios.get('http://localhost:3001/api/getAllUsers').then((res) => {
+            axios.get(apiKey+'api/getAllUsers').then((res) => {
                 if (res.data.length != 0) {
                     res.data.map((item) => {
                         if (item.role != 'NON-USER') {

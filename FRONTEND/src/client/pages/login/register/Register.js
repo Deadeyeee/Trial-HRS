@@ -6,6 +6,7 @@ import { TextInput } from '../../../components/textBox/style'
 import { Button, FormButton } from '../../../components/button/styles';
 import Axios from 'axios';
 import 'font-awesome/css/font-awesome.min.css';
+import { apiKey } from '../../../../apiKey';
 
 export const Register = () => {
   let passwordValidation = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
@@ -75,7 +76,7 @@ export const Register = () => {
         
         setPasswordValid("");
         if (password == confirmPassword) {
-          Axios.post('http://localhost:3001/api/addUser', {
+          Axios.post(apiKey+'api/addUser', {
             userName: userName.toLowerCase(),
             email: email.toLowerCase(),
             contactNumber: formatNumber,
@@ -84,7 +85,7 @@ export const Register = () => {
             localStorage.setItem('id', response.data.account.id);
             localStorage.setItem('email', response.data.account.email);
             localStorage.setItem('userName', response.data.account.userName);
-            Axios.post('http://localhost:3001/api/addGuest', {
+            Axios.post(apiKey+'api/addGuest', {
               firstName: firstName.toLowerCase(),
               lastName: lastName.toLowerCase(),
               user_id: response.data.account.id,
@@ -157,7 +158,7 @@ export const Register = () => {
   }
 
   useEffect(() => {
-    Axios.get("http://localhost:3001/auth/verify-token").then((response) => {
+    Axios.get(apiKey+"auth/verify-token").then((response) => {
       if (response.status === 200) {
         window.location.href = '/';
       }

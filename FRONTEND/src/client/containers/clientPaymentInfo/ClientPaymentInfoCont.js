@@ -9,6 +9,7 @@ import { MainContainer, MessagesTitleContainer } from '../clientMessagesCont/Sty
 import axios from 'axios';
 import CloseIcon from '@mui/icons-material/Close';
 import { Box, padding } from '@mui/system';
+import { apiKey } from '../../../apiKey';
 
 const ClientPaymentInfoCont = () => {
     const [activeReservation, setActiveReservation] = useState([])
@@ -23,9 +24,9 @@ const ClientPaymentInfoCont = () => {
         }).format(value);
 
     useEffect(() => {
-        axios.get('http://localhost:3001/auth/verify-token').then((authUser) => {
+        axios.get(apiKey+'auth/verify-token').then((authUser) => {
             console.log(authUser.data)
-            axios.get('http://localhost:3001/api/getAllReservation').then((getAllReservation) => {
+            axios.get(apiKey+'api/getAllReservation').then((getAllReservation) => {
                 setReservation([])
                 getAllReservation.data.map((item) => {
                     if (item.guestInformation.user.id == authUser.data.id) {
@@ -86,11 +87,11 @@ const ClientPaymentInfoCont = () => {
         formData.append('paymentImage', imageToUpload)
         if (previewImageError.length == 0 && imageToUpload.length != 0) {
             if (activeReservation.payment.paymentImage != null) {
-                axios.post('http://localhost:3001/api/deleteImage', {
+                axios.post(apiKey+'api/deleteImage', {
                     filePath: activeReservation.payment.paymentImage,
                 }).then((result) => {
                     console.log(result.data)
-                    axios.patch('http://localhost:3001/api/updatePaymentPhoto/' + activeReservation.payment.id, formData).then((result) => {
+                    axios.patch(apiKey+'api/updatePaymentPhoto/' + activeReservation.payment.id, formData).then((result) => {
                         console.log(result.data)
                         window.location.reload()
                     }).catch((err) => {
@@ -104,7 +105,7 @@ const ClientPaymentInfoCont = () => {
             }
             else {
                 console.log(activeReservation.payment.paymentImage)
-                axios.patch('http://localhost:3001/api/updatePaymentPhoto/' + activeReservation.payment.id, formData).then((result) => {
+                axios.patch(apiKey+'api/updatePaymentPhoto/' + activeReservation.payment.id, formData).then((result) => {
                     console.log(result.data)
                     window.location.reload()
                 }).catch((err) => {
@@ -440,7 +441,7 @@ const ClientPaymentInfoCont = () => {
                 <PhotoBox>
                     <div style={{ width: '95%', height: 'auto', overflow: 'hidden', padding: '10px' }}>
                         {activeReservation.payment.paymentImage != null ?
-                            <a target='_blank' href={'http://localhost:3001/' + activeReservation.payment.paymentImage}><img src={'http://localhost:3001/' + activeReservation.payment.paymentImage} style={{ width: '100%', height: 'auto' }} /></a>
+                            <a target='_blank' href={apiKey+'' + activeReservation.payment.paymentImage}><img src={apiKey+'' + activeReservation.payment.paymentImage} style={{ width: '100%', height: 'auto' }} /></a>
                             : <Title
                                 bg='white'
                                 family='raleway, sans-serif'

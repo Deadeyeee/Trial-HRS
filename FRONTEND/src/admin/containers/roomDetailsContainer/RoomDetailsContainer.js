@@ -37,6 +37,7 @@ import ActionButton from '../../components/actionButton/ActionButton';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import axios from 'axios';
 import { Alert, Fade, Pagination } from '@mui/material';
+import { apiKey } from '../../../apiKey';
 
 // import ssss from 'src/Images/rooms/'
 
@@ -147,7 +148,11 @@ const RoomDetailsContainer = () => {
 
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
+    const handleClose = () => {
+        setRoomImageUpload([])
+        setSelectedImages([])
+        setOpen(false)
+    };
 
     const [open2, setOpen2] = React.useState(false);
     const handleOpen2 = () => setOpen2(true);
@@ -155,6 +160,8 @@ const RoomDetailsContainer = () => {
         setOpen2(false);
         setRoomTypeValueId("");
         setServicesNames([])
+        setRoomImageUpload([])
+        setSelectedImages([])
     };
 
 
@@ -164,6 +171,9 @@ const RoomDetailsContainer = () => {
         setOpen3(false)
         setRoomTypeValueId("");
         setServicesNames([])
+        setRoomTypeImagesDb([])
+        setRoomImageUpload([])
+        setSelectedImages([])
     };
 
     const theme = useTheme();
@@ -215,7 +225,13 @@ const RoomDetailsContainer = () => {
 
 
     useEffect(() => {
-        Axios.get("http://localhost:3001/api/getAllServices").then((res) => {
+        Axios.get(apiKey + "api/getAllServices").then((result) => {
+            console.log('NEW API LINK', result.data)
+        }).catch((err) => {
+            console.log(err)
+        });
+
+        Axios.get(apiKey + "api/getAllServices").then((res) => {
 
             setServices(res.data)
             console.log(res.data.length)
@@ -225,12 +241,12 @@ const RoomDetailsContainer = () => {
             //     }
         })
 
-        Axios.get("http://localhost:3001/api/getAllUsedServices").then((res) => {
+        Axios.get(apiKey + "api/getAllUsedServices").then((res) => {
             setUsedServices(res.data)
         }).catch((err) => {
             console.log(err.res)
         })
-        Axios.get("http://localhost:3001/api/getAllRoomType").then((res) => {
+        Axios.get(apiKey + "api/getAllRoomType").then((res) => {
 
             setRoomType(res.data);
         })
@@ -238,7 +254,7 @@ const RoomDetailsContainer = () => {
 
     useEffect(() => {
 
-        Axios.get("http://localhost:3001/api/getAllUsedServices").then((res) => {
+        Axios.get(apiKey + "api/getAllUsedServices").then((res) => {
             // console.log(res.data[1].service.servicesName)
             for (let index = 0; index < res.data.length; index++) {
                 if (res.data[index].roomType_id == roomTypeValueId) {
@@ -251,7 +267,7 @@ const RoomDetailsContainer = () => {
             console.log(err.res)
         })
 
-        Axios.get('http://localhost:3001/api/getAllRoomTypeImages').then((result) => {
+        Axios.get(apiKey + 'api/getAllRoomTypeImages').then((result) => {
             setRoomTypeImagesDb([])
             for (let index = 0; index < result.data.length; index++) {
                 if (result.data[index].roomType_id == roomTypeValueId) {
@@ -271,23 +287,71 @@ const RoomDetailsContainer = () => {
         e.preventDefault();
         console.log("these: ", servicesNames)
         const formData = new FormData();
-        for (let index = 0; index < roomImage.length; index++) {
-        }
+
         formData.append('roomType', roomTypeValue)
         formData.append('roomRate', roomRate)
         formData.append('maxAdultOccupancy', maxAdultOccupancy)
         formData.append('maxKidsOccupancy', maxKidsOccupancy)
         formData.append('roomDescription', roomDescription)
-        formData.append('roomImages', roomImage)
 
-        axios.patch("http://localhost:3001/api/updateRoomType/" + roomTypeValueId, formData).then((res) => {
+
+        axios.patch(apiKey + "api/updateRoomType/" + roomTypeValueId, formData).then((res) => {
+
             console.log(res.data)
-            Axios.get('http://localhost:3001/api/getAllUsedServices').then((res2) => {
+            axios.get(apiKey + 'api/getAllRoomTypeImages').then((result) => {
+                for (let index = 0; index < result.data.length; index++) {
+                    if (result.data[index].roomType_id == roomTypeValueId) {
+                        if (!roomTypeImagesDb.includes(result.data[index].roomImages)) {
+
+                            axios.delete(apiKey + 'api/deleteRoomTypeImages/' + result.data[index].id).then((result) => {
+                                console.log(result.data)
+                            }).catch((err) => {
+                                console.log(err)
+                            });
+
+                            axios.post(apiKey + 'api/deleteImageRoom', {
+                                filePath: result.data[index].roomImages
+                            }).then((result) => {
+                                console.log(result.data)
+
+                            }).catch((err) => {
+                                console.log(err)
+
+                            });
+                        }
+                    }
+
+                }
+            }).catch((err) => {
+                console.log(err)
+
+            });
+
+            if (roomImageUpload.length != 0) {
+                for (let index = 0; index < roomImageUpload.length; index++) {
+                    const formData2 = new FormData();
+                    console.log(roomImageUpload[index])
+                    formData2.append('roomImages', roomImageUpload[index])
+                    formData2.append('roomType_id', roomTypeValueId)
+                    Axios.post(apiKey + "api/addRoomTypeImages", formData2).then((result) => {
+                        console.log(result.data)
+                    }).catch((err) => {
+                        console.log(err)
+
+                    });
+
+                }
+            }
+
+
+
+
+            Axios.get(apiKey + 'api/getAllUsedServices').then((res2) => {
                 console.log("Used Services: ", res2.data)
                 for (let index = 0; index < res2.data.length; index++) {
                     if (res2.data[index].roomType_id == roomTypeValueId) {
                         if (servicesNames.includes(res2.data[index].service.servicesName) !== true) {
-                            Axios.delete('http://localhost:3001/api/deleteUsedServices/' + res2.data[index].id).then((res3) => {
+                            Axios.delete(apiKey + 'api/deleteUsedServices/' + res2.data[index].id).then((res3) => {
                                 console.log(res3.data)
                             }).catch((err) => {
                                 console.log(err.res3)
@@ -325,12 +389,12 @@ const RoomDetailsContainer = () => {
                         }
                         if (exist === false) {
                             console.log(items)
-                            Axios.get('http://localhost:3001/api/getAllServices', {
+                            Axios.get(apiKey + 'api/getAllServices', {
 
                             }).then((res3) => {
                                 for (let index = 0; index < res3.data.length; index++) {
                                     if (items === res3.data[index].servicesName) {
-                                        Axios.post('http://localhost:3001/api/addUsedServices', {
+                                        Axios.post(apiKey + 'api/addUsedServices', {
                                             roomType_id: roomTypeValueId,
                                             services_id: res3.data[index].id,
                                         }).then((res4) => {
@@ -349,12 +413,12 @@ const RoomDetailsContainer = () => {
                 }
                 else {
                     servicesNames.map((items) => {
-                        Axios.get('http://localhost:3001/api/getAllServices', {
+                        Axios.get(apiKey + 'api/getAllServices', {
 
                         }).then((res3) => {
                             for (let index = 0; index < res3.data.length; index++) {
                                 if (items === res3.data[index].servicesName) {
-                                    Axios.post('http://localhost:3001/api/addUsedServices', {
+                                    Axios.post(apiKey + 'api/addUsedServices', {
                                         roomType_id: roomTypeValueId,
                                         services_id: res3.data[index].id,
                                     }).then((res4) => {
@@ -427,7 +491,7 @@ const RoomDetailsContainer = () => {
         console.log(formData.getAll('roomImages'))
 
 
-        Axios.post("http://localhost:3001/api/addRoomType",
+        Axios.post(apiKey + "api/addRoomType",
             formData
             // {
             //     roomType: roomTypeValue,
@@ -439,13 +503,13 @@ const RoomDetailsContainer = () => {
             // }
         ).then((res1) => {
 
-
+            console.log(res1.data)
             for (let index = 0; index < roomImageUpload.length; index++) {
                 const formData2 = new FormData();
                 console.log(roomImageUpload[index])
                 formData2.append('roomImages', roomImageUpload[index])
                 formData2.append('roomType_id', res1.data.new_roomType.id)
-                Axios.post("http://localhost:3001/api/addRoomTypeImages", formData2).then((result) => {
+                Axios.post(apiKey + "api/addRoomTypeImages", formData2).then((result) => {
                     console.log(result.data)
                 }).catch((err) => {
                     console.log(err)
@@ -453,12 +517,12 @@ const RoomDetailsContainer = () => {
                 });
 
             }
-            Axios.get('http://localhost:3001/api/getAllServices').then((services) => {
+            Axios.get(apiKey + 'api/getAllServices').then((services) => {
                 selectedServices.map((items) => {
                     for (let index = 0; index < services.data.length; index++) {
 
                         if (items == services.data[index].servicesName) {
-                            Axios.post('http://localhost:3001/api/addUsedServices', {
+                            Axios.post(apiKey + 'api/addUsedServices', {
                                 roomType_id: res1.data.new_roomType.id,
                                 services_id: services.data[index].id,
                             }).then((res3) => {
@@ -473,13 +537,13 @@ const RoomDetailsContainer = () => {
                 handleClose();
                 alertPopUp("Room type created!!!", "success");
             }).catch((err) => {
-                console.log(err.data)
+                console.log(err)
             })
 
 
 
         }).catch((err) => {
-            console.log(err.res.data)
+            console.log(err)
         })
 
 
@@ -501,7 +565,7 @@ const RoomDetailsContainer = () => {
         console.log(servicesNames)
 
         handleOpen2();
-        // Axios.get("http://localhost:3001/api/getAllUsedServices").then((res) => {
+        // Axios.get(apiKey+"api/getAllUsedServices").then((res) => {
         //     // console.log(res.data[1].service.servicesName)
         //     for (let index = 0; index < res.data.length; index++) {
         //         if (res.data[index].roomType_id == roomTypeValueId) {
@@ -525,7 +589,7 @@ const RoomDetailsContainer = () => {
         setRoomDescription(roomDescription)
         setRoomImage(roomImages)
 
-        // Axios.get("http://localhost:3001/api/getAllUsedServices").then((res) => {
+        // Axios.get(apiKey+"api/getAllUsedServices").then((res) => {
         //     // console.log(res.data[1].service.servicesName)
         //     for (let index = 0; index < res.data.length; index++) {
         //         if (res.data[index].roomType_id == roomTypeValueId) {
@@ -540,58 +604,57 @@ const RoomDetailsContainer = () => {
 
     const uploadImages = (e) => {
         console.log(roomImageUpload.length + e.target.files.length)
-        if (e.target.files.length > 9 || roomImageUpload.length + e.target.files.length > 9) {
-            setFileError('Sorry, The maximum photo is 9.')
-            alert('Sorry, The maximum photo is 9.')
+        if (roomTypeImagesDb.length != 0) {
+            if (e.target.files.length > 9 || roomImageUpload.length + e.target.files.length + roomTypeImagesDb.length > 9) {
+                setFileError('Sorry, The maximum photo is 9.')
+                alert('Sorry, The maximum photo is 9.')
+            }
+            else {
+                console.log("e.target.files", e.target.files)
+                console.log("e.target.file", e.target.file)
+                console.log("e.target.files[0]", e.target.files[0])
+                for (let index = 0; index < e.target.files.length; index++) {
+                    setRoomImageUpload((prevImage) => prevImage.concat(e.target.files[index]));
+                }
+
+                console.log(roomImageUpload)
+                if (e.target.files) {
+                    const fileArray = Array.from(e.target.files).map((file) => URL.createObjectURL(file));
+
+                    setSelectedImages((prevImage) => prevImage.concat(fileArray))
+                    Array.from(e.target.files).map(
+                        (file) => URL.revokeObjectURL(file)
+                    )
+                }
+            }
         }
         else {
-            console.log("e.target.files", e.target.files)
-            console.log("e.target.file", e.target.file)
-            console.log("e.target.files[0]", e.target.files[0])
-            for (let index = 0; index < e.target.files.length; index++) {
-                setRoomImageUpload((prevImage) => prevImage.concat(e.target.files[index]));
+            if (e.target.files.length > 9 || roomImageUpload.length + e.target.files.length > 9) {
+                setFileError('Sorry, The maximum photo is 9.')
+                alert('Sorry, The maximum photo is 9.')
             }
+            else {
+                console.log("e.target.files", e.target.files)
+                console.log("e.target.file", e.target.file)
+                console.log("e.target.files[0]", e.target.files[0])
+                for (let index = 0; index < e.target.files.length; index++) {
+                    setRoomImageUpload((prevImage) => prevImage.concat(e.target.files[index]));
+                }
 
-            console.log(roomImageUpload)
-            if (e.target.files) {
-                const fileArray = Array.from(e.target.files).map((file) => URL.createObjectURL(file));
+                console.log(roomImageUpload)
+                if (e.target.files) {
+                    const fileArray = Array.from(e.target.files).map((file) => URL.createObjectURL(file));
 
-                setSelectedImages((prevImage) => prevImage.concat(fileArray))
-                Array.from(e.target.files).map(
-                    (file) => URL.revokeObjectURL(file)
-                )
+                    setSelectedImages((prevImage) => prevImage.concat(fileArray))
+                    Array.from(e.target.files).map(
+                        (file) => URL.revokeObjectURL(file)
+                    )
+                }
             }
         }
 
     }
 
-    const renderPhoto = (source) => {
-        return source.map((photo, index) => {
-            return <ImageListItem
-                style={{
-                    backgroundColor: 'rgba(0, 0, 0, .1)',
-                    width: 'auto',
-                    display: 'flex',
-                    justifyContent: 'center',
-                    flexDirection: 'row',
-                    gap: '10px',
-                    alignItems: 'center',
-                    backgroundImage: `url(${photo})`,
-                    backgroundSize: 'cover',
-
-                }}>
-
-                <a target='_blank' href={photo}>
-                    <IconButton sx={{ p: '8px', backgroundColor: '#D2C3A4' }} aria-label="search" title='Edit' onClick={() => { }}>
-                        <VisibilityIcon style={{ color: '#2e2e2e', fontSize: '18px' }} title='View' />
-                    </IconButton>
-                </a>
-                <IconButton sx={{ p: '8px', backgroundColor: '#D2C3A4' }} aria-label="search" title='Edit' onClick={() => { removeUpload(index) }}>
-                    <CloseIcon style={{ color: '#2e2e2e', fontSize: '18px' }} title='View' />
-                </IconButton>
-            </ImageListItem>
-        })
-    }
 
     const removeUpload = (index) => {
         // console.log(index)
@@ -603,6 +666,11 @@ const RoomDetailsContainer = () => {
         setSelectedImages(oldData => oldData.filter(obj => {
             return obj !== selectedImages[index];
         }));
+
+        setRoomTypeImagesDb(oldData => oldData.filter(obj => {
+            return obj !== roomTypeImagesDb[index];
+        }));
+
     }
 
     // useEffect(() => {
@@ -753,41 +821,45 @@ const RoomDetailsContainer = () => {
                         <Th align='center'>Action</Th>
                     </Tr>
 
-                    {roomType.map((items) => (
-                        <Tr>
-                            <Td align='center'>{items.roomType}</Td>
-                            <Td align='center'>{items.roomRate}</Td>
-                            <Td align='center' style={{ display: 'flex', gap: '5px', justifyContent: 'center', flexWrap: 'wrap' }}>
-                                {usedServices.map((items2) => {
-                                    if (items.id === items2.roomType_id) {
-                                        return <Chip key={items2.service.servicesName} label={items2.service.servicesName} />
-                                        // <span style={{whiteSpace: 'nowrap',backgroundColor:"#948566", color: 'black', borderRadius: '.5em', padding: '5px', }}>{items2.service.servicesName + ", "}</span>
-                                    }
-                                })}
-                            </Td>
-                            <Td align='center'>{items.maxAdultOccupancy}</Td>
-                            <Td align='center'>{items.maxKidsOccupancy}</Td>
-                            <Td align='center'>{items.roomDescription}</Td>
-                            <Td align='center'><ActionButton
-                                view={() => {
-                                    // setRoomTypeValue(items.roomType);
-                                    // setRoomRate(item.roomRate);
-                                    // setMaxAdultOccupancy(item.maxAdultOccupancy);
-                                    // setMaxKidsOccupancy(item.maxKidsOccupancy);
-                                    // setRoomDescription(item.roomDescription);
+                    {roomType.length != 0 ?
+                        roomType.map((items) => (
+                            <Tr>
+                                <Td align='center'>{items.roomType}</Td>
+                                <Td align='center'>{items.roomRate}</Td>
+                                <Td align='center' style={{ display: 'flex', gap: '5px', justifyContent: 'center', flexWrap: 'wrap' }}>
+                                    {usedServices.length != 0 ?
+                                        usedServices.map((items2) => {
+                                            if (items.id === items2.roomType_id) {
+                                                return <Chip key={items2.service.servicesName} label={items2.service.servicesName} />
+                                                // <span style={{whiteSpace: 'nowrap',backgroundColor:"#948566", color: 'black', borderRadius: '.5em', padding: '5px', }}>{items2.service.servicesName + ", "}</span>
+                                            }
+                                        })
+                                        : ""}
+                                </Td>
+                                <Td align='center'>{items.maxAdultOccupancy}</Td>
+                                <Td align='center'>{items.maxKidsOccupancy}</Td>
+                                <Td align='center'>{items.roomDescription}</Td>
+                                <Td align='center'><ActionButton
+                                    view={() => {
+                                        // setRoomTypeValue(items.roomType);
+                                        // setRoomRate(item.roomRate);
+                                        // setMaxAdultOccupancy(item.maxAdultOccupancy);
+                                        // setMaxKidsOccupancy(item.maxKidsOccupancy);
+                                        // setRoomDescription(item.roomDescription);
 
 
-                                    view(items.id, items.roomType, items.roomRate, items.maxAdultOccupancy, items.maxKidsOccupancy, items.roomDescription, JSON.parse(items.roomImages));
-                                }}
-                                edit={() => {
-                                    handleOpen3();
+                                        view(items.id, items.roomType, items.roomRate, items.maxAdultOccupancy, items.maxKidsOccupancy, items.roomDescription, JSON.parse(items.roomImages));
+                                    }}
+                                    edit={() => {
+                                        handleOpen3();
 
-                                    edit(items.id, items.roomType, items.roomRate, items.maxAdultOccupancy, items.maxKidsOccupancy, items.roomDescription, JSON.parse(items.roomImages));
-                                }}
-                            /></Td>
-                        </Tr>
+                                        edit(items.id, items.roomType, items.roomRate, items.maxAdultOccupancy, items.maxKidsOccupancy, items.roomDescription, JSON.parse(items.roomImages));
+                                    }}
+                                /></Td>
+                            </Tr>
 
-                    ))}
+                        ))
+                        : ''}
                 </TableContainer>
 
             </ContainerGlobal>
@@ -893,6 +965,7 @@ const RoomDetailsContainer = () => {
                                         </Box>
                                     )}
                                     MenuProps={MenuProps}
+                                    required
                                 >
                                     {services.map((items) => (
                                         <MenuItem
@@ -1042,9 +1115,6 @@ const RoomDetailsContainer = () => {
 
 
 
-
-
-
             <Modal
                 open={open2}
                 onClose={handleClose2}
@@ -1190,12 +1260,12 @@ const RoomDetailsContainer = () => {
                                                 backgroundColor: 'rgba(0, 0, 0, .1)',
                                                 width: '140px', height: '140px', display: 'flex', justifyContent: 'center',
                                                 alignItems: 'center',
-                                                backgroundImage: `url(http://localhost:3001/${item.replaceAll("\\", "/")})`,
+                                                backgroundImage: `url(${apiKey + item.replaceAll("\\", "/")})`,
                                                 backgroundSize: 'cover',
 
                                             }}
                                         >
-                                            <a target='_blank' href={'http://localhost:3001/' + item}>
+                                            <a target='_blank' href={apiKey + '' + item}>
                                                 <IconButton sx={{ p: '8px', backgroundColor: '#D2C3A4' }} aria-label="search" title='Edit' onClick={() => { }}>
                                                     <VisibilityIcon style={{ color: '#2e2e2e', fontSize: '18px' }} title='View' />
                                                 </IconButton>
@@ -1275,7 +1345,9 @@ const RoomDetailsContainer = () => {
                                 }}
                                 InputProps={{
                                     readOnly: false,
-                                }} />
+                                }}
+                                required
+                                />
 
                             <TextField
                                 placeholder='Rate per Night'
@@ -1289,7 +1361,8 @@ const RoomDetailsContainer = () => {
                                     readOnly: false,
                                     startAdornment: <InputAdornment position="start">PHP</InputAdornment>,
                                 }}
-                                style={{ width: '55%', }} />
+                                style={{ width: '55%', }}
+                                required />
                         </InputContainer>
 
                         <InputContainer
@@ -1303,7 +1376,7 @@ const RoomDetailsContainer = () => {
                                     multiple
                                     value={servicesNames}
                                     onChange={handleChangeEdit}
-
+                                    required
                                     input={<OutlinedInput id="select-multiple-chip" label="Services" />}
                                     renderValue={(selected) => (
                                         <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
@@ -1335,6 +1408,7 @@ const RoomDetailsContainer = () => {
                                 }}
                                 multiline
                                 maxRows={4}
+                                required
                                 InputProps={{
                                     readOnly: false,
                                 }}
@@ -1350,6 +1424,7 @@ const RoomDetailsContainer = () => {
                                 label="Maximum number of adults"
                                 variant="outlined"
                                 type='number'
+                                required
                                 defaultValue={maxAdultOccupancy}
                                 onChange={(e) => {
                                     setMaxAdultOccupancy(e.target.value);
@@ -1359,6 +1434,7 @@ const RoomDetailsContainer = () => {
                             <TextField
                                 placeholder='Maximum number of kids'
                                 label="Maximum number of kids"
+                                required
                                 variant="outlined"
                                 type='number'
                                 onChange={(e) => {
@@ -1387,7 +1463,7 @@ const RoomDetailsContainer = () => {
                                     roomTypeImagesDb.map((item, index) => (
                                         <ImageListItem
                                             style={{
-                                                
+
                                                 backgroundColor: 'rgba(0, 0, 0, .1)',
                                                 width: 'auto',
                                                 display: 'flex',
@@ -1396,11 +1472,11 @@ const RoomDetailsContainer = () => {
                                                 gap: '10px',
                                                 alignItems: 'center',
                                                 backgroundSize: 'cover',
-                                                backgroundImage: `url(http://localhost:3001/${item.replaceAll("\\", "/")})`,
+                                                backgroundImage: `url(${apiKey + item.replaceAll("\\", "/")})`,
 
                                             }}
                                         >
-                                            <a target='_blank' href={'http://localhost:3001/' + item}>
+                                            <a target='_blank' href={apiKey + '' + item}>
                                                 <IconButton sx={{ p: '8px', backgroundColor: '#D2C3A4' }} aria-label="search" title='Edit' onClick={() => { }}>
                                                     <VisibilityIcon style={{ color: '#2e2e2e', fontSize: '18px' }} title='View' />
                                                 </IconButton>

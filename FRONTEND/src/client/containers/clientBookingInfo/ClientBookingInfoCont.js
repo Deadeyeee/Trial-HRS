@@ -8,6 +8,7 @@ import axios from 'axios';
 import { ContainerGlobal } from '../../../admin/components/container/container';
 import { BankContentContainer, BankTitleContainer, BrokenHorizontalLine, ChargeSummaryContainer, ChargeSummaryContentContainer, ReservationInformationContainer, ReservationInformationContentsContainer } from '../bookingConfirmation/Styles';
 import { HorizontalLine } from '../../components/horizontalLine/HorizontalLine';
+import { apiKey } from '../../../apiKey';
 
 const ClientBookingInfoCont = () => {
     useEffect(() => {
@@ -31,9 +32,9 @@ const ClientBookingInfoCont = () => {
     }, [reservedBooking])
 
     useEffect(() => {
-        axios.get('http://localhost:3001/auth/verify-token').then((authUser) => {
+        axios.get(apiKey+'auth/verify-token').then((authUser) => {
             console.log(authUser.data)
-            axios.get('http://localhost:3001/api/getAllReservation').then((getAllReservation) => {
+            axios.get(apiKey+'api/getAllReservation').then((getAllReservation) => {
                 setReservation([])
                 getAllReservation.data.map((item) => {
                     if (item.guestInformation.user.id == authUser.data.id) {
@@ -69,7 +70,7 @@ const ClientBookingInfoCont = () => {
 
     useEffect(() => {
         console.log("activeReservation", activeReservation)
-        axios.get('http://localhost:3001/api/getAllReservationSummary').then((result) => {
+        axios.get(apiKey+'api/getAllReservationSummary').then((result) => {
             setReservedBooking([])
             for (let index = 0; index < result.data.length; index++) {
                 if (activeReservation.id == result.data[index].reservation_id) {

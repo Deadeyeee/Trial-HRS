@@ -26,9 +26,11 @@ import KitchenIcon from '@mui/icons-material/Kitchen';
 import MicrowaveIcon from '@mui/icons-material/Microwave';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import PendingIcon from '@mui/icons-material/Pending';
+import ImageSlider from '../../components/imageSlider/ImageSlider';
 import * as moment from 'moment';
 import { Badge } from '@mui/material';
 import { borderRadius } from '@mui/system';
+import { apiKey } from '../../../apiKey';
 export const BookingPageCont = () => {
     const ratingValue = 3.6;
     const [roomType, setRoomType] = useState([])
@@ -44,6 +46,7 @@ export const BookingPageCont = () => {
     const [bookedRooms, setBookedRooms] = useState([]);
     const [bookFilter, setBookFilter] = useState(0)
 
+    const [roomTypeImagesDb, setRoomTypeImagesDb] = useState([])
 
     let uniqueAvailbleRoomType = [... new Set(availbleRoomType)]
 
@@ -59,8 +62,29 @@ export const BookingPageCont = () => {
         if (window.sessionStorage.getItem('AvailedRoom') != null) {
             setBookedRooms(JSON.parse(window.sessionStorage.getItem('AvailedRoom')))
         }
-    },[])
+    }, [])
 
+
+    
+    useEffect(() => {
+        axios.get(apiKey + 'api/getAllRoomTypeImages').then((result) => {
+            console.log(result.data)
+            // for (let index = 0; index < result.data.length; index++) {
+            //     if (result.data[index].roomType_id == id) {
+            //         setRoomTypeImagesDb((oldData) => [...oldData, result.data[index].roomImages])
+            //     }
+
+            // }
+            setRoomTypeImagesDb(result.data)
+            console.log('TEST')
+        }).catch((err) => {
+            console.lot(err)
+        });
+    }, [])
+
+
+
+    
     useEffect(() => {
         if (bookedRooms != null) {
             console.log("MASAYANG BUHAY", bookedRooms)
@@ -106,7 +130,7 @@ export const BookingPageCont = () => {
 
     const getNotAvailableRoom = async () => {
         try {
-            let result = await axios.get('http://localhost:3001/api/getAllReservationSummary')
+            let result = await axios.get(apiKey + 'api/getAllReservationSummary')
             console.log("ASJDASPDJASOPJADPO", bookedRooms)
             for (let index = 0; index < result.data.length; index++) {
                 if (result.data[index].reservation.reservationStatus == "PENDING" || result.data[index].reservation.reservationStatus == "RESERVED" || result.data[index].reservation.reservationStatus == "BOOKED") {
@@ -141,7 +165,7 @@ export const BookingPageCont = () => {
 
     const getRooms = async () => {
         try {
-            let res = await axios.get('http://localhost:3001/api/getAllRoom')
+            let res = await axios.get(apiKey + 'api/getAllRoom')
             setRoom([])
             res.data.map((item) => {
                 if (item.roomStatus !== "Maintenance") {
@@ -159,7 +183,7 @@ export const BookingPageCont = () => {
 
     const getRoomtypes = async () => {
         try {
-            let res = await axios.get('http://localhost:3001/api/getAllRoomType')
+            let res = await axios.get(apiKey + 'api/getAllRoomType')
             setRoomType([])
             res.data.map((item) => {
                 if (item.maxAdultOccupancy >= adults && item.maxKidsOccupancy >= kids) {
@@ -176,7 +200,7 @@ export const BookingPageCont = () => {
 
     const getUsedServices = async () => {
         try {
-            let res = await axios.get('http://localhost:3001/api/getAllUsedServices')
+            let res = await axios.get(apiKey + 'api/getAllUsedServices')
             setUsedServices(res.data)
             console.log(usedServices)
 
@@ -197,7 +221,7 @@ export const BookingPageCont = () => {
         window.sessionStorage.removeItem('adult')
         window.sessionStorage.removeItem('rooms')
 
-        // axios.get('http://localhost:3001/api/getAllReservationSummary').then((result) => {
+        // axios.get(apiKey+'api/getAllReservationSummary').then((result) => {
         //     setNotAvailableRoom([])
         //     for (let index = 0; index < result.data.length; index++) {
         //         if (result.data[index].reservation.reservationStatus == "PENDING" || result.data[index].reservation.reservationStatus == "RESERVED" || result.data[index].reservation.reservationStatus == "BOOKED") {
@@ -227,7 +251,7 @@ export const BookingPageCont = () => {
 
         // });
 
-        // axios.get('http://localhost:3001/api/getAllRoom').then((res) => {
+        // axios.get(apiKey+'api/getAllRoom').then((res) => {
 
         //     setRoom([])
         //     res.data.map((item) => {
@@ -241,7 +265,7 @@ export const BookingPageCont = () => {
         // })
 
 
-        // axios.get('http://localhost:3001/api/getAllRoomType').then((res) => {
+        // axios.get(apiKey+'api/getAllRoomType').then((res) => {
         //     setRoomType([])
         //     res.data.map((item) => {
         //         if (item.maxAdultOccupancy >= adults && item.maxKidsOccupancy >= kids) {
@@ -255,7 +279,7 @@ export const BookingPageCont = () => {
         // console.log("roomTypeAvailable1:", roomType)
 
 
-        // axios.get('http://localhost:3001/api/getAllUsedServices').then((res) => {
+        // axios.get(apiKey+'api/getAllUsedServices').then((res) => {
         //     setUsedServices(res.data)
         // }).catch((err) => {
         //     console.log(err.data)
@@ -590,10 +614,15 @@ export const BookingPageCont = () => {
                                 {item.roomType}
                             </Title>
                             <RoomContainer>
-                                <RoomContainerContentPhoto
+                                {/* <RoomContainerContentPhoto
                                     src={Background}>
 
-                                </RoomContainerContentPhoto>
+                                </RoomContainerContentPhoto> */}
+                                <div
+                                    style={{ width: '550px', display: 'inline-block', }}
+                                >
+                                    <ImageSlider roomImages={roomTypeImagesDb.length != 0 ? roomTypeImagesDb.filter((itemRoomImage)=>(itemRoomImage.roomType_id == item.id)).map((obj)=>(obj.roomImages)) : null} />
+                                </div>
                                 <RoomContainerContentRight>
 
                                     <Title
@@ -835,83 +864,7 @@ export const BookingPageCont = () => {
                 </RoomContainer>
             </RoomContainerMain> */}
             <BookingLegendsMain>
-                <Title
-                    color='#2e2e2e'
-                    weight='400'
-                    size='26px'
-                    fStyle='Normal'
-                    margin='35px 0px 30px 10px'
-                    align='center'
-                >
-                    Booking Legends
-                </Title>
-                <BookingLegendsContainer>
-                    <ContainerGlobal
-                        justify='center'
-                        align='center'
-                    >
-                        <BookingLegendsWhite></BookingLegendsWhite>
-                        <Title
-                            family='Noticia Text, serif'
-                            weight='400'
-                            size='12px'
-                            fStyle='normal'
-                            margin='0px 30px 0px 10px'
-                            align='center'
-                        >
-                            Available Date
-                        </Title>
-                    </ContainerGlobal>
-                    <ContainerGlobal
-                        justify='center'
-                        align='center'
-                    >
-                        <BookingLegendsRed></BookingLegendsRed>
-                        <Title
-                            family='Noticia Text, serif'
-                            weight='400'
-                            size='12px'
-                            fStyle='normal'
-                            margin='0px 30px 0px 10px'
-                            align='center'
-                        >
-                            Not Available Date
-                        </Title>
-                    </ContainerGlobal>
-                    <ContainerGlobal
-                        justify='center'
-                        align='center'
-                    >
-                        <BookingLegendsGreen></BookingLegendsGreen>
-                        <Title
-                            family='Noticia Text, serif'
-                            weight='400'
-                            size='12px'
-                            fStyle='normal'
-                            margin='0px 30px 0px 10px'
-                            align='center'
-                        >
-                            Check In Date / Check Out Date
-                        </Title>
-                    </ContainerGlobal>
-                    <ContainerGlobal
-                        justify='center'
-                        align='center'
-                    >
-                        <BookingLegendsDarkJade></BookingLegendsDarkJade>
-                        <Title
-                            family='Noticia Text, serif'
-                            weight='400'
-                            size='12px'
-                            fStyle='normal'
-                            margin='0px 30px 0px 10px'
-                            align='center'
-                        >
-                            Period of Stay
-                        </Title>
-
-                    </ContainerGlobal>
-                </BookingLegendsContainer>
+                
                 <Title
                     color='#2e2e2e'
                     weight='400'
