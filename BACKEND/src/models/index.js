@@ -46,6 +46,7 @@ db.orderedAmenities = require('./orderedAmenities.model.js')(sequelize, Sequeliz
 db.payment = require('./payment.model.js')(sequelize, Sequelize, DataTypes)
 db.services = require('./services.model.js')(sequelize, Sequelize, DataTypes)
 db.usedServices = require('./usedServices.model.js')(sequelize, Sequelize, DataTypes)
+db.roomTypeImages = require('./roomTypeImages.model.js')(sequelize, Sequelize, DataTypes)
 
 
 
@@ -75,7 +76,7 @@ db.usedServices = require('./usedServices.model.js')(sequelize, Sequelize, DataT
 // db.paymentMode.bulkCreate([
 //     { paymentMode: "Bank Deposit (via Metro Bank)", billerName: "Metro Bank", accountName: "Elbert Egot", accountNumber: "23423849234298"},
 //     { paymentMode: "E-Payment (Gcash)", billerName: "Gcash", accountName: "Elbert Egot", accountNumber: "09566728906"},
-//     { paymentMode: "Cash", billerName: "Gcash", accountName: "Elbert Egot", accountNumber: "09566728906"},
+//     { paymentMode: "Pay at The Hotel", billerName: "Gcash", accountName: "Elbert Egot", accountNumber: "09566728906"},
 // ]).then(() => console.log("Payment Mode data have been saved"));
 
 
@@ -230,7 +231,16 @@ db.room.hasMany(db.usedServices, {
 });
 
 
+//roomTypeImages has many roomType
+db.roomTypeImages.belongsTo(db.roomType, {
+    foreignKey: { name: "roomType_id", allowNull: false },
+    foreignKeyConstraint: true,
+});
 
+db.roomType.hasMany(db.roomTypeImages, {
+    as: "roomTypeImages",
+    foreignKey: "roomType_id",
+});
 
 
 
@@ -238,7 +248,7 @@ db.room.hasMany(db.usedServices, {
 db.sequelize.sync({ force: false }).then(() => {
     console.log('\n\nDatabase is Running smoothly!\n\n')
 }).catch((err) => {
-    console.log("\n\nDATABSE ERROR!!!!: " + err.data + "\n\n")
+    console.log("\n\nDATABSE ERROR!!!!: " + err + "\n\n")
 });
 
 module.exports = db;

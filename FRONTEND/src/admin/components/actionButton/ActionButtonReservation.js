@@ -88,7 +88,7 @@ const ActionButtonReservation = (props) => {
                 <IconButton onClick={props.edit} type="submit" sx={{ p: '8px', backgroundColor: 'rgb(191, 170, 126, 0.7)' }} aria-label="search" title='Edit/Update'>
                     <EditIcon style={{ color: '#2e2e2e', fontSize: '18px' }} title='View' />
                 </IconButton>
-                <IconButton onClick={() => setShow(prev => !prev)} type="submit" sx={{ p: '8px', backgroundColor: 'rgb(255, 36, 0, 0.7)' }} aria-label="search" title='Delete'>
+                <IconButton onClick={props.delete} type="submit" sx={{ p: '8px', backgroundColor: 'rgb(255, 36, 0, 0.7)' }} aria-label="search" title='Delete'>
                     <DeleteIcon style={{ color: '#2e2e2e', fontSize: '18px' }} title='View' />
                 </IconButton>
                 <Grow in={show}>{deleteModal}</Grow>

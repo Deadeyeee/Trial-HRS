@@ -28,7 +28,7 @@ const BookingCartPageCont = () => {
   }, [bookingInformation])
 
   const numberFormat = (value) =>
-    new Intl.NumberFormat('en-IN', {
+    new Intl.NumberFormat('en-CA', {
       style: 'currency',
       currency: 'PHP'
     }).format(value);

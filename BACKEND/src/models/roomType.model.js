@@ -28,7 +28,7 @@ module.exports = (sequelize, DataTypes, Sequelize) => {
             type: DataTypes.STRING,
         },
         roomImages: {
-            allowNull: false,
+            allowNull: true,
             type: DataTypes.JSON,
         },
     },

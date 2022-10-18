@@ -16,7 +16,7 @@ exports.create = async (req, res) => {
             maxAdultOccupancy: req.body.maxAdultOccupancy,
             maxKidsOccupancy: req.body.maxKidsOccupancy,
             roomDescription: req.body.roomDescription,
-            roomImages: req.files,
+            // roomImages: req.files,
         }
 
         const new_roomType = await RoomType.create(items);
@@ -38,8 +38,7 @@ exports.findOne = async (req, res) => {
 
 exports.update = async (req, res) => {
     try {
-        console.log(req.body.roomImages)
-        console.log(typeof(req.body.roomImages))
+        
         let items = {
             roomType: req.body.roomType,
             roomNumber: req.body.roomNumber,

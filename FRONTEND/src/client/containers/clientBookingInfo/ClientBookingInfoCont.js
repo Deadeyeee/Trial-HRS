@@ -53,7 +53,7 @@ const ClientBookingInfoCont = () => {
             new Date(Math.max.apply(null, reservation.map(function (items, index, arr) {
                 console.log("filter", index)
 
-                if (index == 1) {
+                if (index == 0) {
                     setActiveReservation(items)
                 }
             })));
@@ -561,50 +561,53 @@ const ClientBookingInfoCont = () => {
                                     : {activeReservation.payment.discount.discountType}
                                 </Title>
                             </ContainerGlobal>
-                            <ContainerGlobal justify='space-between' gap='70px'>
-                                <Title
-                                    family='raleway, sans-serif'
-                                    weight='700'
-                                    fstyle='Normal'
-                                    size='26px'
-                                    color='#2e2e2e'
-                                    align='left'
-                                >
-                                    <b>Down Payment</b>
-                                </Title>
-                                <Title
-                                    family='Roboto Slab'
-                                    weight='400'
-                                    fstyle='Normal'
-                                    size='24px'
-                                    color='black'
-                                    align='left'
-                                >
-                                    : {numberFormat(grandTotal / 2)}
-                                </Title>
-                            </ContainerGlobal>
-                            <ContainerGlobal justify='space-between' gap='70px'>
-                                <Title
-                                    family='raleway, sans-serif'
-                                    weight='700'
-                                    fstyle='Normal'
-                                    size='26px'
-                                    color='#2e2e2e'
-                                    align='left'
-                                >
-                                    <b>Full Payment</b>
-                                </Title>
-                                <Title
-                                    family='Roboto Slab'
-                                    weight='400'
-                                    fstyle='Normal'
-                                    size='24px'
-                                    color='black'
-                                    align='left'
-                                >
-                                    : {numberFormat(grandTotal)}
-                                </Title>
-                            </ContainerGlobal>
+                            {activeReservation.payment.paymentType == 'Down Payment' ?
+                                <ContainerGlobal justify='space-between' gap='70px'>
+                                    <Title
+                                        family='raleway, sans-serif'
+                                        weight='700'
+                                        fstyle='Normal'
+                                        size='26px'
+                                        color='#2e2e2e'
+                                        align='left'
+                                    >
+                                        <b>Down Payment</b>
+                                    </Title>
+                                    <Title
+                                        family='Roboto Slab'
+                                        weight='400'
+                                        fstyle='Normal'
+                                        size='24px'
+                                        color='black'
+                                        align='left'
+                                    >
+                                        : {numberFormat(grandTotal / 2)}
+                                    </Title>
+                                </ContainerGlobal>
+                                :
+                                <ContainerGlobal justify='space-between' gap='70px'>
+                                    <Title
+                                        family='raleway, sans-serif'
+                                        weight='700'
+                                        fstyle='Normal'
+                                        size='26px'
+                                        color='#2e2e2e'
+                                        align='left'
+                                    >
+                                        <b>Full Payment</b>
+                                    </Title>
+                                    <Title
+                                        family='Roboto Slab'
+                                        weight='400'
+                                        fstyle='Normal'
+                                        size='24px'
+                                        color='black'
+                                        align='left'
+                                    >
+                                        : {numberFormat(grandTotal)}
+                                    </Title>
+                                </ContainerGlobal>
+                            }
                             <ContainerGlobal justify='space-between' gap='70px'>
                                 <Title
                                     family='raleway, sans-serif'
@@ -624,9 +627,37 @@ const ClientBookingInfoCont = () => {
                                     color='#1C9E60'
                                     align='left'
                                 >
+                                    : {numberFormat(activeReservation.payment.paymentMade)}
+                                </Title>
+                            </ContainerGlobal>
+
+                            <ContainerGlobal justify='space-between' gap='70px'>
+                                <Title
+                                    family='raleway, sans-serif'
+                                    weight='400'
+                                    fstyle='Normal'
+                                    size='24px'
+                                    color='#2e2e2e'
+                                    align='left'
+                                >
+                                    <b>Grand Total</b>
+                                </Title>
+                                <Title
+                                    family='Roboto Slab'
+                                    weight='400'
+                                    fstyle='Normal'
+                                    size='24px'
+                                    color='#000000'
+                                    align='left'
+                                >
                                     : {numberFormat(grandTotal)}
                                 </Title>
                             </ContainerGlobal>
+                            <HorizontalLine
+                                w='100%'
+                                margin='10px 0px 0px 0px'
+                            />
+
                             <ContainerGlobal justify='space-between' gap='70px'>
                                 <Title
                                     family='raleway, sans-serif'
@@ -646,33 +677,7 @@ const ClientBookingInfoCont = () => {
                                     color='red'
                                     align='left'
                                 >
-                                    : {numberFormat(grandTotal)}
-                                </Title>
-                            </ContainerGlobal>
-                            <HorizontalLine
-                                w='100%'
-                                margin='10px 0px 0px 0px'
-                            />
-                            <ContainerGlobal justify='space-between' gap='70px'>
-                                <Title
-                                    family='raleway, sans-serif'
-                                    weight='700'
-                                    fstyle='Normal'
-                                    size='30px'
-                                    color='#2e2e2e'
-                                    align='left'
-                                >
-                                    <b>Grand Total</b>
-                                </Title>
-                                <Title
-                                    family='Roboto Slab'
-                                    weight='700'
-                                    fstyle='Normal'
-                                    size='30px'
-                                    color='#000000'
-                                    align='left'
-                                >
-                                    : {numberFormat(grandTotal)}
+                                    : {numberFormat(activeReservation.payment.grandTotal - activeReservation.payment.paymentMade)}
                                 </Title>
                             </ContainerGlobal>
                         </ChargeSummaryContentContainer>
@@ -1478,50 +1483,53 @@ const ClientBookingInfoCont = () => {
                                     : {activeReservation.payment.discount.discountType}
                                 </Title>
                             </ContainerGlobal>
-                            <ContainerGlobal justify='space-between' gap='70px'>
-                                <Title
-                                    family='raleway, sans-serif'
-                                    weight='700'
-                                    fstyle='Normal'
-                                    size='26px'
-                                    color='#2e2e2e'
-                                    align='left'
-                                >
-                                    <b>Down Payment</b>
-                                </Title>
-                                <Title
-                                    family='Roboto Slab'
-                                    weight='400'
-                                    fstyle='Normal'
-                                    size='24px'
-                                    color='black'
-                                    align='left'
-                                >
-                                    : {numberFormat(grandTotal / 2)}
-                                </Title>
-                            </ContainerGlobal>
-                            <ContainerGlobal justify='space-between' gap='70px'>
-                                <Title
-                                    family='raleway, sans-serif'
-                                    weight='700'
-                                    fstyle='Normal'
-                                    size='26px'
-                                    color='#2e2e2e'
-                                    align='left'
-                                >
-                                    <b>Full Payment</b>
-                                </Title>
-                                <Title
-                                    family='Roboto Slab'
-                                    weight='400'
-                                    fstyle='Normal'
-                                    size='24px'
-                                    color='black'
-                                    align='left'
-                                >
-                                    : {numberFormat(grandTotal)}
-                                </Title>
-                            </ContainerGlobal>
+                            {activeReservation.payment.paymentType == 'Down Payment' ?
+                                <ContainerGlobal justify='space-between' gap='70px'>
+                                    <Title
+                                        family='raleway, sans-serif'
+                                        weight='700'
+                                        fstyle='Normal'
+                                        size='26px'
+                                        color='#2e2e2e'
+                                        align='left'
+                                    >
+                                        <b>Down Payment</b>
+                                    </Title>
+                                    <Title
+                                        family='Roboto Slab'
+                                        weight='400'
+                                        fstyle='Normal'
+                                        size='24px'
+                                        color='black'
+                                        align='left'
+                                    >
+                                        : {numberFormat(grandTotal / 2)}
+                                    </Title>
+                                </ContainerGlobal>
+                                :
+                                <ContainerGlobal justify='space-between' gap='70px'>
+                                    <Title
+                                        family='raleway, sans-serif'
+                                        weight='700'
+                                        fstyle='Normal'
+                                        size='26px'
+                                        color='#2e2e2e'
+                                        align='left'
+                                    >
+                                        <b>Full Payment</b>
+                                    </Title>
+                                    <Title
+                                        family='Roboto Slab'
+                                        weight='400'
+                                        fstyle='Normal'
+                                        size='24px'
+                                        color='black'
+                                        align='left'
+                                    >
+                                        : {numberFormat(grandTotal)}
+                                    </Title>
+                                </ContainerGlobal>
+                            }
                             <ContainerGlobal justify='space-between' gap='70px'>
                                 <Title
                                     family='raleway, sans-serif'
@@ -1541,9 +1549,37 @@ const ClientBookingInfoCont = () => {
                                     color='#1C9E60'
                                     align='left'
                                 >
+                                    : {numberFormat(activeReservation.payment.paymentMade)}
+                                </Title>
+                            </ContainerGlobal>
+
+                            <ContainerGlobal justify='space-between' gap='70px'>
+                                <Title
+                                    family='raleway, sans-serif'
+                                    weight='400'
+                                    fstyle='Normal'
+                                    size='24px'
+                                    color='#2e2e2e'
+                                    align='left'
+                                >
+                                    <b>Grand Total</b>
+                                </Title>
+                                <Title
+                                    family='Roboto Slab'
+                                    weight='400'
+                                    fstyle='Normal'
+                                    size='24px'
+                                    color='#000000'
+                                    align='left'
+                                >
                                     : {numberFormat(grandTotal)}
                                 </Title>
                             </ContainerGlobal>
+                            <HorizontalLine
+                                w='100%'
+                                margin='10px 0px 0px 0px'
+                            />
+
                             <ContainerGlobal justify='space-between' gap='70px'>
                                 <Title
                                     family='raleway, sans-serif'
@@ -1563,33 +1599,7 @@ const ClientBookingInfoCont = () => {
                                     color='red'
                                     align='left'
                                 >
-                                    : {numberFormat(grandTotal)}
-                                </Title>
-                            </ContainerGlobal>
-                            <HorizontalLine
-                                w='100%'
-                                margin='10px 0px 0px 0px'
-                            />
-                            <ContainerGlobal justify='space-between' gap='70px'>
-                                <Title
-                                    family='raleway, sans-serif'
-                                    weight='700'
-                                    fstyle='Normal'
-                                    size='30px'
-                                    color='#2e2e2e'
-                                    align='left'
-                                >
-                                    <b>Grand Total</b>
-                                </Title>
-                                <Title
-                                    family='Roboto Slab'
-                                    weight='700'
-                                    fstyle='Normal'
-                                    size='30px'
-                                    color='#000000'
-                                    align='left'
-                                >
-                                    : {numberFormat(grandTotal)}
+                                    : {numberFormat(activeReservation.payment.grandTotal - activeReservation.payment.paymentMade)}
                                 </Title>
                             </ContainerGlobal>
                         </ChargeSummaryContentContainer>
@@ -2067,50 +2077,53 @@ const ClientBookingInfoCont = () => {
                                     : {activeReservation.payment.discount.discountType}
                                 </Title>
                             </ContainerGlobal>
-                            <ContainerGlobal justify='space-between' gap='70px'>
-                                <Title
-                                    family='raleway, sans-serif'
-                                    weight='700'
-                                    fstyle='Normal'
-                                    size='26px'
-                                    color='#2e2e2e'
-                                    align='left'
-                                >
-                                    <b>Down Payment</b>
-                                </Title>
-                                <Title
-                                    family='Roboto Slab'
-                                    weight='400'
-                                    fstyle='Normal'
-                                    size='24px'
-                                    color='black'
-                                    align='left'
-                                >
-                                    : {numberFormat(grandTotal / 2)}
-                                </Title>
-                            </ContainerGlobal>
-                            <ContainerGlobal justify='space-between' gap='70px'>
-                                <Title
-                                    family='raleway, sans-serif'
-                                    weight='700'
-                                    fstyle='Normal'
-                                    size='26px'
-                                    color='#2e2e2e'
-                                    align='left'
-                                >
-                                    <b>Full Payment</b>
-                                </Title>
-                                <Title
-                                    family='Roboto Slab'
-                                    weight='400'
-                                    fstyle='Normal'
-                                    size='24px'
-                                    color='black'
-                                    align='left'
-                                >
-                                    : {numberFormat(grandTotal)}
-                                </Title>
-                            </ContainerGlobal>
+                            {activeReservation.payment.paymentType == 'Down Payment' ?
+                                <ContainerGlobal justify='space-between' gap='70px'>
+                                    <Title
+                                        family='raleway, sans-serif'
+                                        weight='700'
+                                        fstyle='Normal'
+                                        size='26px'
+                                        color='#2e2e2e'
+                                        align='left'
+                                    >
+                                        <b>Down Payment</b>
+                                    </Title>
+                                    <Title
+                                        family='Roboto Slab'
+                                        weight='400'
+                                        fstyle='Normal'
+                                        size='24px'
+                                        color='black'
+                                        align='left'
+                                    >
+                                        : {numberFormat(grandTotal / 2)}
+                                    </Title>
+                                </ContainerGlobal>
+                                :
+                                <ContainerGlobal justify='space-between' gap='70px'>
+                                    <Title
+                                        family='raleway, sans-serif'
+                                        weight='700'
+                                        fstyle='Normal'
+                                        size='26px'
+                                        color='#2e2e2e'
+                                        align='left'
+                                    >
+                                        <b>Full Payment</b>
+                                    </Title>
+                                    <Title
+                                        family='Roboto Slab'
+                                        weight='400'
+                                        fstyle='Normal'
+                                        size='24px'
+                                        color='black'
+                                        align='left'
+                                    >
+                                        : {numberFormat(grandTotal)}
+                                    </Title>
+                                </ContainerGlobal>
+                            }
                             <ContainerGlobal justify='space-between' gap='70px'>
                                 <Title
                                     family='raleway, sans-serif'
@@ -2130,9 +2143,37 @@ const ClientBookingInfoCont = () => {
                                     color='#1C9E60'
                                     align='left'
                                 >
+                                    : {numberFormat(activeReservation.payment.paymentMade)}
+                                </Title>
+                            </ContainerGlobal>
+
+                            <ContainerGlobal justify='space-between' gap='70px'>
+                                <Title
+                                    family='raleway, sans-serif'
+                                    weight='400'
+                                    fstyle='Normal'
+                                    size='24px'
+                                    color='#2e2e2e'
+                                    align='left'
+                                >
+                                    <b>Grand Total</b>
+                                </Title>
+                                <Title
+                                    family='Roboto Slab'
+                                    weight='400'
+                                    fstyle='Normal'
+                                    size='24px'
+                                    color='#000000'
+                                    align='left'
+                                >
                                     : {numberFormat(grandTotal)}
                                 </Title>
                             </ContainerGlobal>
+                            <HorizontalLine
+                                w='100%'
+                                margin='10px 0px 0px 0px'
+                            />
+
                             <ContainerGlobal justify='space-between' gap='70px'>
                                 <Title
                                     family='raleway, sans-serif'
@@ -2152,33 +2193,7 @@ const ClientBookingInfoCont = () => {
                                     color='red'
                                     align='left'
                                 >
-                                    : {numberFormat(grandTotal)}
-                                </Title>
-                            </ContainerGlobal>
-                            <HorizontalLine
-                                w='100%'
-                                margin='10px 0px 0px 0px'
-                            />
-                            <ContainerGlobal justify='space-between' gap='70px'>
-                                <Title
-                                    family='raleway, sans-serif'
-                                    weight='700'
-                                    fstyle='Normal'
-                                    size='30px'
-                                    color='#2e2e2e'
-                                    align='left'
-                                >
-                                    <b>Grand Total</b>
-                                </Title>
-                                <Title
-                                    family='Roboto Slab'
-                                    weight='700'
-                                    fstyle='Normal'
-                                    size='30px'
-                                    color='#000000'
-                                    align='left'
-                                >
-                                    : {numberFormat(grandTotal)}
+                                    : {numberFormat(activeReservation.payment.grandTotal - activeReservation.payment.paymentMade)}
                                 </Title>
                             </ContainerGlobal>
                         </ChargeSummaryContentContainer>
@@ -2531,50 +2546,53 @@ const ClientBookingInfoCont = () => {
                                     : {activeReservation.payment.discount.discountType}
                                 </Title>
                             </ContainerGlobal>
-                            <ContainerGlobal justify='space-between' gap='70px'>
-                                <Title
-                                    family='raleway, sans-serif'
-                                    weight='700'
-                                    fstyle='Normal'
-                                    size='26px'
-                                    color='#2e2e2e'
-                                    align='left'
-                                >
-                                    <b>Down Payment</b>
-                                </Title>
-                                <Title
-                                    family='Roboto Slab'
-                                    weight='400'
-                                    fstyle='Normal'
-                                    size='24px'
-                                    color='black'
-                                    align='left'
-                                >
-                                    : {numberFormat(grandTotal / 2)}
-                                </Title>
-                            </ContainerGlobal>
-                            <ContainerGlobal justify='space-between' gap='70px'>
-                                <Title
-                                    family='raleway, sans-serif'
-                                    weight='700'
-                                    fstyle='Normal'
-                                    size='26px'
-                                    color='#2e2e2e'
-                                    align='left'
-                                >
-                                    <b>Full Payment</b>
-                                </Title>
-                                <Title
-                                    family='Roboto Slab'
-                                    weight='400'
-                                    fstyle='Normal'
-                                    size='24px'
-                                    color='black'
-                                    align='left'
-                                >
-                                    : {numberFormat(grandTotal)}
-                                </Title>
-                            </ContainerGlobal>
+                            {activeReservation.payment.paymentType == 'Down Payment' ?
+                                <ContainerGlobal justify='space-between' gap='70px'>
+                                    <Title
+                                        family='raleway, sans-serif'
+                                        weight='700'
+                                        fstyle='Normal'
+                                        size='26px'
+                                        color='#2e2e2e'
+                                        align='left'
+                                    >
+                                        <b>Down Payment</b>
+                                    </Title>
+                                    <Title
+                                        family='Roboto Slab'
+                                        weight='400'
+                                        fstyle='Normal'
+                                        size='24px'
+                                        color='black'
+                                        align='left'
+                                    >
+                                        : {numberFormat(grandTotal / 2)}
+                                    </Title>
+                                </ContainerGlobal>
+                                :
+                                <ContainerGlobal justify='space-between' gap='70px'>
+                                    <Title
+                                        family='raleway, sans-serif'
+                                        weight='700'
+                                        fstyle='Normal'
+                                        size='26px'
+                                        color='#2e2e2e'
+                                        align='left'
+                                    >
+                                        <b>Full Payment</b>
+                                    </Title>
+                                    <Title
+                                        family='Roboto Slab'
+                                        weight='400'
+                                        fstyle='Normal'
+                                        size='24px'
+                                        color='black'
+                                        align='left'
+                                    >
+                                        : {numberFormat(grandTotal)}
+                                    </Title>
+                                </ContainerGlobal>
+                            }
                             <ContainerGlobal justify='space-between' gap='70px'>
                                 <Title
                                     family='raleway, sans-serif'
@@ -2594,9 +2612,37 @@ const ClientBookingInfoCont = () => {
                                     color='#1C9E60'
                                     align='left'
                                 >
+                                    : {numberFormat(activeReservation.payment.paymentMade)}
+                                </Title>
+                            </ContainerGlobal>
+
+                            <ContainerGlobal justify='space-between' gap='70px'>
+                                <Title
+                                    family='raleway, sans-serif'
+                                    weight='400'
+                                    fstyle='Normal'
+                                    size='24px'
+                                    color='#2e2e2e'
+                                    align='left'
+                                >
+                                    <b>Grand Total</b>
+                                </Title>
+                                <Title
+                                    family='Roboto Slab'
+                                    weight='400'
+                                    fstyle='Normal'
+                                    size='24px'
+                                    color='#000000'
+                                    align='left'
+                                >
                                     : {numberFormat(grandTotal)}
                                 </Title>
                             </ContainerGlobal>
+                            <HorizontalLine
+                                w='100%'
+                                margin='10px 0px 0px 0px'
+                            />
+
                             <ContainerGlobal justify='space-between' gap='70px'>
                                 <Title
                                     family='raleway, sans-serif'
@@ -2616,33 +2662,7 @@ const ClientBookingInfoCont = () => {
                                     color='red'
                                     align='left'
                                 >
-                                    : {numberFormat(grandTotal)}
-                                </Title>
-                            </ContainerGlobal>
-                            <HorizontalLine
-                                w='100%'
-                                margin='10px 0px 0px 0px'
-                            />
-                            <ContainerGlobal justify='space-between' gap='70px'>
-                                <Title
-                                    family='raleway, sans-serif'
-                                    weight='700'
-                                    fstyle='Normal'
-                                    size='30px'
-                                    color='#2e2e2e'
-                                    align='left'
-                                >
-                                    <b>Grand Total</b>
-                                </Title>
-                                <Title
-                                    family='Roboto Slab'
-                                    weight='700'
-                                    fstyle='Normal'
-                                    size='30px'
-                                    color='#000000'
-                                    align='left'
-                                >
-                                    : {numberFormat(grandTotal)}
+                                    : {numberFormat(activeReservation.payment.grandTotal - activeReservation.payment.paymentMade)}
                                 </Title>
                             </ContainerGlobal>
                         </ChargeSummaryContentContainer>
@@ -2982,50 +3002,53 @@ const ClientBookingInfoCont = () => {
                                     : {activeReservation.payment.discount.discountType}
                                 </Title>
                             </ContainerGlobal>
-                            <ContainerGlobal justify='space-between' gap='70px'>
-                                <Title
-                                    family='raleway, sans-serif'
-                                    weight='700'
-                                    fstyle='Normal'
-                                    size='26px'
-                                    color='#2e2e2e'
-                                    align='left'
-                                >
-                                    <b>Down Payment</b>
-                                </Title>
-                                <Title
-                                    family='Roboto Slab'
-                                    weight='400'
-                                    fstyle='Normal'
-                                    size='24px'
-                                    color='black'
-                                    align='left'
-                                >
-                                    : {numberFormat(grandTotal / 2)}
-                                </Title>
-                            </ContainerGlobal>
-                            <ContainerGlobal justify='space-between' gap='70px'>
-                                <Title
-                                    family='raleway, sans-serif'
-                                    weight='700'
-                                    fstyle='Normal'
-                                    size='26px'
-                                    color='#2e2e2e'
-                                    align='left'
-                                >
-                                    <b>Full Payment</b>
-                                </Title>
-                                <Title
-                                    family='Roboto Slab'
-                                    weight='400'
-                                    fstyle='Normal'
-                                    size='24px'
-                                    color='black'
-                                    align='left'
-                                >
-                                    : {numberFormat(grandTotal)}
-                                </Title>
-                            </ContainerGlobal>
+                            {activeReservation.payment.paymentType == 'Down Payment' ?
+                                <ContainerGlobal justify='space-between' gap='70px'>
+                                    <Title
+                                        family='raleway, sans-serif'
+                                        weight='700'
+                                        fstyle='Normal'
+                                        size='26px'
+                                        color='#2e2e2e'
+                                        align='left'
+                                    >
+                                        <b>Down Payment</b>
+                                    </Title>
+                                    <Title
+                                        family='Roboto Slab'
+                                        weight='400'
+                                        fstyle='Normal'
+                                        size='24px'
+                                        color='black'
+                                        align='left'
+                                    >
+                                        : {numberFormat(grandTotal / 2)}
+                                    </Title>
+                                </ContainerGlobal>
+                                :
+                                <ContainerGlobal justify='space-between' gap='70px'>
+                                    <Title
+                                        family='raleway, sans-serif'
+                                        weight='700'
+                                        fstyle='Normal'
+                                        size='26px'
+                                        color='#2e2e2e'
+                                        align='left'
+                                    >
+                                        <b>Full Payment</b>
+                                    </Title>
+                                    <Title
+                                        family='Roboto Slab'
+                                        weight='400'
+                                        fstyle='Normal'
+                                        size='24px'
+                                        color='black'
+                                        align='left'
+                                    >
+                                        : {numberFormat(grandTotal)}
+                                    </Title>
+                                </ContainerGlobal>
+                            }
                             <ContainerGlobal justify='space-between' gap='70px'>
                                 <Title
                                     family='raleway, sans-serif'
@@ -3045,9 +3068,37 @@ const ClientBookingInfoCont = () => {
                                     color='#1C9E60'
                                     align='left'
                                 >
+                                    : {numberFormat(activeReservation.payment.paymentMade)}
+                                </Title>
+                            </ContainerGlobal>
+
+                            <ContainerGlobal justify='space-between' gap='70px'>
+                                <Title
+                                    family='raleway, sans-serif'
+                                    weight='400'
+                                    fstyle='Normal'
+                                    size='24px'
+                                    color='#2e2e2e'
+                                    align='left'
+                                >
+                                    <b>Grand Total</b>
+                                </Title>
+                                <Title
+                                    family='Roboto Slab'
+                                    weight='400'
+                                    fstyle='Normal'
+                                    size='24px'
+                                    color='#000000'
+                                    align='left'
+                                >
                                     : {numberFormat(grandTotal)}
                                 </Title>
                             </ContainerGlobal>
+                            <HorizontalLine
+                                w='100%'
+                                margin='10px 0px 0px 0px'
+                            />
+
                             <ContainerGlobal justify='space-between' gap='70px'>
                                 <Title
                                     family='raleway, sans-serif'
@@ -3067,33 +3118,7 @@ const ClientBookingInfoCont = () => {
                                     color='red'
                                     align='left'
                                 >
-                                    : {numberFormat(grandTotal)}
-                                </Title>
-                            </ContainerGlobal>
-                            <HorizontalLine
-                                w='100%'
-                                margin='10px 0px 0px 0px'
-                            />
-                            <ContainerGlobal justify='space-between' gap='70px'>
-                                <Title
-                                    family='raleway, sans-serif'
-                                    weight='700'
-                                    fstyle='Normal'
-                                    size='30px'
-                                    color='#2e2e2e'
-                                    align='left'
-                                >
-                                    <b>Grand Total</b>
-                                </Title>
-                                <Title
-                                    family='Roboto Slab'
-                                    weight='700'
-                                    fstyle='Normal'
-                                    size='30px'
-                                    color='#000000'
-                                    align='left'
-                                >
-                                    : {numberFormat(grandTotal)}
+                                    : {numberFormat(activeReservation.payment.grandTotal - activeReservation.payment.paymentMade)}
                                 </Title>
                             </ContainerGlobal>
                         </ChargeSummaryContentContainer>
@@ -3130,24 +3155,37 @@ const ClientBookingInfoCont = () => {
     }
     return (
         <Container>
+
+
+
+            {activeReservation.length != 0 ? 
             <Title
-                padding='15px 80px 15px 80px'
-                bg='#272727'
-                family='raleway, sans-serif'
-                color='white'
-                weight='400'
-                size='25px'
-                fstyle='Normal'
-                margin='50px 0px 10px 0px'
-                align='Center'
-            >
-                Booking Status
-            </Title>
-
-
+            padding='15px 80px 15px 80px'
+            bg='#272727'
+            family='raleway, sans-serif'
+            color='white'
+            weight='400'
+            size='25px'
+            fstyle='Normal'
+            margin='50px 0px 10px 0px'
+            align='Center'
+        >
+            Reservation Status
+        </Title>
+        :
+        ""}
             {activeReservation.length != 0 ?
-                reservationStatus(activeReservation.reservationStatus)
-                : ""}
+                <div>
+                    {reservationStatus(activeReservation.reservationStatus)}
+                </div>
+                :
+                <Title
+                    margin='100px'
+                >
+                    Sorry but you don't have any reservations.
+                </Title>
+
+            }
 
 
 
@@ -3171,7 +3209,7 @@ const ClientBookingInfoCont = () => {
                     </Title>
 
                 </MessagesTitleContainer>
-                <div style={{width: '100%', overflowY: 'auto'}}>
+                <div style={{ width: '100%', overflowY: 'auto' }}>
                     <TableContainer style={{ height: '100%', margin: '0px' }}
                         cellspacing="0"
                         cellpadding="0">
@@ -3186,10 +3224,10 @@ const ClientBookingInfoCont = () => {
 
                             <Tr style={index % 2 == 0 ? { backgroundColor: 'transparent' } : { backgroundColor: 'rgb(0,0,0,.1)' }}>
 
-                                <Td align='center'>{item.reservationReferenceNumber}</Td>
-                                <Td align='center'>{new Date(item.reservationDate).toLocaleDateString()} {new Date(item.reservationDate).toLocaleTimeString()}</Td>
-                                <Td align='center'>{reservationStatusStyle(item.reservationStatus)}</Td>
-                                <Td align='center'><a style={{ cursor: 'pointer', color: 'blue' }} onClick={() => { view(item.id) }}>view</a></Td>
+                                <Td style={item.id == activeReservation.id ? { backgroundColor: 'green', color: 'black' } : { backgroundColor: 'transparent' }} align='center'>{item.reservationReferenceNumber}</Td>
+                                <Td style={item.id == activeReservation.id ? { backgroundColor: 'green', color: 'black' } : { backgroundColor: 'transparent' }} align='center'>{new Date(item.reservationDate).toLocaleDateString()} {new Date(item.reservationDate).toLocaleTimeString()}</Td>
+                                <Td style={item.id == activeReservation.id ? { backgroundColor: 'green', color: 'black', fontWeight: 'bold' } : { backgroundColor: 'transparent' }} align='center'>{reservationStatusStyle(item.reservationStatus)}</Td>
+                                <Td style={item.id == activeReservation.id ? { backgroundColor: 'green', color: 'black' } : { backgroundColor: 'transparent' }} align='center'><a style={{ cursor: 'pointer', color: 'blue' }} onClick={() => { view(item.id) }}>view</a></Td>
                                 {/* <Td align='center'>{item.numberOfNights}</Td>
                             <Td align='center'>{numberFormat(item.room.roomType.roomRate)}</Td>
                             <Td align='center' style={{ color: 'red' }}>{numberFormat(item.room.roomType.roomRate * item.numberOfNights)}</Td> */}

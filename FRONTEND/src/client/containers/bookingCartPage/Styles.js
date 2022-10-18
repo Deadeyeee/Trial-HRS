@@ -15,12 +15,12 @@ export const FlexboxContainer = styled(motion.div)`
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    width: 80%;
+    width: ${(props) => (props.w ? props.w : "80%")};
     overflow: hidden;
     background-color: #DFD3B9;
     display: flex;
-    margin-top: 50px;
-    padding: 50px 30px;
+    margin-top: ${(props) => (props.margin ? props.margin : "50px")};
+    padding: ${(props) => (props.padding ? props.padding : "50px 30px;")};
     gap: 30px;
     
     

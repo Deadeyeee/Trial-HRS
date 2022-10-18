@@ -30,6 +30,7 @@ import { Global } from '@emotion/react'
 import ActionButtonReservation from '../../components/actionButton/ActionButtonReservation'
 import ActionButtonPayment from '../../components/actionButton/ActionButtonPayment'
 import axios from 'axios'
+import OfficialReceipt from '../../pages/officialReceipt/OfficialReceipt'
 
 
 
@@ -73,6 +74,7 @@ const PaymentContainer = () => {
     const [showReceipt, setShowReceipt] = useState(false);
     const [openUpload, setOpenUpload] = useState(false);
     const [uploadLink, setUploadLink] = useState('');
+    const [reservationSelected, setReservationSelected] = useState([]);
 
 
     const [reservations, setReservations] = useState([]);
@@ -2530,6 +2532,7 @@ const PaymentContainer = () => {
                 </Title>
                 <ContainerGlobal
                     gap='60px'>
+
                     <ContainerGlobal
 
 
@@ -3019,12 +3022,374 @@ const PaymentContainer = () => {
 
     const handleOpenUpload = (value) => {
         setOpenUpload(true);
-        setUploadLink(value);
+        setUploadLink(value.payment.paymentImage);
+        setReservationSelected(value)
     }
 
     const handleCloseUpload = (value) => {
         setOpenUpload(false);
+        setReservationSelected([])
         setUploadLink('');
+    }
+
+    const approveReceipt = () => {
+        let paymentMade = 0;
+        if (reservationSelected.payment.paymentType == "Down Payment") {
+            paymentMade = reservationSelected.payment.grandTotal / 2;
+        }
+        else if (reservationSelected.payment.paymentType == "Full Payment") {
+            paymentMade = reservationSelected.payment.grandTotal;
+        }
+        axios.patch('http://localhost:3001/api/updateGrandTotal/' + reservationSelected.payment.id, {
+            paymentMade: paymentMade,
+        }).then((result) => {
+            console.log(result.data)
+
+            axios.patch('http://localhost:3001/api/updateReservation/' + reservationSelected.id, {
+                reservationStatus: 'RESERVED',
+            }).then((result) => {
+                console.log(result.data)
+                axios.get('http://localhost:3001/api/getAllReservationSummary').then((result) => {
+                    console.log(result.data)
+                    result.data.map((item, index, arr) => {
+                        if (item.reservation_id == reservationSelected.id) {
+                            axios.patch('http://localhost:3001/api/updateReservationSummary/' + item.id, {
+                                bookingStatus: 'RESERVED'
+                            }).then((result) => {
+                                console.log(result.data)
+                                console.log(item.reservation.payment.paymentMode.paymentMode)
+                                console.log(index)
+                                // console.log(index)
+
+                            }).catch((err) => {
+                                console.log(err)
+
+                            });
+                        }
+                        if (index == arr.length - 1) {
+                            axios.post('http://localhost:3001/api/sendReservationEmail', {
+                                email: item.reservation.guestInformation.user.email.toLocaleLowerCase(),
+                                birthDay: item.reservation.guestInformation.birthDate,
+                                nationality: item.reservation.guestInformation.nationality.toLocaleLowerCase(),
+                                emailAddress: item.reservation.guestInformation.user.email.toLocaleLowerCase(),
+                                address: item.reservation.guestInformation.address,
+                                contactNumber: item.reservation.guestInformation.user.contactNumber,
+                                firstName: item.reservation.guestInformation.firstName.toLocaleLowerCase(),
+                                lastName: item.reservation.guestInformation.lastName.toLocaleLowerCase(),
+                                reservationStatus: item.reservation.reservationStatus,
+                                accountName: item.reservation.payment.paymentMode.accountName,
+                                accountNumber: item.reservation.payment.paymentMode.accountNumber,
+                                paymentType: item.reservation.payment.paymentType,
+                                paymentMode: item.reservation.payment.paymentMode.paymentMode,
+                                reservationNumber: item.reservation.reservationReferenceNumber,
+                                reservationDate: new Date(item.reservation.reservationDate).toLocaleDateString() + " " + new Date(item.reservation.reservationDate).toLocaleTimeString(),
+                                reservationId: item.reservation.id,
+                                role: item.reservation.guestInformation.user.role,
+                                grandTotal: item.reservation.payment.grandTotal,
+                                discountType: item.reservation.payment.discount.discountType,
+                                expirationDate: new Date(new Date(item.reservation.reservationDate).getTime() + 60 * 60 * 24 * 1000).toLocaleDateString() + " " + new Date(item.reservation.reservationDate).toLocaleTimeString(),
+                                amountPaid: item.reservation.payment.paymentMade,
+                                // payment: ,
+                                // reservedRooms: ,
+                            }).then((result) => {
+                                console.log(result)
+                                window.location.reload();
+
+                            }).catch((err) => {
+                                console.log(err)
+
+                            });
+
+                        }
+                    })
+                }).catch((err) => {
+                    console.log(err)
+
+                });
+            }).catch((err) => {
+                console.log(err)
+
+            });
+
+
+        }).catch((err) => {
+            console.log(err)
+        });
+    }
+
+
+
+    const declineReciept = () => {
+
+        const formData = new FormData();
+
+        formData.append('paymentImage', 'asdsa');
+        formData.append('paymentStatus', 'reciept declined');
+        axios.post('http://localhost:3001/api/deleteImage', {
+            filePath: reservationSelected.payment.paymentImage
+        }).then((result) => {
+            console.log(result.data)
+            axios.patch('http://localhost:3001/api/updatePaymentPhoto/' + reservationSelected.payment.id, formData).then((result) => {
+                console.log(result.data)
+                
+                axios.post('http://localhost:3001/api/sendReservationEmail', {
+                    email: reservationSelected.guestInformation.user.email.toLocaleLowerCase(),
+                    birthDay: reservationSelected.guestInformation.birthDate,
+                    nationality: reservationSelected.guestInformation.nationality.toLocaleLowerCase(),
+                    emailAddress: reservationSelected.guestInformation.user.email.toLocaleLowerCase(),
+                    address: reservationSelected.guestInformation.address,
+                    contactNumber: reservationSelected.guestInformation.user.contactNumber,
+                    firstName: reservationSelected.guestInformation.firstName.toLocaleLowerCase(),
+                    lastName: reservationSelected.guestInformation.lastName.toLocaleLowerCase(),
+                    reservationStatus: 'proof declined',
+                    accountName: reservationSelected.payment.paymentMode.accountName,
+                    accountNumber: reservationSelected.payment.paymentMode.accountNumber,
+                    paymentType: reservationSelected.payment.paymentType,
+                    paymentMode: reservationSelected.payment.paymentMode.paymentMode,
+                    reservationNumber: reservationSelected.reservationReferenceNumber,
+                    reservationDate: new Date(reservationSelected.reservationDate).toLocaleDateString() + " " + new Date(reservationSelected.reservationDate).toLocaleTimeString(),
+                    reservationId: reservationSelected.id,
+                    role: reservationSelected.guestInformation.user.role,
+                    grandTotal: reservationSelected.payment.grandTotal,
+                    discountType: reservationSelected.payment.discount.discountType,
+                    expirationDate: new Date(new Date(reservationSelected.reservationDate).getTime() + 60 * 60 * 24 * 1000).toLocaleDateString() + " " + new Date(reservationSelected.reservationDate).toLocaleTimeString(),
+                    amountPaid: reservationSelected.payment.paymentMade,
+                    // payment: ,
+                    // reservedRooms: ,
+                }).then((result) => {
+                    console.log(result)
+                    window.location.reload();
+
+                }).catch((err) => {
+                    console.log(err)
+
+                });
+            }).catch((err) => {
+                console.log(err.data)
+
+            });
+        }).catch((err) => {
+
+        })
+
+
+        // let paymentMade = 0;
+        // if (reservationSelected.payment.paymentType == "Down Payment") {
+        //     paymentMade = reservationSelected.payment.grandTotal / 2;
+        // }
+        // else if (reservationSelected.payment.paymentType == "Full Payment") {
+        //     paymentMade = reservationSelected.payment.grandTotal;
+        // }
+        // axios.patch('http://localhost:3001/api/updateGrandTotal/' + reservationSelected.payment.id, {
+        //     paymentMade: paymentMade,
+        // }).then((result) => {
+        //     console.log(result.data)
+
+        //     axios.patch('http://localhost:3001/api/updateReservation/' + reservationSelected.id, {
+        //         reservationStatus: 'RESERVED',
+        //     }).then((result) => {
+        //         console.log(result.data)
+        //         axios.get('http://localhost:3001/api/getAllReservationSummary').then((result) => {
+        //             console.log(result.data)
+        //             result.data.map((item, index, arr) => {
+        //                 if (item.reservation_id == reservationSelected.id) {
+        //                     axios.patch('http://localhost:3001/api/updateReservationSummary/' + item.id, {
+        //                         bookingStatus: 'RESERVED'
+        //                     }).then((result) => {
+        //                         console.log(result.data)
+        //                         console.log(item.reservation.payment.paymentMode.paymentMode)
+        //                         console.log(index)
+        //                         // console.log(index)
+
+        //                     }).catch((err) => {
+        //                         console.log(err)
+
+        //                     });
+        //                 }
+        //                 if (index == arr.length - 1) {
+        //                     axios.post('http://localhost:3001/api/sendReservationEmail', {
+        //                         email: item.reservation.guestInformation.user.email.toLocaleLowerCase(),
+        //                         birthDay: item.reservation.guestInformation.birthDate,
+        //                         nationality: item.reservation.guestInformation.nationality.toLocaleLowerCase(),
+        //                         emailAddress: item.reservation.guestInformation.user.email.toLocaleLowerCase(),
+        //                         address: item.reservation.guestInformation.address,
+        //                         contactNumber: item.reservation.guestInformation.user.contactNumber,
+        //                         firstName: item.reservation.guestInformation.firstName.toLocaleLowerCase(),
+        //                         lastName: item.reservation.guestInformation.lastName.toLocaleLowerCase(),
+        //                         reservationStatus: item.reservation.reservationStatus,
+        //                         accountName: item.reservation.payment.paymentMode.accountName,
+        //                         accountNumber: item.reservation.payment.paymentMode.accountNumber,
+        //                         paymentType: item.reservation.payment.paymentType,
+        //                         paymentMode: item.reservation.payment.paymentMode.paymentMode,
+        //                         reservationNumber: item.reservation.reservationReferenceNumber,
+        //                         reservationDate: new Date(item.reservation.reservationDate).toLocaleDateString() + " " + new Date(item.reservation.reservationDate).toLocaleTimeString(),
+        //                         reservationId: item.reservation.id,
+        //                         role: item.reservation.guestInformation.user.role,
+        //                         grandTotal: item.reservation.payment.grandTotal,
+        //                         discountType: item.reservation.payment.discount.discountType,
+        //                         expirationDate: new Date(new Date(item.reservation.reservationDate).getTime() + 60 * 60 * 24 * 1000).toLocaleDateString() + " " + new Date(item.reservation.reservationDate).toLocaleTimeString(),
+        //                         amountPaid: item.reservation.payment.paymentMade,
+        //                         // payment: ,
+        //                         // reservedRooms: ,
+        //                     }).then((result) => {
+        //                         console.log(result)
+        //                         window.location.reload();
+
+        //                     }).catch((err) => {
+        //                         console.log(err)
+
+        //                     });
+
+        //                 }
+        //             })
+        //         }).catch((err) => {
+        //             console.log(err)
+
+        //         });
+        //     }).catch((err) => {
+        //         console.log(err)
+
+        //     });
+
+
+        // }).catch((err) => {
+        //     console.log(err)
+        // });
+    }
+
+
+
+    const paymentStatusStyle = (value) => {
+        if (value == 'pending') {
+            return <ContainerGlobal
+                w='100px'
+                h='auto'
+                margin='0px auto'
+                bg='rgb(205, 161, 65, .2)'
+                direction='row'
+                padding='2px 0px'
+                justify='center'
+                align='center'
+                border='2px solid rgb(205, 161, 65)'
+                gap='10px'
+                borderRadius='.5rem'
+            >
+                <Title
+                    family='Helvetica'
+                    size='12px'
+                    color='BLACK'
+                    fstyle='normal'
+                    display='inline'
+                    padding='5px 10px'
+                >
+                    {value}
+                </Title>
+            </ContainerGlobal>
+        }
+        else if (value == 'partial') {
+            return <ContainerGlobal
+                w='100px'
+                h='auto'
+                margin='0px auto'
+                bg='rgb(0, 0, 255, .2)'
+                direction='row'
+                padding='2px 0px'
+                justify='center'
+                align='center'
+                border='2px solid rgb(0, 0, 255)'
+                gap='10px'
+                borderRadius='.5rem'
+            >
+                <Title
+                    family='Helvetica'
+                    size='12px'
+                    color='BLACK'
+                    fstyle='normal'
+                    display='inline'
+                    padding='5px 10px'
+                >
+                    {value}
+                </Title>
+            </ContainerGlobal>
+        }
+        else if (value == 'fully paid') {
+            return <ContainerGlobal
+                w='100px'
+                h='auto'
+                margin='0px auto'
+                bg='rgb(0, 255, 0, .2)'
+                direction='row'
+                padding='2px 0px'
+                justify='center'
+                align='center'
+                border='2px solid rgb(0, 255, 0)'
+                gap='10px'
+                borderRadius='.5rem'
+            >
+                <Title
+                    family='Helvetica'
+                    size='12px'
+                    color='BLACK'
+                    fstyle='normal'
+                    display='inline'
+                    padding='5px 10px'
+                >
+                    {value}
+                </Title>
+            </ContainerGlobal>
+        }
+        else if (value == 'cancelled') {
+            return <ContainerGlobal
+                w='100px'
+                h='auto'
+                margin='0px auto'
+                bg='rgb(255, 0, 0, .2)'
+                direction='row'
+                padding='2px 0px'
+                justify='center'
+                align='center'
+                border='2px solid rgb(255, 0, 0)'
+                gap='10px'
+                borderRadius='.5rem'
+            >
+                <Title
+                    family='Helvetica'
+                    size='12px'
+                    color='BLACK'
+                    fstyle='normal'
+                    display='inline'
+                    padding='5px 10px'
+                >
+                    {value}
+                </Title>
+            </ContainerGlobal>
+        }
+        else if (value == 'reciept declined') {
+            return <ContainerGlobal
+                w='100px'
+                h='auto'
+                margin='0px auto'
+                bg='rgb(0, 0, 0, .2)'
+                direction='row'
+                padding='2px 0px'
+                justify='center'
+                align='center'
+                border='2px solid rgb(0, 0, 0)'
+                gap='10px'
+                borderRadius='.5rem'
+            >
+                <Title
+                    family='Helvetica'
+                    size='12px'
+                    color='BLACK'
+                    fstyle='normal'
+                    display='inline'
+                    padding='5px 10px'
+                >
+                    {value}
+                </Title>
+            </ContainerGlobal>
+        }
     }
     return (
         <Container>
@@ -3196,7 +3561,9 @@ const PaymentContainer = () => {
                     w='100%'
                     margin='0px'
                 ></HorizontalLine>
-                <TableContainer>
+                <TableContainer
+                    fontsize='.8vw'
+                >
                     <Tr>
                         <Th align='center' style={{ fontSize: '' }}>Reservation Date</Th>
                         <Th align='center' style={{ fontSize: '' }}>Reservation Number</Th>
@@ -3217,43 +3584,22 @@ const PaymentContainer = () => {
                             <Tr>
                                 <Td align='center'>{new Date(item.reservationDate).toLocaleDateString()}</Td>
                                 <Td align='center'>{item.reservationReferenceNumber}</Td>
-                                <Td align='center'>{item.guestInformation.firstName.toLowerCase()} {item.guestInformation.lastName.toLowerCase()}</Td>
+                                <Td align='center'>{item.guestInformation.firstName.toLowerCase()}, {item.guestInformation.lastName.toLowerCase()}</Td>
                                 <Td align='center'>{item.payment.paymentType}</Td>
                                 <Td align='center'>{item.payment.discount.discountType}</Td>
 
                                 <Td align='center'>{numberFormat(item.payment.grandTotal)}</Td>
                                 <Td align='center'>{numberFormat(item.payment.paymentMade)}</Td>
                                 <Td align='center'>{numberFormat(item.payment.balance)}</Td>
-                                <Td align='center'>{item.payment.paymentImage != null ? <a style={{ color: 'blue', cursor: 'pointer' }} onClick={() => { handleOpenUpload(item.payment.paymentImage) }}>Uploaded</a> : "Empty"}</Td>
+                                <Td align='center'>{item.payment.paymentImage != null ? <a style={{ color: 'blue', cursor: 'pointer' }} onClick={() => { handleOpenUpload(item) }}>Uploaded</a> : "Empty"}</Td>
                                 <Td align='center'>
-                                    <ContainerGlobal
-                                        w='100px'
-                                        h='auto'
-                                        margin='0px auto'
-                                        bg='rgb(253, 161, 114, .2)'
-                                        direction='row'
-                                        padding='2px 0px'
-                                        justify='center'
-                                        align='center'
-                                        border='2px solid rgb(255, 215, 0)'
-                                        gap='10px'
-                                        borderRadius='.5rem'
-                                    >
-                                        <Title
-                                            family='Helvetica'
-                                            size='12px'
-                                            color='BLACK'
-                                            fstyle='normal'
-                                            display='inline'
-                                            padding='5px 10px'
-                                        >
-                                            {item.payment.paymentStatus}
-                                        </Title>
-                                    </ContainerGlobal>
+                                    {paymentStatusStyle(item.payment.paymentStatus)}
+
                                 </Td>
                                 <Td align='center'><ActionButtonPayment
                                     view={() => setShowDetails(prev => !prev)}
                                     pay={() => setShowEditDetails(prev => !prev)}
+                                    print={() => setShowReceipt(prev => !prev)}
                                 /></Td>
                             </Tr>
                         ))
@@ -3455,17 +3801,20 @@ const PaymentContainer = () => {
                 <Box sx={style}>
                     <ContainerGlobal direction='column' align='center' justify='center' gap='40px'>
                         <Title
-                        family='arial'
-                        fstyle='normal'
+                            family='arial'
+                            fstyle='normal'
                         >
                             Uploaded proof of payment.
                         </Title>
                         <img src={'http://localhost:3001/' + uploadLink} width="auto" height='500px' />
-                        
+
                         <ContainerGlobal gap='20px'>
-                        <Button variant="contained" color="success">Approve</Button>
-                        <Button variant="contained" color="error">Decline</Button>
+                            <Button disabled={reservationSelected.length != 0 ? reservationSelected.payment.paymentStatus == 'pending' ? false : true : ""} variant="contained" color="success" onClick={() => { approveReceipt() }}>Approve</Button>
+                            <Button disabled={reservationSelected.length != 0 ? reservationSelected.payment.paymentStatus == 'pending' ? false : true : ""} variant="contained" color="error" onClick={() => { declineReciept() }}>Decline</Button>
                         </ContainerGlobal>
+                        <Button variant="contained" onClick={() => {
+                            handleCloseUpload()
+                        }}>Close</Button>
                     </ContainerGlobal>
                 </Box>
 

@@ -34,6 +34,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import ActionButton from '../../components/actionButton/ActionButton';
+import VisibilityIcon from '@mui/icons-material/Visibility';
 import axios from 'axios';
 import { Alert, Fade, Pagination } from '@mui/material';
 
@@ -102,14 +103,6 @@ const MenuProps = {
     },
 };
 
-const names = [
-    'Free Wifi',
-    'Television',
-    'Wash Room',
-    'Mineral Water',
-    'Spotless Linen',
-    'Amenities',
-];
 
 
 function getStyles(name, personName, theme) {
@@ -143,6 +136,9 @@ const RoomDetailsContainer = () => {
     const [roomDescription, setRoomDescription] = useState("");
     const [roomImage, setRoomImage] = useState([]);
     const [roomImageUpload, setRoomImageUpload] = useState([]);
+    const [roomTypeImagesDb, setRoomTypeImagesDb] = useState([]);
+
+    const [fileError, setFileError] = useState("");
 
 
     const [value, setValue] = useState(Date.now());
@@ -254,6 +250,18 @@ const RoomDetailsContainer = () => {
         }).catch((err) => {
             console.log(err.res)
         })
+
+        Axios.get('http://localhost:3001/api/getAllRoomTypeImages').then((result) => {
+            setRoomTypeImagesDb([])
+            for (let index = 0; index < result.data.length; index++) {
+                if (result.data[index].roomType_id == roomTypeValueId) {
+                    setRoomTypeImagesDb((oldData) => [...oldData, result.data[index].roomImages])
+                }
+
+            }
+        }).catch((err) => {
+
+        });
 
     }, [roomTypeValueId])
 
@@ -410,10 +418,6 @@ const RoomDetailsContainer = () => {
         e.preventDefault();
 
         const formData = new FormData();
-        for (let index = 0; index < roomImageUpload.length; index++) {
-            formData.append('roomImages', roomImageUpload[index])
-            console.log(roomImageUpload[index])
-        }
         formData.append('roomType', roomTypeValue)
         formData.append('roomRate', roomRate)
         formData.append('maxAdultOccupancy', maxAdultOccupancy)
@@ -434,6 +438,21 @@ const RoomDetailsContainer = () => {
             //     roomImages: roomImageUpload,
             // }
         ).then((res1) => {
+
+
+            for (let index = 0; index < roomImageUpload.length; index++) {
+                const formData2 = new FormData();
+                console.log(roomImageUpload[index])
+                formData2.append('roomImages', roomImageUpload[index])
+                formData2.append('roomType_id', res1.data.new_roomType.id)
+                Axios.post("http://localhost:3001/api/addRoomTypeImages", formData2).then((result) => {
+                    console.log(result.data)
+                }).catch((err) => {
+                    console.log(err)
+
+                });
+
+            }
             Axios.get('http://localhost:3001/api/getAllServices').then((services) => {
                 selectedServices.map((items) => {
                     for (let index = 0; index < services.data.length; index++) {
@@ -520,31 +539,77 @@ const RoomDetailsContainer = () => {
     }
 
     const uploadImages = (e) => {
-        setRoomImageUpload(e.target.files);
-        console.log(roomImageUpload)
-        if (e.target.files) {
-            const fileArray = Array.from(e.target.files).map((file) => URL.createObjectURL(file));
-
-            setSelectedImages((prevImage) => prevImage.concat(fileArray))
-            Array.from(e.target.files).map(
-                (file) => URL.revokeObjectURL(file)
-            )
+        console.log(roomImageUpload.length + e.target.files.length)
+        if (e.target.files.length > 9 || roomImageUpload.length + e.target.files.length > 9) {
+            setFileError('Sorry, The maximum photo is 9.')
+            alert('Sorry, The maximum photo is 9.')
         }
+        else {
+            console.log("e.target.files", e.target.files)
+            console.log("e.target.file", e.target.file)
+            console.log("e.target.files[0]", e.target.files[0])
+            for (let index = 0; index < e.target.files.length; index++) {
+                setRoomImageUpload((prevImage) => prevImage.concat(e.target.files[index]));
+            }
+
+            console.log(roomImageUpload)
+            if (e.target.files) {
+                const fileArray = Array.from(e.target.files).map((file) => URL.createObjectURL(file));
+
+                setSelectedImages((prevImage) => prevImage.concat(fileArray))
+                Array.from(e.target.files).map(
+                    (file) => URL.revokeObjectURL(file)
+                )
+            }
+        }
+
     }
 
     const renderPhoto = (source) => {
-        return source.map((photo) => {
+        return source.map((photo, index) => {
             return <ImageListItem
                 style={{
                     backgroundColor: 'rgba(0, 0, 0, .1)',
-                    width: 'auto', display: 'flex', justifyContent: 'center',
+                    width: 'auto',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    flexDirection: 'row',
+                    gap: '10px',
                     alignItems: 'center',
                     backgroundImage: `url(${photo})`,
                     backgroundSize: 'cover',
 
-                }} />
+                }}>
+
+                <a target='_blank' href={photo}>
+                    <IconButton sx={{ p: '8px', backgroundColor: '#D2C3A4' }} aria-label="search" title='Edit' onClick={() => { }}>
+                        <VisibilityIcon style={{ color: '#2e2e2e', fontSize: '18px' }} title='View' />
+                    </IconButton>
+                </a>
+                <IconButton sx={{ p: '8px', backgroundColor: '#D2C3A4' }} aria-label="search" title='Edit' onClick={() => { removeUpload(index) }}>
+                    <CloseIcon style={{ color: '#2e2e2e', fontSize: '18px' }} title='View' />
+                </IconButton>
+            </ImageListItem>
         })
     }
+
+    const removeUpload = (index) => {
+        // console.log(index)
+        console.log(roomImageUpload[index])
+        console.log(selectedImages[index])
+        setRoomImageUpload(oldData => oldData.filter(obj => {
+            return obj !== roomImageUpload[index];
+        }));
+        setSelectedImages(oldData => oldData.filter(obj => {
+            return obj !== selectedImages[index];
+        }));
+    }
+
+    // useEffect(() => {
+    //     console.log(roomImageUpload)
+    //     console.log(selectedImages)
+    // }, [roomImageUpload, selectedImages])
+
 
     const [alertOpen, setAlertOpen] = React.useState(false);
 
@@ -658,7 +723,7 @@ const RoomDetailsContainer = () => {
                 padding='30px'
                 margin='20px 0px 10px 0px'
                 gap='10px'
-                
+
             >
                 <Title
                     size='26px'
@@ -724,9 +789,9 @@ const RoomDetailsContainer = () => {
 
                     ))}
                 </TableContainer>
-                
+
             </ContainerGlobal>
-                <Pagination style={{marginBottom: '40px'}} count={10} page={page} onChange={handleChangePagination} />
+            <Pagination style={{ marginBottom: '40px' }} count={10} page={page} onChange={handleChangePagination} />
 
             <Button
                 variant="contained"
@@ -899,15 +964,44 @@ const RoomDetailsContainer = () => {
 
                             <Button variant="contained" component="label">
                                 Upload
-                                <input hidden accept="image/*" multiple type="file"
+                                <input hidden accept="image/*" multiple type="file" id='photoUpload'
                                     onChange={
+
                                         uploadImages
                                     }
-                                    // required
+                                // required
                                 />
                             </Button>
                             <ImageList sx={{ width: '100%', height: 'auto' }} cols={4} rowHeight={164}>
-                                {renderPhoto(selectedImages)}
+                                {/* {renderPhoto(selectedImages)} */}
+                                {selectedImages.length != 0 ?
+                                    selectedImages.map((photo, index) => (
+                                        <ImageListItem
+                                            style={{
+                                                backgroundColor: 'rgba(0, 0, 0, .1)',
+                                                width: 'auto',
+                                                display: 'flex',
+                                                justifyContent: 'center',
+                                                flexDirection: 'row',
+                                                gap: '10px',
+                                                alignItems: 'center',
+                                                backgroundImage: `url(${photo})`,
+                                                backgroundSize: 'cover',
+
+                                            }}>
+
+                                            <a target='_blank' href={photo}>
+                                                <IconButton sx={{ p: '8px', backgroundColor: '#D2C3A4' }} aria-label="search" title='Edit' onClick={() => { }}>
+                                                    <VisibilityIcon style={{ color: '#2e2e2e', fontSize: '18px' }} title='View' />
+                                                </IconButton>
+                                            </a>
+                                            <IconButton sx={{ p: '8px', backgroundColor: '#D2C3A4' }} aria-label="search" title='Edit' onClick={() => { removeUpload(index) }}>
+                                                <CloseIcon style={{ color: '#2e2e2e', fontSize: '18px' }} title='View' />
+                                            </IconButton>
+                                        </ImageListItem>
+                                    ))
+                                    :
+                                    ''}
                                 {/* {itemData.map((item) => (
                                     <ImageListItem
                                         style={{
@@ -1089,30 +1183,26 @@ const RoomDetailsContainer = () => {
                         <InputContainer>
 
                             <ImageList sx={{ width: '100%', height: 'auto' }} cols={4} rowHeight={164}>
-                                {roomImage.map((item) => (
-                                    <ImageListItem
-                                        style={{
-                                            backgroundColor: 'rgba(0, 0, 0, .1)',
-                                            width: '140px', height: '140px', display: 'flex', justifyContent: 'center',
-                                            alignItems: 'center',
-                                            backgroundImage: `url(http://localhost:3001/${item.path.replaceAll("\\", "/")})`,
-                                            backgroundSize: 'cover',
+                                {roomTypeImagesDb.length != 0 ?
+                                    roomTypeImagesDb.map((item) => (
+                                        <ImageListItem
+                                            style={{
+                                                backgroundColor: 'rgba(0, 0, 0, .1)',
+                                                width: '140px', height: '140px', display: 'flex', justifyContent: 'center',
+                                                alignItems: 'center',
+                                                backgroundImage: `url(http://localhost:3001/${item.replaceAll("\\", "/")})`,
+                                                backgroundSize: 'cover',
 
-                                        }}
-                                    >
-                                        {/* <label htmlFor="icon-button-file">
-                                            <Input
-                                                accept="image/*"
-                                                id="icon-button-file"
-                                                type="file" />
-                                            <IconButton aria-label="upload picture" component="span"
-                                                style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)', }} >
-                                                <PhotoCamera
-                                                    style={{ color: '#CCA041', fontSize: '60px', }} />
-                                            </IconButton>
-                                        </label> */}
-                                    </ImageListItem>
-                                ))}
+                                            }}
+                                        >
+                                            <a target='_blank' href={'http://localhost:3001/' + item}>
+                                                <IconButton sx={{ p: '8px', backgroundColor: '#D2C3A4' }} aria-label="search" title='Edit' onClick={() => { }}>
+                                                    <VisibilityIcon style={{ color: '#2e2e2e', fontSize: '18px' }} title='View' />
+                                                </IconButton>
+                                            </a>
+                                        </ImageListItem>
+                                    ))
+                                    : ""}
                             </ImageList>
                         </InputContainer>
 
@@ -1281,7 +1371,7 @@ const RoomDetailsContainer = () => {
                             style={{ textAlign: 'center', margin: '20px 0px 0px 0px', }}>
                             Upload Photo
                         </Typography>
-                        <Button variant="contained" component="label">
+                        <Button variant="contained" component="label" disabled={roomTypeImagesDb.length >= 9 ? true : false}>
                             Upload
                             <input hidden accept="image/*" multiple type="file"
                                 onChange={
@@ -1293,26 +1383,62 @@ const RoomDetailsContainer = () => {
                         <InputContainer>
 
                             <ImageList sx={{ width: '100%', height: 'auto' }} cols={4} rowHeight={164}>
-                                {roomImage.map((item) => (
-                                    <ImageListItem
-                                        style={{
-                                            backgroundColor: 'rgba(0, 0, 0, .1)',
-                                            width: '140px', height: '140px', display: 'flex', justifyContent: 'center',
-                                            alignItems: 'center',
-                                            backgroundImage: `url(http://localhost:3001/${item.path.replaceAll("\\", "/")})`,
-                                            backgroundSize: 'cover',
+                                {roomTypeImagesDb.length != 0 ?
+                                    roomTypeImagesDb.map((item, index) => (
+                                        <ImageListItem
+                                            style={{
+                                                
+                                                backgroundColor: 'rgba(0, 0, 0, .1)',
+                                                width: 'auto',
+                                                display: 'flex',
+                                                justifyContent: 'center',
+                                                flexDirection: 'row',
+                                                gap: '10px',
+                                                alignItems: 'center',
+                                                backgroundSize: 'cover',
+                                                backgroundImage: `url(http://localhost:3001/${item.replaceAll("\\", "/")})`,
 
-                                        }}>
-                                        {/* <label htmlFor="icon-button-file">
-                                            <Input accept="image/*" id="icon-button-file" type="file" />
-                                            <IconButton aria-label="upload picture" component="span"
-                                                style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)', }} >
-                                                <PhotoCamera
-                                                    style={{ color: '#CCA041', fontSize: '60px', }} />
+                                            }}
+                                        >
+                                            <a target='_blank' href={'http://localhost:3001/' + item}>
+                                                <IconButton sx={{ p: '8px', backgroundColor: '#D2C3A4' }} aria-label="search" title='Edit' onClick={() => { }}>
+                                                    <VisibilityIcon style={{ color: '#2e2e2e', fontSize: '18px' }} title='View' />
+                                                </IconButton>
+                                            </a>
+                                            <IconButton sx={{ p: '8px', backgroundColor: '#D2C3A4' }} aria-label="search" title='Edit' onClick={() => { removeUpload(index) }}>
+                                                <CloseIcon style={{ color: '#2e2e2e', fontSize: '18px' }} title='View' />
                                             </IconButton>
-                                        </label> */}
-                                    </ImageListItem>
-                                ))}
+                                        </ImageListItem>
+                                    ))
+                                    : ""}
+                                {selectedImages.length != 0 ?
+                                    selectedImages.map((photo, index) => (
+                                        <ImageListItem
+                                            style={{
+                                                backgroundColor: 'rgba(0, 0, 0, .1)',
+                                                width: 'auto',
+                                                display: 'flex',
+                                                justifyContent: 'center',
+                                                flexDirection: 'row',
+                                                gap: '10px',
+                                                alignItems: 'center',
+                                                backgroundSize: 'cover',
+                                                backgroundImage: `url(${photo})`,
+
+                                            }}>
+
+                                            <a target='_blank' href={photo}>
+                                                <IconButton sx={{ p: '8px', backgroundColor: '#D2C3A4' }} aria-label="search" title='Edit' onClick={() => { }}>
+                                                    <VisibilityIcon style={{ color: '#2e2e2e', fontSize: '18px' }} title='View' />
+                                                </IconButton>
+                                            </a>
+                                            <IconButton sx={{ p: '8px', backgroundColor: '#D2C3A4' }} aria-label="search" title='Edit' onClick={() => { removeUpload(index) }}>
+                                                <CloseIcon style={{ color: '#2e2e2e', fontSize: '18px' }} title='View' />
+                                            </IconButton>
+                                        </ImageListItem>
+                                    ))
+                                    :
+                                    ''}
                             </ImageList>
                         </InputContainer>
 

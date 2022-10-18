@@ -17,10 +17,10 @@ const ClientPaymentInfoCont = () => {
     const [previewImageError, setPreviewImageError] = useState('')
     const [imageToUpload, setImageToUpload] = useState([])
     const numberFormat = (value) =>
-    new Intl.NumberFormat('en-IN', {
-        style: 'currency',
-        currency: 'PHP'
-    }).format(value);
+        new Intl.NumberFormat('en-IN', {
+            style: 'currency',
+            currency: 'PHP'
+        }).format(value);
 
     useEffect(() => {
         axios.get('http://localhost:3001/auth/verify-token').then((authUser) => {
@@ -45,7 +45,7 @@ const ClientPaymentInfoCont = () => {
             new Date(Math.max.apply(null, reservation.map(function (items, index, arr) {
                 console.log("filter", index)
 
-                if (index == 1) {
+                if (index == 0) {
                     setActiveReservation(items)
                 }
             })));
@@ -63,6 +63,7 @@ const ClientPaymentInfoCont = () => {
     const imgTypes = ['image/png', 'image/jpeg',]
     const handleUpload = (e) => {
         setImageToUpload(e.target.files[0])
+        console.log(e.target.files[0])
         let selectedFile = e.target.files[0];
         if (selectedFile) {
             if (selectedFile && imgTypes.includes(selectedFile.type)) {
@@ -115,124 +116,328 @@ const ClientPaymentInfoCont = () => {
     }
 
     const paymentStatusStyle = (value) => {
-        if (value == 'PENDING') {
-            return <Title
-            family='raleway, sans-serif'
-            color='#CDA141'
-            weight='700'
-            size='24px'
-            fstyle='Normal'
-            align='Center'
-        >{value}</Title>
+        if (value.payment.paymentStatus.toUpperCase() == 'PENDING') {
+            return <div>
+                <StatusContainer>
+                    <Title
+                        family='raleway, sans-serif'
+                        color='#292929'
+                        weight='normal'
+                        size='24px'
+                        fstyle='Normal'
+                        align='Center'
+                    >
+                        Reservation reference Number:
+                    </Title>
+                    <Title
+                        family='raleway, sans-serif'
+                        color='#292929'
+                        weight='700'
+                        size='24px'
+                        fstyle='Normal'
+                        align='Center'
+                    >
+                        {value.reservationReferenceNumber}
+                    </Title>
+                </StatusContainer>
+                <StatusContainer>
+                    <Title
+                        family='raleway, sans-serif'
+                        color='#292929'
+                        weight='normal'
+                        size='24px'
+                        fstyle='Normal'
+                        align='Center'
+                    >
+                        Payment Status:
+                    </Title>
+
+                    <Title
+                        family='raleway, sans-serif'
+                        color='#CDA141'
+                        weight='700'
+                        size='24px'
+                        fstyle='Normal'
+                        align='Center'
+                    >{value.payment.paymentStatus.toUpperCase()}</Title>
+                </StatusContainer>
+                <Title
+                    family='poppins, sans-serif'
+                    weight='700'
+                    fstyle='Normal'
+                    size='20px'
+                    color='black'
+                    align='center'
+                    margin='10px 100px 20px 100px'
+                >
+                    <p style={{ fontWeight: 'normal' }}>To confirm your reservation please make your deposit amounting <b>{value.payment.paymentType == 'Down Payment' ? numberFormat(value.payment.grandTotal / 2) : numberFormat(value.payment.grandTotal)}</b> within the next 24 hours.<br></br> <i>"{value.length != 0 ? new Date(new Date(value.reservationDate).getTime() + 60 * 60 * 24 * 1000).toLocaleDateString() + " " + new Date(value.reservationDate).toLocaleTimeString() : ''}"</i></p>
+                </Title>
+            </div>
         }
-        else if (value == 'FULLY PAID'){
-            return <Title
-            family='raleway, sans-serif'
-            color='green'
-            weight='700'
-            size='24px'
-            fstyle='Normal'
-            align='Center'
-        >{value}</Title>
+        else if (value.payment.paymentStatus.toUpperCase() == 'FULLY PAID') {
+            return <div>
+                <StatusContainer>
+                    <Title
+                        family='raleway, sans-serif'
+                        color='#292929'
+                        weight='normal'
+                        size='24px'
+                        fstyle='Normal'
+                        align='Center'
+                    >
+                        Reservation reference Number:
+                    </Title>
+                    <Title
+                        family='raleway, sans-serif'
+                        color='#292929'
+                        weight='700'
+                        size='24px'
+                        fstyle='Normal'
+                        align='Center'
+                    >
+                        {value.reservationReferenceNumber}
+                    </Title>
+                </StatusContainer>
+                <StatusContainer>
+                    <Title
+                        family='raleway, sans-serif'
+                        color='#292929'
+                        weight='normal'
+                        size='24px'
+                        fstyle='Normal'
+                        align='Center'
+                    >
+                        Payment Status:
+                    </Title>
+
+                    <Title
+                        family='raleway, sans-serif'
+                        color='green'
+                        weight='700'
+                        size='24px'
+                        fstyle='Normal'
+                        align='Center'
+                    >{value.payment.paymentStatus.toUpperCase()}</Title>
+                </StatusContainer>
+                <Title
+                    family='poppins, sans-serif'
+                    weight='700'
+                    fstyle='Normal'
+                    size='20px'
+                    color='black'
+                    align='center'
+                    margin='10px 100px 20px 100px'
+                >
+                    <p style={{ fontWeight: 'normal' }}> Your payment has been verified. Thank you!</p>
+                </Title>
+            </div>
         }
-        else if (value == 'PARTIAL'){
-            return <Title
-            family='raleway, sans-serif'
-            color='blue'
-            weight='700'
-            size='24px'
-            fstyle='Normal'
-            align='Center'
-        >{value}</Title>
+        else if (value.payment.paymentStatus.toUpperCase() == 'PARTIAL') {
+            return <div>
+                <StatusContainer>
+                    <Title
+                        family='raleway, sans-serif'
+                        color='#292929'
+                        weight='normal'
+                        size='24px'
+                        fstyle='Normal'
+                        align='Center'
+                    >
+                        Reservation reference Number:
+                    </Title>
+                    <Title
+                        family='raleway, sans-serif'
+                        color='#292929'
+                        weight='700'
+                        size='24px'
+                        fstyle='Normal'
+                        align='Center'
+                    >
+                        {value.reservationReferenceNumber}
+                    </Title>
+                </StatusContainer>
+                <StatusContainer>
+                    <Title
+                        family='raleway, sans-serif'
+                        color='#292929'
+                        weight='normal'
+                        size='24px'
+                        fstyle='Normal'
+                        align='Center'
+                    >
+                        Payment Status:
+                    </Title>
+
+                    <Title
+                        family='raleway, sans-serif'
+                        color='blue'
+                        weight='700'
+                        size='24px'
+                        fstyle='Normal'
+                        align='Center'
+                    >{value.payment.paymentStatus.toUpperCase()}</Title>
+                </StatusContainer>
+                <Title
+                    family='poppins, sans-serif'
+                    weight='700'
+                    fstyle='Normal'
+                    size='20px'
+                    color='black'
+                    align='center'
+                    margin='10px 100px 20px 100px'
+                >
+                    <p style={{ fontWeight: 'normal' }}> Your payment has been varified. Thank you!</p>
+                </Title>
+            </div>
         }
-        else if (value == 'CANCELLED'){
-            return <Title
-            family='raleway, sans-serif'
-            color='red'
-            weight='700'
-            size='24px'
-            fstyle='Normal'
-            align='Center'
-        >{value}</Title>
+        else if (value.payment.paymentStatus.toUpperCase() == 'CANCELLED') {
+            return <div>
+                <StatusContainer>
+                    <Title
+                        family='raleway, sans-serif'
+                        color='#292929'
+                        weight='normal'
+                        size='24px'
+                        fstyle='Normal'
+                        align='Center'
+                    >
+                        Reservation reference Number:
+                    </Title>
+                    <Title
+                        family='raleway, sans-serif'
+                        color='#292929'
+                        weight='700'
+                        size='24px'
+                        fstyle='Normal'
+                        align='Center'
+                    >
+                        {value.reservationReferenceNumber}
+                    </Title>
+                </StatusContainer>
+                <StatusContainer>
+                    <Title
+                        family='raleway, sans-serif'
+                        color='#292929'
+                        weight='normal'
+                        size='24px'
+                        fstyle='Normal'
+                        align='Center'
+                    >
+                        Payment Status:
+                    </Title>
+
+                    <Title
+                        family='raleway, sans-serif'
+                        color='red'
+                        weight='700'
+                        size='24px'
+                        fstyle='Normal'
+                        align='Center'
+                    >{value.payment.paymentStatus.toUpperCase()}</Title>
+                </StatusContainer>
+                <Title
+                    family='poppins, sans-serif'
+                    weight='700'
+                    fstyle='Normal'
+                    size='20px'
+                    color='black'
+                    align='center'
+                    margin='10px 100px 20px 100px'
+                >
+                    <p style={{ fontWeight: 'normal' }}> Thank you for choosing RM Luxe Hotel. Unfortunately, your payment has been <b>CANCELLED </b> due to unsettled fees. If you have already send your proof of payment yet received this message, maybe your payment is not yet verified. Kindly disregard this and we will send you another email and update your payment status once your booking is confirmed.</p>
+                </Title>
+            </div>
+        }
+        else if (value.payment.paymentStatus.toUpperCase() == 'RECIEPT DECLINED') {
+            return <div>
+                <StatusContainer>
+                    <Title
+                        family='raleway, sans-serif'
+                        color='#292929'
+                        weight='normal'
+                        size='24px'
+                        fstyle='Normal'
+                        align='Center'
+                    >
+                        Reservation reference Number:
+                    </Title>
+                    <Title
+                        family='raleway, sans-serif'
+                        color='#292929'
+                        weight='700'
+                        size='24px'
+                        fstyle='Normal'
+                        align='Center'
+                    >
+                        {value.reservationReferenceNumber}
+                    </Title>
+                </StatusContainer>
+                <StatusContainer>
+                    <Title
+                        family='raleway, sans-serif'
+                        color='#292929'
+                        weight='normal'
+                        size='24px'
+                        fstyle='Normal'
+                        align='Center'
+                    >
+                        Payment Status:
+                    </Title>
+
+                    <Title
+                        family='raleway, sans-serif'
+                        color='red'
+                        weight='700'
+                        size='24px'
+                        fstyle='Normal'
+                        align='Center'
+                    >{value.payment.paymentStatus.toUpperCase()}</Title>
+                </StatusContainer>
+                <Title
+                    family='poppins, sans-serif'
+                    weight='700'
+                    fstyle='Normal'
+                    size='20px'
+                    color='black'
+                    align='center'
+                    margin='10px 100px 20px 100px'
+                >
+                    <p style={{ fontWeight: 'normal' }}> The proof of payment that you have uploaded may not be verified either because of the image quality. Kindly upload a clear and valid photo of your receipt for verification. Thank you!</p>
+                </Title>
+            </div>
         }
     }
     return (
         <Container>
-            <Title
-                padding='15px 80px 15px 80px'
-                bg='#272727'
-                family='raleway, sans-serif'
-                color='white'
-                weight='400'
-                size='25px'
-                fstyle='Normal'
-                margin='50px 0px 10px 0px'
-                align='Center'
-            >
-                Payment Status
-            </Title>
-            <StatusContainer>
+            {activeReservation.length != 0 ?
                 <Title
+                    padding='15px 80px 15px 80px'
+                    bg='#272727'
                     family='raleway, sans-serif'
-                    color='#292929'
-                    weight='normal'
-                    size='24px'
+                    color='white'
+                    weight='400'
+                    size='25px'
                     fstyle='Normal'
+                    margin='50px 0px 10px 0px'
                     align='Center'
                 >
-                    Reservation reference Number:
-                </Title>
-                <Title
-                    family='raleway, sans-serif'
-                    color='#292929'
-                    weight='700'
-                    size='24px'
-                    fstyle='Normal'
-                    align='Center'
-                >
-                    {activeReservation.length != 0 ? activeReservation.reservationReferenceNumber : ''}
-                </Title>
-            </StatusContainer>
-            <StatusContainer>
-                <Title
-                    family='raleway, sans-serif'
-                    color='#292929'
-                    weight='normal'
-                    size='24px'
-                    fstyle='Normal'
-                    align='Center'
-                >
-                    Payment Status:
-                </Title>
+                    Upload Proof of Payment
+                </Title> : ""}
 
-                {activeReservation.length != 0 ? paymentStatusStyle(activeReservation.payment.paymentStatus.toUpperCase()) : ''}
-            </StatusContainer>
-            <Title
-                family='poppins, sans-serif'
-                weight='700'
-                fstyle='Normal'
-                size='20px'
-                color='black'
-                align='center'
-                margin='10px 0px 20px 0px'
-            >
-                <p style={{fontWeight: 'normal'}}>To confirm your reservation please make your deposit amounting <b>{activeReservation.length != 0 ? activeReservation.payment.paymentType == 'Down Payment' ? numberFormat(activeReservation.payment.grandTotal / 2) : numberFormat(activeReservation.payment.grandTotal) : ""}</b> within the next 24 hours.<br></br> <i>"{activeReservation.length != 0 ? new Date(new Date(activeReservation.reservationDate).getTime() + 60 * 60 * 24 * 1000).toLocaleDateString() + " " + new Date(activeReservation.reservationDate).toLocaleTimeString() : ''  }"</i></p>
-            </Title>
-            <Title
-                padding='15px 80px 15px 80px'
-                bg='#272727'
-                family='raleway, sans-serif'
-                color='white'
-                weight='400'
-                size='25px'
-                fstyle='Normal'
-                margin='50px 0px 10px 0px'
-                align='Center'
-            >
-                Upload Proof of Payment
-            </Title>
-            <PhotoBox>
-                {activeReservation.length != 0 ?
+            {activeReservation.length != 0 ?
+                <div>
+
+                    {paymentStatusStyle(activeReservation)}
+                </div>
+                :
+                <Title
+                    margin='100px'
+                >Sorry but you don't have any reservations to pay.</Title>
+            }
+
+
+            {activeReservation.length != 0 ?
+                <PhotoBox>
                     <div style={{ width: '95%', height: 'auto', overflow: 'hidden', padding: '10px' }}>
                         {activeReservation.payment.paymentImage != null ?
                             <a target='_blank' href={'http://localhost:3001/' + activeReservation.payment.paymentImage}><img src={'http://localhost:3001/' + activeReservation.payment.paymentImage} style={{ width: '100%', height: 'auto' }} /></a>
@@ -250,51 +455,58 @@ const ClientPaymentInfoCont = () => {
                             </Title>
                         }
                     </div>
-                    :
-                    ""
 
-                }
+                </PhotoBox>
+                :
+                ""
 
-            </PhotoBox>
-            <div style={{ width: '700px', display: 'flex', justifyContent: 'center' }}>
-                <p style={{ color: 'red' }}>{previewImageError}</p>
-                <a target="_blank" href={previewImage}><img src={previewImage} width='200px' height='auto' style={{ border: '1px solid black', cursor: 'pointer' }} /></a>
-            </div>
-            <Box
-                component='form'
-                onSubmit={uploadImage}
-                style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-                <FormButton
-                    w='200px'
-                    h='30px'
-                    border="none"
-                    margin='20px 0px 0px 0px'
-                    fontsize='16px'
-                    type='file'
-                    textcolor='black'
-                    id='upload'
-                    onChange={handleUpload}
-                />
-                <Button2
-                    // whileHover={{ backgroundColor: "#302B20", color: "#A3987D" }}
-                    w='150px'
-                    h='40px'
-                    textcolor='#A3987D'
-                    fam='raleway'
-                    weight='-400'
-                    fontStyle='normal'
-                    radius="0px"
-                    border="1px solid #9E9174"
-                    margin='10px 0px 90px 0px'
-                    fontsize='16px'
-                    bg={previewImageError.length != 0 || previewImage.length == 0 ? 'rgb(0,0,0,0.2)' : '#302B20'}
-                    disabled={previewImageError.length != 0 || previewImage.length == 0 ? true : false}
-                    // onClick={uploadImage}
-                    type='submit'
-                >
-                    Save
-                </Button2>
-            </Box>
+            }
+
+            {activeReservation.length != 0 ?
+                <Box
+                    component='form'
+                    onSubmit={uploadImage}
+                    style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+
+                    <div style={{ width: '700px', display: 'flex', justifyContent: 'center' }}>
+                        <p style={{ color: 'red' }}>{previewImageError}</p>
+                        <a target="_blank" href={previewImage}><img src={previewImage} width='200px' height='auto' style={{ border: '1px solid black', cursor: 'pointer' }} /></a>
+                    </div>
+                    {activeReservation.payment.paymentStatus == 'partial' || activeReservation.payment.paymentStatus == 'fully paid' || activeReservation.payment.paymentStatus == 'cancelled' ? "" : <div
+                        style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+                        <FormButton
+                            w='200px'
+                            h='30px'
+                            border="none"
+                            margin='20px 0px 0px 0px'
+                            fontsize='16px'
+                            type='file'
+                            textcolor='black'
+                            id='upload'
+                            onChange={handleUpload}
+                        />
+                        <Button2
+                            // whileHover={{ backgroundColor: "#302B20", color: "#A3987D" }}
+                            w='150px'
+                            h='40px'
+                            textcolor='#A3987D'
+                            fam='raleway'
+                            weight='-400'
+                            fontStyle='normal'
+                            radius="0px"
+                            border="1px solid #9E9174"
+                            margin='10px 0px 90px 0px'
+                            fontsize='16px'
+                            bg={previewImageError.length != 0 || previewImage.length == 0 ? 'rgb(0,0,0,0.2)' : '#302B20'}
+                            disabled={previewImageError.length != 0 || previewImage.length == 0 ? true : false}
+                            // onClick={uploadImage}
+                            type='submit'
+                        >
+                            Upload
+                        </Button2></div>}
+                </Box>
+                :
+                ""}
 
 
             <MainContainer

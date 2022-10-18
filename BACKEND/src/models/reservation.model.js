@@ -8,9 +8,9 @@ module.exports = (sequelize, DataTypes, Sequelize) => {
             allowNull: false,
         },
         reservationReferenceNumber: {
-            type: DataTypes.STRING,
+            type: DataTypes.BIGINT(8),
             unique: true,
-            allowNull: false,
+            autoIncrement: true,
         },
         reservationDate: {
             type: DataTypes.DATE,
@@ -24,6 +24,7 @@ module.exports = (sequelize, DataTypes, Sequelize) => {
         },
     },
     {
+        initialAutoIncrement: 10000000,
         timestamps: true,
         underscrored: true,
         createdAt: "created_at",
