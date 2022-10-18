@@ -1057,6 +1057,7 @@ export const ReservationContainer = () => {
                                 contactNumber: formatNumber,
                                 email: email,
                                 password: null,
+                                role: 'NON-USER',
                             }).then((user) => {
                                 console.log(user.data);
                                 axios.post('http://localhost:3001/api/addGuest', {
