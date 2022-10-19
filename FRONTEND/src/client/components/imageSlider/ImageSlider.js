@@ -32,8 +32,8 @@ const ImageSlider = (props) => {
         // centerMode: true,
     };
 
-    console.log('roomImages', roomImages)
-    roomImages.map((item)=>console.log(item))
+    // console.log('roomImages', roomImages)
+    // roomImages.map((item)=>console.log(item))
     return (
 
         <div>
