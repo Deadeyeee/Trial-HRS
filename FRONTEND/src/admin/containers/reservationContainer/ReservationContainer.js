@@ -138,6 +138,7 @@ export const ReservationContainer = () => {
 
     const [availableRooms, setAvailableRooms] = useState([]);
     const [reservationStatus, setReservationStatus] = useState('');
+    const [reservationStatusConst, setReservationStatusConst] = useState('');
 
     const [roomTypeDb, setRoomTypeDb] = useState([]);
     const [openCreate, setOpenCreate] = useState(false);
@@ -244,6 +245,18 @@ export const ReservationContainer = () => {
     }
 
     const [editReservationInfo, setEditReservationInfo] = useState([]);
+
+
+    const updadateReservationStatus = () =>{
+        axios.patch(apiKey+'api/updateReservation/'+ editReservationInfo.id, {
+            reservationStatus: reservationStatus,
+        }).then((result) => {
+            console.log(result.data)
+            window.location.reload()
+        }).catch((err) => {
+            console.log(err)
+        });
+    }
     const handleOpenEdit = (value) => {
         setOpenEdit(true)
         axios.get(apiKey + 'api/getReservation/' + value).then((result) => {
@@ -265,6 +278,7 @@ export const ReservationContainer = () => {
             setAddress(result.data.guestInformation.address)
             setUserName(result.data.guestInformation.user.userName)
             setReservationStatus(result.data.reservationStatus)
+            setReservationStatusConst(result.data.reservationStatus)
             setEditPaymentId(result.data.payment.id)
             setEditReservationInfo(result.data)
         }).catch((err) => {
@@ -3596,10 +3610,10 @@ export const ReservationContainer = () => {
                         }}
                     >
                         <ContainerGlobal
-                            w='420px'
+                            w='auto'
                             h='auto'
                             direction='row'
-                            gap='10px'
+                            gap='20px'
                             justify='space-between'
                             align='center'
                             overflow='auto'
@@ -3613,7 +3627,7 @@ export const ReservationContainer = () => {
                                 fstyle='Normal'
                                 weight='400'
                                 align='left'
-                                margin='15px 0px 20px 0px'
+                                // margin='15px 0px 20px 0px'
                             >
                                 Reservation Status:
                             </Title>
@@ -3647,7 +3661,7 @@ export const ReservationContainer = () => {
 
                                 </Select>
                             </FormControl>
-
+                            <Button onClick={()=>{updadateReservationStatus()}} size="small" variant='contained' style={reservationStatusConst == reservationStatus? {display: 'none'}: {display:''}}>Update</Button>
                         </ContainerGlobal>
                     </ContainerGlobalRow>
                     <TitleCalendarContainer
