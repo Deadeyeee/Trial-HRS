@@ -247,8 +247,8 @@ export const ReservationContainer = () => {
     const [editReservationInfo, setEditReservationInfo] = useState([]);
 
 
-    const updadateReservationStatus = () =>{
-        axios.patch(apiKey+'api/updateReservation/'+ editReservationInfo.id, {
+    const updadateReservationStatus = () => {
+        axios.patch(apiKey + 'api/updateReservation/' + editReservationInfo.id, {
             reservationStatus: reservationStatus,
         }).then((result) => {
             console.log(result.data)
@@ -377,7 +377,6 @@ export const ReservationContainer = () => {
 
     const addToCart = () => {
         setAvailedRoomId(availedRoomId + 1)
-
         axios.get(apiKey + 'api/getAllRoom').then((result) => {
             for (let index = 0; index < result.data.length; index++) {
                 if (result.data[index].roomNumber == roomNumber) {
@@ -391,10 +390,13 @@ export const ReservationContainer = () => {
                         roomRate: roomRate,
                         kids: kids,
                         adults: adults,
+                        specialInstrcution: specialInstrcution,
                     }
 
+                    console.log(roomDetails.specialInstrcution)
                     setAvailedRoom((oldData) => [...oldData, roomDetails])
                     setRoomNumber('');
+                    setSpecialInstruction('')
                     break;
                 }
 
@@ -825,7 +827,7 @@ export const ReservationContainer = () => {
         // setAvailedRoom(availedRoom.filter((o, i) => index !== i));
         setEditReservationId(value)
         axios.get(apiKey + 'api/getReservationSummary/' + value).then((result) => {
-            console.log("result.data.room.roomNumber", result.data.room.roomNumber)
+            console.log("result.data.room.roomNumber", result.data.specialInstrcution)
             setStartDate(new Date(result.data.checkInDate))
             setEndDate(new Date(result.data.checkOutDate))
             setNights(result.data.numberOfNights)
@@ -940,7 +942,7 @@ export const ReservationContainer = () => {
                                                     numberOfNights: availedRoom[index].totalNights,
                                                     reservation_id: reservation.data.new_reservation.id,
                                                     room_id: availedRoom[index].id,
-                                                    specialInstrcution: null,
+                                                    specialInstrcution: availedRoom[index].specialInstrcution,
 
                                                     // numberOfAdults:
                                                     // numberOfKids:
@@ -1126,8 +1128,7 @@ export const ReservationContainer = () => {
                                                     numberOfNights: availedRoom[index].totalNights,
                                                     reservation_id: reservation.data.new_reservation.id,
                                                     room_id: availedRoom[index].id,
-                                                    specialInstrcution: null,
-
+                                                    specialInstrcution: availedRoom[index].specialInstrcution,
                                                     // numberOfAdults:
                                                     // numberOfKids:
                                                 }
@@ -1283,6 +1284,7 @@ export const ReservationContainer = () => {
                         adults: adults,
                         specialInstrcution: specialInstrcution,
                         room_id: room.data[index].id,
+                        specialInstrcution: specialInstrcution,
                     }).then((result) => {
                         console.log(result.data)
                         axios.patch(apiKey + 'api/updateGrandTotal/' + editPaymentId, {
@@ -1363,7 +1365,7 @@ export const ReservationContainer = () => {
                             console.log('PASOK')
                             axios.delete(apiKey + 'api/deleteReservation/' + value).then((result) => {
                                 console.log(result.data)
-                                window.localtion.reload();
+                                window.location.reload();
                             }).catch((err) => {
                                 console.log(err)
                             });
@@ -1924,9 +1926,35 @@ export const ReservationContainer = () => {
                                 >
                                     Room rate per night:
                                 </Title>
-                                <TextField value={numberFormat(roomRate)} id="outlined-basic" label="" variant="standard" style={{ width: 200, margin: '5px 0px' }} />
+                                <TextField value={numberFormat(roomRate)} disabled id="outlined-basic" label="" variant="standard" style={{ width: 200, margin: '5px 0px' }} />
 
                             </ContainerGlobal>
+                            <ContainerGlobal
+                                w='420px'
+                                h='auto'
+                                direction='row'
+                                gap='10px'
+                                justify='space-between'
+                                align='center'
+                                overflow='auto'
+
+                            >
+
+                                <Title
+                                    size='20px'
+                                    color='Black'
+                                    family='Helvetica'
+                                    fstyle='Normal'
+                                    weight='400'
+                                    align='left'
+                                    margin='15px 0px 20px 0px'
+                                >
+                                    Total amount due:
+                                </Title>
+                                <TextField value={numberFormat(roomRate * nights)} disabled id="outlined-basic" label="" variant="standard" style={{ width: 200, margin: '5px 0px', fontWeight: 'bold' }} />
+
+                            </ContainerGlobal>
+
                             <Button variant="contained" onClick={() => { addToCart() }} disabled={roomType != '' && roomNumber != '' && roomRate != 0 ? false : true} >Add</Button>
 
 
@@ -3627,7 +3655,7 @@ export const ReservationContainer = () => {
                                 fstyle='Normal'
                                 weight='400'
                                 align='left'
-                                // margin='15px 0px 20px 0px'
+                            // margin='15px 0px 20px 0px'
                             >
                                 Reservation Status:
                             </Title>
@@ -3661,7 +3689,7 @@ export const ReservationContainer = () => {
 
                                 </Select>
                             </FormControl>
-                            <Button onClick={()=>{updadateReservationStatus()}} size="small" variant='contained' style={reservationStatusConst == reservationStatus? {display: 'none'}: {display:''}}>Update</Button>
+                            <Button onClick={() => { updadateReservationStatus() }} size="small" variant='contained' style={reservationStatusConst == reservationStatus ? { display: 'none' } : { display: '' }}>Update</Button>
                         </ContainerGlobal>
                     </ContainerGlobalRow>
                     <TitleCalendarContainer
@@ -3910,6 +3938,31 @@ export const ReservationContainer = () => {
                                     Room rate per night:
                                 </Title>
                                 <TextField value={numberFormat(roomRate)} id="outlined-basic" label="" variant="standard" style={{ width: 200, margin: '5px 0px' }} />
+
+                            </ContainerGlobal>
+                            <ContainerGlobal
+                                w='420px'
+                                h='auto'
+                                direction='row'
+                                gap='10px'
+                                justify='space-between'
+                                align='center'
+                                overflow='auto'
+
+                            >
+
+                                <Title
+                                    size='20px'
+                                    color='Black'
+                                    family='Helvetica'
+                                    fstyle='Normal'
+                                    weight='400'
+                                    align='left'
+                                    margin='15px 0px 20px 0px'
+                                >
+                                    Total amount due:
+                                </Title>
+                                <TextField value={numberFormat(roomRate * nights)} disabled id="outlined-basic" label="" variant="standard" style={{ width: 200, margin: '5px 0px', fontWeight: 'bold' }} />
 
                             </ContainerGlobal>
 
