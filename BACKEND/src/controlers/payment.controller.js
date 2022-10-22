@@ -1,4 +1,4 @@
-const { paymentMode, discount, reservationSummary } = require("../models");
+const { paymentMode, discount, reservationSummary, orderedAmenities } = require("../models");
 const db = require("../models");
 const Payment = db.payment;
 // import Logo from "../../../FRONTEND/src/images/logo.png";
@@ -99,6 +99,9 @@ exports.updateGrandTotal = async (req, res) => {
         const getTotal = await reservationSummary.findAll(
             { include: { all: true, nested: true } }
         );
+        
+        const getamenitiesTotal = await orderedAmenities.findAll(
+            { include: { all: true, nested: true } });
 
         const getpayment = await Payment.findByPk(req.params.id,
             {
@@ -113,24 +116,30 @@ exports.updateGrandTotal = async (req, res) => {
 
         getTotal.map((item) => {
             if (req.params.id == item.dataValues.reservation.payment.id) {
-                grandTotal += (item.dataValues.room.roomType.roomRate * item.dataValues.numberOfNights);
+                grandTotal += (item.dataValues.room.roomType.roomRate * item.dataValues.numberOfNights) + parseInt(item.dataValues.others);
                 // console.log(item.dataValues.room.roomType.roomRate * item.Values.numberOfNights)
             }
         })
 
-        if (getpayment.discountValid == true){
+        getamenitiesTotal.map((item)=>{
+            if(req.params.id == item.dataValues.reservationSummary.reservation.payment.id){
+                grandTotal += (item.dataValues.quantity * item.dataValues.amenity.amenityRate)
+            }
+        })
+
+        if (getpayment.discountValid == true) {
             grandTotal = grandTotal * .80;
         }
 
-            if (grandTotal - req.body.paymentMade == 0) {
-                paymentStatus = 'fully paid'
-            }
-            else if (grandTotal - req.body.paymentMade == grandTotal / 2) {
-                paymentStatus = 'partial'
-            }
-            else {
-                paymentStatus = 'pending'
-            }
+        if (grandTotal - req.body.paymentMade == 0) {
+            paymentStatus = 'fully paid'
+        }
+        else if (grandTotal - req.body.paymentMade == grandTotal / 2) {
+            paymentStatus = 'partial'
+        }
+        else {
+            paymentStatus = 'pending'
+        }
         console.log(grandTotal)
 
         let info = {

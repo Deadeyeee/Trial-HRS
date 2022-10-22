@@ -178,6 +178,15 @@ const BookingsContainer = () => {
 
 
 
+    const [extraMattress, setExtraMattress] = useState(0);
+    const [extraPillow, setExtraPillow] = useState(0);
+    const [extraBlanket, setExtraBlanket] = useState(0);
+    const [extraPerson, setExtraPerson] = useState(0);
+    const [extraTime, setExtraTime] = useState(0);
+    const [others, setOthers] = useState(0);
+
+
+    const [amenities, setAmenities] = useState([]);
 
 
 
@@ -195,6 +204,13 @@ const BookingsContainer = () => {
         setSpecialInstruction('')
         setRoomType('')
         setRoomNumber('')
+        setOthers(0)
+        setExtraBlanket(0)
+        setExtraMattress(0)
+        setExtraPerson(0)
+        setExtraPillow(0)
+        setExtraTime(0)
+
     }
 
 
@@ -209,7 +225,30 @@ const BookingsContainer = () => {
             setSpecialInstruction(result.data.specialInstrcution)
             setRoomType(result.data.room.roomType.roomType)
             setRoomNumber(result.data.room.roomNumber)
-
+            setOthers(result.data.others)
+            axios.get(apiKey + 'api/getAllOrderedAmenities').then((result) => {
+                for (let index = 0; index < result.data.length; index++) {
+                    if (result.data[index].reservationSummary_id == value) {
+                        if (result.data[index].amenity.amenityName == "Extra Mattress") {
+                            setExtraMattress(result.data[index].quantity)
+                        }
+                        else if (result.data[index].amenity.amenityName == "Extra Blanket") {
+                            setExtraBlanket(result.data[index].quantity)
+                        }
+                        else if (result.data[index].amenity.amenityName == "Extra Pillow") {
+                            setExtraPillow(result.data[index].quantity)
+                        }
+                        else if (result.data[index].amenity.amenityName == "Extra Time(Rate/hour)") {
+                            setExtraTime(result.data[index].quantity)
+                        }
+                        else if (result.data[index].amenity.amenityName == "Extra Person") {
+                            setExtraPerson(result.data[index].quantity)
+                        }
+                    }
+                }
+            }).catch((err) => {
+                console.log(err)
+            });
         }).catch((err) => {
             console.log(err)
         });
@@ -221,6 +260,12 @@ const BookingsContainer = () => {
         setOpenEdit(false)
         setReservationInfo([])
         setReservationSummaryInfo([])
+        setOthers(0)
+        setExtraBlanket(0)
+        setExtraMattress(0)
+        setExtraPerson(0)
+        setExtraPillow(0)
+        setExtraTime(0)
 
     }
 
@@ -236,9 +281,35 @@ const BookingsContainer = () => {
             setRoomType(result.data.room.roomType.roomType)
             setRoomNumber(result.data.room.roomNumber)
             setReservationStatus(result.data.bookingStatus)
+            setOthers(result.data.others)
+            axios.get(apiKey + 'api/getAllOrderedAmenities').then((result) => {
+                for (let index = 0; index < result.data.length; index++) {
+                    if (result.data[index].reservationSummary_id == value) {
+                        if (result.data[index].amenity.amenityName == "Extra Mattress") {
+                            setExtraMattress(result.data[index].quantity)
+                        }
+                        else if (result.data[index].amenity.amenityName == "Extra Blanket") {
+                            setExtraBlanket(result.data[index].quantity)
+                        }
+                        else if (result.data[index].amenity.amenityName == "Extra Pillow") {
+                            setExtraPillow(result.data[index].quantity)
+                        }
+                        else if (result.data[index].amenity.amenityName == "Extra Time(Rate/hour)") {
+                            setExtraTime(result.data[index].quantity)
+                        }
+                        else if (result.data[index].amenity.amenityName == "Extra Person") {
+                            setExtraPerson(result.data[index].quantity)
+                        }
+                    }
+                }
+            }).catch((err) => {
+                console.log(err)
+            });
+
         }).catch((err) => {
             console.log(err)
         });
+
 
 
     }
@@ -254,6 +325,13 @@ const BookingsContainer = () => {
         });
         axios.get(apiKey + 'api/getAllRoomType').then((result) => {
             setRoomTypeDb(result.data)
+        }).catch((err) => {
+            console.log(err)
+        });
+
+        axios.get(apiKey + 'api/getAllAmenities').then((result) => {
+            console.log(result.data)
+            setAmenities(result.data)
         }).catch((err) => {
             console.log(err)
         });
@@ -398,18 +476,82 @@ const BookingsContainer = () => {
                         adults: adults,
                         specialInstrcution: specialInstrcution,
                         room_id: room.data[index].id,
+                        others: others,
                     }).then((result) => {
                         console.log(result.data)
-                        axios.patch(apiKey + 'api/updateGrandTotal/' + reservationSummaryInfo.reservation.payment.id, {
-                            paymentMade: paymentMadeValue,
-                        }).then((result) => {
-                            console.log(result.data)
-                            //partial
-                            window.location.reload()
+                        axios.get(apiKey + 'api/getAllOrderedAmenities').then((result) => {
+                            for (let index = 0; index < result.data.length; index++) {
+                                if (result.data[index].reservationSummary_id == reservationSummaryInfo.id) {
+                                    if (result.data[index].amenity.amenityName == "Extra Mattress") {
+                                        axios.patch(apiKey + 'api/updateOrderedAmenities/' + result.data[index].id, {
+                                            quantity: extraMattress,
+                                        }).then((result) => {
+                                            console.log(result.data)
+                                        }).catch((err) => {
+                                            console.log(err)
+
+                                        });
+                                    }
+                                    else if (result.data[index].amenity.amenityName == "Extra Blanket") {
+                                        axios.patch(apiKey + 'api/updateOrderedAmenities/' + result.data[index].id, {
+                                            quantity: extraBlanket,
+                                        }).then((result) => {
+                                            console.log(result.data)
+                                        }).catch((err) => {
+                                            console.log(err)
+
+                                        });
+                                    }
+                                    else if (result.data[index].amenity.amenityName == "Extra Pillow") {
+                                        axios.patch(apiKey + 'api/updateOrderedAmenities/' + result.data[index].id, {
+                                            quantity: extraPillow,
+                                        }).then((result) => {
+                                            console.log(result.data)
+                                        }).catch((err) => {
+                                            console.log(err)
+
+                                        });
+                                    }
+                                    else if (result.data[index].amenity.amenityName == "Extra Time(Rate/hour)") {
+                                        axios.patch(apiKey + 'api/updateOrderedAmenities/' + result.data[index].id, {
+                                            quantity: extraTime,
+                                        }).then((result) => {
+                                            console.log(result.data)
+                                        }).catch((err) => {
+                                            console.log(err)
+
+                                        });
+                                    }
+                                    else if (result.data[index].amenity.amenityName == "Extra Person") {
+                                        axios.patch(apiKey + 'api/updateOrderedAmenities/' + result.data[index].id, {
+                                            quantity: extraPerson,
+                                        }).then((result) => {
+                                            console.log(result.data)
+                                        }).catch((err) => {
+                                            console.log(err)
+
+                                        });
+                                    }
+                                }
+
+
+                                if (index == result.data.length - 1) {
+                                    axios.patch(apiKey + 'api/updateGrandTotal/' + reservationSummaryInfo.reservation.payment.id, {
+                                        paymentMade: paymentMadeValue,
+                                    }).then((result) => {
+                                        console.log(result.data)
+                                        //partial
+                                        window.location.reload()
+                                    }).catch((err) => {
+                                        console.log(err)
+
+                                    })
+                                }
+                            }
                         }).catch((err) => {
                             console.log(err)
+                        });
 
-                        })
                     }).catch((err) => {
                         console.log(err)
                     });
@@ -1187,29 +1329,14 @@ const BookingsContainer = () => {
                                             <MenuItem value={item.roomType}
                                                 disabled={badgeCount(item.roomType) == null ? true : false}
                                             >
-                                                <Badge badgeContent={badgeCount(item.roomType)} color="success" style={{ marginTop: 10 }} title='40 Available rooms'>
-                                                    <ContainerGlobal
-                                                        margin='0px 15px 0px 0px'>
-                                                        {item.roomType}
-                                                    </ContainerGlobal>
-                                                </Badge>
+                                                <ContainerGlobal
+                                                    margin='0px 15px 0px 0px'>
+                                                    {item.roomType}
+                                                </ContainerGlobal>
                                             </MenuItem>))
                                             :
                                             ""}
-                                        {/* <MenuItem value={'Deluxe'} >
-                                        <Badge badgeContent={4} color="success" style={{ marginTop: 10 }} title='10 Available rooms'>
-                                            <ContainerGlobal
-                                                margin='0px 15px 0px 0px'>
-                                                Deluxe Room
-                                            </ContainerGlobal>
-                                        </Badge></MenuItem>
-                                    <MenuItem value={'Premium'} selected>
-                                        <Badge badgeContent={5} color="success" style={{ marginTop: 10 }} title='5 Available rooms'>
-                                            <ContainerGlobal
-                                                margin='0px 15px 0px 0px'>
-                                                Premium Room
-                                            </ContainerGlobal>
-                                        </Badge></MenuItem> */}
+
                                     </Select>
                                 </FormControl>
                             </ContainerGlobal>
@@ -1301,6 +1428,340 @@ const BookingsContainer = () => {
 
                             </ContainerGlobal>
 
+
+
+
+                        </ContainerGlobalColumn>
+                        <ContainerGlobalColumn>
+
+                            <ContainerGlobal
+                                w='320px'
+                                h='auto'
+                                direction='row'
+                                gap='10px'
+                                justify='space-between'
+                                align='center'
+                                overflow='auto'
+
+                            >
+                                <Title
+                                    size='20px'
+                                    color='Black'
+                                    family='Helvetica'
+                                    fstyle='Normal'
+                                    weight='400'
+                                    align='left'
+                                >
+                                    Extra Mattress:
+                                </Title>
+                                <TextField
+                                    value={extraMattress}
+                                    onChange={(e) => {
+                                        if (e.target.value < 0) {
+                                            setExtraMattress(0);
+                                        }
+                                        else {
+                                            setExtraMattress(e.target.value);
+                                        }
+                                    }}
+                                    type='number' id="outlined-basic"
+                                    label=""
+                                    variant="standard"
+                                    style={{ width: 50, margin: '5px 0px', fontWeight: 'bold', }}
+                                    // InputProps={{
+                                    //     endAdornment: (
+                                    //         <InputAdornment position="end">
+                                    //             x
+                                    //         </InputAdornment>
+
+                                    //     ),
+                                    // }}
+                                      />
+
+                            </ContainerGlobal>
+                            <ContainerGlobal
+                                w='320px'
+                                h='auto'
+                                direction='row'
+                                gap='10px'
+                                justify='space-between'
+                                align='center'
+                                overflow='auto'
+
+                            >
+
+                                <Title
+                                    size='20px'
+                                    color='Black'
+                                    family='Helvetica'
+                                    fstyle='Normal'
+                                    weight='400'
+                                    align='left'
+                                >
+                                    Extra Pillow:
+                                </Title>
+                                <TextField
+                                    value={extraPillow}
+                                    onChange={(e) => {
+                                        if (e.target.value < 0) {
+                                            setExtraPillow(0);
+                                        }
+                                        else {
+                                            setExtraPillow(e.target.value);
+                                        }
+                                    }}
+                                    type='number'
+                                    id="outlined-basic"
+                                    label=""
+                                    variant="standard"
+                                    style={{ width: 50, margin: '5px 0px', fontWeight: 'bold', }}
+                                    // InputProps={{
+                                    //     endAdornment: (
+                                    //         <InputAdornment position="end">
+                                    //             x
+                                    //         </InputAdornment>
+
+                                    //     ),
+                                    // }}
+                                      />
+                            </ContainerGlobal>
+                            <ContainerGlobal
+                                w='320px'
+                                h='auto'
+                                direction='row'
+                                gap='10px'
+                                justify='space-between'
+                                align='center'
+                                overflow='auto'
+
+                            >
+
+                                <Title
+                                    size='20px'
+                                    color='Black'
+                                    family='Helvetica'
+                                    fstyle='Normal'
+                                    weight='400'
+                                    align='left'
+                                >
+                                    Extra Blanket:
+                                </Title>
+                                <TextField
+                                    value={extraBlanket}
+                                    onChange={(e) => {
+                                        if (e.target.value < 0) {
+                                            setExtraBlanket(0);
+                                        }
+                                        else {
+                                            setExtraBlanket(e.target.value);
+                                        }
+                                    }}
+                                    type='number'
+                                    id="outlined-basic"
+                                    label=""
+                                    variant="standard"
+                                    style={{ width: 50, margin: '5px 0px', fontWeight: 'bold', }}
+                                    // InputProps={{
+                                    //     endAdornment: (
+                                    //         <InputAdornment position="end">
+                                    //             x
+                                    //         </InputAdornment>
+
+                                    //     ),
+                                    // }}
+                                      />
+                            </ContainerGlobal>
+                            <ContainerGlobal
+                                w='320px'
+                                h='auto'
+                                direction='row'
+                                gap='10px'
+                                justify='space-between'
+                                align='center'
+                                overflow='auto'
+
+                            >
+
+                                <Title
+                                    size='20px'
+                                    color='Black'
+                                    family='Helvetica'
+                                    fstyle='Normal'
+                                    weight='400'
+                                    align='left'
+                                >
+                                    Extra Person:
+                                </Title>
+                                <TextField
+                                    value={extraPerson}
+                                    onChange={(e) => {
+                                        if (e.target.value < 0) {
+                                            setExtraPerson(0);
+                                        }
+                                        else {
+                                            setExtraPerson(e.target.value);
+                                        }
+                                    }}
+                                    type='number'
+                                    id="outlined-basic"
+                                    label=""
+                                    variant="standard"
+                                    style={{ width: 50, margin: '5px 0px', fontWeight: 'bold', }}
+                                    // InputProps={{
+                                    //     endAdornment: (
+                                    //         <InputAdornment position="end">
+                                    //             x
+                                    //         </InputAdornment>
+
+                                    //     ),
+                                    // }}
+                                      />
+                            </ContainerGlobal>
+                            <ContainerGlobal
+                                w='320px'
+                                h='auto'
+                                direction='row'
+                                gap='10px'
+                                justify='space-between'
+                                align='center'
+                                overflow='auto'
+
+                            >
+
+                                <Title
+                                    size='20px'
+                                    color='Black'
+                                    family='Helvetica'
+                                    fstyle='Normal'
+                                    weight='400'
+                                    align='left'
+                                >
+                                    Extra Time(/hour):
+                                </Title>
+                                <TextField
+                                    value={extraTime}
+                                    onChange={(e) => {
+                                        if (e.target.value < 0) {
+                                            setExtraTime(0);
+                                        }
+                                        else {
+                                            setExtraTime(e.target.value);
+                                        }
+
+                                    }}
+                                    type='number'
+                                    id="outlined-basic"
+                                    label=""
+                                    variant="standard"
+                                    style={{ width: 50, margin: '5px 0px', fontWeight: 'bold', }}
+                                    // InputProps={{
+                                    //     endAdornment: (
+                                    //         <InputAdornment position="end">
+                                    //             x
+                                    //         </InputAdornment>
+
+                                    //     ),
+                                    // }}
+                                      />
+                            </ContainerGlobal>
+                            <ContainerGlobal
+                                w='320px'
+                                h='auto'
+                                direction='row'
+                                gap='10px'
+                                justify='space-between'
+                                align='center'
+                                overflow='auto'
+
+                            >
+
+                                <Title
+                                    size='20px'
+                                    color='Black'
+                                    family='Helvetica'
+                                    fstyle='Normal'
+                                    weight='400'
+                                    align='left'
+                                    margin='15px 0px 20px 0px'
+                                >
+                                    Others:
+                                </Title>
+                                <TextField
+                                    value={others}
+                                    onChange={(e) => {
+                                        if (e.target.value < 0) {
+                                            setOthers(0);
+                                        }
+                                        else {
+                                            setOthers(e.target.value);
+                                        }
+                                    }}
+                                    type='number'
+                                    id="outlined-basic"
+                                    label=""
+                                    variant="standard"
+                                    style={{ width: 200, margin: '5px 0px', fontWeight: 'bold' }}
+                                    InputProps={{
+                                        startAdornment: (
+                                            <InputAdornment position="start">
+                                                ₱
+                                            </InputAdornment>
+
+                                        ),
+                                    }}
+                                />
+
+                            </ContainerGlobal>
+
+
+
+                        </ContainerGlobalColumn>
+
+
+                    </ContainerGlobalRow>
+                    <ContainerGlobalRow>
+                        <ContainerGlobalColumn>
+                            <ContainerGlobal
+                                w='420px'
+                                h='auto'
+                                direction='row'
+                                gap='10px'
+                                justify='space-between'
+                                align='center'
+                                overflow='auto'
+
+                            >
+
+                                <Title
+                                    size='20px'
+                                    color='Black'
+                                    family='Helvetica'
+                                    fstyle='Normal'
+                                    weight='400'
+                                    align='left'
+                                    margin='15px 0px 20px 0px'
+                                >
+                                    Total amount due:
+                                </Title>
+                                <TextField
+                                    value={
+                                        amenities.length != 0 &&
+                                        numberFormat(
+                                            (roomRate * nights) + parseInt(extraMattress * amenities.filter((obj) => obj.amenityName == "Extra Mattress").map((item) => item.amenityRate))
+                                            + parseInt(extraPillow * amenities.filter((obj) => obj.amenityName == "Extra Pillow").map((item) => item.amenityRate))
+                                            + parseInt(extraBlanket * amenities.filter((obj) => obj.amenityName == "Extra Blanket").map((item) => item.amenityRate))
+                                            + parseInt(extraPerson * amenities.filter((obj) => obj.amenityName == "Extra Person").map((item) => item.amenityRate))
+                                            + parseInt(extraTime * amenities.filter((obj) => obj.amenityName == "Extra Time(Rate/hour)").map((item) => item.amenityRate))
+                                            + parseInt(others)
+                                        )
+                                    }
+                                    disabled
+                                    id="outlined-basic"
+                                    label=""
+                                    variant="standard"
+                                    style={{ width: 200, margin: '5px 0px', fontWeight: 'bold' }} />
+
+                            </ContainerGlobal>
                             <ContainerGlobal
                                 w='420px'
                                 h='auto'
@@ -1325,19 +1786,13 @@ const BookingsContainer = () => {
                                         rows={4}
                                         style={{ width: '95%', }}
 
-                                        disabled
+
                                         required />
 
                                 </InputContainer>
                             </ContainerGlobal>
-
-
-
                         </ContainerGlobalColumn>
-
-
                     </ContainerGlobalRow>
-
                     <hr style={{ width: '100%' }}></hr>
                     <Title
                         size='26px'
@@ -2082,13 +2537,13 @@ const BookingsContainer = () => {
                                     <MenuItem value='PENDING' disabled={reservationSummaryInfo.length != 0 ? reservationSummaryInfo.reservation.reservationStatus == 'RESERVED' ? true : false : false}>
                                         Pending
                                     </MenuItem>
-                                    <MenuItem value='RESERVED' disabled={reservationSummaryInfo.length != 0 ? reservationSummaryInfo.reservation.reservationStatus == 'PENDING' || reservationSummaryInfo.reservation.reservationStatus == 'UNSETTLED'? true : false : false}>
+                                    <MenuItem value='RESERVED' disabled={reservationSummaryInfo.length != 0 ? reservationSummaryInfo.reservation.reservationStatus == 'PENDING' || reservationSummaryInfo.reservation.reservationStatus == 'UNSETTLED' ? true : false : false}>
                                         Reserved
                                     </MenuItem>
-                                    <MenuItem value='CHECKED-IN' disabled={reservationSummaryInfo.length != 0 ? reservationSummaryInfo.reservation.reservationStatus == 'PENDING' || reservationSummaryInfo.reservation.reservationStatus == 'UNSETTLED'? true : false : false}>
+                                    <MenuItem value='CHECKED-IN' disabled={reservationSummaryInfo.length != 0 ? reservationSummaryInfo.reservation.reservationStatus == 'PENDING' || reservationSummaryInfo.reservation.reservationStatus == 'UNSETTLED' ? true : false : false}>
                                         Checked-in
                                     </MenuItem>
-                                    <MenuItem value='CHECKED-OUT' disabled={reservationSummaryInfo.length != 0 ? reservationSummaryInfo.reservation.reservationStatus == 'PENDING' || reservationSummaryInfo.reservation.reservationStatus == 'UNSETTLED'? true : false : false}>
+                                    <MenuItem value='CHECKED-OUT' disabled={reservationSummaryInfo.length != 0 ? reservationSummaryInfo.reservation.reservationStatus == 'PENDING' || reservationSummaryInfo.reservation.reservationStatus == 'UNSETTLED' ? true : false : false}>
                                         Checked-out
                                     </MenuItem>
                                     <MenuItem value='NO-SHOW' >
@@ -2354,6 +2809,302 @@ const BookingsContainer = () => {
                                 <TextField value={numberFormat(roomRate)} disabled id="outlined-basic" label="" variant="standard" style={{ width: 200, margin: '5px 0px' }} />
 
                             </ContainerGlobal>
+
+
+
+
+                        </ContainerGlobalColumn>
+                        <ContainerGlobalColumn>
+
+                            <ContainerGlobal
+                                w='320px'
+                                h='auto'
+                                direction='row'
+                                gap='10px'
+                                justify='space-between'
+                                align='center'
+                                overflow='auto'
+
+                            >
+                                <Title
+                                    size='20px'
+                                    color='Black'
+                                    family='Helvetica'
+                                    fstyle='Normal'
+                                    weight='400'
+                                    align='left'
+                                >
+                                    Extra Mattress:
+                                </Title>
+                                <TextField
+                                    value={extraMattress}
+                                    onChange={(e) => {
+                                        if (e.target.value < 0) {
+                                            setExtraMattress(0);
+                                        }
+                                        else {
+                                            setExtraMattress(e.target.value);
+                                        }
+                                    }}
+                                    type='number' id="outlined-basic"
+                                    label=""
+                                    variant="standard"
+                                    style={{ width: 50, margin: '5px 0px', fontWeight: 'bold', }}
+                                    // InputProps={{
+                                    //     endAdornment: (
+                                    //         <InputAdornment position="end">
+                                    //             x
+                                    //         </InputAdornment>
+
+                                    //     ),
+                                    // }}
+                                      />
+
+                            </ContainerGlobal>
+                            <ContainerGlobal
+                                w='320px'
+                                h='auto'
+                                direction='row'
+                                gap='10px'
+                                justify='space-between'
+                                align='center'
+                                overflow='auto'
+
+                            >
+
+                                <Title
+                                    size='20px'
+                                    color='Black'
+                                    family='Helvetica'
+                                    fstyle='Normal'
+                                    weight='400'
+                                    align='left'
+                                >
+                                    Extra Pillow:
+                                </Title>
+                                <TextField
+                                    value={extraPillow}
+                                    onChange={(e) => {
+                                        if (e.target.value < 0) {
+                                            setExtraPillow(0);
+                                        }
+                                        else {
+                                            setExtraPillow(e.target.value);
+                                        }
+                                    }}
+                                    type='number'
+                                    id="outlined-basic"
+                                    label=""
+                                    variant="standard"
+                                    style={{ width: 50, margin: '5px 0px', fontWeight: 'bold', }}
+                                    // InputProps={{
+                                    //     endAdornment: (
+                                    //         <InputAdornment position="end">
+                                    //             x
+                                    //         </InputAdornment>
+
+                                    //     ),
+                                    // }}
+                                     
+                                     />
+                            </ContainerGlobal>
+                            <ContainerGlobal
+                                w='320px'
+                                h='auto'
+                                direction='row'
+                                gap='10px'
+                                justify='space-between'
+                                align='center'
+                                overflow='auto'
+
+                            >
+
+                                <Title
+                                    size='20px'
+                                    color='Black'
+                                    family='Helvetica'
+                                    fstyle='Normal'
+                                    weight='400'
+                                    align='left'
+                                >
+                                    Extra Blanket:
+                                </Title>
+                                <TextField
+                                    value={extraBlanket}
+                                    onChange={(e) => {
+                                        if (e.target.value < 0) {
+                                            setExtraBlanket(0);
+                                        }
+                                        else {
+                                            setExtraBlanket(e.target.value);
+                                        }
+                                    }}
+                                    type='number'
+                                    id="outlined-basic"
+                                    label=""
+                                    variant="standard"
+                                    style={{ width: 50, margin: '5px 0px', fontWeight: 'bold', }}
+                                    // InputProps={{
+                                    //     endAdornment: (
+                                    //         <InputAdornment position="end">
+                                    //             x
+                                    //         </InputAdornment>
+
+                                    //     ),
+                                    // }}
+                                      />
+                            </ContainerGlobal>
+                            <ContainerGlobal
+                                w='320px'
+                                h='auto'
+                                direction='row'
+                                gap='10px'
+                                justify='space-between'
+                                align='center'
+                                overflow='auto'
+
+                            >
+
+                                <Title
+                                    size='20px'
+                                    color='Black'
+                                    family='Helvetica'
+                                    fstyle='Normal'
+                                    weight='400'
+                                    align='left'
+                                >
+                                    Extra Person:
+                                </Title>
+                                <TextField
+                                    value={extraPerson}
+                                    onChange={(e) => {
+                                        if (e.target.value < 0) {
+                                            setExtraPerson(0);
+                                        }
+                                        else {
+                                            setExtraPerson(e.target.value);
+                                        }
+                                    }}
+                                    type='number'
+                                    id="outlined-basic"
+                                    label=""
+                                    variant="standard"
+                                    style={{ width: 50, margin: '5px 0px', fontWeight: 'bold', }}
+                                    // InputProps={{
+                                    //     endAdornment: (
+                                    //         <InputAdornment position="end">
+                                    //             x
+                                    //         </InputAdornment>
+
+                                    //     ),
+                                    // }}
+                                      />
+                            </ContainerGlobal>
+                            <ContainerGlobal
+                                w='320px'
+                                h='auto'
+                                direction='row'
+                                gap='10px'
+                                justify='space-between'
+                                align='center'
+                                overflow='auto'
+
+                            >
+
+                                <Title
+                                    size='20px'
+                                    color='Black'
+                                    family='Helvetica'
+                                    fstyle='Normal'
+                                    weight='400'
+                                    align='left'
+                                >
+                                    Extra Time(/hour):
+                                </Title>
+                                <TextField
+                                    value={extraTime}
+                                    onChange={(e) => {
+                                        if (e.target.value < 0) {
+                                            setExtraTime(0);
+                                        }
+                                        else {
+                                            setExtraTime(e.target.value);
+                                        }
+
+                                    }}
+                                    type='number'
+                                    id="outlined-basic"
+                                    label=""
+                                    variant="standard"
+                                    style={{ width: 50, margin: '5px 0px', fontWeight: 'bold', }}
+                                    // InputProps={{
+                                    //     endAdornment: (
+                                    //         <InputAdornment position="end">
+                                    //             x
+                                    //         </InputAdornment>
+
+                                    //     ),
+                                    // }}
+                                      />
+                            </ContainerGlobal>
+                            <ContainerGlobal
+                                w='320px'
+                                h='auto'
+                                direction='row'
+                                gap='10px'
+                                justify='space-between'
+                                align='center'
+                                overflow='auto'
+
+                            >
+
+                                <Title
+                                    size='20px'
+                                    color='Black'
+                                    family='Helvetica'
+                                    fstyle='Normal'
+                                    weight='400'
+                                    align='left'
+                                    margin='15px 0px 20px 0px'
+                                >
+                                    Others:
+                                </Title>
+                                <TextField
+                                    value={others}
+                                    onChange={(e) => {
+                                        if (e.target.value < 0) {
+                                            setOthers(0);
+                                        }
+                                        else {
+                                            setOthers(e.target.value);
+                                        }
+                                    }}
+                                    type='number'
+                                    id="outlined-basic"
+                                    label=""
+                                    variant="standard"
+                                    style={{ width: 200, margin: '5px 0px', fontWeight: 'bold' }}
+                                    InputProps={{
+                                        startAdornment: (
+                                            <InputAdornment position="start">
+                                                ₱
+                                            </InputAdornment>
+
+                                        ),
+                                    }}
+                                />
+
+                            </ContainerGlobal>
+
+
+
+                        </ContainerGlobalColumn>
+
+
+                    </ContainerGlobalRow>
+                    <ContainerGlobalRow>
+                        <ContainerGlobalColumn>
+
                             <ContainerGlobal
                                 w='420px'
                                 h='auto'
@@ -2376,10 +3127,25 @@ const BookingsContainer = () => {
                                 >
                                     Total amount due:
                                 </Title>
-                                <TextField value={numberFormat(roomRate * nights)} disabled id="outlined-basic" label="" variant="standard" style={{ width: 200, margin: '5px 0px', fontWeight: 'bold' }} />
+                                <TextField
+                                    value={
+                                        amenities.length != 0 &&
+                                        numberFormat(
+                                            (roomRate * nights) + parseInt(extraMattress * amenities.filter((obj) => obj.amenityName == "Extra Mattress").map((item) => item.amenityRate))
+                                            + parseInt(extraPillow * amenities.filter((obj) => obj.amenityName == "Extra Pillow").map((item) => item.amenityRate))
+                                            + parseInt(extraBlanket * amenities.filter((obj) => obj.amenityName == "Extra Blanket").map((item) => item.amenityRate))
+                                            + parseInt(extraPerson * amenities.filter((obj) => obj.amenityName == "Extra Person").map((item) => item.amenityRate))
+                                            + parseInt(extraTime * amenities.filter((obj) => obj.amenityName == "Extra Time(Rate/hour)").map((item) => item.amenityRate))
+                                            + parseInt(others)
+                                        )
+                                    }
+                                    disabled
+                                    id="outlined-basic"
+                                    label=""
+                                    variant="standard"
+                                    style={{ width: 200, margin: '5px 0px', fontWeight: 'bold' }} />
 
                             </ContainerGlobal>
-
                             <ContainerGlobal
                                 w='420px'
                                 h='auto'
@@ -2425,12 +3191,8 @@ const BookingsContainer = () => {
                                 </ContainerGlobal>
 
                             </ContainerGlobal>
-
                         </ContainerGlobalColumn>
-
-
                     </ContainerGlobalRow>
-
                     <hr style={{ width: '100%' }}></hr>
                     <Title
                         size='26px'

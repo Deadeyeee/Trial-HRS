@@ -948,6 +948,21 @@ export const ReservationContainer = () => {
                                                     // numberOfKids:
                                                 }
                                                 axios.post(apiKey + "api/addReservationSummary", items).then((reservationSummary) => {
+                                                    axios.get(apiKey + "api/getAllAmenities").then((amenities) => {
+                                                        for (let index = 0; index < amenities.data.length; index++) {
+                                                            axios.post(apiKey + "api/addOrderedAmenities", {
+                                                                amenity_id: amenities.data[index].id,
+                                                                reservationSummary_id: reservationSummary.data.new_reservationSummary.id,
+                                                            }).then((result) => {
+                                                                console.log(result.data)
+                                                            }).catch((err) => {
+                                                                console.log(err)
+
+                                                            });
+                                                        }
+                                                    }).catch((err) => {
+                                                        console.log(err)
+                                                    });
                                                     console.log(reservationSummary.data)
                                                     axios.get(apiKey + 'api/getPayment/' + payment.data.new_payment.id).then((getPayment) => {
 
@@ -1134,6 +1149,21 @@ export const ReservationContainer = () => {
                                                 }
                                                 axios.post(apiKey + "api/addReservationSummary", items).then((reservationSummary) => {
                                                     console.log(reservationSummary.data)
+                                                    axios.get(apiKey + "api/getAllAmenities").then((amenities) => {
+                                                        for (let index = 0; index < amenities.data.length; index++) {
+                                                            axios.post(apiKey + "api/addOrderedAmenities", {
+                                                                amenity_id: amenities.data[index].id,
+                                                                reservationSummary_id: reservationSummary.data.new_reservationSummary.id,
+                                                            }).then((result) => {
+                                                                console.log(result.data)
+                                                            }).catch((err) => {
+                                                                console.log(err)
+
+                                                            });
+                                                        }
+                                                    }).catch((err) => {
+                                                        console.log(err)
+                                                    });
                                                     axios.get(apiKey + 'api/getPayment/' + payment.data.new_payment.id).then((getPayment) => {
 
                                                         if (index == availedRoom.length - 1) {
