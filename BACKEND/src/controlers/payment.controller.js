@@ -137,8 +137,11 @@ exports.updateGrandTotal = async (req, res) => {
         else if (grandTotal - req.body.paymentMade == grandTotal / 2) {
             paymentStatus = 'partial'
         }
-        else {
+        else if(grandTotal - req.body.paymentMade == grandTotal){
             paymentStatus = 'pending'
+        }
+        else {
+            paymentStatus = 'partial'
         }
         console.log(grandTotal)
 

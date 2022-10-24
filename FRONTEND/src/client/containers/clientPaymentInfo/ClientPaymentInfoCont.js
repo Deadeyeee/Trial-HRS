@@ -473,7 +473,7 @@ const ClientPaymentInfoCont = () => {
                         <p style={{ color: 'red' }}>{previewImageError}</p>
                         <a target="_blank" href={previewImage}><img src={previewImage} width='200px' height='auto' style={{ border: '1px solid black', cursor: 'pointer' }} /></a>
                     </div>
-                    {activeReservation.payment.paymentStatus == 'partial' || activeReservation.payment.paymentStatus == 'fully paid' || activeReservation.payment.paymentStatus == 'cancelled' ? "" : <div
+                    {activeReservation.payment.paymentStatus == 'cancelled' || activeReservation.payment.paymentImage != null ? "" : <div
                         style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
                         <FormButton
                             w='200px'

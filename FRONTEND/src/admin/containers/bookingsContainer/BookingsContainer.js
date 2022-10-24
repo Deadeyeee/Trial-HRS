@@ -394,6 +394,60 @@ const BookingsContainer = () => {
 
         axios.get(apiKey + 'api/getAllReservationSummary').then((result) => {
             setNotAvailableRoom([])
+            // setNotAvailableRoom(
+            //     result.data.filter((obj) => {
+            //         if ((obj.bookingStatus == "PENDING" || obj.bookingStatus == "RESERVED" || obj.bookingStatus == "CHECKED-IN") && obj.id != reservationSummaryInfo.id) {
+            //             return obj
+            //         }
+            //     }).filter((obj) => {
+            //         let systemDates = getDates(startDate, endDate);
+            //         systemDates.pop()
+            //         let dataBaseDates = getDates(obj.checkInDate, obj.checkOutDate);
+            //         dataBaseDates.pop()
+
+            //         loop1:
+            //         for (let i = 0; i < systemDates.length; i++) {
+            //             loop2:
+            //             for (let j = 0; j < dataBaseDates.length; j++) {
+            //                 if (systemDates[i] == dataBaseDates[j]) {
+            //                     return obj
+            //                     break loop1;
+            //                 }
+            //                 else {
+            //                     console.log(false)
+            //                 }
+            //             }
+
+            //         }
+            //     }).map((item) => item.room_id))
+
+            // console.log("NOT AVAILABLE dATES: ", result.data.filter((obj) => {
+            //     if ((obj.bookingStatus == "PENDING" || obj.bookingStatus == "RESERVED" || obj.bookingStatus == "CHECKED-IN") && obj.id != reservationSummaryInfo.id) {
+            //         return obj
+            //     }
+            // }).filter((obj) => {
+            //     let systemDates = getDates(startDate, endDate);
+            //     systemDates.pop()
+            //     let dataBaseDates = getDates(obj.checkInDate, obj.checkOutDate);
+            //     dataBaseDates.pop()
+
+            //     loop1:
+            //     for (let i = 0; i < systemDates.length; i++) {
+            //         loop2:
+            //         for (let j = 0; j < dataBaseDates.length; j++) {
+            //             if (systemDates[i] == dataBaseDates[j]) {
+            //                 return obj
+            //                 break loop1;
+            //             }
+            //             else {
+            //                 console.log(false)
+            //             }
+            //         }
+
+            //     }
+            // }).map((item) => item.room_id))
+
+
             for (let index = 0; index < result.data.length; index++) {
                 if ((result.data[index].bookingStatus == "PENDING" || result.data[index].bookingStatus == "RESERVED" || result.data[index].bookingStatus == "CHECKED-IN") && result.data[index].id != reservationSummaryInfo.id) {
                     let systemDates = getDates(startDate, endDate);
@@ -406,6 +460,7 @@ const BookingsContainer = () => {
                         loop2:
                         for (let j = 0; j < dataBaseDates.length; j++) {
                             if (systemDates[i] == dataBaseDates[j]) {
+                                console.log('previous loop: ', result.data[index].room_id)
                                 setNotAvailableRoom((oldData) => [...oldData, result.data[index].room_id])
                                 break loop1;
                             }
@@ -432,21 +487,44 @@ const BookingsContainer = () => {
     useLayoutEffect(() => {
 
         axios.get(apiKey + 'api/getAllRoom').then((result) => {
-            setAvailableRooms([])
-            for (let index = 0; index < result.data.length; index++) {
-                // console.log(result.data[index].roomType.roomType)
-                if (!notAvailableRoom.includes(result.data[index].id) && result.data[index].roomStatus != 'Maintenance' && result.data[index].roomType.maxAdultOccupancy >= adults && result.data[index].roomType.maxKidsOccupancy >= kids) {
-                    setAvailableRooms((oldData) => [...oldData, result.data[index]])
-                    // console.log(result.data[index])
+            setAvailableRooms(result.data.filter((obj) => (!notAvailableRoom.includes(obj.id) && obj.roomStatus != 'Maintenance' && obj.roomType.maxAdultOccupancy >= adults && obj.roomType.maxKidsOccupancy >= kids)))
+
+            // for (let index = 0; index < result.data.length; index++) {
+            //     if (!notAvailableRoom.includes(result.data[index].id) && result.data[index].roomStatus != 'Maintenance' && result.data[index].roomType.maxAdultOccupancy >= adults && result.data[index].roomType.maxKidsOccupancy >= kids) {
+            //         setAvailableRooms((oldData) => [...oldData, result.data[index]])
+            //     }
+
+            // }
+            if (roomType != '') {
+                if (result.data.filter((obj) => (!notAvailableRoom.includes(obj.id) && obj.roomStatus != 'Maintenance' && obj.roomType.maxAdultOccupancy >= adults && obj.roomType.maxKidsOccupancy >= kids)).filter((obj) => (obj.roomType.roomType == roomType)).length == 0) {
+                    // setRoomType('')
+                    setRoomNumber('')
+                }
+
+                if (reservationSummaryInfo.length != 0) {
+                    if (roomType == reservationSummaryInfo.room.roomType.roomType) {
+                        setRoomNumber(reservationSummaryInfo.room.roomNumber)
+                    }
                 }
             }
+
         }).catch((err) => {
             console.log(err)
 
         });
 
-    }, [notAvailableRoom, startDate, endDate, kids, adults])
+    }, [notAvailableRoom, startDate, endDate, kids, adults, roomType])
 
+
+    useEffect(() => {
+        if (availableRooms.length != 0) {
+            console.log("availableRooms", availableRooms)
+            if (availableRooms.filter((obj) => (obj.roomType.roomType == roomType)).length == 0) {
+                // setRoomType('')
+                // setRoomNumber('')
+            }
+        }
+    }, [availableRooms, roomType, startDate, endDate, kids, adults])
 
     const badgeCount = (value) => {
         let counter = {};
@@ -458,6 +536,7 @@ const BookingsContainer = () => {
         for (let item in counter) {
             if (item.replaceAll('"', '') == value) {
                 // console.log('item', counter[item])
+
                 return counter[item]
             }
 
@@ -537,7 +616,7 @@ const BookingsContainer = () => {
 
                                 if (index == result.data.length - 1) {
                                     axios.patch(apiKey + 'api/updateGrandTotal/' + reservationSummaryInfo.reservation.payment.id, {
-                                        paymentMade: paymentMadeValue,
+                                        paymentMade: reservationSummaryInfo.reservation.payment.paymentMade,
                                     }).then((result) => {
                                         console.log(result.data)
                                         //partial
@@ -831,6 +910,52 @@ const BookingsContainer = () => {
         }
     }
 
+
+    const deleteBooking = (id) => {
+        if (window.confirm("Are you sure you want to delete this?")) {
+            axios.get(apiKey + 'api/getAllOrderedAmenities').then((result) => {
+                for (let index = 0; index < result.data.length; index++) {
+                    if (result.data[index].reservationSummary_id == id) {
+                        axios.delete(apiKey + 'api/deleteOrderedAmenities/' + result.data[index].id).then((result) => {
+                            console.log(result.data)
+                            axios.get(apiKey + 'api/getAllOrderedAmenities').then((result) => {
+                                if (result.data.filter((obj) => obj.reservationSummary_id == id).length == 0) {
+                                    axios.delete(apiKey + 'api/deleteReservationSummary/' + id).then((result) => {
+                                        console.log(result.data)
+                                        axios.patch(apiKey + 'api/updateGrandTotal/' + reservationSummaryInfo.reservation.payment.id, {
+                                            paymentMade: reservationSummaryInfo.reservation.payment.paymentMade,
+                                        }).then((result) => {
+                                            console.log(result.data)
+                                            //partial
+                                            window.location.reload()
+                                        }).catch((err) => {
+                                            console.log(err)
+
+                                        })
+                                    }).catch((err) => {
+                                        console.log(err)
+                                    });
+                                }
+                            }).catch((err) => {
+                                console.log(err)
+                            });
+                        }).catch((err) => {
+                            console.log(err)
+                        });
+                    }
+
+
+
+                }
+            }).catch((err) => {
+                console.log(err)
+            });
+        }
+        else {
+
+        }
+
+    }
     const [searchValue, setSearchValue] = useState('')
 
     return (
@@ -1044,6 +1169,7 @@ const BookingsContainer = () => {
                                     <ActionButton
                                         view={() => handleOpenView(item.id)}
                                         edit={() => handleOpenEdit(item.id)}
+                                        delete={() => deleteBooking(item.id)}
                                     />
                                 </Td>
                             </Tr>
@@ -1452,9 +1578,10 @@ const BookingsContainer = () => {
                                     weight='400'
                                     align='left'
                                 >
-                                    Extra Mattress:
+                                    Extra Mattress <i style={{ fontSize: '16px' }}>({numberFormat(amenities.length != 0 && amenities.filter((obj) => obj.amenityName == 'Extra Mattress').map((item) => item.amenityRate))})</i>:
                                 </Title>
                                 <TextField
+                                    disabled
                                     value={extraMattress}
                                     onChange={(e) => {
                                         if (e.target.value < 0) {
@@ -1468,15 +1595,15 @@ const BookingsContainer = () => {
                                     label=""
                                     variant="standard"
                                     style={{ width: 50, margin: '5px 0px', fontWeight: 'bold', }}
-                                    // InputProps={{
-                                    //     endAdornment: (
-                                    //         <InputAdornment position="end">
-                                    //             x
-                                    //         </InputAdornment>
+                                // InputProps={{
+                                //     endAdornment: (
+                                //         <InputAdornment position="end">
+                                //             x
+                                //         </InputAdornment>
 
-                                    //     ),
-                                    // }}
-                                      />
+                                //     ),
+                                // }}
+                                />
 
                             </ContainerGlobal>
                             <ContainerGlobal
@@ -1498,7 +1625,7 @@ const BookingsContainer = () => {
                                     weight='400'
                                     align='left'
                                 >
-                                    Extra Pillow:
+                                    Extra Pillow <i style={{ fontSize: '16px' }}>({numberFormat(amenities.length != 0 && amenities.filter((obj) => obj.amenityName == 'Extra Pillow').map((item) => item.amenityRate))})</i>:
                                 </Title>
                                 <TextField
                                     value={extraPillow}
@@ -1510,20 +1637,21 @@ const BookingsContainer = () => {
                                             setExtraPillow(e.target.value);
                                         }
                                     }}
+                                    disabled
                                     type='number'
                                     id="outlined-basic"
                                     label=""
                                     variant="standard"
                                     style={{ width: 50, margin: '5px 0px', fontWeight: 'bold', }}
-                                    // InputProps={{
-                                    //     endAdornment: (
-                                    //         <InputAdornment position="end">
-                                    //             x
-                                    //         </InputAdornment>
+                                // InputProps={{
+                                //     endAdornment: (
+                                //         <InputAdornment position="end">
+                                //             x
+                                //         </InputAdornment>
 
-                                    //     ),
-                                    // }}
-                                      />
+                                //     ),
+                                // }}
+                                />
                             </ContainerGlobal>
                             <ContainerGlobal
                                 w='320px'
@@ -1544,7 +1672,7 @@ const BookingsContainer = () => {
                                     weight='400'
                                     align='left'
                                 >
-                                    Extra Blanket:
+                                    Extra Blanket <i style={{ fontSize: '16px' }}>({numberFormat(amenities.length != 0 && amenities.filter((obj) => obj.amenityName == 'Extra Blanket').map((item) => item.amenityRate))})</i>:
                                 </Title>
                                 <TextField
                                     value={extraBlanket}
@@ -1556,20 +1684,21 @@ const BookingsContainer = () => {
                                             setExtraBlanket(e.target.value);
                                         }
                                     }}
+                                    disabled
                                     type='number'
                                     id="outlined-basic"
                                     label=""
                                     variant="standard"
                                     style={{ width: 50, margin: '5px 0px', fontWeight: 'bold', }}
-                                    // InputProps={{
-                                    //     endAdornment: (
-                                    //         <InputAdornment position="end">
-                                    //             x
-                                    //         </InputAdornment>
+                                // InputProps={{
+                                //     endAdornment: (
+                                //         <InputAdornment position="end">
+                                //             x
+                                //         </InputAdornment>
 
-                                    //     ),
-                                    // }}
-                                      />
+                                //     ),
+                                // }}
+                                />
                             </ContainerGlobal>
                             <ContainerGlobal
                                 w='320px'
@@ -1590,7 +1719,7 @@ const BookingsContainer = () => {
                                     weight='400'
                                     align='left'
                                 >
-                                    Extra Person:
+                                    Extra Person <i style={{ fontSize: '16px' }}>({numberFormat(amenities.length != 0 && amenities.filter((obj) => obj.amenityName == 'Extra Person').map((item) => item.amenityRate))})</i>:
                                 </Title>
                                 <TextField
                                     value={extraPerson}
@@ -1602,20 +1731,21 @@ const BookingsContainer = () => {
                                             setExtraPerson(e.target.value);
                                         }
                                     }}
+                                    disabled
                                     type='number'
                                     id="outlined-basic"
                                     label=""
                                     variant="standard"
                                     style={{ width: 50, margin: '5px 0px', fontWeight: 'bold', }}
-                                    // InputProps={{
-                                    //     endAdornment: (
-                                    //         <InputAdornment position="end">
-                                    //             x
-                                    //         </InputAdornment>
+                                // InputProps={{
+                                //     endAdornment: (
+                                //         <InputAdornment position="end">
+                                //             x
+                                //         </InputAdornment>
 
-                                    //     ),
-                                    // }}
-                                      />
+                                //     ),
+                                // }}
+                                />
                             </ContainerGlobal>
                             <ContainerGlobal
                                 w='320px'
@@ -1636,7 +1766,7 @@ const BookingsContainer = () => {
                                     weight='400'
                                     align='left'
                                 >
-                                    Extra Time(/hour):
+                                    Extra Time <i style={{ fontSize: '16px' }}>({numberFormat(amenities.length != 0 && amenities.filter((obj) => obj.amenityName == 'Extra Time(Rate/hour)').map((item) => item.amenityRate))}/hour)</i>:
                                 </Title>
                                 <TextField
                                     value={extraTime}
@@ -1649,20 +1779,21 @@ const BookingsContainer = () => {
                                         }
 
                                     }}
+                                    disabled
                                     type='number'
                                     id="outlined-basic"
                                     label=""
                                     variant="standard"
                                     style={{ width: 50, margin: '5px 0px', fontWeight: 'bold', }}
-                                    // InputProps={{
-                                    //     endAdornment: (
-                                    //         <InputAdornment position="end">
-                                    //             x
-                                    //         </InputAdornment>
+                                // InputProps={{
+                                //     endAdornment: (
+                                //         <InputAdornment position="end">
+                                //             x
+                                //         </InputAdornment>
 
-                                    //     ),
-                                    // }}
-                                      />
+                                //     ),
+                                // }}
+                                />
                             </ContainerGlobal>
                             <ContainerGlobal
                                 w='320px'
@@ -1699,6 +1830,7 @@ const BookingsContainer = () => {
                                     type='number'
                                     id="outlined-basic"
                                     label=""
+                                    disabled
                                     variant="standard"
                                     style={{ width: 200, margin: '5px 0px', fontWeight: 'bold' }}
                                     InputProps={{
@@ -1747,12 +1879,12 @@ const BookingsContainer = () => {
                                     value={
                                         amenities.length != 0 &&
                                         numberFormat(
-                                            (roomRate * nights) + parseInt(extraMattress * amenities.filter((obj) => obj.amenityName == "Extra Mattress").map((item) => item.amenityRate))
-                                            + parseInt(extraPillow * amenities.filter((obj) => obj.amenityName == "Extra Pillow").map((item) => item.amenityRate))
-                                            + parseInt(extraBlanket * amenities.filter((obj) => obj.amenityName == "Extra Blanket").map((item) => item.amenityRate))
-                                            + parseInt(extraPerson * amenities.filter((obj) => obj.amenityName == "Extra Person").map((item) => item.amenityRate))
-                                            + parseInt(extraTime * amenities.filter((obj) => obj.amenityName == "Extra Time(Rate/hour)").map((item) => item.amenityRate))
-                                            + parseInt(others)
+                                            (roomRate * nights) + parseFloat(extraMattress * amenities.filter((obj) => obj.amenityName == "Extra Mattress").map((item) => item.amenityRate))
+                                            + parseFloat(extraPillow * amenities.filter((obj) => obj.amenityName == "Extra Pillow").map((item) => item.amenityRate))
+                                            + parseFloat(extraBlanket * amenities.filter((obj) => obj.amenityName == "Extra Blanket").map((item) => item.amenityRate))
+                                            + parseFloat(extraPerson * amenities.filter((obj) => obj.amenityName == "Extra Person").map((item) => item.amenityRate))
+                                            + parseFloat(extraTime * amenities.filter((obj) => obj.amenityName == "Extra Time(Rate/hour)").map((item) => item.amenityRate))
+                                            + parseFloat(others)
                                         )
                                     }
                                     disabled
@@ -2690,6 +2822,8 @@ const BookingsContainer = () => {
                                         label="Menu"
                                         onChange={(event) => {
                                             setRoomType(event.target.value);
+                                            setRoomNumber('')
+
                                         }}
 
                                     >
@@ -2834,7 +2968,7 @@ const BookingsContainer = () => {
                                     weight='400'
                                     align='left'
                                 >
-                                    Extra Mattress:
+                                    Extra Mattress <i style={{ fontSize: '16px' }}>({numberFormat(amenities.length != 0 && amenities.filter((obj) => obj.amenityName == 'Extra Mattress').map((item) => item.amenityRate))})</i>:
                                 </Title>
                                 <TextField
                                     value={extraMattress}
@@ -2850,15 +2984,15 @@ const BookingsContainer = () => {
                                     label=""
                                     variant="standard"
                                     style={{ width: 50, margin: '5px 0px', fontWeight: 'bold', }}
-                                    // InputProps={{
-                                    //     endAdornment: (
-                                    //         <InputAdornment position="end">
-                                    //             x
-                                    //         </InputAdornment>
+                                // InputProps={{
+                                //     endAdornment: (
+                                //         <InputAdornment position="end">
+                                //             x
+                                //         </InputAdornment>
 
-                                    //     ),
-                                    // }}
-                                      />
+                                //     ),
+                                // }}
+                                />
 
                             </ContainerGlobal>
                             <ContainerGlobal
@@ -2880,7 +3014,7 @@ const BookingsContainer = () => {
                                     weight='400'
                                     align='left'
                                 >
-                                    Extra Pillow:
+                                    Extra Pillow <i style={{ fontSize: '16px' }}>({numberFormat(amenities.length != 0 && amenities.filter((obj) => obj.amenityName == 'Extra Pillow').map((item) => item.amenityRate))})</i>:
                                 </Title>
                                 <TextField
                                     value={extraPillow}
@@ -2897,16 +3031,16 @@ const BookingsContainer = () => {
                                     label=""
                                     variant="standard"
                                     style={{ width: 50, margin: '5px 0px', fontWeight: 'bold', }}
-                                    // InputProps={{
-                                    //     endAdornment: (
-                                    //         <InputAdornment position="end">
-                                    //             x
-                                    //         </InputAdornment>
+                                // InputProps={{
+                                //     endAdornment: (
+                                //         <InputAdornment position="end">
+                                //             x
+                                //         </InputAdornment>
 
-                                    //     ),
-                                    // }}
-                                     
-                                     />
+                                //     ),
+                                // }}
+
+                                />
                             </ContainerGlobal>
                             <ContainerGlobal
                                 w='320px'
@@ -2927,7 +3061,7 @@ const BookingsContainer = () => {
                                     weight='400'
                                     align='left'
                                 >
-                                    Extra Blanket:
+                                    Extra Blanket <i style={{ fontSize: '16px' }}>({numberFormat(amenities.length != 0 && amenities.filter((obj) => obj.amenityName == 'Extra Blanket').map((item) => item.amenityRate))})</i>:
                                 </Title>
                                 <TextField
                                     value={extraBlanket}
@@ -2944,15 +3078,15 @@ const BookingsContainer = () => {
                                     label=""
                                     variant="standard"
                                     style={{ width: 50, margin: '5px 0px', fontWeight: 'bold', }}
-                                    // InputProps={{
-                                    //     endAdornment: (
-                                    //         <InputAdornment position="end">
-                                    //             x
-                                    //         </InputAdornment>
+                                // InputProps={{
+                                //     endAdornment: (
+                                //         <InputAdornment position="end">
+                                //             x
+                                //         </InputAdornment>
 
-                                    //     ),
-                                    // }}
-                                      />
+                                //     ),
+                                // }}
+                                />
                             </ContainerGlobal>
                             <ContainerGlobal
                                 w='320px'
@@ -2973,7 +3107,7 @@ const BookingsContainer = () => {
                                     weight='400'
                                     align='left'
                                 >
-                                    Extra Person:
+                                    Extra Person <i style={{ fontSize: '16px' }}>({numberFormat(amenities.length != 0 && amenities.filter((obj) => obj.amenityName == 'Extra Person').map((item) => item.amenityRate))})</i>:
                                 </Title>
                                 <TextField
                                     value={extraPerson}
@@ -2990,15 +3124,15 @@ const BookingsContainer = () => {
                                     label=""
                                     variant="standard"
                                     style={{ width: 50, margin: '5px 0px', fontWeight: 'bold', }}
-                                    // InputProps={{
-                                    //     endAdornment: (
-                                    //         <InputAdornment position="end">
-                                    //             x
-                                    //         </InputAdornment>
+                                // InputProps={{
+                                //     endAdornment: (
+                                //         <InputAdornment position="end">
+                                //             x
+                                //         </InputAdornment>
 
-                                    //     ),
-                                    // }}
-                                      />
+                                //     ),
+                                // }}
+                                />
                             </ContainerGlobal>
                             <ContainerGlobal
                                 w='320px'
@@ -3019,7 +3153,7 @@ const BookingsContainer = () => {
                                     weight='400'
                                     align='left'
                                 >
-                                    Extra Time(/hour):
+                                    Extra Time <i style={{ fontSize: '16px' }}>({numberFormat(amenities.length != 0 && amenities.filter((obj) => obj.amenityName == 'Extra Time(Rate/hour)').map((item) => item.amenityRate))}/hour)</i>:
                                 </Title>
                                 <TextField
                                     value={extraTime}
@@ -3037,15 +3171,15 @@ const BookingsContainer = () => {
                                     label=""
                                     variant="standard"
                                     style={{ width: 50, margin: '5px 0px', fontWeight: 'bold', }}
-                                    // InputProps={{
-                                    //     endAdornment: (
-                                    //         <InputAdornment position="end">
-                                    //             x
-                                    //         </InputAdornment>
+                                // InputProps={{
+                                //     endAdornment: (
+                                //         <InputAdornment position="end">
+                                //             x
+                                //         </InputAdornment>
 
-                                    //     ),
-                                    // }}
-                                      />
+                                //     ),
+                                // }}
+                                />
                             </ContainerGlobal>
                             <ContainerGlobal
                                 w='320px'
@@ -3131,12 +3265,12 @@ const BookingsContainer = () => {
                                     value={
                                         amenities.length != 0 &&
                                         numberFormat(
-                                            (roomRate * nights) + parseInt(extraMattress * amenities.filter((obj) => obj.amenityName == "Extra Mattress").map((item) => item.amenityRate))
-                                            + parseInt(extraPillow * amenities.filter((obj) => obj.amenityName == "Extra Pillow").map((item) => item.amenityRate))
-                                            + parseInt(extraBlanket * amenities.filter((obj) => obj.amenityName == "Extra Blanket").map((item) => item.amenityRate))
-                                            + parseInt(extraPerson * amenities.filter((obj) => obj.amenityName == "Extra Person").map((item) => item.amenityRate))
-                                            + parseInt(extraTime * amenities.filter((obj) => obj.amenityName == "Extra Time(Rate/hour)").map((item) => item.amenityRate))
-                                            + parseInt(others)
+                                            (roomRate * nights) + parseFloat(extraMattress * amenities.filter((obj) => obj.amenityName == "Extra Mattress").map((item) => item.amenityRate))
+                                            + parseFloat(extraPillow * amenities.filter((obj) => obj.amenityName == "Extra Pillow").map((item) => item.amenityRate))
+                                            + parseFloat(extraBlanket * amenities.filter((obj) => obj.amenityName == "Extra Blanket").map((item) => item.amenityRate))
+                                            + parseFloat(extraPerson * amenities.filter((obj) => obj.amenityName == "Extra Person").map((item) => item.amenityRate))
+                                            + parseFloat(extraTime * amenities.filter((obj) => obj.amenityName == "Extra Time(Rate/hour)").map((item) => item.amenityRate))
+                                            + parseFloat(others)
                                         )
                                     }
                                     disabled

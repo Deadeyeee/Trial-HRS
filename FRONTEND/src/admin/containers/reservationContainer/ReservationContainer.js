@@ -845,19 +845,42 @@ export const ReservationContainer = () => {
 
     const deleteBooking = (id, paymentId, paymentMade) => {
         if (window.confirm('are you sure you want to delete this?')) {
-            axios.delete(apiKey + 'api/deleteReservationSummary/' + id).then((result) => {
-                console.log(result.data)
-                axios.patch(apiKey + 'api/updateGrandTotal/' + editPaymentId, {
-                    paymentMade: paymentMadeValue,
-                }).then((result) => {
-                    console.log(result.data)
-                    window.location.reload();
-                }).catch((err) => {
-                    console.log(err)
-                })
+            axios.get(apiKey + 'api/getAllOrderedAmenities').then((result) => {
+                for (let index = 0; index < result.data.length; index++) {
+                    if (result.data[index].reservationSummary_id == id) {
+                        axios.delete(apiKey + 'api/deleteOrderedAmenities/' + result.data[index].id).then((result) => {
+                            console.log(result.data)
+                            axios.get(apiKey + 'api/getAllOrderedAmenities').then((result) => {
+                                if (result.data.filter((obj) => obj.reservationSummary_id == id).length == 0) {
+                                    axios.delete(apiKey + 'api/deleteReservationSummary/' + id).then((result) => {
+                                        console.log(result.data)
+                                        axios.patch(apiKey + 'api/updateGrandTotal/' + editReservationInfo.payment.id, {
+                                            paymentMade: editReservationInfo.payment.paymentMade,
+                                        }).then((result) => {
+                                            console.log(result.data)
+                                            //partial
+                                            window.location.reload()
+                                        }).catch((err) => {
+                                            console.log(err)
+
+                                        })
+                                    }).catch((err) => {
+                                        console.log(err)
+                                    });
+                                }
+                            }).catch((err) => {
+                                console.log(err)
+                            });
+                        }).catch((err) => {
+                            console.log(err)
+                        });
+                    }
+
+
+
+                }
             }).catch((err) => {
                 console.log(err)
-
             });
             setEditReservationId('')
         }
@@ -1359,16 +1382,34 @@ export const ReservationContainer = () => {
                     }
                     axios.post(apiKey + "api/addReservationSummary", items).then((reservationSummary) => {
                         console.log(reservationSummary.data)
-                        axios.patch(apiKey + 'api/updateGrandTotal/' + editPaymentId, {
-                            paymentMade: paymentMadeValue,
-                        }).then((result) => {
-                            console.log(result.data)
-                            //partial
-                            window.location.reload()
+                        axios.get(apiKey + "api/getAllAmenities").then((amenities) => {
+                            for (let index = 0; index < amenities.data.length; index++) {
+                                axios.post(apiKey + "api/addOrderedAmenities", {
+                                    amenity_id: amenities.data[index].id,
+                                    reservationSummary_id: reservationSummary.data.new_reservationSummary.id,
+                                }).then((result) => {
+                                    console.log(result.data)
+                                    if (index == amenities.data.length - 1) {
+                                        axios.patch(apiKey + 'api/updateGrandTotal/' + editPaymentId, {
+                                            paymentMade: paymentMadeValue,
+                                        }).then((result) => {
+                                            console.log(result.data)
+                                            //partial
+                                            window.location.reload()
+                                        }).catch((err) => {
+                                            console.log(err)
+
+                                        })
+                                    }
+                                }).catch((err) => {
+                                    console.log(err)
+
+                                });
+                            }
                         }).catch((err) => {
                             console.log(err)
+                        });
 
-                        })
                     }).catch((err) => {
                         console.log(err)
 
@@ -1387,23 +1428,79 @@ export const ReservationContainer = () => {
         if (window.confirm('are you sure you want to delete this?')) {
             axios.get(apiKey + 'api/getNumberOfRooms/' + value).then((rooms) => {
                 console.log(rooms.data)
-                for (let index = 0; index < rooms.data.length; index++) {
-                    axios.delete(apiKey + 'api/deleteReservationSummary/' + rooms.data[index].id).then((result) => {
-                        console.log(rooms.data.length - 1)
-                        console.log(index)
-                        if (index == rooms.data.length - 1) {
-                            console.log('PASOK')
-                            axios.delete(apiKey + 'api/deleteReservation/' + value).then((result) => {
-                                console.log(result.data)
-                                window.location.reload();
-                            }).catch((err) => {
-                                console.log(err)
-                            });
-                        }
+                if (rooms.data.length == 0) {
+                    axios.delete(apiKey + 'api/deleteReservation/' + value).then((result) => {
+                        console.log(result.data)
+                        axios.delete(apiKey + 'api/deletePayment/' + rooms.data.payment_id).then((result) => {
+                            console.log(result.data)
+                            window.location.reload();
+                        }).catch((err) => {
+                            console.log(err)
+                        });
                     }).catch((err) => {
                         console.log(err)
                     });
+                }
+                else {
 
+
+                    for (let index = 0; index < rooms.data.length; index++) {
+
+                        axios.get(apiKey + 'api/getAllOrderedAmenities').then((result) => {
+                            for (let index2 = 0; index2 < result.data.length; index2++) {
+                                if (result.data[index].reservationSummary_id == rooms.data[index].id) {
+                                    axios.delete(apiKey + 'api/deleteOrderedAmenities/' + result.data[index2].id).then((result) => {
+                                        console.log(result.data)
+                                        axios.get(apiKey + 'api/getAllOrderedAmenities').then((result) => {
+                                            if (result.data.filter((obj) => obj.reservationSummary_id == rooms.data[index].id).length == 0) {
+                                                axios.delete(apiKey + 'api/deleteReservationSummary/' + rooms.data[index].id).then((result) => {
+                                                    console.log(rooms.data.length - 1)
+                                                    console.log(index)
+                                                    if (index == rooms.data.length - 1) {
+                                                        console.log('PASOK')
+                                                        axios.delete(apiKey + 'api/deleteReservation/' + value).then((result) => {
+                                                            console.log(result.data)
+
+                                                            axios.delete(apiKey + 'api/deletePayment/' + rooms.data.payment_id).then((result) => {
+                                                                console.log(result.data)
+                                                                window.location.reload();
+                                                            }).catch((err) => {
+                                                                console.log(err)
+                                                            });
+                                                        }).catch((err) => {
+                                                            console.log(err)
+                                                        });
+                                                    }
+                                                }).catch((err) => {
+                                                    console.log(err)
+                                                });
+                                            }
+                                        }).catch((err) => {
+                                            console.log(err)
+                                        });
+                                    }).catch((err) => {
+                                        console.log(err)
+                                    });
+                                }
+
+
+
+                            }
+                        }).catch((err) => {
+                            console.log(err)
+                        });
+
+
+
+
+
+
+
+
+
+
+
+                    }
                 }
             }).catch((err) => {
                 console.log(err)
@@ -2333,7 +2430,7 @@ export const ReservationContainer = () => {
 
                                 </Title>
                                 <FormControlLabel
-                                    disabled
+                                    disabled = {discount == "No discount" ? true : false}
                                     style={{ width: 200, margin: '5px 0px' }}
                                     control={
                                         <Checkbox
