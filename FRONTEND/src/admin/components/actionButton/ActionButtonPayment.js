@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import EditIcon from '@mui/icons-material/Edit';
 import IconButton from '@mui/material/IconButton';
 import { ContainerGlobal } from '../container/container';
@@ -12,7 +12,7 @@ import { HorizontalLine } from '../../../client/components/horizontalLine/Horizo
 import Button from '@mui/material/Button';
 
 function ActionButtonPayment(props) {
-    const [show, setShow] = useState(false);
+  const [show, setShow] = useState(false);
 
   const deleteModal = (
     <ContainerGlobal
@@ -66,30 +66,33 @@ function ActionButtonPayment(props) {
       </ContainerGlobal>
     </ContainerGlobal>
   );
-    return (
-        <div>
-            <ContainerGlobal
-                w='100%'
-                h='auto'
-                direction='row'
-                align='center'
-                justify='center'
-                gap='10px'
-            >
-                <IconButton onClick={props.pay} type="submit" sx={{ p: '8px', backgroundColor: props.paid == true ? 'rgb(46, 46, 46, .2)' : "rgb(80, 170, 50, 0.7)" }} aria-label="search" title='Payment'>
-                    <AddCardIcon style={{ color: '#2e2e2e', fontSize: '18px' }} title='View' />
-                </IconButton>
-                <IconButton onClick={props.view} type="submit" sx={{ p: '8px', backgroundColor: 'rgb(191, 170, 126, 0.7)' }} aria-label="search" title='View'>
-                    <RemoveRedEyeIcon style={{ color: '#2e2e2e', fontSize: '18px' }} title='View' />
-                </IconButton>
-                <IconButton onClick={props.print} type="submit" sx={{ p: '8px', backgroundColor: props.paid == true ? 'rgb(191, 170, 126, 0.7)' : 'rgb(46, 46, 46, .2)' }} aria-label="search" title='Print receipt'>
-                    <LocalPrintshopIcon style={{ color: '#2e2e2e', fontSize: '18px' }} title='View' />
-                </IconButton>
+  return (
+    <div>
+      <ContainerGlobal
+        w='100%'
+        h='auto'
+        direction='row'
+        align='center'
+        justify='center'
+        gap='10px'
+      >
+        <IconButton onClick={props.pay} type="submit" sx={{ p: '8px', backgroundColor: props.paid == true ? 'rgb(46, 46, 46, .2)' : "rgb(80, 170, 50, 0.7)" }} aria-label="search" title='Payment'>
+          <AddCardIcon style={{ color: '#2e2e2e', fontSize: '18px' }} title='View' />
+        </IconButton>
+        <IconButton onClick={props.view} type="submit" sx={{ p: '8px', backgroundColor: 'rgb(191, 170, 126, 0.7)' }} aria-label="search" title='View'>
+          <RemoveRedEyeIcon style={{ color: '#2e2e2e', fontSize: '18px' }} title='View' />
+        </IconButton>
+        <IconButton onClick={props.edit} type="submit" sx={{ p: '8px', backgroundColor: 'rgb(191, 170, 126, 0.7)' }} aria-label="search" title='Edit/Update'>
+          <EditIcon style={{ color: '#2e2e2e', fontSize: '18px' }} title='View' />
+        </IconButton>
+        <IconButton onClick={props.print}  type="submit" sx={{ display: props.printDisable == true ? 'none' : '' ,p: '8px', backgroundColor: props.printDisable == false ? 'rgb(0, 0, 255, 0.5)' : 'rgb(46, 46, 46, .2)' }} aria-label="search" title='Print receipt'>
+          <LocalPrintshopIcon style={{ color: '#2e2e2e', fontSize: '18px' }} title='View' />
+        </IconButton>
 
-                <Grow in={show}>{deleteModal}</Grow>
-            </ContainerGlobal>
-        </div>
-    )
+        <Grow in={show}>{deleteModal}</Grow>
+      </ContainerGlobal>
+    </div>
+  )
 }
 
 export default ActionButtonPayment

@@ -96,6 +96,9 @@ const PaymentContainer = () => {
     const [reservationInformation, setReservationInformation] = useState([]);
 
     const [openEdit, setOpenEdit] = useState(false);
+    const [openView, setOpenView] = useState(false);
+    const [openUpdate, setOpenUpdate] = useState(false);
+    const [openPrint, setOpenPrint] = useState(false);
 
     const [reservations, setReservations] = useState([]);
     const [paymentValue, setPaymentValue] = useState(0);
@@ -254,10 +257,41 @@ const PaymentContainer = () => {
 
     const handleCloseEdit = () => {
         setOpenEdit(false)
+        setReservationInformation([])
+        setReservationSummaryInfo([])
+        setOrderedAmenities([])
+        setAmenities([])
+        setPaymentValue(0)
+        setPreviewImage('')
+        setPreviewImageError('')
+        setImageToUpload([])
+    }
+    const handleClosePrint = () => {
+        setOpenPrint(false)
+        setReservationInformation([])
 
+    }
+    const handleCloseUpdate = () => {
+        setOpenUpdate(false)
+        setReservationInformation([])
+        setReservationSummaryInfo([])
+        setOrderedAmenities([])
+        setAmenities([])
+        setPaymentValue(0)
+        setPreviewImage('')
+        setPreviewImageError('')
+        setImageToUpload([])
+    }
+    const handleCloseView = () => {
+        setOpenView(false)
+        setReservationInformation([])
+        setReservationSummaryInfo([])
+        setOrderedAmenities([])
+        setAmenities([])
 
     }
     const [orderedAmenities, setOrderedAmenities] = useState([])
+
     const handleOpenEdit = (value) => {
         setOpenEdit(true)
         console.log(value.reservationReferenceNumber)
@@ -283,6 +317,108 @@ const PaymentContainer = () => {
 
         });
     }
+
+    const handleOpenView = (value) => {
+        setOpenView(true)
+        console.log(value.reservationReferenceNumber)
+        setReservationInformation(value)
+        axios.get(apiKey + 'api/getAllReservationSummary').then((result) => {
+            console.log(result.data)
+            console.log(value.id)
+            setReservationSummaryInfo(result.data.filter((obj) => obj.reservation_id == value.id))
+        }).catch((err) => {
+
+        });
+        axios.get(apiKey + 'api/getAllOrderedAmenities').then((result) => {
+
+            setOrderedAmenities(result.data.filter((obj) => obj.reservationSummary.reservation_id == value.id))
+        }).catch((err) => {
+
+        });
+
+        axios.get(apiKey + 'api/getAllAmenities').then((result) => {
+
+            setAmenities(result.data)
+        }).catch((err) => {
+
+        });
+    }
+
+    const handleOpenPrint = (value) => {
+        setOpenPrint(true)
+        setReservationInformation(value)
+    }
+    const handleOpenUpdate = (value) => {
+        setOpenUpdate(true)
+        console.log(value.reservationReferenceNumber)
+        setReservationInformation(value)
+        setReservationStatus(value.payment.paymentStatus)
+        setPaymentMethod(value.payment.paymentMode.paymentMode)
+        setDiscount(value.payment.discount.discountType)
+        setPaymentType(value.payment.paymentType)
+        setDiscountValid(value.payment.discountValid)
+        setGrandTotal(value.payment.grandTotal)
+        axios.get(apiKey + 'api/getAllReservationSummary').then((result) => {
+            console.log(result.data)
+            console.log(value.id)
+            setReservationSummaryInfo(result.data.filter((obj) => obj.reservation_id == value.id))
+        }).catch((err) => {
+            console.log(err)
+
+        });
+        axios.get(apiKey + 'api/getAllOrderedAmenities').then((result) => {
+
+            setOrderedAmenities(result.data.filter((obj) => obj.reservationSummary.reservation_id == value.id))
+        }).catch((err) => {
+            console.log(err)
+
+        });
+
+        axios.get(apiKey + 'api/getAllAmenities').then((result) => {
+
+            setAmenities(result.data)
+        }).catch((err) => {
+            console.log(err)
+
+        });
+
+
+    }
+
+    useEffect(() => {
+        axios.get(apiKey + 'api/getAllPaymentMode').then((result) => {
+            setPaymentMode(result.data)
+        }).catch((err) => {
+            console.log(err)
+
+        });
+
+        axios.get(apiKey + 'api/getAllDiscount').then((result) => {
+            setDiscountDb(result.data)
+        }).catch((err) => {
+            console.log(err)
+
+        });
+
+    }, [])
+
+    useEffect(() => {
+        if (discount != '') {
+            discountDb.map((item) => {
+                if (discount == item.discountType) {
+                    setDiscountId(item.id)
+                }
+            })
+        }
+
+        if (paymentMethod != '') {
+            paymentMode.map((item) => {
+                if (paymentMethod == item.paymentMode) {
+                    setPaymentModeId(item.id)
+                }
+            })
+        }
+    }, [discount, paymentMode])
 
 
     const handleOpenUpload = (value) => {
@@ -319,19 +455,19 @@ const PaymentContainer = () => {
                 console.log(result.data)
                 axios.get(apiKey + 'api/getAllReservationSummary').then((result) => {
                     console.log(result.data)
-                    result.data.filter((obj)=> obj.reservation_id == reservationSelected.id ).map((item, index, arr) => {
-                            axios.patch(apiKey + 'api/updateReservationSummary/' + item.id, {
-                                bookingStatus: 'RESERVED'
-                            }).then((result) => {
-                                console.log(result.data)
-                                console.log(item.reservation.payment.paymentMode.paymentMode)
-                                console.log(index)
-                                // console.log(index)
+                    result.data.filter((obj) => obj.reservation_id == reservationSelected.id).map((item, index, arr) => {
+                        axios.patch(apiKey + 'api/updateReservationSummary/' + item.id, {
+                            bookingStatus: 'RESERVED'
+                        }).then((result) => {
+                            console.log(result.data)
+                            console.log(item.reservation.payment.paymentMode.paymentMode)
+                            console.log(index)
+                            // console.log(index)
 
-                            }).catch((err) => {
-                                console.log(err)
+                        }).catch((err) => {
+                            console.log(err)
 
-                            });
+                        });
                         if (index == arr.length - 1) {
                             axios.post(apiKey + 'api/sendReservationEmail', {
                                 email: item.reservation.guestInformation.user.email.toLocaleLowerCase(),
@@ -680,19 +816,19 @@ const PaymentContainer = () => {
                             console.log(result.data)
                             axios.get(apiKey + 'api/getAllReservationSummary').then((result) => {
                                 console.log(result.data)
-                                result.data.filter((obj)=> obj.reservation_id == reservationInformation.id ).map((item, index, arr) => {
-                                        axios.patch(apiKey + 'api/updateReservationSummary/' + item.id, {
-                                            bookingStatus: 'RESERVED'
-                                        }).then((result) => {
-                                            console.log(result.data)
-                                            console.log(item.reservation.payment.paymentMode.paymentMode)
-                                            console.log(index)
-                                            // console.log(index)
+                                result.data.filter((obj) => obj.reservation_id == reservationInformation.id).map((item, index, arr) => {
+                                    axios.patch(apiKey + 'api/updateReservationSummary/' + item.id, {
+                                        bookingStatus: 'RESERVED'
+                                    }).then((result) => {
+                                        console.log(result.data)
+                                        console.log(item.reservation.payment.paymentMode.paymentMode)
+                                        console.log(index)
+                                        // console.log(index)
 
-                                        }).catch((err) => {
-                                            console.log(err)
+                                    }).catch((err) => {
+                                        console.log(err)
 
-                                        });
+                                    });
                                     if (index == arr.length - 1) {
                                         axios.post(apiKey + 'api/sendReservationEmail', {
                                             email: item.reservation.guestInformation.user.email.toLocaleLowerCase(),
@@ -739,7 +875,7 @@ const PaymentContainer = () => {
                         });
 
                     }
-                    else{
+                    else {
                         window.location.reload();
 
                     }
@@ -753,21 +889,21 @@ const PaymentContainer = () => {
                             console.log(result.data)
                             axios.get(apiKey + 'api/getAllReservationSummary').then((result) => {
                                 console.log(result.data)
-                                result.data.filter((obj)=> obj.reservation_id == reservationInformation.id).map((item, index, arr) => {
-                                    
-                                        axios.patch(apiKey + 'api/updateReservationSummary/' + item.id, {
-                                            bookingStatus: 'RESERVED'
-                                        }).then((result) => {
-                                            console.log(result.data)
-                                            console.log(item.reservation.payment.paymentMode.paymentMode)
-                                            console.log(index)
-                                            // console.log(index)
+                                result.data.filter((obj) => obj.reservation_id == reservationInformation.id).map((item, index, arr) => {
 
-                                        }).catch((err) => {
-                                            console.log(err)
+                                    axios.patch(apiKey + 'api/updateReservationSummary/' + item.id, {
+                                        bookingStatus: 'RESERVED'
+                                    }).then((result) => {
+                                        console.log(result.data)
+                                        console.log(item.reservation.payment.paymentMode.paymentMode)
+                                        console.log(index)
+                                        // console.log(index)
 
-                                        });
-                                    
+                                    }).catch((err) => {
+                                        console.log(err)
+
+                                    });
+
                                     if (index == arr.length - 1) {
                                         axios.post(apiKey + 'api/sendReservationEmail', {
                                             email: item.reservation.guestInformation.user.email.toLocaleLowerCase(),
@@ -814,13 +950,16 @@ const PaymentContainer = () => {
                         });
 
                     }
-                    else{
+                    else {
                         window.location.reload();
 
                     }
                 }
             }
-            // window.location.reload()
+            else{
+
+            window.location.reload()
+            }
         }).catch((err) => {
             console.log(err)
         })
@@ -854,6 +993,7 @@ const PaymentContainer = () => {
     }
 
     const uploadImage = (e) => {
+
         e.preventDefault();
         const formData = new FormData();
         formData.append('paymentImage', imageToUpload)
@@ -887,8 +1027,100 @@ const PaymentContainer = () => {
             }
         }
     }
+    
+    const savePayment = (e) => {
+        e.preventDefault();
+
+        axios.patch(apiKey + "api/updatePayment/" + reservationInformation.payment.id, {
+            discount_id: discountId,
+            paymentMode_id: paymentModeId,
+            paymentType: paymentType,
+            discountValid: discountValid
+        }).then((payment) => {
+            axios.patch(apiKey + 'api/updateGrandTotal/' + reservationInformation.payment.id, {
+                paymentMade: parseFloat(reservationInformation.payment.paymentMade),
+            }).then((result) => {
+                console.log(result.data)
+                if (imageToUpload.length != 0) {
+                    const formData = new FormData();
+                    formData.append('paymentImage', imageToUpload)
+                    if (previewImageError.length == 0 && imageToUpload.length != 0) {
+                        if (reservationInformation.payment.paymentImage != null) {
+                            axios.post(apiKey + 'api/deleteImage', {
+                                filePath: reservationInformation.payment.paymentImage,
+                            }).then((result) => {
+                                console.log(result.data)
+                                axios.patch(apiKey + 'api/updatePaymentPhoto/' + reservationInformation.payment.id, formData).then((result) => {
+                                    console.log(result.data)
+                                    window.location.reload()
+                                }).catch((err) => {
+                                    console.log(err.data)
+
+                                });
+                            }).catch((err) => {
+                                console.log(err.data)
+
+                            });
+                        }
+                        else {
+                            console.log(reservationInformation.payment.paymentImage)
+                            axios.patch(apiKey + 'api/updatePaymentPhoto/' + reservationInformation.payment.id, formData).then((result) => {
+                                console.log(result.data)
+                                window.location.reload()
+                            }).catch((err) => {
+                                console.log(err.data)
+
+                            });
+                        }
+                    }
+                }
+                else {
+                    window.location.reload()
+                }
+            }).catch((err) => {
+                console.log(err)
+
+            });
 
 
+
+
+        }).catch((err) => {
+            console.log(err)
+        })
+    }
+
+    const updadatePaymentStatus = () => {
+        axios.patch(apiKey + 'api/updatePayment/' + reservationInformation.payment.id, {
+            paymentStatus: reservationStatus,
+            grandTotal: reservationInformation.payment.grandTotal,
+            paymentMade: reservationInformation.payment.paymentMade,
+        }).then((result) => {
+            console.log(result.data)
+            window.location.reload()
+        }).catch((err) => {
+            console.log(err)
+        });
+    }
+
+    const downloadReceipt = () => {
+        // window.location.href = '/admin/officialReceipt/download' + reservationInformation.id
+        if(reservationInformation.payment.balance == 0){
+            window.open('/admin/officialReceipt/' + reservationInformation.id + '_download', '_blank');
+        }
+        else if(reservationInformation.payment.balance != 0 && reservationInformation.payment.balance != reservationInformation.payment.grandTotal ){
+            window.open('/admin/acknowledgementReceipt/' + reservationInformation.id + '_download', '_blank');
+        }
+        
+    }
+    const printReceipt = () => {
+        if(reservationInformation.payment.balance == 0){
+            window.open('/admin/officialReceipt/' + reservationInformation.id + '_print', '_blank');
+        }
+        else if(reservationInformation.payment.balance != 0 && reservationInformation.payment.balance != reservationInformation.payment.grandTotal ){
+            window.open('/admin/acknowledgementReceipt/' + reservationInformation.id + '_print', '_blank');
+        }
+    }
     return (
         <Container>
 
@@ -1095,9 +1327,11 @@ const PaymentContainer = () => {
 
                                 </Td>
                                 <Td align='center'><ActionButtonPayment
-                                    view={() => setShowDetails(prev => !prev)}
+                                    view={() => handleOpenView(item)}
+                                    edit={() => handleOpenUpdate(item)}
                                     pay={() => handleOpenEdit(item)}
-                                    print={() => setShowReceipt(prev => !prev)}
+                                    print={() => handleOpenPrint(item)}
+                                    printDisable={item.payment.paymentMade == 0 && true}
                                 /></Td>
                             </Tr>
                         ))
@@ -1139,22 +1373,78 @@ const PaymentContainer = () => {
 
 
 
-            {/* upload payment Modal */}
+            {/* Approve upload payment Modal */}
             <Modal
                 open={openUpload}
                 onClose={handleCloseUpload}
-                aria-labelledby="modal-modal-title"
-                aria-describedby="modal-modal-description"
-            >
-                <Box sx={style}>
-                    <ContainerGlobal direction='column' align='center' justify='center' gap='40px'>
+                style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                }}>
+                <Box
+                    component='form'
+                    // onSubmit={addReservation}
+                    style={{
+                        height: '75vh',
+                        width: '50vw',
+                        backgroundColor: 'white',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: '10px',
+                        justifyContent: 'flex-start',
+                        alignItems: 'center',
+                        overflowY: 'overlay',
+                        overflowX: 'hidden',
+                        padding: '0px 0px 20px 0px',
+                        borderRadius: '.5rem',
+                        position: 'relative'
+                        // margin: '50px 0px',
+
+                    }}>
+                    <div style={{
+                        width: '100%',
+                        height: '50px',
+                        position: 'sticky',
+                        top: 0,
+                        display: 'flex',
+                        justifyContent: 'flex-end',
+                        alignItems: 'center',
+                        backgroundColor: 'black',
+                        zIndex: '1',
+
+                    }}>
                         <Title
-                            family='arial'
+                            size='16px'
+                            color='white'
+                            family='Helvetica'
                             fstyle='normal'
+                            weight='bold'
+                            align='left'
+                            margin='0px auto 0px 10px'
                         >
-                            Uploaded proof of payment.
+                            Proof of payment
                         </Title>
-                        <img src={apiKey + '' + uploadLink} width="auto" height='500px' />
+                        <CloseIcon
+                            onClick={handleCloseUpload}
+                            style={{
+                                color: 'white',
+                                cursor: 'pointer',
+                                margin: '10px',
+                            }} />
+                    </div>
+
+                    <ContainerGlobal w='100%' h='100%' direction='column' align='center' justify='center' gap='40px'>
+
+                        <ContainerGlobal w='80%' h='80%' justify='center' align='center' >
+                            {
+                                reservationSelected.length != 0 &&
+                                    reservationSelected.payment.paymentImage != null ?
+                                    <img src={apiKey + '' + uploadLink} width="50%" height='auto' />
+                                    :
+                                    <h1>No Proof of payment uploaded</h1>
+                            }
+                        </ContainerGlobal>
 
                         <ContainerGlobal gap='20px'>
                             <Button disabled={reservationSelected.length != 0 ? reservationSelected.payment.paymentStatus == 'pending' || reservationSelected.payment.paymentStatus == 'reciept declined' ? false : true : ""} variant="contained" color="success" onClick={() => { approveReceipt() }}>Approve</Button>
@@ -1169,7 +1459,7 @@ const PaymentContainer = () => {
             </Modal>
 
 
-            {/* Edit modal */}
+            {/* Payment modal */}
             <Modal
                 open={openEdit}
                 onClose={handleCloseEdit}
@@ -1765,7 +2055,7 @@ const PaymentContainer = () => {
                                         textcolor='black'
                                         id='upload'
                                         onChange={handleUpload}
-                                        // disabled={reservationInformation.length != 0 && reservationInformation.payment.paymentImage ? true : false}
+                                    // disabled={reservationInformation.length != 0 && reservationInformation.payment.paymentImage ? true : false}
                                     />
                                     <Button
                                         disabled={previewImageError.length != 0 || previewImage.length == 0 ? true : false}
@@ -2466,7 +2756,2194 @@ const PaymentContainer = () => {
                 </Box>
             </Modal>
 
-        </Container>
+            {/* View Payment modal */}
+            <Modal
+                open={openView}
+                onClose={handleCloseView}
+                style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                }}>
+                <Box
+                    component='form'
+                    // onSubmit={addReservation}
+                    style={{
+                        height: '75vh',
+                        width: '80vw',
+                        backgroundColor: 'white',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        padding: '0px 0px 30px 0px',
+                        gap: '10px',
+                        justifyContent: 'flex-start',
+                        alignItems: 'center',
+                        overflowY: 'overlay',
+                        overflowX: 'hidden',
+                        borderRadius: '.5rem',
+                        position: 'relative'
+                        // margin: '50px 0px',
+
+                    }}>
+                    <div style={{
+                        width: '100%',
+                        height: '50px',
+                        position: 'sticky',
+                        top: 0,
+                        display: 'flex',
+                        justifyContent: 'flex-end',
+                        alignItems: 'center',
+                        backgroundColor: 'black',
+                        zIndex: '1',
+
+                    }}>
+                        <Title
+                            size='16px'
+                            color='white'
+                            family='Helvetica'
+                            fstyle='normal'
+                            weight='bold'
+                            align='left'
+                            margin='0px auto 0px 10px'
+                        >
+                            View Payment
+                        </Title>
+                        <CloseIcon
+                            onClick={handleCloseView}
+                            style={{
+                                color: 'white',
+                                cursor: 'pointer',
+                                margin: '10px',
+                            }} />
+                    </div>
+
+
+
+                    <Title
+                        size='26px'
+                        color='white'
+                        family='Helvetica'
+                        fstyle='normal'
+                        weight='600'
+                        align='left'
+                        bg='#2E2E2E'
+                        margin='40px 0px 10px 0px'
+                        padding='10px 15px'
+                        borderRadius='.5rem'
+                    >
+                        Payment details
+                    </Title>
+
+                    <ContainerGlobalRow>
+                        <ContainerGlobalColumn>
+                            <ContainerGlobal
+                                w='auto'
+                                h='auto'
+                                direction='row'
+                                gap='10px'
+                                justify='space-between'
+                                align='center'
+                                overflow='auto'
+
+                            >
+
+                                <Title
+                                    size='20px'
+                                    color='Black'
+                                    family='Helvetica'
+                                    fstyle='Normal'
+                                    weight='bold'
+                                    align='left'
+                                    margin='15px 0px 20px 0px'
+                                >
+                                    Reservation Reference Number:
+                                </Title>
+                                <Title
+                                    size='20px'
+                                    color='Black'
+                                    family='Helvetica'
+                                    fstyle='italic'
+                                    weight='normal'
+                                    align='left'
+                                    margin='15px 0px 20px 0px'
+                                >
+                                    {reservationInformation.length != 0 && reservationInformation.reservationReferenceNumber}
+                                </Title>
+
+                            </ContainerGlobal>
+                            <ContainerGlobal
+                                w='auto'
+                                h='auto'
+                                direction='row'
+                                gap='10px'
+                                justify='space-between'
+                                align='center'
+                                overflow='auto'
+
+                            >
+
+                                <Title
+                                    size='20px'
+                                    color='Black'
+                                    family='Helvetica'
+                                    fstyle='Normal'
+                                    weight='bold'
+                                    align='left'
+                                    margin='15px 0px 20px 0px'
+                                >
+                                    Payment Status:
+                                </Title>
+                                <Title
+                                    size='20px'
+                                    color='Black'
+                                    family='Helvetica'
+                                    fstyle='italic'
+                                    weight='normal'
+                                    align='left'
+                                    margin='15px 0px 20px 0px'
+                                >
+                                    {reservationInformation.length != 0 && reservationInformation.payment.paymentStatus}
+                                </Title>
+
+                            </ContainerGlobal>
+                        </ContainerGlobalColumn>
+                    </ContainerGlobalRow>
+                    <ContainerGlobalRow
+                        style={{ gap: '50px' }}
+                    >
+
+
+                        <ContainerGlobalColumn>
+
+                            <ContainerGlobal
+                                w='420px'
+                                h='auto'
+                                direction='row'
+                                gap='10px'
+                                justify='space-between'
+                                align='center'
+                                overflow='auto'
+
+                            >
+
+                                <Title
+                                    size='20px'
+                                    color='Black'
+                                    family='Helvetica'
+                                    fstyle='Normal'
+                                    weight='400'
+                                    align='left'
+                                    margin='15px 0px 20px 0px'
+                                >
+                                    Payment Mode:
+                                </Title>
+                                <Title
+                                    size='20px'
+                                    color='Black'
+                                    family='Helvetica'
+                                    fstyle='Normal'
+                                    weight='bold'
+                                    align='left'
+                                    margin='15px 0px 20px 0px'
+                                >
+                                    {reservationInformation.length != 0 ? reservationInformation.payment.paymentMode.paymentMode : ""}
+                                </Title>
+
+                            </ContainerGlobal>
+                            <ContainerGlobal
+                                w='420px'
+                                h='auto'
+                                direction='row'
+                                gap='10px'
+                                justify='space-between'
+                                align='center'
+                                overflow='auto'
+
+                            >
+
+                                <Title
+                                    size='20px'
+                                    color='Black'
+                                    family='Helvetica'
+                                    fstyle='Normal'
+                                    weight='400'
+                                    align='left'
+                                    margin='15px 0px 20px 0px'
+                                >
+                                    Payment Type:
+                                </Title>
+                                <Title
+                                    size='20px'
+                                    color='Black'
+                                    family='Helvetica'
+                                    fstyle='Normal'
+                                    weight='bold'
+                                    align='left'
+                                    margin='15px 0px 20px 0px'
+                                >
+                                    {reservationInformation.length != 0 ? reservationInformation.payment.paymentType : ""}
+                                </Title>
+
+                            </ContainerGlobal>
+                            <ContainerGlobal
+                                w='420px'
+                                h='auto'
+                                direction='row'
+                                gap='10px'
+                                justify='space-between'
+                                align='center'
+                                overflow='auto'
+
+                            >
+
+                                <Title
+                                    size='20px'
+                                    color='Black'
+                                    family='Helvetica'
+                                    fstyle='Normal'
+                                    weight='400'
+                                    align='left'
+                                    margin='15px 0px 20px 0px'
+                                >
+                                    Discount:
+                                </Title>
+
+                                <Title
+                                    size='20px'
+                                    color='Black'
+                                    family='Helvetica'
+                                    fstyle='Normal'
+                                    weight='bold'
+                                    align='left'
+                                    margin='15px 0px 20px 0px'
+                                >
+                                    {reservationInformation.length != 0 ? reservationInformation.payment.discount.discountType : ""}
+                                </Title>
+
+                            </ContainerGlobal>
+
+                            <ContainerGlobal
+                                w='420px'
+                                h='auto'
+                                direction='row'
+                                gap='10px'
+                                justify='space-between'
+                                align='center'
+                                overflow='auto'
+
+                            >
+
+                                <Title
+                                    size='20px'
+                                    color='Black'
+                                    family='Helvetica'
+                                    fstyle='Normal'
+                                    weight='400'
+                                    align='left'
+                                    margin='15px 0px 20px 0px'
+                                >
+
+                                </Title>
+                                <FormControlLabel
+                                    disabled
+                                    control={
+                                        <Checkbox
+                                            checked={reservationInformation.length != 0 ? reservationInformation.payment.discountValid == true ? true : false : ""}
+                                            disabled
+                                        />
+                                    }
+                                    label="Discount Verified?" />
+                            </ContainerGlobal>
+
+                        </ContainerGlobalColumn>
+                        <ContainerGlobalColumn>
+                            {reservationInformation.length != 0 ?
+                                reservationInformation.payment.paymentType == 'Full Payment' ? <ContainerGlobal
+                                    w='420px'
+                                    h='auto'
+                                    direction='row'
+                                    gap='10px'
+                                    justify='space-between'
+                                    align='center'
+                                    overflow='auto'
+
+                                >
+                                    <Title
+                                        size='20px'
+                                        color='Black'
+                                        family='Helvetica'
+                                        fstyle='Normal'
+                                        weight='400'
+                                        align='left'
+                                        margin='15px 0px 20px 0px'
+                                    >
+                                        Full payment:
+                                    </Title>
+                                    <TextField id="outlined-basic" label="" variant="standard" style={{ width: 200, margin: '5px 0px' }}
+                                        value={reservationInformation.length != 0 ? numberFormat(reservationInformation.payment.grandTotal) : ""}
+                                        type="text"
+                                        InputProps={{
+                                            readOnly: true,
+                                        }}
+                                    /> </ContainerGlobal>
+                                    :
+                                    <ContainerGlobal
+                                        w='420px'
+                                        h='auto'
+                                        direction='row'
+                                        gap='10px'
+                                        justify='space-between'
+                                        align='center'
+                                        overflow='auto'
+
+                                    >
+                                        <Title
+                                            size='20px'
+                                            color='Black'
+                                            family='Helvetica'
+                                            fstyle='Normal'
+                                            weight='400'
+                                            align='left'
+                                            margin='15px 0px 20px 0px'
+                                        >
+                                            Down payment:
+                                        </Title>
+                                        <TextField id="outlined-basic" label="" variant="standard" style={{ width: 200, margin: '5px 0px' }}
+                                            value={reservationInformation.length != 0 ? numberFormat(reservationInformation.payment.grandTotal / 2) : ""}
+                                            type="text"
+                                            InputProps={{
+                                                readOnly: true,
+                                            }}
+                                        /> </ContainerGlobal>
+                                : ""}
+
+
+                            <ContainerGlobal
+                                w='420px'
+                                h='auto'
+                                direction='row'
+                                gap='10px'
+                                justify='space-between'
+                                align='center'
+                                overflow='auto'
+
+                            >
+
+                                <Title
+                                    size='20px'
+                                    color='Black'
+                                    family='Helvetica'
+                                    fstyle='Normal'
+                                    weight='400'
+                                    align='left'
+                                    margin='15px 0px 20px 0px'
+                                >
+                                    Payment Made:
+                                </Title>
+                                <TextField id="outlined-basic" label="" variant="standard" style={{ width: 200, margin: '5px 0px' }}
+                                    value={reservationInformation.length != 0 ? numberFormat(reservationInformation.payment.paymentMade) : ""}
+                                    type="text"
+                                    InputProps={{
+                                        readOnly: true,
+                                    }}
+                                />
+                            </ContainerGlobal>
+
+                            <ContainerGlobal
+                                w='420px'
+                                h='auto'
+                                direction='row'
+                                gap='10px'
+                                justify='space-between'
+                                align='center'
+                                overflow='auto'
+
+                            >
+
+                                <Title
+                                    size='20px'
+                                    color='Black'
+                                    family='Helvetica'
+                                    fstyle='Normal'
+                                    weight='600'
+                                    align='left'
+                                    margin='15px 0px 20px 0px'
+                                >
+                                    Grand Total:
+                                </Title>
+                                <TextField
+                                    id="outlined-basic"
+                                    label=""
+                                    type="text"
+                                    value={reservationInformation.length != 0 ? numberFormat(reservationInformation.payment.grandTotal) : ""}
+                                    variant="standard"
+                                    style={{ width: 200, margin: '5px 0px', fontWeight: 600 }}
+                                    InputProps={{
+                                        readOnly: true,
+                                    }}
+                                />
+                            </ContainerGlobal>
+                            <ContainerGlobal
+                                w='420px'
+                                h='auto'
+                                direction='row'
+                                gap='10px'
+                                justify='space-between'
+                                align='center'
+                                overflow='auto'
+
+                            >
+
+                                <Title
+                                    size='20px'
+                                    color='Black'
+                                    family='Helvetica'
+                                    fstyle='Normal'
+                                    weight='600'
+                                    align='left'
+                                    margin='15px 0px 20px 0px'
+                                >
+                                    Remaining Balance:
+                                </Title>
+                                <TextField
+                                    id="outlined-basic"
+                                    label=""
+                                    type="text"
+                                    value={reservationInformation.length != 0 ? numberFormat(reservationInformation.payment.balance) : ""}
+                                    variant="standard"
+                                    style={{ width: 200, margin: '5px 0px', fontWeight: 600 }}
+                                    InputProps={{
+                                        readOnly: true,
+                                    }}
+                                />
+                            </ContainerGlobal>
+                        </ContainerGlobalColumn>
+                    </ContainerGlobalRow>
+
+                    <ContainerGlobalRow>
+                        <ContainerGlobal
+                            w='auto'
+                            h='auto'
+                            direction='column'
+                            gap='10px'
+                            justify='space-between'
+                            align='center'
+                            overflow='auto'
+
+                        >
+
+                            <Title
+                                size='20px'
+                                color='Black'
+                                family='Helvetica'
+                                fstyle='Normal'
+                                weight='400'
+                                align='left'
+                                margin='15px 0px 0px 0px'
+                            >
+                                Proof of payment:
+                            </Title>
+                            {reservationInformation.length != 0 ?
+                                <PhotoBox
+                                    style={{ padding: '10px' }}>
+                                    <div style={{ width: '100%', height: 'auto', overflow: 'hidden' }}>
+                                        {reservationInformation.payment.paymentImage != null ?
+                                            <a target='_blank' href={apiKey + '' + reservationInformation.payment.paymentImage}><img src={apiKey + '' + reservationInformation.payment.paymentImage} style={{ width: '100%', height: 'auto' }} /></a>
+                                            : <Title
+                                                bg='white'
+                                                family='raleway, sans-serif'
+                                                color='#BFA698'
+                                                weight='400'
+                                                size='25px'
+                                                fstyle='Normal'
+
+                                                align='Center'
+                                            >
+                                                No Image Uploaded
+                                            </Title>
+                                        }
+                                    </div>
+
+                                </PhotoBox>
+                                :
+                                ""
+
+                            }
+                            {/* <Button onClick={() => { }} disabled={reservationInformation.length != 0 && reservationInformation.payment.paymentImage != null ? true : false} variant='contained' size='small' color='success'>Upload</Button> */}
+
+                        </ContainerGlobal>
+                    </ContainerGlobalRow>
+                    <hr style={{ width: '100%' }}></hr>
+
+                    <Title
+                        size='26px'
+                        color='white'
+                        family='Helvetica'
+                        fstyle='normal'
+                        weight='600'
+                        align='left'
+                        bg='#2E2E2E'
+                        margin='40px 0px 0px 0px'
+                        padding='10px 15px'
+                        borderRadius='.5rem'
+                    >
+                        Charge Summary
+                    </Title>
+                    <ContainerGlobalRow
+                        style={{
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            width: '95%',
+                            flexDirection: 'column'
+                        }}
+                    >
+
+
+                        <ContainerGlobal
+                            w='auto'
+                            h='auto'
+                            direction='row'
+                            gap='10px'
+                            justify='space-between'
+                            align='center'
+                            overflow='auto'
+
+                        >
+
+                            <Title
+                                size='20px'
+                                color='Black'
+                                family='Helvetica'
+                                fstyle='Normal'
+                                weight='bold'
+                                align='left'
+                                margin='15px 0px 0px 0px'
+                            >
+                                Booking summary:
+                            </Title>
+
+
+                        </ContainerGlobal>
+                    </ContainerGlobalRow>
+                    <ContainerGlobalRow
+                        style={{
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            width: '95%'
+                        }}
+                    >
+
+                        <FlexboxContainer
+                            w='70%'
+                            margin='0px'
+                            padding='0px'
+                            style={{
+                                backgroundColor: 'transparent',
+                            }}>
+
+                            <TableContainer
+                                style={{ padding: '0px 10px' }}
+                                cellspacing="0"
+                                cellpadding="0">
+                                <Tr>
+                                    <Th align='left' color='black'>Room number</Th>
+                                    <Th align='center' color='black'>Room type</Th>
+                                    {/* <Th align='center' color='black'>Check in</Th>
+                                    <Th align='center' color='black'>Check out</Th>
+                                    <Th align='center' color='black'>Adults</Th>
+                                    <Th align='center' color='black'>Kids</Th> */}
+                                    <Th align='center' color='black'>Total nights</Th>
+                                    <Th align='center' color='black'>Rate per night</Th>
+                                    <Th align='right' color='black'>Total amout due</Th>
+                                </Tr>
+                                {reservationSummaryInfo.length != 0 ?
+
+                                    reservationSummaryInfo.map((item, index) => (
+                                        <Tr>
+
+                                            <Td align='left' style={item.id == editReservationId ? { backgroundColor: 'green', color: 'white' } : { backgroundColor: '', color: '' }}>{item.room.roomNumber}</Td>
+                                            <Td align='center' style={item.id == editReservationId ? { backgroundColor: 'green', color: 'white' } : { backgroundColor: '', color: '' }}>{item.room.roomType.roomType}</Td>
+                                            {/* <Td align='center' style={item.id == editReservationId ? { backgroundColor: 'green', color: 'white' } : { backgroundColor: '', color: '' }}>{new Date(item.checkInDate).toLocaleDateString()}</Td>
+                                            <Td align='center' style={item.id == editReservationId ? { backgroundColor: 'green', color: 'white' } : { backgroundColor: '', color: '' }}>{new Date(item.checkOutDate).toLocaleDateString()}</Td>
+                                            <Td align='center' style={item.id == editReservationId ? { backgroundColor: 'green', color: 'white' } : { backgroundColor: '', color: '' }}>{item.adults}</Td>
+                                            <Td align='center' style={item.id == editReservationId ? { backgroundColor: 'green', color: 'white' } : { backgroundColor: '', color: '' }}>{item.kids}</Td> */}
+                                            <Td align='center' style={item.id == editReservationId ? { backgroundColor: 'green', color: 'white' } : { backgroundColor: '', color: '' }}>{item.numberOfNights}</Td>
+                                            <Td align='center' style={item.id == editReservationId ? { backgroundColor: 'green', color: 'white' } : { backgroundColor: '', color: '' }}>{numberFormat(item.room.roomType.roomRate)}</Td>
+                                            <Td align='right' style={item.id == editReservationId ? { backgroundColor: 'green', color: 'white' } : { backgroundColor: '', color: 'red' }}>{numberFormat(item.room.roomType.roomRate * item.numberOfNights)}</Td>
+
+
+                                        </Tr>
+
+                                    ))
+                                    :
+
+                                    ""}
+
+                            </TableContainer>
+
+
+                        </FlexboxContainer>
+                    </ContainerGlobalRow>
+                    <ContainerGlobalRow
+                        style={{
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            width: '95%',
+                            flexDirection: 'column',
+                            gap: '10px'
+                        }}
+                    >
+                        <ContainerGlobal
+                            w='auto'
+                            h='auto'
+                            direction='row'
+                            gap='10px'
+                            justify='space-between'
+                            align='center'
+                            overflow='auto'
+
+                        >
+
+                            <Title
+                                size='20px'
+                                color='Black'
+                                family='Helvetica'
+                                fstyle='Normal'
+                                weight='bold'
+                                align='left'
+                                margin='45px 0px 0px 0px'
+                            >
+                                Additional Charges Summary:
+                            </Title>
+
+
+                        </ContainerGlobal>
+
+                    </ContainerGlobalRow>
+                    <ContainerGlobalRow
+                        style={{
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            width: '95%'
+                        }}
+                    >
+
+                        <FlexboxContainer
+                            w='70%'
+                            margin='0px'
+                            padding='0px'
+                            style={{
+                                backgroundColor: 'transparent',
+                            }}>
+
+                            <TableContainer
+                                style={{ padding: '0px 10px' }}
+                                cellspacing="0"
+                                cellpadding="0">
+                                <Tr>
+                                    <Th align='left' color='black'>Additionals</Th>
+                                    <Th align='center' color='black'>Quantity</Th>
+                                    <Th align='center' color='black'>Rate</Th>
+                                    <Th align='right' color='black'>Total Amount Due</Th>
+                                </Tr>
+                                {amenities.length != 0 ?
+
+                                    amenities.map((item, index) => (
+                                        <Tr>
+
+                                            <Td align='left'>{item.amenityName}</Td>
+                                            <Td align='center'>{orderedAmenities.filter((obj) => obj.amenity.amenityName == item.amenityName).map((item) => item.quantity).reduce((accumulator, value) => accumulator + value)}</Td>
+                                            <Td align='center'>{numberFormat(item.amenityRate)}</Td>
+                                            <Td align='right' style={{ color: 'red' }}>{numberFormat(item.amenityRate * orderedAmenities.filter((obj) => obj.amenity.amenityName == item.amenityName).map((item) => item.quantity).reduce((accumulator, value) => accumulator + value))}</Td>
+                                            {/* <Td align='center'>{item.adults}</Td>
+                                            <Td align='center'>{item.kids}</Td>
+                                            <Td align='center'>{item.numberOfNights}</Td>
+                                            <Td align='center'>{numberFormat(item.room.roomType.roomRate)}</Td>
+                                            <Td align='center'>{numberFormat(item.room.roomType.roomRate * item.numberOfNights)}</Td> */}
+
+
+                                        </Tr>
+
+                                    ))
+                                    :
+
+                                    ""}
+                                <Tr>
+
+                                    <Td align='left'><i>Others</i></Td>
+                                    <Td align='center'></Td>
+                                    <Td align='center'></Td>
+                                    <Td align='right' style={{ color: 'red' }}>{reservationSummaryInfo.length != 0 && numberFormat(reservationSummaryInfo.map((item) => item.others).reduce((accumulator, value) => parseFloat(accumulator) + parseFloat(value)))}</Td>
+
+
+
+                                </Tr>
+
+                                {/* <Tr rowSpan={2} style={{ backgroundColor: 'transparent' }}>
+                                    <Td align='center' ></Td>
+                                    <Td align='center'></Td>
+                                    <Td align='center'></Td>
+                                    <Td align='center'></Td>
+                                    <Td colSpan={2} align='center' style={{ fontSize: '16px' }}>Grand Total:</Td>
+                                    <Td align='center' style={{ fontSize: '16px', fontWeight: 'normal', color: 'red' }}>{numberFormat(grandTotal)}</Td>
+                                    <Td align='center'></Td>
+                                </Tr> */}
+                            </TableContainer>
+
+
+                        </FlexboxContainer>
+                    </ContainerGlobalRow>
+
+                    <hr style={{ width: '100%' }}></hr>
+
+
+
+                    <Title
+                        size='26px'
+                        color='white'
+                        family='Helvetica'
+                        fstyle='normal'
+                        weight='600'
+                        align='left'
+                        bg='#2E2E2E'
+                        margin='40px 0px 10px 0px'
+                        padding='10px 15px'
+                        borderRadius='.5rem'
+                    >
+                        Guest details
+                    </Title>
+
+
+
+                    <ContainerGlobalRow>
+                        <ContainerFormContent >
+
+                            <InputContainer>
+                                <TextField
+                                    placeholder='First Name'
+                                    label="First Name"
+                                    inputRef={firstNameRef}
+                                    variant="outlined"
+                                    value={reservationInformation.length != 0 ? reservationInformation.guestInformation.firstName.toLocaleLowerCase() : ""}
+                                    onChange={(e) => {
+                                        setFirstName(e.target.value.toLocaleLowerCase())
+                                        if (!letters.test(e.target.value) && e.target.value.length != 0) {
+                                            setFirstNameError("Invalid first name. Please type letters only.")
+                                        }
+                                        else {
+                                            setFirstNameError("")
+                                        }
+                                    }}
+
+                                    InputProps={{
+                                        readOnly: true,
+                                    }}
+                                    style={{ width: '55%', }}
+                                    required />
+
+                                <TextField
+                                    placeholder='Last Name'
+                                    label="Last Name"
+                                    variant="outlined"
+                                    inputRef={lastNameRef}
+                                    value={reservationInformation.length != 0 ? reservationInformation.guestInformation.lastName.toLocaleLowerCase() : ""}
+                                    onChange={(e) => {
+                                        setLastName(e.target.value.toLocaleLowerCase())
+                                        if (!letters.test(e.target.value) && e.target.value.length != 0) {
+                                            setLastNameError("Invalid last name. Please type letters only.")
+                                        }
+                                        else {
+                                            setLastNameError("")
+                                        }
+
+                                    }}
+                                    style={{ width: '55%', }}
+                                    InputProps={{
+                                        readOnly: true,
+                                    }}
+                                    required />
+                            </InputContainer>
+
+
+                            <InputContainer>
+                                <TextField
+                                    placeholder='Email'
+                                    label="Email"
+                                    variant="outlined"
+                                    type='email'
+                                    value={reservationInformation.length != 0 ? reservationInformation.guestInformation.user.email.toLocaleLowerCase() : ""}
+                                    onChange={(e) => {
+                                        setEmail(e.target.value)
+
+                                        setEmailError("")
+                                    }}
+                                    style={{ width: '55%', }}
+                                    inputRef={emailRef}
+                                    InputProps={{
+                                        readOnly: true,
+                                    }}
+                                    required />
+
+                                <TextField
+                                    placeholder='Contact Number e.g. 09123456789 or +639123456789'
+                                    label="Contact Number"
+                                    variant="outlined"
+                                    value={reservationInformation.length != 0 ? reservationInformation.guestInformation.user.contactNumber : ""}
+                                    onChange={(e) => {
+                                        setContactNumber(e.target.value)
+
+                                        if (!phoneNumberValidation.test(e.target.value) && e.target.value.length != 0) {
+                                            setContactNumberError("Contact number is invalid. Please provide a valid contact number.")
+                                        }
+                                        else {
+                                            setContactNumberError("")
+                                        }
+                                    }}
+                                    inputRef={contactNumberRef}
+                                    style={{ width: '55%', }}
+                                    InputProps={{
+                                        readOnly: true,
+                                    }}
+                                    required />
+                            </InputContainer>
+
+
+                            <InputContainer>
+
+                                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                    <DatePicker
+
+                                        views={['day', 'month', 'year']}
+                                        label="Birthday"
+                                        value={reservationInformation.length != 0 ? reservationInformation.guestInformation.birthDate : ""}
+                                        onChange={(newValue) => {
+                                            setBirthDay(newValue);
+                                        }}
+                                        renderInput={(params) =>
+                                            <TextField
+                                                {...params}
+                                                variant="standard"
+                                                style={{ width: "55%", margin: '5px 0px' }}
+                                                helperText={null}
+                                                InputProps={{
+                                                    readOnly: true,
+                                                }}
+                                                required
+                                            />
+                                        }
+                                        disabled
+                                    />
+
+                                </LocalizationProvider>
+
+                                <FormControl sx={{ width: "55%", margin: '5px 0px' }} size="small" variant="standard">
+                                    <InputLabel id="demo-select-small" >Nationality</InputLabel>
+                                    <Select
+                                        style={{ color: 'black', textAlign: 'left' }}
+                                        labelId="demo-select-small"
+                                        id="demo-select-small"
+                                        value={reservationInformation.length != 0 ? reservationInformation.guestInformation.nationality : ""}
+                                        label="Menu"
+                                        onChange={(event) => {
+                                            setNationality(event.target.value);
+                                        }}
+                                        InputProps={{
+                                            readOnly: true,
+                                        }}
+                                        required
+                                        disabled
+                                    >
+
+                                        {nationalities.map(({ nationality }, index) => (
+                                            <MenuItem value={nationality} >{nationality}</MenuItem>
+                                        ))}
+                                    </Select>
+                                </FormControl>
+                            </InputContainer>
+
+                            <InputContainer
+                                justify='center'>
+                                <FormControl>
+                                    <FormLabel id="demo-row-radio-buttons-group-label"
+                                        style={{ textAlign: 'center', color: 'black' }} >Gender</FormLabel>
+                                    <RadioGroup
+                                        row
+
+                                        aria-labelledby="demo-row-radio-buttons-group-label"
+                                        defaultValue="male"
+                                        value={reservationInformation.length != 0 ? reservationInformation.guestInformation.gender : ""}
+                                        name="row-radio-buttons-group"
+                                        onChange={(e) => {
+                                            setGender(e.target.value)
+                                        }}
+                                        required
+                                    >
+                                        <FormControlLabel
+                                            value="male"
+                                            control={<Radio
+
+                                                InputProps={{
+                                                    readOnly: true,
+                                                }}
+                                            />}
+                                            label="Male"
+                                        />
+                                        <FormControlLabel
+                                            value="female"
+                                            control={<Radio
+
+                                                InputProps={{
+                                                    readOnly: true,
+                                                }}
+                                            />}
+                                            label="Female"
+                                        />
+                                        <FormControlLabel
+                                            value="other"
+                                            control={<Radio
+
+                                                InputProps={{
+                                                    readOnly: true,
+                                                }}
+                                            />}
+                                            label="Other"
+                                        />
+                                    </RadioGroup>
+                                </FormControl>
+                            </InputContainer>
+
+
+                            <InputContainer>
+                                <TextField
+                                    placeholder='Complete Address'
+                                    label="Complete Address"
+                                    variant="outlined"
+                                    type='text'
+                                    value={reservationInformation.length != 0 ? reservationInformation.guestInformation.address : ""}
+                                    onChange={(e) => {
+                                        setAddress(e.target.value)
+                                    }}
+                                    multiline
+                                    rows={4}
+                                    style={{ width: '95%', }}
+
+                                    InputProps={{
+                                        readOnly: true,
+                                    }}
+                                    required />
+
+                            </InputContainer>
+
+
+
+
+                        </ContainerFormContent>
+                    </ContainerGlobalRow>
+                    <br></br>
+                    <Button variant="contained" color='error' onClick={() => {
+                        handleCloseView()
+                    }}>Close</Button>
+                </Box>
+            </Modal>
+
+
+            {/* Edit Payment Modal */}
+            <Modal
+                open={openUpdate}
+                onClose={handleOpenUpdate}
+                style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                }}>
+                <Box
+                    component='form'
+                    // onSubmit={addReservation}
+                    style={{
+                        height: '75vh',
+                        width: '80vw',
+                        backgroundColor: 'white',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        padding: '0px 0px 30px 0px',
+                        gap: '10px',
+                        justifyContent: 'flex-start',
+                        alignItems: 'center',
+                        overflowY: 'overlay',
+                        overflowX: 'hidden',
+                        borderRadius: '.5rem',
+                        position: 'relative'
+                        // margin: '50px 0px',
+
+                    }}>
+                    <div style={{
+                        width: '100%',
+                        height: '50px',
+                        position: 'sticky',
+                        top: 0,
+                        display: 'flex',
+                        justifyContent: 'flex-end',
+                        alignItems: 'center',
+                        backgroundColor: 'black',
+                        zIndex: '1',
+
+                    }}>
+                        <Title
+                            size='16px'
+                            color='white'
+                            family='Helvetica'
+                            fstyle='normal'
+                            weight='bold'
+                            align='left'
+                            margin='0px auto 0px 10px'
+                        >
+                            Edit Payment
+                        </Title>
+                        <CloseIcon
+                            onClick={handleCloseUpdate}
+                            style={{
+                                color: 'white',
+                                cursor: 'pointer',
+                                margin: '10px',
+                            }} />
+                    </div>
+
+
+
+                    <Title
+                        size='26px'
+                        color='white'
+                        family='Helvetica'
+                        fstyle='normal'
+                        weight='600'
+                        align='left'
+                        bg='#2E2E2E'
+                        margin='40px 0px 10px 0px'
+                        padding='10px 15px'
+                        borderRadius='.5rem'
+                    >
+                        Payment details
+                    </Title>
+
+                    <ContainerGlobalRow>
+                        <ContainerGlobalColumn>
+                            <ContainerGlobal
+                                w='auto'
+                                h='auto'
+                                direction='row'
+                                gap='10px'
+                                justify='space-between'
+                                align='center'
+                                overflow='auto'
+
+                            >
+
+                                <Title
+                                    size='20px'
+                                    color='Black'
+                                    family='Helvetica'
+                                    fstyle='Normal'
+                                    weight='bold'
+                                    align='left'
+                                    margin='15px 0px 20px 0px'
+                                >
+                                    Reservation Reference Number:
+                                </Title>
+                                <Title
+                                    size='20px'
+                                    color='Black'
+                                    family='Helvetica'
+                                    fstyle='italic'
+                                    weight='normal'
+                                    align='left'
+                                    margin='15px 0px 20px 0px'
+                                >
+                                    {reservationInformation.length != 0 && reservationInformation.reservationReferenceNumber}
+                                </Title>
+
+                            </ContainerGlobal>
+
+                        </ContainerGlobalColumn>
+                    </ContainerGlobalRow>
+                    <ContainerGlobalRow>
+                        <ContainerGlobal
+                            w='auto'
+                            h='auto'
+                            direction='row'
+                            gap='20px'
+                            justify='space-between'
+                            align='center'
+                            overflow='auto'
+                            margin='20px 0px'
+
+                        >
+
+                            <Title
+                                size='20px'
+                                color='Black'
+                                family='Helvetica'
+                                fstyle='Normal'
+                                weight='400'
+                                align='left'
+                            // margin='15px 0px 20px 0px'
+                            >
+                                Booking Status:
+                            </Title>
+
+                            <FormControl sx={{ width: 200, margin: '5px 0px' }} size="large" variant="standard">
+                                <InputLabel id="demo-select-small" >Reservation Status</InputLabel>
+                                <Select
+                                    style={{ color: 'black', textAlign: 'left', fontWeight: 'bold' }}
+                                    labelId="demo-select-small"
+                                    id="demo-select-small"
+                                    value={reservationStatus}
+                                    label="Menu"
+                                    onChange={(event) => {
+                                        setReservationStatus(event.target.value);
+                                    }}
+                                >
+
+                                    <MenuItem value='pending' >
+                                        Pending
+                                    </MenuItem>
+                                    <MenuItem value='fully paid' >
+                                        Fully Paid
+                                    </MenuItem>
+                                    <MenuItem value='partial' >
+                                        Partial
+                                    </MenuItem>
+                                    <MenuItem value='cancelled' >
+                                        Cancelled
+                                    </MenuItem>
+                                    <MenuItem value='reciept declined' >
+                                        Reciept Declined
+                                    </MenuItem>
+
+
+                                </Select>
+                            </FormControl>
+                            <Button onClick={() => { updadatePaymentStatus() }} size="small" variant='contained' style={reservationInformation.length != 0 && reservationInformation.payment.paymentStatus == reservationStatus ? { display: 'none' } : { display: '' }}>Update</Button>
+                        </ContainerGlobal>
+                    </ContainerGlobalRow>
+                    <ContainerGlobalRow
+                        style={{ gap: '50px' }}
+                    >
+
+
+                        <ContainerGlobalColumn>
+
+                            <ContainerGlobal
+                                w='420px'
+                                h='auto'
+                                direction='row'
+                                gap='10px'
+                                justify='space-between'
+                                align='center'
+                                overflow='auto'
+
+                            >
+
+                                <Title
+                                    size='20px'
+                                    color='Black'
+                                    family='Helvetica'
+                                    fstyle='Normal'
+                                    weight='400'
+                                    align='left'
+                                    margin='15px 0px 20px 0px'
+                                >
+                                    Payment Mode:
+                                </Title>
+                                <FormControl sx={{ width: 200, margin: '5px 0px' }} size="small" variant="standard">
+                                    <InputLabel id="demo-select-small" >Payment method</InputLabel>
+                                    <Select
+                                        style={{ color: 'black', textAlign: 'left' }}
+                                        labelId="demo-select-small"
+                                        id="demo-select-small"
+                                        value={paymentMethod}
+                                        label="Menu"
+                                        onChange={(event) => {
+                                            setPaymentMethod(event.target.value);
+                                        }
+                                        }
+
+                                    >
+                                        {paymentMode.length != 0 ? paymentMode.map((item) => (
+                                            <MenuItem value={item.paymentMode}>{item.paymentMode}</MenuItem>
+
+                                        )) : ""}
+                                        {/* <MenuItem value={'Cash'} selected>Cash (pay at the hotel)</MenuItem>
+            <MenuItem value={'Bank'} >Bank (Metro Bank)</MenuItem>
+            <MenuItem value={'E-Payment'} selected>E-Payment (Gcash)</MenuItem> */}
+                                    </Select>
+                                </FormControl>
+                            </ContainerGlobal>
+                            <ContainerGlobal
+                                w='420px'
+                                h='auto'
+                                direction='row'
+                                gap='10px'
+                                justify='space-between'
+                                align='center'
+                                overflow='auto'
+
+                            >
+
+                                <Title
+                                    size='20px'
+                                    color='Black'
+                                    family='Helvetica'
+                                    fstyle='Normal'
+                                    weight='400'
+                                    align='left'
+                                    margin='15px 0px 20px 0px'
+                                >
+                                    Payment Type:
+                                </Title>
+                                <FormControl sx={{ width: 200, margin: '5px 0px' }} size="small" variant="standard">
+                                    <InputLabel id="demo-select-small" >Payment Type</InputLabel>
+                                    <Select
+                                        style={{ color: 'black', textAlign: 'left' }}
+                                        labelId="demo-select-small"
+                                        id="demo-select-small"
+                                        value={paymentType}
+                                        label="Menu"
+                                        onChange={(event) => {
+                                            setPaymentType(event.target.value);
+                                        }}
+
+                                    >
+
+                                        <MenuItem value={'Full Payment'} >Full payment</MenuItem>
+                                        <MenuItem value={'Down Payment'} >Down Payment</MenuItem>
+                                    </Select>
+                                </FormControl>
+                            </ContainerGlobal>
+                            <ContainerGlobal
+                                w='420px'
+                                h='auto'
+                                direction='row'
+                                gap='10px'
+                                justify='space-between'
+                                align='center'
+                                overflow='auto'
+
+                            >
+
+                                <Title
+                                    size='20px'
+                                    color='Black'
+                                    family='Helvetica'
+                                    fstyle='Normal'
+                                    weight='400'
+                                    align='left'
+                                    margin='15px 0px 20px 0px'
+                                >
+                                    Discount:
+                                </Title>
+                                <FormControl sx={{ width: 200, margin: '5px 0px' }} size="small" variant="standard">
+                                    <InputLabel id="demo-select-small" >Discount</InputLabel>
+                                    <Select
+                                        style={{ color: 'black', textAlign: 'left' }}
+                                        labelId="demo-select-small"
+                                        id="demo-select-small"
+                                        value={discount}
+                                        label="Menu"
+                                        onChange={(event) => {
+                                            setDiscount(event.target.value);
+
+                                            if (event.target.value == "No discount") {
+                                                setDiscountValid(false)
+                                                if (reservationInformation.payment.discountValid == true) {
+
+                                                    setDiscountValid(false)
+                                                    setGrandTotal(reservationInformation.payment.grandTotal / 0.80)
+
+                                                }
+                                                else if (reservationInformation.payment.discountValid == false) {
+
+                                                    setGrandTotal(reservationInformation.payment.grandTotal)
+                                                    setDiscountValid(false)
+                                                }
+                                            }
+                                        }}
+
+                                    >
+                                        {discountDb.length != 0 ? discountDb.map((item, index) => (
+                                            <MenuItem value={item.discountType} >{item.discountType}</MenuItem>
+
+                                        )) : ""}
+
+                                        {/* <MenuItem value={'none'} >None</MenuItem>
+            <MenuItem value={'senior'}>Senior Citizen</MenuItem>
+            <MenuItem value={'pwd'}>PWD</MenuItem> */}
+                                    </Select>
+                                </FormControl>
+                            </ContainerGlobal>
+
+                            <ContainerGlobal
+                                w='420px'
+                                h='auto'
+                                direction='row'
+                                gap='10px'
+                                justify='space-between'
+                                align='center'
+                                overflow='auto'
+
+                            >
+
+                                <Title
+                                    size='20px'
+                                    color='Black'
+                                    family='Helvetica'
+                                    fstyle='Normal'
+                                    weight='400'
+                                    align='left'
+                                    margin='15px 0px 20px 0px'
+                                >
+
+                                </Title>
+                                <FormControlLabel
+                                    disabled={discount == "No discount" ? true : false}
+                                    style={{ width: 200, margin: '5px 0px' }}
+                                    control={
+                                        <Checkbox
+                                            checked={discountValid === true ? true : false}
+                                            value={discountValid}
+                                            onChange={(e) => {
+                                                if (reservationInformation.payment.discountValid == true) {
+                                                    if (e.target.checked) {
+                                                        setDiscountValid(true)
+                                                        setGrandTotal(reservationInformation.payment.grandTotal)
+
+                                                    }
+                                                    else {
+                                                        setDiscountValid(false)
+                                                        setGrandTotal(reservationInformation.payment.grandTotal / 0.80)
+                                                    }
+                                                }
+                                                else if (reservationInformation.payment.discountValid == false) {
+                                                    if (e.target.checked) {
+                                                        setDiscountValid(true)
+                                                        setGrandTotal(reservationInformation.payment.grandTotal * 0.80)
+                                                    }
+                                                    else {
+                                                        setGrandTotal(reservationInformation.payment.grandTotal)
+                                                        setDiscountValid(false)
+                                                    }
+                                                }
+                                            }}
+                                        />
+                                    }
+                                    label="Discount Verified?" />
+                            </ContainerGlobal>
+
+                        </ContainerGlobalColumn>
+                        <ContainerGlobalColumn>
+                            {reservationInformation.length != 0 ?
+                                paymentType == 'Full Payment' ? <ContainerGlobal
+                                    w='420px'
+                                    h='auto'
+                                    direction='row'
+                                    gap='10px'
+                                    justify='space-between'
+                                    align='center'
+                                    overflow='auto'
+
+                                >
+                                    <Title
+                                        size='20px'
+                                        color='Black'
+                                        family='Helvetica'
+                                        fstyle='Normal'
+                                        weight='400'
+                                        align='left'
+                                        margin='15px 0px 20px 0px'
+                                    >
+                                        Full payment:
+                                    </Title>
+                                    <TextField id="outlined-basic" label="" variant="standard" style={{ width: 200, margin: '5px 0px' }}
+                                        value={reservationInformation.length != 0 ? numberFormat(grandTotal) : ""}
+                                        type="text"
+                                        InputProps={{
+                                            readOnly: true,
+                                        }}
+                                    /> </ContainerGlobal>
+                                    :
+                                    <ContainerGlobal
+                                        w='420px'
+                                        h='auto'
+                                        direction='row'
+                                        gap='10px'
+                                        justify='space-between'
+                                        align='center'
+                                        overflow='auto'
+
+                                    >
+                                        <Title
+                                            size='20px'
+                                            color='Black'
+                                            family='Helvetica'
+                                            fstyle='Normal'
+                                            weight='400'
+                                            align='left'
+                                            margin='15px 0px 20px 0px'
+                                        >
+                                            Down payment:
+                                        </Title>
+                                        <TextField id="outlined-basic" label="" variant="standard" style={{ width: 200, margin: '5px 0px' }}
+                                            value={reservationInformation.length != 0 ? numberFormat(grandTotal / 2) : ""}
+                                            type="text"
+                                            InputProps={{
+                                                readOnly: true,
+                                            }}
+                                        /> </ContainerGlobal>
+                                : ""}
+
+
+                            <ContainerGlobal
+                                w='420px'
+                                h='auto'
+                                direction='row'
+                                gap='10px'
+                                justify='space-between'
+                                align='center'
+                                overflow='auto'
+
+                            >
+
+                                <Title
+                                    size='20px'
+                                    color='Black'
+                                    family='Helvetica'
+                                    fstyle='Normal'
+                                    weight='400'
+                                    align='left'
+                                    margin='15px 0px 20px 0px'
+                                >
+                                    Payment Made:
+                                </Title>
+                                <TextField id="outlined-basic" label="" variant="standard" style={{ width: 200, margin: '5px 0px' }}
+                                    value={reservationInformation.length != 0 ? numberFormat(reservationInformation.payment.paymentMade) : ""}
+                                    type="text"
+                                    InputProps={{
+                                        readOnly: true,
+                                    }}
+                                />
+                            </ContainerGlobal>
+
+                            <ContainerGlobal
+                                w='420px'
+                                h='auto'
+                                direction='row'
+                                gap='10px'
+                                justify='space-between'
+                                align='center'
+                                overflow='auto'
+
+                            >
+
+                                <Title
+                                    size='20px'
+                                    color='Black'
+                                    family='Helvetica'
+                                    fstyle='Normal'
+                                    weight='600'
+                                    align='left'
+                                    margin='15px 0px 20px 0px'
+                                >
+                                    Grand Total:
+                                </Title>
+                                <TextField
+                                    id="outlined-basic"
+                                    label=""
+                                    type="text"
+                                    value={reservationInformation.length != 0 ? numberFormat(grandTotal) : ""}
+                                    variant="standard"
+                                    style={{ width: 200, margin: '5px 0px', fontWeight: 600 }}
+                                    InputProps={{
+                                        readOnly: true,
+                                    }}
+                                />
+                            </ContainerGlobal>
+                            <ContainerGlobal
+                                w='420px'
+                                h='auto'
+                                direction='row'
+                                gap='10px'
+                                justify='space-between'
+                                align='center'
+                                overflow='auto'
+
+                            >
+
+                                <Title
+                                    size='20px'
+                                    color='Black'
+                                    family='Helvetica'
+                                    fstyle='Normal'
+                                    weight='600'
+                                    align='left'
+                                    margin='15px 0px 20px 0px'
+                                >
+                                    Remaining Balance:
+                                </Title>
+                                <TextField
+                                    id="outlined-basic"
+                                    label=""
+                                    type="text"
+                                    value={reservationInformation.length != 0 ? numberFormat(parseFloat(grandTotal) - parseFloat(reservationInformation.payment.paymentMade)) : ""}
+                                    variant="standard"
+                                    style={{ width: 200, margin: '5px 0px', fontWeight: 600 }}
+                                    InputProps={{
+                                        readOnly: true,
+                                    }}
+                                />
+                            </ContainerGlobal>
+                        </ContainerGlobalColumn>
+                    </ContainerGlobalRow>
+
+                    <ContainerGlobalRow>
+                        <ContainerGlobal
+                            w='auto'
+                            h='auto'
+                            direction='column'
+                            gap='10px'
+                            justify='space-between'
+                            align='center'
+                            overflow='auto'
+
+                        >
+
+                            <Title
+                                size='20px'
+                                color='Black'
+                                family='Helvetica'
+                                fstyle='Normal'
+                                weight='400'
+                                align='left'
+                                margin='15px 0px 0px 0px'
+                            >
+                                Proof of payment:
+                            </Title>
+                            {reservationInformation.length != 0 ?
+                                <PhotoBox
+                                    style={{ padding: '10px' }}>
+                                    <div style={{ width: '100%', height: 'auto', overflow: 'hidden' }}>
+                                        {reservationInformation.payment.paymentImage != null ?
+                                            <a target='_blank' href={apiKey + '' + reservationInformation.payment.paymentImage}><img src={apiKey + '' + reservationInformation.payment.paymentImage} style={{ width: '100%', height: 'auto' }} /></a>
+                                            : <Title
+                                                bg='white'
+                                                family='raleway, sans-serif'
+                                                color='#BFA698'
+                                                weight='400'
+                                                size='25px'
+                                                fstyle='Normal'
+
+                                                align='Center'
+                                            >
+                                                No Image Uploaded
+                                            </Title>
+                                        }
+                                    </div>
+
+                                </PhotoBox>
+                                :
+                                ""
+
+                            }
+                            {/* <Button onClick={() => { }} disabled={reservationInformation.length != 0 && reservationInformation.payment.paymentImage != null ? true : false} variant='contained' size='small' color='success'>Upload</Button> */}
+                            <Box
+                                component='form'
+                                onSubmit={uploadImage}
+                                style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+
+                                <div style={{ width: '700px', display: 'flex', justifyContent: 'center' }}>
+                                    <p style={{ color: 'red' }}>{previewImageError}</p>
+                                    <a target="_blank" href={previewImage}><img src={previewImage} width='200px' height='auto' style={{ border: '1px solid black', cursor: 'pointer' }} /></a>
+                                </div>
+                                <div
+                                    style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+                                    <FormButton
+                                        w='200px'
+                                        h='30px'
+                                        border="none"
+                                        margin='0px 0px 30px 0px'
+                                        fontsize='16px'
+                                        type='file'
+                                        textcolor='black'
+                                        id='upload'
+                                        onChange={handleUpload}
+                                    // disabled={reservationInformation.length != 0 && reservationInformation.payment.paymentImage ? true : false}
+                                    />
+
+                                </div>
+                            </Box>
+                        </ContainerGlobal>
+
+                    </ContainerGlobalRow>
+                    <ContainerGlobalRow>
+                        <Button
+                            onClick={savePayment}
+                            type='submit'
+                            variant='contained'
+                            size='small'
+                            color='success'
+                        >
+                            Save
+                        </Button>
+                    </ContainerGlobalRow>
+                    <hr style={{ width: '100%' }}></hr>
+
+                    <Title
+                        size='26px'
+                        color='white'
+                        family='Helvetica'
+                        fstyle='normal'
+                        weight='600'
+                        align='left'
+                        bg='#2E2E2E'
+                        margin='40px 0px 0px 0px'
+                        padding='10px 15px'
+                        borderRadius='.5rem'
+                    >
+                        Charge Summary
+                    </Title>
+                    <ContainerGlobalRow
+                        style={{
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            width: '95%',
+                            flexDirection: 'column'
+                        }}
+                    >
+
+
+                        <ContainerGlobal
+                            w='auto'
+                            h='auto'
+                            direction='row'
+                            gap='10px'
+                            justify='space-between'
+                            align='center'
+                            overflow='auto'
+
+                        >
+
+                            <Title
+                                size='20px'
+                                color='Black'
+                                family='Helvetica'
+                                fstyle='Normal'
+                                weight='bold'
+                                align='left'
+                                margin='15px 0px 0px 0px'
+                            >
+                                Booking summary:
+                            </Title>
+
+
+                        </ContainerGlobal>
+                    </ContainerGlobalRow>
+                    <ContainerGlobalRow
+                        style={{
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            width: '95%'
+                        }}
+                    >
+
+                        <FlexboxContainer
+                            w='70%'
+                            margin='0px'
+                            padding='0px'
+                            style={{
+                                backgroundColor: 'transparent',
+                            }}>
+
+                            <TableContainer
+                                style={{ padding: '0px 10px' }}
+                                cellspacing="0"
+                                cellpadding="0">
+                                <Tr>
+                                    <Th align='left' color='black'>Room number</Th>
+                                    <Th align='center' color='black'>Room type</Th>
+                                    {/* <Th align='center' color='black'>Check in</Th>
+                                    <Th align='center' color='black'>Check out</Th>
+                                    <Th align='center' color='black'>Adults</Th>
+                                    <Th align='center' color='black'>Kids</Th> */}
+                                    <Th align='center' color='black'>Total nights</Th>
+                                    <Th align='center' color='black'>Rate per night</Th>
+                                    <Th align='right' color='black'>Total amout due</Th>
+                                </Tr>
+                                {reservationSummaryInfo.length != 0 ?
+
+                                    reservationSummaryInfo.map((item, index) => (
+                                        <Tr>
+
+                                            <Td align='left' style={item.id == editReservationId ? { backgroundColor: 'green', color: 'white' } : { backgroundColor: '', color: '' }}>{item.room.roomNumber}</Td>
+                                            <Td align='center' style={item.id == editReservationId ? { backgroundColor: 'green', color: 'white' } : { backgroundColor: '', color: '' }}>{item.room.roomType.roomType}</Td>
+                                            {/* <Td align='center' style={item.id == editReservationId ? { backgroundColor: 'green', color: 'white' } : { backgroundColor: '', color: '' }}>{new Date(item.checkInDate).toLocaleDateString()}</Td>
+                                            <Td align='center' style={item.id == editReservationId ? { backgroundColor: 'green', color: 'white' } : { backgroundColor: '', color: '' }}>{new Date(item.checkOutDate).toLocaleDateString()}</Td>
+                                            <Td align='center' style={item.id == editReservationId ? { backgroundColor: 'green', color: 'white' } : { backgroundColor: '', color: '' }}>{item.adults}</Td>
+                                            <Td align='center' style={item.id == editReservationId ? { backgroundColor: 'green', color: 'white' } : { backgroundColor: '', color: '' }}>{item.kids}</Td> */}
+                                            <Td align='center' style={item.id == editReservationId ? { backgroundColor: 'green', color: 'white' } : { backgroundColor: '', color: '' }}>{item.numberOfNights}</Td>
+                                            <Td align='center' style={item.id == editReservationId ? { backgroundColor: 'green', color: 'white' } : { backgroundColor: '', color: '' }}>{numberFormat(item.room.roomType.roomRate)}</Td>
+                                            <Td align='right' style={item.id == editReservationId ? { backgroundColor: 'green', color: 'white' } : { backgroundColor: '', color: 'red' }}>{numberFormat(item.room.roomType.roomRate * item.numberOfNights)}</Td>
+
+
+                                        </Tr>
+
+                                    ))
+                                    :
+
+                                    ""}
+                                {/* <Tr rowSpan={2} style={{ backgroundColor: 'transparent' }}>
+                                    <Td align='center' ></Td>
+                                    <Td align='center'></Td>
+                                    <Td align='center'></Td>
+                                    <Td align='center'></Td>
+                                    <Td colSpan={2} align='center' style={{ fontSize: '16px' }}>Grand Total:</Td>
+                                    <Td align='center' style={{ fontSize: '16px', fontWeight: 'normal', color: 'red' }}>{numberFormat(grandTotal)}</Td>
+                                    <Td align='center'></Td>
+                                </Tr> */}
+                            </TableContainer>
+
+
+                        </FlexboxContainer>
+                    </ContainerGlobalRow>
+                    <ContainerGlobalRow
+                        style={{
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            width: '95%',
+                            flexDirection: 'column',
+                            gap: '10px'
+                        }}
+                    >
+                        <ContainerGlobal
+                            w='auto'
+                            h='auto'
+                            direction='row'
+                            gap='10px'
+                            justify='space-between'
+                            align='center'
+                            overflow='auto'
+
+                        >
+
+                            <Title
+                                size='20px'
+                                color='Black'
+                                family='Helvetica'
+                                fstyle='Normal'
+                                weight='bold'
+                                align='left'
+                                margin='45px 0px 0px 0px'
+                            >
+                                Additional Charges Summary:
+                            </Title>
+
+
+                        </ContainerGlobal>
+                    </ContainerGlobalRow>
+                    <ContainerGlobalRow
+                        style={{
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            width: '95%'
+                        }}
+                    >
+
+                        <FlexboxContainer
+                            w='70%'
+                            margin='0px'
+                            padding='0px'
+                            style={{
+                                backgroundColor: 'transparent',
+                            }}>
+
+                            <TableContainer
+                                style={{ padding: '0px 10px' }}
+                                cellspacing="0"
+                                cellpadding="0">
+                                <Tr>
+                                    <Th align='left' color='black'>Additionals</Th>
+                                    <Th align='center' color='black'>Quantity</Th>
+                                    <Th align='center' color='black'>Rate</Th>
+                                    <Th align='right' color='black'>Total Amount Due</Th>
+                                </Tr>
+                                {amenities.length != 0 ?
+
+                                    amenities.map((item, index) => (
+                                        <Tr>
+
+                                            <Td align='left'>{item.amenityName}</Td>
+                                            <Td align='center'>{orderedAmenities.filter((obj) => obj.amenity.amenityName == item.amenityName).map((item) => item.quantity).reduce((accumulator, value) => accumulator + value)}</Td>
+                                            <Td align='center'>{numberFormat(item.amenityRate)}</Td>
+                                            <Td align='right' style={{ color: 'red' }}>{numberFormat(item.amenityRate * orderedAmenities.filter((obj) => obj.amenity.amenityName == item.amenityName).map((item) => item.quantity).reduce((accumulator, value) => accumulator + value))}</Td>
+                                            {/* <Td align='center'>{item.adults}</Td>
+                                            <Td align='center'>{item.kids}</Td>
+                                            <Td align='center'>{item.numberOfNights}</Td>
+                                            <Td align='center'>{numberFormat(item.room.roomType.roomRate)}</Td>
+                                            <Td align='center'>{numberFormat(item.room.roomType.roomRate * item.numberOfNights)}</Td> */}
+
+
+                                        </Tr>
+
+                                    ))
+                                    :
+
+                                    ""}
+                                <Tr>
+
+                                    <Td align='left'><i>Others</i></Td>
+                                    <Td align='center'></Td>
+                                    <Td align='center'></Td>
+                                    <Td align='right' style={{ color: 'red' }}>{reservationSummaryInfo.length != 0 && numberFormat(reservationSummaryInfo.map((item) => item.others).reduce((accumulator, value) => parseFloat(accumulator) + parseFloat(value)))}</Td>
+
+
+
+                                </Tr>
+
+                                {/* <Tr rowSpan={2} style={{ backgroundColor: 'transparent' }}>
+                                    <Td align='center' ></Td>
+                                    <Td align='center'></Td>
+                                    <Td align='center'></Td>
+                                    <Td align='center'></Td>
+                                    <Td colSpan={2} align='center' style={{ fontSize: '16px' }}>Grand Total:</Td>
+                                    <Td align='center' style={{ fontSize: '16px', fontWeight: 'normal', color: 'red' }}>{numberFormat(grandTotal)}</Td>
+                                    <Td align='center'></Td>
+                                </Tr> */}
+                            </TableContainer>
+
+
+                        </FlexboxContainer>
+                    </ContainerGlobalRow>
+
+                    <hr style={{ width: '100%' }}></hr>
+
+
+
+                    <Title
+                        size='26px'
+                        color='white'
+                        family='Helvetica'
+                        fstyle='normal'
+                        weight='600'
+                        align='left'
+                        bg='#2E2E2E'
+                        margin='40px 0px 10px 0px'
+                        padding='10px 15px'
+                        borderRadius='.5rem'
+                    >
+                        Guest details
+                    </Title>
+
+
+
+                    <ContainerGlobalRow>
+                        <ContainerFormContent >
+
+                            <InputContainer>
+                                <TextField
+                                    placeholder='First Name'
+                                    label="First Name"
+                                    inputRef={firstNameRef}
+                                    variant="outlined"
+                                    value={reservationInformation.length != 0 ? reservationInformation.guestInformation.firstName.toLocaleLowerCase() : ""}
+                                    onChange={(e) => {
+                                        setFirstName(e.target.value.toLocaleLowerCase())
+                                        if (!letters.test(e.target.value) && e.target.value.length != 0) {
+                                            setFirstNameError("Invalid first name. Please type letters only.")
+                                        }
+                                        else {
+                                            setFirstNameError("")
+                                        }
+                                    }}
+
+                                    InputProps={{
+                                        readOnly: true,
+                                    }}
+                                    style={{ width: '55%', }}
+                                    required />
+
+                                <TextField
+                                    placeholder='Last Name'
+                                    label="Last Name"
+                                    variant="outlined"
+                                    inputRef={lastNameRef}
+                                    value={reservationInformation.length != 0 ? reservationInformation.guestInformation.lastName.toLocaleLowerCase() : ""}
+                                    onChange={(e) => {
+                                        setLastName(e.target.value.toLocaleLowerCase())
+                                        if (!letters.test(e.target.value) && e.target.value.length != 0) {
+                                            setLastNameError("Invalid last name. Please type letters only.")
+                                        }
+                                        else {
+                                            setLastNameError("")
+                                        }
+
+                                    }}
+                                    style={{ width: '55%', }}
+                                    InputProps={{
+                                        readOnly: true,
+                                    }}
+                                    required />
+                            </InputContainer>
+
+
+                            <InputContainer>
+                                <TextField
+                                    placeholder='Email'
+                                    label="Email"
+                                    variant="outlined"
+                                    type='email'
+                                    value={reservationInformation.length != 0 ? reservationInformation.guestInformation.user.email.toLocaleLowerCase() : ""}
+                                    onChange={(e) => {
+                                        setEmail(e.target.value)
+
+                                        setEmailError("")
+                                    }}
+                                    style={{ width: '55%', }}
+                                    inputRef={emailRef}
+                                    InputProps={{
+                                        readOnly: true,
+                                    }}
+                                    required />
+
+                                <TextField
+                                    placeholder='Contact Number e.g. 09123456789 or +639123456789'
+                                    label="Contact Number"
+                                    variant="outlined"
+                                    value={reservationInformation.length != 0 ? reservationInformation.guestInformation.user.contactNumber : ""}
+                                    onChange={(e) => {
+                                        setContactNumber(e.target.value)
+
+                                        if (!phoneNumberValidation.test(e.target.value) && e.target.value.length != 0) {
+                                            setContactNumberError("Contact number is invalid. Please provide a valid contact number.")
+                                        }
+                                        else {
+                                            setContactNumberError("")
+                                        }
+                                    }}
+                                    inputRef={contactNumberRef}
+                                    style={{ width: '55%', }}
+                                    InputProps={{
+                                        readOnly: true,
+                                    }}
+                                    required />
+                            </InputContainer>
+
+
+                            <InputContainer>
+
+                                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                    <DatePicker
+
+                                        views={['day', 'month', 'year']}
+                                        label="Birthday"
+                                        value={reservationInformation.length != 0 ? reservationInformation.guestInformation.birthDate : ""}
+                                        onChange={(newValue) => {
+                                            setBirthDay(newValue);
+                                        }}
+                                        renderInput={(params) =>
+                                            <TextField
+                                                {...params}
+                                                variant="standard"
+                                                style={{ width: "55%", margin: '5px 0px' }}
+                                                helperText={null}
+                                                InputProps={{
+                                                    readOnly: true,
+                                                }}
+                                                required
+                                            />
+                                        }
+                                        disabled
+                                    />
+
+                                </LocalizationProvider>
+
+                                <FormControl sx={{ width: "55%", margin: '5px 0px' }} size="small" variant="standard">
+                                    <InputLabel id="demo-select-small" >Nationality</InputLabel>
+                                    <Select
+                                        style={{ color: 'black', textAlign: 'left' }}
+                                        labelId="demo-select-small"
+                                        id="demo-select-small"
+                                        value={reservationInformation.length != 0 ? reservationInformation.guestInformation.nationality : ""}
+                                        label="Menu"
+                                        onChange={(event) => {
+                                            setNationality(event.target.value);
+                                        }}
+                                        InputProps={{
+                                            readOnly: true,
+                                        }}
+                                        required
+                                        disabled
+                                    >
+
+                                        {nationalities.map(({ nationality }, index) => (
+                                            <MenuItem value={nationality} >{nationality}</MenuItem>
+                                        ))}
+                                    </Select>
+                                </FormControl>
+                            </InputContainer>
+
+                            <InputContainer
+                                justify='center'>
+                                <FormControl>
+                                    <FormLabel id="demo-row-radio-buttons-group-label"
+                                        style={{ textAlign: 'center', color: 'black' }} >Gender</FormLabel>
+                                    <RadioGroup
+                                        row
+
+                                        aria-labelledby="demo-row-radio-buttons-group-label"
+                                        defaultValue="male"
+                                        value={reservationInformation.length != 0 ? reservationInformation.guestInformation.gender : ""}
+                                        name="row-radio-buttons-group"
+                                        onChange={(e) => {
+                                            setGender(e.target.value)
+                                        }}
+                                        required
+                                    >
+                                        <FormControlLabel
+                                            value="male"
+                                            control={<Radio
+
+                                                InputProps={{
+                                                    readOnly: true,
+                                                }}
+                                            />}
+                                            label="Male"
+                                        />
+                                        <FormControlLabel
+                                            value="female"
+                                            control={<Radio
+
+                                                InputProps={{
+                                                    readOnly: true,
+                                                }}
+                                            />}
+                                            label="Female"
+                                        />
+                                        <FormControlLabel
+                                            value="other"
+                                            control={<Radio
+
+                                                InputProps={{
+                                                    readOnly: true,
+                                                }}
+                                            />}
+                                            label="Other"
+                                        />
+                                    </RadioGroup>
+                                </FormControl>
+                            </InputContainer>
+
+
+                            <InputContainer>
+                                <TextField
+                                    placeholder='Complete Address'
+                                    label="Complete Address"
+                                    variant="outlined"
+                                    type='text'
+                                    value={reservationInformation.length != 0 ? reservationInformation.guestInformation.address : ""}
+                                    onChange={(e) => {
+                                        setAddress(e.target.value)
+                                    }}
+                                    multiline
+                                    rows={4}
+                                    style={{ width: '95%', }}
+
+                                    InputProps={{
+                                        readOnly: true,
+                                    }}
+                                    required />
+
+                            </InputContainer>
+
+
+
+
+                        </ContainerFormContent>
+                    </ContainerGlobalRow>
+                    <br></br>
+                    <Button variant="contained" color='error' onClick={() => {
+                        handleCloseUpdate()
+                    }}>Close</Button>
+                </Box>
+            </Modal>
+
+            {/* Open Print modal */}
+            <Modal
+                open={openPrint}
+                onClose={handleClosePrint}
+                style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                }}>
+                <Box
+                    component='form'
+                    // onSubmit={addReservation}
+                    style={{
+                        height: 'auto',
+                        width: '30vw',
+                        backgroundColor: 'white',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: '10px',
+                        justifyContent: 'flex-start',
+                        alignItems: 'center',
+                        overflowY: 'overlay',
+                        overflowX: 'hidden',
+                        padding: '0px 0px 20px 0px',
+                        borderRadius: '.5rem',
+                        position: 'relative'
+                        // margin: '50px 0px',
+
+                    }}>
+                    <div style={{
+                        width: '100%',
+                        height: '50px',
+                        position: 'sticky',
+                        top: 0,
+                        display: 'flex',
+                        justifyContent: 'flex-end',
+                        alignItems: 'center',
+                        backgroundColor: 'black',
+                        zIndex: '1',
+
+                    }}>
+                        <Title
+                            size='16px'
+                            color='white'
+                            family='Helvetica'
+                            fstyle='normal'
+                            weight='bold'
+                            align='left'
+                            margin='0px auto 0px 10px'
+                        >
+                            Print or Download receipt
+                        </Title>
+                        <CloseIcon
+                            onClick={handleClosePrint}
+                            style={{
+                                color: 'white',
+                                cursor: 'pointer',
+                                margin: '10px',
+                            }} />
+                    </div>
+                    <ContainerGlobal direction='column' align='center' justify='center' gap='40px' margin='20px 0px'>
+
+                        <ContainerGlobal gap='20px'>
+                            <Button variant="contained" color='success' style={{ width: '150px' }} onClick={() => { downloadReceipt() }}>Download</Button>
+                            <Button variant="contained" style={{ width: '150px' }} onClick={() => { printReceipt() }}>Print</Button>
+                        </ContainerGlobal>
+                    </ContainerGlobal>
+                </Box>
+
+            </Modal>
+        </Container >
     )
 }
 

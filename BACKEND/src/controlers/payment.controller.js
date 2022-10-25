@@ -72,7 +72,7 @@ exports.update = async (req, res) => {
             paymentImage: req.body.paymentImage,
             paymentMade: req.body.paymentMade,
             grandTotal: req.body.grandTotal,
-            balance: req.body.grandTotal - req.body.balance,
+            balance: req.body.grandTotal - req.body.paymentMade,
             discountValid: req.body.discountValid,
             paymentType: req.body.paymentType,
             paymentStatus: req.body.paymentStatus,

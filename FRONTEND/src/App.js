@@ -111,8 +111,8 @@ const App = () => {
         <Route path="/admin/report" element={<Reports />}/>
         <Route path="/admin/additionals" element={<Additional />}/>
         
-        <Route path="/admin/officialReceipt" element={<OfficialReceipt />}/>
-        <Route path="/admin/acknowledgementReceipt" element={<AcknowledgementReceipt />}/>
+        <Route path="/admin/officialReceipt/:id" element={<OfficialReceipt />}/>
+        <Route path="/admin/acknowledgementReceipt/:id" element={<AcknowledgementReceipt />}/>
 
 
 
