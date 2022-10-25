@@ -1331,7 +1331,11 @@ const PaymentContainer = () => {
                                     edit={() => handleOpenUpdate(item)}
                                     pay={() => handleOpenEdit(item)}
                                     print={() => handleOpenPrint(item)}
-                                    printDisable={item.payment.paymentMade == 0 && true}
+                                    printDisable={item.payment.paymentType == 'Full Payment' ? 
+                                    item.payment.paymentMade == 0 || item.payment.balance != 0 ? true: false  
+                                    : 
+                                    item.payment.paymentMade == 0 ? true: false
+                                }
                                 /></Td>
                             </Tr>
                         ))
@@ -4057,7 +4061,7 @@ const PaymentContainer = () => {
                                                 if (reservationInformation.payment.discountValid == true) {
 
                                                     setDiscountValid(false)
-                                                    setGrandTotal(reservationInformation.payment.grandTotal / 0.80)
+                                                    setGrandTotal(reservationInformation.payment.grandTotal / 0.80 * 1.12)
 
                                                 }
                                                 else if (reservationInformation.payment.discountValid == false) {
@@ -4119,13 +4123,13 @@ const PaymentContainer = () => {
                                                     }
                                                     else {
                                                         setDiscountValid(false)
-                                                        setGrandTotal(reservationInformation.payment.grandTotal / 0.80)
+                                                        setGrandTotal(reservationInformation.payment.grandTotal / 0.80 * 1.12)
                                                     }
                                                 }
                                                 else if (reservationInformation.payment.discountValid == false) {
                                                     if (e.target.checked) {
                                                         setDiscountValid(true)
-                                                        setGrandTotal(reservationInformation.payment.grandTotal * 0.80)
+                                                        setGrandTotal(reservationInformation.payment.grandTotal / 1.12 * 0.80)
                                                     }
                                                     else {
                                                         setGrandTotal(reservationInformation.payment.grandTotal)

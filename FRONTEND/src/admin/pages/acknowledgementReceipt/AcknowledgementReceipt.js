@@ -10,35 +10,51 @@ const AcknowledgementReceipt = () => {
 
   const { id } = useParams();
 
-const [reservationInformation, setReservationInformation] = useState([])
-const [reservationSummaryInformation, setReservationSummaryInformation] = useState([])
-const [orderedAmenities, setOrderedAmenities] = useState([])
+  const [reservationInformation, setReservationInformation] = useState([])
+  const [reservationSummaryInformation, setReservationSummaryInformation] = useState([])
+  const [orderedAmenities, setOrderedAmenities] = useState([])
+  const [amenities, setAmenities] = useState([])
 
-let url = id.split('_')
-  useEffect(()=>{
-    axios.get(apiKey+'api/getReservation/'+ url[0]).then((result) => {
+  let url = id.split('_')
+
+  const numberFormat = (value) =>
+    new Intl.NumberFormat('en-CA', {
+      style: 'currency',
+      currency: 'PHP'
+    }).format(value);
+
+
+  useEffect(() => {
+    axios.get(apiKey + 'api/getReservation/' + url[0]).then((result) => {
       setReservationInformation(result.data)
+      console.log(result.data.payment.grandTotal)
     }).catch((err) => {
       console.log(err)
-      
+
     });
 
 
     axios.get(apiKey + 'api/getAllReservationSummary').then((result) => {
-      setReservationSummaryInformation(result.data.filter((obj)=> obj.reservation_id == url[0]))
+      setReservationSummaryInformation(result.data.filter((obj) => obj.reservation_id == url[0]))
     }).catch((err) => {
       console.log(err)
     });
 
     axios.get(apiKey + 'api/getAllOrderedAmenities').then((result) => {
-      setOrderedAmenities(result.data.filter((obj)=> obj.reservationSummary.reservation.id == url[0]))
-      console.log(result.data.filter((obj)=> obj.reservationSummary.reservation.id == url[0]))
+      setOrderedAmenities(result.data.filter((obj) => obj.reservationSummary.reservation.id == url[0]))
+      console.log(result.data.filter((obj) => obj.reservationSummary.reservation.id == url[0]))
     }).catch((err) => {
       console.log(err)
-      
     });
-  },[])
-console.log(url[0])
+
+
+    axios.get(apiKey + 'api/getAllAmenities').then((result) => {
+      setAmenities(result.data)
+    }).catch((err) => {
+      console.log(err)
+    });
+  }, [])
+  console.log(url[0])
 
   return (
     <div style={{ width: 'auto', height: '50px' }}>
@@ -78,7 +94,7 @@ console.log(url[0])
                 Receipt No.: 0001
               </Title>
               <Title family="Belleza" size="1.5vw" fstyle="none">
-                Receipt Date.: 09-09-2022
+                Receipt Date.: {new Date().toLocaleDateString()}
               </Title>
             </ContainerGlobal>
           </ContainerGlobal>
@@ -103,22 +119,22 @@ console.log(url[0])
               <ContainerGlobal radius='0px' w="100%" justify="space-between">
                 <Title family="Barlow Condensed" fstyle="none" size="2vw">Guest name:</Title>
 
-                <Title family="Barlow Condensed" fstyle="none" size="2vw" weight="400">Pedro Juan</Title>
+                <Title family="Barlow Condensed" fstyle="none" size="2vw" weight="400">{reservationInformation.length != 0 && reservationInformation.guestInformation.firstName.toLowerCase() + ' ' + reservationInformation.guestInformation.lastName.toLowerCase()}</Title>
               </ContainerGlobal>
               <ContainerGlobal radius='0px' w="100%" justify="space-between">
                 <Title family="Barlow Condensed" fstyle="none" size="2vw">Address:</Title>
 
-                <Title family="Barlow Condensed" fstyle="none" size="2vw" weight="400">Quezon City</Title>
+                <Title family="Barlow Condensed" fstyle="none" size="2vw" weight="400">{reservationInformation.length != 0 && reservationInformation.guestInformation.address.toLowerCase()}</Title>
               </ContainerGlobal>
               <ContainerGlobal radius='0px' w="100%" justify="space-between">
                 <Title family="Barlow Condensed" fstyle="none" size="2vw">Contact Number:</Title>
 
-                <Title family="Barlow Condensed" fstyle="none" size="2vw" weight="400">123456789</Title>
+                <Title family="Barlow Condensed" fstyle="none" size="2vw" weight="400">{reservationInformation.length != 0 && reservationInformation.guestInformation.user.contactNumber}</Title>
               </ContainerGlobal>
               <ContainerGlobal radius='0px' w="100%" justify="space-between">
                 <Title family="Barlow Condensed" fstyle="none" size="2vw">Email Address:</Title>
 
-                <Title family="Barlow Condensed" fstyle="none" size="2vw" weight="400">pedrojuan@yahoo.com</Title>
+                <Title family="Barlow Condensed" fstyle="none" size="2vw" weight="400">{reservationInformation.length != 0 && reservationInformation.guestInformation.user.email.toLowerCase()}</Title>
               </ContainerGlobal>
             </ContainerGlobal>
           </ContainerGlobal>
@@ -129,9 +145,9 @@ console.log(url[0])
             <Title family="Barlow Condensed" fstyle="none" size="2.5vw">Booking Details</Title>
             <ContainerGlobal radius='0px' w="100%" direction="column">
               <ContainerGlobal radius='0px' w="100%" justify="space-between">
-                <Title family="Barlow Condensed" fstyle="none" size="2vw">Reference Number: 2492</Title>
+                <Title family="Barlow Condensed" fstyle="none" size="2vw">Reference Number: {reservationInformation.length != 0 && reservationInformation.reservationReferenceNumber}</Title>
 
-                <Title family="Barlow Condensed" fstyle="none" size="2vw">Booking Date: 09/09/22</Title>
+                <Title family="Barlow Condensed" fstyle="none" size="2vw">Booking Date: {reservationInformation.length != 0 && new Date(reservationInformation.reservationDate).toLocaleDateString()}</Title>
               </ContainerGlobal>
 
               <table
@@ -146,18 +162,16 @@ console.log(url[0])
                   <th>Rate per Night</th>
                   <th>Total Amount Due</th>
                 </tr>
-                <tr>
-                  <td>Deluxe x 1</td>
-                  <td>2</td>
-                  <td>₱2000.00</td>
-                  <td></td>
-                </tr>
-                <tr>
-                  <td>Family Room x 2</td>
-                  <td>3</td>
-                  <td>₱2000.00</td>
-                  <td></td>
-                </tr>
+                {reservationSummaryInformation.length != 0 ? reservationSummaryInformation.map((item) => (
+                  <tr>
+                    <td>{item.room.roomType.roomType}</td>
+                    <td>{item.numberOfNights}</td>
+                    <td>{numberFormat(item.room.roomType.roomRate)}</td>
+                    <td>{numberFormat(item.room.roomType.roomRate * item.numberOfNights)}</td>
+                  </tr>
+                )) : ''}
+
+
               </table>
             </ContainerGlobal>
           </ContainerGlobal>
@@ -166,41 +180,103 @@ console.log(url[0])
 
           <ContainerGlobal radius='0px' w="100%" direction="column">
             <Title family="Barlow Condensed" fstyle="none" size="2.5vw" >Payment Details</Title>
-            <ContainerGlobal radius='0px' w="100%" direction="column" gap="10px">
+            <ContainerGlobal radius='0px' w="100%" direction="column" gap="0px">
               <ContainerGlobal radius='0px' w="100%" justify="space-between" align="flex-end">
                 <Title family="Barlow Condensed" fstyle="none" size="2vw">Payment Method:</Title>
 
-                <Title family="Barlow Condensed" fstyle="none" size="2vw" weight="400">Value</Title>
+                <Title family="Barlow Condensed" fstyle="none" size="2vw" weight="400">{reservationInformation.length != 0 && reservationInformation.payment.paymentMode.paymentMode}</Title>
               </ContainerGlobal>
               <ContainerGlobal radius='0px' w="100%" justify="space-between" align="flex-end">
+                <Title family="Barlow Condensed" fstyle="none" size="2vw">Payment type:</Title>
+
+                <Title family="Barlow Condensed" fstyle="none" size="2vw" weight="400">{reservationInformation.length != 0 && reservationInformation.payment.paymentType}</Title>
+              </ContainerGlobal>
+              <ContainerGlobal radius='0px' w="100%" justify="space-between" align="flex-end">
+                <Title family="Barlow Condensed" fstyle="none" size="2vw">Discount type:</Title>
+
+                <Title family="Barlow Condensed" fstyle="none" size="2vw" weight="400">{reservationInformation.length != 0 && reservationInformation.payment.discountValid == true ? reservationInformation.payment.discount.discountType : 'No Discount'}</Title>
+              </ContainerGlobal>
+              <ContainerGlobal radius='0px' w="100%" justify="space-between" align="flex-end" margin='20px 0px 0px 0px'>
                 <Title family="Barlow Condensed" fstyle="none" size="2vw" >Rooms:</Title>
 
-                <Title family="Barlow Condensed" fstyle="none" size="2vw" weight="400">Value</Title>
+                <Title family="Barlow Condensed" fstyle="none" size="2vw" weight="400">{reservationSummaryInformation != 0 && numberFormat(reservationSummaryInformation.map((item) => item.room.roomType.roomRate).reduce((accumulator, value) => accumulator + value))}</Title>
               </ContainerGlobal>
-              <ContainerGlobal radius='0px' w="100%" justify="space-between" margin="40px 0px">
+              <ContainerGlobal radius='0px' w="100%" justify="space-between" margin="10px 0px 40px 0px">
                 <Title family="Barlow Condensed" fstyle="none" size="2vw">Additional Charges:</Title>
 
                 <ContainerGlobal radius='0px' w="40%" direction="column">
-                  <ContainerGlobal radius='0px' w="100%" justify="space-between">
-                    <Title family="Barlow Condensed" fstyle="none" size="2vw" weight="400">Towel x 1</Title>
-                    <Title family="Barlow Condensed" fstyle="none" size="2vw" weight="400">₱200</Title>
-                  </ContainerGlobal>
-                  <ContainerGlobal radius='0px' w="100%" justify="space-between">
-                    <Title family="Barlow Condensed" fstyle="none" size="2vw" weight="400">Additional Guests x 2</Title>
-                    <Title family="Barlow Condensed" fstyle="none" size="2vw" weight="400">₱700</Title>
-                  </ContainerGlobal>
+                  {orderedAmenities.length != 0 &&
+                    amenities.map((item) => (
+                      orderedAmenities.filter((obj) => obj.amenity.amenityName == item.amenityName).map((item) => item.quantity).reduce((accumulator, value) => accumulator + value) != 0 &&
+                      <ContainerGlobal radius='0px' w="100%" justify="space-between">
+                        <Title family="Barlow Condensed" fstyle="none" size="2vw" weight="400">{item.amenityName} x {orderedAmenities.filter((obj) => obj.amenity.amenityName == item.amenityName).map((item) => item.quantity).reduce((accumulator, value) => accumulator + value)}</Title>
+                        <Title family="Barlow Condensed" fstyle="none" size="2vw" weight="400">{numberFormat(parseFloat(item.amenityRate) * parseFloat(orderedAmenities.filter((obj) => obj.amenity.amenityName == item.amenityName).map((item) => item.quantity).reduce((accumulator, value) => accumulator + value)))}</Title>
+                      </ContainerGlobal>
+
+                    ))
+                  }
+
+
+                  {reservationSummaryInformation.length != 0 &&
+                    reservationSummaryInformation.map((item) => item.others).reduce((accumulator, value) => parseFloat(accumulator) + parseFloat(value)) != 0 &&
+                    <ContainerGlobal radius='0px' w="100%" justify="space-between">
+                      <Title family="Barlow Condensed" fstyle="none" size="2vw" weight="400">Others</Title>
+                      <Title family="Barlow Condensed" fstyle="none" size="2vw" weight="400">{numberFormat(reservationSummaryInformation.map((item) => item.others).reduce((accumulator, value) => parseFloat(accumulator) + parseFloat(value)))}</Title>
+                    </ContainerGlobal>
+
+
+                  }
                 </ContainerGlobal>
               </ContainerGlobal>
+              
               <ContainerGlobal radius='0px' w="100%" justify="space-between">
-                <Title family="Barlow Condensed" fstyle="none" size="2vw">VAT(12%):</Title>
-
-                <Title family="Barlow Condensed" fstyle="none" size="2vw" weight="400">Value</Title>
+                <Title family="Barlow Condensed" fstyle="none" size="2vw">Total:</Title>
+                {reservationInformation.length != 0 ?
+                  reservationInformation.payment.discountValid == true ?
+                    <Title family="Barlow Condensed" fstyle="none" size="2vw" weight="400">{numberFormat((reservationInformation.payment.grandTotal * 1.12) / .80)}</Title>
+                    :
+                    <Title family="Barlow Condensed" fstyle="none" size="2vw" weight="400">{numberFormat((reservationInformation.payment.grandTotal))}</Title>
+                  :
+                  ''
+                }
               </ContainerGlobal>
               <ContainerGlobal radius='0px' w="100%" justify="space-between">
-                <Title family="Barlow Condensed" fstyle="none" size="2vw">Discount:</Title>
+                <Title family="Barlow Condensed" fstyle="none" size="2vw">VAT Sales:</Title>
 
-                <Title family="Barlow Condensed" fstyle="none" size="2vw" weight="400">Value</Title>
+                {reservationInformation.length != 0 ?
+                  reservationInformation.payment.discountValid == true ?
+                    <Title family="Barlow Condensed" fstyle="none" size="2vw" weight="400">{numberFormat(parseFloat((reservationInformation.payment.grandTotal * 1.12) / .80) / 1.12)}</Title>
+                    :
+                    <Title family="Barlow Condensed" fstyle="none" size="2vw" weight="400">{numberFormat(parseFloat(reservationInformation.payment.grandTotal) / 1.12)}</Title>
+                  :
+                  ''
+                }
               </ContainerGlobal>
+              <ContainerGlobal radius='0px' w="100%" justify="space-between">
+                <Title family="Barlow Condensed" fstyle="none" size="2vw">VAT({reservationInformation.length != 0 && reservationInformation.payment.discountValid == true ? '0%' : '12%'}):</Title>
+                {reservationInformation.length != 0 ?
+                  reservationInformation.payment.discountValid == true ?
+                    <Title family="Barlow Condensed" fstyle="none" size="2vw" weight="400">  - {numberFormat(parseFloat((reservationInformation.payment.grandTotal * 1.12) / .80) - (parseFloat((reservationInformation.payment.grandTotal * 1.12) / .80) / 1.12))}</Title>
+                    :
+                    <Title family="Barlow Condensed" fstyle="none" size="2vw" weight="400">{numberFormat(parseFloat(reservationInformation.payment.grandTotal) - (parseFloat(reservationInformation.payment.grandTotal) / 1.12))}</Title>
+                  :
+                  ''
+                }
+              </ContainerGlobal>
+
+              {reservationInformation.length != 0 ?
+                reservationInformation.payment.discountValid == true ?
+                  <ContainerGlobal radius='0px' w="100%" justify="space-between">
+
+                    <Title family="Barlow Condensed" fstyle="none" size="2vw">Discount:</Title>
+
+                    <Title family="Barlow Condensed" fstyle="none" size="2vw" weight="400">{numberFormat((parseFloat((reservationInformation.payment.grandTotal * 1.12) / .80) / 1.12) * .20)}</Title>
+                  </ContainerGlobal>
+                  :
+                  ''
+                :
+                ''
+              }
             </ContainerGlobal>
           </ContainerGlobal>
           <hr style={{ width: "100%" }} />
@@ -212,23 +288,41 @@ console.log(url[0])
               gap="10px"
               align="flex-end"
             >
+
+              {/* {reservationInformation.length != 0 &&
+                reservationInformation.payment.paymentType == 'Down Payment' ?
+
+                <ContainerGlobal radius='0px' w="50%" justify="space-between">
+                  <Title family="Barlow Condensed" fstyle="none" size="3vw" weight="400">Down Payment:</Title>
+                  <Title family="Barlow Condensed" fstyle="none" size="3vw" weight="400">{numberFormat(parseFloat(reservationInformation.payment.grandTotal) / 2)}</Title>
+                </ContainerGlobal>
+                :
+                <ContainerGlobal radius='0px' w="50%" justify="space-between">
+                  <Title family="Barlow Condensed" fstyle="none" size="3vw" weight="400">Full Payment:</Title>
+                  <Title family="Barlow Condensed" fstyle="none" size="3vw" weight="400">{numberFormat(parseFloat(reservationInformation.payment.grandTotal))}</Title>
+                </ContainerGlobal>
+
+              } */}
+
+
               <ContainerGlobal radius='0px' w="50%" justify="space-between">
                 <Title family="Barlow Condensed" fstyle="none" size="3vw" weight="400">Grand Total:</Title>
-                <Title family="Barlow Condensed" fstyle="none" size="3vw" weight="400">₱2900.00</Title>
+                <Title family="Barlow Condensed" fstyle="none" size="3vw" weight="400">{reservationInformation.length != 0 && numberFormat(reservationInformation.payment.grandTotal)}</Title>
               </ContainerGlobal>
               <ContainerGlobal radius='0px' w="50%" justify="space-between">
-                <Title family="Barlow Condensed" fstyle="none" size="3vw" weight="400">Downpayment:</Title>
-                <Title family="Barlow Condensed" fstyle="none" size="3vw" weight="400">₱2900.00</Title>
+                <Title family="Barlow Condensed" fstyle="none" size="3vw" weight="400">Payment Made:</Title>
+                <Title family="Barlow Condensed" fstyle="none" size="3vw" weight="400">{reservationInformation.length != 0 && numberFormat(reservationInformation.payment.paymentMade)}</Title>
               </ContainerGlobal>
+
               <ContainerGlobal radius='0px' w="50%" justify="space-between">
                 <Title family="Barlow Condensed" fstyle="none" size="3vw">Remaining Balance:</Title>
-                <Title family="Barlow Condensed" fstyle="none" size="3vw" color="red">₱0</Title>
+                <Title family="Barlow Condensed" fstyle="none" size="3vw" color="red">{reservationInformation.length != 0 && numberFormat(reservationInformation.payment.balance)}</Title>
               </ContainerGlobal>
             </ContainerGlobal>
           </ContainerGlobal>
         </ContainerGlobal>
       </ContainerGlobal>
-    </div>
+    </div >
   );
 };
 

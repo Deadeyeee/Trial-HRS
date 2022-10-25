@@ -128,7 +128,7 @@ exports.updateGrandTotal = async (req, res) => {
         })
 
         if (getpayment.discountValid == true) {
-            grandTotal = grandTotal * .80;
+            grandTotal = grandTotal / 1.12 * .80;
         }
 
         if (grandTotal - req.body.paymentMade == 0) {
