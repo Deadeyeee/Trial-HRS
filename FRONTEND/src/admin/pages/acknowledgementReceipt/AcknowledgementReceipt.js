@@ -6,6 +6,8 @@ import "./or.css";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { apiKey } from "../../../apiKey";
+import domtoimage from 'dom-to-image';
+import { saveAs } from 'file-saver';
 const AcknowledgementReceipt = () => {
 
   const { id } = useParams();
@@ -28,41 +30,58 @@ const AcknowledgementReceipt = () => {
     axios.get(apiKey + 'api/getReservation/' + url[0]).then((result) => {
       setReservationInformation(result.data)
       console.log(result.data.payment.grandTotal)
+
+      axios.get(apiKey + 'api/getAllReservationSummary').then((result) => {
+        setReservationSummaryInformation(result.data.filter((obj) => obj.reservation_id == url[0]))
+
+        axios.get(apiKey + 'api/getAllOrderedAmenities').then((result) => {
+          setOrderedAmenities(result.data.filter((obj) => obj.reservationSummary.reservation.id == url[0]))
+          console.log(result.data.filter((obj) => obj.reservationSummary.reservation.id == url[0]))
+
+          axios.get(apiKey + 'api/getAllAmenities').then((result) => {
+            setAmenities(result.data)
+
+          }).catch((err) => {
+            console.log(err)
+          });
+        }).catch((err) => {
+          console.log(err)
+        });
+      }).catch((err) => {
+        console.log(err)
+      });
     }).catch((err) => {
       console.log(err)
 
     });
 
 
-    axios.get(apiKey + 'api/getAllReservationSummary').then((result) => {
-      setReservationSummaryInformation(result.data.filter((obj) => obj.reservation_id == url[0]))
-    }).catch((err) => {
-      console.log(err)
-    });
-
-    axios.get(apiKey + 'api/getAllOrderedAmenities').then((result) => {
-      setOrderedAmenities(result.data.filter((obj) => obj.reservationSummary.reservation.id == url[0]))
-      console.log(result.data.filter((obj) => obj.reservationSummary.reservation.id == url[0]))
-    }).catch((err) => {
-      console.log(err)
-    });
 
 
-    axios.get(apiKey + 'api/getAllAmenities').then((result) => {
-      setAmenities(result.data)
-    }).catch((err) => {
-      console.log(err)
-    });
   }, [])
+
+
+  useEffect(()=>{
+    if(amenities.length != 0){
+      let node = document.getElementById('acknowledgeReceipt');
+      domtoimage.toBlob(node)
+      .then(function (blob) {
+        
+          window.saveAs(blob, 'Acknowledgement_Receipt'+Date.now()+'.png');
+      });
+    }
+  },[amenities])
+
   console.log(url[0])
 
   return (
-    <div style={{ width: 'auto', height: '50px' }}>
+    <div style={{ width: 'auto', height: '50px' }} id='acknowledgeReceipt'>
       <ContainerGlobal radius='0px'
         direction="column"
         align="center"
         justify="center"
         margin="0px 20px 20px 20px"
+        bg='white'
       >
         <ContainerGlobal
           radius="0px"
@@ -228,7 +247,7 @@ const AcknowledgementReceipt = () => {
                   }
                 </ContainerGlobal>
               </ContainerGlobal>
-              
+
               <ContainerGlobal radius='0px' w="100%" justify="space-between">
                 <Title family="Barlow Condensed" fstyle="none" size="2vw">Total:</Title>
                 {reservationInformation.length != 0 ?
