@@ -61,27 +61,37 @@ const AcknowledgementReceipt = () => {
   }, [])
 
 
-  useEffect(()=>{
-    if(amenities.length != 0){
+  useEffect(() => {
+    if (amenities.length != 0) {
       let node = document.getElementById('acknowledgeReceipt');
-      domtoimage.toBlob(node)
-      .then(function (blob) {
-        
-          window.saveAs(blob, 'Acknowledgement_Receipt'+Date.now()+'.png');
-      });
+      domtoimage
+        .toJpeg(node, { quality: 0.95 })
+        .then(function (dataUrl) {
+          var link = document.createElement("a");
+          link.download = 'Acknowledgement_Receipt' + Date.now() + '.jpeg';
+          link.href = dataUrl;
+          link.click();
+          window.close();
+        });
+      // domtoimage.toBlob(node)
+      //   .then(function (blob) {
+      //     window.saveAs(blob, 'Acknowledgement_Receipt' + Date.now() + '.png');
+      //     window.close();
+      //   });
     }
-  },[amenities])
+  }, [amenities])
 
   console.log(url[0])
 
   return (
-    <div style={{ width: 'auto', height: '50px' }} id='acknowledgeReceipt'>
+    <div style={{ width: 'auto', height: '50px' }} >
       <ContainerGlobal radius='0px'
         direction="column"
         align="center"
         justify="center"
         margin="0px 20px 20px 20px"
         bg='white'
+        id='acknowledgeReceipt'
       >
         <ContainerGlobal
           radius="0px"
