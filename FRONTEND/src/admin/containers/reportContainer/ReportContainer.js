@@ -41,8 +41,19 @@ import TimelineIcon from '@mui/icons-material/Timeline';
 import Occupancy from '../analytics/Occupancy'
 import { apiKey } from '../../../apiKey'
 import axios from 'axios'
+import moment from 'moment'
 
 export const ReportContainer = () => {
+    function getDates(startDate, stopDate) {
+        var dateArray = [];
+        var currentDate = moment(startDate);
+        var stopDate = moment(stopDate);
+        while (currentDate <= stopDate) {
+            dateArray.push(moment(currentDate).format('YYYY-MM-DD'))
+            currentDate = moment(currentDate).add(1, 'days');
+        }
+        return dateArray;
+    }
     const [value, setValue] = useState(Date.now());
     const [valueEnd, setValueEnd] = useState(Date.now());
     const [valueOcc, setValueOcc] = useState(Date.now());
@@ -528,6 +539,8 @@ export const ReportContainer = () => {
     // FILTER
     const [searchDailyReservation, setSearchDailyReservation] = useState('')
     const [reservationMenuDaily, setReservationMenuDaily] = useState('all')
+    const [endDateDaily, setEndDateDaily] = useState(Date.now())
+    const [startDateDaily, setStartDateDaily] = useState(Date.now())
 
 
     return (
@@ -628,9 +641,9 @@ export const ReportContainer = () => {
                                     <DatePicker
                                         views={['day', 'month', 'year']}
                                         label="Start Date"
-                                        value={value}
+                                        value={startDateDaily}
                                         onChange={(newValue) => {
-                                            setValue(newValue);
+                                            setStartDateDaily(newValue);
                                         }}
                                         renderInput={(params) =>
                                             <TextField
@@ -656,9 +669,9 @@ export const ReportContainer = () => {
 
                                         views={['day', 'month', 'year']}
                                         label="End Date"
-                                        value={valueEnd}
+                                        value={endDateDaily}
                                         onChange={(newValue) => {
-                                            setValueEnd(newValue);
+                                            setEndDateDaily(newValue);
                                         }}
                                         renderInput={(params) =>
                                             <TextField
@@ -693,6 +706,9 @@ export const ReportContainer = () => {
 
                                     >
                                         <option value='all'>All</option>
+                                        <option value='reservationDate'>Reservation date</option>
+                                        <option value='checkIn'>Check in</option>
+                                        <option value='checkOut'>Check out</option>
                                         <optgroup label="Reservation status">
                                             <option value='RSreserved'>reserved</option>
                                             <option value='RSpending'>pending</option>
@@ -748,6 +764,13 @@ export const ReportContainer = () => {
                                 </Tr>
                                 {reservationSummary.length != 0 &&
                                     reservationSummary
+                                        .filter((obj) => {
+                                            let filterDates = getDates(startDateDaily, endDateDaily);
+
+                                            if(filterDates.includes(moment(obj.reservation.reservationDate).format('YYYY-MM-DD'))){
+                                                return obj;
+                                            }
+                                        })
                                         .filter((obj) => {
                                             if (searchDailyReservation != '') {
                                                 if (
