@@ -1107,18 +1107,33 @@ const PaymentContainer = () => {
         // window.location.href = '/admin/officialReceipt/download' + reservationInformation.id
         if(reservationInformation.payment.balance == 0){
             window.open('/admin/officialReceipt/' + reservationInformation.id + '_download', '_blank');
+            handleClosePrint();
         }
         else if(reservationInformation.payment.balance != 0 && reservationInformation.payment.balance != reservationInformation.payment.grandTotal ){
             window.open('/admin/acknowledgementReceipt/' + reservationInformation.id + '_download', '_blank');
+            handleClosePrint();
         }
         
     }
     const printReceipt = () => {
         if(reservationInformation.payment.balance == 0){
             window.open('/admin/officialReceipt/' + reservationInformation.id + '_print', '_blank');
+            handleClosePrint();
         }
         else if(reservationInformation.payment.balance != 0 && reservationInformation.payment.balance != reservationInformation.payment.grandTotal ){
             window.open('/admin/acknowledgementReceipt/' + reservationInformation.id + '_print', '_blank');
+            handleClosePrint();
+        }
+    }
+
+    const viewReceipt = () => {
+        if(reservationInformation.payment.balance == 0){
+            window.open('/admin/officialReceipt/' + reservationInformation.id + '_view', '_blank');
+            handleClosePrint();
+        }
+        else if(reservationInformation.payment.balance != 0 && reservationInformation.payment.balance != reservationInformation.payment.grandTotal ){
+            window.open('/admin/acknowledgementReceipt/' + reservationInformation.id + '_view', '_blank');
+            handleClosePrint();
         }
     }
     return (
@@ -1956,7 +1971,7 @@ const PaymentContainer = () => {
                                         setPaymentValue(0 - reservationInformation.payment.paymentMade);
                                     }
                                     else if (e.target.value > reservationInformation.payment.grandTotal - reservationInformation.payment.paymentMade) {
-                                        setPaymentValue(reservationInformation.payment.grandTotal - reservationInformation.payment.paymentMade)
+                                        setPaymentValue(parseFloat(reservationInformation.payment.grandTotal) - parseFloat(reservationInformation.payment.paymentMade))
                                     }
                                     else {
                                         setPaymentValue(e.target.value);
@@ -4940,6 +4955,7 @@ const PaymentContainer = () => {
                     <ContainerGlobal direction='column' align='center' justify='center' gap='40px' margin='20px 0px'>
 
                         <ContainerGlobal gap='20px'>
+                            <Button variant="contained" style={{ width: '150px', backgroundColor: '#948566' }} onClick={() => { viewReceipt() }} >View</Button>
                             <Button variant="contained" color='success' style={{ width: '150px' }} onClick={() => { downloadReceipt() }}>Download</Button>
                             <Button variant="contained" style={{ width: '150px' }} onClick={() => { printReceipt() }}>Print</Button>
                         </ContainerGlobal>

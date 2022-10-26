@@ -130,14 +130,17 @@ exports.updateGrandTotal = async (req, res) => {
         if (getpayment.discountValid == true) {
             grandTotal = grandTotal / 1.12 * .80;
         }
+        console.log('\n\n\n grand total', parseFloat(grandTotal).toFixed(4))
+        console.log('\n\n\n payment made', parseFloat(req.body.paymentMade))
+        console.log('\n\n\n total',parseFloat(grandTotal) - parseFloat(req.body.paymentMade))
 
-        if (grandTotal - req.body.paymentMade == 0) {
+        if (parseFloat(grandTotal).toFixed(4) - parseFloat(req.body.paymentMade).toFixed(4) == 0) {
             paymentStatus = 'fully paid'
         }
-        else if (grandTotal - req.body.paymentMade == grandTotal / 2) {
+        else if (parseFloat(grandTotal).toFixed(4) - parseFloat(req.body.paymentMade).toFixed(4) == parseFloat(grandTotal).toFixed(4) / 2) {
             paymentStatus = 'partial'
         }
-        else if(grandTotal - req.body.paymentMade == grandTotal){
+        else if(parseFloat(grandTotal).toFixed(4) - parseFloat(req.body.paymentMade).toFixed(4) == parseFloat(grandTotal).toFixed(4)){
             paymentStatus = 'pending'
         }
         else {

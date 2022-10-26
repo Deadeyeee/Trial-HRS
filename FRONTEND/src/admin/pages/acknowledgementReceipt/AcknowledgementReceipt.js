@@ -8,6 +8,7 @@ import axios from "axios";
 import { apiKey } from "../../../apiKey";
 import domtoimage from 'dom-to-image';
 import { saveAs } from 'file-saver';
+import html2canvas from 'html2canvas';
 const AcknowledgementReceipt = () => {
 
   const { id } = useParams();
@@ -24,6 +25,21 @@ const AcknowledgementReceipt = () => {
       style: 'currency',
       currency: 'PHP'
     }).format(value);
+
+
+  const handleDownloadImage = async () => {
+    const element = document.getElementById('acknowledgeReceipt'),
+      canvas = await html2canvas(element),
+      data = canvas.toDataURL('image/jpg'),
+      link = document.createElement('a');
+
+    link.href = data;
+    link.download = 'acknowledgementReceipt'+Date.now()+'.jpg';
+
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
 
 
   useEffect(() => {
@@ -63,35 +79,31 @@ const AcknowledgementReceipt = () => {
 
   useEffect(() => {
     if (amenities.length != 0) {
-      let node = document.getElementById('acknowledgeReceipt');
-      domtoimage
-        .toJpeg(node, { quality: 0.95 })
-        .then(function (dataUrl) {
-          var link = document.createElement("a");
-          link.download = 'Acknowledgement_Receipt' + Date.now() + '.jpeg';
-          link.href = dataUrl;
-          link.click();
+      if (url[1] == 'download') {
+        handleDownloadImage().then((result) => {
+
           window.close();
+        }).catch((err) => {
+
         });
-      // domtoimage.toBlob(node)
-      //   .then(function (blob) {
-      //     window.saveAs(blob, 'Acknowledgement_Receipt' + Date.now() + '.png');
-      //     window.close();
-      //   });
+      }
+      else if (url[1] == 'print') {
+        window.print();
+      }
     }
   }, [amenities])
 
   console.log(url[0])
 
   return (
-    <div style={{ width: 'auto', height: '50px' }} >
+    <div style={{ width: 'auto', height: 'auto' }}
+      id='acknowledgeReceipt'>
       <ContainerGlobal radius='0px'
         direction="column"
         align="center"
         justify="center"
         margin="0px 20px 20px 20px"
         bg='white'
-        id='acknowledgeReceipt'
       >
         <ContainerGlobal
           radius="0px"

@@ -6,6 +6,7 @@ import { Title } from "../../../client/components/title/styles";
 import axios from "axios";
 import { apiKey } from "../../../apiKey";
 import "./or.css";
+import html2canvas from 'html2canvas';
 import { useParams } from "react-router-dom";
 const OfficialReceipt = () => {
 
@@ -24,39 +25,70 @@ const OfficialReceipt = () => {
       currency: 'PHP'
     }).format(value);
 
+    const handleDownloadImage = async () => {
+      const element = document.getElementById('acknowledgeReceipt'),
+        canvas = await html2canvas(element),
+        data = canvas.toDataURL('image/jpg'),
+        link = document.createElement('a');
+  
+      link.href = data;
+      link.download = 'acknowledgementReceipt'+Date.now()+'.jpg';
+  
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    };
 
   useEffect(() => {
     axios.get(apiKey + 'api/getReservation/' + url[0]).then((result) => {
       setReservationInformation(result.data)
       console.log(result.data.payment.grandTotal)
+
+      axios.get(apiKey + 'api/getAllReservationSummary').then((result) => {
+        setReservationSummaryInformation(result.data.filter((obj) => obj.reservation_id == url[0]))
+
+        axios.get(apiKey + 'api/getAllOrderedAmenities').then((result) => {
+          setOrderedAmenities(result.data.filter((obj) => obj.reservationSummary.reservation.id == url[0]))
+          console.log(result.data.filter((obj) => obj.reservationSummary.reservation.id == url[0]))
+
+          axios.get(apiKey + 'api/getAllAmenities').then((result) => {
+            setAmenities(result.data)
+
+          }).catch((err) => {
+            console.log(err)
+          });
+        }).catch((err) => {
+          console.log(err)
+        });
+      }).catch((err) => {
+        console.log(err)
+      });
     }).catch((err) => {
       console.log(err)
 
-    });
-
-
-    axios.get(apiKey + 'api/getAllReservationSummary').then((result) => {
-      setReservationSummaryInformation(result.data.filter((obj) => obj.reservation_id == url[0]))
-    }).catch((err) => {
-      console.log(err)
-    });
-
-    axios.get(apiKey + 'api/getAllOrderedAmenities').then((result) => {
-      setOrderedAmenities(result.data.filter((obj) => obj.reservationSummary.reservation.id == url[0]))
-      console.log(result.data.filter((obj) => obj.reservationSummary.reservation.id == url[0]))
-    }).catch((err) => {
-      console.log(err)
-    });
-
-
-    axios.get(apiKey + 'api/getAllAmenities').then((result) => {
-      setAmenities(result.data)
-    }).catch((err) => {
-      console.log(err)
     });
   }, [])
+
+  
+  useEffect(() => {
+    if (amenities.length != 0) {
+      if (url[1] == 'download') {
+        handleDownloadImage().then((result) => {
+
+          window.close();
+        }).catch((err) => {
+
+        });
+      }
+      else if (url[1] == 'print') {
+        window.print();
+      }
+    }
+  }, [amenities])
+
   return (
-    <div style={{ width: 'auto', height: '50px' }}>
+    <div style={{ width: 'auto', height: 'auto' }}
+    id='acknowledgeReceipt'>
       <ContainerGlobal radius='0px'
         direction="column"
         align="center"
@@ -202,12 +234,14 @@ const OfficialReceipt = () => {
 
                 <Title family="Barlow Condensed" fstyle="none" size="2vw" weight="400">{reservationInformation.length != 0 && reservationInformation.payment.discountValid == true ? reservationInformation.payment.discount.discountType : 'No Discount'}</Title>
               </ContainerGlobal>
-              <ContainerGlobal radius='0px' w="100%" justify="space-between" align="flex-end">
+              <ContainerGlobal radius='0px' w="100%" justify="space-between" align="flex-end" margin='20px 0px 0px 0px'>
+
                 <Title family="Barlow Condensed" fstyle="none" size="2vw" >Rooms:</Title>
 
                 <Title family="Barlow Condensed" fstyle="none" size="2vw" weight="400">{reservationSummaryInformation != 0 && numberFormat(reservationSummaryInformation.map((item) => item.room.roomType.roomRate).reduce((accumulator, value) => accumulator + value))}</Title>
               </ContainerGlobal>
-              <ContainerGlobal radius='0px' w="100%" justify="space-between" margin="40px 0px">
+              <ContainerGlobal radius='0px' w="100%" justify="space-between" margin="10px 0px 40px 0px">
+
                 <Title family="Barlow Condensed" fstyle="none" size="2vw">Additional Charges:</Title>
 
                 <ContainerGlobal radius='0px' w="40%" direction="column">
