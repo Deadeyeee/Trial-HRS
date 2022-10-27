@@ -122,7 +122,7 @@ const BillingSummaryContainer = () => {
         console.log(bookingInformation)
 
         axios.get(apiKey + 'api/getAllPaymentMode').then((result) => {
-            setModeOfPayment(result.data);
+            setModeOfPayment(result.data.filter((obj)=> obj.isActive == true));
 
         }).catch((err) => {
             console.log(err.result)
@@ -145,11 +145,12 @@ const BillingSummaryContainer = () => {
 
     useEffect(() => {
         if (modeOfPayment.length != 0) {
-            modeOfPayment.map((item) => {
-                if (item.paymentMode == "Pay at The Hotel") {
-                    setModeOfPaymentValue(item.paymentMode);
-                }
-            })
+            setModeOfPaymentValue(modeOfPayment[0].paymentMode);
+            // modeOfPayment.map((item, index) => {
+            //     if (item.paymentMode == "Pay at The Hotel") {
+                    
+            //     }
+            // })
         }
 
     }, [modeOfPayment])
@@ -1101,7 +1102,7 @@ const BillingSummaryContainer = () => {
                                 defaultValue={modeOfPaymentValue}
                                 style={{ margin: '0px 0px 0px 30px' }}
                             >
-                                {modeOfPayment.map((item) => (
+                                {modeOfPayment.filter((obj)=> obj.isActive == true).map((item) => (
                                     item.paymentMode === "Cash" ? <FormControlLabel value={item.paymentMode} control={<Radio />} label={item.paymentMode} disabled={typeOfPayment === "Full Payment" ? true : false} /> : <FormControlLabel value={item.paymentMode} control={<Radio />} label={item.paymentMode} />
                                 ))}
                             </RadioGroup>

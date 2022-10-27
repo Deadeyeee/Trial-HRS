@@ -11,7 +11,7 @@ const GeneratedReports = () => {
     const bookingStatusStyle = (value) => {
         if (value == 'PENDING') {
             return <ContainerGlobal
-                
+
                 h='auto'
                 margin='0px auto'
                 bg='rgb(205, 161, 65, .2)'
@@ -29,7 +29,7 @@ const GeneratedReports = () => {
                     color='BLACK'
                     fstyle='normal'
                     display='inline'
-                    
+
                 >
                     {value.toLowerCase()}
                 </Title>
@@ -37,7 +37,7 @@ const GeneratedReports = () => {
         }
         else if (value == 'RESERVED') {
             return <ContainerGlobal
-                
+
                 h='auto'
                 margin='0px auto'
                 bg='rgb(0, 0, 255, .2)'
@@ -55,7 +55,7 @@ const GeneratedReports = () => {
                     color='BLACK'
                     fstyle='normal'
                     display='inline'
-                    
+
                 >
                     {value.toLowerCase()}
                 </Title>
@@ -63,7 +63,7 @@ const GeneratedReports = () => {
         }
         else if (value == 'CHECKED-IN') {
             return <ContainerGlobal
-                
+
                 h='auto'
                 margin='0px auto'
                 bg='rgb(0, 255, 0, .2)'
@@ -81,7 +81,7 @@ const GeneratedReports = () => {
                     color='BLACK'
                     fstyle='normal'
                     display='inline'
-                    
+
                 >
                     {value.toLowerCase()}
                 </Title>
@@ -89,7 +89,7 @@ const GeneratedReports = () => {
         }
         else if (value == 'NO-SHOW') {
             return <ContainerGlobal
-                
+
                 h='auto'
                 margin='0px auto'
                 bg='rgb(255, 0, 0, .2)'
@@ -107,7 +107,7 @@ const GeneratedReports = () => {
                     color='BLACK'
                     fstyle='normal'
                     display='inline'
-                    
+
                 >
                     {value.toLowerCase()}
                 </Title>
@@ -115,7 +115,7 @@ const GeneratedReports = () => {
         }
         else if (value == 'CHECKED-OUT') {
             return <ContainerGlobal
-                
+
                 h='auto'
                 margin='0px auto'
                 bg='rgb(0, 0, 0, .2)'
@@ -133,7 +133,7 @@ const GeneratedReports = () => {
                     color='BLACK'
                     fstyle='normal'
                     display='inline'
-                    
+
                 >
                     {value.toLowerCase()}
                 </Title>
@@ -145,7 +145,7 @@ const GeneratedReports = () => {
     const reservationStatusStyle = (value) => {
         if (value == 'RESERVED') {
             return <ContainerGlobal
-                
+
                 h='auto'
                 margin='0px auto'
                 bg='rgb(0, 0, 255, .2)'
@@ -163,7 +163,7 @@ const GeneratedReports = () => {
                     color='BLACK'
                     fstyle='normal'
                     display='inline'
-                    
+
                 >
                     {value.toLowerCase()}
                 </Title>
@@ -171,7 +171,7 @@ const GeneratedReports = () => {
         }
         else if (value == 'PENDING') {
             return <ContainerGlobal
-                
+
                 h='auto'
                 margin='0px auto'
                 bg='rgb(253, 161, 114, .2)'
@@ -189,7 +189,7 @@ const GeneratedReports = () => {
                     color='BLACK'
                     fstyle='normal'
                     display='inline'
-                    
+
                 >
                     {value.toLowerCase()}
                 </Title>
@@ -197,7 +197,7 @@ const GeneratedReports = () => {
         }
         else if (value == 'DEPARTED') {
             return <ContainerGlobal
-                
+
                 h='auto'
                 margin='0px auto'
                 bg='rgb(0, 255, 0, .2)'
@@ -215,7 +215,7 @@ const GeneratedReports = () => {
                     color='BLACK'
                     fstyle='normal'
                     display='inline'
-                    
+
                 >
                     {value.toLowerCase()}
                 </Title>
@@ -223,7 +223,7 @@ const GeneratedReports = () => {
         }
         else if (value == 'UNSETTLED') {
             return <ContainerGlobal
-                
+
                 h='auto'
                 margin='0px auto'
                 bg='rgb(255, 0, 0, .2)'
@@ -241,7 +241,7 @@ const GeneratedReports = () => {
                     color='BLACK'
                     fstyle='normal'
                     display='inline'
-                    
+
                 >
                     {value.toLowerCase()}
                 </Title>
@@ -249,7 +249,7 @@ const GeneratedReports = () => {
         }
         else if (value == 'NO SHOW') {
             return <ContainerGlobal
-                
+
                 h='auto'
                 margin='0px auto'
                 bg='rgb(0, 0, 0, .2)'
@@ -267,7 +267,7 @@ const GeneratedReports = () => {
                     color='BLACK'
                     fstyle='normal'
                     display='inline'
-                    
+
                 >
                     {value.toLowerCase()}
                 </Title>
@@ -279,7 +279,7 @@ const GeneratedReports = () => {
     const paymentStatusStyle = (value) => {
         if (value == 'pending') {
             return <ContainerGlobal
-                
+
                 h='auto'
                 margin='0px auto'
                 bg='rgb(205, 161, 65, .2)'
@@ -297,7 +297,7 @@ const GeneratedReports = () => {
                     color='BLACK'
                     fstyle='normal'
                     display='inline'
-                    
+
                 >
                     {value}
                 </Title>
@@ -305,7 +305,7 @@ const GeneratedReports = () => {
         }
         else if (value == 'partial') {
             return <ContainerGlobal
-                
+
                 h='auto'
                 margin='0px auto'
                 bg='rgb(0, 0, 255, .2)'
@@ -323,7 +323,7 @@ const GeneratedReports = () => {
                     color='BLACK'
                     fstyle='normal'
                     display='inline'
-                    
+
                 >
                     {value}
                 </Title>
@@ -331,7 +331,7 @@ const GeneratedReports = () => {
         }
         else if (value == 'fully paid') {
             return <ContainerGlobal
-                
+
                 h='auto'
                 margin='0px auto'
                 bg='rgb(0, 255, 0, .2)'
@@ -349,7 +349,7 @@ const GeneratedReports = () => {
                     color='BLACK'
                     fstyle='normal'
                     display='inline'
-                    
+
                 >
                     {value}
                 </Title>
@@ -357,7 +357,7 @@ const GeneratedReports = () => {
         }
         else if (value == 'cancelled') {
             return <ContainerGlobal
-                
+
                 h='auto'
                 margin='0px auto'
                 bg='rgb(255, 0, 0, .2)'
@@ -375,7 +375,7 @@ const GeneratedReports = () => {
                     color='BLACK'
                     fstyle='normal'
                     display='inline'
-                    
+
                 >
                     {value}
                 </Title>
@@ -383,7 +383,7 @@ const GeneratedReports = () => {
         }
         else if (value == 'reciept declined') {
             return <ContainerGlobal
-                
+
                 h='auto'
                 margin='0px auto'
                 bg='rgb(0, 0, 0, .2)'
@@ -401,7 +401,7 @@ const GeneratedReports = () => {
                     color='BLACK'
                     fstyle='normal'
                     display='inline'
-                    
+
                 >
                     {value}
                 </Title>
@@ -490,7 +490,7 @@ const GeneratedReports = () => {
                                 Manila
                             </Title>
                             <Title family="Belleza" size="1.5vw" fstyle="none" weight="400">
-                                rmluxe.hotelqc@gmail.com
+                                rm.luxehotel@gmail.com
                             </Title>
                             <Title family="Belleza" size="1.5vw" fstyle="none" weight="400">
                                 0956 672 8906
@@ -507,15 +507,6 @@ const GeneratedReports = () => {
                     >
                         <Title family="Roboto Slab" size="3vw" fstyle="none" weight="">
                             Reservation report
-                        </Title>
-                    </ContainerGlobal>
-                    <ContainerGlobal radius='0px'
-                        direction="column"
-                        margin="0px 0px 20px 0px"
-                        align="center"
-                    >
-                        <Title family="Roboto Slab" size="1vw" fstyle="none" weight="">
-                            VAT Reg. TIN: 009-988-067-000
                         </Title>
                     </ContainerGlobal>
                     <ContainerGlobal radius='0px'
@@ -541,9 +532,9 @@ const GeneratedReports = () => {
                             </ContainerGlobal>
 
                             <div
-                            style={{
-                                width: '100%'
-                            }}
+                                style={{
+                                    width: '100%'
+                                }}
                             >
                                 <table
                                     className="reportTable"
@@ -636,9 +627,26 @@ const GeneratedReports = () => {
                             gap="10px"
                             align="flex-end"
                         >
-                            <ContainerGlobal radius='0px' w="50%" justify="space-between">
-                                <Title family="Barlow Condensed" fstyle="none" size="3vw" weight="400">Grand Total:</Title>
-                                <Title family="Barlow Condensed" fstyle="none" size="3vw" weight="400" color="#074D25">₱2900.00</Title>
+                            <ContainerGlobal radius='0px' w="40%" justify="space-between">
+                                <Title family="Barlow Condensed" fstyle="none" size="2vw" weight="400">Total Reservation:</Title>
+                                <Title family="Barlow Condensed" fstyle="none" size="2vw" weight="400" color="#074D25">{
+                                    reservationSummary.length != 0 && reservationSummary.length }</Title>
+                            </ContainerGlobal>
+                            <ContainerGlobal radius='0px' w="40%" justify="space-between">
+                                <Title family="Barlow Condensed" fstyle="none" size="2vw" weight="400">Total Income:</Title>
+                                <Title family="Barlow Condensed" fstyle="none" size="2vw" weight="400" color="#074D25">{
+                                    reservationSummary.length != 0 ?
+                                        numberFormat(reservationSummary
+                                            .map((item) => (
+                                                orderedAmenity.length != 0 ?
+                                                    item.reservation.payment.discountValid == true ?
+                                                        parseFloat((((item.room.roomType.roomRate * item.numberOfNights) + (parseFloat(item.others)) + (orderedAmenity.filter((obj) => obj.reservationSummary_id == item.id).map((obj) => obj.quantity * parseFloat(obj.amenity.amenityRate)).reduce((accumulator, value) => accumulator + value))) / 1.12 * .80) / item.reservation.payment.grandTotal) * parseFloat(item.reservation.payment.paymentMade)
+                                                        :
+                                                        parseFloat((((item.room.roomType.roomRate * item.numberOfNights) + (parseFloat(item.others)) + (orderedAmenity.filter((obj) => obj.reservationSummary_id == item.id).map((obj) => obj.quantity * parseFloat(obj.amenity.amenityRate)).reduce((accumulator, value) => accumulator + value)))) / item.reservation.payment.grandTotal) * parseFloat(item.reservation.payment.paymentMade)
+
+                                                    : ''
+                                            )).reduce((accumulator, value) => accumulator + value, 0))
+                                        : numberFormat(0)}</Title>
                             </ContainerGlobal>
                         </ContainerGlobal>
                     </ContainerGlobal>

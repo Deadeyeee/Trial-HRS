@@ -59,7 +59,7 @@ db.roomTypeImages = require('./roomTypeImages.model.js')(sequelize, Sequelize, D
 
 // db.services.bulkCreate([
 //     { servicesName: "Free Wifi" },
-//     { servicesName: "Television" },
+//     { servicesName: "Television" },  
 //     { servicesName: "Car Parking" },
 //     { servicesName: "Aircondition" },
 //     { servicesName: "Reception" },

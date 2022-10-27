@@ -948,7 +948,9 @@ export const ReportContainer = () => {
                                 <Button
                                     variant="contained"
                                     size="large"
-
+                                    onClick={()=>{
+                                        window.open('/admin/generatedReport', '_blank').focus();
+                                    }}
                                     style={{ backgroundColor: '#2f2f2f', margin: 'auto' }}>
                                     Print Reservation report
                                 </Button>
