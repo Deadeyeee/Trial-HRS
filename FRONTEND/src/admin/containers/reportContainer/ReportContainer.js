@@ -822,12 +822,12 @@ export const ReportContainer = () => {
                                                         ?
                                                         item.reservation.payment.discountValid == true ?
                                                             numberFormat(
-                                                                parseFloat((((item.room.roomType.roomRate * item.numberOfNights) + (parseFloat(item.others)) + (orderedAmenity.filter((obj) => obj.reservationSummary_id == item.id).map((obj) => obj.quantity * parseFloat(obj.amenity.amenityRate)).reduce((accumulator, value) => accumulator + value))) / 1.12 * .80) / item.reservation.payment.grandTotal) * parseFloat(item.reservation.payment.paymentMade)
+                                                                parseFloat((((item.room.roomType.roomRate * item.numberOfNights) + (parseFloat(item.others)) + (orderedAmenity.filter((obj) => obj.reservationSummary_id == item.id).map((obj) => obj.quantity * parseFloat(obj.amenity.amenityRate)).reduce((accumulator, value) =>parseFloat(accumulator) + parseFloat(value)))) / 1.12 * .80) / item.reservation.payment.grandTotal) * parseFloat(item.reservation.payment.paymentMade)
                                                             )
                                                             :
 
                                                             numberFormat(
-                                                                parseFloat((((item.room.roomType.roomRate * item.numberOfNights) + (parseFloat(item.others)) + (orderedAmenity.filter((obj) => obj.reservationSummary_id == item.id).map((obj) => obj.quantity * parseFloat(obj.amenity.amenityRate)).reduce((accumulator, value) => accumulator + value)))) / item.reservation.payment.grandTotal) * parseFloat(item.reservation.payment.paymentMade)
+                                                                parseFloat((((item.room.roomType.roomRate * item.numberOfNights) + (parseFloat(item.others)) + (orderedAmenity.filter((obj) => obj.reservationSummary_id == item.id).map((obj) => obj.quantity * parseFloat(obj.amenity.amenityRate)).reduce((accumulator, value) => parseFloat(accumulator) + parseFloat(value))))) / item.reservation.payment.grandTotal) * parseFloat(item.reservation.payment.paymentMade)
                                                             )
                                                         :
                                                         ''
@@ -836,9 +836,9 @@ export const ReportContainer = () => {
                                                     orderedAmenity.length != 0
                                                         ?
                                                         item.reservation.payment.discountValid == true ?
-                                                            numberFormat(((item.room.roomType.roomRate * item.numberOfNights) + (parseFloat(item.others)) + (orderedAmenity.filter((obj) => obj.reservationSummary_id == item.id).map((obj) => obj.quantity * parseFloat(obj.amenity.amenityRate)).reduce((accumulator, value) => accumulator + value))) / 1.12 * .80)
+                                                            numberFormat(((item.room.roomType.roomRate * item.numberOfNights) + (parseFloat(item.others)) + (orderedAmenity.filter((obj) => obj.reservationSummary_id == item.id).map((obj) => obj.quantity * parseFloat(obj.amenity.amenityRate)).reduce((accumulator, value) => parseFloat(accumulator) + parseFloat(value)))) / 1.12 * .80)
                                                             :
-                                                            numberFormat((item.room.roomType.roomRate * item.numberOfNights) + (parseFloat(item.others)) + (orderedAmenity.filter((obj) => obj.reservationSummary_id == item.id).map((obj) => obj.quantity * parseFloat(obj.amenity.amenityRate)).reduce((accumulator, value) => accumulator + value)))
+                                                            numberFormat((item.room.roomType.roomRate * item.numberOfNights) + (parseFloat(item.others)) + (orderedAmenity.filter((obj) => obj.reservationSummary_id == item.id).map((obj) => obj.quantity * parseFloat(obj.amenity.amenityRate)).reduce((accumulator, value) => parseFloat(accumulator) + parseFloat(value))))
                                                         :
                                                         ''
                                                 }</Td>
@@ -932,12 +932,12 @@ export const ReportContainer = () => {
                                             .map((item) => (
                                                 orderedAmenity.length != 0 ?
                                                     item.reservation.payment.discountValid == true ?
-                                                        parseFloat((((item.room.roomType.roomRate * item.numberOfNights) + (parseFloat(item.others)) + (orderedAmenity.filter((obj) => obj.reservationSummary_id == item.id).map((obj) => obj.quantity * parseFloat(obj.amenity.amenityRate)).reduce((accumulator, value) => accumulator + value))) / 1.12 * .80) / item.reservation.payment.grandTotal) * parseFloat(item.reservation.payment.paymentMade)
+                                                        parseFloat((((item.room.roomType.roomRate * item.numberOfNights) + (parseFloat(item.others)) + (orderedAmenity.filter((obj) => obj.reservationSummary_id == item.id).map((obj) => obj.quantity * parseFloat(obj.amenity.amenityRate)).reduce((accumulator, value) => parseFloat(accumulator) + parseFloat(value) , 0))) / 1.12 * .80) / item.reservation.payment.grandTotal) * parseFloat(item.reservation.payment.paymentMade)
                                                         :
-                                                        parseFloat((((item.room.roomType.roomRate * item.numberOfNights) + (parseFloat(item.others)) + (orderedAmenity.filter((obj) => obj.reservationSummary_id == item.id).map((obj) => obj.quantity * parseFloat(obj.amenity.amenityRate)).reduce((accumulator, value) => accumulator + value)))) / item.reservation.payment.grandTotal) * parseFloat(item.reservation.payment.paymentMade)
+                                                        parseFloat((((item.room.roomType.roomRate * item.numberOfNights) + (parseFloat(item.others)) + (orderedAmenity.filter((obj) => obj.reservationSummary_id == item.id).map((obj) => obj.quantity * parseFloat(obj.amenity.amenityRate)).reduce((accumulator, value) => parseFloat(accumulator) + parseFloat(value), 0)))) / item.reservation.payment.grandTotal) * parseFloat(item.reservation.payment.paymentMade)
 
                                                     : ''
-                                            )).reduce((accumulator, value) => accumulator + value, 0)
+                                            )).reduce((accumulator, value) => parseFloat(accumulator) + parseFloat(value), 0)
                                     )
                                     :
                                     numberFormat(0)}</b>

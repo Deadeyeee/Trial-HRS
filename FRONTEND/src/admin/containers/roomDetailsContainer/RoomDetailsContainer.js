@@ -810,14 +810,14 @@ const RoomDetailsContainer = () => {
                 >
                 </HorizontalLine>
 
-                <TableContainer>
+                <TableContainer style={{fontSize: '.8vw'}}>
                     <Tr>
-                        <Th align='center'>Room Type <ArrowDropDownIcon style={{ color: 'black' }} /></Th>
-                        <Th align='center'>Rate/Night <ArrowDropDownIcon style={{ color: 'black' }} /></Th>
-                        <Th align='center'>Services <ArrowDropDownIcon style={{ color: 'black' }} /></Th>
-                        <Th align='center'>Max Adult Occupancy <ArrowDropDownIcon style={{ color: 'black' }} /></Th>
-                        <Th align='center'>Max Kids Occupancy <ArrowDropDownIcon style={{ color: 'black' }} /></Th>
-                        <Th align='center'>Description <ArrowDropDownIcon style={{ color: 'black' }} /></Th>
+                        <Th align='center'>Room Type</Th>
+                        <Th align='center'>Rate/Night</Th>
+                        <Th align='center'>Services</Th>
+                        <Th align='center'>Maximum Adult</Th>
+                        <Th align='center'>Maximum Kids</Th>
+                        <Th align='center'>Description</Th>
                         <Th align='center'>Action</Th>
                     </Tr>
 
@@ -826,19 +826,19 @@ const RoomDetailsContainer = () => {
                             <Tr>
                                 <Td align='center'>{items.roomType}</Td>
                                 <Td align='center'>{items.roomRate}</Td>
-                                <Td align='center' style={{ display: 'flex', gap: '5px', justifyContent: 'center', flexWrap: 'wrap' }}>
+                                <Td align='center' style={{ display: 'flex', gap: '5px', width: '350px', justifyContent: 'flex-start', flexWrap: 'wrap' }}>
                                     {usedServices.length != 0 ?
                                         usedServices.map((items2) => {
                                             if (items.id === items2.roomType_id) {
-                                                return <Chip key={items2.service.servicesName} label={items2.service.servicesName} />
+                                                return <Chip style={{width: '100px'}} key={items2.service.servicesName} label={items2.service.servicesName} />
                                                 // <span style={{whiteSpace: 'nowrap',backgroundColor:"#948566", color: 'black', borderRadius: '.5em', padding: '5px', }}>{items2.service.servicesName + ", "}</span>
                                             }
                                         })
                                         : ""}
                                 </Td>
-                                <Td align='center'>{items.maxAdultOccupancy}</Td>
+                                <Td align='center' style={{width: '100px'}}>{items.maxAdultOccupancy}</Td>
                                 <Td align='center'>{items.maxKidsOccupancy}</Td>
-                                <Td align='center'>{items.roomDescription}</Td>
+                                <Td align='center' ><p style={{ width:'300px', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis'}}>{items.roomDescription}</p></Td>
                                 <Td align='center'><ActionButton
                                     view={() => {
                                         // setRoomTypeValue(items.roomType);

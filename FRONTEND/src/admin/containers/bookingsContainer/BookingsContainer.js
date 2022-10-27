@@ -1820,12 +1820,7 @@ const BookingsContainer = () => {
                                 <TextField
                                     value={others}
                                     onChange={(e) => {
-                                        if (e.target.value < 0) {
-                                            setOthers(0);
-                                        }
-                                        else {
                                             setOthers(e.target.value);
-                                        }
                                     }}
                                     type='number'
                                     id="outlined-basic"
@@ -3206,12 +3201,8 @@ const BookingsContainer = () => {
                                 <TextField
                                     value={others}
                                     onChange={(e) => {
-                                        if (e.target.value < 0) {
-                                            setOthers(0);
-                                        }
-                                        else {
-                                            setOthers(e.target.value);
-                                        }
+                                        
+                                        setOthers(e.target.value);
                                     }}
                                     type='number'
                                     id="outlined-basic"

@@ -37,13 +37,13 @@ export const BookingPageCont = () => {
     const [adults, setAdults] = useState(2)
     const [kids, setKids] = useState(0)
     const [usedServices, setUsedServices] = useState([])
-    const [startDate, setStartDate] = useState(new Date().setHours(0, 0, 0, 0));
-    const [endDate, setEndDate] = useState(new Date(new Date().getTime() + 86400000).setHours(0, 0, 0, 0));
+    const [startDate, setStartDate] = useState(new Date(new Date().setHours(0, 0, 0, 0)));
+    const [endDate, setEndDate] = useState(new Date(new Date(new Date().getTime() + 86400000).setHours(0, 0, 0, 0)));
     const [nights, setNights] = useState();
     const [room, setRoom] = useState([]);
     const [availbleRoomType, setAvailableRoomType] = useState([]);
     const [notAvailableRoom, setNotAvailableRoom] = useState([]);
-    const [bookedRooms, setBookedRooms] = useState([]);
+    const [bookedRooms, setBookedRooms] = useState(window.sessionStorage.getItem('AvailedRoom') != null ? JSON.parse(window.sessionStorage.getItem('AvailedRoom')) : []);
     const [bookFilter, setBookFilter] = useState(0)
 
     const [roomTypeImagesDb, setRoomTypeImagesDb] = useState([])
@@ -58,14 +58,14 @@ export const BookingPageCont = () => {
 
     }, [bookFilter])
 
-    useEffect(() => {
-        if (window.sessionStorage.getItem('AvailedRoom') != null) {
-            setBookedRooms(JSON.parse(window.sessionStorage.getItem('AvailedRoom')))
-        }
-    }, [])
+    // useEffect(() => {
+    //     if (window.sessionStorage.getItem('AvailedRoom') != null) {
+    //         setBookedRooms(JSON.parse(window.sessionStorage.getItem('AvailedRoom')))
+    //     }
+    // }, [])
 
 
-    
+
     useEffect(() => {
         axios.get(apiKey + 'api/getAllRoomTypeImages').then((result) => {
             console.log(result.data)
@@ -84,9 +84,9 @@ export const BookingPageCont = () => {
 
 
 
-    
+
     useEffect(() => {
-        if (bookedRooms != null) {
+        if (bookedRooms.length != 0) {
             console.log("MASAYANG BUHAY", bookedRooms)
             for (let index = 0; index < bookedRooms.length; index++) {
                 let systemDates = getDates(startDate, endDate);
@@ -126,6 +126,19 @@ export const BookingPageCont = () => {
         else {
             setNights(0);
         }
+        // if () {
+        //     alert('ey')
+        //     // setEndDate(new Date(Date.now(startDate)).setHours(0, 0, 0, 0) )
+        // }
+        console.log("ugh: ", startDate)
+        console.log("ugh: ", endDate)
+        // console.log("ugh: ", new Date(startDate).getTime() + 86400000)
+        if (Date.parse(startDate) >= Date.parse(endDate)) {
+            // setEndDate(new Date(startDate).getTime() + 86400000)
+            console.log('JSAPOJ', new Date(Date.now() + 86400000))
+            setEndDate(new Date(Date.parse(startDate) + 86400000))
+        }
+        // if(startDate )
     }, [startDate, endDate])
 
     const getNotAvailableRoom = async () => {
@@ -181,22 +194,22 @@ export const BookingPageCont = () => {
         }
     }
 
-    const getRoomtypes = async () => {
-        try {
-            let res = await axios.get(apiKey + 'api/getAllRoomType')
-            setRoomType([])
-            res.data.map((item) => {
-                if (item.maxAdultOccupancy >= adults && item.maxKidsOccupancy >= kids) {
-                    setRoomType((oldData) => [...oldData, item])
-                }
-            })
+    // const getRoomtypes = async () => {
+    //     try {
+    //         let res = await axios.get(apiKey + 'api/getAllRoomType')
+    //         setRoomType([])
+    //         res.data.map((item) => {
+    //             if (item.maxAdultOccupancy >= adults && item.maxKidsOccupancy >= kids) {
+    //                 setRoomType((oldData) => [...oldData, item])
+    //             }
+    //         })
 
-            console.log(roomType)
+    //         console.log(roomType)
 
-        } catch (error) {
-            console.log(error.data)
-        }
-    }
+    //     } catch (error) {
+    //         console.log(error.data)
+    //     }
+    // }
 
     const getUsedServices = async () => {
         try {
@@ -212,7 +225,7 @@ export const BookingPageCont = () => {
     useEffect(() => {
         getNotAvailableRoom();
         getRooms();
-        getRoomtypes();
+        // getRoomtypes();
         getUsedServices()
         window.sessionStorage.removeItem('checkIn')
         window.sessionStorage.removeItem('checkOut')
@@ -324,17 +337,33 @@ export const BookingPageCont = () => {
     // }, [roomType, uniqueAvailbleRoomType])
 
     useEffect(() => {
-        if (roomType !== null) {
-            roomType.map((item, index) => {
-                if (uniqueAvailbleRoomType.includes(item.id) === false) {
-                    roomType.splice(index, 1)
-                }
+        // if (roomType !== null) {
+        //     roomType.map((item, index) => {
+        //         if (uniqueAvailbleRoomType.includes(item.id) === false) {
+        //             roomType.splice(index, 1)
+        //         }
 
-                console.log("sliced")
-            })
-        }
-        console.log(roomType)
-    }, [roomType])
+        //         console.log("sliced")
+        //     })
+        // }
+        // console.log(roomType)
+
+        axios.get(apiKey + 'api/getAllRoomType').then((res) => {
+            setRoomType(res.data.filter((item) => {
+                if(item.maxAdultOccupancy >= adults && item.maxKidsOccupancy >= kids && uniqueAvailbleRoomType.includes(item.id)==true){
+                    return item;
+                }
+            }
+
+            ))
+
+        }).catch((err) => {
+            console.log(err)
+
+        });
+
+
+    }, [availbleRoomType])
 
     const bookRoom = (roomTypeId) => {
         console.log("roomTypeAvailableButton:", roomType)
@@ -449,7 +478,7 @@ export const BookingPageCont = () => {
                     onChangeStartDate={(date) => setStartDate(date)}
                     onChangeEndDate={(date) => setEndDate(date)}
                     minDateStart={new Date()}
-                    maxDateStart={new Date(endDate)}
+                    // maxDateStart={new Date(endDate)}
                     minDateEnd={minEndDate}
 
                 // minDate={new Date()}
@@ -621,7 +650,7 @@ export const BookingPageCont = () => {
                                 <div
                                     style={{ width: '550px', display: 'inline-block', }}
                                 >
-                                    <ImageSlider roomImages={roomTypeImagesDb.length != 0 ? roomTypeImagesDb.filter((itemRoomImage)=>(itemRoomImage.roomType_id == item.id)).map((obj)=>(obj.roomImages)) : null} />
+                                    <ImageSlider roomImages={roomTypeImagesDb.length != 0 ? roomTypeImagesDb.filter((itemRoomImage) => (itemRoomImage.roomType_id == item.id)).map((obj) => (obj.roomImages)) : null} />
                                 </div>
                                 <RoomContainerContentRight>
 
@@ -864,7 +893,7 @@ export const BookingPageCont = () => {
                 </RoomContainer>
             </RoomContainerMain> */}
             <BookingLegendsMain>
-                
+
                 <Title
                     color='#2e2e2e'
                     weight='400'

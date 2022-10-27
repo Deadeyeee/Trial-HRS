@@ -238,7 +238,7 @@ const OfficialReceipt = () => {
 
                 <Title family="Barlow Condensed" fstyle="none" size="2vw" >Rooms:</Title>
 
-                <Title family="Barlow Condensed" fstyle="none" size="2vw" weight="400">{reservationSummaryInformation != 0 && numberFormat(reservationSummaryInformation.map((item) => item.room.roomType.roomRate).reduce((accumulator, value) => accumulator + value))}</Title>
+                <Title family="Barlow Condensed" fstyle="none" size="2vw" weight="400">{reservationSummaryInformation != 0 && numberFormat(reservationSummaryInformation.map((item) => item.room.roomType.roomRate).reduce((accumulator, value) => parseFloat(accumulator) + parseFloat(value)))}</Title>
               </ContainerGlobal>
               <ContainerGlobal radius='0px' w="100%" justify="space-between" margin="10px 0px 40px 0px">
 
