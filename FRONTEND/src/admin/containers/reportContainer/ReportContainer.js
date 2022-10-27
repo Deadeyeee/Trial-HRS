@@ -767,7 +767,7 @@ export const ReportContainer = () => {
                                         .filter((obj) => {
                                             let filterDates = getDates(startDateDaily, endDateDaily);
 
-                                            if(filterDates.includes(moment(obj.reservation.reservationDate).format('YYYY-MM-DD'))){
+                                            if (filterDates.includes(moment(obj.reservation.reservationDate).format('YYYY-MM-DD'))) {
                                                 return obj;
                                             }
                                         })
@@ -888,7 +888,59 @@ export const ReportContainer = () => {
                                 align='left'
                                 margin='20px 0px 0px auto'
                             >
-                                Total Income: <b style={{ color: 'green' }}>{reservationSummary.length != 0 ? '' : numberFormat(0)}</b>
+                                Total Income: <b style={{ color: 'green' }}>{reservationSummary.length != 0 ?
+                                    numberFormat(
+                                        reservationSummary
+                                            .filter((obj) => {
+                                                let filterDates = getDates(startDateDaily, endDateDaily);
+
+                                                if (filterDates.includes(moment(obj.reservation.reservationDate).format('YYYY-MM-DD'))) {
+                                                    return obj;
+                                                }
+                                            })
+                                            .filter((obj) => {
+                                                if (searchDailyReservation != '') {
+                                                    if (
+                                                        (obj.bookingReferenceNumber).toString().includes(searchDailyReservation.toLowerCase()) ||
+                                                        (new Date(obj.reservation.reservationDate).toLocaleDateString()).toString().includes(searchDailyReservation.toLowerCase()) ||
+                                                        (obj.reservation.reservationStatus.toLowerCase()).toString().includes(searchDailyReservation.toLowerCase()) ||
+                                                        (obj.reservation.guestInformation.firstName.toLowerCase()).toString().includes(searchDailyReservation.toLowerCase()) ||
+                                                        (obj.reservation.guestInformation.firstName.toLowerCase() + ' ' + obj.reservation.guestInformation.lastName.toLowerCase()).toString().includes(searchDailyReservation.toLowerCase()) ||
+                                                        (obj.reservation.guestInformation.lastName.toLowerCase()).toString().includes(searchDailyReservation.toLowerCase()) ||
+                                                        (obj.room.roomType.roomType.toLowerCase()).toString().includes(searchDailyReservation.toLowerCase()) ||
+                                                        (obj.room.roomNumber).toString().includes(searchDailyReservation) ||
+                                                        (obj.room.roomType.roomRate).toString().includes(searchDailyReservation.toLowerCase()) ||
+                                                        (new Date(obj.checkInDate).toLocaleDateString()).toString().includes(searchDailyReservation.toLowerCase()) ||
+                                                        (new Date(obj.checkOutDate).toLocaleDateString()).toString().includes(searchDailyReservation.toLowerCase()) ||
+                                                        (obj.numberOfNights).toString().includes(searchDailyReservation.toLowerCase()) ||
+                                                        (obj.bookingStatus.toLowerCase()).toString().includes(searchDailyReservation.toLowerCase()) ||
+                                                        (obj.reservation.payment.paymentStatus.toLowerCase()).toString().includes(searchDailyReservation.toLowerCase())
+                                                    ) {
+                                                        return obj;
+                                                    }
+                                                }
+                                                else {
+                                                    return obj;
+                                                }
+                                            })
+                                            .sort((a, b) => {
+                                                if (a.bookingReferenceNumber < b.bookingReferenceNumber) {
+                                                    return -1;
+                                                }
+                                            })
+                                            .slice((reservationPageDaily - 1) * 10, reservationPageDaily * 10)
+                                            .map((item) => (
+                                                orderedAmenity.length != 0 ?
+                                                    item.reservation.payment.discountValid == true ?
+                                                        parseFloat((((item.room.roomType.roomRate * item.numberOfNights) + (parseFloat(item.others)) + (orderedAmenity.filter((obj) => obj.reservationSummary_id == item.id).map((obj) => obj.quantity * parseFloat(obj.amenity.amenityRate)).reduce((accumulator, value) => accumulator + value))) / 1.12 * .80) / item.reservation.payment.grandTotal) * parseFloat(item.reservation.payment.paymentMade)
+                                                        :
+                                                        parseFloat((((item.room.roomType.roomRate * item.numberOfNights) + (parseFloat(item.others)) + (orderedAmenity.filter((obj) => obj.reservationSummary_id == item.id).map((obj) => obj.quantity * parseFloat(obj.amenity.amenityRate)).reduce((accumulator, value) => accumulator + value)))) / item.reservation.payment.grandTotal) * parseFloat(item.reservation.payment.paymentMade)
+
+                                                    : ''
+                                            )).reduce((accumulator, value) => accumulator + value, 0)
+                                    )
+                                    :
+                                    numberFormat(0)}</b>
                             </Title>
 
                             <ContainerGlobal

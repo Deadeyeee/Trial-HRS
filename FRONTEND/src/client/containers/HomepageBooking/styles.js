@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { motion } from "framer-motion";
-import BackgroundIMG from "../../images/backgroundImages/homeBackgroundImage.jpg";
+import BackgroundIMG from "../../images/backgroundImages/bg2.JPG";
 
 export const Title = styled.h1`
 font-family: 'Playfair Display', serif;
@@ -42,6 +42,7 @@ export const WelcomeDiv = styled(motion.div)`
         z-index:-1;
         background-image: url(${BackgroundIMG});
         background-size: cover;
+        background-position: center;
         background-color: gray;
         filter: contrast(60%) brightness(35%);
         position:absolute;

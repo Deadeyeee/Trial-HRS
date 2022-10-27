@@ -61,6 +61,7 @@ import FrontReservation from './frontDesk/pages/frontReservation/FrontReservatio
 import FrontAdditional from './frontDesk/pages/frontAdditional/FrontAdditional';
 import OfficialReceipt from './admin/pages/officialReceipt/OfficialReceipt';
 import AcknowledgementReceipt from './admin/pages/acknowledgementReceipt/AcknowledgementReceipt';
+import GeneratedReports from './admin/pages/generateReports/GenerateReports';
 
 
 
@@ -113,6 +114,7 @@ const App = () => {
         
         <Route path="/admin/officialReceipt/:id" element={<OfficialReceipt />}/>
         <Route path="/admin/acknowledgementReceipt/:id" element={<AcknowledgementReceipt />}/>
+        <Route path="/admin/generatedReport" element={<GeneratedReports />}/>
 
 
 
