@@ -23,6 +23,7 @@ import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import TextField from '@mui/material/TextField';
 import axios from 'axios';
+import { apiKey } from '../../../apiKey';
 
 const style = {
     position: 'absolute',
@@ -92,8 +93,8 @@ const ClientProfileCont = () => {
 
 
     useEffect(() => {
-        axios.get('http://localhost:3001/auth/verify-token').then((result) => {
-            axios.get('http://localhost:3001/api/getAllGuest').then((guest) => {
+        axios.get(apiKey+'auth/verify-token').then((result) => {
+            axios.get(apiKey+'api/getAllGuest').then((guest) => {
                 guest.data.map((item) => {
                     if (result.data.id == item.user_id) {
 
@@ -128,7 +129,7 @@ const ClientProfileCont = () => {
         if (userInformation.length != 0) {
             if (userInformation.user.role != 'NON-USER') {
 
-                axios.get('http://localhost:3001/api/getAllUsers').then((res) => {
+                axios.get(apiKey+'api/getAllUsers').then((res) => {
                     if (res.data.length != 0) {
                         res.data.map((item) => {
                             if (item.role != 'NON-USER' && item.id != userInformation.user.id) {
@@ -168,13 +169,13 @@ const ClientProfileCont = () => {
         }
         else {
             if (emailError.length == 0 && contactNumberError.length == 0 && userNameError.length == 0) {
-                axios.patch('http://localhost:3001/api/updateUsers/' + userInformation.user.id, {
+                axios.patch(apiKey+'api/updateUsers/' + userInformation.user.id, {
                     email: email,
                     contactNumber: contactNumber,
                      
                 }).then((result) => {
                     console.log(result.data);
-                    axios.patch('http://localhost:3001/api/updateGuest/' + userInformation.id, {
+                    axios.patch(apiKey+'api/updateGuest/' + userInformation.id, {
                         firstName: firstName,
                         lastName: lastName,
                         birthDate: birthDay,

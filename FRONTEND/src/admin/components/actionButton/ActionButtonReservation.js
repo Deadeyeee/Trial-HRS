@@ -78,10 +78,7 @@ const ActionButtonReservation = (props) => {
             >
 
                 
-                <IconButton onClick={props.check} type="submit" sx={{ p: '8px', backgroundColor: props.unsettled == true ? 'rgb(46, 46, 46, .2)' : "rgb(80, 170, 50, 0.7)" }} aria-label="search" title='Approve Reservation'
-                >
-                    <CheckIcon style={{ color: '#2e2e2e', fontSize: '18px' }} title='View' />
-                </IconButton>
+                
                 <IconButton onClick={props.view} type="submit" sx={{ p: '8px', backgroundColor: 'rgb(191, 170, 126, 0.7)' }} aria-label="search" title='View'>
                     <RemoveRedEyeIcon style={{ color: '#2e2e2e', fontSize: '18px' }} title='View' />
                 </IconButton>

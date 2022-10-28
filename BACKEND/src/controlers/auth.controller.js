@@ -103,7 +103,7 @@ exports.verifyToken = async (req, res) => {
             res.locals.user = jwtPayLoad;
             res.status(200).send(res.locals.user);
         } catch (error) {
-            res.status(401).send("Unauthorized");
+            res.status(401).send(error);
             res.locals.user = null;
             return;
         }

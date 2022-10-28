@@ -41,6 +41,11 @@ module.exports = (sequelize, DataTypes, Sequelize) => {
             unique: true,
             autoIncrement: true,
         },
+        others: {
+            type: DataTypes.DECIMAL(19, 2),
+            allowNull: false,
+            defaultValue: 0,
+        },
 
     },
         {

@@ -24,4 +24,4 @@ module.exports = (sequelize, DataTypes, Sequelize) => {
     },
     )
     return Discount;
-}
+}   

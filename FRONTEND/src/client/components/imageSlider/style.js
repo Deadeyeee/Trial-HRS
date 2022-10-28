@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 
 export const RoomPicture = styled.img`
     width: 100%;
-    height: AUTO;
+    height: 500px;
     object-fit: cover;
 `;
 

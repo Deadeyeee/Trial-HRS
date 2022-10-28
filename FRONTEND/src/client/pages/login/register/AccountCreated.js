@@ -6,6 +6,7 @@ import { useParams } from 'react-router-dom';
 import Axios from 'axios';
 import { Button } from '../../../components/button/styles';
 import Logo from '../../../images/logo.png'
+import { apiKey } from '../../../../apiKey';
 
 
 const AccountCreated = () => {
@@ -13,14 +14,15 @@ const AccountCreated = () => {
   const [ message, setMessage ] = useState("");
   const { id } = useParams();
   useEffect(() => {
-    Axios.get('http://localhost:3001/auth/verify-email-token/' + id).then((res) => {
+    
+    Axios.get(apiKey+'auth/verify-email-token/' + id).then((res) => {
       if (res.status === 401) {
 
         window.location.href = '/404';
       }
-      Axios.get('http://localhost:3001/api/getUsers/' + res.data.id).then((res) => {
+      Axios.get(apiKey+'api/getUsers/' + res.data.id).then((res) => {
         if (res.data.emailVerified === false) {
-          Axios.patch('http://localhost:3001/api/confirmEmail', {
+          Axios.patch(apiKey+'api/confirmEmail', {
             id: res.data.id,
           }).then((res) => {
             setMessage("You can now login on our page!\n just click the button below to go into our login page.")

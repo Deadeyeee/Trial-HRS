@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { BlackTab, Container, ContainerGlobalColumn, ContainerGlobalRow, GrayTab, HeadContainer, TabContainer, TableContainer, Td, Th, Tr } from './style'
 import { Title } from '../../../client/components/title/styles'
 import { ContainerGlobal } from '../../components/container/container'
@@ -23,7 +23,7 @@ import ActionButton from '../../components/actionButton/ActionButton'
 import Grow from '@mui/material/Grow';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
-import { Badge, FormControlLabel, Radio, RadioGroup, TextareaAutosize, FormControl } from '@mui/material'
+import { Badge, FormControlLabel, Radio, RadioGroup, TextareaAutosize, FormControl, Pagination } from '@mui/material'
 import { nationalities } from '../../../nationalities'
 import { Global } from '@emotion/react'
 import ActionButtonReservation from '../../components/actionButton/ActionButtonReservation'
@@ -39,8 +39,21 @@ import DonutSmallIcon from '@mui/icons-material/DonutSmall';
 import { Reservation } from '../analytics/Reservation'
 import TimelineIcon from '@mui/icons-material/Timeline';
 import Occupancy from '../analytics/Occupancy'
+import { apiKey } from '../../../apiKey'
+import axios from 'axios'
+import moment from 'moment'
 
 export const ReportContainer = () => {
+    function getDates(startDate, stopDate) {
+        var dateArray = [];
+        var currentDate = moment(startDate);
+        var stopDate = moment(stopDate);
+        while (currentDate <= stopDate) {
+            dateArray.push(moment(currentDate).format('YYYY-MM-DD'))
+            currentDate = moment(currentDate).add(1, 'days');
+        }
+        return dateArray;
+    }
     const [value, setValue] = useState(Date.now());
     const [valueEnd, setValueEnd] = useState(Date.now());
     const [valueOcc, setValueOcc] = useState(Date.now());
@@ -80,15 +93,454 @@ export const ReportContainer = () => {
     const handleChange3 = (event, newValue) => {
         setValue3(newValue);
     }
+    const paymentStatusStyle = (value) => {
+        if (value == 'pending') {
+            return <ContainerGlobal
+                w='100px'
+                h='auto'
+                margin='0px auto'
+                bg='rgb(205, 161, 65, .2)'
+                direction='row'
+                padding='2px 0px'
+                justify='center'
+                align='center'
+                border='2px solid rgb(205, 161, 65)'
+                gap='10px'
+                borderRadius='.5rem'
+            >
+                <Title
+                    family='Helvetica'
+                    size='12px'
+                    color='BLACK'
+                    fstyle='normal'
+                    display='inline'
+                    padding='5px 10px'
+                >
+                    {value}
+                </Title>
+            </ContainerGlobal>
+        }
+        else if (value == 'partial') {
+            return <ContainerGlobal
+                w='100px'
+                h='auto'
+                margin='0px auto'
+                bg='rgb(0, 0, 255, .2)'
+                direction='row'
+                padding='2px 0px'
+                justify='center'
+                align='center'
+                border='2px solid rgb(0, 0, 255)'
+                gap='10px'
+                borderRadius='.5rem'
+            >
+                <Title
+                    family='Helvetica'
+                    size='12px'
+                    color='BLACK'
+                    fstyle='normal'
+                    display='inline'
+                    padding='5px 10px'
+                >
+                    {value}
+                </Title>
+            </ContainerGlobal>
+        }
+        else if (value == 'fully paid') {
+            return <ContainerGlobal
+                w='100px'
+                h='auto'
+                margin='0px auto'
+                bg='rgb(0, 255, 0, .2)'
+                direction='row'
+                padding='2px 0px'
+                justify='center'
+                align='center'
+                border='2px solid rgb(0, 255, 0)'
+                gap='10px'
+                borderRadius='.5rem'
+            >
+                <Title
+                    family='Helvetica'
+                    size='12px'
+                    color='BLACK'
+                    fstyle='normal'
+                    display='inline'
+                    padding='5px 10px'
+                >
+                    {value}
+                </Title>
+            </ContainerGlobal>
+        }
+        else if (value == 'cancelled') {
+            return <ContainerGlobal
+                w='100px'
+                h='auto'
+                margin='0px auto'
+                bg='rgb(255, 0, 0, .2)'
+                direction='row'
+                padding='2px 0px'
+                justify='center'
+                align='center'
+                border='2px solid rgb(255, 0, 0)'
+                gap='10px'
+                borderRadius='.5rem'
+            >
+                <Title
+                    family='Helvetica'
+                    size='12px'
+                    color='BLACK'
+                    fstyle='normal'
+                    display='inline'
+                    padding='5px 10px'
+                >
+                    {value}
+                </Title>
+            </ContainerGlobal>
+        }
+        else if (value == 'reciept declined') {
+            return <ContainerGlobal
+                w='100px'
+                h='auto'
+                margin='0px auto'
+                bg='rgb(0, 0, 0, .2)'
+                direction='row'
+                padding='2px 0px'
+                justify='center'
+                align='center'
+                border='2px solid rgb(0, 0, 0)'
+                gap='10px'
+                borderRadius='.5rem'
+            >
+                <Title
+                    family='Helvetica'
+                    size='12px'
+                    color='BLACK'
+                    fstyle='normal'
+                    display='inline'
+                    padding='5px 10px'
+                >
+                    {value}
+                </Title>
+            </ContainerGlobal>
+        }
+    }
+
+    const [reservationPageDaily, setReservationPageDaily] = useState(1)
+
+    const [reservationSummary, setReservationSummary] = useState([])
+    const [reservation, setReservation] = useState([])
+    const [amenity, setAmenity] = useState([])
+    const [orderedAmenity, setOrderedAmenity] = useState([])
+
+    const reservationStatusStyle = (value) => {
+        if (value == 'RESERVED') {
+            return <ContainerGlobal
+                w='100px'
+                h='auto'
+                margin='0px auto'
+                bg='rgb(0, 0, 255, .2)'
+                direction='row'
+                padding='2px 0px'
+                justify='center'
+                align='center'
+                border='2px solid rgb(0, 0, 255)'
+                gap='10px'
+                borderRadius='.5rem'
+            >
+                <Title
+                    family='Helvetica'
+                    size='12px'
+                    color='BLACK'
+                    fstyle='normal'
+                    display='inline'
+                    padding='5px 10px'
+                >
+                    {value.toLowerCase()}
+                </Title>
+            </ContainerGlobal>
+        }
+        else if (value == 'PENDING') {
+            return <ContainerGlobal
+                w='100px'
+                h='auto'
+                margin='0px auto'
+                bg='rgb(253, 161, 114, .2)'
+                direction='row'
+                padding='2px 0px'
+                justify='center'
+                align='center'
+                border='2px solid rgb(255, 215, 0)'
+                gap='10px'
+                borderRadius='.5rem'
+            >
+                <Title
+                    family='Helvetica'
+                    size='12px'
+                    color='BLACK'
+                    fstyle='normal'
+                    display='inline'
+                    padding='5px 10px'
+                >
+                    {value.toLowerCase()}
+                </Title>
+            </ContainerGlobal>
+        }
+        else if (value == 'DEPARTED') {
+            return <ContainerGlobal
+                w='100px'
+                h='auto'
+                margin='0px auto'
+                bg='rgb(0, 255, 0, .2)'
+                direction='row'
+                padding='2px 0px'
+                justify='center'
+                align='center'
+                border='2px solid rgb(0, 255, 0)'
+                gap='10px'
+                borderRadius='.5rem'
+            >
+                <Title
+                    family='Helvetica'
+                    size='12px'
+                    color='BLACK'
+                    fstyle='normal'
+                    display='inline'
+                    padding='5px 10px'
+                >
+                    {value.toLowerCase()}
+                </Title>
+            </ContainerGlobal>
+        }
+        else if (value == 'UNSETTLED') {
+            return <ContainerGlobal
+                w='100px'
+                h='auto'
+                margin='0px auto'
+                bg='rgb(255, 0, 0, .2)'
+                direction='row'
+                padding='2px 0px'
+                justify='center'
+                align='center'
+                border='2px solid rgb(255, 0, 0)'
+                gap='10px'
+                borderRadius='.5rem'
+            >
+                <Title
+                    family='Helvetica'
+                    size='12px'
+                    color='BLACK'
+                    fstyle='normal'
+                    display='inline'
+                    padding='5px 10px'
+                >
+                    {value.toLowerCase()}
+                </Title>
+            </ContainerGlobal>
+        }
+        else if (value == 'NO SHOW') {
+            return <ContainerGlobal
+                w='100px'
+                h='auto'
+                margin='0px auto'
+                bg='rgb(0, 0, 0, .2)'
+                direction='row'
+                padding='2px 0px'
+                justify='center'
+                align='center'
+                border='2px solid rgb(0, 0, 0)'
+                gap='10px'
+                borderRadius='.5rem'
+            >
+                <Title
+                    family='Helvetica'
+                    size='12px'
+                    color='BLACK'
+                    fstyle='normal'
+                    display='inline'
+                    padding='5px 10px'
+                >
+                    {value.toLowerCase()}
+                </Title>
+            </ContainerGlobal>
+        }
+    }
+
+    const numberFormat = (value) =>
+        new Intl.NumberFormat('en-CA', {
+            style: 'currency',
+            currency: 'PHP'
+        }).format(value);
+
+    useEffect(() => {
+        axios.get(apiKey + 'api/getAllReservation/').then((result) => {
+            setReservation(result.data)
+
+            axios.get(apiKey + 'api/getAllReservationSummary').then((result) => {
+                setReservationSummary(result.data)
+
+                axios.get(apiKey + 'api/getAllOrderedAmenities').then((result) => {
+                    setOrderedAmenity(result.data)
+
+
+                    axios.get(apiKey + 'api/getAllAmenities').then((result) => {
+                        setAmenity(result.data)
+
+                    }).catch((err) => {
+                        console.log(err)
+                    });
+                }).catch((err) => {
+                    console.log(err)
+                });
+            }).catch((err) => {
+                console.log(err)
+            });
+        }).catch((err) => {
+            console.log(err)
+
+        });
+    }, [])
 
 
 
+    const bookingStatusStyle = (value) => {
+        if (value == 'PENDING') {
+            return <ContainerGlobal
+                w='100px'
+                h='auto'
+                margin='0px auto'
+                bg='rgb(205, 161, 65, .2)'
+                direction='row'
+                padding='2px 0px'
+                justify='center'
+                align='center'
+                border='2px solid rgb(205, 161, 65)'
+                gap='10px'
+                borderRadius='.5rem'
+            >
+                <Title
+                    family='Helvetica'
+                    size='12px'
+                    color='BLACK'
+                    fstyle='normal'
+                    display='inline'
+                    padding='5px 10px'
+                >
+                    {value.toLowerCase()}
+                </Title>
+            </ContainerGlobal>
+        }
+        else if (value == 'RESERVED') {
+            return <ContainerGlobal
+                w='100px'
+                h='auto'
+                margin='0px auto'
+                bg='rgb(0, 0, 255, .2)'
+                direction='row'
+                padding='2px 0px'
+                justify='center'
+                align='center'
+                border='2px solid rgb(0, 0, 255)'
+                gap='10px'
+                borderRadius='.5rem'
+            >
+                <Title
+                    family='Helvetica'
+                    size='12px'
+                    color='BLACK'
+                    fstyle='normal'
+                    display='inline'
+                    padding='5px 10px'
+                >
+                    {value.toLowerCase()}
+                </Title>
+            </ContainerGlobal>
+        }
+        else if (value == 'CHECKED-IN') {
+            return <ContainerGlobal
+                w='100px'
+                h='auto'
+                margin='0px auto'
+                bg='rgb(0, 255, 0, .2)'
+                direction='row'
+                padding='2px 0px'
+                justify='center'
+                align='center'
+                border='2px solid rgb(0, 255, 0)'
+                gap='10px'
+                borderRadius='.5rem'
+            >
+                <Title
+                    family='Helvetica'
+                    size='12px'
+                    color='BLACK'
+                    fstyle='normal'
+                    display='inline'
+                    padding='5px 10px'
+                >
+                    {value.toLowerCase()}
+                </Title>
+            </ContainerGlobal>
+        }
+        else if (value == 'NO-SHOW') {
+            return <ContainerGlobal
+                w='100px'
+                h='auto'
+                margin='0px auto'
+                bg='rgb(255, 0, 0, .2)'
+                direction='row'
+                padding='2px 0px'
+                justify='center'
+                align='center'
+                border='2px solid rgb(255, 0, 0)'
+                gap='10px'
+                borderRadius='.5rem'
+            >
+                <Title
+                    family='Helvetica'
+                    size='12px'
+                    color='BLACK'
+                    fstyle='normal'
+                    display='inline'
+                    padding='5px 10px'
+                >
+                    {value.toLowerCase()}
+                </Title>
+            </ContainerGlobal>
+        }
+        else if (value == 'CHECKED-OUT') {
+            return <ContainerGlobal
+                w='100px'
+                h='auto'
+                margin='0px auto'
+                bg='rgb(0, 0, 0, .2)'
+                direction='row'
+                padding='2px 0px'
+                justify='center'
+                align='center'
+                border='2px solid rgb(0, 0, 0)'
+                gap='10px'
+                borderRadius='.5rem'
+            >
+                <Title
+                    family='Helvetica'
+                    size='12px'
+                    color='BLACK'
+                    fstyle='normal'
+                    display='inline'
+                    padding='5px 10px'
+                >
+                    {value.toLowerCase()}
+                </Title>
+            </ContainerGlobal>
+        }
+    }
 
-
-
-
-
-
+    // FILTER
+    const [searchDailyReservation, setSearchDailyReservation] = useState('')
+    const [reservationMenuDaily, setReservationMenuDaily] = useState('all')
+    const [endDateDaily, setEndDateDaily] = useState(Date.now())
+    const [startDateDaily, setStartDateDaily] = useState(Date.now())
 
 
     return (
@@ -164,6 +616,10 @@ export const ReportContainer = () => {
                                 <TextField
                                     id="outlined-basic"
                                     label="Search..."
+                                    value={searchDailyReservation}
+                                    onChange={(e) => {
+                                        setSearchDailyReservation(e.target.value)
+                                    }}
                                     variant="outlined"
                                     sx={{
                                         input: { color: 'black', fontWeight: 'bold' },
@@ -185,9 +641,9 @@ export const ReportContainer = () => {
                                     <DatePicker
                                         views={['day', 'month', 'year']}
                                         label="Start Date"
-                                        value={value}
+                                        value={startDateDaily}
                                         onChange={(newValue) => {
-                                            setValue(newValue);
+                                            setStartDateDaily(newValue);
                                         }}
                                         renderInput={(params) =>
                                             <TextField
@@ -213,9 +669,9 @@ export const ReportContainer = () => {
 
                                         views={['day', 'month', 'year']}
                                         label="End Date"
-                                        value={valueEnd}
+                                        value={endDateDaily}
                                         onChange={(newValue) => {
-                                            setValueEnd(newValue);
+                                            setEndDateDaily(newValue);
                                         }}
                                         renderInput={(params) =>
                                             <TextField
@@ -238,19 +694,40 @@ export const ReportContainer = () => {
                                 <FormControl sx={{ m: 1, minWidth: 120, }} size="small">
                                     <InputLabel id="demo-select-small" >Menu</InputLabel>
                                     <Select
+                                        native
                                         style={{ color: 'black', fontWeight: 'bold' }}
                                         labelId="roomType-select-small"
                                         id="demo-select-small"
-                                        value={age}
+                                        value={reservationMenuDaily}
                                         label="Menu"
                                         onChange={(event) => {
-                                            setAge(event.target.value);
+                                            setReservationMenuDaily(event.target.value);
                                         }}
 
                                     >
-
-                                        <MenuItem value={'Check-in'} selected>Check-in</MenuItem>
-                                        <MenuItem value={'Check-out'}>Check-out</MenuItem>
+                                        <option value='all'>All</option>
+                                        <option value='reservationDate'>Reservation date</option>
+                                        <option value='checkIn'>Check in</option>
+                                        <option value='checkOut'>Check out</option>
+                                        <optgroup label="Reservation status">
+                                            <option value='RSreserved'>reserved</option>
+                                            <option value='RSpending'>pending</option>
+                                            <option value='RScancelled'>cancelled</option>
+                                        </optgroup>
+                                        <optgroup label="Booking status">
+                                            <option value='BSpending'>pending</option>
+                                            <option value='BSreserved'>reserved</option>
+                                            <option value='BScheckedIn'>checked in</option>
+                                            <option value='BScheckedOut'>checked out</option>
+                                            <option value='BSnoShow'>no show</option>
+                                        </optgroup>
+                                        <optgroup label="Payment status">
+                                            <option value='PSpartial'>parital</option>
+                                            <option value='PSfullyPaid'>fully paid</option>
+                                            <option value='PSreceiptDeclined'>receipt declined</option>
+                                            <option value='PSpending'>pending</option>
+                                            <option value='PScancelled'>cancelled</option>
+                                        </optgroup>
                                     </Select>
                                 </FormControl>
 
@@ -270,72 +747,104 @@ export const ReportContainer = () => {
                             </ContainerGlobal>
                             <TableContainer>
                                 <Tr>
-                                    <Th align='center'>Reservation Number <ArrowDropDownIcon style={{ color: 'black' }} /> </Th>
-                                    <Th align='center'>Guest's Name  <ArrowDropDownIcon style={{ color: 'black' }} /></Th>
-                                    <Th align='center'>Room Type  <ArrowDropDownIcon style={{ color: 'black' }} /></Th>
-                                    <Th align='center' style={{ width: '190px' }}>Room Number  <ArrowDropDownIcon style={{ color: 'black' }} /></Th>
-                                    <Th align='center'>Room Rate  <ArrowDropDownIcon style={{ color: 'black' }} /></Th>
-                                    <Th align='center'>Check in <ArrowDropDownIcon style={{ color: 'black' }} /></Th>
-                                    <Th align='center'>Check out <ArrowDropDownIcon style={{ color: 'black' }} /></Th>
-                                    <Th align='center'>Total Nights <ArrowDropDownIcon style={{ color: 'black' }} /></Th>
-                                    <Th align='center'>Subtotal <ArrowDropDownIcon style={{ color: 'black' }} /></Th>
+                                    <Th align='center'>Booking number</Th>
+                                    <Th align='center'>Reservation date </Th>
+                                    <Th align='center'>Reservation status</Th>
+                                    <Th align='center'>Guest's name</Th>
+                                    <Th align='center'>Room type</Th>
+                                    <Th align='center' style={{ width: '190px' }}>Room Number</Th>
+                                    <Th align='center'>Room Rate </Th>
+                                    <Th align='center'>Check in</Th>
+                                    <Th align='center'>Check out</Th>
+                                    <Th align='center'>Total nights</Th>
+                                    <Th align='center'>Booking status</Th>
+                                    <Th align='center'>Payment status</Th>
+                                    <Th align='center'>Paid amount</Th>
+                                    <Th align='center'>Total amount</Th>
                                 </Tr>
-                                <Tr>
-                                    <Td align='center'>091234568</Td>
-                                    <Td align='center'>Pedro Juan</Td>
-                                    <Td align='center'>Deluxe</Td>
-                                    <Td align='center'>103</Td>
-                                    <Td align='center'>PHP 1,500.00</Td>
-                                    <Td align='center'>05/25/2021</Td>
-                                    <Td align='center'>05/29/2021</Td>
-                                    <Td align='center'>
-                                        4
-                                    </Td>
+                                {reservationSummary.length != 0 &&
+                                    reservationSummary
+                                        .filter((obj) => {
+                                            let filterDates = getDates(startDateDaily, endDateDaily);
 
-                                    <Td align='center'>PHP 6,000.00</Td>
-                                </Tr>
-                                <Tr>
-                                    <Td align='center'>091234569</Td>
-                                    <Td align='center'>Emerald Santino</Td>
-                                    <Td align='center'>Family</Td>
-                                    <Td align='center'>201</Td>
-                                    <Td align='center'>PHP 2,500.00</Td>
-                                    <Td align='center'>05/25/2021</Td>
-                                    <Td align='center'>05/26/2021</Td>
-                                    <Td align='center'>
-                                        1
-                                    </Td>
+                                            if (filterDates.includes(moment(obj.reservation.reservationDate).format('YYYY-MM-DD'))) {
+                                                return obj;
+                                            }
+                                        })
+                                        .filter((obj) => {
+                                            if (searchDailyReservation != '') {
+                                                if (
+                                                    (obj.bookingReferenceNumber).toString().includes(searchDailyReservation.toLowerCase()) ||
+                                                    (new Date(obj.reservation.reservationDate).toLocaleDateString()).toString().includes(searchDailyReservation.toLowerCase()) ||
+                                                    (obj.reservation.reservationStatus.toLowerCase()).toString().includes(searchDailyReservation.toLowerCase()) ||
+                                                    (obj.reservation.guestInformation.firstName.toLowerCase()).toString().includes(searchDailyReservation.toLowerCase()) ||
+                                                    (obj.reservation.guestInformation.firstName.toLowerCase() + ' ' + obj.reservation.guestInformation.lastName.toLowerCase()).toString().includes(searchDailyReservation.toLowerCase()) ||
+                                                    (obj.reservation.guestInformation.lastName.toLowerCase()).toString().includes(searchDailyReservation.toLowerCase()) ||
+                                                    (obj.room.roomType.roomType.toLowerCase()).toString().includes(searchDailyReservation.toLowerCase()) ||
+                                                    (obj.room.roomNumber).toString().includes(searchDailyReservation) ||
+                                                    (obj.room.roomType.roomRate).toString().includes(searchDailyReservation.toLowerCase()) ||
+                                                    (new Date(obj.checkInDate).toLocaleDateString()).toString().includes(searchDailyReservation.toLowerCase()) ||
+                                                    (new Date(obj.checkOutDate).toLocaleDateString()).toString().includes(searchDailyReservation.toLowerCase()) ||
+                                                    (obj.numberOfNights).toString().includes(searchDailyReservation.toLowerCase()) ||
+                                                    (obj.bookingStatus.toLowerCase()).toString().includes(searchDailyReservation.toLowerCase()) ||
+                                                    (obj.reservation.payment.paymentStatus.toLowerCase()).toString().includes(searchDailyReservation.toLowerCase())
+                                                ) {
+                                                    return obj;
+                                                }
+                                            }
+                                            else {
+                                                return obj;
+                                            }
+                                        })
+                                        .sort((a, b) => {
+                                            if (a.bookingReferenceNumber < b.bookingReferenceNumber) {
+                                                return -1;
+                                            }
+                                        })
+                                        .slice((reservationPageDaily - 1) * 10, reservationPageDaily * 10)
+                                        .map((item) => (
+                                            <Tr>
+                                                <Td align='center'>{item.bookingReferenceNumber}</Td>
+                                                <Td align='center'>{new Date(item.reservation.reservationDate).toLocaleDateString()}</Td>
+                                                <Td align='center'>{reservationStatusStyle(item.reservation.reservationStatus)}</Td>
+                                                <Td align='center'>{item.reservation.guestInformation.firstName.toLowerCase()} {item.reservation.guestInformation.lastName.toLowerCase()}</Td>
+                                                <Td align='center'>{item.room.roomType.roomType}</Td>
+                                                <Td align='center'>{item.room.roomNumber}</Td>
+                                                <Td align='center'>{numberFormat(item.room.roomType.roomRate)}</Td>
+                                                <Td align='center'>{new Date(item.checkInDate).toLocaleDateString()}</Td>
+                                                <Td align='center'>{new Date(item.checkOutDate).toLocaleDateString()}</Td>
+                                                <Td align='center'>{item.numberOfNights}</Td>
+                                                <Td align='center'>{bookingStatusStyle(item.bookingStatus)}</Td>
+                                                <Td align='center'>{paymentStatusStyle(item.reservation.payment.paymentStatus)}</Td>
 
-                                    <Td align='center'>PHP 2,500.00</Td>
-                                </Tr>
-                                <Tr>
-                                    <Td align='center'>091234570</Td>
-                                    <Td align='center'>Pedro Penduco</Td>
-                                    <Td align='center'>Deluxe</Td>
-                                    <Td align='center'>104</Td>
-                                    <Td align='center'>PHP 1,500.00</Td>
-                                    <Td align='center'>05/25/2021</Td>
-                                    <Td align='center'>05/29/2021</Td>
-                                    <Td align='center'>
-                                        4
-                                    </Td>
+                                                <Td align='center'>{
+                                                    orderedAmenity.length != 0
+                                                        ?
+                                                        item.reservation.payment.discountValid == true ?
+                                                            numberFormat(
+                                                                parseFloat((((item.room.roomType.roomRate * item.numberOfNights) + (parseFloat(item.others)) + (orderedAmenity.filter((obj) => obj.reservationSummary_id == item.id).map((obj) => obj.quantity * parseFloat(obj.amenity.amenityRate)).reduce((accumulator, value) =>parseFloat(accumulator) + parseFloat(value)))) / 1.12 * .80) / item.reservation.payment.grandTotal) * parseFloat(item.reservation.payment.paymentMade)
+                                                            )
+                                                            :
 
-                                    <Td align='center'>PHP 6,000.00</Td>
-                                </Tr>
-                                <Tr>
-                                    <Td align='center'>091234571</Td>
-                                    <Td align='center'>Pedro Juan</Td>
-                                    <Td align='center'>Premium</Td>
-                                    <Td align='center'>102</Td>
-                                    <Td align='center'>PHP 1,000.00</Td>
-                                    <Td align='center'>03/04/2022</Td>
-                                    <Td align='center'>03/08/2022</Td>
-                                    <Td align='center'>
-                                        4
-                                    </Td>
-
-                                    <Td align='center'>PHP 4,000.00</Td>
-                                </Tr>
+                                                            numberFormat(
+                                                                parseFloat((((item.room.roomType.roomRate * item.numberOfNights) + (parseFloat(item.others)) + (orderedAmenity.filter((obj) => obj.reservationSummary_id == item.id).map((obj) => obj.quantity * parseFloat(obj.amenity.amenityRate)).reduce((accumulator, value) => parseFloat(accumulator) + parseFloat(value))))) / item.reservation.payment.grandTotal) * parseFloat(item.reservation.payment.paymentMade)
+                                                            )
+                                                        :
+                                                        ''
+                                                }</Td>
+                                                <Td align='center'>{
+                                                    orderedAmenity.length != 0
+                                                        ?
+                                                        item.reservation.payment.discountValid == true ?
+                                                            numberFormat(((item.room.roomType.roomRate * item.numberOfNights) + (parseFloat(item.others)) + (orderedAmenity.filter((obj) => obj.reservationSummary_id == item.id).map((obj) => obj.quantity * parseFloat(obj.amenity.amenityRate)).reduce((accumulator, value) => parseFloat(accumulator) + parseFloat(value)))) / 1.12 * .80)
+                                                            :
+                                                            numberFormat((item.room.roomType.roomRate * item.numberOfNights) + (parseFloat(item.others)) + (orderedAmenity.filter((obj) => obj.reservationSummary_id == item.id).map((obj) => obj.quantity * parseFloat(obj.amenity.amenityRate)).reduce((accumulator, value) => parseFloat(accumulator) + parseFloat(value))))
+                                                        :
+                                                        ''
+                                                }</Td>
+                                            </Tr>
+                                        ))
+                                }
 
 
 
@@ -347,6 +856,18 @@ export const ReportContainer = () => {
                                 margin='0px 0px 20px 0px'
                             >
                             </HorizontalLine>
+                            <ContainerGlobal
+                                w='100%'
+                                justify='center'>
+                                <Pagination
+                                    page={reservationPageDaily}
+                                    count={reservationSummary.length != 0 && Math.ceil(reservationSummary.length / 10)}
+                                    onChange={(e, value) => {
+
+                                        setReservationPageDaily(value)
+                                    }}
+                                />
+                            </ContainerGlobal>
                             <Title
                                 size='26px'
                                 color='black'
@@ -356,7 +877,7 @@ export const ReportContainer = () => {
                                 align='left'
                                 margin='0px 0px 0px auto'
                             >
-                                Total Reservations: <b style={{ color: 'green' }}>4</b>
+                                Total Reservations: <b style={{ color: 'green' }}>{reservationSummary.length != 0 ? reservationSummary.length : 0}</b>
                             </Title>
                             <Title
                                 size='26px'
@@ -367,16 +888,73 @@ export const ReportContainer = () => {
                                 align='left'
                                 margin='20px 0px 0px auto'
                             >
-                                Total Income: <b style={{ color: 'green' }}>PHP 18,500.00</b>
+                                Total Income: <b style={{ color: 'green' }}>{reservationSummary.length != 0 ?
+                                    numberFormat(
+                                        reservationSummary
+                                            .filter((obj) => {
+                                                let filterDates = getDates(startDateDaily, endDateDaily);
+
+                                                if (filterDates.includes(moment(obj.reservation.reservationDate).format('YYYY-MM-DD'))) {
+                                                    return obj;
+                                                }
+                                            })
+                                            .filter((obj) => {
+                                                if (searchDailyReservation != '') {
+                                                    if (
+                                                        (obj.bookingReferenceNumber).toString().includes(searchDailyReservation.toLowerCase()) ||
+                                                        (new Date(obj.reservation.reservationDate).toLocaleDateString()).toString().includes(searchDailyReservation.toLowerCase()) ||
+                                                        (obj.reservation.reservationStatus.toLowerCase()).toString().includes(searchDailyReservation.toLowerCase()) ||
+                                                        (obj.reservation.guestInformation.firstName.toLowerCase()).toString().includes(searchDailyReservation.toLowerCase()) ||
+                                                        (obj.reservation.guestInformation.firstName.toLowerCase() + ' ' + obj.reservation.guestInformation.lastName.toLowerCase()).toString().includes(searchDailyReservation.toLowerCase()) ||
+                                                        (obj.reservation.guestInformation.lastName.toLowerCase()).toString().includes(searchDailyReservation.toLowerCase()) ||
+                                                        (obj.room.roomType.roomType.toLowerCase()).toString().includes(searchDailyReservation.toLowerCase()) ||
+                                                        (obj.room.roomNumber).toString().includes(searchDailyReservation) ||
+                                                        (obj.room.roomType.roomRate).toString().includes(searchDailyReservation.toLowerCase()) ||
+                                                        (new Date(obj.checkInDate).toLocaleDateString()).toString().includes(searchDailyReservation.toLowerCase()) ||
+                                                        (new Date(obj.checkOutDate).toLocaleDateString()).toString().includes(searchDailyReservation.toLowerCase()) ||
+                                                        (obj.numberOfNights).toString().includes(searchDailyReservation.toLowerCase()) ||
+                                                        (obj.bookingStatus.toLowerCase()).toString().includes(searchDailyReservation.toLowerCase()) ||
+                                                        (obj.reservation.payment.paymentStatus.toLowerCase()).toString().includes(searchDailyReservation.toLowerCase())
+                                                    ) {
+                                                        return obj;
+                                                    }
+                                                }
+                                                else {
+                                                    return obj;
+                                                }
+                                            })
+                                            .sort((a, b) => {
+                                                if (a.bookingReferenceNumber < b.bookingReferenceNumber) {
+                                                    return -1;
+                                                }
+                                            })
+                                            .slice((reservationPageDaily - 1) * 10, reservationPageDaily * 10)
+                                            .map((item) => (
+                                                orderedAmenity.length != 0 ?
+                                                    item.reservation.payment.discountValid == true ?
+                                                        parseFloat((((item.room.roomType.roomRate * item.numberOfNights) + (parseFloat(item.others)) + (orderedAmenity.filter((obj) => obj.reservationSummary_id == item.id).map((obj) => obj.quantity * parseFloat(obj.amenity.amenityRate)).reduce((accumulator, value) => parseFloat(accumulator) + parseFloat(value) , 0))) / 1.12 * .80) / item.reservation.payment.grandTotal) * parseFloat(item.reservation.payment.paymentMade)
+                                                        :
+                                                        parseFloat((((item.room.roomType.roomRate * item.numberOfNights) + (parseFloat(item.others)) + (orderedAmenity.filter((obj) => obj.reservationSummary_id == item.id).map((obj) => obj.quantity * parseFloat(obj.amenity.amenityRate)).reduce((accumulator, value) => parseFloat(accumulator) + parseFloat(value), 0)))) / item.reservation.payment.grandTotal) * parseFloat(item.reservation.payment.paymentMade)
+
+                                                    : ''
+                                            )).reduce((accumulator, value) => parseFloat(accumulator) + parseFloat(value), 0)
+                                    )
+                                    :
+                                    numberFormat(0)}</b>
                             </Title>
 
-                            <Button
-                                variant="contained"
-                                size="large"
-
-                                style={{ backgroundColor: '#2f2f2f', margin: '15px 0px 0px auto' }}>
-                                Print Reservation report
-                            </Button>
+                            <ContainerGlobal
+                                w='100%'>
+                                <Button
+                                    variant="contained"
+                                    size="large"
+                                    onClick={()=>{
+                                        window.open('/admin/generatedReport', '_blank').focus();
+                                    }}
+                                    style={{ backgroundColor: '#2f2f2f', margin: 'auto' }}>
+                                    Print Reservation report
+                                </Button>
+                            </ContainerGlobal>
                         </ContainerGlobal>
                     </TabPanel>
 

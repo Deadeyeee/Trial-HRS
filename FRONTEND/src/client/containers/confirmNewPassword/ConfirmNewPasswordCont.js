@@ -8,6 +8,7 @@ import logo from '../../images/logo.png';
 import 'font-awesome/css/font-awesome.min.css';
 import { useParams } from 'react-router-dom';
 import { RegistrationForm } from '../../pages/login/style'
+import { apiKey } from '../../../apiKey'
 
 
 
@@ -18,7 +19,7 @@ function ConfirmNewPasswordCont() {
     const [message, setMessage] = useState("")
 
     useEffect(() => {
-        Axios.get('http://localhost:3001/auth/verify-email-token/' + id).then((res) => {
+        Axios.get(apiKey+'auth/verify-email-token/' + id).then((res) => {
         }).catch((err) => {
             window.location.href = '/404';
         });
@@ -29,10 +30,10 @@ function ConfirmNewPasswordCont() {
     const resetPassword = (e) => {
         e.preventDefault();
         if (password === confirmPassword) {
-            Axios.get('http://localhost:3001/auth/verify-email-token/' + id).then((res) => {
-                Axios.get('http://localhost:3001/api/getUsers/' + res.data.id).then((res) => {
+            Axios.get(apiKey+'auth/verify-email-token/' + id).then((res) => {
+                Axios.get(apiKey+'api/getUsers/' + res.data.id).then((res) => {
                     console.log(res.data.id)
-                    Axios.patch('http://localhost:3001/api/updateUsers/' + res.data.id, {
+                    Axios.patch(apiKey+'api/updateUsers/' + res.data.id, {
                         password: password,
                     }).then((res) => {
                         console.log(res.data);

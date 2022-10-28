@@ -36,6 +36,7 @@ export const FlexboxContainer1 = styled(motion.div)`
 
 export const FlexboxContainer2 = styled(motion.div)`
     align-items: column;
+
     
 `;
 
@@ -47,7 +48,8 @@ export const FlexboxItem1 = styled(motion.div)`
 
 export const FlexboxItem2 = styled(motion.div)`
     display: flex;
-    justify-content: flex-start;
+    justify-content: center;
+    align-items: center;
     flex-direction: column;
 
     

@@ -7,11 +7,12 @@ import ProfileContainer from '../../containers/profileContainer/ProfileContainer
 import ClientProfileCont from '../../containers/clientProfile/ClientProfileCont';
 import Navprofile from '../../components/navigationBar/Navprofile';
 import Axios from 'axios';
+import { apiKey } from '../../../apiKey';
 
 export const Profile = () => {
     
     useEffect(() => {
-        Axios.get("http://localhost:3001/auth/verify-token").then((response) => {
+        Axios.get(apiKey+"auth/verify-token").then((response) => {
         }).catch((err) => {
             console.log(err.response.data.message)
             window.location.href = '/login';

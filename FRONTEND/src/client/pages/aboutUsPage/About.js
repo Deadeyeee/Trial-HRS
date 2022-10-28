@@ -9,7 +9,7 @@ import Background from '../../images/backgroundImages/aboutus.jpg';
 export const About = () => {
     useEffect(() => {
         document.title = "About Us"
-      }, [])
+    }, [])
     return (
         <Container>
             <ChatBot />
@@ -31,89 +31,44 @@ export const About = () => {
             </Title>
             <ContentContainer>
                 <FlexboxTitleContainer>
-                    <FlexboxTitle>
-                        <Title
-                            family='Roboto Slab'
-                            weight='Normal'
-                            size='20px'
-                            alignSelf='center'
-                        >
-                            I'm a Title
-                        </Title>
-                    </FlexboxTitle>
-                    <FlexboxTitle>
-                        <Title
-                            family='Roboto Slab'
-                            weight='Normal'
-                            size='20px'
-                            alignSelf='center'
-                        >
-                            Click here to add your own text and edit me.
-                        </Title>
-                    </FlexboxTitle>
                 </FlexboxTitleContainer>
                 <FlexboxContainerMain>
                     <FlexboxContainer1>
+                        <FlexboxTitle>
+                            <Title
+                                family='Roboto Slab'
+                                weight='700'
+                                size='20px'
+                                alignSelf='center'
+                                fstyle='normal'
+                                color='black'
+                            >
+                                RM LUXE HOTEL
+                            </Title>
+                        </FlexboxTitle>
                         <HorizontalLineSmall></HorizontalLineSmall>
                         <FlexboxItem1>
-                            <p>
-                                <i
-                                    family='times new roman'
-                                    weight='normal'
-                                    color='#5b5b5b'
-                                >   Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-                                    sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                                    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                                    Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-                                    Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                                </i>
+                            <p
+                                style={{
+                                    fontSize: '20px',
+                                    fontFamily: 'Roboto Slab'
+                                }}>
+                                RMC Realty and Real Estate is a corporate owned company. It was a newly established hotel that began its operations on December 1, 2020, in the heart of Quezon City. The building was initially built with features of a condotel, but due to the pandemic, they have come up with the idea that it was suitable for a better business concept, so it was later converted into a hotel as a starting point.
                             </p>
-                            <p>
-                                <i
-                                    family='times new roman'
-                                    weight='normal'
-                                    color='#5b5b5b'
-                                    margin='20px'
-                                >   Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-                                    sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                                    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                                    Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-                                    Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                                </i>
+                            <p
+                                style={{
+                                    fontSize: '20px',
+                                    fontFamily: 'Roboto Slab'
+                                }}>
+                                The hotel provided a variety of services, including functions, staycations, photoshoots, and long-term lease. It is a five-story building with 12 rooms on each floor; there are 48 operational rooms, but the total number of rooms is 64; and their amenities include an event place, and a coffee shop.
                             </p>
                         </FlexboxItem1>
                     </FlexboxContainer1>
-                    <FlexboxContainer2>
-                        <HorizontalLineSmall></HorizontalLineSmall>
-                        <FlexboxItem2>
-                            <p>
-                                <i
-                                    family='times new roman'
-                                    weight='normal'
-                                    color='#5b5b5b'
-                                >   Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-                                    sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                                    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                                    Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-                                    Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                                </i>
-                            </p>
-                            <p>
-                                <i
-                                    family='times new roman'
-                                    weight='normal'
-                                    color='#5b5b5b'
-                                >   Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-                                    sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                                    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                                    Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-                                    Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                                </i>
-                            </p>
-                        </FlexboxItem2>
-                    </FlexboxContainer2>
+
                     <FlexboxPhoto
-                    link={Background}></FlexboxPhoto>
+                        link={Background}>
+
+                    </FlexboxPhoto>
                 </FlexboxContainerMain>
             </ContentContainer>
             <Footer />

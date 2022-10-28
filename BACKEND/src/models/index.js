@@ -49,10 +49,17 @@ db.usedServices = require('./usedServices.model.js')(sequelize, Sequelize, DataT
 db.roomTypeImages = require('./roomTypeImages.model.js')(sequelize, Sequelize, DataTypes)
 
 
+// db.amenities.bulkCreate([
+//     {amenityName: "Extra Mattress", amenityRate: 500},
+//     {amenityName: "Extra Pillow", amenityRate: 100},
+//     {amenityName: "Extra Blanket", amenityRate: 100},
+//     {amenityName: "Extra Person", amenityRate: 250},
+//     {amenityName: "Extra Time(Rate/hour)", amenityRate: 100},
+// ]).then(() => console.log("Users data have been saved"));
 
 // db.services.bulkCreate([
 //     { servicesName: "Free Wifi" },
-//     { servicesName: "Television" },
+//     { servicesName: "Television" },  
 //     { servicesName: "Car Parking" },
 //     { servicesName: "Aircondition" },
 //     { servicesName: "Reception" },
@@ -144,14 +151,14 @@ db.room.hasOne(db.reservationSummary, {
 
 
 // One orderedAmenities has one amenity
-db.orderedAmenities.belongsTo(db.reservation, {
-    foreignKey: { name: "reservation_id", allowNull: false },
+db.orderedAmenities.belongsTo(db.reservationSummary, {
+    foreignKey: { name: "reservationSummary_id", allowNull: false },
     foreignKeyConstraint: true,
 });
 
-db.reservation.hasMany(db.orderedAmenities, {
+db.reservationSummary.hasMany(db.orderedAmenities, {
     as: "amenity",
-    foreignKey: "reservation_id",
+    foreignKey: "reservationSummary_id",
 });
 
 

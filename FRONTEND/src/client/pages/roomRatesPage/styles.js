@@ -44,7 +44,7 @@ export const HorizontalLineShortLeft = styled(motion.div)`
     background-color: black;
     height: 0.5px;
     width: 20%;
-    margin: 40px 0px;
+    margin: 40px auto;
 `;
 
 export const Description = styled.p`

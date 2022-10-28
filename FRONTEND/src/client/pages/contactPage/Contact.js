@@ -7,7 +7,7 @@ import { TextInput } from '../../components/textBox/style';
 import { Title } from '../../components/title/styles';
 import { Button } from '../../components/button/styles';
 import Location from '../../components/map/Location'
-
+import MapIcon from '../../images/backgroundImages/mapIcon.png'
 export const Contact = () => {
     useEffect(() => {
         document.title = "Contact Us"
@@ -55,74 +55,26 @@ export const Contact = () => {
                         </FlexboxItem1>
                     </FlexboxContainer1>
                     <VerticalLine></VerticalLine>
-                    <FlexboxContainer2>
+                    <FlexboxContainer2
+                    style={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center'
+                    }}
+                    >
                         <FlexboxItem2>
-                            <Title
-                                family='Roboto Slab'
-                                size='40px'
-                                color='#8F805F'
-                                align='left'
-                            >
-                                Inquiry Form
-                            </Title>
-                            <TextInput
-                                margins='10px 0px 0px 0px'
-                                fontStyle='italic'
-                                width='375px'
-                                padding='0px 0px 0px 10px'
-                                background='#E1DACA'
-                                placeholder='Name'
-                            >
-
-                            </TextInput>
-                            <TextInput
-                                margins='10px 0px 0px 0px'
-                                fontStyle='italic'
-                                width='375px'
-                                padding='0px 0px 0px 10px'
-                                background='#E1DACA'
-                                placeholder='Email'
-                            >
-
-                            </TextInput>
-                            <TextInput
-                                margins='10px 0px 0px 0px'
-                                fontStyle='italic'
-                                width='375px'
-                                padding='0px 0px 0px 10px'
-                                background='#E1DACA'
-                                placeholder='Subject'
-                            >
-
-                            </TextInput>
-                            <TextInput
-                                margins='10px 0px 0px 0px'
-                                fontStyle='italic'
-                                width='375px'
-                                padding='0px 0px 80px 10px'
-                                background='#E1DACA'
-                                placeholder='Message'
-                            >
-
-                            </TextInput>
-                            <Button
-                                bg='#60553F'
-                                w='70px'
-                                h='35px'
-                                margin='5px 0px 0px 310px'
-                                padding='0.5px'
-                                fam='Roboto Slab'
-                                fontStyle='normal'
-                            >
-                                Submit
-                            </Button>
+                            <a target='_blank' href='https://www.google.com/maps/place/RMC+Realty+and+Real+Estate+Development+Corporation/@14.6695732,121.048862,17z/data=!3m1!4b1!4m5!3m4!1s0x3397b72cc97ad977:0xb200b7e744606c3d!8m2!3d14.6695732!4d121.048862?authuser=0&hl=en'><img src={MapIcon}
+                            style={{
+                                width: '200px',
+                                
+                            }}></img></a>
                         </FlexboxItem2>
                     </FlexboxContainer2>
                 </FlexboxContainerMain>
             </ContentContainer>
-            <MapContainer>
+            {/* <MapContainer>
                 <Location></Location>
-            </MapContainer>
+            </MapContainer> */}
             <Footer />
         </Container>
     )

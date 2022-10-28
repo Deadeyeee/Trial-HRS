@@ -7,19 +7,22 @@ const OrderedAmenities = db.orderedAmenities;
 exports.create = async (req, res) => {
     try {
         const new_orderedAmenities = await OrderedAmenities.create(req.body);
-        return res.status(200).send({new_orderedAmenities});
+        return res.status(200).send({ new_orderedAmenities });
     } catch (error) {
         return res.status(200).send(error.message);
     }
 };
 
 exports.findAll = async (req, res) => {
-    const orderedAmenities = await OrderedAmenities.findAll();
+    const orderedAmenities = await OrderedAmenities.findAll(
+        { include: { all: true, nested: true } });
     return res.status(200).send(orderedAmenities);
 };
 
 exports.findOne = async (req, res) => {
-    const orderedAmenities = await OrderedAmenities.findByPk(req.params.id);
+    const orderedAmenities = await OrderedAmenities.findByPk(req.params.id,
+        { include: { all: true, nested: true } }
+    );
     return res.status(200).send(orderedAmenities);
 };
 

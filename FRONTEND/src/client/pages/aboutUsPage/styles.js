@@ -39,7 +39,7 @@ export const FlexboxContainer2 = styled(motion.div)`
 `;
 
 export const FlexboxItem1 = styled(motion.div)`
-    width: 300px;
+    width: 500px;
     height: 300px;
     margin: 20px 20px 0px 20px;
 
@@ -54,10 +54,10 @@ export const FlexboxItem2 = styled(motion.div)`
 export const FlexboxPhoto = styled(motion.div)`
     width: 220px;
     height: 500px;
-    margin: 62px 20px 20px 20px;
+    margin: 0px 20px 20px 20px;
     background-image: url(${(props) => (props.link ? props.link : null)});
     background-size: cover;
-    background-position: center;
+    background-position: right;
 `;
 
 export const FlexboxTitle = styled(motion.div)`

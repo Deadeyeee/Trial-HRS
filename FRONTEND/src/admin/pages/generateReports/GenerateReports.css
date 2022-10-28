@@ -1,0 +1,41 @@
+@media print
+{
+  .reportTable { page-break-after:auto }
+  .reportTable tr    { page-break-inside:avoid; page-break-after:auto }
+  .reportTable td    { page-break-inside:avoid; page-break-after:auto }
+  .reportTable thead { display:table-header-group }
+  .reportTable tfoot { display:table-footer-group }
+}
+
+
+th,
+td {
+    text-align: center;
+    font-family: Verdana;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    /* font-size: 1.5vw; */
+}
+
+tr {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+table {
+    margin-top: 25px;
+    margin-bottom: 25px;
+}
+
+
+.reportTable {
+    border-collapse: collapse;
+    border: 1px solid black;
+}
+
+.reportTable td,
+.reportTable th {
+    padding: 10px;
+}
+
+.reportTable tr:nth-child(even) {background-color: rgb(0, 0, 0, 0.2);}

@@ -7,6 +7,11 @@ module.exports = (sequelize, DataTypes, Sequelize) => {
             primaryKey: true,
             allowNull: false,
         },
+        quantity: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            defaultValue: 0,
+        },
     },
     {
         timestamps: true,

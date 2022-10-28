@@ -3,6 +3,7 @@ import VerificationEmailCont from '../../../containers/verificationEmail/Verific
 import { Container } from '../style'
 import Background from '../../../components/background/Background'
 import Axios from 'axios'
+import { apiKey } from '../../../../apiKey'
 
 function VerificationEmail() {
 
@@ -34,7 +35,7 @@ function VerificationEmail() {
     useEffect(() => {
 
 
-        Axios.get('http://localhost:3001/api/getUsers/' + localStorage.getItem('id')).then((res) => {
+        Axios.get(apiKey+'api/getUsers/' + localStorage.getItem('id')).then((res) => {
             if (res.data == "") {
 
                 localStorage.removeItem('id');
@@ -53,7 +54,7 @@ function VerificationEmail() {
                 window.location = "/login"
             }
             if (sessionStorage.getItem('timerEmail') == null) {
-                Axios.post('http://localhost:3001/api/resendEmail', {
+                Axios.post(apiKey+'api/resendEmail', {
                     id: localStorage.getItem('id'),
                     email: localStorage.getItem('email'),
                     userName: localStorage.getItem('userName')
@@ -80,7 +81,7 @@ function VerificationEmail() {
             localStorage.removeItem('email');
             window.location = "/login"
         }
-        Axios.post('http://localhost:3001/api/resendEmail', {
+        Axios.post(apiKey+'api/resendEmail', {
             id: localStorage.getItem('id'),
             email: localStorage.getItem('email'),
             userName: localStorage.getItem('userName')

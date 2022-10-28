@@ -4,6 +4,7 @@ import logo from '../../images/logo.png';
 import { Button } from '../button/styles';
 import Axios from 'axios';
 import ProfileDrop from '../../containers/profileDrop/ProfileDrop';
+import { apiKey } from '../../../apiKey';
 
 
 export const Navprofile = (props) => {
@@ -14,7 +15,7 @@ export const Navprofile = (props) => {
   const [userName, setUserName] = useState("");
 
   const Logout = () => {
-      Axios.delete("http://localhost:3001/auth/Logout").then((response) => {
+      Axios.delete(apiKey+"auth/Logout").then((response) => {
         
         window.location.reload();
       })
@@ -23,7 +24,7 @@ export const Navprofile = (props) => {
   useLayoutEffect(()=>{
     console.log()
     Axios.defaults.withCredentials = true;
-    Axios.get("http://localhost:3001/auth/verify-token").then((response)=>{
+    Axios.get(apiKey+"auth/verify-token").then((response)=>{
       setLogin(false);
       setdropDown("inline-flex")
       setUserName(response.data.userName.charAt(0).toUpperCase()+ response.data.userName.slice(1));

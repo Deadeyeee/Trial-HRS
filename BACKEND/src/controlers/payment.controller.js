@@ -1,4 +1,4 @@
-const { paymentMode, discount, reservationSummary } = require("../models");
+const { paymentMode, discount, reservationSummary, orderedAmenities } = require("../models");
 const db = require("../models");
 const Payment = db.payment;
 // import Logo from "../../../FRONTEND/src/images/logo.png";
@@ -72,7 +72,7 @@ exports.update = async (req, res) => {
             paymentImage: req.body.paymentImage,
             paymentMade: req.body.paymentMade,
             grandTotal: req.body.grandTotal,
-            balance: req.body.grandTotal - req.body.balance,
+            balance: req.body.grandTotal - req.body.paymentMade,
             discountValid: req.body.discountValid,
             paymentType: req.body.paymentType,
             paymentStatus: req.body.paymentStatus,
@@ -99,6 +99,9 @@ exports.updateGrandTotal = async (req, res) => {
         const getTotal = await reservationSummary.findAll(
             { include: { all: true, nested: true } }
         );
+        
+        const getamenitiesTotal = await orderedAmenities.findAll(
+            { include: { all: true, nested: true } });
 
         const getpayment = await Payment.findByPk(req.params.id,
             {
@@ -113,24 +116,36 @@ exports.updateGrandTotal = async (req, res) => {
 
         getTotal.map((item) => {
             if (req.params.id == item.dataValues.reservation.payment.id) {
-                grandTotal += (item.dataValues.room.roomType.roomRate * item.dataValues.numberOfNights);
+                grandTotal += (item.dataValues.room.roomType.roomRate * item.dataValues.numberOfNights) + parseInt(item.dataValues.others);
                 // console.log(item.dataValues.room.roomType.roomRate * item.Values.numberOfNights)
             }
         })
 
-        if (getpayment.discountValid == true){
-            grandTotal = grandTotal * .80;
-        }
+        getamenitiesTotal.map((item)=>{
+            if(req.params.id == item.dataValues.reservationSummary.reservation.payment.id){
+                grandTotal += (item.dataValues.quantity * item.dataValues.amenity.amenityRate)
+            }
+        })
 
-            if (grandTotal - req.body.paymentMade == 0) {
-                paymentStatus = 'fully paid'
-            }
-            else if (grandTotal - req.body.paymentMade == grandTotal / 2) {
-                paymentStatus = 'partial'
-            }
-            else {
-                paymentStatus = 'pending'
-            }
+        if (getpayment.discountValid == true) {
+            grandTotal = grandTotal / 1.12 * .80;
+        }
+        console.log('\n\n\n grand total', parseFloat(grandTotal).toFixed(4))
+        console.log('\n\n\n payment made', parseFloat(req.body.paymentMade))
+        console.log('\n\n\n total',parseFloat(grandTotal) - parseFloat(req.body.paymentMade))
+
+        if (parseFloat(grandTotal).toFixed(4) - parseFloat(req.body.paymentMade).toFixed(4) == 0) {
+            paymentStatus = 'fully paid'
+        }
+        else if (parseFloat(grandTotal).toFixed(4) - parseFloat(req.body.paymentMade).toFixed(4) == parseFloat(grandTotal).toFixed(4) / 2) {
+            paymentStatus = 'partial'
+        }
+        else if(parseFloat(grandTotal).toFixed(4) - parseFloat(req.body.paymentMade).toFixed(4) == parseFloat(grandTotal).toFixed(4)){
+            paymentStatus = 'pending'
+        }
+        else {
+            paymentStatus = 'partial'
+        }
         console.log(grandTotal)
 
         let info = {
@@ -177,7 +192,7 @@ exports.upload = multer({
     storage: storage,
     limits: { fileSize: '100000000' },
     fileFilter: (req, file, cb) => {
-        const fileTypes = /jpeg|jpg|png/
+        const fileTypes = /jpeg|jpg|png|JPG|JPEG|PNG/
         const mimeType = fileTypes.test(file.mimetype)
         const extname = fileTypes.test(path.extname(file.originalname))
 

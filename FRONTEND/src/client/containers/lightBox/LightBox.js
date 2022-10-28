@@ -2,7 +2,7 @@ import React from 'react'
 import {  Button } from '../../components/button/styles'
 import { Title } from '../../components/title/styles'
 import { Announcement, AnnouncementConent, Background, Container, TitleBar } from './style'
-import AnnouncementImg from '../../images/AnnouncementIMG/announcement.jpg'
+import AnnouncementImg from '../../images/AnnouncementIMG/announcement.png'
 
 function LightBox(props) {
   return (
