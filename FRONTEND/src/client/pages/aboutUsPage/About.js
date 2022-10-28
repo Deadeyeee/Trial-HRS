@@ -4,7 +4,7 @@ import NavigationBar from '../../components/navigationBar/Nav';
 import Footer from '../../components/footer/Footer'
 import ChatBot from '../../components/chatBot/ChatBot';
 import { Title } from '../../components/title/styles';
-import Background from '../../images/backgroundImages/aboutus.JPG';
+import Background from '../../images/backgroundImages/aboutus.jpg';
 
 export const About = () => {
     useEffect(() => {
