@@ -105,9 +105,9 @@ export const ContentDiv = styled(motion.div)`
 `;
 
 export const AccordionTitle = styled(motion.div)`
-    min-height: 100vh;
+    min-height: 70%;
     width: 70%;
-    margin: 0 auto;
+    margin: 0 auto 90px auto;
     display: flex;
     flex-direction: column;
     align-items: center;
