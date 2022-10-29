@@ -1896,7 +1896,7 @@ const BookingsContainer = () => {
                                 gap='10px'
                                 justify='space-between'
                                 align='center'
-                                overflow='auto'
+                                overflow='visible'
 
                             >
                                 <InputContainer>
@@ -1911,9 +1911,11 @@ const BookingsContainer = () => {
                                         }}
                                         multiline
                                         rows={4}
-                                        style={{ width: '95%', }}
+                                        style={{ width: '95%', overflow: 'visible'}}
 
-
+                                        InputProps={{
+                                            readOnly: true,
+                                        }}
                                         required />
 
                                 </InputContainer>
@@ -2367,6 +2369,7 @@ const BookingsContainer = () => {
                                         onChange={(newValue) => {
                                             setBirthDay(newValue);
                                         }}
+                                        disabled
                                         renderInput={(params) =>
                                             <TextField
                                                 {...params}
@@ -2394,9 +2397,7 @@ const BookingsContainer = () => {
                                         onChange={(event) => {
                                             setNationality(event.target.value);
                                         }}
-                                        InputProps={{
-                                            readOnly: true,
-                                        }}
+                                        disabled
                                         required
                                     >
 

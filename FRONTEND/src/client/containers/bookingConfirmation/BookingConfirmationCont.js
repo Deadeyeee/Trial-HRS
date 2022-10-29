@@ -443,7 +443,7 @@ function BookingConfirmationCont() {
                             color='#2e2e2e'
                             align='left'
                         >
-                            Reservation Number.
+                            Reservation Number:
                         </Title>
                         <Title
                             family='raleway, sans-serif'
@@ -453,7 +453,7 @@ function BookingConfirmationCont() {
                             color='#2e2e2e'
                             align='left'
                         >
-                            <b>: {reservationInfo.length != 0 && reservationInfo.reservationReferenceNumber}</b>
+                            <b>{reservationInfo.length != 0 && reservationInfo.reservationReferenceNumber}</b>
                         </Title>
                     </ContainerGlobal>
                     <ContainerGlobal
@@ -467,7 +467,7 @@ function BookingConfirmationCont() {
                             color='#2e2e2e'
                             align='left'
                         >
-                            Reservation Date.
+                            Reservation Date:
                         </Title>
                         <Title
                             family='raleway, sans-serif'
@@ -477,7 +477,7 @@ function BookingConfirmationCont() {
                             color='#2e2e2e'
                             align='left'
                         >
-                            <b>: {reservationInfo.length != 0 && new Date(reservationInfo.reservationDate).toLocaleDateString()}</b>
+                            <b>{reservationInfo.length != 0 && new Date(reservationInfo.reservationDate).toLocaleDateString()}</b>
                         </Title>
                     </ContainerGlobal>
                     <ContainerGlobal
@@ -491,7 +491,7 @@ function BookingConfirmationCont() {
                             color='#2e2e2e'
                             align='left'
                         >
-                            Payment Mode
+                            Payment Mode:
                         </Title>
                         <Title
                             family='raleway, sans-serif'
@@ -501,7 +501,7 @@ function BookingConfirmationCont() {
                             color='#2e2e2e'
                             align='left'
                         >
-                            <b>: {reservationInfo.length != 0 && reservationInfo.payment.paymentMode.paymentMode}</b>
+                            <b>{reservationInfo.length != 0 && reservationInfo.payment.paymentMode.paymentMode}</b>
                         </Title>
                     </ContainerGlobal>
                     <ContainerGlobal
@@ -515,7 +515,7 @@ function BookingConfirmationCont() {
                             color='#2e2e2e'
                             align='left'
                         >
-                            Payment Type
+                            Payment Type:
                         </Title>
                         <Title
                             family='raleway, sans-serif'
@@ -525,7 +525,7 @@ function BookingConfirmationCont() {
                             color='#2e2e2e'
                             align='left'
                         >
-                            <b>:  {reservationInfo.length != 0 && reservationInfo.payment.paymentType}</b>
+                            <b>{reservationInfo.length != 0 && reservationInfo.payment.paymentType}</b>
                         </Title>
                     </ContainerGlobal>
                     <ContainerGlobal
@@ -539,7 +539,7 @@ function BookingConfirmationCont() {
                             color='#2e2e2e'
                             align='left'
                         >
-                            Guest Name
+                            Guest Name:
                         </Title>
                         <Title
                             family='raleway, sans-serif'
@@ -549,7 +549,7 @@ function BookingConfirmationCont() {
                             color='#2e2e2e'
                             align='left'
                         >
-                            <b>: {reservationInfo.length != 0 && reservationInfo.guestInformation.firstName.toLowerCase()}  {reservationInfo.length != 0 && reservationInfo.guestInformation.lastName.toLowerCase()}</b>
+                            <b>{reservationInfo.length != 0 && reservationInfo.guestInformation.firstName.toLowerCase()}  {reservationInfo.length != 0 && reservationInfo.guestInformation.lastName.toLowerCase()}</b>
                         </Title>
                     </ContainerGlobal>
                     <ContainerGlobal
@@ -563,7 +563,7 @@ function BookingConfirmationCont() {
                             color='#2e2e2e'
                             align='left'
                         >
-                            Birthdate
+                            Birthdate:
                         </Title>
                         <Title
                             family='raleway, sans-serif'
@@ -573,7 +573,7 @@ function BookingConfirmationCont() {
                             color='#2e2e2e'
                             align='left'
                         >
-                            <b>: {reservationInfo.length != 0 && new Date(reservationInfo.guestInformation.birthDate).toLocaleDateString()}</b>
+                            <b>{reservationInfo.length != 0 && new Date(reservationInfo.guestInformation.birthDate).toLocaleDateString()}</b>
                         </Title>
                     </ContainerGlobal>
                     <ContainerGlobal
@@ -587,7 +587,7 @@ function BookingConfirmationCont() {
                             color='#2e2e2e'
                             align='left'
                         >
-                            Nationality
+                            Nationality:
                         </Title>
                         <Title
                             family='raleway, sans-serif'
@@ -597,7 +597,7 @@ function BookingConfirmationCont() {
                             color='#2e2e2e'
                             align='left'
                         >
-                            <b>: {reservationInfo.length != 0 && reservationInfo.guestInformation.nationality.toLowerCase()}</b>
+                            <b>{reservationInfo.length != 0 && reservationInfo.guestInformation.nationality.toLowerCase()}</b>
                         </Title>
                     </ContainerGlobal>
                     <ContainerGlobal
@@ -611,7 +611,7 @@ function BookingConfirmationCont() {
                             color='#2e2e2e'
                             align='left'
                         >
-                            Email Address
+                            Email Address:
                         </Title>
                         <Title
                             family='raleway, sans-serif'
@@ -621,7 +621,7 @@ function BookingConfirmationCont() {
                             color='#2e2e2e'
                             align='left'
                         >
-                            <b>: {reservationInfo.length != 0 && reservationInfo.guestInformation.user.email.toLowerCase()}</b>
+                            <b>{reservationInfo.length != 0 && reservationInfo.guestInformation.user.email.toLowerCase()}</b>
                         </Title>
                     </ContainerGlobal>
                     <ContainerGlobal
@@ -635,7 +635,7 @@ function BookingConfirmationCont() {
                             color='#2e2e2e'
                             align='left'
                         >
-                            Address
+                            Address:
                         </Title>
                         <Title
                             family='raleway, sans-serif'
@@ -646,7 +646,7 @@ function BookingConfirmationCont() {
                             align='left'
                             width=''
                         >
-                            <b>: {reservationInfo.length != 0 && reservationInfo.guestInformation.address.toLowerCase()}</b>
+                            <b>{reservationInfo.length != 0 && reservationInfo.guestInformation.address.toLowerCase()}</b>
                         </Title>
                     </ContainerGlobal>
                     <ContainerGlobal
@@ -660,7 +660,7 @@ function BookingConfirmationCont() {
                             color='#2e2e2e'
                             align='left'
                         >
-                            Contact Number
+                            Contact Number:
                         </Title>
                         <Title
                             family='raleway, sans-serif'
@@ -670,7 +670,7 @@ function BookingConfirmationCont() {
                             color='#2e2e2e'
                             align='left'
                         >
-                            <b>: {reservationInfo.length != 0 && reservationInfo.guestInformation.user.contactNumber.toLowerCase()}</b>
+                            <b>{reservationInfo.length != 0 && reservationInfo.guestInformation.user.contactNumber.toLowerCase()}</b>
                         </Title>
                     </ContainerGlobal>
 
@@ -729,7 +729,7 @@ function BookingConfirmationCont() {
                         align='left'
                         margin='0px 100px 0px 0px'
                     >
-                        <b>Grand Total</b>
+                        <b>Grand Total:</b>
                     </Title>
                 </ChargeSummaryContentContainer>
                 <ChargeSummaryContentContainer>
@@ -742,7 +742,7 @@ function BookingConfirmationCont() {
                         align='left'
                         margin='0px 0px 0px 100px'
                     >
-                        : {numberFormat(grandTotal)}
+                        {numberFormat(grandTotal)}
                     </Title>
                 </ChargeSummaryContentContainer>
 

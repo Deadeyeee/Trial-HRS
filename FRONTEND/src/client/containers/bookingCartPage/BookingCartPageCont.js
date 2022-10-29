@@ -5,16 +5,65 @@ import { BrownTab, Container, FlexboxContainer, FlexboxContentMain, TableContain
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useEffect } from 'react';
+import { CheckCircleOutline, Close, HighlightOffSharp } from '@mui/icons-material';
+import logo from '../../images/logo.png';
+
 import { useState } from 'react';
+import { Box, CircularProgress, Grow, Modal } from '@mui/material';
 const BookingCartPageCont = () => {
   const [bookingInformation, setBookingInformation] = useState([])
   const [grandTotal, setGrandTotal] = useState(0);
 
 
-  
+  const [isLoading, setIsLoading] = useState(false);
+  const [loadingMessage, setLoadingMessage] = useState('Please wait...')
+  const [status, setStatus] = useState('loading')
+
+  const handleOpenIsLoading = () => {
+    setIsLoading(true);
+    setStatus('loading')
+    setLoadingMessage('Please wait...')
+  }
+
+  const handleCloseIsLoading = (status, link) => {
+
+    if (status == 1 || status === undefined) {
+      setStatus('loading')
+      setLoadingMessage('')
+    }
+    else if (status == 2) {
+      setStatus('success')
+      setLoadingMessage('')
+    }
+    else if (status == 3) {
+      setStatus('failed')
+      setLoadingMessage('')
+    }
+
+    setTimeout(() => {
+      setIsLoading(false);
+      console.log(link)
+      if (link !== undefined) {
+        window.location = link;
+      }
+    }, 1000)
+  }
+
+  const loadingStatus = (value) => {
+    if (value == 'loading') {
+      return <CircularProgress></CircularProgress>;
+    }
+    else if (value == 'success') {
+      return <Grow in={true}><CheckCircleOutline style={{ color: 'green', fontSize: '80px' }} /></Grow>;
+    }
+    else if (value == 'failed') {
+      return <Grow in={true}><HighlightOffSharp style={{ color: 'red', fontSize: '80px' }} /></Grow>;
+    }
+  }
+
   useEffect(() => {
-    
-    if(JSON.parse(window.sessionStorage.getItem("AvailedRoom")).length == 0 || window.sessionStorage.getItem("AvailedRoom") == null){
+
+    if (JSON.parse(window.sessionStorage.getItem("AvailedRoom")).length == 0 || window.sessionStorage.getItem("AvailedRoom") == null) {
       window.location = "/booking"
     }
     setBookingInformation(JSON.parse(window.sessionStorage.getItem("AvailedRoom")))
@@ -44,6 +93,47 @@ const BookingCartPageCont = () => {
 
   return (
     <Container>
+
+
+      <Modal
+        open={isLoading}
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          border: 'none'
+        }}>
+        <Box
+          component='form'
+          style={{
+            height: '300px',
+            width: '400px',
+            backgroundColor: 'white',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '10px',
+            justifyContent: 'center',
+            alignItems: 'center',
+            overflowY: 'overlay',
+            overflowX: 'hidden',
+            borderRadius: '.5rem',
+            position: 'relative',
+            border: 'none'
+            // margin: '50px 0px',
+
+          }}>
+          <div style={{ margin: '10px', display: 'flex', width: '400px', height: '350px', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', }}>
+            <img src={logo} width="35%"></img>
+            {loadingStatus(status)}
+            <h1 style={{ fontWeight: 'normal', margin: '0px' }}>{loadingMessage}</h1>
+          </div>
+        </Box>
+      </Modal>
+
+
+
+
+
       <FlexboxContainer>
         <Title
           color='#2e2e2e'

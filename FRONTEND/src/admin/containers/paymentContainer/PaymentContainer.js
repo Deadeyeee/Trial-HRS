@@ -2481,9 +2481,9 @@ const PaymentContainer = () => {
                                         <Tr>
 
                                             <Td align='left'>{item.amenityName}</Td>
-                                            <Td align='center'>{orderedAmenities.filter((obj) => obj.amenity.amenityName == item.amenityName).map((item) => item.quantity).reduce((accumulator, value) => accumulator + value)}</Td>
+                                            <Td align='center'>{orderedAmenities.filter((obj) => obj.amenity.amenityName == item.amenityName).map((item) => item.quantity).reduce((accumulator, value) => parseFloat(accumulator) + parseFloat(value), 0)}</Td>
                                             <Td align='center'>{numberFormat(item.amenityRate)}</Td>
-                                            <Td align='right' style={{ color: 'red' }}>{numberFormat(item.amenityRate * orderedAmenities.filter((obj) => obj.amenity.amenityName == item.amenityName).map((item) => item.quantity).reduce((accumulator, value) => accumulator + value))}</Td>
+                                            <Td align='right' style={{ color: 'red' }}>{numberFormat(item.amenityRate * orderedAmenities.filter((obj) => obj.amenity.amenityName == item.amenityName).map((item) => item.quantity).reduce((accumulator, value) => parseFloat(accumulator) + parseFloat(value), 0))}</Td>
                                             {/* <Td align='center'>{item.adults}</Td>
                                             <Td align='center'>{item.kids}</Td>
                                             <Td align='center'>{item.numberOfNights}</Td>
@@ -2502,7 +2502,7 @@ const PaymentContainer = () => {
                                     <Td align='left'><i>Others</i></Td>
                                     <Td align='center'></Td>
                                     <Td align='center'></Td>
-                                    <Td align='right' style={{ color: 'red' }}>{reservationSummaryInfo.length != 0 && numberFormat(reservationSummaryInfo.map((item) => item.others).reduce((accumulator, value) => parseFloat(accumulator) + parseFloat(value)))}</Td>
+                                    <Td align='right' style={{ color: 'red' }}>{reservationSummaryInfo.length != 0 && numberFormat(reservationSummaryInfo.map((item) => item.others).reduce((accumulator, value) => parseFloat(accumulator) + parseFloat(value), 0))}</Td>
 
 
 
@@ -3471,9 +3471,9 @@ const PaymentContainer = () => {
                                         <Tr>
 
                                             <Td align='left'>{item.amenityName}</Td>
-                                            <Td align='center'>{orderedAmenities.filter((obj) => obj.amenity.amenityName == item.amenityName).map((item) => item.quantity).reduce((accumulator, value) => accumulator + value)}</Td>
+                                            <Td align='center'>{orderedAmenities.filter((obj) => obj.amenity.amenityName == item.amenityName).map((item) => item.quantity).reduce((accumulator, value) => parseFloat(accumulator) + parseFloat(value), 0)}</Td>
                                             <Td align='center'>{numberFormat(item.amenityRate)}</Td>
-                                            <Td align='right' style={{ color: 'red' }}>{numberFormat(item.amenityRate * orderedAmenities.filter((obj) => obj.amenity.amenityName == item.amenityName).map((item) => item.quantity).reduce((accumulator, value) => accumulator + value))}</Td>
+                                            <Td align='right' style={{ color: 'red' }}>{numberFormat(item.amenityRate * orderedAmenities.filter((obj) => obj.amenity.amenityName == item.amenityName).map((item) => item.quantity).reduce((accumulator, value) => parseFloat(accumulator) + parseFloat(value), 0))}</Td>
                                             {/* <Td align='center'>{item.adults}</Td>
                                             <Td align='center'>{item.kids}</Td>
                                             <Td align='center'>{item.numberOfNights}</Td>
@@ -3492,7 +3492,7 @@ const PaymentContainer = () => {
                                     <Td align='left'><i>Others</i></Td>
                                     <Td align='center'></Td>
                                     <Td align='center'></Td>
-                                    <Td align='right' style={{ color: 'red' }}>{reservationSummaryInfo.length != 0 && numberFormat(reservationSummaryInfo.map((item) => item.others).reduce((accumulator, value) => parseFloat(accumulator) + parseFloat(value)))}</Td>
+                                    <Td align='right' style={{ color: 'red' }}>{reservationSummaryInfo.length != 0 && numberFormat(reservationSummaryInfo.map((item) => item.others).reduce((accumulator, value) => parseFloat(accumulator) + parseFloat(value), 0))}</Td>
 
 
 
@@ -4598,9 +4598,9 @@ const PaymentContainer = () => {
                                         <Tr>
 
                                             <Td align='left'>{item.amenityName}</Td>
-                                            <Td align='center'>{orderedAmenities.filter((obj) => obj.amenity.amenityName == item.amenityName).map((item) => item.quantity).reduce((accumulator, value) => accumulator + value)}</Td>
+                                            <Td align='center'>{orderedAmenities.filter((obj) => obj.amenity.amenityName == item.amenityName).map((item) => item.quantity).reduce((accumulator, value) => parseFloat(accumulator) + parseFloat(value), 0)}</Td>
                                             <Td align='center'>{numberFormat(item.amenityRate)}</Td>
-                                            <Td align='right' style={{ color: 'red' }}>{numberFormat(item.amenityRate * orderedAmenities.filter((obj) => obj.amenity.amenityName == item.amenityName).map((item) => item.quantity).reduce((accumulator, value) => accumulator + value))}</Td>
+                                            <Td align='right' style={{ color: 'red' }}>{numberFormat(item.amenityRate * orderedAmenities.filter((obj) => obj.amenity.amenityName == item.amenityName).map((item) => item.quantity).reduce((accumulator, value) => parseFloat(accumulator) + parseFloat(value), 0))}</Td>
                                             {/* <Td align='center'>{item.adults}</Td>
                                             <Td align='center'>{item.kids}</Td>
                                             <Td align='center'>{item.numberOfNights}</Td>
@@ -4619,7 +4619,7 @@ const PaymentContainer = () => {
                                     <Td align='left'><i>Others</i></Td>
                                     <Td align='center'></Td>
                                     <Td align='center'></Td>
-                                    <Td align='right' style={{ color: 'red' }}>{reservationSummaryInfo.length != 0 && numberFormat(reservationSummaryInfo.map((item) => item.others).reduce((accumulator, value) => parseFloat(accumulator) + parseFloat(value)))}</Td>
+                                    <Td align='right' style={{ color: 'red' }}>{reservationSummaryInfo.length != 0 && numberFormat(reservationSummaryInfo.map((item) => item.others).reduce((accumulator, value) => parseFloat(accumulator) + parseFloat(value), 0))}</Td>
 
 
 
