@@ -103,3 +103,37 @@ export const ContentDiv = styled(motion.div)`
     height: 240px;
     overflow: hidden;
 `;
+
+export const AccordionTitle = styled(motion.div)`
+    min-height: 100vh;
+    width: 70%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+`;
+
+export const Faq = styled(motion.div)`
+    width: 65vw;
+    height: auto;
+    margin-top: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #ffffff;
+    cursor: pointer;
+`;
+
+export const Question = styled(motion.div)`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: auto;
+`;
+
+export const Answer = styled(motion.div)`
+    max-height: 0;
+    margin: 10px 0px 15px 0px;
+    display: flex;
+    justify-content: flex-start;
+
+`;
+
