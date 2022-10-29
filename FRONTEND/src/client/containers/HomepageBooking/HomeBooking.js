@@ -44,7 +44,7 @@ export const HomeBooking = ({ title }) => {
     hidden: { opacity: 0 },
   }
 
-  const bookFilterDate = () =>{
+  const bookFilterDate = () => {
     window.sessionStorage.setItem('startDate', startDate)
     window.sessionStorage.setItem('endDate', endDate)
     window.sessionStorage.setItem('guest', adults)
@@ -146,7 +146,7 @@ export const HomeBooking = ({ title }) => {
           border="1px solid #8F805F"
           fontsize='1.1vw'
 
-        onClick={() => { bookFilterDate(); }}
+          onClick={() => { bookFilterDate(); }}
         >
 
           Book now!!
@@ -178,9 +178,9 @@ export const HomeBooking = ({ title }) => {
           fontStyle='italic'
           margin='30px 0px'
         >
-          Relax and Enjoy the vicinity of Quezon City in the comfort of RM Luxe Hotel. 
-          We offer services, including function, staycations, photoshoots and long-term lease. 
-          RM Luxe Hotel also has an event place to accommodate your upcoming events and a coffee shop to make your stay great. 
+          Relax and Enjoy the vicinity of Quezon City in the comfort of RM Luxe Hotel.
+          We offer services, including function, staycations, photoshoots and long-term lease.
+          RM Luxe Hotel also has an event place to accommodate your upcoming events and a coffee shop to make your stay great.
           Visit us to become one of our valuable guests. See you around!
         </Description>
         <FlexItems>
@@ -197,10 +197,10 @@ export const HomeBooking = ({ title }) => {
                 size='14px'
                 fontStyle='italic'
               >
-               Celebrate your milestones at our open event space, 
-               located at the building's rooftop, that can be designed and customized according to your desire. 
-               You can also try the premium healthy coffee offered by 
-               Doctors Blend Café located just in front of RM Luxe Hotel to boost your mood while enjoying your stay with us.
+                Celebrate your milestones at our open event space,
+                located at the building's rooftop, that can be designed and customized according to your desire.
+                You can also try the premium healthy coffee offered by
+                Doctors Blend Café located just in front of RM Luxe Hotel to boost your mood while enjoying your stay with us.
               </Description>
 
             </ContentDiv>
@@ -234,10 +234,10 @@ export const HomeBooking = ({ title }) => {
                 size='13.5px'
                 fontStyle='italic'
               >
-                Feel at ease and enjoy our exceptional guest rooms during your stay. 
+                Feel at ease and enjoy our exceptional guest rooms during your stay.
                 The RM Luxe Hotel is a five-story building with 12 rooms on each floor.
-                Currently, 48 of the 64 rooms are operating. 
-                We’ll help you find the accommodation that would suit your needs. Choose from Deluxe with table, 
+                Currently, 48 of the 64 rooms are operating.
+                We’ll help you find the accommodation that would suit your needs. Choose from Deluxe with table,
                 Deluxe w/o table, Premium or Family Rooms, and relax in peace and comfort with the hotel's ambiance.
               </Description>
 
@@ -271,8 +271,8 @@ export const HomeBooking = ({ title }) => {
                 size='14px'
                 fontStyle='italic'
               >
-                Relax, Enjoy and Rejuvenate yourself. 
-                In the heart of Quezon City, close to the well-known event venue Fernwoods Garden, 
+                Relax, Enjoy and Rejuvenate yourself.
+                In the heart of Quezon City, close to the well-known event venue Fernwoods Garden,
                 is where you'll find the RM Luxe Hotel. The hotel's overall good ambiance and high-caliber
                 service enable it to compete well with the other hotels in the area.
               </Description>
@@ -299,128 +299,134 @@ export const HomeBooking = ({ title }) => {
 
 
         <AccordionTitle>
-            <Title
-              size='50px'
-              margin='10px 0px 20px 0px'
-              color='#FFFFFF'
-              shadow='1px 3px 2px black'
-              family='Quicksand'
-              fstyle='none'
-            >
-              FAQs
-            </Title>
+          <Title
+            size='50px'
+            margin='10px 0px 20px 0px'
+            color='#FFFFFF'
+            shadow='1px 3px 2px black'
+            family='Quicksand'
+            fstyle='none'
+          >
+            FAQs
+          </Title>
 
-            <Faq>
-              <Question>
-                <Title
-                  size='20px'
-                  color='#FFFFFF'
-                  family='Quicksand'
-                  fstyle='none'
-                >What time can I check-in and check-out?
-                </Title>
-                  
-              </Question>
-              <Answer>
-                <Title
-                   size='15px'
-                   color='#FFFFFF'
-                   family='Quicksand'
-                   fstyle='none'
-                > You can Check-In from 2pm to 4am and check-out before 12pm.
-                </Title>
-              </Answer>
-            </Faq>
+          <Faq>
+            <Question>
+              <Title
+                size='30px'
+                color='#FFFFFF'
+                family='Quicksand'
+                fstyle='none'
+              >What time can I check-in and check-out?
+              </Title>
 
-            <Faq>
-              <Question>
-                <Title
-                  size='20px'
-                  color='#FFFFFF'
-                  family='Quicksand'
-                  fstyle='none'
-                >Are pets allowed?
-                </Title>
-                 
-              </Question>
-              <Answer>
-                <Title
-                   size='15px'
-                   color='#FFFFFF'
-                   family='Quicksand'
-                   fstyle='none'
-                   padding='1rm 0rm 0rm 0rm'
-                > Sorry, we dont allow pets around the hotel's premises.
-                </Title>
-              </Answer>
-            </Faq>
+            </Question>
+            <Answer>
+              <Title
+                size='24px'
+                color='#FFFFFF'
+                family='Quicksand'
+                fstyle='none'
+                weight='normal'
+              > You can Check-In from 2pm to 4am and check-out before 12pm.
+              </Title>
+            </Answer>
+          </Faq>
 
-            <Faq>
-              <Question>
-                <Title
-                  size='20px'
-                  color='#FFFFFF'
-                  family='Quicksand'
-                  fstyle='none'
-                > Does the hotel require a 50% downpayment to confirm my reservation?
-                </Title>
-                  
-              </Question>
-              <Answer>
-                <Title
-                   size='15px'
-                   color='#FFFFFF'
-                   family='Quicksand'
-                   fstyle='none'
-                > Yes, you can pay via Gcash or Bank Transfer.
-                </Title>
-              </Answer>
-            </Faq>  
+          <Faq>
+            <Question>
+              <Title
+                size='30px'
+                color='#FFFFFF'
+                family='Quicksand'
+                fstyle='none'
+              >Are pets allowed?
+              </Title>
 
-            <Faq>
-              <Question>
-                <Title
-                  size='20px'
-                  color='#FFFFFF'
-                  family='Quicksand'
-                  fstyle='none'
-                > Yes, you can pay via Gcash or Bank Transfer.
-                </Title>
-                  
-              </Question>
-              <Answer>
-                <Title
-                   size='15px'
-                   color='#FFFFFF'
-                   family='Quicksand'
-                   fstyle='none'
-                > We charge 150 pesos per every hour of extension after 12NN.
-                </Title>
-              </Answer>
-            </Faq>  
+            </Question>
+            <Answer>
+              <Title
+                size='24px'
+                color='#FFFFFF'
+                family='Quicksand'
+                fstyle='none'
+                weight='normal'
+                padding='1rm 0rm 0rm 0rm'
+              > Sorry, we dont allow pets around the hotel's premises.
+              </Title>
+            </Answer>
+          </Faq>
 
-            <Faq>
-              <Question>
-                <Title
-                  size='20px'
-                  color='#FFFFFF'
-                  family='Quicksand'
-                  fstyle='none'
-                >What time can I check-in and check-out?
-                </Title>
-                  
-              </Question>
-              <Answer>
-                <Title
-                   size='15px'
-                   color='#FFFFFF'
-                   family='Quicksand'
-                   fstyle='none'
-                > You can Check-In from 2pm to 4am and check-out before 12pm.
-                </Title>
-              </Answer>
-            </Faq>  
-          </AccordionTitle>
+          <Faq>
+            <Question>
+              <Title
+                size='30px'
+                color='#FFFFFF'
+                family='Quicksand'
+                fstyle='none'
+                align='left'
+              > Does the hotel require a 50% downpayment to confirm my reservation?
+              </Title>
+
+            </Question>
+            <Answer>
+              <Title
+                size='24px'
+                color='#FFFFFF'
+                family='Quicksand'
+                fstyle='none'
+                weight='normal'
+              > Yes, you can pay via Gcash or Bank Transfer.
+              </Title>
+            </Answer>
+          </Faq>
+
+          <Faq>
+            <Question>
+              <Title
+                size='30px'
+                color='#FFFFFF'
+                family='Quicksand'
+                fstyle='none'
+              > Yes, you can pay via Gcash or Bank Transfer.
+              </Title>
+
+            </Question>
+            <Answer>
+              <Title
+                size='24px'
+                color='#FFFFFF'
+                family='Quicksand'
+                fstyle='none'
+                weight='normal'
+              > We charge 150 pesos per every hour of extension after 12NN.
+              </Title>
+            </Answer>
+          </Faq>
+
+          <Faq>
+            <Question>
+              <Title
+                size='30px'
+                color='#FFFFFF'
+                family='Quicksand'
+                fstyle='none'
+              >What time can I check-in and check-out?
+              </Title>
+
+            </Question>
+            <Answer>
+              <Title
+                size='24px'
+                color='#FFFFFF'
+                family='Quicksand'
+                fstyle='none'
+                weight='normal'
+              > You can Check-In from 2pm to 4am and check-out before 12pm.
+              </Title>
+            </Answer>
+          </Faq>
+        </AccordionTitle>
 
       </WelcomeDiv>
     </Container>

@@ -22,8 +22,13 @@ import Checkbox from '@mui/material/Checkbox';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import TextField from '@mui/material/TextField';
+import CloseIcon from '@mui/icons-material/Close';
 import axios from 'axios';
 import { apiKey } from '../../../apiKey';
+import { CircularProgress, Grow } from '@mui/material';
+import { CheckCircleOutline, Close, HighlightOffSharp } from '@mui/icons-material';
+import logo from '../../images/logo.png';
+import zIndex from '@mui/material/styles/zIndex';
 
 const style = {
     position: 'absolute',
@@ -92,9 +97,60 @@ const ClientProfileCont = () => {
     const lastNameRef = useRef();
 
 
+    const [isLoading, setIsLoading] = useState(false);
+    const [loadingMessage, setLoadingMessage] = useState('Please wait...')
+    const [status, setStatus] = useState('loading')
+
+    const handleOpenIsLoading = () => {
+        setIsLoading(true);
+        setStatus('loading')
+        setLoadingMessage('Please wait...')
+    }
+
+    const handleCloseIsLoading = (status, link) => {
+
+        if (status == 1 || status === undefined) {
+            setStatus('loading')
+            setLoadingMessage('')
+        }
+        else if (status == 2) {
+            setStatus('success')
+            setLoadingMessage('')
+        }
+        else if (status == 3) {
+            setStatus('failed')
+            setLoadingMessage('Sorry, Something went wrong.')
+        }
+
+        setTimeout(() => {
+            setIsLoading(false);
+            console.log(link)
+            if (link !== undefined) {
+                window.location = link;
+            }
+        }, 1000)
+    }
+
+    const loadingStatus = (value) => {
+        if (value == 'loading') {
+            return <CircularProgress></CircularProgress>;
+        }
+        else if (value == 'success') {
+            return <Grow in={true}><CheckCircleOutline style={{ color: 'green', fontSize: '80px' }} /></Grow>;
+        }
+        else if (value == 'failed') {
+            return <Grow in={true}><HighlightOffSharp style={{ color: 'red', fontSize: '80px' }} /></Grow>;
+        }
+    }
+
+
+
+
+
+
     useEffect(() => {
-        axios.get(apiKey+'auth/verify-token').then((result) => {
-            axios.get(apiKey+'api/getAllGuest').then((guest) => {
+        axios.get(apiKey + 'auth/verify-token').then((result) => {
+            axios.get(apiKey + 'api/getAllGuest').then((guest) => {
                 guest.data.map((item) => {
                     if (result.data.id == item.user_id) {
 
@@ -129,7 +185,7 @@ const ClientProfileCont = () => {
         if (userInformation.length != 0) {
             if (userInformation.user.role != 'NON-USER') {
 
-                axios.get(apiKey+'api/getAllUsers').then((res) => {
+                axios.get(apiKey + 'api/getAllUsers').then((res) => {
                     if (res.data.length != 0) {
                         res.data.map((item) => {
                             if (item.role != 'NON-USER' && item.id != userInformation.user.id) {
@@ -168,14 +224,15 @@ const ClientProfileCont = () => {
 
         }
         else {
+            handleOpenIsLoading();
             if (emailError.length == 0 && contactNumberError.length == 0 && userNameError.length == 0) {
-                axios.patch(apiKey+'api/updateUsers/' + userInformation.user.id, {
+                axios.patch(apiKey + 'api/updateUsers/' + userInformation.user.id, {
                     email: email,
                     contactNumber: contactNumber,
-                     
+
                 }).then((result) => {
                     console.log(result.data);
-                    axios.patch(apiKey+'api/updateGuest/' + userInformation.id, {
+                    axios.patch(apiKey + 'api/updateGuest/' + userInformation.id, {
                         firstName: firstName,
                         lastName: lastName,
                         birthDate: birthDay,
@@ -183,13 +240,16 @@ const ClientProfileCont = () => {
                         address: address,
                         nationality: nationality
                     }).then((result) => {
-                    console.log(result.data);
-                        window.location.reload()
+                        console.log(result.data);
+                        handleCloseIsLoading(2, '')
+                        // window.location.reload()
                     }).catch((err) => {
-                        
+                        handleCloseIsLoading(3)
+
                     });
                 }).catch((err) => {
-                    
+                    handleCloseIsLoading(3)
+
                 });
 
 
@@ -199,6 +259,45 @@ const ClientProfileCont = () => {
     }
     return (
         <Container>
+
+            <Modal
+                open={isLoading}
+                style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    border: 'none',
+                    zIndex: '7 !important'
+                }}>
+                <Box
+                    component='form'
+                    style={{
+                        height: '300px',
+                        width: '400px',
+                        backgroundColor: 'white',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: '10px',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        overflowY: 'overlay',
+                        overflowX: 'hidden',
+                        borderRadius: '.5rem',
+                        position: 'relative',
+                        border: 'none'
+                        // margin: '50px 0px',
+
+                    }}>
+                    <div style={{ margin: '10px', display: 'flex', width: '400px', height: '350px', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', }}>
+                        <img src={logo} width="35%"></img>
+                        {loadingStatus(status)}
+                        <h1 style={{ fontWeight: 'normal', margin: '0px' }}>{loadingMessage}</h1>
+                    </div>
+                </Box>
+            </Modal>
+
+
+
             <Title
                 color='#bfaa7e'
                 weight='400'
@@ -431,29 +530,68 @@ const ClientProfileCont = () => {
             <Modal
                 open={open}
                 onClose={handleClose}
-                aria-labelledby="modal-modal-title"
-                aria-describedby="modal-modal-description"
-            >
-                <Box sx={style}
+                style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                }}>
+                <Box
                     component='form'
-                    onSubmit={updateUser}>
-                    <Title
-                        size='26px'
-                        color='black'
-                        family='Helvetica'
-                        fstyle='Normal'
-                        weight='600'
-                        align='left'
-                    >
-                        Edit Profile
-                    </Title>
-                    <HorizontalLine
-                        bg='gray'
-                        w='100%'
-                        margin='0px 0px 20px 0px'
-                    />
+                    onSubmit={updateUser}
+                    style={{
+                        height: '75vh',
+                        width: '70vw',
+                        backgroundColor: 'white',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        padding: '0px 0px 30px 0px',
+                        gap: '10px',
+                        justifyContent: 'flex-start',
+                        alignItems: 'center',
+                        overflowY: 'overlay',
+                        overflowX: 'hidden',
+                        borderRadius: '.5rem',
+                        position: 'relative',
+                        // margin: '50px 0px',
 
-                    <InputContainer>
+                    }}>
+                    <div style={{
+                        width: '100%',
+                        height: '50px',
+                        position: 'sticky',
+                        top: 0,
+                        display: 'flex',
+                        justifyContent: 'flex-end',
+                        alignItems: 'center',
+                        backgroundColor: 'black',
+                        zIndex: '1',
+
+                    }}>
+                        <Title
+                            size='16px'
+                            color='white'
+                            family='Helvetica'
+                            fstyle='normal'
+                            weight='bold'
+                            align='left'
+                            margin='0px auto 0px 10px'
+                        >
+                            Edit Profile
+                        </Title>
+                        <CloseIcon
+                            onClick={handleClose}
+                            style={{
+                                color: 'white',
+                                cursor: 'pointer',
+                                margin: '10px',
+                            }} />
+                    </div>
+
+
+                    <InputContainer
+                    style={{
+                        margin: '50px 0px 0px 0px'
+                    }}>
                         <TextField
                             error={firstNameError.length != 0 ? true : false}
                             helperText={firstNameError.length != 0 ? firstNameError : ""}
@@ -628,55 +766,46 @@ const ClientProfileCont = () => {
                             }}
                             style={{ width: '100%', }} />
 
-                        
+
 
                     </InputContainer>
                     <InputContainer>
-                    {userInformation.length != 0 && userInformation.user.role != 'NON-USER' ? 
-                        <Link
-                            href="#">Change Password
-                        </Link>
+                        {userInformation.length != 0 && userInformation.user.role != 'NON-USER' ?
+                            <Link
+                                href="#">Change Password
+                            </Link>
                             :
                             ""
                         }
                     </InputContainer>
 
                     <Button2
-                        whileHover={{
-                            scale: 1.05, backgroundColor: "#0C4426",
-                            border: "2px solid #2E2E2E", color: "white"
-                        }}
-                        whileTap={{ scale: 1 }}
+                        whileHover={{ backgroundColor: "#2E2E2E", color: "white" }}
                         w='150px'
                         h='40px'
-                        radius='0px'
-                        padding='10px 0px'
-                        border='2px solid black'
-                        fam='arial'
-                        textcolor='#0C4426'
-                        fontsize='20px'
-                        fontStyle='normal'
-                        type='submit'>Update
+                        textcolor="black"
+                        fam='Times New Roman'
+                        weight='-400'
+                        radius="0px"
+                        border="1px solid #8F805F"
+                        margin='30px 0px 0px 0px'
+                        fontsize='15px'
+                        type='submit'>
+                            Update
                     </Button2>
 
                     <FormButton
-                        whileHover={{
-                            scale: 1.05, backgroundColor: "rgba(219, 51, 51, 1)",
-                            border: "2px solid #2E2E2E", color: "white"
-                        }}
-                        whileTap={{ scale: 1 }}
-                        w='120px'
+                        whileHover={{ color: "#0C4426" }}
+                        w='100px'
                         h='40px'
-                        type='submit'
-                        bg='rgba(219, 51, 51, 0.55)'
-                        radius='0px'
-                        padding='0px 0px'
-                        border='2px solid black'
-                        margin='0px 0px 0px 0px'
-                        fam='arial'
-                        textcolor='white'
-                        fontsize='15px'
-                        fontStyle='normal'
+                        textcolor='#FFFFFF'
+                        fam='Times New Roman, serif'
+                        weight='-400'
+                        fontStyle='Italic'
+                        radius="0px"
+                        margin='20px 0px 40px 0px'
+                        fontsize='16px'
+                        bg='#FF9292'
                         value='Cancel'
                         onClick={handleClose}>
                     </FormButton>
