@@ -5,7 +5,7 @@ import Footer from '../../components/footer/Footer'
 import ChatBot from '../../components/chatBot/ChatBot';
 import { Title } from '../../components/title/styles';
 import BackgroundIMG from "../../images/FamenitiesIMG/spa.jpg";
-import BackgroundIMG1 from "../../images/FamenitiesIMG/salon.jpg";
+import BackgroundIMG1 from "../../images/FamenitiesIMG/coffeeshop.jpg";
 import BackgroundIMG2 from "../../images/FamenitiesIMG/eventsplace.jpg";
 export const Famenities = () => {
     useEffect(() => {
@@ -53,7 +53,7 @@ export const Famenities = () => {
                 </TitleHolder>
             </PhotoHolder>
             <PhotoHolder
-            link={BackgroundIMG}>
+            link={BackgroundIMG1}>
                 <TitleHolder
                 
                 justifyContent="flex-end"
@@ -69,7 +69,7 @@ export const Famenities = () => {
                             opc='100%'
                             margin="0px 300px 0px 0px"
                         >
-                            SPA
+                            COFFEE SHOP
                         </Title>
                         <Title
                             color='white'
@@ -82,34 +82,6 @@ export const Famenities = () => {
                         </Title>
                     </i>
 
-                </TitleHolder>
-            </PhotoHolder>
-            <PhotoHolder
-            link={BackgroundIMG1}>
-                <TitleHolder>
-                    <i>
-                        <Title
-
-                            family='Roboto Slab, Serif'
-                            color='white'
-                            size='46px'
-                            weight='400'
-                            align='left'
-                            margin="0px 0px 0px 300px"
-                        >
-                            SALON
-                        </Title>
-                        <Title
-                            color='white'
-                            size='14px'
-                            align='left'
-                            weight='400'
-                            margin="0px 0px 0px 300px"
-                        >
-                            See More
-                        </Title>
-
-                    </i>
                 </TitleHolder>
             </PhotoHolder>
             <Footer />
