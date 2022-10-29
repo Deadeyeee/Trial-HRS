@@ -14,19 +14,19 @@ function ForgotPasswordCont() {
     const [seconds, setSeconds] = useState(localStorage.getItem('timer'));
     const [minutes, setMinutes] = useState("");
     var timer;
-    
+
     useEffect(() => {
-        if(seconds != 0){
+        if (seconds != 0) {
             setSent(true);
         }
-        timer = setInterval(()=>{
-            setSeconds(seconds-1);
+        timer = setInterval(() => {
+            setSeconds(seconds - 1);
             localStorage.setItem('timer', seconds);
-            if(seconds === 0){
+            if (seconds === 0) {
                 clearInterval(timer);
             }
-        },1000)
-        if(seconds === 0 || seconds < 0){
+        }, 1000)
+        if (seconds === 0 || seconds < 0) {
             localStorage.removeItem('timer');
             clearInterval(timer);
             setLoginStatus2("");
@@ -34,7 +34,7 @@ function ForgotPasswordCont() {
         }
         return () => clearInterval(timer);
     })
-    
+
     const [loginStatus, setLoginStatus] = useState("");
     const [loginStatus2, setLoginStatus2] = useState("");
     const [sent, setSent] = useState(false);
@@ -42,12 +42,12 @@ function ForgotPasswordCont() {
 
     const verifyEmail = (e) => {
         e.preventDefault();
-        Axios.get(apiKey+'api/getAllUsers/').then((res) => {
+        Axios.get(apiKey + 'api/getAllUsers/').then((res) => {
 
             for (let i = 0; i < res.data.length; i++) {
-                if (res.data[i].email == email && res.data.role != 'NON-USER') {
+                if (res.data[i].email == email && res.data[i].role != 'NON-USER') {
 
-                    Axios.post(apiKey+'api/resetPassword', {
+                    Axios.post(apiKey + 'api/resetPassword', {
                         id: res.data[i].id,
                         email: res.data[i].email,
                         userName: res.data[i].userName
@@ -64,8 +64,10 @@ function ForgotPasswordCont() {
                     break;
                 }
                 else {
-                    setLoginStatus("Invalid email. Email is not yet registered or verified.");
-                    setLoginStatus2("");
+                    if (i == res.data.length - 1) {
+                        setLoginStatus("Invalid email. Email is not yet registered or verified.");
+                        setLoginStatus2("");
+                    }
                 }
 
             }
@@ -76,7 +78,7 @@ function ForgotPasswordCont() {
         <ChangePasswordHolder>
             <a href="/">
                 <Logo
-                src={logo}
+                    src={logo}
                 ></Logo>
 
             </a>
@@ -100,12 +102,12 @@ function ForgotPasswordCont() {
                 onSubmit={verifyEmail}
             >
                 <TextInput
-                    
-                family='FontAwesome'
-                background='white'
-                type='email'
-                margins='10px 0px 10px 0px'
-                placeholder='&#xf0e0;   Email Address'
+
+                    family='FontAwesome'
+                    background='white'
+                    type='email'
+                    margins='10px 0px 10px 0px'
+                    placeholder='&#xf0e0;   Email Address'
                     onChange={(e) => {
                         setEmail(e.target.value);
                         setLoginStatus("");
@@ -144,10 +146,10 @@ function ForgotPasswordCont() {
                     w='300px'
                 >{timer}</Title>
                 <FormButton
-                    whileHover={sent ? 'none' :{
+                    whileHover={sent ? 'none' : {
                         scale: 1.1, backgroundColor: "#8F805F",
                         border: "2px solid #2E2E2E", color: "rgb(255, 255, 255)"
-                        }}
+                    }}
                     whileTap={{ scale: 1 }}
                     type="submit"
                     w='190px'

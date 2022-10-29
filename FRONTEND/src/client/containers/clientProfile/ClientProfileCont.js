@@ -232,7 +232,7 @@ const ClientProfileCont = () => {
                             color='#2e2e2e'
                             align='left'
                         >
-                            <b>: {userInformation.length != 0 ? userInformation.firstName.toLowerCase() : ""}</b>
+                            <b>{userInformation.length != 0 ? userInformation.firstName.toLowerCase() : ""}</b>
                         </Title>
                     </ContainerGlobal>
                     <ContainerGlobal
@@ -256,7 +256,7 @@ const ClientProfileCont = () => {
                             color='#2e2e2e'
                             align='left'
                         >
-                            <b>: {userInformation.length != 0 ? userInformation.lastName.toLowerCase() : ""}</b>
+                            <b>{userInformation.length != 0 ? userInformation.lastName.toLowerCase() : ""}</b>
                         </Title>
                     </ContainerGlobal>
                     <ContainerGlobal
@@ -280,7 +280,7 @@ const ClientProfileCont = () => {
                             color='#2e2e2e'
                             align='left'
                         >
-                            <b>:  {userInformation.length != 0 ? userInformation.user.email.toLowerCase() : ""}</b>
+                            <b>{userInformation.length != 0 ? userInformation.user.email.toLowerCase() : ""}</b>
                         </Title>
                     </ContainerGlobal>
                     <ContainerGlobal
@@ -304,7 +304,7 @@ const ClientProfileCont = () => {
                             color='#2e2e2e'
                             align='left'
                         >
-                            <b>: {userInformation.length != 0 ? userInformation.user.contactNumber.toLowerCase() : ""}</b>
+                            <b>{userInformation.length != 0 ? userInformation.user.contactNumber.toLowerCase() : ""}</b>
                         </Title>
                     </ContainerGlobal>
                     <ContainerGlobal
@@ -328,7 +328,7 @@ const ClientProfileCont = () => {
                             color='#2e2e2e'
                             align='left'
                         >
-                            <b>: {userInformation.length != 0 ? new Date(userInformation.birthDate).toLocaleDateString() : ""}</b>
+                            <b>{userInformation.length != 0 ? new Date(userInformation.birthDate).toLocaleDateString() : ""}</b>
                         </Title>
                     </ContainerGlobal>
                     <ContainerGlobal
@@ -352,7 +352,7 @@ const ClientProfileCont = () => {
                             color='#2e2e2e'
                             align='left'
                         >
-                            <b>: {userInformation.length != 0 ? userInformation.nationality.toLowerCase() : ""}</b>
+                            <b>{userInformation.length != 0 ? userInformation.nationality.toLowerCase() : ""}</b>
                         </Title>
                     </ContainerGlobal>
                     <ContainerGlobal
@@ -376,7 +376,7 @@ const ClientProfileCont = () => {
                             color='#2e2e2e'
                             align='left'
                         >
-                            <b>: {userInformation.length != 0 ? userInformation.gender.toLowerCase() : ""}</b>
+                            <b>{userInformation.length != 0 ? userInformation.gender.toLowerCase() : ""}</b>
                         </Title>
                     </ContainerGlobal>
                     <ContainerGlobal
@@ -402,7 +402,7 @@ const ClientProfileCont = () => {
                             align='left'
                             width=''
                         >
-                            <b>: {userInformation.length != 0 ? userInformation.address : ""}</b>
+                            <b>{userInformation.length != 0 ? userInformation.address : ""}</b>
                         </Title>
                     </ContainerGlobal>
                 </ProfileContent>

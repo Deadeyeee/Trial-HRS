@@ -62,7 +62,7 @@ const ClientBookingInfoCont = () => {
     }, [reservation])
 
     const numberFormat = (value) =>
-        new Intl.NumberFormat('en-IN', {
+        new Intl.NumberFormat('en-CA', {
             style: 'currency',
             currency: 'PHP'
         }).format(value);
@@ -245,7 +245,7 @@ const ClientBookingInfoCont = () => {
                             margin='0px 20px'
                         >
 
-                            To confirm your reservation, please make your deposit amounting within the next 24 hours. Please email your proof of payment to <b>(COMPANY EMAIL)</b> or upload it in the PAYMENT TAB section so we can verify the payment. Once your payment has been verified, you will receive a booking confirmation.
+                            To confirm your reservation, please make your deposit amounting within the next 24 hours. Please email your proof of payment to <b>rm.luxehotel@gmail.com</b> or upload it in the PAYMENT TAB section so we can verify the payment. Once your payment has been verified, you will receive a booking confirmation.
                         </Title>
                         <Title
                             family='raleway, sans-serif'
@@ -256,7 +256,7 @@ const ClientBookingInfoCont = () => {
                             align='center'
                             margin='25px 20px'
                         >
-                            For further information, please send an email to (Company email), or <a href='/login'>message us</a> through your account. You will find the details of your reservation made below.
+                            For further information, please send an email to rm.luxehotel@gmail.com, or <a href='/login'>message us</a> through your account. You will find the details of your reservation made below.
                         </Title>
                     </BankContentContainer>
                     <Title
@@ -285,7 +285,31 @@ const ClientBookingInfoCont = () => {
                                     color='#2e2e2e'
                                     align='left'
                                 >
-                                    Reservation Date.
+                                    Reservation Number
+                                </Title>
+                                <Title
+                                    family='raleway, sans-serif'
+                                    weight='700'
+                                    fstyle='Normal'
+                                    size='25px'
+                                    color='#2e2e2e'
+                                    align='left'
+                                >
+                                    <b>: {activeReservation.reservationReferenceNumber}</b>
+                                </Title>
+                            </ContainerGlobal>
+                            <ContainerGlobal
+                                justify='space-between'
+                            >
+                                <Title
+                                    family='raleway, sans-serif'
+                                    weight='400'
+                                    fstyle='Normal'
+                                    size='25px'
+                                    color='#2e2e2e'
+                                    align='left'
+                                >
+                                    Reservation Date
                                 </Title>
                                 <Title
                                     family='raleway, sans-serif'
@@ -1772,7 +1796,7 @@ const ClientBookingInfoCont = () => {
                             align='center'
                             margin='25px 20px'
                         >
-                            For further information, please send an email to (Company email), or <a href='/login'>message us</a> through your account. You will find the details of your reservation made below.
+                            For further information, please send an email to rm.luxehotel@gmail.com, or <a href='/login'>message us</a> through your account. You will find the details of your reservation made below.
                         </Title>
                     </BankContentContainer>
                     <Title
@@ -3176,7 +3200,9 @@ const ClientBookingInfoCont = () => {
         :
         ""}
             {activeReservation.length != 0 ?
-                <div>
+                <div
+                style={{display: 'flex', justifyContent: 'center'}}
+                >
                     {reservationStatus(activeReservation.reservationStatus)}
                 </div>
                 :
@@ -3193,7 +3219,8 @@ const ClientBookingInfoCont = () => {
             <MainContainer
                 display='flex'
                 height='450px'
-                style={{ yOverflow: 'scroll' }}>
+
+                style={{ yOverflow: 'scroll', }}>
                 <MessagesTitleContainer>
                     <Title
                         bg='#272727'

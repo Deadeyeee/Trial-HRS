@@ -29,9 +29,11 @@ import { TextInput } from '../../components/textBox/style';
 import Slider from "react-slick";
 import ImageSlider from '../../components/imageSlider/ImageSlider';
 import { letterSpacing } from '@mui/system';
-import { TextField } from '@mui/material';
+import { Box, CircularProgress, Grow, Modal, TextField } from '@mui/material';
 import { apiKey } from '../../../apiKey';
-
+// import CloseIcon from '@mui/icons-material/Close';
+import logo from '../../images/logo.png';
+import { CheckCircleOutline, Close, HighlightOffSharp } from '@mui/icons-material';
 export const BookingChildPageCont = () => {
 
     let { id } = useParams();
@@ -44,36 +46,73 @@ export const BookingChildPageCont = () => {
     const [availedRooms, setAvailedRooms] = useState([])
 
     const [roomTypeImagesDb, setRoomTypeImagesDb] = useState([])
-    
+
     const { roomquantityRef, kidRef, adultRef } = useRef();
 
+    const [isLoading, setIsLoading] = useState(false);
+    const [loadingMessage, setLoadingMessage] = useState('Please wait...')
+    const [status, setStatus] = useState('loading')
 
-    useEffect(()=>{
-        axios.get(apiKey+'api/getAllRoomTypeImages').then((result) => {
-            console.log(result.data)
-            for (let index = 0; index < result.data.length; index++) {
-                if(result.data[index].roomType_id == id){
-                    setRoomTypeImagesDb((oldData)=> [...oldData, result.data[index].roomImages])
-                }
-                
+    const handleOpenIsLoading = () => {
+        setIsLoading(true);
+        setStatus('loading')
+        setLoadingMessage('Please wait...')
+    }
+
+    const handleCloseIsLoading = (status, link) => {
+
+        if (status == 1 || status === undefined) {
+            setStatus('loading')
+            setLoadingMessage('')
+        }
+        else if (status == 2) {
+            setStatus('success')
+            setLoadingMessage('')
+        }
+        else if (status == 3) {
+            setStatus('failed')
+            setLoadingMessage('')
+        }
+
+        setTimeout(() => {
+            setIsLoading(false);
+            console.log(link)
+            if(link !== undefined){
+                window.location = link;
             }
-        }).catch((err) => {
-            console.lot(err)
-        });
-    },[])
+        }, 1000)
+    }
+
+    const loadingStatus = (value) => {
+        if (value == 'loading') {
+            return <CircularProgress></CircularProgress>;
+        }
+        else if (value == 'success') {
+            return <Grow in={true}><CheckCircleOutline style={{ color: 'green', fontSize: '80px' }} /></Grow>;
+        }
+        else if (value == 'failed') {
+            return <Grow in={true}><HighlightOffSharp style={{ color: 'red', fontSize: '80px' }} /></Grow>;
+        }
+    }
+
 
     const addRoom = () => {
+        handleOpenIsLoading();
 
         if (roomQuantity > availedRooms.length) {
             setRoomQuantity(availedRooms.length);
             roomquantityRef.current.focus();
+            handleCloseIsLoading(3);
+
         }
         else if (roomQuantity < 1) {
             setRoomQuantity(1);
+            handleCloseIsLoading(3);
         }
         else if (kid > roomType.maxKidsOccupancy) {
             setKid(roomType.maxKidsOccupancy);
             kidRef.current.focus();
+            handleCloseIsLoading(3);
         }
         else if (kid < 0) {
             setKid(0);
@@ -81,9 +120,11 @@ export const BookingChildPageCont = () => {
         else if (adult > roomType.maxAdultOccupancy) {
             setAdult(roomType.maxAdultOccupancy);
             adult.current.focus();
+            handleCloseIsLoading(3);
         }
         else if (adult < 1) {
             setAdult(1);
+            handleCloseIsLoading(3);
         }
         else {
             let listOfRoomAvail = [];
@@ -107,6 +148,8 @@ export const BookingChildPageCont = () => {
                         "specialInstruction": specialInstruction,
                     }]
                 window.sessionStorage.setItem('AvailedRoom', JSON.stringify(items))
+                handleCloseIsLoading(2);
+
             }
             else {
                 let items =
@@ -123,11 +166,12 @@ export const BookingChildPageCont = () => {
                     "adult": adult,
                     "specialInstruction": specialInstruction,
                 }
-                
+
                 const existingAvailedRooms = JSON.parse(window.sessionStorage.getItem("AvailedRoom"))
                 existingAvailedRooms.push(items)
                 window.sessionStorage.setItem('AvailedRoom', JSON.stringify(existingAvailedRooms))
                 // window.sessionStorage.setItem('AvailedRoom', JSON.stringify())
+                
 
             }
 
@@ -136,40 +180,58 @@ export const BookingChildPageCont = () => {
             window.sessionStorage.removeItem('nights')
             window.sessionStorage.removeItem('kid')
             window.sessionStorage.removeItem('adult')
-            window.location = '/bookingCart'
+            handleCloseIsLoading(2, '/bookingCart');
         }
     }
 
     useEffect(() => {
-        console.log("asd : ",window.sessionStorage.getItem('rooms'))
+
+        console.log("asd : ", window.sessionStorage.getItem('rooms'))
         if (window.sessionStorage.getItem('checkIn') == null || window.sessionStorage.getItem('checkOut') == null || window.sessionStorage.getItem('nights') == null || window.sessionStorage.getItem('rooms') == null || window.sessionStorage.getItem('rooms') == "[]") {
             window.location = '/booking'
         }
-        axios.get(apiKey+'api/getRoomType/' + id).then((res) => {
+        axios.get(apiKey + 'api/getRoomType/' + id).then((res) => {
             setRoomType(res.data)
             console.log(roomType)
-        }).catch((err) => {
-            console.log(err.data)
-        })
+            axios.get(apiKey + 'api/getAllUsedServices').then((res) => {
+                setUsedServices([])
+                for (let index = 0; index < res.data.length; index++) {
+                    if (res.data[index].roomType_id === id) {
+                        setUsedServices(oldData => [...oldData, res.data[index]])
+                    }
 
-        axios.get(apiKey+'api/getAllUsedServices').then((res) => {
-            setUsedServices([])
-            for (let index = 0; index < res.data.length; index++) {
-                if (res.data[index].roomType_id === id) {
-                    setUsedServices(oldData => [...oldData, res.data[index]])
+
                 }
 
+                axios.get(apiKey + 'api/getAllRoomTypeImages').then((result) => {
+                    console.log(result.data)
+                    setRoomTypeImagesDb([])
+                    for (let index = 0; index < result.data.length; index++) {
+                        if (result.data[index].roomType_id == id) {
+                            setRoomTypeImagesDb((oldData) => [...oldData, result.data[index].roomImages])
+                        }
+                        if (index == result.data.length - 1) {
 
-            }
+                        }
+                    }
+                }).catch((err) => {
+                    console.lot(err)
+                });
+            }).catch((err) => {
+                console.log(err.data)
+            })
+
         }).catch((err) => {
             console.log(err.data)
         })
+
+
         setAvailedRooms(JSON.parse(window.sessionStorage.getItem('rooms')));
 
-        
+
 
     }, [])
-    
+
     const serviceIcon = (service) => {
         if (service === 'Free Wifi') {
             return <Services><NetworkWifiIcon style={{ color: "#bfaa7e" }} /><Title family="Arial" size="12px" >{service}</Title></Services>
@@ -223,7 +285,7 @@ export const BookingChildPageCont = () => {
 
 
     const numberFormat = (value) =>
-        new Intl.NumberFormat('en-IN', {
+        new Intl.NumberFormat('en-CA', {
             style: 'currency',
             currency: 'PHP'
         }).format(value);
@@ -240,6 +302,7 @@ export const BookingChildPageCont = () => {
 
         <Container>
 
+
             <Title
                 weight='400'
                 size='66px'
@@ -250,6 +313,46 @@ export const BookingChildPageCont = () => {
             >
                 {roomType.roomType}
             </Title>
+
+            <Modal
+                open={isLoading}
+                // onClose={handleCloseView}
+                style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    border: 'none'
+                }}>
+                <Box
+                    component='form'
+                    // onSubmit={addReservation}
+                    style={{
+                        height: '300px',
+                        width: '400px',
+                        backgroundColor: 'white',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: '10px',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        overflowY: 'overlay',
+                        overflowX: 'hidden',
+                        borderRadius: '.5rem',
+                        position: 'relative',
+                        border: 'none'
+                        // margin: '50px 0px',
+
+                    }}>
+                    <div style={{ margin: '10px', display: 'flex', width: '400px', height: '350px', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', }}>
+                        <img src={logo} width="35%"></img>
+                        {loadingStatus(status)}
+                        <h1 style={{ fontWeight: 'normal', margin: '0px' }}>{loadingMessage}</h1>
+                    </div>
+                </Box>
+            </Modal>
+
+
+
             <RoomContainerMain>
 
 
@@ -258,7 +361,7 @@ export const BookingChildPageCont = () => {
                     <div
                         style={{ width: '550px', display: 'inline-block', }}
                     >
-                        <ImageSlider roomImages={roomTypeImagesDb.length != 0 ? roomTypeImagesDb : null}/>
+                        <ImageSlider roomImages={roomTypeImagesDb.length != 0 ? roomTypeImagesDb : null} />
                     </div>
                     <RoomContainerContentRight>
                         <ContentContainerHolder>
@@ -313,68 +416,19 @@ export const BookingChildPageCont = () => {
                             <ContainerGlobal
                                 align='flex-end'
                             >
-                                <TextInput
-                                    onChange={(e) => {
-                                        setAdult(e.target.value);
-                                    }}
-                                    value={adult}
-                                    family="Roboto Slab"
-                                    type="number"
-                                    // ref={emailref}
-                                    widthFocus="0px"
-                                    width='10%'
-                                    fontSize='25px'
-                                    indent='5px'
-                                    radiusFocus="0px"
-                                    border="0 0 1px"
-                                    background='white'
-                                    align='center'
-                                    margins='0px 0px 0px 15px'
-                                    // defaultValue="1"
-                                    weight='bold'
-                                    height='100%'
-                                    min="1"
-                                    ref={adultRef}
-                                    max={roomType.maxAdultOccupancy}
-                                    required
 
-                                ></TextInput>
                                 <Title
-                                    family='Times New Roman, times, serif'
+                                    family='Times New Roman'
                                     color='#292929'
                                     weight='normal'
-                                    size='20px'
-                                    fStyle='Normal'
-                                    margin='0px 0px 0px 5px'
+                                    size='24px'
+                                    fstyle='Normal'
+                                    margin='0px 0px 0px 10px'
                                     align='left'
                                 >
-                                    <b></b> adult/s (max of {roomType.maxAdultOccupancy})
+                                    <b>{roomType.maxAdultOccupancy - 1} </b> guest(s) (max of {roomType.maxAdultOccupancy})
                                 </Title>
-                                <TextInput
-                                    onChange={(e) => {
-                                        setKid(e.target.value);
-                                    }}
-                                    value={kid}
-                                    family="Roboto Slab"
-                                    type="number"
-                                    // ref={emailref}
-                                    widthFocus="0px"
-                                    width='10%'
-                                    fontSize='25px'
-                                    indent='5px'
-                                    radiusFocus="0px"
-                                    border="0 0 1px"
-                                    background='white'
-                                    align='center'
-                                    margins='0px 0px 0px 15px'
-                                    // defaultValue="1"
-                                    weight='bold'
-                                    min="1"
-                                    ref={kidRef}
-                                    max={roomType.maxKidsOccupancy}
-                                    required
 
-                                ></TextInput>
                                 <Title
                                     family='Times New Roman, times, serif'
                                     color='#292929'
@@ -384,7 +438,7 @@ export const BookingChildPageCont = () => {
                                     margin='0px 0px 0px 5px'
                                     align='left'
                                 >
-                                    <b></b> kid/s (max of {roomType.maxKidsOccupancy})
+                                    {/* <b></b> kid/s (max of {roomType.maxKidsOccupancy}) */}
                                 </Title>
                             </ContainerGlobal>
                         </ContentContainerHolder>
@@ -437,7 +491,7 @@ export const BookingChildPageCont = () => {
                                 indent='5px'
                                 radiusFocus="0px"
                                 border="0 0 1px"
-                                background='white'
+                                background='transparent'
                                 align='center'
                                 margins='0px 10px 0px 0px'
                                 // defaultValue="1"
@@ -457,7 +511,7 @@ export const BookingChildPageCont = () => {
                                 line="50px"
 
 
-                            >{availedRooms.length} room left</Description>
+                            ><b style={{ color: 'red' }}>{availedRooms.length} room left</b></Description>
                         </ContentContainerHolder>
                         <ContentContainerHolder>
                             <Title

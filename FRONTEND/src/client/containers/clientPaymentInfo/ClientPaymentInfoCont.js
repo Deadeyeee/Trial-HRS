@@ -10,6 +10,11 @@ import axios from 'axios';
 import CloseIcon from '@mui/icons-material/Close';
 import { Box, padding } from '@mui/system';
 import { apiKey } from '../../../apiKey';
+import { CheckCircleOutline, Close, HighlightOffSharp } from '@mui/icons-material';
+import logo from '../../images/logo.png';
+import { CircularProgress, Grow, Modal, TextField } from '@mui/material';
+
+
 
 const ClientPaymentInfoCont = () => {
     const [activeReservation, setActiveReservation] = useState([])
@@ -18,15 +23,61 @@ const ClientPaymentInfoCont = () => {
     const [previewImageError, setPreviewImageError] = useState('')
     const [imageToUpload, setImageToUpload] = useState([])
     const numberFormat = (value) =>
-        new Intl.NumberFormat('en-IN', {
+        new Intl.NumberFormat('en-CA', {
             style: 'currency',
             currency: 'PHP'
         }).format(value);
+    const [isLoading, setIsLoading] = useState(false);
+    const [loadingMessage, setLoadingMessage] = useState('Please wait...')
+    const [status, setStatus] = useState('loading')
+
+    const handleOpenIsLoading = () => {
+        setIsLoading(true);
+        setStatus('loading')
+        setLoadingMessage('Please wait...')
+    }
+
+    const handleCloseIsLoading = (status, link) => {
+
+        if (status == 1 || status === undefined) {
+            setStatus('loading')
+            setLoadingMessage('')
+        }
+        else if (status == 2) {
+            setStatus('success')
+            setLoadingMessage('')
+        }
+        else if (status == 3) {
+            setStatus('failed')
+            setLoadingMessage('Sorry, Something went wrong.')
+        }
+
+        setTimeout(() => {
+            setIsLoading(false);
+            console.log(link)
+            if (link !== undefined) {
+                window.location = link;
+            }
+        }, 1000)
+    }
+
+    const loadingStatus = (value) => {
+        if (value == 'loading') {
+            return <CircularProgress></CircularProgress>;
+        }
+        else if (value == 'success') {
+            return <Grow in={true}><CheckCircleOutline style={{ color: 'green', fontSize: '80px' }} /></Grow>;
+        }
+        else if (value == 'failed') {
+            return <Grow in={true}><HighlightOffSharp style={{ color: 'red', fontSize: '80px' }} /></Grow>;
+        }
+    }
+
 
     useEffect(() => {
-        axios.get(apiKey+'auth/verify-token').then((authUser) => {
+        axios.get(apiKey + 'auth/verify-token').then((authUser) => {
             console.log(authUser.data)
-            axios.get(apiKey+'api/getAllReservation').then((getAllReservation) => {
+            axios.get(apiKey + 'api/getAllReservation').then((getAllReservation) => {
                 setReservation([])
                 getAllReservation.data.map((item) => {
                     if (item.guestInformation.user.id == authUser.data.id) {
@@ -62,6 +113,7 @@ const ClientPaymentInfoCont = () => {
     }
 
     const imgTypes = ['image/png', 'image/jpeg',]
+
     const handleUpload = (e) => {
         setImageToUpload(e.target.files[0])
         console.log(e.target.files[0])
@@ -83,32 +135,38 @@ const ClientPaymentInfoCont = () => {
 
     const uploadImage = (e) => {
         e.preventDefault();
+        handleOpenIsLoading()
         const formData = new FormData();
         formData.append('paymentImage', imageToUpload)
         if (previewImageError.length == 0 && imageToUpload.length != 0) {
             if (activeReservation.payment.paymentImage != null) {
-                axios.post(apiKey+'api/deleteImage', {
+                axios.post(apiKey + 'api/deleteImage', {
                     filePath: activeReservation.payment.paymentImage,
                 }).then((result) => {
                     console.log(result.data)
-                    axios.patch(apiKey+'api/updatePaymentPhoto/' + activeReservation.payment.id, formData).then((result) => {
+                    axios.patch(apiKey + 'api/updatePaymentPhoto/' + activeReservation.payment.id, formData).then((result) => {
                         console.log(result.data)
-                        window.location.reload()
+                        handleCloseIsLoading(2, '')
+                        // window.location.reload()
                     }).catch((err) => {
                         console.log(err.data)
-
+                        handleCloseIsLoading(3)
                     });
                 }).catch((err) => {
                     console.log(err.data)
+                    handleCloseIsLoading(3)
 
                 });
             }
             else {
                 console.log(activeReservation.payment.paymentImage)
-                axios.patch(apiKey+'api/updatePaymentPhoto/' + activeReservation.payment.id, formData).then((result) => {
+                axios.patch(apiKey + 'api/updatePaymentPhoto/' + activeReservation.payment.id, formData).then((result) => {
                     console.log(result.data)
-                    window.location.reload()
+                    handleCloseIsLoading(2, '')
+
+                    // window.location.reload()
                 }).catch((err) => {
+                    handleCloseIsLoading(3)
                     console.log(err.data)
 
                 });
@@ -410,6 +468,41 @@ const ClientPaymentInfoCont = () => {
     }
     return (
         <Container>
+            <Modal
+                open={isLoading}
+                style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    border: 'none'
+                }}>
+                <Box
+                    component='form'
+                    style={{
+                        height: '300px',
+                        width: '400px',
+                        backgroundColor: 'white',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: '10px',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        overflowY: 'overlay',
+                        overflowX: 'hidden',
+                        borderRadius: '.5rem',
+                        position: 'relative',
+                        border: 'none'
+                        // margin: '50px 0px',
+
+                    }}>
+                    <div style={{ margin: '10px', display: 'flex', width: '400px', height: '350px', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', }}>
+                        <img src={logo} width="35%"></img>
+                        {loadingStatus(status)}
+                        <h1 style={{ fontWeight: 'normal', margin: '0px' }}>{loadingMessage}</h1>
+                    </div>
+                </Box>
+            </Modal>
+
             {activeReservation.length != 0 ?
                 <Title
                     padding='15px 80px 15px 80px'
@@ -441,7 +534,7 @@ const ClientPaymentInfoCont = () => {
                 <PhotoBox>
                     <div style={{ width: '95%', height: 'auto', overflow: 'hidden', padding: '10px' }}>
                         {activeReservation.payment.paymentImage != null ?
-                            <a target='_blank' href={apiKey+'' + activeReservation.payment.paymentImage}><img src={apiKey+'' + activeReservation.payment.paymentImage} style={{ width: '100%', height: 'auto' }} /></a>
+                            <a target='_blank' href={apiKey + '' + activeReservation.payment.paymentImage}><img src={apiKey + '' + activeReservation.payment.paymentImage} style={{ width: '100%', height: 'auto' }} /></a>
                             : <Title
                                 bg='white'
                                 family='raleway, sans-serif'

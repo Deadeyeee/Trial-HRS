@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, { useLayoutEffect, useState } from 'react'
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import logo from '../../../client/images/logo.png'
 import MenuBookIcon from '@mui/icons-material/MenuBook';
@@ -20,62 +20,105 @@ import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import AddIcon from '@mui/icons-material/Add';
 import { Button, Grow } from '@mui/material';
 import { ContainerGlobal, ContainerGlobal2 } from '../../components/container/container';
+import Axios from 'axios'
+
+import { apiKey } from '../../../apiKey';
 const SideBarNav = (props) => {
     const [show, setShow] = useState(false);
 
-    const deleteModal = (
-    
-        <ContainerGlobal2
-            w='100%'
-            h='100%'
-            radius='none'
-            justify='center'
-            align='center'
-            bg='rgb(46, 46, 46, 0.9)'
-            index='1'
-            overflow='auto'
-            active
-        >
-            <ContainerGlobal
-                w='40%'
-                h='auto'
-                bg='white'
-                direction='column'
-                padding='30px'
-                gap='10px'
-                justify='center'
-                align='center'
-            >
-                <Title
-                    size='26px'
-                    color='black'
-                    family='Helvetica'
-                    fstyle='normal'
-                    weight='600'
-                    align='left'
-                >
-                    Are you sure you want to <b style={{ color: 'red' }}>Logout</b>?
-                </Title>
-                <HorizontalLine
-                    bg='gray'
-                    w='100%'
-                    margin='0px'
-                />
-                <ContainerGlobal gap='30px' overflow='vissible'>
-                    <Button variant="contained"
-                        style={{ backgroundColor: 'rgb(80, 170, 50)' }}
-                        onClick={()=>{window.location.href='/login'}}>
-                        Yes
-                    </Button>
-                    <Button variant="contained"
-                        style={{ backgroundColor: 'rgb(255, 36, 0)' }}
-                        onClick={() => setShow(prev => !prev)}>
-                        No
-                    </Button>
-                </ContainerGlobal>
-            </ContainerGlobal>
-        </ContainerGlobal2>
-    );
+    const [getUser, setGetUser] = useState([]);
+
+    const signOut = () => {
+        Axios.delete(apiKey + "auth/Logout").then((response) => {
+
+            window.location.reload();
+        })
+    }
+
+    Axios.defaults.withCredentials = true;
+    useLayoutEffect(() => {
+        Axios.get(apiKey + "auth/verify-token").then((response1) => {
+            console.log(response1.data.role == 'CUSTOMER')
+            if (response1.data.role == 'CUSTOMER' || response1.data.role == 'NON-USER') {
+                window.location = '/'
+            }
+            else {
+                Axios.get(apiKey + "api/getAllGuest/").then((response2) => {
+                    console.log(response1.data)
+                    for (let i = 0; i < response2.data.length; i++) {
+                        if (response2.data[i].user_id == response1.data.id) {
+                            setGetUser(response2.data[i]);
+                        }
+                    }
+                }).catch((err) => {
+                    console.log(err)
+                })
+            }
+
+        }).catch((err) => {
+            console.log(err.message)
+            window.location = '/login'
+
+        });
+
+
+    }, []);
+
+
+
+    // const deleteModal = (
+
+    //     <ContainerGlobal2
+    //         w='100%'
+    //         h='100%'
+    //         radius='none'
+    //         justify='center'
+    //         align='center'
+    //         bg='rgb(46, 46, 46, 0.9)'
+    //         index='1'
+    //         overflow='auto'
+    //         active
+    //     >
+    //         <ContainerGlobal
+    //             w='40%'
+    //             h='auto'
+    //             bg='white'
+    //             direction='column'
+    //             padding='30px'
+    //             gap='10px'
+    //             justify='center'
+    //             align='center'
+    //         >
+    //             <Title
+    //                 size='26px'
+    //                 color='black'
+    //                 family='Helvetica'
+    //                 fstyle='normal'
+    //                 weight='600'
+    //                 align='left'
+    //             >
+    //                 Are you sure you want to <b style={{ color: 'red' }}>Logout</b>?
+    //             </Title>
+    //             <HorizontalLine
+    //                 bg='gray'
+    //                 w='100%'
+    //                 margin='0px'
+    //             />
+    //             <ContainerGlobal gap='30px' overflow='vissible'>
+    //                 <Button variant="contained"
+    //                     style={{ backgroundColor: 'rgb(80, 170, 50)' }}
+    //                     onClick={Logout}>
+    //                     Yes
+    //                 </Button>
+    //                 <Button variant="contained"
+    //                     style={{ backgroundColor: 'rgb(255, 36, 0)' }}
+    //                     onClick={() => setShow(prev => !prev)}>
+    //                     No
+    //                 </Button>
+    //             </ContainerGlobal>
+    //         </ContainerGlobal>
+    //     </ContainerGlobal2>
+    // );
     return (
         <Container>
             <ProfileContainer
@@ -91,7 +134,7 @@ const SideBarNav = (props) => {
                         family='arial'
                         fstyle='normal'
                         cursor='pointer'
-                    >Juan Dela Cruz</Title>
+                    >{getUser.length != 0 ? getUser.firstName.toLowerCase() + " " + getUser.lastName.toLowerCase() : ""}</Title>
                     <Title
                         size='12px'
                         color='white'
@@ -100,7 +143,7 @@ const SideBarNav = (props) => {
                         weight='normal'
                         align='left'
                         cursor='pointer'
-                    >Admin</Title>
+                    >{getUser.length != 0 ? getUser.user.role == 'STAFF' ? 'Front Desk' : getUser.user.role : ''}</Title>
 
                 </DescriptionContainer>
             </ProfileContainer>
@@ -221,7 +264,7 @@ const SideBarNav = (props) => {
                 </Title>
             </MenuContainer>
 
-            <MenuContainer
+            {getUser.length != 0 ? getUser.user.role == 'ADMIN'? <MenuContainer
 
                 href='/admin/userList'
                 whileTap={{ scale: 0.98 }}
@@ -241,9 +284,9 @@ const SideBarNav = (props) => {
                 >
                     User List
                 </Title>
-            </MenuContainer>
+            </MenuContainer> : '' : ''}
 
-            <MenuContainer
+            {/* <MenuContainer
 
                 href='/admin/userLogs'
                 whileTap={{ scale: 0.98 }}
@@ -263,7 +306,7 @@ const SideBarNav = (props) => {
                 >
                     User Logs
                 </Title>
-            </MenuContainer>
+            </MenuContainer> */}
 
 
 
@@ -356,6 +399,8 @@ const SideBarNav = (props) => {
                 </Badge >
             </MenuContainer>
 
+
+            {getUser.length != 0 ? getUser.user.role == 'ADMIN' ? 
             <MenuContainer
                 href='/admin/report'
                 whileTap={{ scale: 0.98 }}
@@ -375,11 +420,13 @@ const SideBarNav = (props) => {
                 >
                     Reports
                 </Title>
-            </MenuContainer>
+            </MenuContainer> : '' : ''}
+
+
             <Logout
                 bg='red'
                 margin='auto 0px 20px 0px'
-                onClick={() => setShow(prev => !prev)}
+                onClick={signOut}
             >
                 <LogoutIcon
                     style={{ color: "#dddddd" }}
@@ -398,7 +445,6 @@ const SideBarNav = (props) => {
                 </Title>
             </Logout>
 
-            <Grow in={show}>{deleteModal}</Grow>
         </Container>
     )
 }
