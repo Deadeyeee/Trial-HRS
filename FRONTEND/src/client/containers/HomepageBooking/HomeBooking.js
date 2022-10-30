@@ -7,6 +7,7 @@ import { Description } from '../../components/paragraph/style.js';
 import image from '../../images/backgroundImages/homeBackgroundImage.jpg'
 import { LabelDiv, Persons, TitleCalendarContainer } from '../bookingPage/Styles.js';
 import { TextInput } from '../../components/textBox/style.js';
+import { ArrowForwardIos } from '@mui/icons-material';
 export const HomeBooking = ({ title }) => {
   const [startDate, setStartDate] = useState(new Date(new Date().setHours(0, 0, 0, 0)));
   const [endDate, setEndDate] = useState(new Date(new Date(new Date().getTime() + 86400000).setHours(0, 0, 0, 0)));
@@ -51,6 +52,31 @@ export const HomeBooking = ({ title }) => {
 
     window.location = '/booking'
   }
+
+
+  const [openAnswer1, setOpenAnswer1] = useState(false);
+  const [openAnswer2, setOpenAnswer2] = useState(false);
+  const [openAnswer3, setOpenAnswer3] = useState(false);
+  const [openAnswer4, setOpenAnswer4] = useState(false);
+  const [openAnswer5, setOpenAnswer5] = useState(false);
+
+  const handleOpenAnswer1 = () => setOpenAnswer1(true);
+  const handleCloseAnswer1 = () => setOpenAnswer1(false);
+
+  const handleOpenAnswer2 = () => setOpenAnswer2(true);
+  const handleCloseAnswer2 = () => setOpenAnswer2(false);
+
+  const handleOpenAnswer3 = () => setOpenAnswer3(true);
+  const handleCloseAnswer3 = () => setOpenAnswer3(false);
+
+
+  const handleOpenAnswer4 = () => setOpenAnswer4(true);
+  const handleCloseAnswer4 = () => setOpenAnswer4(false);
+
+  const handleOpenAnswer5 = () => setOpenAnswer5(true);
+  const handleCloseAnswer5 = () => setOpenAnswer5(false);
+
+
   return (
     <Container
       initial="hidden"
@@ -73,6 +99,7 @@ export const HomeBooking = ({ title }) => {
           minDateStart={new Date()}
           // maxDateStart={new Date(endDate)}
           minDateEnd={minEndDate}
+          maxDateEnd={new Date(Date.parse(startDate) + 15552000000)}
 
         // minDate={new Date()}
         />
@@ -178,7 +205,7 @@ export const HomeBooking = ({ title }) => {
           fontStyle='italic'
           margin='30px 0px'
         >
-          Relax and Enjoy the vicinity of Quezon City in the comfort of RM Luxe Hotel.
+          Relax and enjoy the vicinity of Quezon City in the comfort of RM Luxe Hotel.
           We offer services, including function, staycations, photoshoots and long-term lease.
           RM Luxe Hotel also has an event place to accommodate your upcoming events and a coffee shop to make your stay great.
           Visit us to become one of our valuable guests. See you around!
@@ -310,8 +337,12 @@ export const HomeBooking = ({ title }) => {
             FAQs
           </Title>
 
-          <Faq>
-            <Question>
+          <Faq
+            onClick={() => { setOpenAnswer1(!openAnswer1) }}
+          >
+            <Question
+
+            >
               <Title
                 size='30px'
                 color='#FFFFFF'
@@ -319,9 +350,23 @@ export const HomeBooking = ({ title }) => {
                 fstyle='none'
               >What time can I check-in and check-out?
               </Title>
-
+              {/* import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'; */}
+              <ArrowForwardIos
+                style={openAnswer1 == true ?
+                  {
+                    color: 'white',
+                    transform: 'rotate(90deg)'
+                  }
+                  : {
+                    color: 'white',
+                  }}
+              />
             </Question>
-            <Answer>
+            <Answer
+              style={openAnswer1 == true ? {}: {
+                display: 'none'
+              }}
+            >
               <Title
                 size='24px'
                 color='#FFFFFF'
@@ -333,7 +378,7 @@ export const HomeBooking = ({ title }) => {
             </Answer>
           </Faq>
 
-          <Faq>
+          <Faq onClick={() => { setOpenAnswer2(!openAnswer2) }}>
             <Question>
               <Title
                 size='30px'
@@ -342,9 +387,21 @@ export const HomeBooking = ({ title }) => {
                 fstyle='none'
               >Are pets allowed?
               </Title>
-
+              <ArrowForwardIos
+                style={openAnswer2 == true ?
+                  {
+                    color: 'white',
+                    transform: 'rotate(90deg)'
+                  }
+                  : {
+                    color: 'white',
+                  }}
+              />
             </Question>
-            <Answer>
+            <Answer
+              style={openAnswer2 == true ? {}: {
+                display: 'none'
+              }}>
               <Title
                 size='24px'
                 color='#FFFFFF'
@@ -357,7 +414,7 @@ export const HomeBooking = ({ title }) => {
             </Answer>
           </Faq>
 
-          <Faq>
+          <Faq onClick={() => { setOpenAnswer3(!openAnswer3) }}>
             <Question>
               <Title
                 size='30px'
@@ -367,9 +424,21 @@ export const HomeBooking = ({ title }) => {
                 align='left'
               > Does the hotel require a 50% downpayment to confirm my reservation?
               </Title>
-
+              <ArrowForwardIos
+                style={openAnswer3 == true ?
+                  {
+                    color: 'white',
+                    transform: 'rotate(90deg)'
+                  }
+                  : {
+                    color: 'white',
+                  }}
+              />
             </Question>
-            <Answer>
+            <Answer
+              style={openAnswer3 == true ? {}: {
+                display: 'none'
+              }}>
               <Title
                 size='24px'
                 color='#FFFFFF'
@@ -381,7 +450,7 @@ export const HomeBooking = ({ title }) => {
             </Answer>
           </Faq>
 
-          <Faq>
+          <Faq onClick={() => { setOpenAnswer4(!openAnswer4) }}>
             <Question>
               <Title
                 size='30px'
@@ -390,9 +459,21 @@ export const HomeBooking = ({ title }) => {
                 fstyle='none'
               > Yes, you can pay via Gcash or Bank Transfer.
               </Title>
-
+              <ArrowForwardIos
+                style={openAnswer4 == true ?
+                  {
+                    color: 'white',
+                    transform: 'rotate(90deg)'
+                  }
+                  : {
+                    color: 'white',
+                  }}
+              />
             </Question>
-            <Answer>
+            <Answer
+              style={openAnswer4 == true ? {}: {
+                display: 'none'
+              }}>
               <Title
                 size='24px'
                 color='#FFFFFF'
@@ -404,7 +485,7 @@ export const HomeBooking = ({ title }) => {
             </Answer>
           </Faq>
 
-          <Faq>
+          <Faq onClick={() => { setOpenAnswer5(!openAnswer5) }}>
             <Question>
               <Title
                 size='30px'
@@ -413,9 +494,21 @@ export const HomeBooking = ({ title }) => {
                 fstyle='none'
               >What time can I check-in and check-out?
               </Title>
-
+              <ArrowForwardIos
+                style={openAnswer5 == true ?
+                  {
+                    color: 'white',
+                    transform: 'rotate(90deg)'
+                  }
+                  : {
+                    color: 'white',
+                  }}
+              />
             </Question>
-            <Answer>
+            <Answer
+              style={openAnswer5 == true ? {}: {
+                display: 'none'
+              }}>
               <Title
                 size='24px'
                 color='#FFFFFF'

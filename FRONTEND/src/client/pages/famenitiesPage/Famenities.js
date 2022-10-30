@@ -13,7 +13,6 @@ export const Famenities = () => {
       }, [])
     return (
         <Container>
-            <ChatBot />
             <NavigationBar facilities />
             <Title
                 color='#bfaa7e'

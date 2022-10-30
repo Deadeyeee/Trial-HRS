@@ -535,6 +535,8 @@ export const BookingChildPageCont = () => {
                                 onChange={(e) => {
                                     setSpecialInstruction(e.target.value)
                                 }}
+                                
+                                inputProps={{ maxLength: 100 }}
                                 style={{ width: '95%', }}
                             />
 

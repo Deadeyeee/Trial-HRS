@@ -91,13 +91,13 @@ exports.sendReservationEmail = async (req, res) => {
                     dateFormat: (date) => new Date(date).toLocaleDateString(),
                     timeFormat: (date) => new Date(date).toLocaleTimeString(),
                     numberFormat: (value) => numberFormat(value),
-                    downPayment: (grand) => numberFormat(grand/2),
+                    downPayment: (grand) => numberFormat(grand / 2),
                     remainingBalance: (total, paid) => numberFormat(total - paid),
                     paymentModecondition: (paymentModeValue) => {
-                        if(paymentModeValue == 'Pay at The Hotel'){
+                        if (paymentModeValue == 'Pay at The Hotel') {
                             return 'Gcash'
                         }
-                        else{
+                        else {
                             return paymentModeValue;
                         }
                     },
@@ -364,6 +364,43 @@ exports.confirmEmail = async (req, res) => {
             },
         });
         return res.status(200).send("Email verified successfully!");
+    } catch (error) {
+        return res.status(400).send(error.message);
+    }
+};
+
+
+exports.changePassword = async (req, res) => {
+    try {
+
+        let user_login;
+
+        user_login = await User.findOne({
+            where: {
+                id: req.params.id
+            },
+        });
+
+        let passwordIsValid = bcrypt.compareSync(req.body.oldPassword, user_login.password);
+        if (!passwordIsValid) {
+            return res.status(400).send({
+                message: "Old password is incorrect."
+            });
+        }
+        else{
+            let user = req.body;
+            const hash = await bcrypt.hash(user.password, 10);
+            user.password = hash;
+            await User.update(req.body, {
+                where: {
+                    id: req.params.id,
+                },
+            });
+            return res.status(200).send("User updated successfully");
+        }
+
+
+        
     } catch (error) {
         return res.status(400).send(error.message);
     }

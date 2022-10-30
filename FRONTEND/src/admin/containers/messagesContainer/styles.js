@@ -71,5 +71,4 @@ export const Td = styled(motion.td)`
   width: '200px';
   height: 4px;
   white-space: nowrap;
-  
 `;

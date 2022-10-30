@@ -14,7 +14,6 @@ const ClientMessagesPage = () => {
   }, [])
   return (
       <Container>
-        <ChatBot />
         <Navprofile/>
         <ContentContainer>
           <ProfileContainer message></ProfileContainer>

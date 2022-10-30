@@ -25,7 +25,6 @@ export const Home = () => {
             display={lightBox}
             onClick={close}
             ></LightBox>
-            <ChatBot />
             <NavigationBar home />
             <BookingHome title="Book Now!" ></BookingHome>
 

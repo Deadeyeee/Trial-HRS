@@ -12,7 +12,6 @@ export const About = () => {
     }, [])
     return (
         <Container>
-            <ChatBot />
             <NavigationBar about />
             <Title
                 color='#bfaa7e'

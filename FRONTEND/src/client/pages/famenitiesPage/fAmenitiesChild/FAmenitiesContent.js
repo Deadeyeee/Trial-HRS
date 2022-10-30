@@ -11,7 +11,6 @@ const FAmenitiesContent = () => {
   }, [])
   return (
     <Container>
-        <ChatBot />
         <NavigationBar facilities />
         <FAmenitiesContentCont></FAmenitiesContentCont>
         <Footer />

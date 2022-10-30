@@ -81,7 +81,7 @@ export const BookingPageCont = () => {
             console.lot(err)
         });
 
-        if(window.sessionStorage.getItem('endDate') != null || window.sessionStorage.getItem('guest') != null || window.sessionStorage.getItem('startDate')){
+        if (window.sessionStorage.getItem('endDate') != null || window.sessionStorage.getItem('guest') != null || window.sessionStorage.getItem('startDate')) {
             console.log(window.sessionStorage.getItem('endDate'))
             console.log(window.sessionStorage.getItem('guest'))
             console.log(window.sessionStorage.getItem('startDate'))
@@ -491,7 +491,7 @@ export const BookingPageCont = () => {
                     minDateStart={new Date()}
                     // maxDateStart={new Date(endDate)}
                     minDateEnd={minEndDate}
-
+                    maxDateEnd={new Date(Date.parse(startDate) + 15552000000)}
                 // minDate={new Date()}
                 />
 
@@ -701,7 +701,7 @@ export const BookingPageCont = () => {
                                     >
                                         {item.maxAdultOccupancy - 1} Guest(s) only
                                     </Title>
-                                    
+
                                     <Title
                                         color='#8f805f'
                                         weight='700'

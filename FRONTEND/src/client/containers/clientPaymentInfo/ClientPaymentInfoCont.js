@@ -172,6 +172,10 @@ const ClientPaymentInfoCont = () => {
                 });
             }
         }
+        else{
+            handleCloseIsLoading(3)
+
+        }
     }
 
     const paymentStatusStyle = (value) => {

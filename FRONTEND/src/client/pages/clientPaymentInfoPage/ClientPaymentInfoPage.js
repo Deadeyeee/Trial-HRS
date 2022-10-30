@@ -14,7 +14,6 @@ const ClientPaymentInfoPage = () => {
   }, [])
   return (
     <Container>
-      <ChatBot />
       <Navprofile/>
       
       <ContentContainer>

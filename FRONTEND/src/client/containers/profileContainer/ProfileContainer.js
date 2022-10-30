@@ -16,7 +16,7 @@ const ProfileContainer = (props) => {
     Axios.get(apiKey + "auth/verify-token").then((response1) => {
 
       if (response1.data.role == 'ADMIN' || response1.data.role == 'STAFF') {
-        // window.location = '/admin'
+        window.location = '/admin'
       }
       else {
         Axios.get(apiKey + "api/getAllGuest/").then((response2) => {

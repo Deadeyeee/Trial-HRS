@@ -12,7 +12,6 @@ function BookingChildPage() {
   }, [])
   return (
     <Container>
-        <ChatBot />
         <NavigationBar book />
         <BookingChildPageCont></BookingChildPageCont>
         <Footer />
