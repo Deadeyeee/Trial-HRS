@@ -50,7 +50,6 @@ export const RoomRates = () => {
 
     return (
         <Container>
-            <ChatBot />
             <NavigationBar room />
             <Title
                 color='#bfaa7e'
@@ -157,14 +156,16 @@ export const RoomRates = () => {
                                         </Title>
                                         <Button
                                             whileHover={{ backgroundColor: "#2E2E2E", color: "white" }}
+                                            textcolor="black"
                                             w='125px'
                                             h='40px'
-                                            textcolor="black"
+                                            margin='5px 0px 0px 0px'
                                             fam='Times New Roman'
                                             weight='-400'
                                             fontStyle='Normal'
                                             radius="0px"
                                             border="1px solid #8F805F"
+                                            href='/booking'
                                         >
                                             Book Now!
                                         </Button>

@@ -14,7 +14,6 @@ export const Contact = () => {
       }, [])
     return (
         <Container>
-            <ChatBot />
             <NavigationBar contact />
             <Title
                 color='#bfaa7e'

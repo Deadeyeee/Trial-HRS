@@ -9,7 +9,6 @@ import InformationForm from '../../containers/informationForm/InformationForm';
 const GuestInfoPage = () => {
   return (
     <Container>
-        <ChatBot />
             <NavigationBar book />
             <Title
             color='#bfaa7e'

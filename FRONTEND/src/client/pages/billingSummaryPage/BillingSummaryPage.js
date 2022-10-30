@@ -12,7 +12,6 @@ const BillingSummaryPage = () => {
   return (
     <Container>
         <Container>
-            <ChatBot />
             <NavigationBar book />
             <BillingSummaryContainer></BillingSummaryContainer>
             <Footer />

@@ -22,7 +22,6 @@ export const Profile = () => {
 
     return (
         <Container>
-            <ChatBot />
             <Navprofile />
             <ContentContainer>
                 <ProfileContainer profile></ProfileContainer>

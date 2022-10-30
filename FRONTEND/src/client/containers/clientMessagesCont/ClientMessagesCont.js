@@ -14,7 +14,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import InputLabel from '@mui/material/InputLabel';
-import { FormControlLabel, FormControl, Grow } from '@mui/material';
+import { FormControlLabel, FormControl, Grow, Modal, Pagination } from '@mui/material';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import Select from '@mui/material/Select';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
@@ -27,9 +27,16 @@ import Box from '@mui/material/Box';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 import IconButton from '@mui/material/IconButton';
 import Recipt from '../../images/sample_recipt.png';
+import axios from 'axios'
+import { apiKey } from '../../../apiKey'
+import { Tr, TableContainer, TableFixHead, Td, Th } from '../../../admin/containers/messagesContainer/styles'
+import ActionButtonMessages from '../../../admin/components/actionButton/ActionButtonMessages'
 const ClientMessagesCont = () => {
   const [option, setOption] = useState('inbox');
 
+  const [userInformation, setUserInformation] = useState([])
+  const [inbox, setInbox] = useState([])
+  const [sent, setSent] = useState([])
 
   useEffect(() => {
     console.log(option)
@@ -46,6 +53,18 @@ const ClientMessagesCont = () => {
   const [show, setShow] = useState(false);
   const [showComposeMessage, setShowComposeMessage] = useState(false);
   const [show2, setShow2] = useState(false);
+
+
+  const [openCompose, setOpenCompose] = React.useState(false);
+
+  const handleOpenCompose = () => setOpenCompose(true);
+  const handleCloseCompose = () => {
+    setOpenCompose(false)
+  };
+
+  const [inboxPage, setInboxPage] = useState(1)
+
+
 
   const handleChange2 = (event, newValue) => {
     setValue2(newValue);
@@ -442,467 +461,275 @@ const ClientMessagesCont = () => {
     </ContainerGlobal2>
   );
 
+
+
+
+  useEffect(() => {
+    axios.get(apiKey + 'auth/verify-token').then((result) => {
+      axios.get(apiKey + 'api/getAllGuest').then((guest) => {
+        guest.data.map((item) => {
+          if (result.data.id == item.user_id) {
+
+            setUserInformation(item)
+            axios.get(apiKey + 'api/getAllMessage').then((result) => {
+              console.log(item.id)
+              console.log(result.data.filter((obj) => obj.conversation.conversationTo.id == item.id))
+              setInbox(result.data.filter((obj) => obj.conversation.conversationTo.id == item.id))
+              setSent(result.data.filter((obj) => obj.conversation.conversationFrom.id == item.id))
+            }).catch((err) => {
+
+            });
+          }
+        })
+        console.log(guest.data)
+      }).catch((err) => {
+
+      });
+    }).catch((err) => {
+      console.log(err)
+    });
+  }, [])
+
+
+  useEffect(() => {
+
+  }, [userInformation])
+
   return (
     <Container>
-      <OptionContainer>
-        <Button2
-          onClick={() => {
-            setOption('inbox');
-            console.log(option);
-          }}
-          w='70px'
-          fam='Roboto Slab'
-          h='25px'
-          textcolor={option == 'inbox' ? 'white' : 'black'}
-          bg={option == 'inbox' ? '#302B20' : 'transparent'}
-          weight='700'
-          fontStyle='normal'
-          radius="0px"
-          border="1px solid #8F805F"
-          fontsize='20px'
-          padding='5px'>
 
-          Inbox
-        </Button2>
-        <Button2
-          onClick={() => {
-            setOption('sent');
-            console.log(option);
-          }}
-          textcolor={option == 'sent' ? 'white' : 'black'}
-          bg={option == 'sent' ? '#302B20' : 'transparent'}
-          w='70px'
-          fam='Roboto Slab'
-          h='25px'
-          weight='700'
-          fontStyle='bold'
-          radius="0px"
-          border="1px solid #8F805F"
-          fontsize='20px'
-          padding='5px'>
-          Sent
-        </Button2>
-      </OptionContainer>
+      <Modal
+        open={openCompose}
+        onClose={handleCloseCompose}
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}>
+        <Box
+          component='form'
+          // onSubmit={updatePassword}
+          style={{
+            height: 'auto',
+            width: '50vw',
+            backgroundColor: 'white',
+            display: 'flex',
+            flexDirection: 'column',
+            padding: '0px 0px 30px 0px',
+            gap: '10px',
+            justifyContent: 'flex-start',
+            alignItems: 'center',
+            overflowY: 'overlay',
+            overflowX: 'hidden',
+            borderRadius: '.5rem',
+            position: 'relative',
+            // margin: '50px 0px',
 
-      {/* inbox */}
-      <MainContainer
-        display={option == 'inbox' ? 'flex' : 'none'}
-      >
-        <MessagesTitleContainer>
+          }}>
+          <div style={{
+            width: '100%',
+            height: '50px',
+            position: 'sticky',
+            top: 0,
+            display: 'flex',
+            justifyContent: 'flex-end',
+            alignItems: 'center',
+            backgroundColor: 'black',
+            zIndex: '1',
+
+          }}>
+            <Title
+              size='16px'
+              color='white'
+              family='Helvetica'
+              fstyle='normal'
+              weight='bold'
+              align='left'
+              margin='0px auto 0px 10px'
+            >
+              Compose message
+            </Title>
+            <CloseIcon
+              onClick={handleCloseCompose}
+              style={{
+                color: 'white',
+                cursor: 'pointer',
+                margin: '10px',
+              }} />
+          </div>
+          <ContainerGlobal
+            w='95%' overflow='visible' margin='5px auto'
+            align='center' gap='10px'
+          >
+            <Title
+              size='16px'
+              color='black'
+              family='Helvetica'
+              fstyle='normal'
+              weight='400'
+              align='left'
+              margin='0px 0px 0px 0px'
+            >
+              <b>Subject:</b>
+            </Title>
+            <TextField id="outlined-basic" style={{ width: '400px' }} label="" variant="outlined" size='small' />
+          </ContainerGlobal>
           <Title
-            bg='#272727'
-            family='raleway, sans-serif'
-            color='white'
+            size='16px'
+            color='black'
+            family='Helvetica'
+            fstyle='normal'
             weight='400'
-            size='35px'
-            fStyle='Normal'
-            align='Center'
-            width='100%'
-            padding='15px 0px 15px 0px'
+            align='left' w='95%' margin='5px auto'
           >
-            Inbox
+            <b>Message:</b>
           </Title>
-        </MessagesTitleContainer>
-        <MessagesContentContainer>
-
-          <MessagesContent
-            whileHover={{ boxShadow: "5px 2px 10px gray" }}
-            whileTap={{ scale: .99 }}
-
-            bg='white'
+          <TextField id="outlined-basic" label="Write your message here..." variant="outlined" multiline rows={10} style={{ width: '95%', margin: '0px auto' }} />
+          <ContainerGlobal
+            w='auto'
+            h='auto'
+            bg='none'
+            direction='row'
+            gap='10px'
+            justify='center'
+            margin='auto'
+            align='center'
+            overflow='none'
           >
-            <Title
-              family='raleway, sans-serif'
-              color='#736449'
-              weight='700'
-              size='18px'
-              fStyle='Normal'
-              align='Center'
-              margin='20px'
+            <Button variant="contained" size="large"
+              style={{ backgroundColor: '#948566' }}
+
+              onClick={() => setShowComposeMessage(prev => !prev)}
             >
-              From: Front Desk
-            </Title>
-            <Title
-              family='raleway, sans-serif'
-              color='#736449'
-              weight='700'
-              size='18px'
-              fStyle='Normal'
-              align='Center'
-              margin='20px'>
-              Payment Update
-            </Title>
-            <Title
-              family='raleway, sans-serif'
-              color='#736449'
-              weight='700'
-              size='18px'
-              fStyle='Italic'
-              align='Center'
-              margin='20px'>
-              10/20/22
-            </Title>
-          </MessagesContent>
-          <MessagesContent
+              Send
+            </Button>
+            <Button variant="contained" size="large"
+              style={{ backgroundColor: '#FF2400' }}
 
-            onClick={() => setShow(prev => !prev)}
-            whileHover={{ boxShadow: "5px 2px 10px gray" }}
-            whileTap={{ scale: .99 }}
+              onClick={() => { handleCloseCompose() }}
+            >
+              Cancel
+            </Button>
+          </ContainerGlobal>
+        </Box>
+      </Modal>
 
+
+
+
+
+
+
+      <TabContext value={value2}>
+        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+          <TabList onChange={handleChange2} aria-label="lab API tabs example">
+            <Tab label="Inbox" value="1" />
+            <Tab label="Sent" value="2" />
+          </TabList>
+        </Box>
+        <TabPanel value="1" style={{ width: '100%', maxHeight: '500px', display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', gap: '10px' }} >
+
+          <TableContainer
+            cellspacing="0"
+            cellpadding="0"
+            style={{
+              width: '95%',
+              height: '10px',
+              overflow: 'hidden',
+              position: 'static',
+              tableLayout: 'auto',
+              margin: '0px auto',
+              border: '1px solid black'
+
+            }}
           >
-            <Title
-              family='raleway, sans-serif'
-              color='#736449'
-              weight='400'
-              size='18px'
-              fStyle='Normal'
-              align='Center'
-              margin='20px'
-            >
-              From: Front Desk
-            </Title>
-            <Title
-              family='raleway, sans-serif'
-              color='#736449'
-              weight='400'
-              size='18px'
-              fStyle='Normal'
-              align='Center'
-              margin='20px'>
-              Reservation Confirmation
-            </Title>
-            <Title
-              family='raleway, sans-serif'
-              color='#736449'
-              weight='400'
-              size='18px'
-              fStyle='Italic'
-              align='Center'
-              margin='20px'>
-              04/22/21
-            </Title>
-          </MessagesContent>
-          <MessagesContent
-            whileHover={{ boxShadow: "5px 2px 10px gray" }}
-            whileTap={{ scale: .99 }}
+            <thead>
+              <Tr cursor='normal'>
+                <Th align='center' style={{ width: '10%' }}>From</Th>
+                <Th align='center' style={{ width: '20%' }}>Subject</Th>
+                <Th align='center' style={{ width: '45%' }} >Message</Th>
+                <Th align='center' style={{ width: '10%' }}>Date</Th>
+                <Th align='center' style={{ width: '10%' }}>Time</Th>
+                <Th align='center' style={{ width: '10%' }}>Action</Th>
+              </Tr>
+            </thead>
+            <tbody style={{ height: '10px', overflow: 'hidden' }}>
+              {inbox.length != 0 ? inbox
+              .slice((inboxPage - 1) * 6, inboxPage * 6)
+              .map((item) => (
+                <Tr
+                  whileHover={{ boxShadow: '0px 2px 2px gray' }}
+                  whileTap={{ boxShadow: 'none' }}
+                  style={item.conversation.status == true && { backgroundColor: 'rgb(40,40,40, .05', }}
+                >
+                  <Td align='center' normal={item.conversation.status == true && 'normal'}>{item.conversation.conversationFrom.user.role == 'STAFF' ? 'Front Desk' : 'Admin'}</Td>
+                  <Td align='center' normal={item.conversation.status == true && 'normal'}>{item.subject}</Td>
+                  <Td align='center' normal={item.conversation.status == true && 'normal'}><p style={{ margin: 'auto', width: '300px', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>
+                    {item.message}
+                  </p>
+                  </Td>
+                  <Td align='center' normal={item.conversation.status == true && 'normal'}>{new Date(item.created_at).toLocaleDateString()} </Td>
+                  <Td align='center' normal={item.conversation.status == true && 'normal'}>{new Date(item.created_at).toLocaleTimeString().slice(0, 4)} {new Date(item.created_at).toLocaleTimeString().slice(7, 10)}</Td>
+                  <Td align='center' normal={item.conversation.status == true && 'normal'}><ActionButtonMessages /></Td>
+                </Tr>
+              )) : 'no inbox'}
 
-            bg='white'
+            </tbody>
+          </TableContainer>
+          <Pagination
+            page={inboxPage}
+            count={inbox.length != 0 && Math.ceil(inbox.length / 6)}
+            onChange={(e, value) => {
+              setInboxPage(value)
+            }}
+          />
+          
+        </TabPanel>
+        <TabPanel value="2" style={{ width: '100%' }} >
+
+          <TableContainer
+            cellspacing="0"
+            cellpadding="0"
+            style={{
+              width: '95%',
+              height: '10px',
+              overflow: 'hidden',
+              position: 'static',
+              tableLayout: 'auto',
+              margin: '0px auto',
+              border: '1px solid black'
+
+            }}
           >
-            <Title
-              family='raleway, sans-serif'
-              color='#736449'
-              weight='700'
-              size='18px'
-              fStyle='Normal'
-              align='Center'
-              margin='20px'
-            >
-              From: Front Desk
-            </Title>
-            <Title
-              family='raleway, sans-serif'
-              color='#736449'
-              weight='700'
-              size='18px'
-              fStyle='Normal'
-              align='Center'
-              margin='20px'>
-              Promo!
-            </Title>
-            <Title
-              family='raleway, sans-serif'
-              color='#736449'
-              weight='700'
-              size='18px'
-              fStyle='Italic'
-              align='Center'
-              margin='20px'>
-              10/20/22
-            </Title>
-          </MessagesContent>
-          <MessagesContent
-            whileHover={{ boxShadow: "5px 2px 10px gray" }}
-            whileTap={{ scale: .99 }}>
-            <Title
-              family='raleway, sans-serif'
-              color='#736449'
-              weight='400'
-              size='18px'
-              fStyle='Normal'
-              align='Center'
-              margin='20px'
-            >
-              From: Front Desk
-            </Title>
-            <Title
-              family='raleway, sans-serif'
-              color='#736449'
-              weight='400'
-              size='18px'
-              fStyle='Normal'
-              align='Center'
-              margin='20px'>
-              Promo!
-            </Title>
-            <Title
-              family='raleway, sans-serif'
-              color='#736449'
-              weight='400'
-              size='18px'
-              fStyle='Italic'
-              align='Center'
-              margin='20px'>
-              10/20/22
-            </Title>
-          </MessagesContent>
-          <MessagesContent
-            whileHover={{ boxShadow: "5px 2px 10px gray" }}
-            whileTap={{ scale: .99 }}>
-            <Title
-              family='raleway, sans-serif'
-              color='#736449'
-              weight='400'
-              size='18px'
-              fStyle='Normal'
-              align='Center'
-              margin='20px'
-            >
-              From: Front Desk
-            </Title>
-            <Title
-              family='raleway, sans-serif'
-              color='#736449'
-              weight='400'
-              size='18px'
-              fStyle='Normal'
-              align='Center'
-              margin='20px'>
-              Promo!
-            </Title>
-            <Title
-              family='raleway, sans-serif'
-              color='#736449'
-              weight='400'
-              size='18px'
-              fStyle='Italic'
-              align='Center'
-              margin='20px'>
-              10/20/22
-            </Title>
-          </MessagesContent>
-          <MessagesContent
-            whileHover={{ boxShadow: "5px 2px 10px gray" }}
-            whileTap={{ scale: .99 }}>
-            <Title
-              family='raleway, sans-serif'
-              color='#736449'
-              weight='400'
-              size='18px'
-              fStyle='Normal'
-              align='Center'
-              margin='20px'
-            >
-              From: Front Desk
-            </Title>
-            <Title
-              family='raleway, sans-serif'
-              color='#736449'
-              weight='400'
-              size='18px'
-              fStyle='Normal'
-              align='Center'
-              margin='20px'>
-              Promo!
-            </Title>
-            <Title
-              family='raleway, sans-serif'
-              color='#736449'
-              weight='400'
-              size='18px'
-              fStyle='Italic'
-              align='Center'
-              margin='20px'>
-              10/20/22
-            </Title>
-          </MessagesContent>
-          <MessagesContent
-            whileHover={{ boxShadow: "5px 2px 10px gray" }}
-            whileTap={{ scale: .99 }}>
-            <Title
-              family='raleway, sans-serif'
-              color='#736449'
-              weight='400'
-              size='18px'
-              fStyle='Normal'
-              align='Center'
-              margin='20px'
-            >
-              From: Front Desk
-            </Title>
-            <Title
-              family='raleway, sans-serif'
-              color='#736449'
-              weight='400'
-              size='18px'
-              fStyle='Normal'
-              align='Center'
-              margin='20px'>
-              Promo!
-            </Title>
-            <Title
-              family='raleway, sans-serif'
-              color='#736449'
-              weight='400'
-              size='18px'
-              fStyle='Italic'
-              align='Center'
-              margin='20px'>
-              10/20/22
-            </Title>
-          </MessagesContent>
-          <MessagesContent
-            whileHover={{ boxShadow: "5px 2px 10px gray" }}
-            whileTap={{ scale: .99 }}>
-            <Title
-              family='raleway, sans-serif'
-              color='#736449'
-              weight='400'
-              size='18px'
-              fStyle='Normal'
-              align='Center'
-              margin='20px'
-            >
-              From: Front Desk
-            </Title>
-            <Title
-              family='raleway, sans-serif'
-              color='#736449'
-              weight='400'
-              size='18px'
-              fStyle='Normal'
-              align='Center'
-              margin='20px'>
-              Promo!
-            </Title>
-            <Title
-              family='raleway, sans-serif'
-              color='#736449'
-              weight='400'
-              size='18px'
-              fStyle='Italic'
-              align='Center'
-              margin='20px'>
-              10/20/22
-            </Title>
-          </MessagesContent>
-        </MessagesContentContainer>
-      </MainContainer>
+            <Tr>
+              <Th align='center' style={{ width: '20%' }}>Subject</Th>
+              <Th align='center' style={{ width: '45%' }} >Message</Th>
+              <Th align='center' style={{ width: '10%' }}>Date</Th>
+              <Th align='center' style={{ width: '10%' }}>Time</Th>
+              <Th align='center' style={{ width: '10%' }}>Action</Th>
+            </Tr>
+            {sent.length != 0 ?
+              sent.map((item) => (
+                <Tr
+                  style={{ backgroundColor: 'rgb(40,40,40, .05', }}
+                  whileHover={{ boxShadow: '0px 2px 2px gray' }}
+                  whileTap={{ boxShadow: 'none' }}
+                  onClick={() => setShow2(prev => !prev)}
+                >
+                  <Td align='center' normal>{item.subject}</Td>
+                  <Td align='center' normal>
+                    <p style={{ margin: 'auto', width: '300px', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>
+                      {item.message}</p></Td>
+                  <Td align='center' normal>{new Date(item.created_at).toLocaleDateString()}</Td>
+                  <Td align='center' normal>{new Date(item.created_at).toLocaleTimeString().slice(0, 4)} {new Date(item.created_at).toLocaleTimeString().slice(7, 10)}</Td>
+                  <Td align='center' normal><ActionButtonMessages /></Td>
+                </Tr>
+              ))
+              : 'No sent messages'}
 
-
-
-      {/* SENT */}
-      <MainContainer
-
-        display={option == 'sent' ? 'flex' : 'none'}>
-        <MessagesTitleContainer>
-          <Title
-            bg='#272727'
-            family='raleway, sans-serif'
-            color='white'
-            weight='400'
-            size='35px'
-            fStyle='Normal'
-            align='Center'
-            width='100%'
-            padding='15px 0px 15px 0px'
-          >
-            Sent
-          </Title>
-        </MessagesTitleContainer>
-        <MessagesContentContainer>
-
-          <MessagesContent
-            whileHover={{ boxShadow: "5px 2px 10px gray" }}
-            whileTap={{ scale: .99 }}
-
-            onClick={() => setShow2(prev => !prev)}
-          >
-            <Title
-              family='raleway, sans-serif'
-              color='#736449'
-              weight='400'
-              size='18px'
-              fStyle='Normal'
-              align='Center'
-              margin='20px'
-            >
-              To: Front Desk
-            </Title>
-            <Title
-              family='raleway, sans-serif'
-              color='#736449'
-              weight='400'
-              size='18px'
-              fStyle='Normal'
-              align='Center'
-              margin='20px'
-
-            >
-              Reservation Payment
-            </Title>
-            <Title
-              family='raleway, sans-serif'
-              color='#736449'
-              weight='400'
-              size='18px'
-              fStyle='Italic'
-              align='Center'
-              margin='20px'>
-              10/20/22
-            </Title>
-          </MessagesContent>
-          <MessagesContent
-            whileHover={{ boxShadow: "5px 2px 10px gray" }}
-            whileTap={{ scale: .99 }}
-
-          >
-            <Title
-              family='raleway, sans-serif'
-              color='#736449'
-              weight='400'
-              size='18px'
-              fStyle='Normal'
-              align='Center'
-              margin='20px'
-            >
-              To: Support
-            </Title>
-            <Title
-              family='raleway, sans-serif'
-              color='#736449'
-              weight='400'
-              size='18px'
-              fStyle='Normal'
-              align='Center'
-              margin='20px'>
-              Help assistance
-            </Title>
-            <Title
-              family='raleway, sans-serif'
-              color='#736449'
-              weight='400'
-              size='18px'
-              fStyle='Italic'
-              align='Center'
-              margin='20px'>
-              10/20/22
-            </Title>
-          </MessagesContent>
-
-
-        </MessagesContentContainer>
-      </MainContainer>
-
+          </TableContainer>
+        </TabPanel>
+      </TabContext>
       <Button2
         whileHover={{ backgroundColor: "#302B20", color: "white" }}
         w='auto'
@@ -917,16 +744,10 @@ const ClientMessagesCont = () => {
         margin='30px 0px 0px 0px'
         fontsize='17px'
         bg='#282626'
-        onClick={() => setShowComposeMessage(prev => !prev)}
+        onClick={() => { handleOpenCompose() }}
       >
         Compose New Message
       </Button2>
-
-
-      <Grow in={show}>{viewMessage}</Grow>
-      <Grow in={show2}>{viewSentMessage}</Grow>
-
-      <Grow in={showComposeMessage}>{composeMessage}</Grow>
     </Container>
   )
 }

@@ -324,6 +324,7 @@ const BillingSummaryContainer = () => {
                                                 console.log(patchUser.data)
                                             }).catch((err) => {
                                                 console.log(err)
+                                                handleCloseIsLoading(3)
                                             });
                                             console.log(reservation.data)
                                             for (let index = 0; index < bookingInformation.length; index++) {
@@ -331,10 +332,13 @@ const BillingSummaryContainer = () => {
                                                     if (notAvailableRoom.includes(value)) {
                                                         axios.delete(apiKey + 'api/deleteReservation/' + reservation.data.new_reservation.id).then((result) => {
                                                             console.log(result)
+                                                            handleCloseIsLoading(3)
                                                             axios.delete(apiKey + 'api/deletePayment/' + payment.data.new_payment.id).then((result) => {
                                                                 console.log(result)
+                                                                handleCloseIsLoading(3)
                                                                 axios.delete(apiKey + 'api/deleteGuest/' + guest.data.new_guest.id).then((result) => {
                                                                     console.log(result)
+                                                                    handleCloseIsLoading(3)
                                                                     axios.delete(apiKey + 'api/deleteUser/' + user.data.account.id).then((result) => {
                                                                         console.log(result)
                                                                         window.sessionStorage.clear();
@@ -342,15 +346,19 @@ const BillingSummaryContainer = () => {
                                                                         handleCloseIsLoading(3, '/booking')
                                                                     }).catch((err) => {
                                                                         console.log(err)
+                                                                        handleCloseIsLoading(3)
                                                                     });
                                                                 }).catch((err) => {
                                                                     console.log(err)
+                                                                    handleCloseIsLoading(3)
                                                                 });
                                                             }).catch((err) => {
                                                                 console.log(err)
+                                                                handleCloseIsLoading(3)
                                                             });
                                                         }).catch((err) => {
                                                             console.log(err)
+                                                            handleCloseIsLoading(3)
                                                         });
                                                     }
                                                     else {
@@ -377,11 +385,13 @@ const BillingSummaryContainer = () => {
                                                                         console.log(result.data)
                                                                     }).catch((err) => {
                                                                         console.log(err)
+                                                                        handleCloseIsLoading(3)
 
                                                                     });
                                                                 }
                                                             }).catch((err) => {
                                                                 console.log(err)
+                                                                handleCloseIsLoading(3)
                                                             });
                                                             axios.get(apiKey + "api/getReservationSummary/" + reservationSummary.data.new_reservationSummary.id).then((getreservationSummary) => {
 
@@ -432,17 +442,22 @@ const BillingSummaryContainer = () => {
                                                                                 window.location = '/booking/confirmation/' + reservation.data.new_reservation.id;
                                                                             }).catch((err) => {
                                                                                 console.log(err)
+                                                                                handleCloseIsLoading(3)
 
                                                                             });
                                                                         }).catch((err) => {
                                                                             axios.delete(apiKey + 'api/deleteReservationSummary/' + reservationSummary.data.new_reservationSummary.id).then((result) => {
                                                                                 console.log(result)
+                                                                                handleCloseIsLoading(3)
                                                                                 axios.delete(apiKey + 'api/deleteReservation/' + reservation.data.new_reservation.id).then((result) => {
                                                                                     console.log(result)
+                                                                                    handleCloseIsLoading(3)
                                                                                     axios.delete(apiKey + 'api/deletePayment/' + payment.data.new_payment.id).then((result) => {
                                                                                         console.log(result)
+                                                                                        handleCloseIsLoading(3)
                                                                                         axios.delete(apiKey + 'api/deleteGuest/' + guest.data.new_guest.id).then((result) => {
                                                                                             console.log(result)
+                                                                                            handleCloseIsLoading(3)
                                                                                             axios.delete(apiKey + 'api/deleteUser/' + user.data.account.id).then((result) => {
 
 
@@ -450,18 +465,23 @@ const BillingSummaryContainer = () => {
 
                                                                                             }).catch((err) => {
                                                                                                 console.log(err)
+                                                                                                handleCloseIsLoading(3)
                                                                                             });
                                                                                         }).catch((err) => {
                                                                                             console.log(err)
+                                                                                            handleCloseIsLoading(3)
                                                                                         });
                                                                                     }).catch((err) => {
                                                                                         console.log(err)
+                                                                                        handleCloseIsLoading(3)
                                                                                     });
                                                                                 }).catch((err) => {
                                                                                     console.log(err)
+                                                                                    handleCloseIsLoading(3)
                                                                                 });
                                                                             }).catch((err) => {
                                                                                 console.log(err)
+                                                                                handleCloseIsLoading(3)
                                                                             });
 
 
@@ -501,14 +521,19 @@ const BillingSummaryContainer = () => {
                                                                     // });
                                                                 }).catch((err) => {
                                                                     console.log(err)
+                                                                    handleCloseIsLoading(3)
                                                                     axios.delete(apiKey + 'api/deleteReservationSummary/' + reservationSummary.data.new_reservationSummary.id).then((result) => {
                                                                         console.log(result)
+                                                                        handleCloseIsLoading(3)
                                                                         axios.delete(apiKey + 'api/deleteReservation/' + reservation.data.new_reservation.id).then((result) => {
                                                                             console.log(result)
+                                                                            handleCloseIsLoading(3)
                                                                             axios.delete(apiKey + 'api/deletePayment/' + payment.data.new_payment.id).then((result) => {
                                                                                 console.log(result)
+                                                                                handleCloseIsLoading(3)
                                                                                 axios.delete(apiKey + 'api/deleteGuest/' + guest.data.new_guest.id).then((result) => {
                                                                                     console.log(result)
+                                                                                    handleCloseIsLoading(3)
                                                                                     axios.delete(apiKey + 'api/deleteUser/' + user.data.account.id).then((result) => {
 
                                                                                         console.log(result)
@@ -516,29 +541,38 @@ const BillingSummaryContainer = () => {
 
                                                                                     }).catch((err) => {
                                                                                         console.log(err)
+                                                                                        handleCloseIsLoading(3)
                                                                                     });
                                                                                 }).catch((err) => {
                                                                                     console.log(err)
+                                                                                    handleCloseIsLoading(3)
                                                                                 });
                                                                             }).catch((err) => {
                                                                                 console.log(err)
+                                                                                handleCloseIsLoading(3)
                                                                             });
                                                                         }).catch((err) => {
                                                                             console.log(err)
+                                                                            handleCloseIsLoading(3)
                                                                         });
                                                                     }).catch((err) => {
                                                                         console.log(err)
+                                                                        handleCloseIsLoading(3)
                                                                     });
                                                                 });
                                                             }).catch((err) => {
                                                                 axios.delete(apiKey + 'api/deleteReservationSummary/' + reservationSummary.data.new_reservationSummary.id).then((result) => {
                                                                     console.log(result)
+                                                                    handleCloseIsLoading(3)
                                                                     axios.delete(apiKey + 'api/deleteReservation/' + reservation.data.new_reservation.id).then((result) => {
                                                                         console.log(result)
+                                                                        handleCloseIsLoading(3)
                                                                         axios.delete(apiKey + 'api/deletePayment/' + payment.data.new_payment.id).then((result) => {
                                                                             console.log(result)
+                                                                            handleCloseIsLoading(3)
                                                                             axios.delete(apiKey + 'api/deleteGuest/' + guest.data.new_guest.id).then((result) => {
                                                                                 console.log(result)
+                                                                                handleCloseIsLoading(3)
                                                                                 axios.delete(apiKey + 'api/deleteUser/' + user.data.account.id).then((result) => {
 
                                                                                     console.log(result)
@@ -546,43 +580,56 @@ const BillingSummaryContainer = () => {
 
                                                                                 }).catch((err) => {
                                                                                     console.log(err)
+                                                                                    handleCloseIsLoading(3)
                                                                                 });
                                                                             }).catch((err) => {
                                                                                 console.log(err)
+                                                                                handleCloseIsLoading(3)
                                                                             });
                                                                         }).catch((err) => {
                                                                             console.log(err)
+                                                                            handleCloseIsLoading(3)
                                                                         });
                                                                     }).catch((err) => {
                                                                         console.log(err)
+                                                                        handleCloseIsLoading(3)
                                                                     });
                                                                 }).catch((err) => {
                                                                     console.log(err)
+                                                                    handleCloseIsLoading(3)
                                                                 });
                                                             });
 
                                                         }).catch((err) => {
                                                             console.log(err)
+                                                            handleCloseIsLoading(3)
                                                             axios.delete(apiKey + 'api/deleteReservation/' + reservation.data.new_reservation.id).then((result) => {
                                                                 console.log(result)
+                                                                handleCloseIsLoading(3)
                                                                 axios.delete(apiKey + 'api/deletePayment/' + payment.data.new_payment.id).then((result) => {
                                                                     console.log(result)
+                                                                    handleCloseIsLoading(3)
                                                                     axios.delete(apiKey + 'api/deleteGuest/' + guest.data.new_guest.id).then((result) => {
                                                                         console.log(result)
+                                                                        handleCloseIsLoading(3)
                                                                         axios.delete(apiKey + 'api/deleteUser/' + user.data.account.id).then((result) => {
                                                                             console.log(result)
                                                                             handleCloseIsLoading(3)
                                                                         }).catch((err) => {
                                                                             console.log(err)
+                                                                            handleCloseIsLoading(3)
                                                                         });
                                                                     }).catch((err) => {
                                                                         console.log(err)
+                                                                        handleCloseIsLoading(3)
                                                                     });
                                                                 }).catch((err) => {
                                                                     console.log(err)
+                                                                    handleCloseIsLoading(3)
                                                                 });
                                                             }).catch((err) => {
                                                                 console.log(err)
+                                                                handleCloseIsLoading(3)
                                                             });
 
                                                         });
@@ -603,27 +650,34 @@ const BillingSummaryContainer = () => {
                                                         handleCloseIsLoading(3)
                                                     }).catch((err) => {
                                                         console.log(err)
+                                                        handleCloseIsLoading(3)
                                                     });
                                                 }).catch((err) => {
                                                     console.log(err)
+                                                    handleCloseIsLoading(3)
                                                 });
                                             }).catch((err) => {
                                                 console.log(err)
+                                                handleCloseIsLoading(3)
                                             });
 
                                         });
                                     }).catch((err) => {
                                         console.log(err)
+                                        handleCloseIsLoading(3)
                                         axios.delete(apiKey + 'api/deleteGuest/' + guest.data.new_guest.id).then((result) => {
                                             console.log(result)
+                                            handleCloseIsLoading(3)
                                             axios.delete(apiKey + 'api/deleteUser/' + user.data.account.id).then((result) => {
                                                 console.log(result)
                                                 handleCloseIsLoading(3)
                                             }).catch((err) => {
                                                 console.log(err)
+                                                handleCloseIsLoading(3)
                                             });
                                         }).catch((err) => {
                                             console.log(err)
+                                            handleCloseIsLoading(3)
                                         });
 
                                     });
@@ -636,10 +690,12 @@ const BillingSummaryContainer = () => {
                                         handleCloseIsLoading(3)
                                     }).catch((err) => {
                                         
+                                        handleCloseIsLoading(3)
                                     });
                                 });
                             }).catch((err) => {
                                 console.log(err.result)
+                                handleCloseIsLoading(3)
                             });
 
 
@@ -674,9 +730,11 @@ const BillingSummaryContainer = () => {
 
                                                     }).catch((err) => {
                                                         console.log(err)
+                                                        handleCloseIsLoading(3)
                                                     });
                                                 }).catch((err) => {
                                                     console.log(err)
+                                                    handleCloseIsLoading(3)
                                                 });
                                             }
                                             else {
@@ -703,11 +761,13 @@ const BillingSummaryContainer = () => {
                                                                 console.log(result.data)
                                                             }).catch((err) => {
                                                                 console.log(err)
+                                                                handleCloseIsLoading(3)
 
                                                             });
                                                         }
                                                     }).catch((err) => {
                                                         console.log(err)
+                                                        handleCloseIsLoading(3)
                                                     });
 
 
@@ -758,18 +818,22 @@ const BillingSummaryContainer = () => {
                                                                         window.location = '/booking/confirmation/' + reservation.data.new_reservation.id;
                                                                     }).catch((err) => {
                                                                         console.log(err)
+                                                                        handleCloseIsLoading(3)
 
                                                                     });
                                                                 }).catch((err) => {
                                                                     console.log(err)
+                                                                    handleCloseIsLoading(3)
 
                                                                     axios.delete(apiKey + 'api/deleteReservationSummary/' + reservationSummary.data.new_reservationSummary.id).then((result) => {
 
                                                                         console.log(result)
+                                                                        handleCloseIsLoading(3)
 
                                                                         axios.delete(apiKey + 'api/deleteReservation/' + reservation.data.new_reservation.id).then((result) => {
 
                                                                             console.log(result)
+                                                                            handleCloseIsLoading(3)
 
 
                                                                             axios.delete(apiKey + 'api/deletePayment/' + payment.data.new_payment.id).then((result) => {
@@ -777,12 +841,15 @@ const BillingSummaryContainer = () => {
                                                                                 handleCloseIsLoading(3)
                                                                             }).catch((err) => {
                                                                                 console.log(err)
+                                                                                handleCloseIsLoading(3)
                                                                             });
                                                                         }).catch((err) => {
                                                                             console.log(err)
+                                                                            handleCloseIsLoading(3)
                                                                         });
                                                                     }).catch((err) => {
                                                                         console.log(err)
+                                                                        handleCloseIsLoading(3)
                                                                     });
                                                                 });
 
@@ -820,10 +887,12 @@ const BillingSummaryContainer = () => {
                                                             axios.delete(apiKey + 'api/deleteReservationSummary/' + reservationSummary.data.new_reservationSummary.id).then((result) => {
 
                                                                 console.log(result)
+                                                                handleCloseIsLoading(3)
 
                                                                 axios.delete(apiKey + 'api/deleteReservation/' + reservation.data.new_reservation.id).then((result) => {
 
                                                                     console.log(result)
+                                                                    handleCloseIsLoading(3)
 
 
                                                                     axios.delete(apiKey + 'api/deletePayment/' + payment.data.new_payment.id).then((result) => {
@@ -832,12 +901,15 @@ const BillingSummaryContainer = () => {
 
                                                                     }).catch((err) => {
                                                                         console.log(err)
+                                                                        handleCloseIsLoading(3)
                                                                     });
                                                                 }).catch((err) => {
                                                                     console.log(err)
+                                                                    handleCloseIsLoading(3)
                                                                 });
                                                             }).catch((err) => {
                                                                 console.log(err)
+                                                                handleCloseIsLoading(3)
                                                             });
                                                         });
                                                     }).catch((err) => {
@@ -845,10 +917,12 @@ const BillingSummaryContainer = () => {
                                                         axios.delete(apiKey + 'api/deleteReservationSummary/' + reservationSummary.data.new_reservationSummary.id).then((result) => {
 
                                                             console.log(result)
+                                                            handleCloseIsLoading(3)
 
                                                             axios.delete(apiKey + 'api/deleteReservation/' + reservation.data.new_reservation.id).then((result) => {
 
                                                                 console.log(result)
+                                                                handleCloseIsLoading(3)
 
 
                                                                 axios.delete(apiKey + 'api/deletePayment/' + payment.data.new_payment.id).then((result) => {
@@ -857,12 +931,15 @@ const BillingSummaryContainer = () => {
 
                                                                 }).catch((err) => {
                                                                     console.log(err)
+                                                                    handleCloseIsLoading(3)
                                                                 });
                                                             }).catch((err) => {
                                                                 console.log(err)
+                                                                handleCloseIsLoading(3)
                                                             });
                                                         }).catch((err) => {
                                                             console.log(err)
+                                                            handleCloseIsLoading(3)
                                                         });
                                                     });
 
@@ -876,9 +953,11 @@ const BillingSummaryContainer = () => {
                                                             handleCloseIsLoading(3)
                                                         }).catch((err) => {
                                                             console.log(err)
+                                                            handleCloseIsLoading(3)
                                                         });
                                                     }).catch((err) => {
                                                         console.log(err)
+                                                        handleCloseIsLoading(3)
                                                     });
 
 
@@ -901,7 +980,7 @@ const BillingSummaryContainer = () => {
                                 });
                             }).catch((err) => {
                                 console.log(err)
-
+                                handleCloseIsLoading(3)
                             });
 
 
@@ -918,7 +997,7 @@ const BillingSummaryContainer = () => {
                     }
                 }).catch((err) => {
                     console.log(err)
-
+                    handleCloseIsLoading(3)
                 });
             })
 

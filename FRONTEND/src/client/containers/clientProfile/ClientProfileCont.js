@@ -52,6 +52,7 @@ const style = {
 const ClientProfileCont = () => {
     let letters = /^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/;
     let phoneNumberValidation = /^(09|\+639)\d{9}$/;
+    let passwordValidation = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[-._!"`'#%&,:;<>=@{}~\$\(\)\*\+\/\\\?\[\]\^\| ])[A-Za-z\d -._!"`'#%&,:;<>=@{}~\$\(\)\*\+\/\\\?\[\]\^\|]{8,}/;
 
     const [paymentOption, setPaymentOption] = useState("");
     const [displayBanks, setDisplayBanks] = useState("");
@@ -65,11 +66,25 @@ const ClientProfileCont = () => {
     const [username, setUsername] = useState('');
     const [birthDay, setBirthDay] = useState('');
     const [gender, setGender] = useState('');
+    const [oldPassword, setOldPassword] = useState('');
+    const [newPassword, setNewPassword] = useState('');
+
+
 
     const [userInformation, setUserInformation] = useState([])
     const [value, setValue] = useState(Date.now());
     const [open, setOpen] = React.useState(false);
+    const [changePassword, setChangePassword] = React.useState(false);
     const handleOpen = () => setOpen(true);
+    const handleOpenPassword = () => {
+        setChangePassword(true)
+        setOpen(false)
+    };
+
+    const handleClosePassword = () => {
+        setChangePassword(false);
+
+    }
     const handleClose = () => {
         // window.confirm("any unsaved changes will be lost");
         if (window.confirm("any unsaved changes will be lost.")) {
@@ -89,12 +104,16 @@ const ClientProfileCont = () => {
     const [addressError, setAddressError] = useState("");
     const [userNameError, setUserNameError] = useState("");
     const [passwordError, setPasswordError] = useState("");
+    const [oldPasswordError, setOldPasswordError] = useState("");
+    const [newPasswordError, setNewPasswordError] = useState("");
 
     const emailRef = useRef();
     const contactNumberRef = useRef();
     const userNameRef = useRef();
     const firstNameRef = useRef();
     const lastNameRef = useRef();
+    const oldPasswordRef = useRef();
+    const newPasswordRef = useRef();
 
 
     const [isLoading, setIsLoading] = useState(false);
@@ -225,16 +244,25 @@ const ClientProfileCont = () => {
         }
         else {
             handleOpenIsLoading();
+            let formatNumber;
+            if (contactNumber.slice(0, 3) == "+63") {
+
+                formatNumber = contactNumber.replace("+63", "0");
+
+            }
+            else {
+                formatNumber = contactNumber;
+            }
             if (emailError.length == 0 && contactNumberError.length == 0 && userNameError.length == 0) {
                 axios.patch(apiKey + 'api/updateUsers/' + userInformation.user.id, {
                     email: email,
-                    contactNumber: contactNumber,
+                    contactNumber: formatNumber,
 
                 }).then((result) => {
                     console.log(result.data);
                     axios.patch(apiKey + 'api/updateGuest/' + userInformation.id, {
-                        firstName: firstName,
-                        lastName: lastName,
+                        firstName: firstName.toLocaleLowerCase(),
+                        lastName: lastName.toLocaleLowerCase(),
                         birthDate: birthDay,
                         gender: gender,
                         address: address,
@@ -256,6 +284,31 @@ const ClientProfileCont = () => {
             }
         }
 
+    }
+
+    const updatePassword = (e) => {
+        e.preventDefault()
+        console.log('CHANGE PASSWORD')
+        if (oldPasswordError == '' && newPasswordError == '') {
+            handleOpenIsLoading()
+            axios.patch(apiKey + 'api/changePassword/' + userInformation.user.id, {
+                oldPassword: oldPassword,
+                password: newPassword
+            }).then((result) => {
+                handleCloseIsLoading(2, '')
+            }).catch((err) => {
+                handleCloseIsLoading(3)
+                setOldPasswordError(err.response.data.message)
+                oldPasswordRef.current.focus()
+            });
+        }
+        else {
+            if(oldPasswordError != ''){
+                oldPasswordRef.current.focus()
+            }else{
+                newPasswordRef.current.focus()
+            }
+        }
     }
     return (
         <Container>
@@ -329,7 +382,7 @@ const ClientProfileCont = () => {
                             fstyle='Normal'
                             size='25px'
                             color='#2e2e2e'
-                            align='left'
+                            align='right'
                         >
                             <b>{userInformation.length != 0 ? userInformation.firstName.toLowerCase() : ""}</b>
                         </Title>
@@ -353,7 +406,7 @@ const ClientProfileCont = () => {
                             fstyle='Normal'
                             size='25px'
                             color='#2e2e2e'
-                            align='left'
+                            align='right'
                         >
                             <b>{userInformation.length != 0 ? userInformation.lastName.toLowerCase() : ""}</b>
                         </Title>
@@ -377,7 +430,7 @@ const ClientProfileCont = () => {
                             fstyle='Normal'
                             size='25px'
                             color='#2e2e2e'
-                            align='left'
+                            align='right'
                         >
                             <b>{userInformation.length != 0 ? userInformation.user.email.toLowerCase() : ""}</b>
                         </Title>
@@ -401,7 +454,7 @@ const ClientProfileCont = () => {
                             fstyle='Normal'
                             size='25px'
                             color='#2e2e2e'
-                            align='left'
+                            align='right'
                         >
                             <b>{userInformation.length != 0 ? userInformation.user.contactNumber.toLowerCase() : ""}</b>
                         </Title>
@@ -425,7 +478,7 @@ const ClientProfileCont = () => {
                             fstyle='Normal'
                             size='25px'
                             color='#2e2e2e'
-                            align='left'
+                            align='right'
                         >
                             <b>{userInformation.length != 0 ? new Date(userInformation.birthDate).toLocaleDateString() : ""}</b>
                         </Title>
@@ -449,7 +502,7 @@ const ClientProfileCont = () => {
                             fstyle='Normal'
                             size='25px'
                             color='#2e2e2e'
-                            align='left'
+                            align='right'
                         >
                             <b>{userInformation.length != 0 ? userInformation.nationality.toLowerCase() : ""}</b>
                         </Title>
@@ -473,7 +526,7 @@ const ClientProfileCont = () => {
                             fstyle='Normal'
                             size='25px'
                             color='#2e2e2e'
-                            align='left'
+                            align='right'
                         >
                             <b>{userInformation.length != 0 ? userInformation.gender.toLowerCase() : ""}</b>
                         </Title>
@@ -498,7 +551,7 @@ const ClientProfileCont = () => {
                             fstyle='Normal'
                             size='25px'
                             color='#2e2e2e'
-                            align='left'
+                            align='right'
                             width=''
                         >
                             <b>{userInformation.length != 0 ? userInformation.address : ""}</b>
@@ -589,20 +642,21 @@ const ClientProfileCont = () => {
 
 
                     <InputContainer
-                    style={{
-                        margin: '50px 0px 0px 0px'
-                    }}>
+                        style={{
+                            margin: '50px 0px 0px 0px'
+                        }}>
                         <TextField
                             error={firstNameError.length != 0 ? true : false}
                             helperText={firstNameError.length != 0 ? firstNameError : ""}
-                            inputRef={firstNameRef}
-
                             placeholder='First Name'
                             label="First Name"
+                            inputRef={firstNameRef}
+                            variant="outlined"
                             value={firstName}
-                            onChange={(e) => {
-                                setFirstName(e.target.value);
 
+                            inputProps={{ maxLength: 80 }}
+                            onChange={(e) => {
+                                setFirstName(e.target.value)
                                 if (!letters.test(e.target.value) && e.target.value.length != 0) {
                                     setFirstNameError("Invalid first name. Please type letters only.")
                                 }
@@ -610,7 +664,6 @@ const ClientProfileCont = () => {
                                     setFirstNameError("")
                                 }
                             }}
-                            variant="outlined"
                             style={{ width: '55%', }}
                             required />
 
@@ -619,7 +672,10 @@ const ClientProfileCont = () => {
                             helperText={lastNameError.length != 0 ? lastNameError : ""}
                             placeholder='Last Name'
                             label="Last Name"
+                            variant="outlined"
+                            inputRef={lastNameRef}
                             value={lastName}
+                            inputProps={{ maxLength: 80 }}
                             onChange={(e) => {
                                 setLastName(e.target.value)
                                 if (!letters.test(e.target.value) && e.target.value.length != 0) {
@@ -628,46 +684,53 @@ const ClientProfileCont = () => {
                                 else {
                                     setLastNameError("")
                                 }
+
                             }}
-                            inputRef={lastNameRef}
-                            variant="outlined"
                             style={{ width: '55%', }}
                             required />
                     </InputContainer>
 
                     <InputContainer>
                         <TextField
+                            error={emailError.length != 0 ? true : false}
+                            helperText={emailError.length != 0 ? emailError : ""}
                             placeholder='Email'
+                            label="Email"
+                            variant="outlined"
+                            type='email'
                             value={email}
+                            inputProps={{ maxLength: 254 }}
+
                             onChange={(e) => {
                                 setEmail(e.target.value)
 
                                 setEmailError("")
                             }}
-                            inputRef={emailRef}
-                            label="Email"
-                            variant="outlined"
-                            type='email'
                             style={{ width: '55%', }}
+                            inputRef={emailRef}
                             required />
 
                         <TextField
                             error={contactNumberError.length != 0 ? true : false}
-                            helperText={contactNumberError.length != 0 ? contactNumberError : ""}
-                            placeholder='Contact Number'
+                            helperText={contactNumberError.length != 0 ? contactNumberError : "ex. 09123456789 or +639123456789"}
+                            placeholder='Contact Number e.g. 09123456789 or +639123456789'
                             label="Contact Number"
+                            variant="outlined"
                             value={contactNumber}
                             onChange={(e) => {
-                                setcontactNumber(e.target.value);
+                                setcontactNumber(e.target.value)
+
                                 if (!phoneNumberValidation.test(e.target.value) && e.target.value.length != 0) {
+                                    console.log('asda')
                                     setContactNumberError("Contact number is invalid. Please provide a valid contact number.")
                                 }
                                 else {
                                     setContactNumberError("")
                                 }
                             }}
-                            variant="outlined"
-                            type='tel'
+                            inputRef={contactNumberRef}
+
+                            inputProps={{ maxLength: 13 }}
                             style={{ width: '55%', }}
                             required />
                     </InputContainer>
@@ -681,7 +744,8 @@ const ClientProfileCont = () => {
                                 views={['day', 'month', 'year']}
                                 label="Birthday"
                                 value={birthDay}
-                                required
+                                maxDate={new Date(Date.parse(new Date()) - 568025136000)}
+                                minDate={new Date(Date.parse(new Date()) - 2524556160000)}
                                 onChange={(newValue) => {
                                     setBirthDay(newValue);
                                 }}
@@ -691,6 +755,7 @@ const ClientProfileCont = () => {
                                         variant="standard"
                                         style={{ width: "55%", margin: '5px 0px' }}
                                         helperText={null}
+                                        required
                                     />
                                 }
                             />
@@ -754,25 +819,29 @@ const ClientProfileCont = () => {
 
                     <InputContainer>
                         <TextField
-                            placeholder='Address'
-                            label="Address"
+                            error={addressError.length != 0 ? true : false}
+                            helperText={addressError.length != 0 ? addressError : ""}
+                            placeholder='Complete Address'
+                            label="Complete Address"
                             variant="outlined"
-                            multiline
-                            rows={4}
+                            type='text'
                             value={address}
-                            required
                             onChange={(e) => {
                                 setAddress(e.target.value)
                             }}
-                            style={{ width: '100%', }} />
+                            multiline
+                            rows={4}
+                            style={{ width: '95%', }}
+                            required
+                            inputProps={{ maxLength: 255 }} />
 
 
 
                     </InputContainer>
                     <InputContainer>
                         {userInformation.length != 0 && userInformation.user.role != 'NON-USER' ?
-                            <Link
-                                href="#">Change Password
+                            <Link style={{ cursor: 'pointer' }}
+                                onClick={() => { handleOpenPassword() }}>Change Password
                             </Link>
                             :
                             ""
@@ -791,7 +860,7 @@ const ClientProfileCont = () => {
                         margin='30px 0px 0px 0px'
                         fontsize='15px'
                         type='submit'>
-                            Update
+                        Update
                     </Button2>
 
                     <FormButton
@@ -812,6 +881,150 @@ const ClientProfileCont = () => {
                 </Box>
             </Modal>
 
+
+
+
+            <Modal
+                open={changePassword}
+                onClose={handleClosePassword}
+                style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                }}>
+                <Box
+                    component='form'
+                    onSubmit={updatePassword}
+                    style={{
+                        height: 'auto',
+                        width: '50vw',
+                        backgroundColor: 'white',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        padding: '0px 0px 30px 0px',
+                        gap: '10px',
+                        justifyContent: 'flex-start',
+                        alignItems: 'center',
+                        overflowY: 'overlay',
+                        overflowX: 'hidden',
+                        borderRadius: '.5rem',
+                        position: 'relative',
+                        // margin: '50px 0px',
+
+                    }}>
+                    <div style={{
+                        width: '100%',
+                        height: '50px',
+                        position: 'sticky',
+                        top: 0,
+                        display: 'flex',
+                        justifyContent: 'flex-end',
+                        alignItems: 'center',
+                        backgroundColor: 'black',
+                        zIndex: '1',
+
+                    }}>
+                        <Title
+                            size='16px'
+                            color='white'
+                            family='Helvetica'
+                            fstyle='normal'
+                            weight='bold'
+                            align='left'
+                            margin='0px auto 0px 10px'
+                        >
+                            Change password
+                        </Title>
+                        <CloseIcon
+                            onClick={handleClosePassword}
+                            style={{
+                                color: 'white',
+                                cursor: 'pointer',
+                                margin: '10px',
+                            }} />
+                    </div>
+
+
+                    <InputContainer
+                        style={{
+                            margin: '50px 0px 0px 0px',
+                            flexDirection: 'column',
+                            alignItems: 'center'
+                        }}>
+                        <TextField
+                            error={oldPasswordError.length != 0 ? true : false}
+                            helperText={oldPasswordError.length != 0 ? oldPasswordError : ""}
+                            placeholder='Old password'
+                            label="Old password"
+                            inputRef={oldPasswordRef}
+                            variant="outlined"
+                            value={oldPassword}
+                            type='password'
+                            onChange={(e) => {
+                                setOldPassword(e.target.value)
+                                setOldPasswordError('')
+
+                            }}
+                            style={{ width: '55%', }}
+                            required />
+
+                        <TextField
+                            error={newPasswordError.length != 0 ? true : false}
+                            helperText={newPasswordError.length != 0 ? newPasswordError : ""}
+                            placeholder='New password'
+                            label="New password"
+                            inputRef={newPasswordRef}
+                            variant="outlined"
+                            value={newPassword}
+                            type='password'
+                            onChange={(e) => {
+                                setNewPassword(e.target.value)
+                                if (!passwordValidation.test(e.target.value) && e.target.value.length != 0) {
+                                    setNewPasswordError("Password must have a minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character.")
+                                }
+                                else {
+                                    setNewPasswordError("")
+                                }
+
+                            }}
+                            style={{ width: '55%', }}
+                            required />
+                    </InputContainer>
+
+
+
+                    <Button2
+                        whileHover={{ backgroundColor: "#2E2E2E", color: "white" }}
+                        w='150px'
+                        h='40px'
+                        textcolor="black"
+                        fam='Times New Roman'
+                        weight='-400'
+                        radius="0px"
+                        border="1px solid #8F805F"
+                        margin='30px 0px 0px 0px'
+                        fontsize='15px'
+                        type='submit'>
+                        Change password
+                    </Button2>
+
+                    <FormButton
+                        whileHover={{ color: "#0C4426" }}
+                        w='100px'
+                        h='40px'
+                        textcolor='#FFFFFF'
+                        fam='Times New Roman, serif'
+                        weight='-400'
+                        fontStyle='Italic'
+                        radius="0px"
+                        margin='20px 0px 40px 0px'
+                        fontsize='16px'
+                        bg='#FF9292'
+                        value='Cancel'
+                        onClick={handleClosePassword}>
+                    </FormButton>
+                </Box>
+            </Modal>
 
         </Container>
     )

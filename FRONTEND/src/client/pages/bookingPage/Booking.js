@@ -10,7 +10,6 @@ export const Booking = () => {
       }, [])
     return (
         <Container>
-            <ChatBot />
             <NavigationBar book />
             <BookingPageCont></BookingPageCont>
             <Footer />

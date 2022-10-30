@@ -31,7 +31,7 @@ exports.Login = async (req, res) => {
                         { userName: req.body.userName }
                     ],
 
-                    role: 'NON-USER' 
+                    role: 'NON-USER'
                 },
             });
             //nonuser
@@ -40,8 +40,8 @@ exports.Login = async (req, res) => {
                 return res.status(400).send({ message: "Username/Email or Password is Incorrect." });
             }
         }
-
         let passwordIsValid = bcrypt.compareSync(req.body.password, user_login.password);
+
         if (!passwordIsValid) {
             user_login = await User.findOne({
                 where: {
@@ -52,8 +52,12 @@ exports.Login = async (req, res) => {
                     role: 'NON-USER'
                 },
             });
-
-            passwordIsValid = bcrypt.compareSync(req.body.password, user_login.password);
+            if (!user_login) {
+                passwordIsValid == false;
+            }
+            else {
+                passwordIsValid = bcrypt.compareSync(req.body.password, user_login.password);
+            }
 
             if (!passwordIsValid) {
                 return res.status(400).send({
@@ -63,15 +67,14 @@ exports.Login = async (req, res) => {
             }
 
         }
-
         //our login secured authentication token
         if (user_login.emailVerified === true || user_login.emailVerified === false) {
             let token = jwt.sign(
                 { id: user_login.id, userName: user_login.userName, email: user_login.email, role: user_login.role },
                 config.auth.secret,
-                {
-                    expiresIn: 43200,
-                }
+                // {
+                //     expiresIn: 43200,
+                // }
             );
 
             req.session.user = token;
