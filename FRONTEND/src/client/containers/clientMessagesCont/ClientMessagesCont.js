@@ -46,6 +46,8 @@ const ClientMessagesCont = () => {
   const [value, setValue] = useState(Date.now());
   const color = "#c44242";
   const [age, setAge] = React.useState('');
+  const [subject, setSubject] = React.useState('');
+  const [message, setMessage] = React.useState('');
 
 
   const [value2, setValue2] = React.useState('1');
@@ -495,6 +497,11 @@ const ClientMessagesCont = () => {
 
   }, [userInformation])
 
+
+  const sendComposeMessage = () => {
+
+  }
+
   return (
     <Container>
 
@@ -572,7 +579,17 @@ const ClientMessagesCont = () => {
             >
               <b>Subject:</b>
             </Title>
-            <TextField id="outlined-basic" style={{ width: '400px' }} label="" variant="outlined" size='small' />
+            <TextField
+              id="outlined-basic" style={{ width: '400px' }}
+              label=""
+              variant="outlined"
+              size='small'
+              value={subject}
+              onChange={(e)=>{
+                setSubject(e.target.value)
+              }}
+              inputProps={{ maxLength: 150 }}
+            />
           </ContainerGlobal>
           <Title
             size='16px'
@@ -584,7 +601,19 @@ const ClientMessagesCont = () => {
           >
             <b>Message:</b>
           </Title>
-          <TextField id="outlined-basic" label="Write your message here..." variant="outlined" multiline rows={10} style={{ width: '95%', margin: '0px auto' }} />
+          <TextField
+            id="outlined-basic"
+            label="Write your message here..."
+            variant="outlined"
+            multiline
+            rows={10}
+            value={message}
+            onChange={(e)=>{
+              setMessage(e.target.value)
+            }}
+
+            inputProps={{ maxLength: 255 }}
+            style={{ width: '95%', margin: '0px auto' }} />
           <ContainerGlobal
             w='auto'
             h='auto'
@@ -655,24 +684,24 @@ const ClientMessagesCont = () => {
             </thead>
             <tbody style={{ height: '10px', overflow: 'hidden' }}>
               {inbox.length != 0 ? inbox
-              .slice((inboxPage - 1) * 6, inboxPage * 6)
-              .map((item) => (
-                <Tr
-                  whileHover={{ boxShadow: '0px 2px 2px gray' }}
-                  whileTap={{ boxShadow: 'none' }}
-                  style={item.conversation.status == true && { backgroundColor: 'rgb(40,40,40, .05', }}
-                >
-                  <Td align='center' normal={item.conversation.status == true && 'normal'}>{item.conversation.conversationFrom.user.role == 'STAFF' ? 'Front Desk' : 'Admin'}</Td>
-                  <Td align='center' normal={item.conversation.status == true && 'normal'}>{item.subject}</Td>
-                  <Td align='center' normal={item.conversation.status == true && 'normal'}><p style={{ margin: 'auto', width: '300px', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>
-                    {item.message}
-                  </p>
-                  </Td>
-                  <Td align='center' normal={item.conversation.status == true && 'normal'}>{new Date(item.created_at).toLocaleDateString()} </Td>
-                  <Td align='center' normal={item.conversation.status == true && 'normal'}>{new Date(item.created_at).toLocaleTimeString().slice(0, 4)} {new Date(item.created_at).toLocaleTimeString().slice(7, 10)}</Td>
-                  <Td align='center' normal={item.conversation.status == true && 'normal'}><ActionButtonMessages /></Td>
-                </Tr>
-              )) : 'no inbox'}
+                .slice((inboxPage - 1) * 6, inboxPage * 6)
+                .map((item) => (
+                  <Tr
+                    whileHover={{ boxShadow: '0px 2px 2px gray' }}
+                    whileTap={{ boxShadow: 'none' }}
+                    style={item.conversation.status == true && { backgroundColor: 'rgb(40,40,40, .05', }}
+                  >
+                    <Td align='center' normal={item.conversation.status == true && 'normal'}>{item.conversation.conversationFrom.user.role == 'STAFF' ? 'Front Desk' : 'Admin'}</Td>
+                    <Td align='center' normal={item.conversation.status == true && 'normal'}>{item.subject}</Td>
+                    <Td align='center' normal={item.conversation.status == true && 'normal'}><p style={{ margin: 'auto', width: '300px', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>
+                      {item.message}
+                    </p>
+                    </Td>
+                    <Td align='center' normal={item.conversation.status == true && 'normal'}>{new Date(item.created_at).toLocaleDateString()} </Td>
+                    <Td align='center' normal={item.conversation.status == true && 'normal'}>{new Date(item.created_at).toLocaleTimeString().slice(0, 4)} {new Date(item.created_at).toLocaleTimeString().slice(7, 10)}</Td>
+                    <Td align='center' normal={item.conversation.status == true && 'normal'}><ActionButtonMessages /></Td>
+                  </Tr>
+                )) : 'no inbox'}
 
             </tbody>
           </TableContainer>
@@ -683,7 +712,7 @@ const ClientMessagesCont = () => {
               setInboxPage(value)
             }}
           />
-          
+
         </TabPanel>
         <TabPanel value="2" style={{ width: '100%' }} >
 
