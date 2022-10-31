@@ -1,4 +1,4 @@
-const { guestInformation, user } = require("../models");
+const { guestInformation, user, message } = require("../models");
 const db = require("../models");
 const Conversation = db.conversation;
 // import Logo from "../../../FRONTEND/src/images/logo.png";
@@ -18,9 +18,19 @@ exports.findAll = async (req, res) => {
     const conversation = await Conversation.findAll({
 
         include: [
-            { model: guestInformation, as: 'conversationFrom' , include: user},
-            { model: guestInformation, as: 'conversationTo' , include: user}
+            { model: guestInformation, as: 'conversationFrom', include: user },
+            { model: guestInformation, as: 'conversationTo', include: user },
+            // {
+            //     model: message, as: 'message', required: true, include: [
+            //         { model: guestInformation, as: 'messageTo', include: user },
+            //     ]
+            // }
         ]
+
+        // include: [{
+        //     model: User,
+        // //  required: false
+        //    }]
     });
     return res.status(200).send(conversation);
 };
@@ -30,8 +40,9 @@ exports.findOne = async (req, res) => {
         {
 
             include: [
-                { model: guestInformation, as: 'conversationFrom' , include: user},
-                { model: guestInformation, as: 'conversationTo' , include: user}
+                { model: guestInformation, as: 'conversationFrom', include: user },
+                { model: guestInformation, as: 'conversationTo', include: user },
+                { model: message, as: 'message', required: true, }
             ]
         }
     );

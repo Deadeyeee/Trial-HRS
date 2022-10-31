@@ -11,8 +11,9 @@ module.exports = (sequelize, DataTypes, Sequelize) => {
             type: DataTypes.STRING,
             allowNull: false,
         },
-        subject: {
-            type: DataTypes.STRING,
+        status: {
+            type: DataTypes.BOOLEAN,
+            defaultValue: false,
             allowNull: false,
         },
     },

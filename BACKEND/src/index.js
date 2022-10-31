@@ -8,10 +8,10 @@ const path = require('path')
 const schedules = require('node-schedule')
 const controller  = require('./controlers/user.controller.js');
 
+const auth2 = require('../config/auth.config')
 //import routes here
 
 //create routes
-
 app.use(cors({
     origin: ["http://localhost:3000"],
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
@@ -22,7 +22,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(cookieParser());
 app.use(session({
     key: "user",
-    secret: "example",
+    secret: auth2.auth.secret,
     resave: false,
     saveUninitialized: false,
     cookie: {
