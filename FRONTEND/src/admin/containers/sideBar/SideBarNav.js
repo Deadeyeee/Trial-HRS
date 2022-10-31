@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useState } from 'react'
+import React, { useEffect, useLayoutEffect, useState } from 'react'
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import logo from '../../../client/images/logo.png'
 import MenuBookIcon from '@mui/icons-material/MenuBook';
@@ -24,6 +24,7 @@ import Axios from 'axios'
 
 import { apiKey } from '../../../apiKey';
 const SideBarNav = (props) => {
+    const [unreadMessage, setUnreadMessage] = useState([]);
     const [show, setShow] = useState(false);
 
     const [getUser, setGetUser] = useState([]);
@@ -48,6 +49,24 @@ const SideBarNav = (props) => {
                     for (let i = 0; i < response2.data.length; i++) {
                         if (response2.data[i].user_id == response1.data.id) {
                             setGetUser(response2.data[i]);
+
+
+                            Axios.get(apiKey + 'api/getAllConversation').then((conversationResult) => {
+                                console.log(conversationResult.data)
+                                Axios.get(apiKey + 'api/getAllMessage').then((messageResult) => {
+                                    console.log(messageResult.data)
+                                    setUnreadMessage(
+                                        conversationResult.data.map((item) => (
+                                            messageResult.data.filter((obj) => obj.messageTo.user.role == 'ADMIN' || obj.messageTo.user.role == 'STAFF').filter((obj) => obj.conversation_id == item.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].status
+                                        ))
+                                    )
+
+                                }).catch((err) => {
+                                    console.log(err)
+                                })
+                            }).catch((err) => {
+                                console.log(err)
+                            })
                         }
                     }
                 }).catch((err) => {
@@ -64,7 +83,9 @@ const SideBarNav = (props) => {
 
     }, []);
 
-
+    useEffect(() => {
+        if (unreadMessage.length != 0) console.log('unreadMessage', unreadMessage.filter((obj) => obj == false).length)
+    }, [unreadMessage])
 
     // const deleteModal = (
 
@@ -119,6 +140,16 @@ const SideBarNav = (props) => {
     //         </ContainerGlobal>
     //     </ContainerGlobal2>
     // );
+
+
+
+
+    const messageBadgeCount = () => {
+
+
+
+
+    }
     return (
         <Container>
             <ProfileContainer
@@ -264,7 +295,7 @@ const SideBarNav = (props) => {
                 </Title>
             </MenuContainer>
 
-            {getUser.length != 0 ? getUser.user.role == 'ADMIN'? <MenuContainer
+            {getUser.length != 0 ? getUser.user.role == 'ADMIN' ? <MenuContainer
 
                 href='/admin/userList'
                 whileTap={{ scale: 0.98 }}
@@ -383,7 +414,51 @@ const SideBarNav = (props) => {
                 <MailIcon
                     style={{ color: props.message == true ? "#2E2E2E" : "#dddddd" }}
                 />
-                <Badge badgeContent={4} color="warning">
+                {props.message == true ?
+
+                    <Badge badgeContent={0} color="warning">
+                        <Title
+                            size='14px'
+                            color='white'
+                            family='Helvetica'
+                            cursor='pointer'
+                            fstyle='normal'
+                            weight='600'
+                            align='left'
+                            padding='0px 10px 0px 0px'
+                        >
+                            Messages
+                        </Title>
+                    </Badge >
+
+                    :
+                    <Badge badgeContent={unreadMessage.length != 0 ? unreadMessage.filter((obj) => obj == false).length : 0} color="warning">
+                        <Title
+                            size='14px'
+                            color='white'
+                            family='Helvetica'
+                            cursor='pointer'
+                            fstyle='normal'
+                            weight='600'
+                            align='left'
+                            padding='0px 10px 0px 0px'
+                        >
+                            Messages
+                        </Title>
+                    </Badge >
+                }
+            </MenuContainer>
+
+
+            {getUser.length != 0 ? getUser.user.role == 'ADMIN' ?
+                <MenuContainer
+                    href='/admin/report'
+                    whileTap={{ scale: 0.98 }}
+                    active={props.report == true}>
+                    <AssessmentIcon
+                        style={{ color: props.report == true ? "#2E2E2E" : "#dddddd" }}
+                    />
+
                     <Title
                         size='14px'
                         color='white'
@@ -392,35 +467,10 @@ const SideBarNav = (props) => {
                         fstyle='normal'
                         weight='600'
                         align='left'
-                        padding='0px 10px 0px 0px'
                     >
-                        Messages
+                        Reports
                     </Title>
-                </Badge >
-            </MenuContainer>
-
-
-            {getUser.length != 0 ? getUser.user.role == 'ADMIN' ? 
-            <MenuContainer
-                href='/admin/report'
-                whileTap={{ scale: 0.98 }}
-                active={props.report == true}>
-                <AssessmentIcon
-                    style={{ color: props.report == true ? "#2E2E2E" : "#dddddd" }}
-                />
-
-                <Title
-                    size='14px'
-                    color='white'
-                    family='Helvetica'
-                    cursor='pointer'
-                    fstyle='normal'
-                    weight='600'
-                    align='left'
-                >
-                    Reports
-                </Title>
-            </MenuContainer> : '' : ''}
+                </MenuContainer> : '' : ''}
 
 
             <Logout

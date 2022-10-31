@@ -31,7 +31,7 @@ import axios from 'axios'
 import { apiKey } from '../../../apiKey'
 import { Tr, TableContainer, TableFixHead, Td, Th } from '../../../admin/containers/messagesContainer/styles'
 import ActionButtonMessages from '../../../admin/components/actionButton/ActionButtonMessages'
-import { borderRadius, display, margin } from '@mui/system'
+import { borderRadius, display, margin, maxHeight } from '@mui/system'
 const ClientMessagesCont = () => {
   const [option, setOption] = useState('inbox');
 
@@ -39,25 +39,17 @@ const ClientMessagesCont = () => {
   const [inbox, setInbox] = useState([])
   const [sent, setSent] = useState([])
   const [messagesDb, setMessagesDb] = useState([])
-  const [conversationDb, setConversationDb] = useState([])
 
   useEffect(() => {
     console.log(option)
   })
 
 
-  const [value, setValue] = useState(Date.now());
-  const color = "#c44242";
-  const [age, setAge] = React.useState('');
   const [subject, setSubject] = React.useState('');
   const [message, setMessage] = React.useState('');
 
 
   const [value2, setValue2] = React.useState('1');
-
-  const [show, setShow] = useState(false);
-  const [showComposeMessage, setShowComposeMessage] = useState(false);
-  const [show2, setShow2] = useState(false);
 
 
   const [openCompose, setOpenCompose] = React.useState(false);
@@ -65,17 +57,48 @@ const ClientMessagesCont = () => {
   const handleOpenCompose = () => setOpenCompose(true);
   const handleCloseCompose = () => {
     setOpenCompose(false)
+    setReloadData(reloadData + 1);
+    setMessage('')
+    setSubject('')
   };
   const [viewMessage, setViewMessage] = React.useState(false);
-  const [messageContentDb, setMessageContentDb] = React.useState('');
-  const [conversationId, setConversationId] = React.useState('');
+  const [conversationId, setConversationId] = React.useState([]);
+
+  const [reloadData, setReloadData] = React.useState(0);
+
+
+  const scrollToBottom = (id) => {
+    const element = document.getElementById(id);
+    element.scrollTop = element.scrollHeight;
+  }
 
   const handleOpenViewMessage = (value) => {
+
+
+    axios.patch(apiKey + 'api/updateMessage/' + messagesDb.filter((obj) => obj.conversation_id == value.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].id, {
+      status: true,
+    })
+      .then((result) => {
+        console.log(result.data);
+      })
+      .catch((err) => {
+        console.log(err);
+
+      });
     setViewMessage(true)
     setConversationId(value)
+    setMessage('')
+    setSubject('')
   };
+
+
+
   const handleCloseViewMessage = () => {
+    setReloadData(reloadData + 1);
     setViewMessage(false)
+    setMessage('')
+    setSubject('')
+    setConversationId([])
   };
 
   const [inboxPage, setInboxPage] = useState(1)
@@ -86,397 +109,6 @@ const ClientMessagesCont = () => {
   const handleChange2 = (event, newValue) => {
     setValue2(newValue);
   };
-
-  // const viewMessage = (
-
-  //   <ContainerGlobal2
-  //     w='100%'
-  //     h='100%'
-  //     radius='none'
-  //     justify='center'
-  //     align='center'
-  //     bg='rgb(46, 46, 46, 0.9)'
-  //     index='2'
-  //     overflow='auto'
-  //     active
-  //   >
-  //     <ContainerGlobal
-  //       w='900px'
-  //       h='700px'
-  //       bg='white'
-  //       direction='column'
-  //       gap='10px'
-
-  //     >
-  //       <ContainerGlobal
-  //         bg='#998B6D'
-  //         radius='none'
-  //         align='center'
-  //         w='100%'>
-  //         <Title
-  //           size='20px'
-  //           color='black'
-  //           family='Helvetica'
-  //           fstyle='normal'
-  //           weight='600'
-  //           align='left'
-  //           margin='20px'
-  //         >
-  //           Reservation Confirmation
-  //         </Title>
-  //         <IconButton aria-label="delete" size='large' style={{ color: 'white', margin: '0px 0px 0px auto' }}
-
-  //           onClick={() => setShow(prev => !prev)}
-  //         >
-  //           <CloseIcon />
-  //         </IconButton>
-
-  //       </ContainerGlobal>
-
-  //       <ContainerGlobal
-  //         w='95%' overflow='visible' margin='5px auto'>
-  //         <Title
-  //           size='16px'
-  //           color='black'
-  //           family='Helvetica'
-  //           fstyle='normal'
-  //           weight='400'
-  //           align='left'
-  //           margin='0px 0px 0px 0px'
-  //         >
-  //           <b>From:</b> FrontDesk
-  //         </Title>
-  //         <Title
-  //           size='16px'
-  //           color='black'
-  //           family='Helvetica'
-  //           fstyle='normal'
-  //           weight='400'
-  //           align='left'
-  //           margin='0px 0px 0px auto'
-  //         >
-  //           04/22/21 - 12:26 PM
-  //         </Title>
-  //       </ContainerGlobal>
-  //       <ContainerGlobal
-  //         w='95%'
-  //         h='450px'
-  //         margin='0px 15px'
-  //         bg='rgb(183, 183, 183,.3)'
-  //         padding='10px'
-  //         style={{ textAlign: 'justify' }}
-  //         direction='column'
-  //         overflow='auto'
-  //       >
-  //         Dear Pedro Juan, <br /><br />
-
-  //         We are pleased to inform you that your RESERVATION [091234568] is confirmed.<br /><br />
-
-  //         Your check-in : 04/26/2022<br />
-  //         Your checkout : 04/27/2022<br /><br />
-
-  //         Reservation details:<br /><br />
-
-  //         Reservation Number: 091234568<br />
-  //         Reservation Date: 03/01/2022<br />
-  //         Payment Mode: Bank (MetroBank)<br />
-  //         Payment Type: Down Payment<br />
-  //         Guest Name: Pedro <br />
-  //         Birthdate: 2000/12/21<br />
-  //         Nationality: Filipino<br />
-  //         Email Address: PedroJuan@gmail.com<br />
-  //         Address: Cecilia Chapman 711 Philippines<br />
-  //         Contact Number: 09292333312<br />
-  //         Check-In Date: 03/04/2022<br />
-  //         Check-Out Date: 03/08/2022<br />
-  //         Night(s): 4 nights<br />
-  //         Total No. of Rooms: 1<br />
-  //         Total No. of adult: 2<br />
-  //         Total No. of kids: 0<br />
-  //         Special Request(s): none<br /><br />
-
-  //         We are sincerely awaiting your visit, I hope you enjoy your stay with us.<br /><br />
-
-  //         - Mr. Elbert<br />
-  //         Hotel Manager
-  //       </ContainerGlobal>
-
-  //       <ContainerGlobal
-  //         w='auto'
-  //         h='auto'
-  //         bg='none'
-  //         direction='row'
-  //         gap='10px'
-  //         justify='center'
-  //         margin='auto'
-  //         align='center'
-  //         overflow='none'
-  //       >
-  //         <Button variant="contained" size="large"
-  //           style={{ backgroundColor: '#948566' }}
-
-  //           onClick={() => setShow(prev => !prev)}
-  //         >
-  //           Reply
-  //         </Button>
-  //         <Button variant="contained" size="large"
-  //           style={{ backgroundColor: '#FF2400' }}
-
-  //           onClick={() => setShow(prev => !prev)}
-  //         >
-  //           Delete
-  //         </Button>
-  //       </ContainerGlobal>
-  //     </ContainerGlobal>
-
-  //   </ContainerGlobal2>
-  // );
-
-
-
-  const viewSentMessage = (
-
-    <ContainerGlobal2
-      w='100%'
-      h='100%'
-      radius='none'
-      justify='center'
-      align='center'
-      bg='rgb(46, 46, 46, 0.9)'
-      index='2'
-      overflow='auto'
-      active
-    >
-      <ContainerGlobal
-        w='900px'
-        h='700px'
-        bg='white'
-        direction='column'
-        gap='10px'
-
-      >
-        <ContainerGlobal
-          bg='#998B6D'
-          radius='none'
-          align='center'
-          w='100%'>
-          <Title
-            size='20px'
-            color='black'
-            family='Helvetica'
-            fstyle='normal'
-            weight='600'
-            align='left'
-            margin='20px'
-          >
-            Reservation Payment
-          </Title>
-          <IconButton aria-label="delete" size='large' style={{ color: 'white', margin: '0px 0px 0px auto' }}
-
-            onClick={() => setShow2(prev => !prev)}
-          >
-            <CloseIcon />
-          </IconButton>
-
-        </ContainerGlobal>
-
-        <ContainerGlobal
-          w='95%' overflow='visible' margin='5px auto'>
-          <Title
-            size='16px'
-            color='black'
-            family='Helvetica'
-            fstyle='normal'
-            weight='400'
-            align='left'
-            margin='0px 0px 0px 0px'
-          >
-            <b>To:</b> FrontDesk
-          </Title>
-          <Title
-            size='16px'
-            color='black'
-            family='Helvetica'
-            fstyle='normal'
-            weight='400'
-            align='left'
-            margin='0px 0px 0px auto'
-          >
-            04/20/21 - 12:26 PM
-          </Title>
-        </ContainerGlobal>
-        <ContainerGlobal
-          w='95%'
-          h='450px'
-          margin='0px 15px'
-          bg='rgb(183, 183, 183,.3)'
-          padding='10px'
-          style={{ textAlign: 'justify' }}
-          direction='column'
-          overflow='auto'
-        >
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ut tellus id felis maximus semper vel non tellus. Ut rutrum nisi augue, eu efficitur tortor pellentesque sed. Suspendisse sed mi a dolor fringilla luctus non vitae augue. Duis consectetur finibus ultrices. Ut ac fermentum arcu. Sed commodo rhoncus lectus, a porttitor velit vehicula sed. Nullam bibendum purus eu mattis cursus. Cras porta sem sit amet eleifend malesuada. Nullam eu sagittis neque. Maecenas sagittis ornare nulla nec sagittis.
-
-          <img style={{ margin: '20px 0px 0px 0px' }} width='30%' src={Recipt} />
-        </ContainerGlobal>
-        <ContainerGlobal
-          w='auto'
-          h='auto'
-          bg='none'
-          direction='row'
-          gap='10px'
-          justify='center'
-          margin='auto'
-          align='center'
-          overflow='none'
-        >
-          <Button variant="contained" size="large"
-            style={{ backgroundColor: '#948566' }}
-
-            onClick={() => setShow2(prev => !prev)}
-          >
-            Reply
-          </Button>
-          <Button variant="contained" size="large"
-            style={{ backgroundColor: '#FF2400' }}
-
-            onClick={() => setShow2(prev => !prev)}
-          >
-            Delete
-          </Button>
-        </ContainerGlobal>
-      </ContainerGlobal>
-
-    </ContainerGlobal2>
-  );
-
-
-
-  const composeMessage = (
-    <ContainerGlobal2
-      w='100%'
-      h='100%'
-      radius='none'
-      justify='center'
-      align='center'
-      bg='rgb(46, 46, 46, 0.9)'
-      index='4'
-      active
-    >
-      <ContainerGlobal
-        w='900px'
-        h='650px'
-        bg='white'
-        direction='column'
-        gap='10px'
-
-      >
-        <ContainerGlobal
-          bg='#2e2e2e'
-          radius='none'
-          align='center'
-          w='100%'>
-          <Title
-            size='20px'
-            color='white'
-            family='Helvetica'
-            fstyle='normal'
-            weight='600'
-            align='left'
-            bg='#2e2e2e'
-            margin='20px'
-          >
-            Compose message
-          </Title>
-          <IconButton aria-label="delete" size='large' style={{ color: 'white', margin: '0px 0px 0px auto' }}
-            onClick={() => setShowComposeMessage(prev => !prev)}
-          >
-            <CloseIcon />
-          </IconButton>
-
-        </ContainerGlobal>
-
-        <ContainerGlobal
-          w='95%' overflow='visible' margin='5px auto'
-          align='center' gap='50px'>
-          <Title
-            size='16px'
-            color='black'
-            family='Helvetica'
-            fstyle='normal'
-            weight='400'
-            align='left'
-            margin='0px 0px 0px 0px'
-
-          >
-            <b>To:</b>
-          </Title>
-          <TextField id="outlined-basic" style={{ width: '200px' }} label="" variant="outlined" size='small' />
-        </ContainerGlobal>
-        <ContainerGlobal
-          w='95%' overflow='visible' margin='5px auto'
-          align='center' gap='10px'
-        >
-          <Title
-            size='16px'
-            color='black'
-            family='Helvetica'
-            fstyle='normal'
-            weight='400'
-            align='left'
-            margin='0px 0px 0px 0px'
-          >
-            <b>Subject:</b>
-          </Title>
-          <TextField id="outlined-basic" style={{ width: '400px' }} label="" variant="outlined" size='small' />
-        </ContainerGlobal>
-        <Title
-          size='16px'
-          color='black'
-          family='Helvetica'
-          fstyle='normal'
-          weight='400'
-          align='left' w='95%' margin='5px auto'
-        >
-          <b>Message:</b>
-        </Title>
-        <TextField id="outlined-basic" label="Write your message here..." variant="outlined" multiline rows={10} style={{ width: '95%', margin: '0px auto' }} />
-
-        <IconButton aria-label="delete" size='large' style={{ color: 'black', margin: '0px 0px 0px 25px', border: '1px solid black' }}
-
-        >
-          <AttachFileIcon />
-        </IconButton>
-        <ContainerGlobal
-          w='auto'
-          h='auto'
-          bg='none'
-          direction='row'
-          gap='10px'
-          justify='center'
-          margin='auto'
-          align='center'
-          overflow='none'
-        >
-          <Button variant="contained" size="large"
-            style={{ backgroundColor: '#948566' }}
-
-            onClick={() => setShowComposeMessage(prev => !prev)}
-          >
-            Send
-          </Button>
-          <Button variant="contained" size="large"
-            style={{ backgroundColor: '#FF2400' }}
-
-            onClick={() => setShowComposeMessage(prev => !prev)}
-          >
-            Cancel
-          </Button>
-        </ContainerGlobal>
-      </ContainerGlobal>
-
-    </ContainerGlobal2>
-  );
 
 
 
@@ -505,15 +137,15 @@ const ClientMessagesCont = () => {
                 setInbox(result.data
                   .filter((obj) => obj.from_guest_id == item.id || obj.to_guest_id == item.id)
                   .filter((item2) => (
-                    messageResult.data.filter((obj) => obj.conversation_id == item2.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].message_to_guest_id != item.id
+                    messageResult.data.filter((obj) => obj.conversation_id == item2.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].message_to_guest_id == item.id
                   )))
                 setSent(result.data
                   .filter((obj) => obj.from_guest_id == item.id || obj.to_guest_id == item.id)
                   .filter((item2) => (
-                    messageResult.data.filter((obj) => obj.conversation_id == item2.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].message_to_guest_id == item.id
+                    messageResult.data.filter((obj) => obj.conversation_id == item2.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].message_to_guest_id != item.id
                   )))
 
-                  
+
               }).catch((err) => {
                 console.log(err)
 
@@ -534,7 +166,7 @@ const ClientMessagesCont = () => {
     }).catch((err) => {
       console.log(err)
     });
-  }, [])
+  }, [reloadData])
 
 
   useEffect(() => {
@@ -542,37 +174,96 @@ const ClientMessagesCont = () => {
   }, [userInformation])
 
 
-  const sendComposeMessage = () => {
+  const sendComposeMessage = (e) => {
+    e.preventDefault()
     console.log('ASD')
     axios.get(apiKey + 'api/getAllGuest').then((guest) => {
-      guest.data.filter((obj) => obj.user.role == 'ADMIN' || obj.user.role == 'STAFF').map((item) => {
-        axios.post(apiKey + 'api/addConversation', {
-          from_guest_id: userInformation.id,
-          to_guest_id: item.id
-        }).then((result) => {
-          console.log(result.data);
-          axios.post(apiKey + 'api/addMessage', {
-            message: message,
-            conversation_id: result.data.new_conversation.id,
-            subject: subject,
-          }).then((result) => {
-            console.log(result.data);
-            window.location.reload()
-          }).catch((err) => {
-            console.log(err);
+      if (guest.data.length != 0) {
+        guest.data.filter((obj) => obj.user.role == 'ADMIN').map((item, index) => {
+          if (index == 0) {
+            axios.post(apiKey + 'api/addConversation', {
+              from_guest_id: userInformation.id,
+              to_guest_id: item.id,
+              subject: subject,
+            }).then((result) => {
+              console.log(result.data);
+              axios.post(apiKey + 'api/addMessage', {
+                message: message,
+                conversation_id: result.data.new_conversation.id,
+                message_to_guest_id: item.id,
+                message_from_guest_id: userInformation.id,
+              }).then((result) => {
+                console.log(result.data);
+                handleCloseCompose();
+              }).catch((err) => {
+                console.log(err);
 
-          });
-        }).catch((err) => {
-          console.log(err);
+              });
+            }).catch((err) => {
+              console.log(err);
 
-        });
-      })
+            });
+          }
+
+        })
+      }
+      else {
+        console.log('no users')
+      }
     }).catch((err) => {
       console.log(err);
     });
 
   }
 
+
+  const sendReply = (value) => {
+    if (value.from_guest_id != userInformation.id) {
+      axios.post(apiKey + 'api/addMessage', {
+        message: message,
+        conversation_id: value.id,
+        message_to_guest_id: value.from_guest_id,
+        message_from_guest_id: userInformation.id,
+      }).then((result) => {
+        console.log(result.data);
+        axios.patch(apiKey + 'api/updateConversation/' + value.id, {
+          updated_at: new Date(Date.now()),
+        }).then((result) => {
+          console.log(result.data);
+          handleCloseViewMessage();
+        }).catch((err) => {
+          console.log(err);
+
+        });
+      }).catch((err) => {
+        console.log(err);
+
+      });
+    }
+    else {
+      axios.post(apiKey + 'api/addMessage', {
+        message: message,
+        conversation_id: value.id,
+        message_to_guest_id: value.to_guest_id,
+        message_from_guest_id: userInformation.id,
+      }).then((result) => {
+        console.log(result.data);
+        axios.patch(apiKey + 'api/updateConversation/' + value.id, {
+          updated_at: new Date(Date.now()),
+        }).then((result) => {
+          console.log(result.data);
+          handleCloseViewMessage();
+
+        }).catch((err) => {
+          console.log(err);
+
+        });
+      }).catch((err) => {
+        console.log(err);
+
+      });
+    }
+  }
   return (
     <Container>
 
@@ -586,7 +277,7 @@ const ClientMessagesCont = () => {
         }}>
         <Box
           component='form'
-          // onSubmit={updatePassword}
+          onSubmit={sendComposeMessage}
           style={{
             height: 'auto',
             width: '50vw',
@@ -652,7 +343,7 @@ const ClientMessagesCont = () => {
             </Title>
             <TextField
               id="outlined-basic" style={{ width: '400px' }}
-              label=""
+              label="Subject"
               variant="outlined"
               size='small'
               value={subject}
@@ -700,8 +391,7 @@ const ClientMessagesCont = () => {
           >
             <Button variant="contained" size="large"
               style={{ backgroundColor: '#948566' }}
-
-              onClick={() => sendComposeMessage()}
+              type='submit'
             >
               Send
             </Button>
@@ -730,6 +420,7 @@ const ClientMessagesCont = () => {
           // onSubmit={updatePassword}
           style={{
             height: 'auto',
+            maxHeight: '90vh',
             width: '50vw',
             backgroundColor: 'white',
             display: 'flex',
@@ -761,8 +452,8 @@ const ClientMessagesCont = () => {
               margin: '0px auto 0px 10px',
               display: 'flex',
               gap: '10px',
-              alignItems: 'center'
-
+              alignItems: 'center',
+              maxWidth: '600px'
             }}>
               <Title
                 size='16px'
@@ -786,13 +477,13 @@ const ClientMessagesCont = () => {
                 weight='normal'
                 align='left'
                 style={{
-                  width: '500px',
+                  width: '400px',
                   whiteSpace: 'nowrap',
                   overflow: 'hidden',
                   textOverflow: 'ellipsis'
                 }}
               >
-                sample
+                {conversationId.subject}
               </Title>
             </div>
             <CloseIcon
@@ -803,14 +494,14 @@ const ClientMessagesCont = () => {
                 margin: '10px',
               }} />
           </div>
-          <div style={{ width: '100%', overflowY: 'scroll', height: '500px', overflowX: 'hidden' }}>
-            {messagesDb.length != 0 && conversationId != '' ?
+          <div id='conversation' style={{ width: '100%', overflowY: 'scroll', height: '500px', overflowX: 'hidden', display: 'flex', flexDirection: 'column' }}>
+            {messagesDb.length != 0 && conversationId.length != 0 ?
               messagesDb
-                .filter((obj) => obj.conversation_id == conversationId)
+                .filter((obj) => obj.conversation_id == conversationId.id)
                 .sort((a, b) => new Date(a.created_at) - new Date(b.created_at))
-                .map((item) => (
-                  item.message_to_guest_id != userInformation.id ?
-                    <div style={{ width: '100%', marginBottom: '30px' }}>
+                .map((item, index, array) => ( 
+                  item.message_to_guest_id == userInformation.id ?
+                    <div style={{ display: 'flex', flexDirection: 'column', width: '50%', marginBottom: '30px' }}>
                       <ContainerGlobal
                         w='95%' overflow='visible' margin='5px auto'
                       >
@@ -823,7 +514,7 @@ const ClientMessagesCont = () => {
                           align='left'
                           margin='0px 0px 0px 0px'
                         >
-                          <b>From:</b> {item.messageTo.firstName}
+                          <b>From:</b> RM luxe hotel
                         </Title>
                         <Title
                           size='16px'
@@ -834,7 +525,10 @@ const ClientMessagesCont = () => {
                           align='left'
                           margin='0px 0px 0px auto'
                         >
-                          {new Date(item.created_at).toLocaleDateString()} {new Date(item.created_at).toLocaleTimeString().slice(0, 4)} {new Date(item.created_at).toLocaleTimeString().slice(7, 10)}
+                          {new Date(item.created_at).toLocaleDateString() + ' '}
+                          {new Date(item.created_at).toLocaleTimeString().split(':')[0]}:{new Date(item.created_at).toLocaleTimeString().split(':')[0] + ' '}
+                          {new Date(item.created_at).toLocaleTimeString().split(' ')[1] + ' '}
+
                         </Title>
                       </ContainerGlobal>
                       <ContainerGlobal
@@ -847,11 +541,11 @@ const ClientMessagesCont = () => {
                         direction='column'
                         overflow='auto'
                       >
-                        {item.message}
+                        <p style={{wordWrap:'break-word', width: '100%', margin:'0px', }}>{item.message}</p>
                       </ContainerGlobal>
                     </div>
                     :
-                    <div style={{ width: '100%', marginBottom: '30px' }}>
+                    <div style={{ display: 'flex', flexDirection: 'column', width: '50%', marginBottom: '30px', marginLeft: 'auto' }}>
                       <ContainerGlobal
                         w='95%' overflow='visible' margin='5px auto'
                       >
@@ -864,7 +558,9 @@ const ClientMessagesCont = () => {
                           align='left'
                           margin='0px 0px 0px 0px'
                         >
-                          {new Date(item.created_at).toLocaleDateString()} {new Date(item.created_at).toLocaleTimeString().slice(0, 4)} {new Date(item.created_at).toLocaleTimeString().slice(7, 10)}
+                          {new Date(item.created_at).toLocaleDateString() + ' '}
+                          {new Date(item.created_at).toLocaleTimeString().split(':')[0]}:{new Date(item.created_at).toLocaleTimeString().split(':')[0] + ' '}
+                          {new Date(item.created_at).toLocaleTimeString().split(' ')[1]}
                         </Title>
                         <Title
                           size='16px'
@@ -888,7 +584,7 @@ const ClientMessagesCont = () => {
                         direction='column'
                         overflow='auto'
                       >
-                        {item.message}
+                        <p style={{wordWrap:'break-word', width: '100%', margin:'0px', }}>{item.message}</p>
                       </ContainerGlobal>
                     </div>
 
@@ -900,6 +596,30 @@ const ClientMessagesCont = () => {
 
           </div>
 
+          <hr style={{ width: '100%' }}></hr>
+          <Title
+            size='16px'
+            color='black'
+            family='Helvetica'
+            fstyle='normal'
+            weight='400'
+            align='left' w='95%' margin='5px auto'
+          >
+            <b>Message:</b>
+          </Title>
+          <TextField
+            id="outlined-basic"
+            label="Write your message here..."
+            variant="outlined"
+            multiline
+            rows={5}
+            value={message}
+            onChange={(e) => {
+              setMessage(e.target.value)
+            }}
+
+            inputProps={{ maxLength: 255 }}
+            style={{ width: '95%', margin: '0px auto' }} />
 
           <ContainerGlobal
             w='auto'
@@ -914,8 +634,8 @@ const ClientMessagesCont = () => {
           >
             <Button variant="contained" size="large"
               style={{ backgroundColor: '#948566' }}
-
-              onClick={() => sendComposeMessage()}
+              disabled={message == '' ? true : false}
+              onClick={() => sendReply(conversationId)}
             >
               Reply
             </Button>
@@ -973,6 +693,7 @@ const ClientMessagesCont = () => {
                 // .filter((obj) => obj.to_guest_id == userInformation.id || obj.to_guest_id == userInformation.id)
                 // .filter((obj) => obj.message.message_to_guest_id != userInformation.id)
                 // .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+                .sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at))
                 // .filter((obj, index, array) => index != 0 ? array[index].id != array[index - 1].id : array[index])
                 .slice((inboxPage - 1) * 6, inboxPage * 6)
                 .map((item) => (
@@ -980,7 +701,7 @@ const ClientMessagesCont = () => {
                     whileHover={{ boxShadow: '0px 2px 2px gray' }}
                     whileTap={{ boxShadow: 'none' }}
                     style={messagesDb.filter((obj) => obj.conversation_id == item.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].status == true && { backgroundColor: 'rgb(40,40,40, .05', }}
-                    onClick={() => handleOpenViewMessage(item.id)}
+                    onClick={() => handleOpenViewMessage(item)}
                   >
                     <Td align='center' normal={messagesDb.filter((obj) => obj.conversation_id == item.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].status == true && 'normal'}>{item.subject}</Td>
                     <Td align='center' normal={messagesDb.filter((obj) => obj.conversation_id == item.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].status == true && 'normal'}><p style={{ margin: 'auto', width: '300px', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>
@@ -988,10 +709,15 @@ const ClientMessagesCont = () => {
                     </p>
                     </Td>
                     <Td align='center' normal={item.status == true && 'normal'}>{new Date(messagesDb.filter((obj) => obj.conversation_id == item.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].created_at).toLocaleDateString()} </Td>
-                    <Td align='center' normal={item.status == true && 'normal'}>{new Date(messagesDb.filter((obj) => obj.conversation_id == item.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].created_at).toLocaleTimeString().slice(0, 4)} {new Date(messagesDb.filter((obj) => obj.conversation_id == item.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].created_at).toLocaleTimeString().slice(7, 10)}</Td>
+                    <Td align='center' normal={item.status == true && 'normal'}>{new Date(messagesDb.filter((obj) => obj.conversation_id == item.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].created_at).toLocaleTimeString().split(':')[0]}:{new Date(messagesDb.filter((obj) => obj.conversation_id == item.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].created_at).toLocaleTimeString().split(':')[1]} {new Date(messagesDb.filter((obj) => obj.conversation_id == item.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].created_at).toLocaleTimeString().split(' ')[1]}</Td>
                     <Td align='center' normal={item.status == true && 'normal'}><ActionButtonMessages /></Td>
                   </Tr>
-                )) : 'no inbox'}
+                )) :
+                <Tr
+                >
+                  <Td colSpan={5} align='center'>No Inbox</Td>
+                </Tr>
+              }
 
             </tbody>
           </TableContainer>
@@ -1037,26 +763,29 @@ const ClientMessagesCont = () => {
             {sent.length != 0 && messagesDb.length != 0 ? sent
               // .filter((obj) => obj.to_guest_id == userInformation.id || obj.to_guest_id == userInformation.id)
               // .filter((obj) => obj.message.message_to_guest_id != userInformation.id)
-              // .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+              .sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at))
               // .filter((obj, index, array) => index != 0 ? array[index].id != array[index - 1].id : array[index])
-              .slice((inboxPage - 1) * 6, inboxPage * 6)
+              .slice((sentPage - 1) * 6, sentPage * 6)
               .map((item) => (
                 <Tr
                   whileHover={{ boxShadow: '0px 2px 2px gray' }}
                   whileTap={{ boxShadow: 'none' }}
-                  style={messagesDb.filter((obj) => obj.conversation_id == item.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].status == true && { backgroundColor: 'rgb(40,40,40, .05', }}
-                  onClick={() => handleOpenViewMessage(item.id)}
+                  style={{ backgroundColor: 'rgb(40,40,40, .05', }}
+                  onClick={() => handleOpenViewMessage(item)}
                 >
-                  <Td align='center' normal={messagesDb.filter((obj) => obj.conversation_id == item.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].status == true && 'normal'}>{item.subject}</Td>
-                  <Td align='center' normal={messagesDb.filter((obj) => obj.conversation_id == item.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].status == true && 'normal'}><p style={{ margin: 'auto', width: '300px', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>
+                  <Td align='center' normal>{item.subject}</Td>
+                  <Td align='center' normal><p style={{ margin: 'auto', width: '300px', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>
                     {messagesDb.filter((obj) => obj.conversation_id == item.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].message}
                   </p>
                   </Td>
-                  <Td align='center' normal={item.status == true && 'normal'}>{new Date(messagesDb.filter((obj) => obj.conversation_id == item.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].created_at).toLocaleDateString()} </Td>
-                  <Td align='center' normal={item.status == true && 'normal'}>{new Date(messagesDb.filter((obj) => obj.conversation_id == item.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].created_at).toLocaleTimeString().slice(0, 4)} {new Date(messagesDb.filter((obj) => obj.conversation_id == item.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].created_at).toLocaleTimeString().slice(7, 10)}</Td>
-                  <Td align='center' normal={item.status == true && 'normal'}><ActionButtonMessages /></Td>
+                  <Td align='center' normal>{new Date(messagesDb.filter((obj) => obj.conversation_id == item.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].created_at).toLocaleDateString()} </Td>
+                  <Td align='center' normal>{new Date(messagesDb.filter((obj) => obj.conversation_id == item.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].created_at).toLocaleTimeString().split(':')[0]}:{new Date(messagesDb.filter((obj) => obj.conversation_id == item.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].created_at).toLocaleTimeString().split(':')[1]} {new Date(messagesDb.filter((obj) => obj.conversation_id == item.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].created_at).toLocaleTimeString().split(' ')[1]}</Td>
+                  <Td align='center' normal><ActionButtonMessages /></Td>
                 </Tr>
-              )) : 'no inbox'}
+              )) : <Tr
+              >
+              <Td colSpan={5} align='center'>Empty, please check your inbox.</Td>
+            </Tr>}
 
           </TableContainer>
           <Pagination
