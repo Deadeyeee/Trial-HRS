@@ -20,6 +20,7 @@ exports.findAll = async (req, res) => {
             include: [
 
                 { model: guestInformation, as: 'messageTo', include: user }, 
+                { model: guestInformation, as: 'messageFrom', include: user }, 
                 {
                     model: conversation,
 
@@ -39,6 +40,7 @@ exports.findOne = async (req, res) => {
         {
             include: [
                 { model: guestInformation, as: 'messageTo', include: user }, 
+                { model: guestInformation, as: 'messageFrom', include: user }, 
                 {
                     model: conversation,
                     include: [

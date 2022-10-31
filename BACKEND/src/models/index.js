@@ -272,6 +272,16 @@ db.message.belongsTo(db.guestInformation, {
     as: "messageTo",
 });
 
+
+
+
+db.message.belongsTo(db.guestInformation, {
+    foreignKey: { name: "message_from_guest_id", allowNull: false },
+    foreignKeyConstraint: true,
+    as: "messageFrom",
+});
+
+
 //conversation has manny guest
 db.conversation.belongsTo(db.guestInformation, {
     foreignKey: { name: "from_guest_id", allowNull: false },
