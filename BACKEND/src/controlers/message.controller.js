@@ -18,11 +18,14 @@ exports.findAll = async (req, res) => {
     const message = await Message.findAll(
         {
             include: [
+
+                { model: guestInformation, as: 'messageTo', include: user }, 
                 {
                     model: conversation,
+
                     include: [
-                        {model: guestInformation, as: 'conversationFrom', include: user},
-                        {model: guestInformation, as: 'conversationTo', include: user}
+                        { model: guestInformation, as: 'conversationFrom', include: user },
+                        { model: guestInformation, as: 'conversationTo', include: user },
                     ]
                 }
             ]
@@ -35,11 +38,12 @@ exports.findOne = async (req, res) => {
     const message = await Message.findByPk(req.params.id,
         {
             include: [
+                { model: guestInformation, as: 'messageTo', include: user }, 
                 {
                     model: conversation,
                     include: [
-                        {model: guestInformation, as: 'conversationFrom', include: user},
-                        {model: guestInformation, as: 'conversationTo', include: user}
+                        { model: guestInformation, as: 'conversationFrom', include: user },
+                        { model: guestInformation, as: 'conversationTo', include: user }
                     ]
                 }
             ]

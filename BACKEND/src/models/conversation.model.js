@@ -7,9 +7,8 @@ module.exports = (sequelize, DataTypes, Sequelize) => {
             primaryKey: true,
             allowNull: false,
         },
-        status: {
-            type: DataTypes.BOOLEAN,
-            defaultValue: false,
+        subject: {
+            type: DataTypes.STRING,
             allowNull: false,
         },
     },

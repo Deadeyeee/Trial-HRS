@@ -10,6 +10,7 @@ import { apiKey } from '../../../apiKey';
 export const Navprofile = (props) => {
   
 
+  Axios.defaults.withCredentials = true;
   const [login, setLogin] = useState(true);
   const [dropDown, setdropDown] = useState("flex");
   const [userName, setUserName] = useState("");

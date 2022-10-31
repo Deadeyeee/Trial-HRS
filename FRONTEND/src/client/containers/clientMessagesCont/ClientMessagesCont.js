@@ -31,12 +31,15 @@ import axios from 'axios'
 import { apiKey } from '../../../apiKey'
 import { Tr, TableContainer, TableFixHead, Td, Th } from '../../../admin/containers/messagesContainer/styles'
 import ActionButtonMessages from '../../../admin/components/actionButton/ActionButtonMessages'
+import { borderRadius, display, margin } from '@mui/system'
 const ClientMessagesCont = () => {
   const [option, setOption] = useState('inbox');
 
   const [userInformation, setUserInformation] = useState([])
   const [inbox, setInbox] = useState([])
   const [sent, setSent] = useState([])
+  const [messagesDb, setMessagesDb] = useState([])
+  const [conversationDb, setConversationDb] = useState([])
 
   useEffect(() => {
     console.log(option)
@@ -63,8 +66,20 @@ const ClientMessagesCont = () => {
   const handleCloseCompose = () => {
     setOpenCompose(false)
   };
+  const [viewMessage, setViewMessage] = React.useState(false);
+  const [messageContentDb, setMessageContentDb] = React.useState('');
+  const [conversationId, setConversationId] = React.useState('');
+
+  const handleOpenViewMessage = (value) => {
+    setViewMessage(true)
+    setConversationId(value)
+  };
+  const handleCloseViewMessage = () => {
+    setViewMessage(false)
+  };
 
   const [inboxPage, setInboxPage] = useState(1)
+  const [sentPage, setSentPage] = useState(1)
 
 
 
@@ -72,150 +87,150 @@ const ClientMessagesCont = () => {
     setValue2(newValue);
   };
 
-  const viewMessage = (
+  // const viewMessage = (
 
-    <ContainerGlobal2
-      w='100%'
-      h='100%'
-      radius='none'
-      justify='center'
-      align='center'
-      bg='rgb(46, 46, 46, 0.9)'
-      index='2'
-      overflow='auto'
-      active
-    >
-      <ContainerGlobal
-        w='900px'
-        h='700px'
-        bg='white'
-        direction='column'
-        gap='10px'
+  //   <ContainerGlobal2
+  //     w='100%'
+  //     h='100%'
+  //     radius='none'
+  //     justify='center'
+  //     align='center'
+  //     bg='rgb(46, 46, 46, 0.9)'
+  //     index='2'
+  //     overflow='auto'
+  //     active
+  //   >
+  //     <ContainerGlobal
+  //       w='900px'
+  //       h='700px'
+  //       bg='white'
+  //       direction='column'
+  //       gap='10px'
 
-      >
-        <ContainerGlobal
-          bg='#998B6D'
-          radius='none'
-          align='center'
-          w='100%'>
-          <Title
-            size='20px'
-            color='black'
-            family='Helvetica'
-            fstyle='normal'
-            weight='600'
-            align='left'
-            margin='20px'
-          >
-            Reservation Confirmation
-          </Title>
-          <IconButton aria-label="delete" size='large' style={{ color: 'white', margin: '0px 0px 0px auto' }}
+  //     >
+  //       <ContainerGlobal
+  //         bg='#998B6D'
+  //         radius='none'
+  //         align='center'
+  //         w='100%'>
+  //         <Title
+  //           size='20px'
+  //           color='black'
+  //           family='Helvetica'
+  //           fstyle='normal'
+  //           weight='600'
+  //           align='left'
+  //           margin='20px'
+  //         >
+  //           Reservation Confirmation
+  //         </Title>
+  //         <IconButton aria-label="delete" size='large' style={{ color: 'white', margin: '0px 0px 0px auto' }}
 
-            onClick={() => setShow(prev => !prev)}
-          >
-            <CloseIcon />
-          </IconButton>
+  //           onClick={() => setShow(prev => !prev)}
+  //         >
+  //           <CloseIcon />
+  //         </IconButton>
 
-        </ContainerGlobal>
+  //       </ContainerGlobal>
 
-        <ContainerGlobal
-          w='95%' overflow='visible' margin='5px auto'>
-          <Title
-            size='16px'
-            color='black'
-            family='Helvetica'
-            fstyle='normal'
-            weight='400'
-            align='left'
-            margin='0px 0px 0px 0px'
-          >
-            <b>From:</b> FrontDesk
-          </Title>
-          <Title
-            size='16px'
-            color='black'
-            family='Helvetica'
-            fstyle='normal'
-            weight='400'
-            align='left'
-            margin='0px 0px 0px auto'
-          >
-            04/22/21 - 12:26 PM
-          </Title>
-        </ContainerGlobal>
-        <ContainerGlobal
-          w='95%'
-          h='450px'
-          margin='0px 15px'
-          bg='rgb(183, 183, 183,.3)'
-          padding='10px'
-          style={{ textAlign: 'justify' }}
-          direction='column'
-          overflow='auto'
-        >
-          Dear Pedro Juan, <br /><br />
+  //       <ContainerGlobal
+  //         w='95%' overflow='visible' margin='5px auto'>
+  //         <Title
+  //           size='16px'
+  //           color='black'
+  //           family='Helvetica'
+  //           fstyle='normal'
+  //           weight='400'
+  //           align='left'
+  //           margin='0px 0px 0px 0px'
+  //         >
+  //           <b>From:</b> FrontDesk
+  //         </Title>
+  //         <Title
+  //           size='16px'
+  //           color='black'
+  //           family='Helvetica'
+  //           fstyle='normal'
+  //           weight='400'
+  //           align='left'
+  //           margin='0px 0px 0px auto'
+  //         >
+  //           04/22/21 - 12:26 PM
+  //         </Title>
+  //       </ContainerGlobal>
+  //       <ContainerGlobal
+  //         w='95%'
+  //         h='450px'
+  //         margin='0px 15px'
+  //         bg='rgb(183, 183, 183,.3)'
+  //         padding='10px'
+  //         style={{ textAlign: 'justify' }}
+  //         direction='column'
+  //         overflow='auto'
+  //       >
+  //         Dear Pedro Juan, <br /><br />
 
-          We are pleased to inform you that your RESERVATION [091234568] is confirmed.<br /><br />
+  //         We are pleased to inform you that your RESERVATION [091234568] is confirmed.<br /><br />
 
-          Your check-in : 04/26/2022<br />
-          Your checkout : 04/27/2022<br /><br />
+  //         Your check-in : 04/26/2022<br />
+  //         Your checkout : 04/27/2022<br /><br />
 
-          Reservation details:<br /><br />
+  //         Reservation details:<br /><br />
 
-          Reservation Number: 091234568<br />
-          Reservation Date: 03/01/2022<br />
-          Payment Mode: Bank (MetroBank)<br />
-          Payment Type: Down Payment<br />
-          Guest Name: Pedro <br />
-          Birthdate: 2000/12/21<br />
-          Nationality: Filipino<br />
-          Email Address: PedroJuan@gmail.com<br />
-          Address: Cecilia Chapman 711 Philippines<br />
-          Contact Number: 09292333312<br />
-          Check-In Date: 03/04/2022<br />
-          Check-Out Date: 03/08/2022<br />
-          Night(s): 4 nights<br />
-          Total No. of Rooms: 1<br />
-          Total No. of adult: 2<br />
-          Total No. of kids: 0<br />
-          Special Request(s): none<br /><br />
+  //         Reservation Number: 091234568<br />
+  //         Reservation Date: 03/01/2022<br />
+  //         Payment Mode: Bank (MetroBank)<br />
+  //         Payment Type: Down Payment<br />
+  //         Guest Name: Pedro <br />
+  //         Birthdate: 2000/12/21<br />
+  //         Nationality: Filipino<br />
+  //         Email Address: PedroJuan@gmail.com<br />
+  //         Address: Cecilia Chapman 711 Philippines<br />
+  //         Contact Number: 09292333312<br />
+  //         Check-In Date: 03/04/2022<br />
+  //         Check-Out Date: 03/08/2022<br />
+  //         Night(s): 4 nights<br />
+  //         Total No. of Rooms: 1<br />
+  //         Total No. of adult: 2<br />
+  //         Total No. of kids: 0<br />
+  //         Special Request(s): none<br /><br />
 
-          We are sincerely awaiting your visit, I hope you enjoy your stay with us.<br /><br />
+  //         We are sincerely awaiting your visit, I hope you enjoy your stay with us.<br /><br />
 
-          - Mr. Elbert<br />
-          Hotel Manager
-        </ContainerGlobal>
+  //         - Mr. Elbert<br />
+  //         Hotel Manager
+  //       </ContainerGlobal>
 
-        <ContainerGlobal
-          w='auto'
-          h='auto'
-          bg='none'
-          direction='row'
-          gap='10px'
-          justify='center'
-          margin='auto'
-          align='center'
-          overflow='none'
-        >
-          <Button variant="contained" size="large"
-            style={{ backgroundColor: '#948566' }}
+  //       <ContainerGlobal
+  //         w='auto'
+  //         h='auto'
+  //         bg='none'
+  //         direction='row'
+  //         gap='10px'
+  //         justify='center'
+  //         margin='auto'
+  //         align='center'
+  //         overflow='none'
+  //       >
+  //         <Button variant="contained" size="large"
+  //           style={{ backgroundColor: '#948566' }}
 
-            onClick={() => setShow(prev => !prev)}
-          >
-            Reply
-          </Button>
-          <Button variant="contained" size="large"
-            style={{ backgroundColor: '#FF2400' }}
+  //           onClick={() => setShow(prev => !prev)}
+  //         >
+  //           Reply
+  //         </Button>
+  //         <Button variant="contained" size="large"
+  //           style={{ backgroundColor: '#FF2400' }}
 
-            onClick={() => setShow(prev => !prev)}
-          >
-            Delete
-          </Button>
-        </ContainerGlobal>
-      </ContainerGlobal>
+  //           onClick={() => setShow(prev => !prev)}
+  //         >
+  //           Delete
+  //         </Button>
+  //       </ContainerGlobal>
+  //     </ContainerGlobal>
 
-    </ContainerGlobal2>
-  );
+  //   </ContainerGlobal2>
+  // );
 
 
 
@@ -473,18 +488,47 @@ const ClientMessagesCont = () => {
           if (result.data.id == item.user_id) {
 
             setUserInformation(item)
-            axios.get(apiKey + 'api/getAllMessage').then((result) => {
-              console.log(item.id)
-              console.log(result.data.filter((obj) => obj.conversation.conversationTo.id == item.id))
-              setInbox(result.data.filter((obj) => obj.conversation.conversationTo.id == item.id))
-              setSent(result.data.filter((obj) => obj.conversation.conversationFrom.id == item.id))
+            axios.get(apiKey + 'api/getAllMessage').then((messageResult) => {
+              setMessagesDb(messageResult.data)
+
+              axios.get(apiKey + 'api/getAllConversation').then((result) => {
+                console.log("TEST1 :", result.data
+                  .filter((obj) => obj.from_guest_id == item.id || obj.to_guest_id == item.id)
+                  .filter((item2) => (
+                    messageResult.data.filter((obj) => obj.conversation_id == item2.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].message_to_guest_id == item.id
+                  )))
+                console.log("TEST2 :", result.data
+                  .filter((obj) => obj.from_guest_id == item.id || obj.to_guest_id == item.id)
+                  .filter((item2) => (
+                    messageResult.data.filter((obj) => obj.conversation_id == item2.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].message_to_guest_id != item.id
+                  )))
+                setInbox(result.data
+                  .filter((obj) => obj.from_guest_id == item.id || obj.to_guest_id == item.id)
+                  .filter((item2) => (
+                    messageResult.data.filter((obj) => obj.conversation_id == item2.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].message_to_guest_id != item.id
+                  )))
+                setSent(result.data
+                  .filter((obj) => obj.from_guest_id == item.id || obj.to_guest_id == item.id)
+                  .filter((item2) => (
+                    messageResult.data.filter((obj) => obj.conversation_id == item2.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].message_to_guest_id == item.id
+                  )))
+
+                  
+              }).catch((err) => {
+                console.log(err)
+
+              });
             }).catch((err) => {
+              console.log(err)
 
             });
+
+
           }
         })
         console.log(guest.data)
       }).catch((err) => {
+        console.log(err)
 
       });
     }).catch((err) => {
@@ -499,6 +543,33 @@ const ClientMessagesCont = () => {
 
 
   const sendComposeMessage = () => {
+    console.log('ASD')
+    axios.get(apiKey + 'api/getAllGuest').then((guest) => {
+      guest.data.filter((obj) => obj.user.role == 'ADMIN' || obj.user.role == 'STAFF').map((item) => {
+        axios.post(apiKey + 'api/addConversation', {
+          from_guest_id: userInformation.id,
+          to_guest_id: item.id
+        }).then((result) => {
+          console.log(result.data);
+          axios.post(apiKey + 'api/addMessage', {
+            message: message,
+            conversation_id: result.data.new_conversation.id,
+            subject: subject,
+          }).then((result) => {
+            console.log(result.data);
+            window.location.reload()
+          }).catch((err) => {
+            console.log(err);
+
+          });
+        }).catch((err) => {
+          console.log(err);
+
+        });
+      })
+    }).catch((err) => {
+      console.log(err);
+    });
 
   }
 
@@ -585,10 +656,11 @@ const ClientMessagesCont = () => {
               variant="outlined"
               size='small'
               value={subject}
-              onChange={(e)=>{
+              onChange={(e) => {
                 setSubject(e.target.value)
               }}
               inputProps={{ maxLength: 150 }}
+              required
             />
           </ContainerGlobal>
           <Title
@@ -608,9 +680,10 @@ const ClientMessagesCont = () => {
             multiline
             rows={10}
             value={message}
-            onChange={(e)=>{
+            onChange={(e) => {
               setMessage(e.target.value)
             }}
+            required
 
             inputProps={{ maxLength: 255 }}
             style={{ width: '95%', margin: '0px auto' }} />
@@ -628,7 +701,7 @@ const ClientMessagesCont = () => {
             <Button variant="contained" size="large"
               style={{ backgroundColor: '#948566' }}
 
-              onClick={() => setShowComposeMessage(prev => !prev)}
+              onClick={() => sendComposeMessage()}
             >
               Send
             </Button>
@@ -636,6 +709,220 @@ const ClientMessagesCont = () => {
               style={{ backgroundColor: '#FF2400' }}
 
               onClick={() => { handleCloseCompose() }}
+            >
+              Cancel
+            </Button>
+          </ContainerGlobal>
+        </Box>
+      </Modal>
+
+
+      <Modal
+        open={viewMessage}
+        onClose={handleCloseViewMessage}
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}>
+        <Box
+          component='form'
+          // onSubmit={updatePassword}
+          style={{
+            height: 'auto',
+            width: '50vw',
+            backgroundColor: 'white',
+            display: 'flex',
+            flexDirection: 'column',
+            padding: '0px 0px 30px 0px',
+            gap: '10px',
+            justifyContent: 'flex-start',
+            alignItems: 'center',
+            overflowY: 'overlay',
+            overflowX: 'hidden',
+            borderRadius: '.5rem',
+            position: 'relative',
+            // margin: '50px 0px',
+
+          }}>
+          <div style={{
+            width: '100%',
+            height: '50px',
+            position: 'sticky',
+            top: 0,
+            display: 'flex',
+            justifyContent: 'flex-end',
+            alignItems: 'center',
+            backgroundColor: 'black',
+            zIndex: '1',
+
+          }}>
+            <div style={{
+              margin: '0px auto 0px 10px',
+              display: 'flex',
+              gap: '10px',
+              alignItems: 'center'
+
+            }}>
+              <Title
+                size='16px'
+                color='white'
+                family='Helvetica'
+                fstyle='normal'
+                weight='bold'
+                align='left'
+                bg='#948566'
+                borderRadius='0.5rem'
+                padding='5px 10px'
+
+              >
+                Subject:
+              </Title>
+              <Title
+                size='14px'
+                color='white'
+                family='Helvetica'
+                fstyle='normal'
+                weight='normal'
+                align='left'
+                style={{
+                  width: '500px',
+                  whiteSpace: 'nowrap',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis'
+                }}
+              >
+                sample
+              </Title>
+            </div>
+            <CloseIcon
+              onClick={handleCloseViewMessage}
+              style={{
+                color: 'white',
+                cursor: 'pointer',
+                margin: '10px',
+              }} />
+          </div>
+          <div style={{ width: '100%', overflowY: 'scroll', height: '500px', overflowX: 'hidden' }}>
+            {messagesDb.length != 0 && conversationId != '' ?
+              messagesDb
+                .filter((obj) => obj.conversation_id == conversationId)
+                .sort((a, b) => new Date(a.created_at) - new Date(b.created_at))
+                .map((item) => (
+                  item.message_to_guest_id != userInformation.id ?
+                    <div style={{ width: '100%', marginBottom: '30px' }}>
+                      <ContainerGlobal
+                        w='95%' overflow='visible' margin='5px auto'
+                      >
+                        <Title
+                          size='16px'
+                          color='black'
+                          family='Helvetica'
+                          fstyle='normal'
+                          weight='400'
+                          align='left'
+                          margin='0px 0px 0px 0px'
+                        >
+                          <b>From:</b> {item.messageTo.firstName}
+                        </Title>
+                        <Title
+                          size='16px'
+                          color='black'
+                          family='Helvetica'
+                          fstyle='normal'
+                          weight='400'
+                          align='left'
+                          margin='0px 0px 0px auto'
+                        >
+                          {new Date(item.created_at).toLocaleDateString()} {new Date(item.created_at).toLocaleTimeString().slice(0, 4)} {new Date(item.created_at).toLocaleTimeString().slice(7, 10)}
+                        </Title>
+                      </ContainerGlobal>
+                      <ContainerGlobal
+                        w='95%'
+                        h='auto'
+                        margin='auto'
+                        bg='rgb(183, 183, 183,.3)'
+                        padding='10px'
+                        style={{ textAlign: 'justify', minHeight: '100px' }}
+                        direction='column'
+                        overflow='auto'
+                      >
+                        {item.message}
+                      </ContainerGlobal>
+                    </div>
+                    :
+                    <div style={{ width: '100%', marginBottom: '30px' }}>
+                      <ContainerGlobal
+                        w='95%' overflow='visible' margin='5px auto'
+                      >
+                        <Title
+                          size='16px'
+                          color='black'
+                          family='Helvetica'
+                          fstyle='normal'
+                          weight='400'
+                          align='left'
+                          margin='0px 0px 0px 0px'
+                        >
+                          {new Date(item.created_at).toLocaleDateString()} {new Date(item.created_at).toLocaleTimeString().slice(0, 4)} {new Date(item.created_at).toLocaleTimeString().slice(7, 10)}
+                        </Title>
+                        <Title
+                          size='16px'
+                          color='black'
+                          family='Helvetica'
+                          fstyle='normal'
+                          weight='400'
+                          align='left'
+                          margin='0px 0px 0px auto'
+                        >
+                          <b>Reply to:</b> Rm luxe hotel
+                        </Title>
+                      </ContainerGlobal>
+                      <ContainerGlobal
+                        w='95%'
+                        h='auto'
+                        margin='auto'
+                        bg='#d2c3a4'
+                        padding='10px'
+                        style={{ textAlign: 'justify', minHeight: '100px' }}
+                        direction='column'
+                        overflow='auto'
+                      >
+                        {item.message}
+                      </ContainerGlobal>
+                    </div>
+
+                ))
+              : ''}
+
+
+
+
+          </div>
+
+
+          <ContainerGlobal
+            w='auto'
+            h='auto'
+            bg='none'
+            direction='row'
+            gap='10px'
+            justify='center'
+            margin='auto'
+            align='center'
+            overflow='none'
+          >
+            <Button variant="contained" size="large"
+              style={{ backgroundColor: '#948566' }}
+
+              onClick={() => sendComposeMessage()}
+            >
+              Reply
+            </Button>
+            <Button variant="contained" size="large"
+              style={{ backgroundColor: '#FF2400' }}
+
+              onClick={() => { handleCloseViewMessage() }}
             >
               Cancel
             </Button>
@@ -656,7 +943,7 @@ const ClientMessagesCont = () => {
             <Tab label="Sent" value="2" />
           </TabList>
         </Box>
-        <TabPanel value="1" style={{ width: '100%', maxHeight: '500px', display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', gap: '10px' }} >
+        <TabPanel value="1" style={{ width: '100%', height: '500px', maxHeight: '500px' }} >
 
           <TableContainer
             cellspacing="0"
@@ -674,7 +961,6 @@ const ClientMessagesCont = () => {
           >
             <thead>
               <Tr cursor='normal'>
-                <Th align='center' style={{ width: '10%' }}>From</Th>
                 <Th align='center' style={{ width: '20%' }}>Subject</Th>
                 <Th align='center' style={{ width: '45%' }} >Message</Th>
                 <Th align='center' style={{ width: '10%' }}>Date</Th>
@@ -683,23 +969,27 @@ const ClientMessagesCont = () => {
               </Tr>
             </thead>
             <tbody style={{ height: '10px', overflow: 'hidden' }}>
-              {inbox.length != 0 ? inbox
+              {inbox.length != 0 && messagesDb.length != 0 ? inbox
+                // .filter((obj) => obj.to_guest_id == userInformation.id || obj.to_guest_id == userInformation.id)
+                // .filter((obj) => obj.message.message_to_guest_id != userInformation.id)
+                // .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+                // .filter((obj, index, array) => index != 0 ? array[index].id != array[index - 1].id : array[index])
                 .slice((inboxPage - 1) * 6, inboxPage * 6)
                 .map((item) => (
                   <Tr
                     whileHover={{ boxShadow: '0px 2px 2px gray' }}
                     whileTap={{ boxShadow: 'none' }}
-                    style={item.conversation.status == true && { backgroundColor: 'rgb(40,40,40, .05', }}
+                    style={messagesDb.filter((obj) => obj.conversation_id == item.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].status == true && { backgroundColor: 'rgb(40,40,40, .05', }}
+                    onClick={() => handleOpenViewMessage(item.id)}
                   >
-                    <Td align='center' normal={item.conversation.status == true && 'normal'}>{item.conversation.conversationFrom.user.role == 'STAFF' ? 'Front Desk' : 'Admin'}</Td>
-                    <Td align='center' normal={item.conversation.status == true && 'normal'}>{item.subject}</Td>
-                    <Td align='center' normal={item.conversation.status == true && 'normal'}><p style={{ margin: 'auto', width: '300px', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>
-                      {item.message}
+                    <Td align='center' normal={messagesDb.filter((obj) => obj.conversation_id == item.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].status == true && 'normal'}>{item.subject}</Td>
+                    <Td align='center' normal={messagesDb.filter((obj) => obj.conversation_id == item.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].status == true && 'normal'}><p style={{ margin: 'auto', width: '300px', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>
+                      {messagesDb.filter((obj) => obj.conversation_id == item.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].message}
                     </p>
                     </Td>
-                    <Td align='center' normal={item.conversation.status == true && 'normal'}>{new Date(item.created_at).toLocaleDateString()} </Td>
-                    <Td align='center' normal={item.conversation.status == true && 'normal'}>{new Date(item.created_at).toLocaleTimeString().slice(0, 4)} {new Date(item.created_at).toLocaleTimeString().slice(7, 10)}</Td>
-                    <Td align='center' normal={item.conversation.status == true && 'normal'}><ActionButtonMessages /></Td>
+                    <Td align='center' normal={item.status == true && 'normal'}>{new Date(messagesDb.filter((obj) => obj.conversation_id == item.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].created_at).toLocaleDateString()} </Td>
+                    <Td align='center' normal={item.status == true && 'normal'}>{new Date(messagesDb.filter((obj) => obj.conversation_id == item.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].created_at).toLocaleTimeString().slice(0, 4)} {new Date(messagesDb.filter((obj) => obj.conversation_id == item.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].created_at).toLocaleTimeString().slice(7, 10)}</Td>
+                    <Td align='center' normal={item.status == true && 'normal'}><ActionButtonMessages /></Td>
                   </Tr>
                 )) : 'no inbox'}
 
@@ -711,10 +1001,17 @@ const ClientMessagesCont = () => {
             onChange={(e, value) => {
               setInboxPage(value)
             }}
+            style={{
+              justifyContent: "center",
+              display: 'flex',
+              margin: '20px',
+            }}
           />
 
         </TabPanel>
-        <TabPanel value="2" style={{ width: '100%' }} >
+
+
+        <TabPanel value="2" style={{ width: '100%', height: '500px', maxHeight: '500px' }} >
 
           <TableContainer
             cellspacing="0"
@@ -737,26 +1034,44 @@ const ClientMessagesCont = () => {
               <Th align='center' style={{ width: '10%' }}>Time</Th>
               <Th align='center' style={{ width: '10%' }}>Action</Th>
             </Tr>
-            {sent.length != 0 ?
-              sent.map((item) => (
+            {sent.length != 0 && messagesDb.length != 0 ? sent
+              // .filter((obj) => obj.to_guest_id == userInformation.id || obj.to_guest_id == userInformation.id)
+              // .filter((obj) => obj.message.message_to_guest_id != userInformation.id)
+              // .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+              // .filter((obj, index, array) => index != 0 ? array[index].id != array[index - 1].id : array[index])
+              .slice((inboxPage - 1) * 6, inboxPage * 6)
+              .map((item) => (
                 <Tr
-                  style={{ backgroundColor: 'rgb(40,40,40, .05', }}
                   whileHover={{ boxShadow: '0px 2px 2px gray' }}
                   whileTap={{ boxShadow: 'none' }}
-                  onClick={() => setShow2(prev => !prev)}
+                  style={messagesDb.filter((obj) => obj.conversation_id == item.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].status == true && { backgroundColor: 'rgb(40,40,40, .05', }}
+                  onClick={() => handleOpenViewMessage(item.id)}
                 >
-                  <Td align='center' normal>{item.subject}</Td>
-                  <Td align='center' normal>
-                    <p style={{ margin: 'auto', width: '300px', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>
-                      {item.message}</p></Td>
-                  <Td align='center' normal>{new Date(item.created_at).toLocaleDateString()}</Td>
-                  <Td align='center' normal>{new Date(item.created_at).toLocaleTimeString().slice(0, 4)} {new Date(item.created_at).toLocaleTimeString().slice(7, 10)}</Td>
-                  <Td align='center' normal><ActionButtonMessages /></Td>
+                  <Td align='center' normal={messagesDb.filter((obj) => obj.conversation_id == item.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].status == true && 'normal'}>{item.subject}</Td>
+                  <Td align='center' normal={messagesDb.filter((obj) => obj.conversation_id == item.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].status == true && 'normal'}><p style={{ margin: 'auto', width: '300px', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>
+                    {messagesDb.filter((obj) => obj.conversation_id == item.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].message}
+                  </p>
+                  </Td>
+                  <Td align='center' normal={item.status == true && 'normal'}>{new Date(messagesDb.filter((obj) => obj.conversation_id == item.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].created_at).toLocaleDateString()} </Td>
+                  <Td align='center' normal={item.status == true && 'normal'}>{new Date(messagesDb.filter((obj) => obj.conversation_id == item.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].created_at).toLocaleTimeString().slice(0, 4)} {new Date(messagesDb.filter((obj) => obj.conversation_id == item.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].created_at).toLocaleTimeString().slice(7, 10)}</Td>
+                  <Td align='center' normal={item.status == true && 'normal'}><ActionButtonMessages /></Td>
                 </Tr>
-              ))
-              : 'No sent messages'}
+              )) : 'no inbox'}
 
           </TableContainer>
+          <Pagination
+            page={sentPage}
+            count={sent.length != 0 && Math.ceil(sent.length / 6)}
+            onChange={(e, value) => {
+              setSentPage(value)
+            }}
+
+            style={{
+              justifyContent: "center",
+              display: 'flex',
+              margin: '20px',
+            }}
+          />
         </TabPanel>
       </TabContext>
       <Button2
@@ -770,7 +1085,7 @@ const ClientMessagesCont = () => {
         radius="0px"
         padding="2px 20px 2px 20px"
         border="1px solid #8F805F"
-        margin='30px 0px 0px 0px'
+        margin='50px 0px 0px 0px'
         fontsize='17px'
         bg='#282626'
         onClick={() => { handleOpenCompose() }}
