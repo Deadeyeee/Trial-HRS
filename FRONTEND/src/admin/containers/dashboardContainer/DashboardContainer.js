@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Title } from '../../../client/components/title/styles'
 import { Container, HeadContainer, SummaryContainer, SummaryDescription, SummaryIcon, SummaryPlate, TableContainer, Td, Th, Tr } from './style'
 import BedroomChildOutlinedIcon from '@mui/icons-material/BedroomChildOutlined';
@@ -14,11 +14,77 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import { HorizontalLine } from '../../../client/components/horizontalLine/HorizontalLine';
 import Occupancy from '../analytics/Occupancy';
 import ActionButton from '../../components/actionButton/ActionButton';
+import { apiKey } from '../../../apiKey';
+import axios from 'axios';
+import moment from 'moment';
 
 const DashboardContainer = () => {
 
     const Dates = new Date(Date.now());
     const DateNow = Dates.toString().split(' ');
+
+
+    const [reservationSummary, setReservationSummary] = useState([])
+    const [reservation, setReservation] = useState([])
+    const [amenity, setAmenity] = useState([])
+    const [room, setRoom] = useState([])
+    const [orderedAmenity, setOrderedAmenity] = useState([])
+    const [yearOccupancyRate, setYearOccupancyRate] = useState(new Date(new Date().getFullYear(), 0, 1))
+
+
+    function getDates(startDate, stopDate) {
+        var dateArray = [];
+        var currentDate = moment(startDate);
+        var stopDate = moment(stopDate);
+        while (currentDate <= stopDate) {
+            dateArray.push(moment(currentDate).format('YYYY-MM-DD'))
+            currentDate = moment(currentDate).add(1, 'days');
+        }
+        return dateArray;
+    }
+
+    const [yearlyOcupancyDates, setYearlyOcupancyDates] = useState([]);
+
+
+    useEffect(() => {
+        setYearlyOcupancyDates(getDates(yearOccupancyRate, new Date(new Date(yearOccupancyRate).getFullYear(), 11, 31)))
+    }, [yearOccupancyRate])
+
+    useEffect(() => {
+        axios.get(apiKey + 'api/getAllReservation/').then((result) => {
+            setReservation(result.data)
+
+            axios.get(apiKey + 'api/getAllReservationSummary').then((result) => {
+                setReservationSummary(result.data)
+
+                axios.get(apiKey + 'api/getAllOrderedAmenities').then((result) => {
+                    setOrderedAmenity(result.data)
+
+
+                    axios.get(apiKey + 'api/getAllAmenities').then((result) => {
+                        setAmenity(result.data)
+                        axios.get(apiKey + 'api/getAllRoom').then((result) => {
+                            setRoom(result.data)
+
+                        }).catch((err) => {
+                            console.log(err)
+                        });
+                    }).catch((err) => {
+                        console.log(err)
+                    });
+                }).catch((err) => {
+                    console.log(err)
+                });
+            }).catch((err) => {
+                console.log(err)
+            });
+        }).catch((err) => {
+            console.log(err)
+
+        });
+    }, [])
+
+
     return (
         <Container>
             <HeadContainer>
@@ -243,7 +309,7 @@ const DashboardContainer = () => {
                         weight='600'
                         align='left'
                     >
-                        Reservations <a style={{ fontSize: '12px' }} href='admin/report'>(view)</a>
+                        Reservations <a style={{ fontSize: '12px' }} href='/admin/report'>(view)</a>
                     </Title>
 
 
@@ -253,7 +319,7 @@ const DashboardContainer = () => {
                         margin='0px'
 
                     ></HorizontalLine>
-                    
+
                     <ContainerGlobal
 
                         w='100%'
@@ -262,7 +328,35 @@ const DashboardContainer = () => {
 
                         align='center'
                     >
-                        <Reservation />
+                        <Reservation
+                            confirmed={reservationSummary != 0 ?
+                                reservationSummary.filter((obj) => obj.reservation.reservationStatus == 'RESERVED').filter((obj) => {
+                                    let filterDate = getDates(new Date(Date.now()), new Date(Date.now()));
+
+                                    if (filterDate.includes(moment(obj.checkInDate).format('YYYY-MM-DD')) == true || filterDate.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) == true) {
+                                        return obj
+                                    }
+                                }).length
+                                : ''}
+                            cancelled={reservationSummary != 0 ?
+                                reservationSummary.filter((obj) => obj.reservation.reservationStatus == 'CANCELLED').filter((obj) => {
+                                    let filterDate = getDates(new Date(Date.now()), new Date(Date.now()));
+
+                                    if (filterDate.includes(moment(obj.checkInDate).format('YYYY-MM-DD')) == true || filterDate.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) == true) {
+                                        return obj
+                                    }
+                                }).length
+                                : ''}
+                            pending={reservationSummary != 0 ?
+                                reservationSummary.filter((obj) => obj.reservation.reservationStatus == 'PENDING').filter((obj) => {
+                                    let filterDate = getDates(new Date(Date.now()), new Date(Date.now()));
+
+                                    if (filterDate.includes(moment(obj.checkInDate).format('YYYY-MM-DD')) == true || filterDate.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) == true) {
+                                        return obj
+                                    }
+                                }).length
+                                : ''}
+                        />
                     </ContainerGlobal>
 
 
@@ -287,7 +381,7 @@ const DashboardContainer = () => {
                         weight='600'
                         align='left'
                     >
-                        Occupancy Rate <a style={{ fontSize: '12px' }} href='admin/report'>(view)</a>
+                        Occupancy Rate <a style={{ fontSize: '12px' }} href='/admin/report'>(view)</a>
                     </Title>
 
 
@@ -305,7 +399,188 @@ const DashboardContainer = () => {
 
                         align='center'
                     >
-                        <Occupancy />
+                        <Occupancy
+                                    January={
+                                        parseFloat(yearlyOcupancyDates.filter((obj) => obj.split('-')[1] == '01')
+                                            .map((item) => (
+                                                reservationSummary
+                                                    .filter((obj) => obj.bookingStatus == 'CHECKED-IN' || obj.bookingStatus == 'CHECKED-OUT')
+                                                    .filter((obj) => {
+                                                        let bookedDates = getDates(obj.checkInDate, obj.checkOutDate)
+                                                        bookedDates.pop()
+                                                        if (bookedDates.includes(moment(item).format('YYYY-MM-DD'))) {
+                                                            return obj
+                                                        }
+
+                                                    }).length / room.length * 100
+                                            )).reduce((accu, value) => accu + value, 0) / yearlyOcupancyDates.filter((obj) => obj.split('-')[1] == '01').length).toFixed(2)
+                                    }
+                                    February={
+                                        parseFloat(yearlyOcupancyDates.filter((obj) => obj.split('-')[1] == '02')
+                                            .map((item) => (
+                                                reservationSummary
+                                                    .filter((obj) => obj.bookingStatus == 'CHECKED-IN' || obj.bookingStatus == 'CHECKED-OUT')
+                                                    .filter((obj) => {
+                                                        let bookedDates = getDates(obj.checkInDate, obj.checkOutDate)
+                                                        bookedDates.pop()
+                                                        if (bookedDates.includes(moment(item).format('YYYY-MM-DD'))) {
+                                                            return obj
+                                                        }
+
+                                                    }).length / room.length * 100
+                                            )).reduce((accu, value) => accu + value, 0) / yearlyOcupancyDates.filter((obj) => obj.split('-')[1] == '02').length).toFixed(2)
+                                    }
+                                    March={
+                                        parseFloat(yearlyOcupancyDates.filter((obj) => obj.split('-')[1] == '03')
+                                            .map((item) => (
+                                                reservationSummary
+                                                    .filter((obj) => obj.bookingStatus == 'CHECKED-IN' || obj.bookingStatus == 'CHECKED-OUT')
+                                                    .filter((obj) => {
+                                                        let bookedDates = getDates(obj.checkInDate, obj.checkOutDate)
+                                                        bookedDates.pop()
+                                                        if (bookedDates.includes(moment(item).format('YYYY-MM-DD'))) {
+                                                            return obj
+                                                        }
+
+                                                    }).length / room.length * 100
+                                            )).reduce((accu, value) => accu + value, 0) / yearlyOcupancyDates.filter((obj) => obj.split('-')[1] == '03').length).toFixed(2)
+                                    }
+                                    April={
+                                        parseFloat(yearlyOcupancyDates.filter((obj) => obj.split('-')[1] == '04')
+                                            .map((item) => (
+                                                reservationSummary
+                                                    .filter((obj) => obj.bookingStatus == 'CHECKED-IN' || obj.bookingStatus == 'CHECKED-OUT')
+                                                    .filter((obj) => {
+                                                        let bookedDates = getDates(obj.checkInDate, obj.checkOutDate)
+                                                        bookedDates.pop()
+                                                        if (bookedDates.includes(moment(item).format('YYYY-MM-DD'))) {
+                                                            return obj
+                                                        }
+
+                                                    }).length / room.length * 100
+                                            )).reduce((accu, value) => accu + value, 0) / yearlyOcupancyDates.filter((obj) => obj.split('-')[1] == '04').length).toFixed(2)
+                                    }
+                                    May={
+                                        parseFloat(yearlyOcupancyDates.filter((obj) => obj.split('-')[1] == '05')
+                                            .map((item) => (
+                                                reservationSummary
+                                                    .filter((obj) => obj.bookingStatus == 'CHECKED-IN' || obj.bookingStatus == 'CHECKED-OUT')
+                                                    .filter((obj) => {
+                                                        let bookedDates = getDates(obj.checkInDate, obj.checkOutDate)
+                                                        bookedDates.pop()
+                                                        if (bookedDates.includes(moment(item).format('YYYY-MM-DD'))) {
+                                                            return obj
+                                                        }
+
+                                                    }).length / room.length * 100
+                                            )).reduce((accu, value) => accu + value, 0) / yearlyOcupancyDates.filter((obj) => obj.split('-')[1] == '05').length).toFixed(2)
+                                    }
+                                    June={
+                                        parseFloat(yearlyOcupancyDates.filter((obj) => obj.split('-')[1] == '06')
+                                            .map((item) => (
+                                                reservationSummary
+                                                    .filter((obj) => obj.bookingStatus == 'CHECKED-IN' || obj.bookingStatus == 'CHECKED-OUT')
+                                                    .filter((obj) => {
+                                                        let bookedDates = getDates(obj.checkInDate, obj.checkOutDate)
+                                                        bookedDates.pop()
+                                                        if (bookedDates.includes(moment(item).format('YYYY-MM-DD'))) {
+                                                            return obj
+                                                        }
+
+                                                    }).length / room.length * 100
+                                            )).reduce((accu, value) => accu + value, 0) / yearlyOcupancyDates.filter((obj) => obj.split('-')[1] == '06').length).toFixed(2)
+                                    }
+                                    July={
+                                        parseFloat(yearlyOcupancyDates.filter((obj) => obj.split('-')[1] == '07')
+                                            .map((item) => (
+                                                reservationSummary
+                                                    .filter((obj) => obj.bookingStatus == 'CHECKED-IN' || obj.bookingStatus == 'CHECKED-OUT')
+                                                    .filter((obj) => {
+                                                        let bookedDates = getDates(obj.checkInDate, obj.checkOutDate)
+                                                        bookedDates.pop()
+                                                        if (bookedDates.includes(moment(item).format('YYYY-MM-DD'))) {
+                                                            return obj
+                                                        }
+
+                                                    }).length / room.length * 100
+                                            )).reduce((accu, value) => accu + value, 0) / yearlyOcupancyDates.filter((obj) => obj.split('-')[1] == '07').length).toFixed(2)
+                                    }
+                                    August={
+                                        parseFloat(yearlyOcupancyDates.filter((obj) => obj.split('-')[1] == '08')
+                                            .map((item) => (
+                                                reservationSummary
+                                                    .filter((obj) => obj.bookingStatus == 'CHECKED-IN' || obj.bookingStatus == 'CHECKED-OUT')
+                                                    .filter((obj) => {
+                                                        let bookedDates = getDates(obj.checkInDate, obj.checkOutDate)
+                                                        bookedDates.pop()
+                                                        if (bookedDates.includes(moment(item).format('YYYY-MM-DD'))) {
+                                                            return obj
+                                                        }
+
+                                                    }).length / room.length * 100
+                                            )).reduce((accu, value) => accu + value, 0) / yearlyOcupancyDates.filter((obj) => obj.split('-')[1] == '08').length).toFixed(2)
+                                    }
+                                    September={
+                                        parseFloat(yearlyOcupancyDates.filter((obj) => obj.split('-')[1] == '09')
+                                            .map((item) => (
+                                                reservationSummary
+                                                    .filter((obj) => obj.bookingStatus == 'CHECKED-IN' || obj.bookingStatus == 'CHECKED-OUT')
+                                                    .filter((obj) => {
+                                                        let bookedDates = getDates(obj.checkInDate, obj.checkOutDate)
+                                                        bookedDates.pop()
+                                                        if (bookedDates.includes(moment(item).format('YYYY-MM-DD'))) {
+                                                            return obj
+                                                        }
+
+                                                    }).length / room.length * 100
+                                            )).reduce((accu, value) => accu + value, 0) / yearlyOcupancyDates.filter((obj) => obj.split('-')[1] == '09').length).toFixed(2)
+                                    }
+                                    October={
+                                        parseFloat(yearlyOcupancyDates.filter((obj) => obj.split('-')[1] == '10')
+                                            .map((item) => (
+                                                reservationSummary
+                                                    .filter((obj) => obj.bookingStatus == 'CHECKED-IN' || obj.bookingStatus == 'CHECKED-OUT')
+                                                    .filter((obj) => {
+                                                        let bookedDates = getDates(obj.checkInDate, obj.checkOutDate)
+                                                        bookedDates.pop()
+                                                        if (bookedDates.includes(moment(item).format('YYYY-MM-DD'))) {
+                                                            return obj
+                                                        }
+
+                                                    }).length / room.length * 100
+                                            )).reduce((accu, value) => accu + value, 0) / yearlyOcupancyDates.filter((obj) => obj.split('-')[1] == '10').length).toFixed(2)
+                                    }
+                                    November={
+                                        parseFloat(yearlyOcupancyDates.filter((obj) => obj.split('-')[1] == '11')
+                                            .map((item) => (
+                                                reservationSummary
+                                                    .filter((obj) => obj.bookingStatus == 'CHECKED-IN' || obj.bookingStatus == 'CHECKED-OUT')
+                                                    .filter((obj) => {
+                                                        let bookedDates = getDates(obj.checkInDate, obj.checkOutDate)
+                                                        bookedDates.pop()
+                                                        if (bookedDates.includes(moment(item).format('YYYY-MM-DD'))) {
+                                                            return obj
+                                                        }
+
+                                                    }).length / room.length * 100
+                                            )).reduce((accu, value) => accu + value, 0) / yearlyOcupancyDates.filter((obj) => obj.split('-')[1] == '11').length).toFixed(2)
+                                    }
+                                    December={
+                                        parseFloat(yearlyOcupancyDates.filter((obj) => obj.split('-')[1] == '12')
+                                            .map((item) => (
+                                                reservationSummary
+                                                    .filter((obj) => obj.bookingStatus == 'CHECKED-IN' || obj.bookingStatus == 'CHECKED-OUT')
+                                                    .filter((obj) => {
+                                                        let bookedDates = getDates(obj.checkInDate, obj.checkOutDate)
+                                                        bookedDates.pop()
+                                                        if (bookedDates.includes(moment(item).format('YYYY-MM-DD'))) {
+                                                            return obj
+                                                        }
+
+                                                    }).length / room.length * 100
+                                            )).reduce((accu, value) => accu + value, 0) / yearlyOcupancyDates.filter((obj) => obj.split('-')[1] == '12').length).toFixed(2)
+                                    }
+                                />
                     </ContainerGlobal>
 
                 </ContainerGlobal>

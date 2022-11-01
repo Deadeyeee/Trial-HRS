@@ -5,15 +5,15 @@ import { ContainerGlobal } from '../../components/container/container'
 import { Chart } from 'chart.js'
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 Chart.register(ChartDataLabels);
-const Occupancy = () => {
+const Occupancy = (props) => {
     const data = {
-        labels: ["January", "February", "March", "April", "May", "June", "July"],
+        labels: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
             datasets: [{
                 label: 'Occupancy percentage ',
-                data: [90, 20, 30,50,20,50,70],
+                data: [props.January , props.February , props.March , props.April , props.May , props.June , props.July , props.August , props.September , props.October , props.November , props.December],
                 fill: true,
                 borderColor: 'pink',
-                tension: .5,
+                tension: 1,
                 backgroundColor: "#f4c2c2",
                 borderWidth: 5,
                 pointBorderWidth: 10,

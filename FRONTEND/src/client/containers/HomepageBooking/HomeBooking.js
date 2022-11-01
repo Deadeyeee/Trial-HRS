@@ -334,7 +334,7 @@ export const HomeBooking = ({ title }) => {
             family='Quicksand'
             fstyle='none'
           >
-            FAQs
+            Frequently Asked Questions
           </Title>
 
           <Faq
@@ -457,7 +457,7 @@ export const HomeBooking = ({ title }) => {
                 color='#FFFFFF'
                 family='Quicksand'
                 fstyle='none'
-              > Yes, you can pay via Gcash or Bank Transfer.
+              > How much do you charge for every extended hour after the check-out time?
               </Title>
               <ArrowForwardIos
                 style={openAnswer4 == true ?
