@@ -12,7 +12,6 @@ function BookingConfirmationPage() {
   }, [])
   return (
     <Container>
-            <ChatBot />
             <NavigationBar book />
               <BookingConfirmationCont></BookingConfirmationCont>
             <Footer />

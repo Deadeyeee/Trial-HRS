@@ -9,6 +9,7 @@ router.get('/getAllUsers', controller.findAll);
 router.get('/getUsers/:id', controller.findOne);
 router.patch('/updateUsers/:id', controller.update);
 router.patch('/confirmEmail', controller.confirmEmail);
+router.patch('/changePassword/:id', controller.changePassword);
 router.delete('/deleteUser/:id', controller.delete);
 
 

@@ -16,9 +16,7 @@ exports.Login = async (req, res) => {
                     { userName: req.body.userName }
                 ],
 
-                [Op.not]: [
-                    { role: 'NON-USER' }
-                ]
+                role: 'CUSTOMER'
             },
         });
 
@@ -31,7 +29,7 @@ exports.Login = async (req, res) => {
                         { userName: req.body.userName }
                     ],
 
-                    role: 'NON-USER' 
+                    role: 'NON-USER'
                 },
             });
             //nonuser
@@ -40,8 +38,8 @@ exports.Login = async (req, res) => {
                 return res.status(400).send({ message: "Username/Email or Password is Incorrect." });
             }
         }
-
         let passwordIsValid = bcrypt.compareSync(req.body.password, user_login.password);
+
         if (!passwordIsValid) {
             user_login = await User.findOne({
                 where: {
@@ -52,8 +50,12 @@ exports.Login = async (req, res) => {
                     role: 'NON-USER'
                 },
             });
-
-            passwordIsValid = bcrypt.compareSync(req.body.password, user_login.password);
+            if (!user_login) {
+                passwordIsValid == false;
+            }
+            else {
+                passwordIsValid = bcrypt.compareSync(req.body.password, user_login.password);
+            }
 
             if (!passwordIsValid) {
                 return res.status(400).send({
@@ -63,15 +65,14 @@ exports.Login = async (req, res) => {
             }
 
         }
-
         //our login secured authentication token
         if (user_login.emailVerified === true || user_login.emailVerified === false) {
             let token = jwt.sign(
                 { id: user_login.id, userName: user_login.userName, email: user_login.email, role: user_login.role },
                 config.auth.secret,
-                {
-                    expiresIn: 43200,
-                }
+                // {
+                //     expiresIn: 43200,
+                // }
             );
 
             req.session.user = token;
@@ -92,6 +93,77 @@ exports.Login = async (req, res) => {
     }
 
 };
+
+
+
+
+
+
+
+exports.LoginAdmin = async (req, res) => {
+    try {
+        let user_login;
+
+        user_login = await User.findOne({
+            where: {
+                [Op.or]: [
+                    { email: req.body.email },
+                    { userName: req.body.userName }
+                ],
+                
+                role: {[Op.or]: ['ADMIN', 'STAFF']}
+                // [Op.or]: [
+                //     { role: 'ADMIN' },
+                //     { role: 'STAFF' },
+                // ],
+            },
+        });
+
+        if (!user_login) {
+            return res.status(400).send({ message: "Username/Email or Password is Incorrect." });
+
+        }
+
+        let passwordIsValid = bcrypt.compareSync(req.body.password, user_login.password);
+        console.log(user_login)
+        if (!passwordIsValid) {
+            return res.status(400).send({
+                accessToken: null,
+                message: "Password is Incorrect."
+            });
+        }
+
+        
+        //our login secured authentication token
+        if (user_login.emailVerified === true || user_login.emailVerified === false) {
+            let token = jwt.sign(
+                { id: user_login.id, userName: user_login.userName, email: user_login.email, role: user_login.role },
+                config.auth.secret,
+                // {
+                //     expiresIn: 43200,
+                // }
+            );
+
+            req.session.user = token;
+            res.status(200).send({
+                id: user_login.id,
+                userName: user_login.userName,
+                email: user_login.email,
+                role: user_login.role,
+                cookieSession: req.session.user,
+            });
+        }
+        else {
+            res.status(400).send({ message: "Please verify your email address." })
+        }
+
+    } catch (error) {
+        res.status(500).send({ message: error.message });
+    }
+
+};
+
+
 
 
 exports.verifyToken = async (req, res) => {

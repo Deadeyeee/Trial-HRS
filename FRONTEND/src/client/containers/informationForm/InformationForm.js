@@ -10,7 +10,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { DatePicker } from '@mui/x-date-pickers';
 import InputLabel from '@mui/material/InputLabel';
-import { Badge, FormControlLabel, Radio, RadioGroup, TextareaAutosize, FormControl } from '@mui/material'
+import { Badge, FormControlLabel, Radio, RadioGroup, TextareaAutosize, FormControl, CircularProgress, Grow } from '@mui/material'
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import { nationalities } from '../../../nationalities'
@@ -22,7 +22,8 @@ import Box from '@mui/material/Box';
 import TermsAndConditionsCont from "../termsAndConditionsPage/TermsAndConditionsCont";
 import axios from 'axios'
 import { apiKey } from '../../../apiKey'
-
+import { CheckCircleOutline, Close, HighlightOffSharp } from '@mui/icons-material';
+import logo from '../../images/logo.png';
 
 const style = {
     position: 'absolute',
@@ -42,10 +43,63 @@ const style = {
 };
 
 const InformationForm = () => {
-    let passwordValidation = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+
+
+    const [isLoading, setIsLoading] = useState(false);
+    const [loadingMessage, setLoadingMessage] = useState('Please wait...')
+    const [status, setStatus] = useState('loading')
+
+    const handleOpenIsLoading = () => {
+        setIsLoading(true);
+        setStatus('loading')
+        setLoadingMessage('Please wait...')
+    }
+
+    const handleCloseIsLoading = (status, link) => {
+
+        if (status == 1 || status === undefined) {
+            setStatus('loading')
+            setLoadingMessage('')
+        }
+        else if (status == 2) {
+            setStatus('success')
+            setLoadingMessage('')
+        }
+        else if (status == 3) {
+            setStatus('failed')
+            setLoadingMessage('')
+        }
+
+        setTimeout(() => {
+            setIsLoading(false);
+            console.log(link)
+            if (link !== undefined) {
+                window.location = link;
+            }
+        }, 1000)
+    }
+
+    const loadingStatus = (value) => {
+        if (value == 'loading') {
+            return <CircularProgress></CircularProgress>;
+        }
+        else if (value == 'success') {
+            return <Grow in={true}><CheckCircleOutline style={{ color: 'green', fontSize: '80px' }} /></Grow>;
+        }
+        else if (value == 'failed') {
+            return <Grow in={true}><HighlightOffSharp style={{ color: 'red', fontSize: '80px' }} /></Grow>;
+        }
+    }
+
+
+
+
+
+    let passwordValidation = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[-._!"`'#%&,:;<>=@{}~\$\(\)\*\+\/\\\?\[\]\^\| ])[A-Za-z\d -._!"`'#%&,:;<>=@{}~\$\(\)\*\+\/\\\?\[\]\^\|]{8,}/;
     let letters = /^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/;
     let phoneNumberValidation = /^(09|\+639)\d{9}$/;
     var Recaptcha = require('react-recaptcha');
+    let userNameValidation = /^\S*$/;
 
     var callback = function () {
         console.log('Done!!!!');
@@ -61,7 +115,7 @@ const InformationForm = () => {
     const [lastName, setLastName] = useState("");
     const [contactNumber, setContactNumber] = useState("");
     const [email, setEmail] = useState("");
-    const [birthday, setBirthDay] = useState(new Date());
+    const [birthday, setBirthDay] = useState(new Date(Date.parse(new Date()) - 568025136000));
     const [gender, setGender] = useState('male');
     const [address, setAddress] = useState("");
     const [userName, setUserName] = useState("");
@@ -106,12 +160,13 @@ const InformationForm = () => {
     // let eWallets = ["Gcash", "Paymaya"];
 
     useEffect(() => {
-        axios.get(apiKey+'auth/verify-token').then((result) => {
-            if(result.data.role != 'NON-USER'){
+        handleOpenIsLoading()
+        axios.get(apiKey + 'auth/verify-token').then((result) => {
+            if (result.data.role != 'NON-USER') {
+                handleCloseIsLoading();
                 window.location = '/billingSummary'
             }
         }).catch((err) => {
-
         });
         window.sessionStorage.removeItem("email")
         window.sessionStorage.removeItem("contactNumber")
@@ -125,9 +180,12 @@ const InformationForm = () => {
         window.sessionStorage.removeItem("userName");
         window.sessionStorage.removeItem("password");
 
+        handleCloseIsLoading(1);
         if (window.sessionStorage.getItem('AvailedRoom') == null || window.sessionStorage.getItem('AvailedRoom') == [] || window.sessionStorage.getItem('AvailedRoom') == "") {
             window.location = "/booking"
+            handleCloseIsLoading();
         }
+
         document.title = "Guest Information"
 
     }, [])
@@ -141,7 +199,7 @@ const InformationForm = () => {
             formatNumber = contactNumber.replace("+63", "0");
 
         }
-        else{
+        else {
             formatNumber = contactNumber;
         }
 
@@ -160,19 +218,21 @@ const InformationForm = () => {
             userNameRef.current.focus()
         }
         else {
-            axios.get(apiKey+'api/getAllUsers').then((res) => {
+
+            handleOpenIsLoading()
+            axios.get(apiKey + 'api/getAllUsers').then((res) => {
                 if (userName.length != 0 && password.length != 0) {
                     if (emailError.length == 0 && contactNumberError.length == 0 && userNameError.length == 0) {
-                        axios.post(apiKey+'api/addUser', {
+                        axios.post(apiKey + 'api/addUser', {
                             userName: userName,
                             contactNumber: formatNumber,
                             email: email,
                             password: password,
                         }).then((user) => {
                             console.log(user.data);
-                            axios.post(apiKey+'api/addGuest', {
-                                firstName: firstName,
-                                lastName: lastName,
+                            axios.post(apiKey + 'api/addGuest', {
+                                firstName: firstName.toLocaleLowerCase(),
+                                lastName: lastName.toLocaleLowerCase(),
                                 birthDate: birthday,
                                 gender: gender,
                                 address: address,
@@ -180,34 +240,41 @@ const InformationForm = () => {
                                 user_id: user.data.account.id,
                             }).then((guest) => {
                                 console.log(guest.data);
-                                axios.post(apiKey+'auth/login',
+                                axios.post(apiKey + 'auth/login',
                                     {
                                         userName: userName,
                                         password: password,
                                         email: email,
                                     },
                                 ).then((result) => {
-                                    window.location.reload();
+                                    handleCloseIsLoading(2, '')
+                                    // window.location.reload();
                                 }).catch((err) => {
-                                    axios.delete(apiKey+'api/deleteGuest/' + guest.data.new_guest.id).then((result) => {
+                                    axios.delete(apiKey + 'api/deleteGuest/' + guest.data.new_guest.id).then((result) => {
                                         console.log(result)
-                                        axios.delete(apiKey+'api/deleteUser/' + user.data.account.id).then((result) => {
+                                        axios.delete(apiKey + 'api/deleteUser/' + user.data.account.id).then((result) => {
+                                            handleCloseIsLoading(3)
                                             console.log(result)
                                         }).catch((err) => {
+                                            handleCloseIsLoading(3)
                                             console.log(err)
                                         });
                                     }).catch((err) => {
+                                        handleCloseIsLoading(3)
                                         console.log(err)
                                     });
                                 });
                             }).catch((err) => {
-                                axios.delete(apiKey+'api/deleteUser/' + user.data.account.id).then((result) => {
+                                axios.delete(apiKey + 'api/deleteUser/' + user.data.account.id).then((result) => {
+                                    handleCloseIsLoading(3)
                                     console.log(result)
                                 }).catch((err) => {
+                                    handleCloseIsLoading(3)
                                     console.log(err)
                                 });
                             });
                         }).catch((err) => {
+                            handleCloseIsLoading(3)
                             console.log(err)
                         });
                     }
@@ -223,9 +290,10 @@ const InformationForm = () => {
                     window.sessionStorage.setItem("nationality", nationality);
                     window.sessionStorage.setItem("gender", gender);
                     window.sessionStorage.setItem("address", address);
-                    window.location = '/billingSummary'
+                    handleCloseIsLoading(2, '/billingSummary')
                 }
             }).catch((err) => {
+                handleCloseIsLoading(3)
                 console.log(err)
             })
         }
@@ -247,7 +315,7 @@ const InformationForm = () => {
 
     useEffect(() => {
         if (userName.length != 0 || password.length != 0) {
-            axios.get(apiKey+'api/getAllUsers').then((res) => {
+            axios.get(apiKey + 'api/getAllUsers').then((res) => {
                 if (res.data.length != 0) {
                     res.data.map((item) => {
                         if (item.role != 'NON-USER') {
@@ -270,15 +338,46 @@ const InformationForm = () => {
 
             });
         }
-        else{
-                                setContactNumberError("")
-                                setUserNameError("")
-                                setEmailError("")
-
-        }
     }, [userName, email, contactNumber, password])
     return (
         <Container>
+            <Modal
+                open={isLoading}
+                style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    border: 'none'
+                }}>
+                <Box
+                    component='form'
+                    style={{
+                        height: '300px',
+                        width: '400px',
+                        backgroundColor: 'white',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: '10px',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        overflowY: 'overlay',
+                        overflowX: 'hidden',
+                        borderRadius: '.5rem',
+                        position: 'relative',
+                        border: 'none'
+                        // margin: '50px 0px',
+
+                    }}>
+                    <div style={{ margin: '10px', display: 'flex', width: '400px', height: '350px', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', }}>
+                        <img src={logo} width="35%"></img>
+                        {loadingStatus(status)}
+                        <h1 style={{ fontWeight: 'normal', margin: '0px' }}>{loadingMessage}</h1>
+                    </div>
+                </Box>
+            </Modal>
+
+
+
             <ContainerChild>
                 <ContainerForm onSubmit={createGuestInformation}>
                     <ContainerFormContent >
@@ -292,8 +391,10 @@ const InformationForm = () => {
                                 inputRef={firstNameRef}
                                 variant="outlined"
                                 value={firstName}
+                                
+                                inputProps={{ maxLength: 80 }}
                                 onChange={(e) => {
-                                    setFirstName(e.target.value.toLocaleLowerCase())
+                                    setFirstName(e.target.value)
                                     if (!letters.test(e.target.value) && e.target.value.length != 0) {
                                         setFirstNameError("Invalid first name. Please type letters only.")
                                     }
@@ -312,8 +413,9 @@ const InformationForm = () => {
                                 variant="outlined"
                                 inputRef={lastNameRef}
                                 value={lastName}
+                                inputProps={{ maxLength: 80 }}
                                 onChange={(e) => {
-                                    setLastName(e.target.value.toLocaleLowerCase())
+                                    setLastName(e.target.value)
                                     if (!letters.test(e.target.value) && e.target.value.length != 0) {
                                         setLastNameError("Invalid last name. Please type letters only.")
                                     }
@@ -335,7 +437,8 @@ const InformationForm = () => {
                                 label="Email"
                                 variant="outlined"
                                 type='email'
-                                value={email}
+                            inputProps={{ maxLength: 254 }}
+                            value={email}
                                 onChange={(e) => {
                                     setEmail(e.target.value)
 
@@ -347,7 +450,7 @@ const InformationForm = () => {
 
                             <TextField
                                 error={contactNumberError.length != 0 ? true : false}
-                                helperText={contactNumberError.length != 0 ? contactNumberError : ""}
+                                helperText={contactNumberError.length != 0 ? contactNumberError : "ex. 09123456789 or +639123456789"}
                                 placeholder='Contact Number e.g. 09123456789 or +639123456789'
                                 label="Contact Number"
                                 variant="outlined"
@@ -356,6 +459,7 @@ const InformationForm = () => {
                                     setContactNumber(e.target.value)
 
                                     if (!phoneNumberValidation.test(e.target.value) && e.target.value.length != 0) {
+                                        console.log('asda')
                                         setContactNumberError("Contact number is invalid. Please provide a valid contact number.")
                                     }
                                     else {
@@ -363,6 +467,8 @@ const InformationForm = () => {
                                     }
                                 }}
                                 inputRef={contactNumberRef}
+
+                                inputProps={{ maxLength: 13 }}
                                 style={{ width: '55%', }}
                                 required />
                         </InputContainer>
@@ -376,6 +482,8 @@ const InformationForm = () => {
                                     views={['day', 'month', 'year']}
                                     label="Birthday"
                                     value={birthday}
+                                    maxDate={new Date(Date.parse(new Date()) - 568025136000)}
+                                    minDate={new Date(Date.parse(new Date()) - 2524556160000)}
                                     onChange={(newValue) => {
                                         setBirthDay(newValue);
                                     }}
@@ -467,7 +575,9 @@ const InformationForm = () => {
                                 multiline
                                 rows={4}
                                 style={{ width: '95%', }}
-                                required />
+                                required
+                                inputProps={{ maxLength: 255 }}
+                            />
 
                         </InputContainer>
                         <p><h1 style={{ display: 'inline' }}>Create an account </h1>(optional)*</p>
@@ -483,8 +593,17 @@ const InformationForm = () => {
                                 value={userName}
                                 onChange={(e) => {
                                     setUserName(e.target.value)
-                                    setUserNameError("")
+                                    if (!userNameValidation.test(e.target.value) && e.target.value.length != 0) {
+                                        console.log('asda')
+                                        setUserNameError("Invalid username.")
+                                    }
+                                    else{
+
+                                        setUserNameError("")
+                                    }
                                 }}
+                                
+                                inputProps={{ maxLength: 40 }}
                                 required={password.length != 0 ? true : false}
                                 style={{ width: '55%', }} />
 
@@ -499,7 +618,7 @@ const InformationForm = () => {
                                 onChange={(e) => {
                                     setPassword(e.target.value)
                                     if (!passwordValidation.test(e.target.value) && e.target.value.length != 0) {
-                                        setPasswordError("Password must have a minimum of eight characters, at least one letter and one number.")
+                                        setPasswordError("Password must have a minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character.")
                                     }
                                     else {
                                         setPasswordError("")

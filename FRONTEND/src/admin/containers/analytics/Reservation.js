@@ -6,21 +6,21 @@ import { ContainerGlobal } from '../../components/container/container'
 import { Chart } from 'chart.js'
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 Chart.register(ChartDataLabels);
-export const Reservation = () => {
+export const Reservation = (props) => {
     const data = {
-        labels: ["Confirmed", "Cancelled", "Pending"],
+        labels: ["Reserved", "Cancelled", "Pending"],
         datasets: [{
-            data: [30, 10, 20],
+            data: [props.confirmed, props.cancelled, props.pending],
             backgroundColor: [
-                'rgb(255, 209, 5, .4)',
-                'rgb(0, 0, 0, .4)',
-                'rgb(102, 193, 37, .4)',
+                'rgb(0, 0, 255, .5)',
+                'rgb(255, 0, 0, .5)',
+                'rgb(205, 161, 65, .5)',
                 'rgb(231, 98, 95, .4)',
             ],
             borderColor: [
-                '#E1C340',
-                '#000000',
-                '#76B947',
+                'rgb(0, 0, 255)',
+                'rgb(255, 0, 0)',
+                'rgb(205, 161, 65)',
                 '#E7625F',
             ],
 
@@ -29,7 +29,7 @@ export const Reservation = () => {
             borderWidth: 3,
             
             borderJoinStyle: 'round',
-            spacing: 10,
+            spacing: 5,
 
         }],
 

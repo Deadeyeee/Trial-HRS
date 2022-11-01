@@ -8,10 +8,10 @@ const path = require('path')
 const schedules = require('node-schedule')
 const controller  = require('./controlers/user.controller.js');
 
+const auth2 = require('../config/auth.config')
 //import routes here
 
 //create routes
-
 app.use(cors({
     origin: ["http://localhost:3000"],
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
@@ -22,7 +22,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(cookieParser());
 app.use(session({
     key: "user",
-    secret: "example",
+    secret: auth2.auth.secret,
     resave: false,
     saveUninitialized: false,
     cookie: {
@@ -63,6 +63,8 @@ const payment = require('./routes/payment.route.js');
 const services = require('./routes/services.route.js');
 const usedServices = require('./routes/usedServices.route.js');
 const roomTypeImages = require('./routes/roomTypeImages.route.js');
+const message = require('./routes/message.route.js');
+const conversation = require('./routes/conversation.route.js');
 
 
 
@@ -82,6 +84,8 @@ app.use('/api', payment);
 app.use('/api', services);
 app.use('/api', usedServices);
 app.use('/api', roomTypeImages);
+app.use('/api', message);
+app.use('/api', conversation);
 
 
 //static image 

@@ -80,6 +80,17 @@ export const BookingPageCont = () => {
         }).catch((err) => {
             console.lot(err)
         });
+
+        if (window.sessionStorage.getItem('endDate') != null || window.sessionStorage.getItem('guest') != null || window.sessionStorage.getItem('startDate')) {
+            console.log(window.sessionStorage.getItem('endDate'))
+            console.log(window.sessionStorage.getItem('guest'))
+            console.log(window.sessionStorage.getItem('startDate'))
+
+            setEndDate(new Date(window.sessionStorage.getItem('endDate')))
+            setStartDate(new Date(window.sessionStorage.getItem('startDate')))
+            setAdults(parseInt(window.sessionStorage.getItem('guest')))
+            window.sessionStorage.clear();
+        }
     }, [])
 
 
@@ -350,7 +361,7 @@ export const BookingPageCont = () => {
 
         axios.get(apiKey + 'api/getAllRoomType').then((res) => {
             setRoomType(res.data.filter((item) => {
-                if(item.maxAdultOccupancy >= adults && item.maxKidsOccupancy >= kids && uniqueAvailbleRoomType.includes(item.id)==true){
+                if (item.maxAdultOccupancy >= adults && item.maxKidsOccupancy >= kids && uniqueAvailbleRoomType.includes(item.id) == true) {
                     return item;
                 }
             }
@@ -438,7 +449,7 @@ export const BookingPageCont = () => {
     }
 
     const numberFormat = (value) =>
-        new Intl.NumberFormat('en-IN', {
+        new Intl.NumberFormat('en-CA', {
             style: 'currency',
             currency: 'PHP'
         }).format(value);
@@ -480,7 +491,7 @@ export const BookingPageCont = () => {
                     minDateStart={new Date()}
                     // maxDateStart={new Date(endDate)}
                     minDateEnd={minEndDate}
-
+                    maxDateEnd={new Date(Date.parse(startDate) + 15552000000)}
                 // minDate={new Date()}
                 />
 
@@ -489,7 +500,7 @@ export const BookingPageCont = () => {
                         <TextInput
                             style={{ fontWeight: 'bold', fontSize: '1.1vw' }}
                             family='Roboto Slab'
-                            width="5vw"
+                            width="6vw"
                             placeholder="No. of Adults"
                             align="center"
                             borderColor='black'
@@ -509,13 +520,13 @@ export const BookingPageCont = () => {
                             size='1.1vw'
                             weight="Bold">
 
-                            Adults
+                            No. of guest(s)
                         </Title>
                     </LabelDiv>
                     <LabelDiv>
 
 
-                        <TextInput
+                        {/* <TextInput
                             style={{ fontWeight: 'bold', fontSize: '1.1vw' }}
                             family='Roboto Slab'
                             width="5vw"
@@ -538,7 +549,7 @@ export const BookingPageCont = () => {
                             weight="bold">
 
                             Kids
-                        </Title>
+                        </Title> */}
                     </LabelDiv>
                 </Persons>
                 <Button
@@ -688,19 +699,9 @@ export const BookingPageCont = () => {
                                         margin='10px 0px 0px 10px'
                                         align='left'
                                     >
-                                        {item.maxAdultOccupancy} Adults only
+                                        {item.maxAdultOccupancy - 1} Guest(s) only
                                     </Title>
-                                    <Title
-                                        family='Roboto Slab'
-                                        color='#2e2e2e'
-                                        weight='700'
-                                        size='17px'
-                                        fStyle='Normal'
-                                        margin='10px 0px 0px 10px'
-                                        align='left'
-                                    >
-                                        {item.maxKidsOccupancy} Kids only
-                                    </Title>
+
                                     <Title
                                         color='#8f805f'
                                         weight='700'

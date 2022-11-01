@@ -81,6 +81,9 @@ export const ReportContainer = () => {
 
     const [showDetails, setShowDetails] = useState(false);
     const [showEditDetails, setShowEditDetails] = useState(false);
+    const [fromOccupancyRate, setFromOccupancyRate] = useState(new Date(Date.now()))
+    const [toOccupancyRate, setToOccupancyRate] = useState(new Date(Date.now()))
+    const [yearOccupancyRate, setYearOccupancyRate] = useState(new Date(new Date().getFullYear(), 0, 1))
 
 
     const [value2, setValue2] = React.useState('1');
@@ -227,10 +230,12 @@ export const ReportContainer = () => {
     }
 
     const [reservationPageDaily, setReservationPageDaily] = useState(1)
+    const [ocupancyRatePage, setOcupancyRatePage] = useState(1)
 
     const [reservationSummary, setReservationSummary] = useState([])
     const [reservation, setReservation] = useState([])
     const [amenity, setAmenity] = useState([])
+    const [room, setRoom] = useState([])
     const [orderedAmenity, setOrderedAmenity] = useState([])
 
     const reservationStatusStyle = (value) => {
@@ -385,7 +390,12 @@ export const ReportContainer = () => {
 
                     axios.get(apiKey + 'api/getAllAmenities').then((result) => {
                         setAmenity(result.data)
+                        axios.get(apiKey + 'api/getAllRoom').then((result) => {
+                            setRoom(result.data)
 
+                        }).catch((err) => {
+                            console.log(err)
+                        });
                     }).catch((err) => {
                         console.log(err)
                     });
@@ -536,6 +546,16 @@ export const ReportContainer = () => {
         }
     }
 
+
+    const [ocupancyDates, setOcupancyDates] = useState([]);
+    const [yearlyOcupancyDates, setYearlyOcupancyDates] = useState([]);
+    useEffect(() => {
+        setOcupancyDates(getDates(new Date(fromOccupancyRate), new Date(toOccupancyRate)))
+    }, [toOccupancyRate, fromOccupancyRate])
+    useEffect(() => {
+        setYearlyOcupancyDates(getDates(yearOccupancyRate, new Date(new Date(yearOccupancyRate).getFullYear(), 11, 31)))
+    }, [yearOccupancyRate])
+
     // FILTER
     const [searchDailyReservation, setSearchDailyReservation] = useState('')
     const [reservationMenuDaily, setReservationMenuDaily] = useState('all')
@@ -589,10 +609,7 @@ export const ReportContainer = () => {
                 <TabContext value={value2}>
                     <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                         <TabList onChange={handleChange2} aria-label="lab API tabs example">
-                            <Tab label="Daily" value="1" />
-                            <Tab label="Monthly" value="2" />
-                            <Tab label="Quarterly" value="3" />
-                            <Tab label="Yearly" value="4" />
+                            <Tab label="Reports" value="1" />
                             <Tab label={<DonutSmallIcon />} value="5" />
                         </TabList>
                     </Box>
@@ -692,14 +709,14 @@ export const ReportContainer = () => {
 
                                 </LocalizationProvider>
                                 <FormControl sx={{ m: 1, minWidth: 120, }} size="small">
-                                    <InputLabel id="demo-select-small" >Menu</InputLabel>
+                                    <InputLabel id="demo-select-small" >Category</InputLabel>
                                     <Select
                                         native
                                         style={{ color: 'black', fontWeight: 'bold' }}
                                         labelId="roomType-select-small"
                                         id="demo-select-small"
                                         value={reservationMenuDaily}
-                                        label="Menu"
+                                        label="Category"
                                         onChange={(event) => {
                                             setReservationMenuDaily(event.target.value);
                                         }}
@@ -731,16 +748,7 @@ export const ReportContainer = () => {
                                     </Select>
                                 </FormControl>
 
-                                <Button variant="contained"
-                                    style={{ backgroundColor: 'rgb(80, 170, 50)' }}
-                                    startIcon={<FilterAltIcon />}>
-                                    Filter
-                                </Button>
-                                <Button variant="contained"
-                                    style={{ backgroundColor: 'rgb(255, 36, 0)' }}
-                                    startIcon={<CloseIcon />}>
-                                    clear
-                                </Button>
+
 
 
 
@@ -767,7 +775,158 @@ export const ReportContainer = () => {
                                         .filter((obj) => {
                                             let filterDates = getDates(startDateDaily, endDateDaily);
 
-                                            if (filterDates.includes(moment(obj.reservation.reservationDate).format('YYYY-MM-DD'))) {
+                                            if (reservationMenuDaily == 'reservationDate' || reservationMenuDaily == 'all') {
+                                                if (filterDates.includes(moment(obj.reservation.reservationDate).format('YYYY-MM-DD'))) {
+                                                    return obj;
+                                                }
+                                            }
+                                            else if (reservationMenuDaily == 'checkIn') {
+                                                if (filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
+                                                    return obj;
+                                                }
+                                            }
+                                            else if (reservationMenuDaily == 'checkOut') {
+                                                if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD'))) {
+                                                    return obj;
+                                                }
+                                            }
+                                            else if (reservationMenuDaily == 'RSreserved') {
+                                                if (filterDates.includes(moment(obj.reservation.reservationDate).format('YYYY-MM-DD'))) {
+                                                    return obj;
+                                                }
+                                            }
+                                            else if (reservationMenuDaily == 'RSpending') {
+                                                if (filterDates.includes(moment(obj.reservation.reservationDate).format('YYYY-MM-DD'))) {
+                                                    return obj;
+                                                }
+                                            }
+                                            else if (reservationMenuDaily == 'RScancelled') {
+                                                if (filterDates.includes(moment(obj.reservation.reservationDate).format('YYYY-MM-DD'))) {
+                                                    return obj;
+                                                }
+                                            }
+                                            else if (reservationMenuDaily == 'BSpending') {
+                                                if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
+                                                    return obj;
+                                                }
+                                            }
+                                            else if (reservationMenuDaily == 'BSreserved') {
+                                                if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
+                                                    return obj;
+                                                }
+                                            }
+                                            else if (reservationMenuDaily == 'BScheckedIn') {
+                                                if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
+                                                    return obj;
+                                                }
+                                            }
+                                            else if (reservationMenuDaily == 'BScheckedOut') {
+                                                if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
+                                                    return obj;
+                                                }
+                                            }
+                                            else if (reservationMenuDaily == 'BSnoShow') {
+                                                if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
+                                                    return obj;
+                                                }
+                                            }
+                                            else if (reservationMenuDaily == 'PSpartial') {
+                                                if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
+                                                    return obj;
+                                                }
+                                            }
+                                            else if (reservationMenuDaily == 'PSfullyPaid') {
+                                                if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
+                                                    return obj;
+                                                }
+                                            }
+                                            else if (reservationMenuDaily == 'PSreceiptDeclined') {
+                                                if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
+                                                    return obj;
+                                                }
+                                            }
+                                            else if (reservationMenuDaily == 'PSpending') {
+                                                if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
+                                                    return obj;
+                                                }
+                                            }
+                                            else if (reservationMenuDaily == 'PScancelled') {
+                                                if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
+                                                    return obj;
+                                                }
+                                            }
+                                            else {
+                                                return obj;
+                                            }
+
+                                        })
+                                        .filter((obj) => {
+                                            if (reservationMenuDaily == 'RSreserved') {
+                                                if (obj.reservation.reservationStatus.toLowerCase() == 'reserved') {
+                                                    return obj;
+                                                }
+                                            }
+                                            else if (reservationMenuDaily == 'RSpending') {
+                                                if (obj.reservation.reservationStatus.toLowerCase() == 'pending') {
+                                                    return obj;
+                                                }
+                                            }
+                                            else if (reservationMenuDaily == 'RScancelled') {
+                                                if (obj.reservation.reservationStatus.toLowerCase() == 'cancelled') {
+                                                    return obj;
+                                                }
+                                            }
+                                            else if (reservationMenuDaily == 'BSpending') {
+                                                if (obj.bookingStatus.toLowerCase() == 'pending') {
+                                                    return obj;
+                                                }
+                                            }
+                                            else if (reservationMenuDaily == 'BSreserved') {
+                                                if (obj.bookingStatus.toLowerCase() == 'reserved') {
+                                                    return obj;
+                                                }
+                                            }
+                                            else if (reservationMenuDaily == 'BScheckedIn') {
+                                                if (obj.bookingStatus.toLowerCase() == 'checked-in') {
+                                                    return obj;
+                                                }
+                                            }
+                                            else if (reservationMenuDaily == 'BScheckedOut') {
+                                                if (obj.bookingStatus.toLowerCase() == 'checked-out') {
+                                                    return obj;
+                                                }
+                                            }
+                                            else if (reservationMenuDaily == 'BSnoShow') {
+                                                if (obj.bookingStatus.toLowerCase() == 'no show') {
+                                                    return obj;
+                                                }
+                                            }
+                                            else if (reservationMenuDaily == 'PSpartial') {
+                                                if (obj.reservation.payment.paymentStatus.toLowerCase() == 'partial') {
+                                                    return obj;
+                                                }
+                                            }
+                                            else if (reservationMenuDaily == 'PSfullyPaid') {
+                                                if (obj.reservation.payment.paymentStatus.toLowerCase() == 'fully paid') {
+                                                    return obj;
+                                                }
+                                            }
+                                            else if (reservationMenuDaily == 'PSreceiptDeclined') {
+                                                if (obj.reservation.payment.paymentStatus.toLowerCase() == 'reciept declined') {
+                                                    return obj;
+                                                }
+                                            }
+                                            else if (reservationMenuDaily == 'PSpending') {
+                                                if (obj.reservation.payment.paymentStatus.toLowerCase() == 'pending') {
+                                                    return obj;
+                                                }
+                                            }
+                                            else if (reservationMenuDaily == 'PScancelled') {
+                                                if (obj.reservation.payment.paymentStatus.toLowerCase() == 'cancelled') {
+                                                    return obj;
+                                                }
+                                            }
+                                            else {
                                                 return obj;
                                             }
                                         })
@@ -822,12 +981,12 @@ export const ReportContainer = () => {
                                                         ?
                                                         item.reservation.payment.discountValid == true ?
                                                             numberFormat(
-                                                                parseFloat((((item.room.roomType.roomRate * item.numberOfNights) + (parseFloat(item.others)) + (orderedAmenity.filter((obj) => obj.reservationSummary_id == item.id).map((obj) => obj.quantity * parseFloat(obj.amenity.amenityRate)).reduce((accumulator, value) =>parseFloat(accumulator) + parseFloat(value)))) / 1.12 * .80) / item.reservation.payment.grandTotal) * parseFloat(item.reservation.payment.paymentMade)
+                                                                parseFloat((((item.room.roomType.roomRate * item.numberOfNights) + (parseFloat(item.others)) + (orderedAmenity.filter((obj) => obj.reservationSummary_id == item.id).map((obj) => obj.quantity * parseFloat(obj.amenity.amenityRate)).reduce((accumulator, value) => parseFloat(accumulator) + parseFloat(value), 0))) / 1.12 * .80) / item.reservation.payment.grandTotal) * parseFloat(item.reservation.payment.paymentMade)
                                                             )
                                                             :
 
                                                             numberFormat(
-                                                                parseFloat((((item.room.roomType.roomRate * item.numberOfNights) + (parseFloat(item.others)) + (orderedAmenity.filter((obj) => obj.reservationSummary_id == item.id).map((obj) => obj.quantity * parseFloat(obj.amenity.amenityRate)).reduce((accumulator, value) => parseFloat(accumulator) + parseFloat(value))))) / item.reservation.payment.grandTotal) * parseFloat(item.reservation.payment.paymentMade)
+                                                                parseFloat((((item.room.roomType.roomRate * item.numberOfNights) + (parseFloat(item.others)) + (orderedAmenity.filter((obj) => obj.reservationSummary_id == item.id).map((obj) => obj.quantity * parseFloat(obj.amenity.amenityRate)).reduce((accumulator, value) => parseFloat(accumulator) + parseFloat(value), 0)))) / item.reservation.payment.grandTotal) * parseFloat(item.reservation.payment.paymentMade)
                                                             )
                                                         :
                                                         ''
@@ -836,9 +995,9 @@ export const ReportContainer = () => {
                                                     orderedAmenity.length != 0
                                                         ?
                                                         item.reservation.payment.discountValid == true ?
-                                                            numberFormat(((item.room.roomType.roomRate * item.numberOfNights) + (parseFloat(item.others)) + (orderedAmenity.filter((obj) => obj.reservationSummary_id == item.id).map((obj) => obj.quantity * parseFloat(obj.amenity.amenityRate)).reduce((accumulator, value) => parseFloat(accumulator) + parseFloat(value)))) / 1.12 * .80)
+                                                            numberFormat(((item.room.roomType.roomRate * item.numberOfNights) + (parseFloat(item.others)) + (orderedAmenity.filter((obj) => obj.reservationSummary_id == item.id).map((obj) => obj.quantity * parseFloat(obj.amenity.amenityRate)).reduce((accumulator, value) => parseFloat(accumulator) + parseFloat(value), 0))) / 1.12 * .80)
                                                             :
-                                                            numberFormat((item.room.roomType.roomRate * item.numberOfNights) + (parseFloat(item.others)) + (orderedAmenity.filter((obj) => obj.reservationSummary_id == item.id).map((obj) => obj.quantity * parseFloat(obj.amenity.amenityRate)).reduce((accumulator, value) => parseFloat(accumulator) + parseFloat(value))))
+                                                            numberFormat((item.room.roomType.roomRate * item.numberOfNights) + (parseFloat(item.others)) + (orderedAmenity.filter((obj) => obj.reservationSummary_id == item.id).map((obj) => obj.quantity * parseFloat(obj.amenity.amenityRate)).reduce((accumulator, value) => parseFloat(accumulator) + parseFloat(value), 0)))
                                                         :
                                                         ''
                                                 }</Td>
@@ -877,7 +1036,197 @@ export const ReportContainer = () => {
                                 align='left'
                                 margin='0px 0px 0px auto'
                             >
-                                Total Reservations: <b style={{ color: 'green' }}>{reservationSummary.length != 0 ? reservationSummary.length : 0}</b>
+                                Total Reservations: <b style={{ color: 'green' }}>{reservationSummary.length != 0 ?
+                                    reservationSummary
+                                        .filter((obj) => {
+                                            let filterDates = getDates(startDateDaily, endDateDaily);
+
+                                            if (reservationMenuDaily == 'reservationDate' || reservationMenuDaily == 'all') {
+                                                if (filterDates.includes(moment(obj.reservation.reservationDate).format('YYYY-MM-DD'))) {
+                                                    return obj;
+                                                }
+                                            }
+                                            else if (reservationMenuDaily == 'checkIn') {
+                                                if (filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
+                                                    return obj;
+                                                }
+                                            }
+                                            else if (reservationMenuDaily == 'checkOut') {
+                                                if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD'))) {
+                                                    return obj;
+                                                }
+                                            }
+                                            else if (reservationMenuDaily == 'RSreserved') {
+                                                if (filterDates.includes(moment(obj.reservation.reservationDate).format('YYYY-MM-DD'))) {
+                                                    return obj;
+                                                }
+                                            }
+                                            else if (reservationMenuDaily == 'RSpending') {
+                                                if (filterDates.includes(moment(obj.reservation.reservationDate).format('YYYY-MM-DD'))) {
+                                                    return obj;
+                                                }
+                                            }
+                                            else if (reservationMenuDaily == 'RScancelled') {
+                                                if (filterDates.includes(moment(obj.reservation.reservationDate).format('YYYY-MM-DD'))) {
+                                                    return obj;
+                                                }
+                                            }
+                                            else if (reservationMenuDaily == 'BSpending') {
+                                                if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
+                                                    return obj;
+                                                }
+                                            }
+                                            else if (reservationMenuDaily == 'BSreserved') {
+                                                if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
+                                                    return obj;
+                                                }
+                                            }
+                                            else if (reservationMenuDaily == 'BScheckedIn') {
+                                                if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
+                                                    return obj;
+                                                }
+                                            }
+                                            else if (reservationMenuDaily == 'BScheckedOut') {
+                                                if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
+                                                    return obj;
+                                                }
+                                            }
+                                            else if (reservationMenuDaily == 'BSnoShow') {
+                                                if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
+                                                    return obj;
+                                                }
+                                            }
+                                            else if (reservationMenuDaily == 'PSpartial') {
+                                                if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
+                                                    return obj;
+                                                }
+                                            }
+                                            else if (reservationMenuDaily == 'PSfullyPaid') {
+                                                if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
+                                                    return obj;
+                                                }
+                                            }
+                                            else if (reservationMenuDaily == 'PSreceiptDeclined') {
+                                                if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
+                                                    return obj;
+                                                }
+                                            }
+                                            else if (reservationMenuDaily == 'PSpending') {
+                                                if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
+                                                    return obj;
+                                                }
+                                            }
+                                            else if (reservationMenuDaily == 'PScancelled') {
+                                                if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
+                                                    return obj;
+                                                }
+                                            }
+                                            else {
+                                                return obj;
+                                            }
+
+                                        })
+                                        .filter((obj) => {
+                                            if (reservationMenuDaily == 'RSreserved') {
+                                                if (obj.reservation.reservationStatus.toLowerCase() == 'reserved') {
+                                                    return obj;
+                                                }
+                                            }
+                                            else if (reservationMenuDaily == 'RSpending') {
+                                                if (obj.reservation.reservationStatus.toLowerCase() == 'pending') {
+                                                    return obj;
+                                                }
+                                            }
+                                            else if (reservationMenuDaily == 'RScancelled') {
+                                                if (obj.reservation.reservationStatus.toLowerCase() == 'cancelled') {
+                                                    return obj;
+                                                }
+                                            }
+                                            else if (reservationMenuDaily == 'BSpending') {
+                                                if (obj.bookingStatus.toLowerCase() == 'pending') {
+                                                    return obj;
+                                                }
+                                            }
+                                            else if (reservationMenuDaily == 'BSreserved') {
+                                                if (obj.bookingStatus.toLowerCase() == 'reserved') {
+                                                    return obj;
+                                                }
+                                            }
+                                            else if (reservationMenuDaily == 'BScheckedIn') {
+                                                if (obj.bookingStatus.toLowerCase() == 'checked-in') {
+                                                    return obj;
+                                                }
+                                            }
+                                            else if (reservationMenuDaily == 'BScheckedOut') {
+                                                if (obj.bookingStatus.toLowerCase() == 'checked-out') {
+                                                    return obj;
+                                                }
+                                            }
+                                            else if (reservationMenuDaily == 'BSnoShow') {
+                                                if (obj.bookingStatus.toLowerCase() == 'no show') {
+                                                    return obj;
+                                                }
+                                            }
+                                            else if (reservationMenuDaily == 'PSpartial') {
+                                                if (obj.reservation.payment.paymentStatus.toLowerCase() == 'partial') {
+                                                    return obj;
+                                                }
+                                            }
+                                            else if (reservationMenuDaily == 'PSfullyPaid') {
+                                                if (obj.reservation.payment.paymentStatus.toLowerCase() == 'fully paid') {
+                                                    return obj;
+                                                }
+                                            }
+                                            else if (reservationMenuDaily == 'PSreceiptDeclined') {
+                                                if (obj.reservation.payment.paymentStatus.toLowerCase() == 'reciept declined') {
+                                                    return obj;
+                                                }
+                                            }
+                                            else if (reservationMenuDaily == 'PSpending') {
+                                                if (obj.reservation.payment.paymentStatus.toLowerCase() == 'pending') {
+                                                    return obj;
+                                                }
+                                            }
+                                            else if (reservationMenuDaily == 'PScancelled') {
+                                                if (obj.reservation.payment.paymentStatus.toLowerCase() == 'cancelled') {
+                                                    return obj;
+                                                }
+                                            }
+                                            else {
+                                                return obj;
+                                            }
+                                        })
+                                        .filter((obj) => {
+                                            if (searchDailyReservation != '') {
+                                                if (
+                                                    (obj.bookingReferenceNumber).toString().includes(searchDailyReservation.toLowerCase()) ||
+                                                    (new Date(obj.reservation.reservationDate).toLocaleDateString()).toString().includes(searchDailyReservation.toLowerCase()) ||
+                                                    (obj.reservation.reservationStatus.toLowerCase()).toString().includes(searchDailyReservation.toLowerCase()) ||
+                                                    (obj.reservation.guestInformation.firstName.toLowerCase()).toString().includes(searchDailyReservation.toLowerCase()) ||
+                                                    (obj.reservation.guestInformation.firstName.toLowerCase() + ' ' + obj.reservation.guestInformation.lastName.toLowerCase()).toString().includes(searchDailyReservation.toLowerCase()) ||
+                                                    (obj.reservation.guestInformation.lastName.toLowerCase()).toString().includes(searchDailyReservation.toLowerCase()) ||
+                                                    (obj.room.roomType.roomType.toLowerCase()).toString().includes(searchDailyReservation.toLowerCase()) ||
+                                                    (obj.room.roomNumber).toString().includes(searchDailyReservation) ||
+                                                    (obj.room.roomType.roomRate).toString().includes(searchDailyReservation.toLowerCase()) ||
+                                                    (new Date(obj.checkInDate).toLocaleDateString()).toString().includes(searchDailyReservation.toLowerCase()) ||
+                                                    (new Date(obj.checkOutDate).toLocaleDateString()).toString().includes(searchDailyReservation.toLowerCase()) ||
+                                                    (obj.numberOfNights).toString().includes(searchDailyReservation.toLowerCase()) ||
+                                                    (obj.bookingStatus.toLowerCase()).toString().includes(searchDailyReservation.toLowerCase()) ||
+                                                    (obj.reservation.payment.paymentStatus.toLowerCase()).toString().includes(searchDailyReservation.toLowerCase())
+                                                ) {
+                                                    return obj;
+                                                }
+                                            }
+                                            else {
+                                                return obj;
+                                            }
+                                        })
+                                        .sort((a, b) => {
+                                            if (a.bookingReferenceNumber < b.bookingReferenceNumber) {
+                                                return -1;
+                                            }
+                                        })
+                                        .length : 0}</b>
                             </Title>
                             <Title
                                 size='26px'
@@ -894,7 +1243,158 @@ export const ReportContainer = () => {
                                             .filter((obj) => {
                                                 let filterDates = getDates(startDateDaily, endDateDaily);
 
-                                                if (filterDates.includes(moment(obj.reservation.reservationDate).format('YYYY-MM-DD'))) {
+                                                if (reservationMenuDaily == 'reservationDate' || reservationMenuDaily == 'all') {
+                                                    if (filterDates.includes(moment(obj.reservation.reservationDate).format('YYYY-MM-DD'))) {
+                                                        return obj;
+                                                    }
+                                                }
+                                                else if (reservationMenuDaily == 'checkIn') {
+                                                    if (filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
+                                                        return obj;
+                                                    }
+                                                }
+                                                else if (reservationMenuDaily == 'checkOut') {
+                                                    if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD'))) {
+                                                        return obj;
+                                                    }
+                                                }
+                                                else if (reservationMenuDaily == 'RSreserved') {
+                                                    if (filterDates.includes(moment(obj.reservation.reservationDate).format('YYYY-MM-DD'))) {
+                                                        return obj;
+                                                    }
+                                                }
+                                                else if (reservationMenuDaily == 'RSpending') {
+                                                    if (filterDates.includes(moment(obj.reservation.reservationDate).format('YYYY-MM-DD'))) {
+                                                        return obj;
+                                                    }
+                                                }
+                                                else if (reservationMenuDaily == 'RScancelled') {
+                                                    if (filterDates.includes(moment(obj.reservation.reservationDate).format('YYYY-MM-DD'))) {
+                                                        return obj;
+                                                    }
+                                                }
+                                                else if (reservationMenuDaily == 'BSpending') {
+                                                    if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
+                                                        return obj;
+                                                    }
+                                                }
+                                                else if (reservationMenuDaily == 'BSreserved') {
+                                                    if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
+                                                        return obj;
+                                                    }
+                                                }
+                                                else if (reservationMenuDaily == 'BScheckedIn') {
+                                                    if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
+                                                        return obj;
+                                                    }
+                                                }
+                                                else if (reservationMenuDaily == 'BScheckedOut') {
+                                                    if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
+                                                        return obj;
+                                                    }
+                                                }
+                                                else if (reservationMenuDaily == 'BSnoShow') {
+                                                    if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
+                                                        return obj;
+                                                    }
+                                                }
+                                                else if (reservationMenuDaily == 'PSpartial') {
+                                                    if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
+                                                        return obj;
+                                                    }
+                                                }
+                                                else if (reservationMenuDaily == 'PSfullyPaid') {
+                                                    if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
+                                                        return obj;
+                                                    }
+                                                }
+                                                else if (reservationMenuDaily == 'PSreceiptDeclined') {
+                                                    if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
+                                                        return obj;
+                                                    }
+                                                }
+                                                else if (reservationMenuDaily == 'PSpending') {
+                                                    if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
+                                                        return obj;
+                                                    }
+                                                }
+                                                else if (reservationMenuDaily == 'PScancelled') {
+                                                    if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
+                                                        return obj;
+                                                    }
+                                                }
+                                                else {
+                                                    return obj;
+                                                }
+
+                                            })
+                                            .filter((obj) => {
+                                                if (reservationMenuDaily == 'RSreserved') {
+                                                    if (obj.reservation.reservationStatus.toLowerCase() == 'reserved') {
+                                                        return obj;
+                                                    }
+                                                }
+                                                else if (reservationMenuDaily == 'RSpending') {
+                                                    if (obj.reservation.reservationStatus.toLowerCase() == 'pending') {
+                                                        return obj;
+                                                    }
+                                                }
+                                                else if (reservationMenuDaily == 'RScancelled') {
+                                                    if (obj.reservation.reservationStatus.toLowerCase() == 'cancelled') {
+                                                        return obj;
+                                                    }
+                                                }
+                                                else if (reservationMenuDaily == 'BSpending') {
+                                                    if (obj.bookingStatus.toLowerCase() == 'pending') {
+                                                        return obj;
+                                                    }
+                                                }
+                                                else if (reservationMenuDaily == 'BSreserved') {
+                                                    if (obj.bookingStatus.toLowerCase() == 'reserved') {
+                                                        return obj;
+                                                    }
+                                                }
+                                                else if (reservationMenuDaily == 'BScheckedIn') {
+                                                    if (obj.bookingStatus.toLowerCase() == 'checked-in') {
+                                                        return obj;
+                                                    }
+                                                }
+                                                else if (reservationMenuDaily == 'BScheckedOut') {
+                                                    if (obj.bookingStatus.toLowerCase() == 'checked-out') {
+                                                        return obj;
+                                                    }
+                                                }
+                                                else if (reservationMenuDaily == 'BSnoShow') {
+                                                    if (obj.bookingStatus.toLowerCase() == 'no show') {
+                                                        return obj;
+                                                    }
+                                                }
+                                                else if (reservationMenuDaily == 'PSpartial') {
+                                                    if (obj.reservation.payment.paymentStatus.toLowerCase() == 'partial') {
+                                                        return obj;
+                                                    }
+                                                }
+                                                else if (reservationMenuDaily == 'PSfullyPaid') {
+                                                    if (obj.reservation.payment.paymentStatus.toLowerCase() == 'fully paid') {
+                                                        return obj;
+                                                    }
+                                                }
+                                                else if (reservationMenuDaily == 'PSreceiptDeclined') {
+                                                    if (obj.reservation.payment.paymentStatus.toLowerCase() == 'reciept declined') {
+                                                        return obj;
+                                                    }
+                                                }
+                                                else if (reservationMenuDaily == 'PSpending') {
+                                                    if (obj.reservation.payment.paymentStatus.toLowerCase() == 'pending') {
+                                                        return obj;
+                                                    }
+                                                }
+                                                else if (reservationMenuDaily == 'PScancelled') {
+                                                    if (obj.reservation.payment.paymentStatus.toLowerCase() == 'cancelled') {
+                                                        return obj;
+                                                    }
+                                                }
+                                                else {
                                                     return obj;
                                                 }
                                             })
@@ -928,11 +1428,10 @@ export const ReportContainer = () => {
                                                     return -1;
                                                 }
                                             })
-                                            .slice((reservationPageDaily - 1) * 10, reservationPageDaily * 10)
                                             .map((item) => (
                                                 orderedAmenity.length != 0 ?
                                                     item.reservation.payment.discountValid == true ?
-                                                        parseFloat((((item.room.roomType.roomRate * item.numberOfNights) + (parseFloat(item.others)) + (orderedAmenity.filter((obj) => obj.reservationSummary_id == item.id).map((obj) => obj.quantity * parseFloat(obj.amenity.amenityRate)).reduce((accumulator, value) => parseFloat(accumulator) + parseFloat(value) , 0))) / 1.12 * .80) / item.reservation.payment.grandTotal) * parseFloat(item.reservation.payment.paymentMade)
+                                                        parseFloat((((item.room.roomType.roomRate * item.numberOfNights) + (parseFloat(item.others)) + (orderedAmenity.filter((obj) => obj.reservationSummary_id == item.id).map((obj) => obj.quantity * parseFloat(obj.amenity.amenityRate)).reduce((accumulator, value) => parseFloat(accumulator) + parseFloat(value), 0))) / 1.12 * .80) / item.reservation.payment.grandTotal) * parseFloat(item.reservation.payment.paymentMade)
                                                         :
                                                         parseFloat((((item.room.roomType.roomRate * item.numberOfNights) + (parseFloat(item.others)) + (orderedAmenity.filter((obj) => obj.reservationSummary_id == item.id).map((obj) => obj.quantity * parseFloat(obj.amenity.amenityRate)).reduce((accumulator, value) => parseFloat(accumulator) + parseFloat(value), 0)))) / item.reservation.payment.grandTotal) * parseFloat(item.reservation.payment.paymentMade)
 
@@ -948,7 +1447,7 @@ export const ReportContainer = () => {
                                 <Button
                                     variant="contained"
                                     size="large"
-                                    onClick={()=>{
+                                    onClick={() => {
                                         window.open('/admin/generatedReport', '_blank').focus();
                                     }}
                                     style={{ backgroundColor: '#2f2f2f', margin: 'auto' }}>
@@ -959,564 +1458,6 @@ export const ReportContainer = () => {
                     </TabPanel>
 
 
-
-
-                    <TabPanel value="2" style={{ width: '97%' }}>
-
-                        <ContainerGlobal
-                            direction='column'
-                            w='100%'
-                            overflow='visible'>
-                            <ContainerGlobal
-                                w='100%'
-                                h='7vh'
-                                bg='none'
-                                direction='row'
-                                overflow='visible'
-                                align='center'
-                                justify='center'
-                                gap='10px'
-                            >
-                                <TextField
-                                    id="outlined-basic"
-                                    label="Search..."
-                                    variant="outlined"
-                                    sx={{
-                                        input: { color: 'black', fontWeight: 'bold' },
-
-                                    }}
-                                    InputProps={{
-                                        endAdornment: (
-                                            <InputAdornment position="end">
-                                                <IconButton type="submit" sx={{ p: '10px' }} aria-label="search">
-                                                    <SearchIcon />
-                                                </IconButton>
-                                            </InputAdornment>
-
-                                        ),
-                                    }}
-                                    style={{ width: 500 }} />
-                                <LocalizationProvider dateAdapter={AdapterDateFns}
-                                >
-                                    <DatePicker
-                                        views={['month', 'year']}
-                                        label="Start Date"
-                                        value={value}
-                                        onChange={(newValue) => {
-                                            setValue(newValue);
-                                        }}
-                                        renderInput={(params) =>
-                                            <TextField
-                                                {...params}
-                                                sx={{
-                                                    svg: { color: 'black' },
-                                                    input: { color },
-                                                    label: { color },
-                                                    color: { color },
-                                                    input: { color: 'black', fontWeight: 'bold' },
-
-                                                }}
-                                                style={{ width: 200, margin: '0px 0px 0px 20px' }}
-                                                helperText={null}
-                                            />
-                                        }
-                                    />
-
-                                </LocalizationProvider>
-                                <ArrowForwardIcon />
-                                <LocalizationProvider dateAdapter={AdapterDateFns}>
-                                    <DatePicker
-
-                                        views={['month', 'year']}
-                                        label="End Date"
-                                        value={valueEnd}
-                                        onChange={(newValue) => {
-                                            setValueEnd(newValue);
-                                        }}
-                                        renderInput={(params) =>
-                                            <TextField
-                                                {...params}
-                                                sx={{
-                                                    svg: { color: 'black' },
-                                                    input: { color },
-                                                    label: { color },
-                                                    color: { color },
-                                                    input: { color: 'black', fontWeight: 'bold' },
-
-                                                }}
-                                                style={{ width: 200 }}
-                                                helperText={null}
-                                            />
-                                        }
-                                    />
-
-                                </LocalizationProvider>
-
-                                <Button variant="contained"
-                                    style={{ backgroundColor: 'rgb(80, 170, 50)' }}
-                                    startIcon={<FilterAltIcon />}>
-                                    Filter
-                                </Button>
-                                <Button variant="contained"
-                                    style={{ backgroundColor: 'rgb(255, 36, 0)' }}
-                                    startIcon={<CloseIcon />}>
-                                    clear
-                                </Button>
-
-
-
-                            </ContainerGlobal>
-                            <TableContainer>
-                                <Tr>
-                                    <Th align='center'>Year <ArrowDropDownIcon style={{ color: 'black' }} /> </Th>
-                                    <Th align='center'>Month <ArrowDropDownIcon style={{ color: 'black' }} /> </Th>
-                                    <Th align='center'>Total Reservation  <ArrowDropDownIcon style={{ color: 'black' }} /></Th>
-                                    <Th align='center'>Quarter Income  <ArrowDropDownIcon style={{ color: 'black' }} /></Th>
-                                </Tr>
-                                <Tr>
-                                    <Td align='center'>2020</Td>
-                                    <Td align='center'>January</Td>
-                                    <Td align='center'>6</Td>
-
-                                    <Td align='center'>PHP 22,200.00</Td>
-                                </Tr>
-                                <Tr>
-                                    <Td align='center'>2020</Td>
-                                    <Td align='center'>Feburuary</Td>
-                                    <Td align='center'>6</Td>
-
-                                    <Td align='center'>PHP 22,200.00</Td>
-                                </Tr>
-                                <Tr>
-                                    <Td align='center'>2020</Td>
-                                    <Td align='center'>March</Td>
-                                    <Td align='center'>7</Td>
-
-                                    <Td align='center'>PHP 30,363.00</Td>
-                                </Tr>
-                                <Tr>
-                                    <Td align='center'>2020</Td>
-                                    <Td align='center'>April</Td>
-                                    <Td align='center'>7</Td>
-
-                                    <Td align='center'>PHP 30,362.00</Td>
-                                </Tr>
-
-
-
-
-                            </TableContainer>
-
-                            <HorizontalLine
-                                bg='gray'
-                                w='100%'
-                                margin='0px 0px 20px 0px'
-                            >
-                            </HorizontalLine>
-
-                            <Title
-                                size='26px'
-                                color='black'
-                                family='Helvetica'
-                                fstyle='normal'
-                                weight='400'
-                                align='left'
-                                margin='0px 0px 0px auto'
-                            >
-                                Total Monthly Reservation : <b style={{ color: 'green' }}>26</b>
-                            </Title>
-                            <Title
-                                size='26px'
-                                color='black'
-                                family='Helvetica'
-                                fstyle='normal'
-                                weight='400'
-                                align='left'
-                                margin='15px 0px 0px auto'
-                            >
-                                Total Monthly Income: <b style={{ color: 'green' }}>PHP 105,125.00</b>
-                            </Title>
-
-                            <Button
-                                variant="contained"
-                                size="large"
-
-                                style={{ backgroundColor: '#2f2f2f', margin: '15px 0px 0px auto' }}>
-                                Print Reservation report
-                            </Button>
-
-                        </ContainerGlobal>
-                    </TabPanel>
-
-
-
-
-
-                    <TabPanel value="3" style={{ width: '97%' }}>
-
-                        <ContainerGlobal
-                            direction='column'
-                            w='100%'
-                            overflow='visible'>
-                            <ContainerGlobal
-                                w='100%'
-                                h='7vh'
-                                bg='none'
-                                direction='row'
-                                overflow='visible'
-                                align='center'
-                                justify='center'
-                                gap='10px'
-                            >
-                                <TextField
-                                    id="outlined-basic"
-                                    label="Search..."
-                                    variant="outlined"
-                                    sx={{
-                                        input: { color: 'black', fontWeight: 'bold' },
-
-                                    }}
-                                    InputProps={{
-                                        endAdornment: (
-                                            <InputAdornment position="end">
-                                                <IconButton type="submit" sx={{ p: '10px' }} aria-label="search">
-                                                    <SearchIcon />
-                                                </IconButton>
-                                            </InputAdornment>
-
-                                        ),
-                                    }}
-                                    style={{ width: 500 }} />
-                                <LocalizationProvider dateAdapter={AdapterDateFns}
-                                >
-                                    <DatePicker
-                                        views={['year']}
-                                        label="Start Date"
-                                        value={value}
-                                        onChange={(newValue) => {
-                                            setValue(newValue);
-                                        }}
-                                        renderInput={(params) =>
-                                            <TextField
-                                                {...params}
-                                                sx={{
-                                                    svg: { color: 'black' },
-                                                    input: { color },
-                                                    label: { color },
-                                                    color: { color },
-                                                    input: { color: 'black', fontWeight: 'bold' },
-
-                                                }}
-                                                style={{ width: 200, margin: '0px 0px 0px 20px' }}
-                                                helperText={null}
-                                            />
-                                        }
-                                    />
-
-                                </LocalizationProvider>
-                                <ArrowForwardIcon />
-                                <LocalizationProvider dateAdapter={AdapterDateFns}>
-                                    <DatePicker
-
-                                        views={['year']}
-                                        label="End Date"
-                                        value={valueEnd}
-                                        onChange={(newValue) => {
-                                            setValueEnd(newValue);
-                                        }}
-                                        renderInput={(params) =>
-                                            <TextField
-                                                {...params}
-                                                sx={{
-                                                    svg: { color: 'black' },
-                                                    input: { color },
-                                                    label: { color },
-                                                    color: { color },
-                                                    input: { color: 'black', fontWeight: 'bold' },
-
-                                                }}
-                                                style={{ width: 200 }}
-                                                helperText={null}
-                                            />
-                                        }
-                                    />
-
-                                </LocalizationProvider>
-
-                                <Button variant="contained"
-                                    style={{ backgroundColor: 'rgb(80, 170, 50)' }}
-                                    startIcon={<FilterAltIcon />}>
-                                    Filter
-                                </Button>
-                                <Button variant="contained"
-                                    style={{ backgroundColor: 'rgb(255, 36, 0)' }}
-                                    startIcon={<CloseIcon />}>
-                                    clear
-                                </Button>
-
-
-
-                            </ContainerGlobal>
-                            <TableContainer>
-                                <Tr>
-                                    <Th align='center'>Year <ArrowDropDownIcon style={{ color: 'black' }} /> </Th>
-                                    <Th align='center'>Quarter <ArrowDropDownIcon style={{ color: 'black' }} /> </Th>
-                                    <Th align='center'>Total Reservation  <ArrowDropDownIcon style={{ color: 'black' }} /></Th>
-                                    <Th align='center'>Quarter Income  <ArrowDropDownIcon style={{ color: 'black' }} /></Th>
-                                </Tr>
-                                <Tr>
-                                    <Td align='center'>2020</Td>
-                                    <Td align='center'>QUARTER 1</Td>
-                                    <Td align='center'>26</Td>
-
-                                    <Td align='center'>PHP 105,125.00</Td>
-                                </Tr>
-                                <Tr>
-                                    <Td align='center'>2020</Td>
-                                    <Td align='center'>QUARTER 2</Td>
-                                    <Td align='center'>26</Td>
-
-                                    <Td align='center'>PHP 105,125.00</Td>
-                                </Tr>
-                                <Tr>
-                                    <Td align='center'>2020</Td>
-                                    <Td align='center'>QUARTER 3</Td>
-                                    <Td align='center'>26</Td>
-
-                                    <Td align='center'>PHP 105,125.00</Td>
-                                </Tr>
-                                <Tr>
-                                    <Td align='center'>2020</Td>
-                                    <Td align='center'>QUARTER 4</Td>
-                                    <Td align='center'>27</Td>
-
-                                    <Td align='center'>PHP 105,125.00</Td>
-                                </Tr>
-
-
-
-
-                            </TableContainer>
-
-                            <HorizontalLine
-                                bg='gray'
-                                w='100%'
-                                margin='0px 0px 20px 0px'
-                            >
-                            </HorizontalLine>
-
-                            <Title
-                                size='26px'
-                                color='black'
-                                family='Helvetica'
-                                fstyle='normal'
-                                weight='400'
-                                align='left'
-                                margin='0px 0px 0px auto'
-                            >
-                                Total Reservation : <b style={{ color: 'green' }}>105</b>
-                            </Title>
-                            <Title
-                                size='26px'
-                                color='black'
-                                family='Helvetica'
-                                fstyle='normal'
-                                weight='400'
-                                align='left'
-                                margin='15px 0px 0px auto'
-                            >
-                                Total Income: <b style={{ color: 'green' }}>PHP 420,500.00</b>
-                            </Title>
-
-                            <Button
-                                variant="contained"
-                                size="large"
-
-                                style={{ backgroundColor: '#2f2f2f', margin: '15px 0px 0px auto' }}>
-                                Print Reservation report
-                            </Button>
-                        </ContainerGlobal>
-                    </TabPanel>
-
-
-
-
-
-                    <TabPanel value="4" style={{ width: '97%' }}>
-                        <ContainerGlobal
-                            direction='column'
-                            w='100%'
-                            overflow='visible'>
-
-                            <ContainerGlobal
-                                w='100%'
-                                h='7vh'
-                                bg='none'
-                                direction='row'
-                                overflow='visible'
-                                align='center'
-                                justify='center'
-                                gap='10px'
-                            >
-                                <TextField
-                                    id="outlined-basic"
-                                    label="Search..."
-                                    variant="outlined"
-                                    sx={{
-                                        input: { color: 'black', fontWeight: 'bold' },
-
-                                    }}
-                                    InputProps={{
-                                        endAdornment: (
-                                            <InputAdornment position="end">
-                                                <IconButton type="submit" sx={{ p: '10px' }} aria-label="search">
-                                                    <SearchIcon />
-                                                </IconButton>
-                                            </InputAdornment>
-
-                                        ),
-                                    }}
-                                    style={{ width: 500 }} />
-                                <LocalizationProvider dateAdapter={AdapterDateFns}
-                                >
-                                    <DatePicker
-                                        views={['year']}
-                                        label="Start Date"
-                                        value={value}
-                                        onChange={(newValue) => {
-                                            setValue(newValue);
-                                        }}
-                                        renderInput={(params) =>
-                                            <TextField
-                                                {...params}
-                                                sx={{
-                                                    svg: { color: 'black' },
-                                                    input: { color },
-                                                    label: { color },
-                                                    color: { color },
-                                                    input: { color: 'black', fontWeight: 'bold' },
-
-                                                }}
-                                                style={{ width: 200, margin: '0px 0px 0px 20px' }}
-                                                helperText={null}
-                                            />
-                                        }
-                                    />
-
-                                </LocalizationProvider>
-                                <ArrowForwardIcon />
-                                <LocalizationProvider dateAdapter={AdapterDateFns}>
-                                    <DatePicker
-
-                                        views={['year']}
-                                        label="End Date"
-                                        value={valueEnd}
-                                        onChange={(newValue) => {
-                                            setValueEnd(newValue);
-                                        }}
-                                        renderInput={(params) =>
-                                            <TextField
-                                                {...params}
-                                                sx={{
-                                                    svg: { color: 'black' },
-                                                    input: { color },
-                                                    label: { color },
-                                                    color: { color },
-                                                    input: { color: 'black', fontWeight: 'bold' },
-
-                                                }}
-                                                style={{ width: 200 }}
-                                                helperText={null}
-                                            />
-                                        }
-                                    />
-
-                                </LocalizationProvider>
-
-                                <Button variant="contained"
-                                    style={{ backgroundColor: 'rgb(80, 170, 50)' }}
-                                    startIcon={<FilterAltIcon />}>
-                                    Filter
-                                </Button>
-                                <Button variant="contained"
-                                    style={{ backgroundColor: 'rgb(255, 36, 0)' }}
-                                    startIcon={<CloseIcon />}>
-                                    clear
-                                </Button>
-
-
-
-                            </ContainerGlobal>
-                            <TableContainer>
-                                <Tr>
-                                    <Th align='center'>Year <ArrowDropDownIcon style={{ color: 'black' }} /> </Th>
-                                    <Th align='center'>Total Reservation  <ArrowDropDownIcon style={{ color: 'black' }} /></Th>
-                                    <Th align='center'>Annual Income  <ArrowDropDownIcon style={{ color: 'black' }} /></Th>
-                                </Tr>
-                                <Tr>
-                                    <Td align='center'>2020</Td>
-                                    <Td align='center'>105</Td>
-
-                                    <Td align='center'>PHP 420,500.00</Td>
-                                </Tr>
-                                <Tr>
-                                    <Td align='center'>2019</Td>
-                                    <Td align='center'>720</Td>
-
-                                    <Td align='center'>PHP 3,262,000.00</Td>
-                                </Tr>
-                                <Tr>
-                                    <Td align='center'>2018</Td>
-                                    <Td align='center'>500</Td>
-
-                                    <Td align='center'>PHP 2,262,000.00</Td>
-                                </Tr>
-
-
-
-
-                            </TableContainer>
-
-                            <HorizontalLine
-                                bg='gray'
-                                w='100%'
-                                margin='0px 0px 20px 0px'
-                            >
-                            </HorizontalLine>
-
-                            <Title
-                                size='26px'
-                                color='black'
-                                family='Helvetica'
-                                fstyle='normal'
-                                weight='400'
-                                align='left'
-                                margin='0px 0px 0px auto'
-                            >
-                                Total Anual Reservation : <b style={{ color: 'green' }}>1,325</b>
-                            </Title>
-                            <Title
-                                size='26px'
-                                color='black'
-                                family='Helvetica'
-                                fstyle='normal'
-                                weight='400'
-                                align='left'
-                                margin='15px 0px 0px auto'
-                            >
-                                Total Anual Income: <b style={{ color: 'green' }}>PHP 5,944,500.00</b>
-                            </Title>
-
-                            <Button
-                                variant="contained"
-                                size="large"
-
-                                style={{ backgroundColor: '#2f2f2f', margin: '15px 0px 0px auto' }}>
-                                Print Reservation report
-                            </Button>
-                        </ContainerGlobal>
-
-                    </TabPanel>
 
 
 
@@ -1564,11 +1505,10 @@ export const ReportContainer = () => {
                                 <LocalizationProvider dateAdapter={AdapterDateFns}
                                 >
                                     <DatePicker
-                                        views={['year']}
                                         label="Start Date"
-                                        value={value}
+                                        value={startDateDaily}
                                         onChange={(newValue) => {
-                                            setValue(newValue);
+                                            setStartDateDaily(newValue);
                                         }}
                                         renderInput={(params) =>
                                             <TextField
@@ -1592,11 +1532,10 @@ export const ReportContainer = () => {
                                 <LocalizationProvider dateAdapter={AdapterDateFns}>
                                     <DatePicker
 
-                                        views={['year']}
                                         label="End Date"
-                                        value={valueEnd}
+                                        value={endDateDaily}
                                         onChange={(newValue) => {
-                                            setValueEnd(newValue);
+                                            setEndDateDaily(newValue);
                                         }}
                                         renderInput={(params) =>
                                             <TextField
@@ -1617,23 +1556,42 @@ export const ReportContainer = () => {
 
                                 </LocalizationProvider>
 
-                                <Button variant="contained"
-                                    style={{ backgroundColor: 'rgb(80, 170, 50)' }}
-                                    startIcon={<FilterAltIcon />}>
-                                    Filter
-                                </Button>
-                                <Button variant="contained"
-                                    style={{ backgroundColor: 'rgb(255, 36, 0)' }}
-                                    startIcon={<CloseIcon />}>
-                                    clear
-                                </Button>
+
 
 
 
                             </ContainerGlobal>
                             <ContainerGlobal margin='0px auto'
                                 w='50%'>
-                                <Reservation />
+                                <Reservation
+                                    confirmed={reservationSummary != 0 ?
+                                        reservationSummary.filter((obj) => obj.reservation.reservationStatus == 'RESERVED').filter((obj) => {
+                                            let filterDate = getDates(startDateDaily, endDateDaily);
+
+                                            if (filterDate.includes(moment(obj.checkInDate).format('YYYY-MM-DD')) == true || filterDate.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) == true) {
+                                                return obj
+                                            }
+                                        }).length
+                                        : ''}
+                                    cancelled={reservationSummary != 0 ?
+                                        reservationSummary.filter((obj) => obj.reservation.reservationStatus == 'CANCELLED').filter((obj) => {
+                                            let filterDate = getDates(startDateDaily, endDateDaily);
+
+                                            if (filterDate.includes(moment(obj.checkInDate).format('YYYY-MM-DD')) == true || filterDate.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) == true) {
+                                                return obj
+                                            }
+                                        }).length
+                                        : ''}
+                                    pending={reservationSummary != 0 ?
+                                        reservationSummary.filter((obj) => obj.reservation.reservationStatus == 'PENDING').filter((obj) => {
+                                            let filterDate = getDates(startDateDaily, endDateDaily);
+
+                                            if (filterDate.includes(moment(obj.checkInDate).format('YYYY-MM-DD')) == true || filterDate.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) == true) {
+                                                return obj
+                                            }
+                                        }).length
+                                        : ''}
+                                />
                             </ContainerGlobal>
                             <HorizontalLine
                                 bg='gray'
@@ -1695,7 +1653,7 @@ export const ReportContainer = () => {
                 <TabContext value={value3}>
                     <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                         <TabList onChange={handleChange3} aria-label="lab API tabs example">
-                            <Tab label="Daily" value="1" />
+                            <Tab label="Report" value="1" />
                             <Tab label={<TimelineIcon />} value="2" title='Analytics' />
                         </TabList>
                     </Box>
@@ -1716,34 +1674,14 @@ export const ReportContainer = () => {
                                 justify='center'
                                 gap='10px'
                             >
-                                <TextField
-                                    id="outlined-basic"
-                                    label="Search..."
-                                    variant="outlined"
-                                    sx={{
-                                        input: { color: 'black', fontWeight: 'bold' },
 
-                                    }}
-                                    InputProps={{
-                                        endAdornment: (
-                                            <InputAdornment position="end">
-                                                <IconButton type="submit" sx={{ p: '10px' }} aria-label="search">
-                                                    <SearchIcon />
-                                                </IconButton>
-                                            </InputAdornment>
-
-                                        ),
-                                    }}
-                                    style={{ width: 500 }} />
                                 <LocalizationProvider dateAdapter={AdapterDateFns}
                                 >
                                     <DatePicker
                                         views={['day', 'month', 'year']}
                                         label="From"
-                                        value={value}
-                                        onChange={(newValue) => {
-                                            setValue(newValue);
-                                        }}
+                                        value={fromOccupancyRate}
+                                        onChange={(newValue) => (setFromOccupancyRate(newValue))}
                                         renderInput={(params) =>
                                             <TextField
                                                 {...params}
@@ -1768,10 +1706,8 @@ export const ReportContainer = () => {
 
                                         views={['day', 'month', 'year']}
                                         label="To"
-                                        value={valueOcc}
-                                        onChange={(newValue) => {
-                                            setValueOcc(newValue);
-                                        }}
+                                        value={toOccupancyRate}
+                                        onChange={(newValue) => (setToOccupancyRate(newValue))}
                                         renderInput={(params) =>
                                             <TextField
                                                 {...params}
@@ -1791,33 +1727,63 @@ export const ReportContainer = () => {
 
                                 </LocalizationProvider>
 
-                                <Button variant="contained"
-                                    style={{ backgroundColor: 'rgb(80, 170, 50)' }}
-                                    startIcon={<FilterAltIcon />}>
-                                    Filter
-                                </Button>
-                                <Button variant="contained"
-                                    style={{ backgroundColor: 'rgb(255, 36, 0)' }}
-                                    startIcon={<CloseIcon />}>
-                                    clear
-                                </Button>
 
 
 
                             </ContainerGlobal>
                             <TableContainer>
                                 <Tr>
-                                    <Th align='center'>From <ArrowDropDownIcon style={{ color: 'black' }} /> </Th>
-                                    <Th align='center'>To  <ArrowDropDownIcon style={{ color: 'black' }} /></Th>
-                                    <Th align='center'>Average Room Occupied  <ArrowDropDownIcon style={{ color: 'black' }} /></Th>
+                                    <Th align='center'>Date <ArrowDropDownIcon style={{ color: 'black' }} /> </Th>
+                                    <Th align='center'>Total rooms occupied  <ArrowDropDownIcon style={{ color: 'black' }} /></Th>
                                     <Th align='center'>Total Number of Rooms  <ArrowDropDownIcon style={{ color: 'black' }} /></Th>
+                                    <Th align='center'>Average Room Occupied  <ArrowDropDownIcon style={{ color: 'black' }} /></Th>
                                 </Tr>
-                                <Tr>
-                                    <Td align='center'>03/04/2022</Td>
-                                    <Td align='center'>03/08/2022</Td>
-                                    <Td align='center'>45.4</Td>
-                                    <Td align='center'>64</Td>
-                                </Tr>
+                                {console.log(ocupancyDates)}
+                                {ocupancyDates.length != 0 ?
+                                    ocupancyDates
+                                        .slice((ocupancyRatePage - 1) * 10, ocupancyRatePage * 10)
+                                        .map((item) => (
+                                            <Tr>
+                                                <Td align='center'>{new Date(item).toLocaleDateString()}</Td>
+                                                <Td align='center'>
+                                                    {
+                                                        reservationSummary.length != 0 && room.length ?
+                                                            reservationSummary
+                                                                .filter((obj) => obj.bookingStatus == 'CHECKED-IN' || obj.bookingStatus == 'CHECKED-OUT')
+                                                                .filter((obj) => {
+                                                                    let bookedDates = getDates(obj.checkInDate, obj.checkOutDate)
+                                                                    bookedDates.pop()
+                                                                    if (bookedDates.includes(moment(item).format('YYYY-MM-DD'))) {
+                                                                        return obj
+                                                                    }
+
+                                                                }).length
+                                                            : 0
+                                                    }
+                                                </Td>
+                                                <Td align='center'>{room.length != 0 ? room.length : 0}</Td>
+                                                <Td align='center'>
+                                                    {
+                                                        reservationSummary.length != 0 && room.length != 0 ?
+                                                            parseFloat(reservationSummary
+                                                                .filter((obj) => obj.bookingStatus == 'CHECKED-IN' || obj.bookingStatus == 'CHECKED-OUT')
+                                                                .filter((obj) => {
+                                                                    let bookedDates = getDates(obj.checkInDate, obj.checkOutDate)
+                                                                    bookedDates.pop()
+                                                                    if (bookedDates.includes(moment(item).format('YYYY-MM-DD'))) {
+                                                                        return obj
+                                                                    }
+
+                                                                }).length / room.length * 100).toFixed(2)
+                                                            : 0
+                                                    }%
+                                                </Td>
+                                            </Tr>
+                                        ))
+
+                                    : ''
+                                }
+
 
 
 
@@ -1830,6 +1796,18 @@ export const ReportContainer = () => {
                                 margin='0px 0px 20px 0px'
                             >
                             </HorizontalLine>
+                            <ContainerGlobal
+                                w='100%'
+                                justify='center'>
+                                <Pagination
+                                    page={ocupancyRatePage}
+                                    count={ocupancyDates.length != 0 && Math.ceil(ocupancyDates.length / 10)}
+                                    onChange={(e, value) => {
+
+                                        setOcupancyRatePage(value)
+                                    }}
+                                />
+                            </ContainerGlobal>
                             <Title
                                 size='26px'
                                 color='black'
@@ -1839,7 +1817,24 @@ export const ReportContainer = () => {
                                 align='left'
                                 margin='0px 0px 0px auto'
                             >
-                                Average Room Occupancy : <b style={{ color: 'green' }}>71%</b>
+                                Average Room Occupancy : <b style={{ color: 'green' }}>{
+                                    ocupancyDates.length != 0 && reservationSummary.length != 0 && room.length != 0 ?
+                                        parseFloat(
+                                            ocupancyDates.map((item) => (
+                                                reservationSummary
+                                                    .filter((obj) => obj.bookingStatus == 'CHECKED-IN' || obj.bookingStatus == 'CHECKED-OUT')
+                                                    .filter((obj) => {
+                                                        let bookedDates = getDates(obj.checkInDate, obj.checkOutDate)
+                                                        bookedDates.pop()
+                                                        if (bookedDates.includes(moment(item).format('YYYY-MM-DD'))) {
+                                                            return obj
+                                                        }
+
+                                                    }).length / room.length * 100
+                                            )).reduce((accu, value) => accu + value, 0) / ocupancyDates.length
+                                        ).toFixed(2)
+                                        : 0
+                                }%</b>
                             </Title>
 
                             <Button
@@ -1874,62 +1869,19 @@ export const ReportContainer = () => {
                                 justify='center'
                                 gap='10px'
                             >
-                                <TextField
-                                    id="outlined-basic"
-                                    label="Search..."
-                                    variant="outlined"
-                                    sx={{
-                                        input: { color: 'black', fontWeight: 'bold' },
 
-                                    }}
-                                    InputProps={{
-                                        endAdornment: (
-                                            <InputAdornment position="end">
-                                                <IconButton type="submit" sx={{ p: '10px' }} aria-label="search">
-                                                    <SearchIcon />
-                                                </IconButton>
-                                            </InputAdornment>
-
-                                        ),
-                                    }}
-                                    style={{ width: 500 }} />
-                                <LocalizationProvider dateAdapter={AdapterDateFns}
-                                >
-                                    <DatePicker
-                                        views={['month', 'year']}
-                                        label="From"
-                                        value={value}
-                                        onChange={(newValue) => {
-                                            setValue(newValue);
-                                        }}
-                                        renderInput={(params) =>
-                                            <TextField
-                                                {...params}
-                                                sx={{
-                                                    svg: { color: 'black' },
-                                                    input: { color },
-                                                    label: { color },
-                                                    color: { color },
-                                                    input: { color: 'black', fontWeight: 'bold' },
-
-                                                }}
-                                                style={{ width: 200, margin: '0px 0px 0px 20px' }}
-                                                helperText={null}
-                                            />
-                                        }
-                                    />
-
-                                </LocalizationProvider>
-                                <ArrowForwardIcon />
                                 <LocalizationProvider dateAdapter={AdapterDateFns}>
                                     <DatePicker
 
-                                        views={['month', 'year']}
-                                        label="To"
-                                        value={valueOcc}
+                                        views={['year']}
+                                        label="Year"
+                                        value={yearOccupancyRate}
                                         onChange={(newValue) => {
-                                            setValueOcc(newValue);
+                                            setYearOccupancyRate(
+                                                new Date(new Date(newValue).getFullYear(), 0, 1)
+                                            );
                                         }}
+                                        maxDate={new Date(Date.now())}
                                         renderInput={(params) =>
                                             <TextField
                                                 {...params}
@@ -1949,16 +1901,7 @@ export const ReportContainer = () => {
 
                                 </LocalizationProvider>
 
-                                <Button variant="contained"
-                                    style={{ backgroundColor: 'rgb(80, 170, 50)' }}
-                                    startIcon={<FilterAltIcon />}>
-                                    Filter
-                                </Button>
-                                <Button variant="contained"
-                                    style={{ backgroundColor: 'rgb(255, 36, 0)' }}
-                                    startIcon={<CloseIcon />}>
-                                    clear
-                                </Button>
+
 
 
 
@@ -1968,7 +1911,188 @@ export const ReportContainer = () => {
                                 w='100%'
                                 justify='center'
                             >
-                                <Occupancy />
+                                <Occupancy
+                                    January={
+                                        parseFloat(yearlyOcupancyDates.filter((obj) => obj.split('-')[1] == '01')
+                                            .map((item) => (
+                                                reservationSummary
+                                                    .filter((obj) => obj.bookingStatus == 'CHECKED-IN' || obj.bookingStatus == 'CHECKED-OUT')
+                                                    .filter((obj) => {
+                                                        let bookedDates = getDates(obj.checkInDate, obj.checkOutDate)
+                                                        bookedDates.pop()
+                                                        if (bookedDates.includes(moment(item).format('YYYY-MM-DD'))) {
+                                                            return obj
+                                                        }
+
+                                                    }).length / room.length * 100
+                                            )).reduce((accu, value) => accu + value, 0) / yearlyOcupancyDates.filter((obj) => obj.split('-')[1] == '01').length).toFixed(2)
+                                    }
+                                    February={
+                                        parseFloat(yearlyOcupancyDates.filter((obj) => obj.split('-')[1] == '02')
+                                            .map((item) => (
+                                                reservationSummary
+                                                    .filter((obj) => obj.bookingStatus == 'CHECKED-IN' || obj.bookingStatus == 'CHECKED-OUT')
+                                                    .filter((obj) => {
+                                                        let bookedDates = getDates(obj.checkInDate, obj.checkOutDate)
+                                                        bookedDates.pop()
+                                                        if (bookedDates.includes(moment(item).format('YYYY-MM-DD'))) {
+                                                            return obj
+                                                        }
+
+                                                    }).length / room.length * 100
+                                            )).reduce((accu, value) => accu + value, 0) / yearlyOcupancyDates.filter((obj) => obj.split('-')[1] == '02').length).toFixed(2)
+                                    }
+                                    March={
+                                        parseFloat(yearlyOcupancyDates.filter((obj) => obj.split('-')[1] == '03')
+                                            .map((item) => (
+                                                reservationSummary
+                                                    .filter((obj) => obj.bookingStatus == 'CHECKED-IN' || obj.bookingStatus == 'CHECKED-OUT')
+                                                    .filter((obj) => {
+                                                        let bookedDates = getDates(obj.checkInDate, obj.checkOutDate)
+                                                        bookedDates.pop()
+                                                        if (bookedDates.includes(moment(item).format('YYYY-MM-DD'))) {
+                                                            return obj
+                                                        }
+
+                                                    }).length / room.length * 100
+                                            )).reduce((accu, value) => accu + value, 0) / yearlyOcupancyDates.filter((obj) => obj.split('-')[1] == '03').length).toFixed(2)
+                                    }
+                                    April={
+                                        parseFloat(yearlyOcupancyDates.filter((obj) => obj.split('-')[1] == '04')
+                                            .map((item) => (
+                                                reservationSummary
+                                                    .filter((obj) => obj.bookingStatus == 'CHECKED-IN' || obj.bookingStatus == 'CHECKED-OUT')
+                                                    .filter((obj) => {
+                                                        let bookedDates = getDates(obj.checkInDate, obj.checkOutDate)
+                                                        bookedDates.pop()
+                                                        if (bookedDates.includes(moment(item).format('YYYY-MM-DD'))) {
+                                                            return obj
+                                                        }
+
+                                                    }).length / room.length * 100
+                                            )).reduce((accu, value) => accu + value, 0) / yearlyOcupancyDates.filter((obj) => obj.split('-')[1] == '04').length).toFixed(2)
+                                    }
+                                    May={
+                                        parseFloat(yearlyOcupancyDates.filter((obj) => obj.split('-')[1] == '05')
+                                            .map((item) => (
+                                                reservationSummary
+                                                    .filter((obj) => obj.bookingStatus == 'CHECKED-IN' || obj.bookingStatus == 'CHECKED-OUT')
+                                                    .filter((obj) => {
+                                                        let bookedDates = getDates(obj.checkInDate, obj.checkOutDate)
+                                                        bookedDates.pop()
+                                                        if (bookedDates.includes(moment(item).format('YYYY-MM-DD'))) {
+                                                            return obj
+                                                        }
+
+                                                    }).length / room.length * 100
+                                            )).reduce((accu, value) => accu + value, 0) / yearlyOcupancyDates.filter((obj) => obj.split('-')[1] == '05').length).toFixed(2)
+                                    }
+                                    June={
+                                        parseFloat(yearlyOcupancyDates.filter((obj) => obj.split('-')[1] == '06')
+                                            .map((item) => (
+                                                reservationSummary
+                                                    .filter((obj) => obj.bookingStatus == 'CHECKED-IN' || obj.bookingStatus == 'CHECKED-OUT')
+                                                    .filter((obj) => {
+                                                        let bookedDates = getDates(obj.checkInDate, obj.checkOutDate)
+                                                        bookedDates.pop()
+                                                        if (bookedDates.includes(moment(item).format('YYYY-MM-DD'))) {
+                                                            return obj
+                                                        }
+
+                                                    }).length / room.length * 100
+                                            )).reduce((accu, value) => accu + value, 0) / yearlyOcupancyDates.filter((obj) => obj.split('-')[1] == '06').length).toFixed(2)
+                                    }
+                                    July={
+                                        parseFloat(yearlyOcupancyDates.filter((obj) => obj.split('-')[1] == '07')
+                                            .map((item) => (
+                                                reservationSummary
+                                                    .filter((obj) => obj.bookingStatus == 'CHECKED-IN' || obj.bookingStatus == 'CHECKED-OUT')
+                                                    .filter((obj) => {
+                                                        let bookedDates = getDates(obj.checkInDate, obj.checkOutDate)
+                                                        bookedDates.pop()
+                                                        if (bookedDates.includes(moment(item).format('YYYY-MM-DD'))) {
+                                                            return obj
+                                                        }
+
+                                                    }).length / room.length * 100
+                                            )).reduce((accu, value) => accu + value, 0) / yearlyOcupancyDates.filter((obj) => obj.split('-')[1] == '07').length).toFixed(2)
+                                    }
+                                    August={
+                                        parseFloat(yearlyOcupancyDates.filter((obj) => obj.split('-')[1] == '08')
+                                            .map((item) => (
+                                                reservationSummary
+                                                    .filter((obj) => obj.bookingStatus == 'CHECKED-IN' || obj.bookingStatus == 'CHECKED-OUT')
+                                                    .filter((obj) => {
+                                                        let bookedDates = getDates(obj.checkInDate, obj.checkOutDate)
+                                                        bookedDates.pop()
+                                                        if (bookedDates.includes(moment(item).format('YYYY-MM-DD'))) {
+                                                            return obj
+                                                        }
+
+                                                    }).length / room.length * 100
+                                            )).reduce((accu, value) => accu + value, 0) / yearlyOcupancyDates.filter((obj) => obj.split('-')[1] == '08').length).toFixed(2)
+                                    }
+                                    September={
+                                        parseFloat(yearlyOcupancyDates.filter((obj) => obj.split('-')[1] == '09')
+                                            .map((item) => (
+                                                reservationSummary
+                                                    .filter((obj) => obj.bookingStatus == 'CHECKED-IN' || obj.bookingStatus == 'CHECKED-OUT')
+                                                    .filter((obj) => {
+                                                        let bookedDates = getDates(obj.checkInDate, obj.checkOutDate)
+                                                        bookedDates.pop()
+                                                        if (bookedDates.includes(moment(item).format('YYYY-MM-DD'))) {
+                                                            return obj
+                                                        }
+
+                                                    }).length / room.length * 100
+                                            )).reduce((accu, value) => accu + value, 0) / yearlyOcupancyDates.filter((obj) => obj.split('-')[1] == '09').length).toFixed(2)
+                                    }
+                                    October={
+                                        parseFloat(yearlyOcupancyDates.filter((obj) => obj.split('-')[1] == '10')
+                                            .map((item) => (
+                                                reservationSummary
+                                                    .filter((obj) => obj.bookingStatus == 'CHECKED-IN' || obj.bookingStatus == 'CHECKED-OUT')
+                                                    .filter((obj) => {
+                                                        let bookedDates = getDates(obj.checkInDate, obj.checkOutDate)
+                                                        bookedDates.pop()
+                                                        if (bookedDates.includes(moment(item).format('YYYY-MM-DD'))) {
+                                                            return obj
+                                                        }
+
+                                                    }).length / room.length * 100
+                                            )).reduce((accu, value) => accu + value, 0) / yearlyOcupancyDates.filter((obj) => obj.split('-')[1] == '10').length).toFixed(2)
+                                    }
+                                    November={
+                                        parseFloat(yearlyOcupancyDates.filter((obj) => obj.split('-')[1] == '11')
+                                            .map((item) => (
+                                                reservationSummary
+                                                    .filter((obj) => obj.bookingStatus == 'CHECKED-IN' || obj.bookingStatus == 'CHECKED-OUT')
+                                                    .filter((obj) => {
+                                                        let bookedDates = getDates(obj.checkInDate, obj.checkOutDate)
+                                                        bookedDates.pop()
+                                                        if (bookedDates.includes(moment(item).format('YYYY-MM-DD'))) {
+                                                            return obj
+                                                        }
+
+                                                    }).length / room.length * 100
+                                            )).reduce((accu, value) => accu + value, 0) / yearlyOcupancyDates.filter((obj) => obj.split('-')[1] == '11').length).toFixed(2)
+                                    }
+                                    December={
+                                        parseFloat(yearlyOcupancyDates.filter((obj) => obj.split('-')[1] == '12')
+                                            .map((item) => (
+                                                reservationSummary
+                                                    .filter((obj) => obj.bookingStatus == 'CHECKED-IN' || obj.bookingStatus == 'CHECKED-OUT')
+                                                    .filter((obj) => {
+                                                        let bookedDates = getDates(obj.checkInDate, obj.checkOutDate)
+                                                        bookedDates.pop()
+                                                        if (bookedDates.includes(moment(item).format('YYYY-MM-DD'))) {
+                                                            return obj
+                                                        }
+
+                                                    }).length / room.length * 100
+                                            )).reduce((accu, value) => accu + value, 0) / yearlyOcupancyDates.filter((obj) => obj.split('-')[1] == '12').length).toFixed(2)
+                                    }
+                                />
                             </ContainerGlobal>
 
                             <HorizontalLine
@@ -1986,7 +2110,21 @@ export const ReportContainer = () => {
                                 align='left'
                                 margin='0px 0px 0px auto'
                             >
-                                Average Room Occupancy : <b style={{ color: 'green' }}>47%</b>
+                                Average Room Occupancy : <b style={{ color: 'green' }}>{
+                                parseFloat(yearlyOcupancyDates
+                                    .map((item) => (
+                                        reservationSummary
+                                            .filter((obj) => obj.bookingStatus == 'CHECKED-IN' || obj.bookingStatus == 'CHECKED-OUT')
+                                            .filter((obj) => {
+                                                let bookedDates = getDates(obj.checkInDate, obj.checkOutDate)
+                                                bookedDates.pop()
+                                                if (bookedDates.includes(moment(item).format('YYYY-MM-DD'))) {
+                                                    return obj
+                                                }
+
+                                            }).length / room.length * 100
+                                    )).reduce((accu, value) => accu + value, 0) / yearlyOcupancyDates.length).toFixed(2)
+                                    }%</b>
                             </Title>
 
                             <Button

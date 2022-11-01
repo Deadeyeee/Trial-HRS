@@ -31,5 +31,5 @@ export const ProfileInformationContent = styled(motion.div)`
 export const ButtonHolder = styled(motion.div)`
     display: flex;
     flex-direction: Row;
-    margin-bottom: 150px;
+    margin-bottom: 100px;
 `;

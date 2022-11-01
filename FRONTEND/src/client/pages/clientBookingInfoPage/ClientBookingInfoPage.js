@@ -14,7 +14,6 @@ const ClientBookingInfoPage = () => {
   }, [])
   return (
     <Container>
-            <ChatBot />
             <Navprofile/>
             <ContentContainer book>
               <ProfileContainer book></ProfileContainer>

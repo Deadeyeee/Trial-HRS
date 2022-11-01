@@ -10,51 +10,59 @@ const ProfileContainer = (props) => {
     document.title = "Profile"
   }, [])
 
+  Axios.defaults.withCredentials = true;
   const [getUser, setGetUser] = useState([]);
   useLayoutEffect(() => {
-    Axios.get(apiKey+"auth/verify-token").then((response1) => {
-      console.log(response1.data.id)
-      
-      Axios.get(apiKey+"api/getAllGuest/").then((response2) =>{
-        console.log(response1.data)
-        for (let i = 0; i < response2.data.length; i++) {
-          if (response2.data[i].user_id == response1.data.id) {
-            setGetUser(response2.data[i]);
-          }
-        }
-      }).catch((err)=>{
-        console.log(err)
-      })
-    }).catch((err)=>{
-      console.log(err)
-    });
-    
-}, []);
- 
+    Axios.get(apiKey + "auth/verify-token").then((response1) => {
 
-return (
+      if (response1.data.role == 'ADMIN' || response1.data.role == 'STAFF') {
+        window.location = '/admin'
+      }
+      else {
+        Axios.get(apiKey + "api/getAllGuest/").then((response2) => {
+          console.log(response1.data)
+          for (let i = 0; i < response2.data.length; i++) {
+            if (response2.data[i].user_id == response1.data.id) {
+              setGetUser(response2.data[i]);
+            }
+          }
+        }).catch((err) => {
+          console.log(err)
+        })
+      }
+
+    }).catch((err) => {
+      console.log(err)
+      window.location = '/login'
+
+    });
+
+  }, []);
+
+
+  return (
     <Container>
-        <MainContainer>
-            <HeadContainer>
-                <Title
-                color='white'
-                family='Georgia'
-                fStyle='normal'
-                border='1px solid white'
-                padding='10px 40px'
-                borderRadius='5px'
-                weight='normal'
-                >{getUser.length != 0 ? getUser.firstName.toLowerCase() + " " + getUser.lastName.toLowerCase(): ""}</Title>
-            </HeadContainer>
-            <Navigations>
-            
-            <MenuItems><Link active={props.profile == true} href="/client/profile">Profile</Link></MenuItems>
-           <MenuItems><Link active={props.book == true} href="/client/bookingInfo">Booking</Link></MenuItems>
-           <MenuItems><Link active={props.payment == true} href="/client/paymentInfo">Payments</Link></MenuItems>
-           <MenuItems><Link active={props.message == true} href="/client/messages">Messages</Link></MenuItems>
-            </Navigations>
-            <HorizontalLine w='50%'></HorizontalLine>
-        </MainContainer>
+      <MainContainer>
+        <HeadContainer>
+          <Title
+            color='white'
+            family='Georgia'
+            fStyle='normal'
+            border='1px solid white'
+            padding='10px 40px'
+            borderRadius='5px'
+            weight='normal'
+          >{getUser.length != 0 ? getUser.firstName.toLowerCase() + " " + getUser.lastName.toLowerCase() : ""}</Title>
+        </HeadContainer>
+        <Navigations>
+
+          <MenuItems><Link active={props.profile == true} href="/client/profile">Profile</Link></MenuItems>
+          <MenuItems><Link active={props.book == true} href="/client/bookingInfo">Booking</Link></MenuItems>
+          <MenuItems><Link active={props.payment == true} href="/client/paymentInfo">Payments</Link></MenuItems>
+          <MenuItems><Link active={props.message == true} href="/client/messages">Messages</Link></MenuItems>
+        </Navigations>
+        <HorizontalLine w='50%'></HorizontalLine>
+      </MainContainer>
     </Container>
   )
 }

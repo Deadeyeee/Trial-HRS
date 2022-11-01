@@ -14,7 +14,6 @@ const BookingCartPage = () => {
   }, [])
   return (
     <Container>
-            <ChatBot />
             <NavigationBar book/>
             <BookingCartPageCont></BookingCartPageCont>
             <Footer />

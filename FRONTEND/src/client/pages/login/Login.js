@@ -24,7 +24,6 @@ export const Login = () => {
         console.log(response);
     };
     // Axios.defaults.withCredentials = true;
-
     const [userName, setUserName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -47,56 +46,94 @@ export const Login = () => {
 
 
         e.preventDefault();
-        Axios.post(apiKey+'auth/login',
-            {
-                userName: userName,
-                email: email,
-                password: password,
-            },
-        ).then((response) => {
-            if (verifyCaptcha == false) {
-                e.preventDefault();
-                setLoginStatus("Please Verify that you are not a robot")
-                captcha.current.focus();
-            }
-            else {
-                window.location.href = '/';
-                setLoginStatus("");
-                console.log(response.data)
-            }
-        }).catch((err) => {
-            if (verifyCaptcha == false) {
-                e.preventDefault();
-                setLoginStatus("Please Verify that you are not a robot")
-                captcha.current.focus();
-            }
-            else {
-                setLoginStatus(err.response.data.message);
-                console.log(err.response.data.message)
-                if (err.response.data.message == "Please verify your email address.") {
-                    setverify("Click here to re-send Verification Code to your email")
-                }
-                else if (err.response.data.message == "Password is Incorrect.") {
 
-                    incorrectPassword.current.focus();
-                    incorrectPassword.current.select();
-                }
-                else if (err.response.data.message == "Username/Email or Password is incorrect. Please try again.") {
+        if (verifyCaptcha == false) {
+            e.preventDefault();
+            setLoginStatus("Please Verify that you are not a robot")
+            captcha.current.focus();
+        }
+        else {
+            Axios.post(apiKey + 'auth/login',
+                {
+                    userName: userName,
+                    email: email,
+                    password: password,
+                },
+            ).then((response) => {
+                if (response.data.role == 'NON-USER') {
+                    Axios.get(apiKey + 'api/getAllReservationSummary').then((result) => {
 
-                    incorrectEmail.current.focus();
-                    incorrectEmail.current.select();
+                        if (result.data
+                            .filter((obj) => {
+                                if (obj.reservation.guestInformation.user_id == response.data.id) {
+                                    return obj;
+                                }
+                            })
+                            .filter((obj) => obj.bookingReferenceNumber != 'NO-SHOW').length != 0) {
+
+                            window.location.href = '/';
+                            setLoginStatus("");
+                            console.log(response.data)
+                        }
+                        else {
+                            Axios.delete(apiKey + "auth/Logout").then((response) => {
+                                setLoginStatus("Username/Email or Password is incorrect. Please try again.")
+
+                                incorrectEmail.current.focus();
+                                incorrectEmail.current.select();
+                            })
+                        }
+
+
+                    }).catch((err) => {
+
+                    });
                 }
-                else{
+                else {
+                    if(response.data.role == 'ADMIN' || response.data.role == 'STAFF'){
+                        
+                    window.location.href = '/admin';
+                    }
+                    else{
+                        
+                    window.location.href = '/';
+                    }
+                    setLoginStatus("");
+                }
+            }).catch((err) => {
+                if (verifyCaptcha == false) {
+                    e.preventDefault();
+                    setLoginStatus("Please Verify that you are not a robot")
+                    captcha.current.focus();
+                }
+                else {
+                    setLoginStatus(err.response.data.message);
                     console.log(err.response.data.message)
-                }
-            }
+                    if (err.response.data.message == "Please verify your email address.") {
+                        setverify("Click here to re-send Verification Code to your email")
+                    }
+                    else if (err.response.data.message == "Password is Incorrect.") {
 
-        });;
+                        incorrectPassword.current.focus();
+                        incorrectPassword.current.select();
+                    }
+                    else if (err.response.data.message == "Username/Email or Password is incorrect. Please try again.") {
+
+                        incorrectEmail.current.focus();
+                        incorrectEmail.current.select();
+                    }
+                    else {
+                        console.log(err.response.data.message)
+                    }
+                }
+
+            });;
+        }
 
     };
 
     useEffect(() => {
-        Axios.get(apiKey+"auth/verify-token").then((response) => {
+        Axios.get(apiKey + "auth/verify-token").then((response) => {
             if (response.status === 200) {
                 window.location.href = '/';
             }
@@ -108,7 +145,7 @@ export const Login = () => {
     })
 
     const verifyEmail = () => {
-        Axios.get(apiKey+'api/getAllUsers/').then((res) => {
+        Axios.get(apiKey + 'api/getAllUsers/').then((res) => {
 
             for (let i = 0; i < res.data.length; i++) {
                 if (res.data[i].email == email || res.data[i].userName == userName) {
@@ -253,18 +290,18 @@ export const Login = () => {
                             bg='#2E2E2E'
                             fontStyle='none'
                             fontsize='1vw'
-                            margin='0px 0px 10px 0px'                            
+                            margin='0px 0px 10px 0px'
                             fam='Roboto'
                         ></FormButton>
                     </RegistrationForm>
                     <Button
-                        whileHover={{ scale: 1, color: "white", backgroundColor:"#757575", border:"2px solid white"}}
+                        whileHover={{ scale: 1, color: "white", backgroundColor: "#757575", border: "2px solid white" }}
                         whileTap={{ scale: 1, color: "rgb(220,220,220)" }}
                         href='/register'
                         w='140px'
                         h='30px'
                         radius='20px'
-                        weight='500'   
+                        weight='500'
                         border='2px solid #2E2E2E'
                         fontStyle='none'
                         textcolor='#2E2E2E'

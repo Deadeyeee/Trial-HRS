@@ -47,6 +47,8 @@ db.payment = require('./payment.model.js')(sequelize, Sequelize, DataTypes)
 db.services = require('./services.model.js')(sequelize, Sequelize, DataTypes)
 db.usedServices = require('./usedServices.model.js')(sequelize, Sequelize, DataTypes)
 db.roomTypeImages = require('./roomTypeImages.model.js')(sequelize, Sequelize, DataTypes)
+db.conversation = require('./conversation.model.js')(sequelize, Sequelize, DataTypes)
+db.message = require('./message.model.js')(sequelize, Sequelize, DataTypes)
 
 
 // db.amenities.bulkCreate([
@@ -249,6 +251,60 @@ db.roomType.hasMany(db.roomTypeImages, {
     foreignKey: "roomType_id",
 });
 
+
+
+//messages has one conversation
+db.message.belongsTo(db.conversation, {
+    foreignKey: { name: "conversation_id", allowNull: false },
+    foreignKeyConstraint: true,
+});
+
+db.conversation.hasOne(db.message, {
+    as: "message",
+    foreignKey: "conversation_id",
+});
+
+
+
+db.message.belongsTo(db.guestInformation, {
+    foreignKey: { name: "message_to_guest_id", allowNull: false },
+    foreignKeyConstraint: true,
+    as: "messageTo",
+});
+
+
+
+
+db.message.belongsTo(db.guestInformation, {
+    foreignKey: { name: "message_from_guest_id", allowNull: false },
+    foreignKeyConstraint: true,
+    as: "messageFrom",
+});
+
+
+//conversation has manny guest
+db.conversation.belongsTo(db.guestInformation, {
+    foreignKey: { name: "from_guest_id", allowNull: false },
+    foreignKeyConstraint: true,
+    as: "conversationFrom",
+});
+
+// db.guestInformation.hasMany(db.conversation, {
+//     as: "conversationFrom",
+//     foreignKey: "from_guest_id",
+// });
+
+//conversation has manny guest
+db.conversation.belongsTo(db.guestInformation, {
+    foreignKey: { name: "to_guest_id", allowNull: false },
+    foreignKeyConstraint: true,
+    as: "conversationTo",
+});
+
+// db.guestInformation.hasMany(db.conversation, {
+//     as: "conversationTo",
+//     foreignKey: "to_guest_id",
+// });
 
 
 
