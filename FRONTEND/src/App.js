@@ -62,6 +62,7 @@ import FrontAdditional from './frontDesk/pages/frontAdditional/FrontAdditional';
 import OfficialReceipt from './admin/pages/officialReceipt/OfficialReceipt';
 import AcknowledgementReceipt from './admin/pages/acknowledgementReceipt/AcknowledgementReceipt';
 import GeneratedReports from './admin/pages/generateReports/GenerateReports';
+import LoginAdminStaff from './client/pages/login/LoginAdminStaff';
 
 
 
@@ -97,7 +98,14 @@ const App = () => {
         <Route path="/client/messages" element={<ClientMessagesPage />} />
       
 
-        <Route path="/admin" element={<AdminProfile />} />
+
+
+
+
+        <Route path="/admin" element={<LoginAdminStaff />} />
+
+
+        <Route path="/admin/dashboard" element={<AdminProfile />} />
         <Route path="/admin/status" element={<Status />} />
         <Route path="/admin/payments" element={<Payment/>} />
         <Route path="/admin/guests" element={<Guest />} />

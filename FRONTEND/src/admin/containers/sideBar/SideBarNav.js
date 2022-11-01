@@ -76,7 +76,7 @@ const SideBarNav = (props) => {
 
         }).catch((err) => {
             console.log(err.message)
-            window.location = '/login'
+            window.location = '/admin'
 
         });
 
@@ -186,7 +186,7 @@ const SideBarNav = (props) => {
             ></HorizontalLine>
 
             <MenuContainer
-                href='/admin'
+                href='/admin/dashboard'
                 whileTap={{ scale: 0.98 }}
                 active={props.dashboard == true}
             >
