@@ -81,8 +81,8 @@ export const ReportContainer = () => {
 
     const [showDetails, setShowDetails] = useState(false);
     const [showEditDetails, setShowEditDetails] = useState(false);
-    const [fromOccupancyRate, setFromOccupancyRate] = useState(Date.now())
-    const [toOccupancyRate, setToOccupancyRate] = useState(Date.now())
+    const [fromOccupancyRate, setFromOccupancyRate] = useState(new Date(Date.now()))
+    const [toOccupancyRate, setToOccupancyRate] = useState(new Date(Date.now()))
     const [yearOccupancyRate, setYearOccupancyRate] = useState(new Date(new Date().getFullYear(), 0, 1))
 
 
