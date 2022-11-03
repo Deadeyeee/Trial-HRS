@@ -81,7 +81,7 @@ export const BookingPageCont = () => {
             console.lot(err)
         });
 
-        if (window.sessionStorage.getItem('endDate') != null || window.sessionStorage.getItem('guest') != null || window.sessionStorage.getItem('startDate')) {
+        if (window.sessionStorage.getItem('endDate') != null || window.sessionStorage.getItem('kids') != null ||window.sessionStorage.getItem('guest') != null || window.sessionStorage.getItem('startDate') != null ) {
             console.log(window.sessionStorage.getItem('endDate'))
             console.log(window.sessionStorage.getItem('guest'))
             console.log(window.sessionStorage.getItem('startDate'))
@@ -89,6 +89,7 @@ export const BookingPageCont = () => {
             setEndDate(new Date(window.sessionStorage.getItem('endDate')))
             setStartDate(new Date(window.sessionStorage.getItem('startDate')))
             setAdults(parseInt(window.sessionStorage.getItem('guest')))
+            setKids(parseInt(window.sessionStorage.getItem('kids')))
             window.sessionStorage.clear();
         }
     }, [])
@@ -500,7 +501,7 @@ export const BookingPageCont = () => {
                         <TextInput
                             style={{ fontWeight: 'bold', fontSize: '1.1vw' }}
                             family='Roboto Slab'
-                            width="6vw"
+                            width="5vw"
                             placeholder="No. of Adults"
                             align="center"
                             borderColor='black'
@@ -520,17 +521,17 @@ export const BookingPageCont = () => {
                             size='1.1vw'
                             weight="Bold">
 
-                            No. of guest(s)
+                            Adults
                         </Title>
                     </LabelDiv>
                     <LabelDiv>
 
 
-                        {/* <TextInput
+                        <TextInput
                             style={{ fontWeight: 'bold', fontSize: '1.1vw' }}
                             family='Roboto Slab'
                             width="5vw"
-                            placeholder="No. of Adults"
+                            placeholder="No. of Kids"
                             align="center"
                             borderColor='black'
                             margins='0px'
@@ -549,7 +550,7 @@ export const BookingPageCont = () => {
                             weight="bold">
 
                             Kids
-                        </Title> */}
+                        </Title>
                     </LabelDiv>
                 </Persons>
                 <Button
@@ -641,7 +642,7 @@ export const BookingPageCont = () => {
                         </Button> */}
                     </div>
                     :
-                    roomType.map((item, index, arr) => (
+                    roomType.sort((a,b)=> a.roomRate - b.roomRate ).map((item, index, arr) => (
                         <RoomContainerMain>
                             <Title
                                 color='#292929'
@@ -700,7 +701,7 @@ export const BookingPageCont = () => {
                                         margin='10px 0px 0px 10px'
                                         align='left'
                                     >
-                                        {item.maxAdultOccupancy - 1} Guest(s) only
+                                        {item.maxAdultOccupancy - 1} Adult(s) and {item.maxKidsOccupancy} Kid(s) only
                                     </Title>
 
                                     <Title

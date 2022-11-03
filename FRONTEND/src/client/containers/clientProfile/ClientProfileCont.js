@@ -206,12 +206,21 @@ const ClientProfileCont = () => {
 
                 axios.get(apiKey + 'api/getAllUsers').then((res) => {
                     if (res.data.length != 0) {
+                        let formatNumber;
+                                if (contactNumber.slice(0, 3) == "+63") {
+
+                                    formatNumber = contactNumber.replace("+63", "0");
+
+                                }
+                                else {
+                                    formatNumber = contactNumber;
+                                }
                         res.data.map((item) => {
                             if (item.role != 'NON-USER' && item.id != userInformation.user.id) {
                                 if (item.email.toLowerCase() == email.toLowerCase()) {
                                     setEmailError("This email is already taken.")
                                 }
-                                else if (item.contactNumber == contactNumber) {
+                                else if (item.contactNumber == formatNumber) {
                                     setContactNumberError("This number is already taken.")
 
                                 }
@@ -582,6 +591,17 @@ const ClientProfileCont = () => {
                     Edit
                 </Button>
             </ButtonHolder>
+
+
+
+
+
+
+
+
+
+
+
 
             <Modal
                 open={open}

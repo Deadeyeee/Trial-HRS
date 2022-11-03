@@ -134,22 +134,28 @@ const MessagesContainer = () => {
         setMessage('')
         setSubject('')
     };
+
+
     const [viewMessage, setViewMessage] = React.useState(false);
     const [conversationId, setConversationId] = React.useState([]);
 
     const handleOpenViewMessage = (value) => {
 
 
-        axios.patch(apiKey + 'api/updateMessage/' + messagesDb.filter((obj) => obj.conversation_id == value.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].id, {
-            status: true,
-        })
-            .then((result) => {
-                console.log(result.data);
+        if (messagesDb.filter((obj) => obj.conversation_id == value.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].messageTo.user.role != 'NON-USER' && messagesDb.filter((obj) => obj.conversation_id == value.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].messageTo.user.role != 'CUSTOMER') {
+            axios.patch(apiKey + 'api/updateMessage/' + messagesDb.filter((obj) => obj.conversation_id == value.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].id, {
+                status: true,
             })
-            .catch((err) => {
-                console.log(err);
+                .then((result) => {
+                    console.log(result.data);
+                })
+                .catch((err) => {
+                    console.log(err);
 
-            });
+                });
+        }
+
+
         setViewMessage(true)
         setConversationId(value)
         setMessage('')
@@ -172,21 +178,21 @@ const MessagesContainer = () => {
     const sendComposeMessage = (e) => {
         e.preventDefault()
         console.log('ASD')
-        console.log('guestList.filter((obj)=> obj.user.userName == autoCompleteValue).map((item) => item.id)', guestList.filter((obj)=> obj.user.userName == autoCompleteValue).map((item) => item.id)[0])
+        console.log('guestList.filter((obj)=> obj.user.userName == autoCompleteValue).map((item) => item.id)', guestList.filter((obj) => obj.user.userName == autoCompleteValue).map((item) => item.id)[0])
         axios.get(apiKey + 'api/getAllGuest').then((guest) => {
             if (guest.data.length != 0) {
                 guest.data.filter((obj) => obj.user.role == 'ADMIN').map((item, index) => {
                     if (index == 0) {
                         axios.post(apiKey + 'api/addConversation', {
                             from_guest_id: userInformation.id,
-                            to_guest_id: guestList.filter((obj)=> obj.user.userName == autoCompleteValue).map((item) => item.id)[0],
+                            to_guest_id: guestList.filter((obj) => obj.user.userName == autoCompleteValue).map((item) => item.id)[0],
                             subject: subject,
                         }).then((result) => {
                             console.log(result.data);
                             axios.post(apiKey + 'api/addMessage', {
                                 message: message,
                                 conversation_id: result.data.new_conversation.id,
-                                message_to_guest_id: guestList.filter((obj)=> obj.user.userName == autoCompleteValue).map((item) => item.id)[0],
+                                message_to_guest_id: guestList.filter((obj) => obj.user.userName == autoCompleteValue).map((item) => item.id)[0],
                                 message_from_guest_id: userInformation.id,
                             }).then((result) => {
                                 console.log(result.data);
@@ -762,9 +768,9 @@ const MessagesContainer = () => {
                             inputProps={{ maxLength: 150 }}
                             required
                         /> */}
-                        
+
                         <Autocomplete
-                        
+
                             value={autoCompleteValue}
                             onChange={(event, newValue) => {
                                 setAutoCompleteValue(newValue);
@@ -777,7 +783,7 @@ const MessagesContainer = () => {
                             options={guestList.map((item) => item.user.userName)}
                             sx={{ width: 300 }}
                             renderInput={(params) => <TextField {...params} label="Guests" placeholder='Choose guest' required />}
-                            
+
                         />
                     </ContainerGlobal>
                     <ContainerGlobal
@@ -995,7 +1001,7 @@ const MessagesContainer = () => {
                                                 direction='column'
                                                 overflow='auto'
                                             >
-                                                <p style={{wordWrap:'break-word', width: '100%', margin:'0px', }}>{item.message}</p>
+                                                <p style={{ wordWrap: 'break-word', width: '100%', margin: '0px', }}>{item.message}</p>
                                             </ContainerGlobal>
                                         </div>
                                         :
@@ -1038,7 +1044,7 @@ const MessagesContainer = () => {
                                                 direction='column'
                                                 overflow='auto'
                                             >
-                                                <p style={{wordWrap:'break-word', width: '100%', margin:'0px', }}>{item.message}</p>
+                                                <p style={{ wordWrap: 'break-word', width: '100%', margin: '0px', }}>{item.message}</p>
                                             </ContainerGlobal>
                                         </div>
 
@@ -1223,17 +1229,6 @@ const MessagesContainer = () => {
 
                     </LocalizationProvider>
 
-                    <Button variant="contained"
-                        style={{ backgroundColor: 'rgb(80, 170, 50)' }}
-                        startIcon={<FilterAltIcon />}
-                    >
-                        Filter
-                    </Button>
-                    <Button variant="contained"
-                        style={{ backgroundColor: 'rgb(255, 36, 0)' }}
-                        startIcon={<CloseIcon />}>
-                        clear
-                    </Button>
 
 
 

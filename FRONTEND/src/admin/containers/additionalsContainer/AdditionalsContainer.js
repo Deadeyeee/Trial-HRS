@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Button from '@mui/material/Button';
 import { HorizontalLine } from '../../../client/components/horizontalLine/HorizontalLine'
 import { Title } from '../../../client/components/title/styles'
@@ -33,6 +33,8 @@ import CloseIcon from '@mui/icons-material/Close';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import ActionButton from '../../components/actionButton/ActionButton';
+import axios from 'axios';
+import { apiKey } from '../../../apiKey';
 
 
 
@@ -58,95 +60,83 @@ const Input = styled('input')({
     display: 'none',
 });
 
-const itemData = [
-    {
-        img: delux,
-    },
-    {
-        img: prm,
-    },
-    {
-        img: '',
-    },
-    {
-        img: '',
-    },
-    {
-        img: '',
-    },
-    {
-        img: '',
-    },
-    {
-        img: '',
-    },
-    {
-        img: '',
-    },
-    {
-        img: '',
-    },
-];
-
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
-const MenuProps = {
-    PaperProps: {
-        style: {
-            maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-            width: 250,
-        },
-    },
-};
 
-const names = [
-    'Free Wifi',
-    'Television',
-    'Wash Room',
-    'Mineral Water',
-    'Spotless Linen',
-    'Amenities',
-];
 
-function getStyles(name, personName, theme) {
-    return {
-        fontWeight:
-            personName.indexOf(name) === -1
-                ? theme.typography.fontWeightRegular
-                : theme.typography.fontWeightMedium,
-    };
-}
 
 const AdditionalsContainer = () => {
+    const [amenity, setAmenity] = useState([]);
 
-    const [value, setValue] = useState(Date.now());
-    const color = "#c44242";
-    const [age, setAge] = React.useState('');
+    const [selectedAmenity, setSelectedAmenity] = useState([])
+    const [reloadData, setReloadData] = useState(0)
+    const [amenityRate, setAmenityRate] = useState(0)
 
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
     const [open2, setOpen2] = React.useState(false);
-    const handleOpen2 = () => setOpen2(true);
-    const handleClose2 = () => setOpen2(false);
+    const handleOpen2 = (value) => {
+        setSelectedAmenity(value)
+        setOpen2(true)
+    };
+
+
+    const handleClose2 = () => {
+        setOpen2(false)
+        setSelectedAmenity([])
+    };
 
 
     const [open3, setOpen3] = React.useState(false);
-    const handleOpen3 = () => setOpen3(true);
-    const handleClose3 = () => setOpen3(false);
 
-    const theme = useTheme();
-    const [personName, setPersonName] = React.useState([]);
-
-    const handleChange = (event) => {
-        const {
-            target: { value },
-        } = event;
-        setPersonName(
-            typeof value === 'string' ? value.split(',') : value,
-        );
+    const handleOpen3 = (value) => {
+        setSelectedAmenity(value)
+        setAmenityRate(parseFloat(value.amenityRate).toFixed(2))
+        setOpen3(true)
     };
+
+    const handleClose3 = () => {
+        setSelectedAmenity([])
+        setAmenityRate(0)
+        setReloadData(reloadData + 1)
+        setOpen3(false)
+    };
+
+
+    const numberFormat = (value) =>
+        new Intl.NumberFormat('en-CA', {
+            style: 'currency',
+            currency: 'PHP'
+        }).format(value);
+
+
+    useEffect(() => {
+        axios.get(apiKey + 'api/getAllAmenities').then((result) => {
+            console.log(result)
+            setAmenity(result.data)
+        }).catch((err) => {
+            console.log(err)
+
+        });
+
+    }, [reloadData])
+
+    const editAmenityRate = (e)=>{
+        e.preventDefault()
+        axios.patch(apiKey + 'api/updateAmenities/' + selectedAmenity.id, {
+            amenityRate: amenityRate,
+        }).then((result) => {
+            console.log(result.data)
+            handleClose3();
+        }).catch((err) => {
+            console.log(err)
+            
+        });
+    }
+
+
     return (
 
         <Container>
@@ -242,7 +232,18 @@ const AdditionalsContainer = () => {
                         <Th align='center'>Price <ArrowDropDownIcon style={{ color: 'black' }} /></Th>
                         <Th align='center'>Action</Th>
                     </Tr>
-                    <Tr>
+                    {amenity.length != 0 ?
+                        amenity.map((item) => (
+                            <Tr>
+                                <Td align='center'>{item.amenityName}</Td>
+                                <Td align='center'>{numberFormat(item.amenityRate)}</Td>
+                                <Td align='center'><ActionButton
+                                    view={() => handleOpen2(item)}
+                                    edit={()=> handleOpen3(item)} /></Td>
+                            </Tr>
+                        ))
+                        : 'empty'}
+                    {/* <Tr>
                         <Td align='center'>Bed</Td>
                         <Td align='center'>PHP 500.00</Td>
                         <Td align='center'><ActionButton
@@ -258,81 +259,13 @@ const AdditionalsContainer = () => {
                         <Td align='center'>Blanket</Td>
                         <Td align='center'>PHP 200.00</Td>
                         <Td align='center'><ActionButton /></Td>
-                    </Tr>
+                    </Tr> */}
 
                 </TableContainer>
             </ContainerGlobal>
 
-            <Button
-                variant="contained"
-                size="large"
-                onClick={handleOpen}
-                style={{ backgroundColor: '#2E2E2E' }}>
-                Add amenities
-            </Button>
 
-            <Modal
-                open={open}
-                onClose={handleClose}
-                aria-labelledby="modal-modal-title"
-                aria-describedby="modal-modal-description"
-                style={{ overflow: 'scroll' }}
-            >
-                <Box sx={style}>
-                    <Title
-                        size='33px'
-                        color='black'
-                        family='Helvetica'
-                        fstyle='normal'
-                        weight='600'
-                        align='left'
-                        margin='0px 0px 20px 0px'
-                    >
-                        Additional Amenities
-                    </Title>
-
-                    <HorizontalLine
-                        bg='gray'
-                        w='100%'
-                        margin='0px 0px 40px 0px'
-                    ></HorizontalLine>
-
-                    <InputContainer
-                        w='90%'
-                    >
-                        <TextField
-                            placeholder='Additional Name'
-                            label="Additional Name"
-                            variant="outlined"
-                            style={{ width: '55%', }} />
-
-                        <TextField
-                            placeholder='Price'
-                            label="Price"
-                            variant="outlined"
-                            InputProps={{
-                                startAdornment: <InputAdornment position="start">PHP</InputAdornment>,
-                            }}
-                            style={{ width: '55%', }} />
-                    </InputContainer>
-
-                    <InputContainer
-                        style={{ marginTop: '40px', }}>
-
-                        <Button variant="contained" size="large"
-                            style={{ backgroundColor: '#50AA32' }}
-                            onClick={handleClose}>
-                            Add
-                        </Button>
-                        <Button variant="contained" size="large"
-                            style={{ backgroundColor: '#FF2400' }}
-                            onClick={handleClose}>
-                            Cancel
-                        </Button>
-
-                    </InputContainer>
-                </Box>
-            </Modal>
+           
 
 
 
@@ -341,65 +274,100 @@ const AdditionalsContainer = () => {
             <Modal
                 open={open2}
                 onClose={handleClose2}
-                aria-labelledby="modal-modal-title"
-                aria-describedby="modal-modal-description"
-                style={{ overflow: 'scroll' }}
-            >
-                <Box sx={style}>
-                    <Title
-                        size='33px'
-                        color='black'
-                        family='Helvetica'
-                        fstyle='normal'
-                        weight='600'
-                        align='left'
-                        margin='0px 0px 20px 0px'
-                    >
-                        Additional Amenities
-                    </Title>
+                style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                }}>
+                <Box
+                    component='form'
+                    // onSubmit={addReservation}
+                    style={{
+                        height: '35vh',
+                        width: 'auto',
+                        backgroundColor: 'white',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        padding: '0px 0px 30px 0px',
+                        gap: '10px',
+                        justifyContent: 'flex-start',
+                        alignItems: 'center',
+                        overflowY: 'overlay',
+                        overflowX: 'hidden',
+                        borderRadius: '.5rem',
+                        position: 'relative'
+                        // margin: '50px 0px',
 
-                    <HorizontalLine
-                        bg='gray'
-                        w='100%'
-                        margin='0px 0px 40px 0px'
-                    ></HorizontalLine>
+                    }}>
+                    <div style={{
+                        width: '100%',
+                        height: '50px',
+                        position: 'sticky',
+                        top: 0,
+                        display: 'flex',
+                        justifyContent: 'flex-end',
+                        alignItems: 'center',
+                        backgroundColor: 'black',
+                        zIndex: '1',
 
-                    <InputContainer
-                        w='90%'
-                    >
-                        <TextField
-                            placeholder='Additional Name'
-                            label="Additional Name"
-                            defaultValue='Bed'
-                            variant="outlined"
+                    }}>
+                        <Title
+                            size='16px'
+                            color='white'
+                            family='Helvetica'
+                            fstyle='normal'
+                            weight='bold'
+                            align='left'
+                            margin='0px auto 0px 10px'
+                        >
+                            View additional
+                        </Title>
+                        <CloseIcon
+                            onClick={handleClose2}
+                            style={{
+                                color: 'white',
+                                cursor: 'pointer',
+                                margin: '10px',
+                            }} />
+                    </div>
 
-                            InputProps={{
-                                readOnly: 'true'
-                            }}
-                            style={{ width: '55%', }} />
+                    <div style={{ display: 'flex', height: '100%', alignItems: 'center', flexDirection: 'column', justifyContent: 'center' }}>
+                        <InputContainer
+                            w='90%'
+                        >
+                            <TextField
+                                placeholder='Additional Name'
+                                label="Additional Name"
+                                defaultValue={selectedAmenity.length != 0 ? selectedAmenity.amenityName : ''}
+                                variant="outlined"
+                                InputProps={{
+                                    readOnly: 'true'
+                                }}
+                                style={{ width: '55%', }} />
 
-                        <TextField
-                            placeholder='Price'
-                            label="Price"
-                            defaultValue='500.00'
-                            variant="outlined"
-                            InputProps={{
-                                readOnly: 'true',
-                                startAdornment: <InputAdornment position="start">PHP</InputAdornment>,
-                            }}
-                            style={{ width: '55%', }} />
-                    </InputContainer>
+                            <TextField
+                                placeholder='Price'
+                                label="Price"
+                                defaultValue={selectedAmenity.length != 0 ? parseFloat(selectedAmenity.amenityRate).toFixed(2) : ''}
+                                variant="outlined"
+                                InputProps={{
+                                    readOnly: 'true',
+                                    startAdornment: <InputAdornment position="start">₱</InputAdornment>,
+                                }}
+                                style={{ width: '55%', }} />
+                        </InputContainer>
 
-                    <InputContainer
-                        style={{ marginTop: '40px', }}>
+                        <InputContainer
+                            style={{ marginTop: '40px', }}>
 
-                        <Button variant="contained" size="large"
-                            style={{ backgroundColor: '#50AA32' }}
-                            onClick={handleClose2}>
-                            Ok
-                        </Button>
+                            <Button variant="contained" size="large"
+                                style={{ backgroundColor: '#50AA32' }}
+                                onClick={handleClose2}>
+                                Ok
+                            </Button>
 
-                    </InputContainer>
+                        </InputContainer>
+                    </div>
                 </Box>
             </Modal>
 
@@ -413,49 +381,96 @@ const AdditionalsContainer = () => {
             <Modal
                 open={open3}
                 onClose={handleClose3}
-                aria-labelledby="modal-modal-title"
-                aria-describedby="modal-modal-description"
-                style={{ overflow: 'scroll' }}
-            >
-                <Box sx={style}>
-                    <Title
-                        size='33px'
-                        color='black'
-                        family='Helvetica'
-                        fstyle='normal'
-                        weight='600'
-                        align='left'
-                        margin='0px 0px 20px 0px'
-                    >
-                        Additional Amenities
-                    </Title>
+                style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                }}>
+                <Box
+                    component='form'
+                    onSubmit={editAmenityRate}
+                    style={{
+                        height: '35vh',
+                        width: 'auto',
+                        backgroundColor: 'white',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        padding: '0px 0px 30px 0px',
+                        gap: '10px',
+                        justifyContent: 'flex-start',
+                        alignItems: 'center',
+                        overflowY: 'overlay',
+                        overflowX: 'hidden',
+                        borderRadius: '.5rem',
+                        position: 'relative'
+                        // margin: '50px 0px',
 
-                    <HorizontalLine
-                        bg='gray'
-                        w='100%'
-                        margin='0px 0px 40px 0px'
-                    ></HorizontalLine>
+                    }}>
+                    <div style={{
+                        width: '100%',
+                        height: '50px',
+                        position: 'sticky',
+                        top: 0,
+                        display: 'flex',
+                        justifyContent: 'flex-end',
+                        alignItems: 'center',
+                        backgroundColor: 'black',
+                        zIndex: '1',
 
+                    }}>
+                        <Title
+                            size='16px'
+                            color='white'
+                            family='Helvetica'
+                            fstyle='normal'
+                            weight='bold'
+                            align='left'
+                            margin='0px auto 0px 10px'
+                        >
+                            Edit additional
+                        </Title>
+                        <CloseIcon
+                            onClick={handleClose3}
+                            style={{
+                                color: 'white',
+                                cursor: 'pointer',
+                                margin: '10px',
+                            }} />
+                    </div>
+
+                    <div style={{ display: 'flex', height: '100%', alignItems: 'center', flexDirection: 'column', justifyContent: 'center' }}>
                     <InputContainer
                         w='90%'
                     >
                         <TextField
                             placeholder='Additional Name'
                             label="Additional Name"
-                            defaultValue='Bed'
                             variant="outlined"
-
-                            InputProps={{
-                            }}
+                            disabled
+                            value={selectedAmenity.amenityName}
                             style={{ width: '55%', }} />
 
                         <TextField
                             placeholder='Price'
                             label="Price"
-                            defaultValue='500.00'
                             variant="outlined"
+                            value={amenityRate}
+                            
+                            onChange={(e)=>{
+                                if(e.target.value < 0){
+                                    setAmenityRate(0)
+                                }
+                                else if(e.target.value > 999999999999){
+                                    setAmenityRate(999999999999)
+                                }
+                                else{
+                                    setAmenityRate(e.target.value)
+                                }
+                            }}
+                            required
+                            type='number'
                             InputProps={{
-                                startAdornment: <InputAdornment position="start">PHP</InputAdornment>,
+                                startAdornment: <InputAdornment position="start">₱</InputAdornment>,
                             }}
                             style={{ width: '55%', }} />
                     </InputContainer>
@@ -465,7 +480,7 @@ const AdditionalsContainer = () => {
 
                         <Button variant="contained" size="large"
                             style={{ backgroundColor: '#50AA32' }}
-                            onClick={handleClose3}>
+                            type='submit'>
                             Save Changes
                         </Button>
                         <Button variant="contained" size="large"
@@ -475,8 +490,9 @@ const AdditionalsContainer = () => {
                         </Button>
 
                     </InputContainer>
-                </Box>
-            </Modal>
+                </div>
+            </Box>
+        </Modal>
 
 
 

@@ -65,6 +65,7 @@ export const Famenities = () => {
                             align='right'
                             opc='100%'
                             margin="0px 300px 0px 0px"
+                            cursor="pointer"
                         >
                             COFFEE SHOP
                         </Title>
