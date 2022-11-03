@@ -10,7 +10,7 @@ const ReservationSummary = db.reservationSummary;
 
 // import Logo from "../../../FRONTEND/src/images/logo.png";
 const numberFormat = (value) =>
-    new Intl.NumberFormat('en-IN', {
+    new Intl.NumberFormat('en-CA', {
         style: 'currency',
         currency: 'PHP'
     }).format(value);

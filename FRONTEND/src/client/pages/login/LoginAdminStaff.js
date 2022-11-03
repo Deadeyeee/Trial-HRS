@@ -151,7 +151,7 @@ export const LoginAdminStaff = () => {
                         margin="0px 0px 20px 0px"
                         fontSize='100%'
                         fstyle='none'
-                    >Admin Login</Title>
+                    >Admin/Front Desk Login</Title>
 
                     <RegistrationForm
                         onSubmit={checkAccount}>

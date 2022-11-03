@@ -1373,7 +1373,7 @@ export const ReportContainer = () => {
                                                     return obj;
                                                 }
                                             })
-                                            
+
                                             .sort((a, b) => {
                                                 if (a.bookingReferenceNumber < b.bookingReferenceNumber) {
                                                     return -1;
@@ -1399,14 +1399,14 @@ export const ReportContainer = () => {
                                     variant="contained"
                                     size="large"
                                     onClick={() => {
-                                        window.open('/admin/generatedReport/detailed'+'_'+reservationMenuDaily+'_'+ new Date(startDateDaily).toLocaleDateString().replaceAll('/', '-')+'_' + new Date(endDateDaily).toLocaleDateString().replaceAll('/', '-'), '_blank').focus();
+                                        window.open('/admin/generatedReport/detailed' + '_' + reservationMenuDaily + '_' + new Date(startDateDaily).toLocaleDateString().replaceAll('/', '-') + '_' + new Date(endDateDaily).toLocaleDateString().replaceAll('/', '-'), '_blank').focus();
                                     }}
                                     disabled={
                                         reservationSummary.length != 0 ?
                                             reservationSummary
                                                 .filter((obj) => {
                                                     let filterDates = getDates(startDateDaily, endDateDaily);
-        
+
                                                     if (reservationMenuDaily == 'reservationDate' || reservationMenuDaily == 'all') {
                                                         if (filterDates.includes(moment(obj.reservation.reservationDate).format('YYYY-MM-DD'))) {
                                                             return obj;
@@ -1490,7 +1490,7 @@ export const ReportContainer = () => {
                                                     else {
                                                         return obj;
                                                     }
-        
+
                                                 })
                                                 .filter((obj) => {
                                                     if (reservationMenuDaily == 'RSreserved') {
@@ -1567,7 +1567,7 @@ export const ReportContainer = () => {
                                                         return -1;
                                                     }
                                                 })
-                                                .length != 0 ? false: true : true
+                                                .length != 0 ? false : true : true
 
                                     }
                                     style={{ backgroundColor: '', margin: 'auto' }}>
@@ -1725,6 +1725,20 @@ export const ReportContainer = () => {
                                 variant="contained"
                                 size="large"
 
+                                onClick={() => {
+                                    window.open('/admin/generatedReport/visual' + '_' + reservationMenuDaily + '_' + new Date(startDateDaily).toLocaleDateString().replaceAll('/', '-') + '_' + new Date(endDateDaily).toLocaleDateString().replaceAll('/', '-'), '_blank').focus();
+                                }}
+                                disabled={
+                                    reservationSummary != 0 ?
+                                        reservationSummary.filter((obj) => obj.reservation.reservationStatus == 'PENDING' || obj.reservation.reservationStatus == 'UNSETTLED'|| obj.reservation.reservationStatus == 'RESERVED').filter((obj) => {
+                                            let filterDate = getDates(startDateDaily, endDateDaily);
+
+                                            if (filterDate.includes(moment(obj.checkInDate).format('YYYY-MM-DD')) == true || filterDate.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) == true) {
+                                                return obj
+                                            }
+
+                                        }).length != 0 ? false : true : true
+                                }
                                 style={{ backgroundColor: '', margin: '15px 0px 0px auto' }}>
                                 Print Visual report
                             </Button>
@@ -2231,20 +2245,20 @@ export const ReportContainer = () => {
                                 margin='0px 0px 0px auto'
                             >
                                 Average Room Occupancy : <b style={{ color: 'green' }}>{
-                                parseFloat(yearlyOcupancyDates
-                                    .map((item) => (
-                                        reservationSummary
-                                            .filter((obj) => obj.bookingStatus == 'CHECKED-IN' || obj.bookingStatus == 'CHECKED-OUT')
-                                            .filter((obj) => {
-                                                let bookedDates = getDates(obj.checkInDate, obj.checkOutDate)
-                                                bookedDates.pop()
-                                                if (bookedDates.includes(moment(item).format('YYYY-MM-DD'))) {
-                                                    return obj
-                                                }
+                                    parseFloat(yearlyOcupancyDates
+                                        .map((item) => (
+                                            reservationSummary
+                                                .filter((obj) => obj.bookingStatus == 'CHECKED-IN' || obj.bookingStatus == 'CHECKED-OUT')
+                                                .filter((obj) => {
+                                                    let bookedDates = getDates(obj.checkInDate, obj.checkOutDate)
+                                                    bookedDates.pop()
+                                                    if (bookedDates.includes(moment(item).format('YYYY-MM-DD'))) {
+                                                        return obj
+                                                    }
 
-                                            }).length / room.length * 100
-                                    )).reduce((accu, value) => accu + value, 0) / yearlyOcupancyDates.length).toFixed(2)
-                                    }%</b>
+                                                }).length / room.length * 100
+                                        )).reduce((accu, value) => accu + value, 0) / yearlyOcupancyDates.length).toFixed(2)
+                                }%</b>
                             </Title>
 
                             <Button

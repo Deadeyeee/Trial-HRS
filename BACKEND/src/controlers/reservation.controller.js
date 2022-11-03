@@ -2,7 +2,67 @@ const { payment, paymentMode, guestInformation, user, discount, reservationSumma
 const db = require("../models");
 const Reservation = db.reservation;
 // import Logo from "../../../FRONTEND/src/images/logo.png";
+const schedules = require('node-schedule')
 
+
+
+
+const fetchUsers = async () => {
+    try {
+        const reservation = await Reservation.findAll(
+            {
+                include: [
+                    { model: payment, include: [{ model: paymentMode }, { model: discount }] },
+                    { model: guestInformation, include: [user] },
+                ]
+            }
+        );
+
+
+        reservation.filter((item) => {
+            if (Date.now() - Date.parse(new Date(item.dataValues.reservationDate)) >= 86400000 && item.dataValues.reservationStatus == 'PENDING') {
+                return item
+            }
+        }).map((item) => {
+            Reservation.update({
+                reservationStatus: 'UNSETTLED'
+            }, {
+                where: {
+                    id: item.dataValues.id,
+                },
+            })
+
+            
+            reservationSummary.update({
+                bookingStatus: 'NO-SHOW'
+            }, {
+                where: {
+                    reservation_id: item.dataValues.id,
+                },
+            })
+
+            payment.update({
+                paymentStatus: 'cancelled'
+            }, {
+                where: {
+                    id: item.dataValues.payment_id,
+                },
+            })
+
+        })
+
+        console.log('done')
+    } catch (error) {
+        console.log('\n\n\n\n\n', error)
+
+    }
+}
+
+
+schedules.scheduleJob('* 1 * * *', async () => {
+    fetchUsers()
+    // console.log('YAWA')
+})
 
 
 exports.create = async (req, res) => {
@@ -18,7 +78,7 @@ exports.findAll = async (req, res) => {
     const reservation = await Reservation.findAll(
         {
             include: [
-                { model: payment, include: [{model: paymentMode}, {model: discount}] },
+                { model: payment, include: [{ model: paymentMode }, { model: discount }] },
                 { model: guestInformation, include: [user] },
             ]
         }
@@ -30,7 +90,7 @@ exports.findOne = async (req, res) => {
     const reservation = await Reservation.findByPk(req.params.id,
         {
             include: [
-                { model: payment, include: [{model: paymentMode}, {model: discount}] },
+                { model: payment, include: [{ model: paymentMode }, { model: discount }] },
                 { model: guestInformation, include: [user] },
             ]
         }
