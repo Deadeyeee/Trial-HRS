@@ -69,13 +69,16 @@ function ActionButtonPayment(props) {
   return (
     <div>
       <ContainerGlobal
-        w='100%'
+        w='auto'
         h='auto'
         direction='row'
         align='center'
-        justify='center'
+        justify='right'
         gap='10px'
       >
+        <IconButton onClick={props.print} type="submit" sx={{ display: props.printDisable == true ? 'none' : '', p: '8px', backgroundColor: props.printDisable == false ? 'rgb(0, 0, 255, 0.5)' : 'rgb(46, 46, 46, .2)' }} aria-label="search" title='Print receipt'>
+          <LocalPrintshopIcon style={{ color: '#2e2e2e', fontSize: '18px' }} title='View' />
+        </IconButton>
         <IconButton onClick={props.pay} type="submit" sx={{ p: '8px', backgroundColor: props.paid == true ? 'rgb(46, 46, 46, .2)' : "rgb(80, 170, 50, 0.7)" }} aria-label="search" title='Payment'>
           <AddCardIcon style={{ color: '#2e2e2e', fontSize: '18px' }} title='View' />
         </IconButton>
@@ -85,9 +88,7 @@ function ActionButtonPayment(props) {
         <IconButton onClick={props.edit} type="submit" sx={{ p: '8px', backgroundColor: 'rgb(191, 170, 126, 0.7)' }} aria-label="search" title='Edit/Update'>
           <EditIcon style={{ color: '#2e2e2e', fontSize: '18px' }} title='View' />
         </IconButton>
-        <IconButton onClick={props.print}  type="submit" sx={{ display: props.printDisable == true ? 'none' : '' ,p: '8px', backgroundColor: props.printDisable == false ? 'rgb(0, 0, 255, 0.5)' : 'rgb(46, 46, 46, .2)' }} aria-label="search" title='Print receipt'>
-          <LocalPrintshopIcon style={{ color: '#2e2e2e', fontSize: '18px' }} title='View' />
-        </IconButton>
+
 
         <Grow in={show}>{deleteModal}</Grow>
       </ContainerGlobal>

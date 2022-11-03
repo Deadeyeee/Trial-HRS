@@ -98,8 +98,9 @@ const InformationForm = () => {
     let passwordValidation = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[-._!"`'#%&,:;<>=@{}~\$\(\)\*\+\/\\\?\[\]\^\| ])[A-Za-z\d -._!"`'#%&,:;<>=@{}~\$\(\)\*\+\/\\\?\[\]\^\|]{8,}/;
     let letters = /^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/;
     let phoneNumberValidation = /^(09|\+639)\d{9}$/;
-    var Recaptcha = require('react-recaptcha');
     let userNameValidation = /^\S*$/;
+    
+    var Recaptcha = require('react-recaptcha');
 
     var callback = function () {
         console.log('Done!!!!');
@@ -319,10 +320,22 @@ const InformationForm = () => {
                 if (res.data.length != 0) {
                     res.data.map((item) => {
                         if (item.role != 'NON-USER') {
+
+                            let formatNumber;
+                                if (contactNumber.slice(0, 3) == "+63") {
+
+                                    formatNumber = contactNumber.replace("+63", "0");
+
+                                }
+                                else {
+                                    formatNumber = contactNumber;
+                                }
+                            
+
                             if (item.email.toLowerCase() == email.toLowerCase()) {
                                 setEmailError("This email is already taken.")
                             }
-                            else if (item.contactNumber == contactNumber) {
+                            else if (item.contactNumber == formatNumber) {
                                 setContactNumberError("This number is already taken.")
 
                             }

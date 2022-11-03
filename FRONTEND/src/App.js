@@ -122,7 +122,7 @@ const App = () => {
         
         <Route path="/admin/officialReceipt/:id" element={<OfficialReceipt />}/>
         <Route path="/admin/acknowledgementReceipt/:id" element={<AcknowledgementReceipt />}/>
-        <Route path="/admin/generatedReport" element={<GeneratedReports />}/>
+        <Route path="/admin/generatedReport/:id" element={<GeneratedReports />}/>
 
 
 

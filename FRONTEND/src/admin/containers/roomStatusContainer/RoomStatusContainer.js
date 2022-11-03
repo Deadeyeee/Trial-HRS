@@ -28,6 +28,8 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import axios from 'axios'
 import { apiKey } from '../../../apiKey'
+import { useRef } from 'react'
+import { Pagination } from '@mui/material'
 
 
 const style = {
@@ -56,18 +58,35 @@ const RoomStatusContainer = () => {
 
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
+    const handleClose = () => {
+        setOpen(false)
+        setRoomNumber(0)
+        setSelectedRoomType('')
+    };
 
 
+    const [roomPage, setRoomPage] = useState(1)
 
     const [open2, setOpen2] = React.useState(false);
     const handleOpen2 = () => setOpen2(true);
-    const handleClose2 = () => setOpen2(false);
+    const handleClose2 = () => {
+        setOpen2(false)
+        setRoomNumber('')
+        setSelectedRoomType('')
+        setMaintenance('Vacant')
+        setRoomId('')
+    };
 
 
     const [open3, setOpen3] = React.useState(false);
     const handleOpen3 = () => setOpen3(true);
-    const handleClose3 = () => setOpen3(false);
+    const handleClose3 = () => {
+        setOpen3(false)
+        setRoomNumber('')
+        setSelectedRoomType('')
+        setMaintenance('Vacant')
+        setRoomId('')
+    };
 
     const [roomId, setRoomId] = React.useState('');
 
@@ -82,63 +101,79 @@ const RoomStatusContainer = () => {
 
     const [roomTypeValue, setRoomTypeValue] = React.useState([])
     const [roomValue, setRoomValue] = React.useState([])
+    const [reservationSummary, setReservationSummary] = React.useState([])
 
     useEffect(() => {
-        axios.get(apiKey+'api/getAllRoomType').then((res) => {
+        axios.get(apiKey + 'api/getAllRoomType').then((res) => {
             setRoomTypeValue(res.data)
             console.log(roomTypeValue)
         }).catch((err) => {
             console.log(err.res)
         })
 
-        axios.get(apiKey+'api/getAllRoom').then((res) => {
+        axios.get(apiKey + 'api/getAllRoom').then((res) => {
             setRoomValue(res.data)
             console.log(roomValue)
         }).catch((err) => {
             console.log(err.res)
         })
+        axios.get(apiKey + 'api/getAllReservationSummary').then((res) => {
+            setReservationSummary(res.data)
+            console.log('res.data', res.data)
+        }).catch((err) => {
+            console.log(err.res)
+        })
     }, [])
+
 
     const createRoom = (e) => {
         e.preventDefault();
-        roomTypeValue.map((item) => {
-            if (selectedRoomType === item.roomType) {
-                axios.post(apiKey+'api/addRoom',
-                    {
-                        roomNumber: roomNumber,
-                        roomStatus: maintenance,
-                        roomType_id: item.id
+        if (roomNumberError != '') {
+            roomNumberRef.current.focus()
+        } else {
+            roomTypeValue.map((item) => {
+                if (selectedRoomType === item.roomType) {
+                    axios.post(apiKey + 'api/addRoom',
+                        {
+                            roomNumber: roomNumber,
+                            roomStatus: maintenance,
+                            roomType_id: item.id
 
-                    }).then((res) => {
-                        console.log(res.data)
-                        handleClose();
-                        window.location.reload(false);
-                    }).catch((err) => {
-                        console.log(err.res)
-                    })
-            }
-        })
+                        }).then((res) => {
+                            console.log(res.data)
+                            handleClose();
+                            window.location.reload(false);
+                        }).catch((err) => {
+                            console.log(err.res)
+                        })
+                }
+            })
+        }
     }
 
     const editRoom = (e) => {
         e.preventDefault();
-        roomTypeValue.map((item) => {
-            if (selectedRoomType === item.roomType) {
-                axios.patch(apiKey+'api/updateRoom/' + roomId,
-                    {
-                        roomNumber: roomNumber,
-                        roomStatus: maintenance,
-                        roomType_id: item.id
+        if (roomNumberError != '') {
+            roomNumberRef.current.focus()
+        } else {
+            roomTypeValue.map((item) => {
+                if (selectedRoomType === item.roomType) {
+                    axios.patch(apiKey + 'api/updateRoom/' + roomId,
+                        {
+                            roomNumber: roomNumber,
+                            roomStatus: maintenance,
+                            roomType_id: item.id
 
-                    }).then((res) => {
-                        console.log(res.data)
-                        handleClose3();
-                        window.location.reload(false);
-                    }).catch((err) => {
-                        console.log(err.res)
-                    })
-            }
-        })
+                        }).then((res) => {
+                            console.log(res.data)
+                            handleClose3();
+                            window.location.reload(false);
+                        }).catch((err) => {
+                            console.log(err.res)
+                        })
+                }
+            })
+        }
     }
 
 
@@ -155,6 +190,7 @@ const RoomStatusContainer = () => {
         setMaintenance(roomStatus)
         setRoomId(roomId)
         handleOpen3();
+
     }
 
 
@@ -247,6 +283,47 @@ const RoomStatusContainer = () => {
             </Td>
         }
     }
+
+
+
+    const [roomNumberError, setRoomNumberError] = useState('')
+    const roomNumberRef = useRef();
+
+
+    useEffect(() => {
+        console.log(roomId)
+        if (roomId != '') {
+            axios.get(apiKey + 'api/getAllRoom').then((result) => {
+                console.log(result.data)
+                console.log("SHABU", result.data.filter((obj) => obj.roomNumber == roomNumber && obj.id != roomId))
+                if (result.data.filter((obj) => obj.roomNumber == roomNumber && obj.id != roomId).length != 0) {
+                    setRoomNumberError('Room already exist!')
+                } else {
+                    setRoomNumberError('')
+
+                }
+            }).catch((err) => {
+                console.log(err)
+            });
+        } else {
+            axios.get(apiKey + 'api/getAllRoom').then((result) => {
+                console.log(result.data)
+                if (result.data.filter((obj) => obj.roomNumber == roomNumber).length != 0) {
+                    setRoomNumberError('Room already exist!')
+                }
+                else {
+                    setRoomNumberError('')
+                }
+            }).catch((err) => {
+                console.log(err)
+            });
+        }
+    }, [roomNumber, roomId])
+
+
+
+
+
     return (
         <Container>
             <HeadContainer>
@@ -302,8 +379,8 @@ const RoomStatusContainer = () => {
 
                             ),
                         }}
-                        style={{ width: 500 }} />
-                    <LocalizationProvider dateAdapter={AdapterDateFns}
+                        style={{ width: '100%' }} />
+                    {/* <LocalizationProvider dateAdapter={AdapterDateFns}
                     >
                         <DatePicker
                             views={['day', 'month', 'year']}
@@ -385,7 +462,7 @@ const RoomStatusContainer = () => {
                         style={{ backgroundColor: 'rgb(255, 36, 0)' }}
                         startIcon={<CloseIcon />}>
                         clear
-                    </Button>
+                    </Button> */}
 
 
 
@@ -420,22 +497,24 @@ const RoomStatusContainer = () => {
                 </HorizontalLine>
                 <TableContainer>
                     <Tr>
-                        <Th align='center'>Room Number <ArrowDropDownIcon style={{ color: 'black' }} /></Th>
-                        <Th align='center'>Room Type <ArrowDropDownIcon style={{ color: 'black' }} /></Th>
-                        <Th align='center'>Booking Date <ArrowDropDownIcon style={{ color: 'black' }} /></Th>
-                        <Th align='center'>Check in <ArrowDropDownIcon style={{ color: 'black' }} /></Th>
-                        <Th align='center'>Check out <ArrowDropDownIcon style={{ color: 'black' }} /></Th>
-                        <Th align='center'>Room Status <ArrowDropDownIcon style={{ color: 'black' }} /></Th>
+                        <Th align='center'>Room Number</Th>
+                        <Th align='center'>Room Type</Th>
+                        <Th align='center'>Check in</Th>
+                        <Th align='center'>Check out</Th>
+                        <Th align='center'>Room Status</Th>
                         <Th align='center'>Action</Th>
                     </Tr>
-                    {roomValue.map((item) => (
+                    {roomValue
+                    .slice((roomPage - 1) * 10, roomPage * 10)
+                    .sort((a, b) => a.roomNumber - b.roomNumber).map((item) => (
                         <Tr>
                             <Td align='center'>{item.roomNumber}</Td>
                             <Td align='center'>{item.roomType.roomType}</Td>
-                            <Td align='center'>.........</Td>
-                            <Td align='center'>.........</Td>
-                            <Td align='center'>.........</Td>
-                            {roomStatusDesign(item.roomStatus)}
+                            <Td align='center'>{reservationSummary.length != 0 ? reservationSummary.filter((obj) => obj.bookingStatus == 'CHECKED-IN' && obj.room_id == item.id).length != 0 ? new Date(reservationSummary.filter((obj) => obj.bookingStatus == 'CHECKED-IN' && obj.room_id == item.id).map((item2) => item2.checkInDate)).toLocaleDateString() : '.........' : '.........'}</Td>
+                            <Td align='center'>{reservationSummary.length != 0 ? reservationSummary.filter((obj) => obj.bookingStatus == 'CHECKED-IN' && obj.room_id == item.id).length != 0 ? new Date(reservationSummary.filter((obj) => obj.bookingStatus == 'CHECKED-IN' && obj.room_id == item.id).map((item2) => item2.checkOutDate)).toLocaleDateString() : '.........' : '.........'}</Td>
+                            {
+                                reservationSummary.length != 0 ? reservationSummary.filter((obj) => obj.bookingStatus == 'CHECKED-IN' && obj.room_id == item.id).length != 0 ? roomStatusDesign('Occupied') : roomStatusDesign(item.roomStatus) : '.........'
+                            }
 
                             <Td align='center'><ActionButton
                                 view={() => {
@@ -451,12 +530,24 @@ const RoomStatusContainer = () => {
                     ))}
 
                 </TableContainer>
+                <ContainerGlobal
+                    w='100%'
+                    justify='center'>
+                    <Pagination
+                        page={roomPage}
+                        count={roomValue.length != 0 && Math.ceil(roomValue.length / 10)}
+                        onChange={(e, value) => {
+
+                            setRoomPage(value)
+                        }}
+                    />
+                </ContainerGlobal>
             </ContainerGlobal>
             <Button
                 variant="contained"
                 size="large"
                 onClick={handleOpen}
-                style={{ backgroundColor: '#2E2E2E' }}>
+                style={{ backgroundColor: '#2E2E2E', marginBottom: '20px' }}>
                 Add Room
             </Button>
 
@@ -470,43 +561,96 @@ const RoomStatusContainer = () => {
             <Modal
                 open={open}
                 onClose={handleClose}
-                aria-labelledby="modal-modal-title"
-                aria-describedby="modal-modal-description"
-            >
-                <Box sx={style}
+                style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                }}>
+                <Box
                     component='form'
                     onSubmit={createRoom}
-                >
-                    <Title
-                        size='33px'
-                        color='black'
-                        family='Helvetica'
-                        fstyle='normal'
-                        weight='600'
-                        align='left'
-                        margin='0px 0px 20px 0px'
-                    >
-                        Add Room
-                    </Title>
+                    style={{
+                        height: 'auto',
+                        width: 'auto',
+                        backgroundColor: 'white',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        padding: '0px 0px 30px 0px',
+                        gap: '10px',
+                        justifyContent: 'flex-start',
+                        alignItems: 'center',
+                        overflowY: 'overlay',
+                        overflowX: 'hidden',
+                        borderRadius: '.5rem',
+                        position: 'relative'
+                        // margin: '50px 0px',
 
-                    <HorizontalLine
-                        bg='gray'
-                        w='100%'
-                        margin='0px 0px 40px 0px'
-                    ></HorizontalLine>
+                    }}>
+                    <div style={{
+                        width: '100%',
+                        height: '50px',
+                        position: 'sticky',
+                        top: 0,
+                        display: 'flex',
+                        justifyContent: 'flex-end',
+                        alignItems: 'center',
+                        backgroundColor: 'black',
+                        zIndex: '1',
+
+                    }}>
+                        <Title
+                            size='16px'
+                            color='white'
+                            family='Helvetica'
+                            fstyle='normal'
+                            weight='bold'
+                            align='left'
+                            margin='0px auto 0px 10px'
+                        >
+                            Add Room
+                        </Title>
+                        <CloseIcon
+                            onClick={handleClose}
+                            style={{
+                                color: 'white',
+                                cursor: 'pointer',
+                                margin: '10px',
+                            }} />
+                    </div>
 
                     <InputContainer
                         w='90%'
+                        style={{ marginTop: '20px' }}
                     >
                         <TextField
+                            error={roomNumberError.length != 0 ? true : false}
+                            helperText={roomNumberError.length != 0 ? roomNumberError : ""}
                             placeholder='Room Number'
                             label="Room No."
                             variant="outlined"
                             value={roomNumber}
+                            type='number'
+                            inputRef={roomNumberRef}
+
+
                             onChange={(e) => {
-                                setRoomNumber(e.target.value)
+
+                                setRoomNumberError('')
+                                if (e.target.value > 999999999) {
+                                    setRoomNumber(999999999)
+                                }
+                                else if (e.target.value < 0) {
+                                    setRoomNumber(0)
+                                }
+                                else {
+                                    setRoomNumber(parseInt(e.target.value))
+                                    setRoomNumberError('')
+                                }
+
+
                             }}
-                            style={{ width: '50%', }} />
+                            style={{ width: '50%', }}
+                            required />
 
                         <FormControl
                             variant="outlined"
@@ -519,10 +663,11 @@ const RoomStatusContainer = () => {
                                 // defaultValue={roomTypeValue[0].roomType}
                                 onChange={handleChange}
                                 label="roomType"
+                                required
                             >
                                 {roomTypeValue.map((item) => (
 
-                                    <MenuItem value={item.roomType}>{item.roomType}</MenuItem>
+                                    <MenuItem value={item.roomType} required>{item.roomType}</MenuItem>
                                 ))}
                             </Select>
                         </FormControl>
@@ -547,7 +692,7 @@ const RoomStatusContainer = () => {
                     </InputContainer>
 
                     <InputContainer
-                        style={{ marginTop: '40px', }}>
+                        style={{ marginTop: '20px', }}>
 
 
                         <Button variant="contained" size="large"
@@ -573,30 +718,65 @@ const RoomStatusContainer = () => {
             <Modal
                 open={open2}
                 onClose={handleClose2}
-                aria-labelledby="modal-modal-title"
-                aria-describedby="modal-modal-description"
-            >
-                <Box sx={style}>
-                    <Title
-                        size='33px'
-                        color='black'
-                        family='Helvetica'
-                        fstyle='normal'
-                        weight='600'
-                        align='left'
-                        margin='0px 0px 20px 0px'
-                    >
-                        View Room
-                    </Title>
+                style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                }}>
+                <Box
+                    component='form'
+                    style={{
+                        height: 'auto',
+                        width: 'auto',
+                        backgroundColor: 'white',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        padding: '0px 0px 30px 0px',
+                        gap: '10px',
+                        justifyContent: 'flex-start',
+                        alignItems: 'center',
+                        overflowY: 'overlay',
+                        overflowX: 'hidden',
+                        borderRadius: '.5rem',
+                        position: 'relative'
+                        // margin: '50px 0px',
 
-                    <HorizontalLine
-                        bg='gray'
-                        w='100%'
-                        margin='0px 0px 40px 0px'
-                    ></HorizontalLine>
+                    }}>
+                    <div style={{
+                        width: '100%',
+                        height: '50px',
+                        position: 'sticky',
+                        top: 0,
+                        display: 'flex',
+                        justifyContent: 'flex-end',
+                        alignItems: 'center',
+                        backgroundColor: 'black',
+                        zIndex: '1',
+
+                    }}>
+                        <Title
+                            size='16px'
+                            color='white'
+                            family='Helvetica'
+                            fstyle='normal'
+                            weight='bold'
+                            align='left'
+                            margin='0px auto 0px 10px'
+                        >
+                            View Room
+                        </Title>
+                        <CloseIcon
+                            onClick={handleClose2}
+                            style={{
+                                color: 'white',
+                                cursor: 'pointer',
+                                margin: '10px',
+                            }} />
+                    </div>
 
                     <InputContainer
                         w='90%'
+                        style={{ marginTop: '20px' }}
                     >
                         <TextField
                             placeholder='Room Number'
@@ -648,7 +828,7 @@ const RoomStatusContainer = () => {
                     </InputContainer>
 
                     <InputContainer
-                        style={{ marginTop: '40px', }}>
+                        style={{ marginTop: '20px', }}>
 
                         <Button variant="contained" size="large"
                             style={{ backgroundColor: '#50AA32' }}
@@ -671,43 +851,82 @@ const RoomStatusContainer = () => {
             <Modal
                 open={open3}
                 onClose={handleClose3}
-                aria-labelledby="modal-modal-title"
-                aria-describedby="modal-modal-description"
-            >
-                <Box sx={style}
-                component='form'
-                onSubmit={editRoom}>
-                    <Title
-                        size='33px'
-                        color='black'
-                        family='Helvetica'
-                        fstyle='normal'
-                        weight='600'
-                        align='left'
-                        margin='0px 0px 20px 0px'
-                    >
-                        Edit Room
-                    </Title>
+                style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                }}>
+                <Box
+                    component='form'
+                    onSubmit={editRoom}
+                    style={{
+                        height: 'auto',
+                        width: 'auto',
+                        backgroundColor: 'white',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        padding: '0px 0px 30px 0px',
+                        gap: '10px',
+                        justifyContent: 'flex-start',
+                        alignItems: 'center',
+                        overflowY: 'overlay',
+                        overflowX: 'hidden',
+                        borderRadius: '.5rem',
+                        position: 'relative'
+                        // margin: '50px 0px',
 
-                    <HorizontalLine
-                        bg='gray'
-                        w='100%'
-                        margin='0px 0px 40px 0px'
-                    ></HorizontalLine>
+                    }}>
+                    <div style={{
+                        width: '100%',
+                        height: '50px',
+                        position: 'sticky',
+                        top: 0,
+                        display: 'flex',
+                        justifyContent: 'flex-end',
+                        alignItems: 'center',
+                        backgroundColor: 'black',
+                        zIndex: '1',
+
+                    }}>
+                        <Title
+                            size='16px'
+                            color='white'
+                            family='Helvetica'
+                            fstyle='normal'
+                            weight='bold'
+                            align='left'
+                            margin='0px auto 0px 10px'
+                        >
+                            Edit Room
+                        </Title>
+                        <CloseIcon
+                            onClick={handleClose3}
+                            style={{
+                                color: 'white',
+                                cursor: 'pointer',
+                                margin: '10px',
+                            }} />
+                    </div>
 
                     <InputContainer
                         w='90%'
+                        style={{ marginTop: '20px' }}
                     >
                         <TextField
+                            error={roomNumberError.length != 0 ? true : false}
+                            helperText={roomNumberError.length != 0 ? roomNumberError : ""}
                             placeholder='Room Number'
                             label="Room No."
+                            inputRef={roomNumberRef}
                             variant="outlined"
                             value={roomNumber}
                             onChange={(e) => {
                                 setRoomNumber(e.target.value);
+                                setRoomNumberError('')
                             }}
                             style={{ width: '50%', }}
                             type='number'
+                            required
                         />
 
                         <FormControl
@@ -720,11 +939,11 @@ const RoomStatusContainer = () => {
                                 value={selectedRoomType}
                                 onChange={handleChange}
                                 label="roomType"
-
+                                required
                             >
                                 {roomTypeValue.map((item) => (
 
-                                    <MenuItem value={item.roomType}>{item.roomType}</MenuItem>
+                                    <MenuItem value={item.roomType} required>{item.roomType}</MenuItem>
                                 ))}
                             </Select>
                         </FormControl>
@@ -751,7 +970,7 @@ const RoomStatusContainer = () => {
                     </InputContainer>
 
                     <InputContainer
-                        style={{ marginTop: '40px', }}>
+                        style={{ marginTop: '20px', }}>
 
                         <Button variant="contained" size="large"
                             style={{ backgroundColor: '#50AA32' }}
@@ -760,7 +979,7 @@ const RoomStatusContainer = () => {
                         </Button>
                         <Button variant="contained" size="large"
                             style={{ backgroundColor: '#FF2400' }}
-                            onClick={handleClose}>
+                            onClick={handleClose3}>
                             Cancel
                         </Button>
                     </InputContainer>
@@ -769,6 +988,11 @@ const RoomStatusContainer = () => {
 
                 </Box>
             </Modal>
+
+
+
+
+
         </Container>
     )
 }

@@ -138,14 +138,16 @@ const BillingSummaryContainer = () => {
     useEffect(() => {
         axios.get(apiKey + "auth/verify-token").then((response) => {
             console.log(response.data)
-            window.sessionStorage.removeItem('contactNumber');
-            window.sessionStorage.removeItem('email');
-            window.sessionStorage.removeItem('firstName');
-            window.sessionStorage.removeItem('lastName');
-            window.sessionStorage.removeItem('birthday');
-            window.sessionStorage.removeItem('gender');
-            window.sessionStorage.removeItem('address');
-            window.sessionStorage.removeItem('nationality');
+            if (response.data.role != 'NON-USER') {
+                window.sessionStorage.removeItem('contactNumber');
+                window.sessionStorage.removeItem('email');
+                window.sessionStorage.removeItem('firstName');
+                window.sessionStorage.removeItem('lastName');
+                window.sessionStorage.removeItem('birthday');
+                window.sessionStorage.removeItem('gender');
+                window.sessionStorage.removeItem('address');
+                window.sessionStorage.removeItem('nationality');
+            }
 
             axios.get(apiKey + 'api/getAllGuest').then((guest) => {
                 console.log(guest.data)
@@ -437,7 +439,7 @@ const BillingSummaryContainer = () => {
                                                                                 console.log(result)
                                                                                 console.log(reservationSummary.data)
                                                                                 window.sessionStorage.clear();
-                                                                                
+
                                                                                 handleCloseIsLoading(2)
                                                                                 window.location = '/booking/confirmation/' + reservation.data.new_reservation.id;
                                                                             }).catch((err) => {
@@ -686,10 +688,10 @@ const BillingSummaryContainer = () => {
                                 }).catch((err) => {
                                     console.log(err.result)
                                     axios.delete('ttp://localhost:3001/api/deleteUser/' + user.data.account.id).then((result) => {
-                                        
+
                                         handleCloseIsLoading(3)
                                     }).catch((err) => {
-                                        
+
                                         handleCloseIsLoading(3)
                                     });
                                 });
@@ -1493,16 +1495,20 @@ const BillingSummaryContainer = () => {
                 margin='20px 0px 40px 0px'
                 fontsize='16px'
                 bg='#FF9292'
-                onClick={()=> {
+                onClick={() => {
 
                     axios.get(apiKey + "auth/verify-token").then((response1) => {
-                        
-            
+
+                        if(response1.data.role != 'NON-USER'){
                         window.location = '/bookingCart'
+                        }
+                        else{
+                        window.location = '/guestInformation'
+                        }
                     }).catch((err) => {
-                        
-                    window.location = '/guestInformation'
-            
+
+                        window.location = '/guestInformation'
+
                     });
                 }}
             >

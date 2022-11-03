@@ -39,7 +39,7 @@ import { ContainerFormContent, InputContainer } from '../../../client/containers
 import { FlexboxContainer } from '../../../client/containers/bookingCartPage/Styles'
 import { PhotoBox } from '../../../client/containers/clientPaymentInfo/Styles'
 
-
+import { Pagination } from '@mui/material'
 
 const style = {
     position: 'absolute',
@@ -56,11 +56,9 @@ const style = {
 const PaymentContainer = () => {
 
 
-    let passwordValidation = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
     let letters = /^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/;
     let phoneNumberValidation = /^(09|\+639)\d{9}$/;
-    var Recaptcha = require('react-recaptcha');
-
+    const [roomPage, setRoomPage] = useState(1)
     const [value, setValue] = useState(Date.now());
     const [outValue, setOutValue] = useState(Date.now() + 86400000);
     const color = "#c44242";
@@ -68,27 +66,20 @@ const PaymentContainer = () => {
 
     const [paymentType, setPaymentType] = React.useState('Down Payment');
     const [paymentMethod, setPaymentMethod] = React.useState('Cash');
-    const [roomType, setRoomType] = React.useState('Deluxe');
     const [discount, setDiscount] = React.useState('none');
-    const [roomNumber, setRoomNumber] = React.useState('R101');
 
 
     const [nationality, setNationality] = useState('Filipino')
     console.log(outValue)
-    const bday = new Date(2000, 11, 2,)
 
 
     console.log(outValue)
-    const [show, setShow] = useState(false);
 
-    const [showDetails, setShowDetails] = useState(false);
-    const [showEditDetails, setShowEditDetails] = useState(false);
-    const [showReceipt, setShowReceipt] = useState(false);
+
     const [openUpload, setOpenUpload] = useState(false);
     const [uploadLink, setUploadLink] = useState('');
     const [reservationSelected, setReservationSelected] = useState([]);
 
-    const [paymentStatus, setPaymentStatus] = useState([''])
 
 
 
@@ -105,8 +96,6 @@ const PaymentContainer = () => {
 
 
     const [open, setOpen] = React.useState(false);
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
 
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
@@ -115,45 +104,25 @@ const PaymentContainer = () => {
     const [birthday, setBirthDay] = useState(new Date());
     const [gender, setGender] = useState('male');
     const [address, setAddress] = useState("");
-    const [userName, setUserName] = useState("");
-    const [password, setPassword] = useState("");
-    const [nights, setNights] = useState();
 
 
-    const [downPaymentValue, setDownPaymentValue] = useState(0)
-    const [paymentMadeValue, setPaymentMadeValue] = useState(0)
-    const [grandTotalValue, setGrandTotalValue] = useState(0)
-    const [remainingBalanceValue, setRemainingBalanceValue] = useState(0)
 
     const [firstNameError, setFirstNameError] = useState("");
     const [lastNameError, setLastNameError] = useState("");
     const [contactNumberError, setContactNumberError] = useState("");
     const [emailError, setEmailError] = useState("");
-    const [genderError, setGenderError] = useState('male');
-    const [addressError, setAddressError] = useState("");
-    const [userNameError, setUserNameError] = useState("");
-    const [passwordError, setPasswordError] = useState("");
 
     const emailRef = useRef();
     const contactNumberRef = useRef();
-    const userNameRef = useRef();
     const firstNameRef = useRef();
     const lastNameRef = useRef();
 
 
-    const [adults, setAdults] = useState(2)
-    const [kids, setKids] = useState(0)
 
     const [startDate, setStartDate] = useState(new Date().setHours(0, 0, 0, 0));
-    const [endDate, setEndDate] = useState(new Date(new Date().getTime() + 86400000).setHours(0, 0, 0, 0));
-    // const [nights, setNights] = useState();
     let minEndDate = new Date(startDate);
     minEndDate.setDate(minEndDate.getDate() + 1);
 
-
-    const [specialInstrcution, setSpecialInstruction] = React.useState('');
-
-    const [reservation, setReservation] = useState([]);
 
     const numberFormat = (value) =>
         new Intl.NumberFormat('en-CA', {
@@ -169,19 +138,9 @@ const PaymentContainer = () => {
 
 
 
-    const [availedRoom, setAvailedRoom] = useState([]);
-
-    const [roomRate, setRoomRate] = useState(0);
-
-    const [notAvailableRoom, setNotAvailableRoom] = useState([]);
 
 
-    const [availableRooms, setAvailableRooms] = useState([]);
     const [reservationStatus, setReservationStatus] = useState('');
-    const [reservationStatusConst, setReservationStatusConst] = useState('');
-
-    const [roomTypeDb, setRoomTypeDb] = useState([]);
-    const [openCreate, setOpenCreate] = useState(false);
 
     const [paymentMode, setPaymentMode] = useState([]);
     const [discountDb, setDiscountDb] = useState([]);
@@ -192,20 +151,15 @@ const PaymentContainer = () => {
     const [grandTotal, setGrandTotal] = useState(0);
 
 
-    const [editPaymentId, setEditPaymentId] = useState('');
 
 
 
     const [editReservationId, setEditReservationId] = useState('');
 
 
-    const [reservationInfo, setReservationInfo] = useState([])
     const [reservationSummaryInfo, setReservationSummaryInfo] = useState([])
     let formatNumber;
 
-    const [numberOfRooms, setNumberOfRooms] = useState([]);
-
-    const [availedRoomId, setAvailedRoomId] = useState(0)
     function getDates(startDate, stopDate) {
         var dateArray = [];
         var currentDate = moment(startDate);
@@ -219,23 +173,11 @@ const PaymentContainer = () => {
 
 
 
-
-
-    const [extraMattress, setExtraMattress] = useState(0);
-    const [extraPillow, setExtraPillow] = useState(0);
-    const [extraBlanket, setExtraBlanket] = useState(0);
-    const [extraPerson, setExtraPerson] = useState(0);
-    const [extraTime, setExtraTime] = useState(0);
-    const [others, setOthers] = useState(0);
-
-
     const [amenities, setAmenities] = useState([]);
 
 
 
 
-
-    const [activeReservation, setActiveReservation] = useState([])
     const [previewImage, setPreviewImage] = useState('')
     const [previewImageError, setPreviewImageError] = useState('')
     const [imageToUpload, setImageToUpload] = useState([])
@@ -956,9 +898,9 @@ const PaymentContainer = () => {
                     }
                 }
             }
-            else{
+            else {
 
-            window.location.reload()
+                window.location.reload()
             }
         }).catch((err) => {
             console.log(err)
@@ -1027,7 +969,7 @@ const PaymentContainer = () => {
             }
         }
     }
-    
+
     const savePayment = (e) => {
         e.preventDefault();
 
@@ -1105,33 +1047,33 @@ const PaymentContainer = () => {
 
     const downloadReceipt = () => {
         // window.location.href = '/admin/officialReceipt/download' + reservationInformation.id
-        if(reservationInformation.payment.balance == 0){
+        if (reservationInformation.payment.balance == 0) {
             window.open('/admin/officialReceipt/' + reservationInformation.id + '_download', '_blank');
             handleClosePrint();
         }
-        else if(reservationInformation.payment.balance != 0 && reservationInformation.payment.balance != reservationInformation.payment.grandTotal ){
+        else if (reservationInformation.payment.balance != 0 && reservationInformation.payment.balance != reservationInformation.payment.grandTotal) {
             window.open('/admin/acknowledgementReceipt/' + reservationInformation.id + '_download', '_blank');
             handleClosePrint();
         }
-        
+
     }
     const printReceipt = () => {
-        if(reservationInformation.payment.balance == 0){
+        if (reservationInformation.payment.balance == 0) {
             window.open('/admin/officialReceipt/' + reservationInformation.id + '_print', '_blank');
             handleClosePrint();
         }
-        else if(reservationInformation.payment.balance != 0 && reservationInformation.payment.balance != reservationInformation.payment.grandTotal ){
+        else if (reservationInformation.payment.balance != 0 && reservationInformation.payment.balance != reservationInformation.payment.grandTotal) {
             window.open('/admin/acknowledgementReceipt/' + reservationInformation.id + '_print', '_blank');
             handleClosePrint();
         }
     }
 
     const viewReceipt = () => {
-        if(reservationInformation.payment.balance == 0){
+        if (reservationInformation.payment.balance == 0) {
             window.open('/admin/officialReceipt/' + reservationInformation.id + '_view', '_blank');
             handleClosePrint();
         }
-        else if(reservationInformation.payment.balance != 0 && reservationInformation.payment.balance != reservationInformation.payment.grandTotal ){
+        else if (reservationInformation.payment.balance != 0 && reservationInformation.payment.balance != reservationInformation.payment.grandTotal) {
             window.open('/admin/acknowledgementReceipt/' + reservationInformation.id + '_view', '_blank');
             handleClosePrint();
         }
@@ -1247,34 +1189,7 @@ const PaymentContainer = () => {
                         />
 
                     </LocalizationProvider>
-                    <FormControl sx={{ m: 1, minWidth: 120, }} size="small">
-                        <InputLabel id="demo-select-small" >Menu</InputLabel>
-                        <Select
-                            style={{ color: 'black', fontWeight: 'bold' }}
-                            labelId="roomType-select-small"
-                            id="demo-select-small"
-                            value={age}
-                            label="Menu"
-                            onChange={(event) => {
-                                setAge(event.target.value);
-                            }}
 
-                        >
-
-                            <MenuItem value={'Check-in'} selected>Check-in</MenuItem>
-                            <MenuItem value={'Check-out'}>Check-out</MenuItem>
-                        </Select>
-                    </FormControl>
-                    <Button variant="contained"
-                        style={{ backgroundColor: 'rgb(80, 170, 50)' }}
-                        startIcon={<FilterAltIcon />}>
-                        Filter
-                    </Button>
-                    <Button variant="contained"
-                        style={{ backgroundColor: 'rgb(255, 36, 0)' }}
-                        startIcon={<CloseIcon />}>
-                        clear
-                    </Button>
 
 
 
@@ -1283,7 +1198,7 @@ const PaymentContainer = () => {
 
             <ContainerGlobal
                 w='90%'
-                h='65vh'
+                h='auto'
                 bg='white'
                 direction='column'
                 padding='30px'
@@ -1320,45 +1235,59 @@ const PaymentContainer = () => {
                         <Th align='center'>Remaining Balance</Th>
                         <Th align='center'>Proof of Payment</Th>
                         <Th align='center'>Payment Status</Th>
-                        <Th align='center'>Action</Th>
+                        <Th align='right'>Action</Th>
                     </Tr>
 
 
                     {reservations.length != 0 ?
-                        reservations.map((item) => (
-                            <Tr>
-                                <Td align='center'>{new Date(item.reservationDate).toLocaleDateString()}</Td>
-                                <Td align='center'>{item.reservationReferenceNumber}</Td>
-                                <Td align='center'>{item.guestInformation.firstName.toLowerCase()}, {item.guestInformation.lastName.toLowerCase()}</Td>
-                                <Td align='center'>{item.payment.paymentType}</Td>
-                                <Td align='center'>{item.payment.discount.discountType}</Td>
+                        reservations
+                            .slice((roomPage - 1) * 10, roomPage * 10)
+                            .sort((a, b) => a.reservationReferenceNumber - b.reservationReferenceNumber)
+                            .map((item) => (
+                                <Tr>
+                                    <Td align='center'>{new Date(item.reservationDate).toLocaleDateString()}</Td>
+                                    <Td align='center'>{item.reservationReferenceNumber}</Td>
+                                    <Td align='center'>{item.guestInformation.firstName.toLowerCase()}, {item.guestInformation.lastName.toLowerCase()}</Td>
+                                    <Td align='center'>{item.payment.paymentType}</Td>
+                                    <Td align='center'>{item.payment.discount.discountType}</Td>
 
-                                <Td align='center'>{numberFormat(item.payment.grandTotal)}</Td>
-                                <Td align='center'>{numberFormat(item.payment.paymentMade)}</Td>
-                                <Td align='center'>{numberFormat(item.payment.balance)}</Td>
-                                <Td align='center'>{item.payment.paymentImage != null ? <a style={{ color: 'blue', cursor: 'pointer' }} onClick={() => { handleOpenUpload(item) }}>Uploaded</a> : "Empty"}</Td>
-                                <Td align='center'>
-                                    {paymentStatusStyle(item.payment.paymentStatus)}
+                                    <Td align='center'>{numberFormat(item.payment.grandTotal)}</Td>
+                                    <Td align='center'>{numberFormat(item.payment.paymentMade)}</Td>
+                                    <Td align='center'>{numberFormat(item.payment.balance)}</Td>
+                                    <Td align='center'>{item.payment.paymentImage != null ? <a style={{ color: 'blue', cursor: 'pointer' }} onClick={() => { handleOpenUpload(item) }}>Uploaded</a> : "Empty"}</Td>
+                                    <Td align='center'>
+                                        {paymentStatusStyle(item.payment.paymentStatus)}
 
-                                </Td>
-                                <Td align='center'><ActionButtonPayment
-                                    view={() => handleOpenView(item)}
-                                    edit={() => handleOpenUpdate(item)}
-                                    pay={() => handleOpenEdit(item)}
-                                    print={() => handleOpenPrint(item)}
-                                    printDisable={item.payment.paymentType == 'Full Payment' ? 
-                                    item.payment.paymentMade == 0 || item.payment.balance != 0 ? true: false  
-                                    : 
-                                    item.payment.paymentMade == 0 ? true: false
-                                }
-                                /></Td>
-                            </Tr>
-                        ))
+                                    </Td>
+                                    <Td align='right'><ActionButtonPayment
+                                        view={() => handleOpenView(item)}
+                                        edit={() => handleOpenUpdate(item)}
+                                        pay={() => handleOpenEdit(item)}
+                                        print={() => handleOpenPrint(item)}
+                                        printDisable={item.payment.paymentType == 'Full Payment' ?
+                                            item.payment.paymentMade == 0 || item.payment.balance != 0 ? true : false
+                                            :
+                                            item.payment.paymentMade == 0 ? true : false
+                                        }
+                                    /></Td>
+                                </Tr>
+                            ))
                         :
                         ""}
 
                 </TableContainer>
+                <ContainerGlobal
+                    w='100%'
+                    justify='center'>
+                    <Pagination
+                        page={roomPage}
+                        count={reservations.length != 0 && Math.ceil(reservations.length / 10)}
+                        onChange={(e, value) => {
 
+                            setRoomPage(value)
+                        }}
+                    />
+                </ContainerGlobal>
             </ContainerGlobal>
 
 
@@ -1459,7 +1388,7 @@ const PaymentContainer = () => {
                             {
                                 reservationSelected.length != 0 &&
                                     reservationSelected.payment.paymentImage != null ?
-                                    <img src={apiKey + '' + uploadLink} width="50%" height='auto' />
+                                    <a href={apiKey + uploadLink} target="_blank"><img src={apiKey + '' + uploadLink} width="50%" height='auto' /></a>
                                     :
                                     <h1>No Proof of payment uploaded</h1>
                             }
@@ -1624,7 +1553,7 @@ const PaymentContainer = () => {
                                     align='left'
                                     margin='15px 0px 20px 0px'
                                 >
-                                    {reservationInformation.length != 0 && reservationInformation.payment.paymentStatus}
+                                    {reservationInformation.length != 0 ? reservationInformation.payment.paymentStatus : 'none'}
                                 </Title>
 
                             </ContainerGlobal>
@@ -2564,11 +2493,9 @@ const PaymentContainer = () => {
                                         }
                                     }}
 
-                                    InputProps={{
-                                        readOnly: true,
-                                    }}
+
                                     style={{ width: '55%', }}
-                                    required />
+                                    disabled />
 
                                 <TextField
                                     placeholder='Last Name'
@@ -2587,10 +2514,7 @@ const PaymentContainer = () => {
 
                                     }}
                                     style={{ width: '55%', }}
-                                    InputProps={{
-                                        readOnly: true,
-                                    }}
-                                    required />
+                                    disabled />
                             </InputContainer>
 
 
@@ -2608,10 +2532,7 @@ const PaymentContainer = () => {
                                     }}
                                     style={{ width: '55%', }}
                                     inputRef={emailRef}
-                                    InputProps={{
-                                        readOnly: true,
-                                    }}
-                                    required />
+                                    disabled />
 
                                 <TextField
                                     placeholder='Contact Number e.g. 09123456789 or +639123456789'
@@ -2630,10 +2551,7 @@ const PaymentContainer = () => {
                                     }}
                                     inputRef={contactNumberRef}
                                     style={{ width: '55%', }}
-                                    InputProps={{
-                                        readOnly: true,
-                                    }}
-                                    required />
+                                    disabled />
                             </InputContainer>
 
 
@@ -2654,10 +2572,8 @@ const PaymentContainer = () => {
                                                 variant="standard"
                                                 style={{ width: "55%", margin: '5px 0px' }}
                                                 helperText={null}
-                                                InputProps={{
-                                                    readOnly: true,
-                                                }}
-                                                required
+
+                                                disabled
                                             />
                                         }
                                         disabled
@@ -2676,15 +2592,12 @@ const PaymentContainer = () => {
                                         onChange={(event) => {
                                             setNationality(event.target.value);
                                         }}
-                                        InputProps={{
-                                            readOnly: true,
-                                        }}
-                                        required
+
                                         disabled
                                     >
 
                                         {nationalities.map(({ nationality }, index) => (
-                                            <MenuItem value={nationality} >{nationality}</MenuItem>
+                                            <MenuItem value={nationality} disabled>{nationality}</MenuItem>
                                         ))}
                                     </Select>
                                 </FormControl>
@@ -2705,15 +2618,13 @@ const PaymentContainer = () => {
                                         onChange={(e) => {
                                             setGender(e.target.value)
                                         }}
-                                        required
+                                        disabled
                                     >
                                         <FormControlLabel
                                             value="male"
                                             control={<Radio
 
-                                                InputProps={{
-                                                    readOnly: true,
-                                                }}
+                                                disabled
                                             />}
                                             label="Male"
                                         />
@@ -2721,9 +2632,7 @@ const PaymentContainer = () => {
                                             value="female"
                                             control={<Radio
 
-                                                InputProps={{
-                                                    readOnly: true,
-                                                }}
+                                                disabled
                                             />}
                                             label="Female"
                                         />
@@ -2731,9 +2640,7 @@ const PaymentContainer = () => {
                                             value="other"
                                             control={<Radio
 
-                                                InputProps={{
-                                                    readOnly: true,
-                                                }}
+                                                disabled
                                             />}
                                             label="Other"
                                         />
@@ -2756,10 +2663,7 @@ const PaymentContainer = () => {
                                     rows={4}
                                     style={{ width: '95%', }}
 
-                                    InputProps={{
-                                        readOnly: true,
-                                    }}
-                                    required />
+                                    disabled />
 
                             </InputContainer>
 
@@ -3554,11 +3458,9 @@ const PaymentContainer = () => {
                                         }
                                     }}
 
-                                    InputProps={{
-                                        readOnly: true,
-                                    }}
+
                                     style={{ width: '55%', }}
-                                    required />
+                                    disabled />
 
                                 <TextField
                                     placeholder='Last Name'
@@ -3577,10 +3479,7 @@ const PaymentContainer = () => {
 
                                     }}
                                     style={{ width: '55%', }}
-                                    InputProps={{
-                                        readOnly: true,
-                                    }}
-                                    required />
+                                    disabled />
                             </InputContainer>
 
 
@@ -3598,10 +3497,7 @@ const PaymentContainer = () => {
                                     }}
                                     style={{ width: '55%', }}
                                     inputRef={emailRef}
-                                    InputProps={{
-                                        readOnly: true,
-                                    }}
-                                    required />
+                                    disabled />
 
                                 <TextField
                                     placeholder='Contact Number e.g. 09123456789 or +639123456789'
@@ -3620,10 +3516,7 @@ const PaymentContainer = () => {
                                     }}
                                     inputRef={contactNumberRef}
                                     style={{ width: '55%', }}
-                                    InputProps={{
-                                        readOnly: true,
-                                    }}
-                                    required />
+                                    disabled />
                             </InputContainer>
 
 
@@ -3644,10 +3537,8 @@ const PaymentContainer = () => {
                                                 variant="standard"
                                                 style={{ width: "55%", margin: '5px 0px' }}
                                                 helperText={null}
-                                                InputProps={{
-                                                    readOnly: true,
-                                                }}
-                                                required
+
+                                                disabled
                                             />
                                         }
                                         disabled
@@ -3666,15 +3557,12 @@ const PaymentContainer = () => {
                                         onChange={(event) => {
                                             setNationality(event.target.value);
                                         }}
-                                        InputProps={{
-                                            readOnly: true,
-                                        }}
-                                        required
+
                                         disabled
                                     >
 
                                         {nationalities.map(({ nationality }, index) => (
-                                            <MenuItem value={nationality} >{nationality}</MenuItem>
+                                            <MenuItem value={nationality} disabled>{nationality}</MenuItem>
                                         ))}
                                     </Select>
                                 </FormControl>
@@ -3695,15 +3583,13 @@ const PaymentContainer = () => {
                                         onChange={(e) => {
                                             setGender(e.target.value)
                                         }}
-                                        required
+                                        disabled
                                     >
                                         <FormControlLabel
                                             value="male"
                                             control={<Radio
 
-                                                InputProps={{
-                                                    readOnly: true,
-                                                }}
+                                                disabled
                                             />}
                                             label="Male"
                                         />
@@ -3711,9 +3597,7 @@ const PaymentContainer = () => {
                                             value="female"
                                             control={<Radio
 
-                                                InputProps={{
-                                                    readOnly: true,
-                                                }}
+                                                disabled
                                             />}
                                             label="Female"
                                         />
@@ -3721,9 +3605,7 @@ const PaymentContainer = () => {
                                             value="other"
                                             control={<Radio
 
-                                                InputProps={{
-                                                    readOnly: true,
-                                                }}
+                                                disabled
                                             />}
                                             label="Other"
                                         />
@@ -3746,10 +3628,7 @@ const PaymentContainer = () => {
                                     rows={4}
                                     style={{ width: '95%', }}
 
-                                    InputProps={{
-                                        readOnly: true,
-                                    }}
-                                    required />
+                                    disabled />
 
                             </InputContainer>
 
@@ -3769,7 +3648,7 @@ const PaymentContainer = () => {
             {/* Edit Payment Modal */}
             <Modal
                 open={openUpdate}
-                onClose={handleOpenUpdate}
+                onClose={handleCloseUpdate}
                 style={{
                     display: 'flex',
                     justifyContent: 'center',
@@ -3906,7 +3785,7 @@ const PaymentContainer = () => {
                                 align='left'
                             // margin='15px 0px 20px 0px'
                             >
-                                Booking Status:
+                                Payment Status:
                             </Title>
 
                             <FormControl sx={{ width: 200, margin: '5px 0px' }} size="large" variant="standard">
@@ -4681,11 +4560,9 @@ const PaymentContainer = () => {
                                         }
                                     }}
 
-                                    InputProps={{
-                                        readOnly: true,
-                                    }}
+
                                     style={{ width: '55%', }}
-                                    required />
+                                    disabled />
 
                                 <TextField
                                     placeholder='Last Name'
@@ -4704,10 +4581,7 @@ const PaymentContainer = () => {
 
                                     }}
                                     style={{ width: '55%', }}
-                                    InputProps={{
-                                        readOnly: true,
-                                    }}
-                                    required />
+                                    disabled />
                             </InputContainer>
 
 
@@ -4725,10 +4599,7 @@ const PaymentContainer = () => {
                                     }}
                                     style={{ width: '55%', }}
                                     inputRef={emailRef}
-                                    InputProps={{
-                                        readOnly: true,
-                                    }}
-                                    required />
+                                    disabled />
 
                                 <TextField
                                     placeholder='Contact Number e.g. 09123456789 or +639123456789'
@@ -4747,10 +4618,7 @@ const PaymentContainer = () => {
                                     }}
                                     inputRef={contactNumberRef}
                                     style={{ width: '55%', }}
-                                    InputProps={{
-                                        readOnly: true,
-                                    }}
-                                    required />
+                                    disabled />
                             </InputContainer>
 
 
@@ -4771,10 +4639,7 @@ const PaymentContainer = () => {
                                                 variant="standard"
                                                 style={{ width: "55%", margin: '5px 0px' }}
                                                 helperText={null}
-                                                InputProps={{
-                                                    readOnly: true,
-                                                }}
-                                                required
+                                                disabled
                                             />
                                         }
                                         disabled
@@ -4793,15 +4658,11 @@ const PaymentContainer = () => {
                                         onChange={(event) => {
                                             setNationality(event.target.value);
                                         }}
-                                        InputProps={{
-                                            readOnly: true,
-                                        }}
-                                        required
                                         disabled
                                     >
 
                                         {nationalities.map(({ nationality }, index) => (
-                                            <MenuItem value={nationality} >{nationality}</MenuItem>
+                                            <MenuItem value={nationality} disabled>{nationality}</MenuItem>
                                         ))}
                                     </Select>
                                 </FormControl>
@@ -4822,15 +4683,13 @@ const PaymentContainer = () => {
                                         onChange={(e) => {
                                             setGender(e.target.value)
                                         }}
-                                        required
+                                        disabled
                                     >
                                         <FormControlLabel
                                             value="male"
                                             control={<Radio
 
-                                                InputProps={{
-                                                    readOnly: true,
-                                                }}
+                                                disabled
                                             />}
                                             label="Male"
                                         />
@@ -4838,9 +4697,7 @@ const PaymentContainer = () => {
                                             value="female"
                                             control={<Radio
 
-                                                InputProps={{
-                                                    readOnly: true,
-                                                }}
+                                                disabled
                                             />}
                                             label="Female"
                                         />
@@ -4848,9 +4705,7 @@ const PaymentContainer = () => {
                                             value="other"
                                             control={<Radio
 
-                                                InputProps={{
-                                                    readOnly: true,
-                                                }}
+                                                disabled
                                             />}
                                             label="Other"
                                         />
@@ -4873,10 +4728,7 @@ const PaymentContainer = () => {
                                     rows={4}
                                     style={{ width: '95%', }}
 
-                                    InputProps={{
-                                        readOnly: true,
-                                    }}
-                                    required />
+                                    disabled />
 
                             </InputContainer>
 

@@ -7,7 +7,8 @@ import { useParams } from 'react-router-dom';
 import { ContainerGlobal } from '../../../admin/components/container/container';
 import { TableContainer, Td, Th, Tr } from '../bookingCartPage/Styles'
 import { apiKey } from '../../../apiKey';
-
+import html2canvas from 'html2canvas';
+import { jsPDF } from "jspdf";
 function BookingConfirmationCont() {
 
     const [reservedBooking, setReservationBooking] = useState([]);
@@ -36,11 +37,11 @@ function BookingConfirmationCont() {
 
         });
 
-        axios.get(apiKey+"auth/verify-token").then((response) => {
+        axios.get(apiKey + "auth/verify-token").then((response) => {
             if (response.status === 200) {
                 setLogedIn(true)
             }
-            else{
+            else {
                 setLogedIn(false)
             }
         });
@@ -118,210 +119,238 @@ function BookingConfirmationCont() {
             }
         }
     }
+
+
+
+
+
+
+    const handleDownloadImage = async () => {
+        const element = document.getElementById('RMLuxeHotel_BookingConfimation_PDF')
+        const canvas = await html2canvas(element, { scale: 1 })
+        const data = canvas.toDataURL('image/png')
+
+        const pdf = new jsPDF("p", "pt", "a4")
+        pdf.addImage(data, "JPEG", 1, 1, 600, 700)
+        pdf.save('RMLuxeHotel_BookingConfimation_PDF');
+    };
+
+
+
+
+
     return (
-        <Container>
-            <Title
-                weight='400'
-                size='66px'
-                fstyle='Normal'
-                margin='100px 0px 10px 0px'
-                align='Center'
-                color='#bfaa7e'
-            >
-                Booking Confirmation
-            </Title>
-            <HorizontalLine></HorizontalLine>
-            <Title
-                family='raleway, sans-serif'
-                color='#292929'
-                weight='400'
-                size='37px'
-                fstyle='Normal'
-                margin='50px 0px 10px 0px'
-                align='Center'
-                overflow='visible'
-            >
-                Thank you for choosing <b>RM Luxe Hotel</b>
-            </Title>
-            {
-                reservationInfo != [] && reservationStatus(reservationInfo.reservationStatus)
-            }
-            <Title
-                family='raleway, sans-serif'
-                color='#292929'
-                weight='400'
-                size='25px'
-                fstyle='Normal'
-                margin='25px 0px 10px 0px'
-                align='Center'
-
-            >
-                <b>Instructions on how to make the payment:</b>
-            </Title>
-            <Title
-                family='raleway, sans-serif'
-                color='#292929'
-                overflow='visible'
-                weight='400'
-                size='25px'
-                fstyle='Normal'
-                margin='25px 0px 10px 0px'
-                align='Center'
-
-            >
-                Deposit payment through our bank account:
-            </Title>
-            <BankDetailsContainer>
-
-                <BankTitleContainer>
-                    <ContainerGlobal
-                        justify='space-between'>
-                        <Title
-                            family='raleway, sans-serif'
-                            weight='700'
-                            fstyle='Normal'
-                            overflow='visible'
-                            size='25px'
-                            color='#2e2e2e'
-                            align='left'
-                        >
-                            <b>BANK / E-Payment: </b>
-                        </Title>
-                        <Title
-                            family='raleway, sans-serif'
-                            weight='400'
-                            fstyle='Normal'
-                            size='25px'
-                            color='#2e2e2e'
-                            align='left'
-                        >
-                            {reservationInfo.length != 0 && reservationInfo.payment.paymentMode.billerName}
-                        </Title>
-                    </ContainerGlobal>
-
-                    <ContainerGlobal
-                        justify='space-between'>
-                        <Title
-                            family='raleway, sans-serif'
-                            weight='700'
-                            fstyle='Normal'
-                            size='25px'
-                            color='#2e2e2e'
-                            align='left'
-                        >
-                            <b>Bank Address: </b>
-                        </Title>
-                        <Title
-                            family='raleway, sans-serif'
-                            weight='400'
-                            fstyle='Normal'
-                            size='25px'
-                            color='#2e2e2e'
-                            align='left'
-                        >
-                            Quezon City
-                        </Title>
-                    </ContainerGlobal>
-
-                    <ContainerGlobal
-                        justify='space-between'>
-                        <Title
-                            family='raleway, sans-serif'
-                            weight='700'
-                            fstyle='Normal'
-                            size='25px'
-                            color='#2e2e2e'
-                            align='left'
-                        >
-                            <b>Account Name: </b>
-                        </Title>
-                        <Title
-                            family='raleway, sans-serif'
-                            weight='400'
-                            fstyle='Normal'
-                            size='25px'
-                            color='#2e2e2e'
-                            align='left'
-                        >
-                            {reservationInfo.length != 0 && reservationInfo.payment.paymentMode.accountName}
-                        </Title>
-                    </ContainerGlobal>
-
-                    <ContainerGlobal
-                        justify='space-between'>
-                        <Title
-                            family='raleway, sans-serif'
-                            weight='700'
-                            fstyle='Normal'
-                            size='25px'
-                            color='#2e2e2e'
-                            align='left'
-                        >
-                            <b>Account Number: </b>
-                        </Title>
-                        <Title
-                            family='raleway, sans-serif'
-                            weight='400'
-                            fstyle='Normal'
-                            size='25px'
-                            color='#2e2e2e'
-                            align='left'
-                        >
-                            {reservationInfo.length != 0 && reservationInfo.payment.paymentMode.accountNumber}
-                        </Title>
-                    </ContainerGlobal>
-
-                </BankTitleContainer>
-
-
-            </BankDetailsContainer>
-            <BankContentContainer>
+        <Container >
+            <div 
+            style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+            }}
+            id='RMLuxeHotel_BookingConfimation_PDF'>
+                <Title
+                    weight='400'
+                    size='66px'
+                    fstyle='Normal'
+                    margin='100px 0px 10px 0px'
+                    align='Center'
+                    color='#bfaa7e'
+                >
+                    Booking Confirmation
+                </Title>
+                <HorizontalLine></HorizontalLine>
                 <Title
                     family='raleway, sans-serif'
+                    color='#292929'
                     weight='400'
+                    size='37px'
                     fstyle='Normal'
-                    size='25px'
-                    color='#2e2e2e'
-                    align='center'
-                    margin='0px 200px'
+                    margin='50px 0px 10px 0px'
+                    align='Center'
+                    overflow='visible'
                 >
-                    To confirm your reservation, <b>
-                        please make your deposit amounting
-                        {reservationInfo.length != 0 ?
-                            reservationInfo.payment.paymentType == 'Down Payment' ? ' ' +
-                                numberFormat(reservationInfo.payment.grandTotal / 2) + ' until ' + new Date(new Date(reservationInfo.reservationDate).getTime() + 60 * 60 * 24 * 1000).toLocaleDateString() + " " + new Date(reservationInfo.reservationDate).toLocaleTimeString()
+                    Thank you for choosing <b>RM Luxe Hotel</b>
+                </Title>
+                {
+                    reservationInfo != [] && reservationStatus(reservationInfo.reservationStatus)
+                }
+                <Title
+                    family='raleway, sans-serif'
+                    color='#292929'
+                    weight='400'
+                    size='25px'
+                    fstyle='Normal'
+                    margin='25px 0px 10px 0px'
+                    align='Center'
+
+                >
+                    <b>Instructions on how to make the payment:</b>
+                </Title>
+                <Title
+                    family='raleway, sans-serif'
+                    color='#292929'
+                    overflow='visible'
+                    weight='400'
+                    size='25px'
+                    fstyle='Normal'
+                    margin='25px 0px 10px 0px'
+                    align='Center'
+
+                >
+                    Deposit payment through our bank account:
+                </Title>
+                <BankDetailsContainer>
+
+                    <BankTitleContainer>
+                        <ContainerGlobal
+                            justify='space-between'>
+                            <Title
+                                family='raleway, sans-serif'
+                                weight='700'
+                                fstyle='Normal'
+                                overflow='visible'
+                                size='25px'
+                                color='#2e2e2e'
+                                align='left'
+                            >
+                                <b>BANK / E-Payment: </b>
+                            </Title>
+                            <Title
+                                family='raleway, sans-serif'
+                                weight='400'
+                                fstyle='Normal'
+                                size='25px'
+                                color='#2e2e2e'
+                                align='left'
+                            >
+                                {reservationInfo.length != 0 && reservationInfo.payment.paymentMode.billerName}
+                            </Title>
+                        </ContainerGlobal>
+
+                        <ContainerGlobal
+                            justify='space-between'>
+                            <Title
+                                family='raleway, sans-serif'
+                                weight='700'
+                                fstyle='Normal'
+                                size='25px'
+                                color='#2e2e2e'
+                                align='left'
+                            >
+                                <b>Bank Address: </b>
+                            </Title>
+                            <Title
+                                family='raleway, sans-serif'
+                                weight='400'
+                                fstyle='Normal'
+                                size='25px'
+                                color='#2e2e2e'
+                                align='left'
+                            >
+                                Quezon City
+                            </Title>
+                        </ContainerGlobal>
+
+                        <ContainerGlobal
+                            justify='space-between'>
+                            <Title
+                                family='raleway, sans-serif'
+                                weight='700'
+                                fstyle='Normal'
+                                size='25px'
+                                color='#2e2e2e'
+                                align='left'
+                            >
+                                <b>Account Name: </b>
+                            </Title>
+                            <Title
+                                family='raleway, sans-serif'
+                                weight='400'
+                                fstyle='Normal'
+                                size='25px'
+                                color='#2e2e2e'
+                                align='left'
+                            >
+                                {reservationInfo.length != 0 && reservationInfo.payment.paymentMode.accountName}
+                            </Title>
+                        </ContainerGlobal>
+
+                        <ContainerGlobal
+                            justify='space-between'>
+                            <Title
+                                family='raleway, sans-serif'
+                                weight='700'
+                                fstyle='Normal'
+                                size='25px'
+                                color='#2e2e2e'
+                                align='left'
+                            >
+                                <b>Account Number: </b>
+                            </Title>
+                            <Title
+                                family='raleway, sans-serif'
+                                weight='400'
+                                fstyle='Normal'
+                                size='25px'
+                                color='#2e2e2e'
+                                align='left'
+                            >
+                                {reservationInfo.length != 0 && reservationInfo.payment.paymentMode.accountNumber}
+                            </Title>
+                        </ContainerGlobal>
+
+                    </BankTitleContainer>
+
+
+                </BankDetailsContainer>
+                <BankContentContainer>
+                    <Title
+                        family='raleway, sans-serif'
+                        weight='400'
+                        fstyle='Normal'
+                        size='25px'
+                        color='#2e2e2e'
+                        align='center'
+                        margin='0px 200px'
+                    >
+                        To confirm your reservation, <b>
+                            please make your deposit amounting
+                            {reservationInfo.length != 0 ?
+                                reservationInfo.payment.paymentType == 'Down Payment' ? ' ' +
+                                    numberFormat(reservationInfo.payment.grandTotal / 2) + ' until ' + new Date(new Date(reservationInfo.reservationDate).getTime() + 60 * 60 * 24 * 1000).toLocaleDateString() + " " + new Date(reservationInfo.reservationDate).toLocaleTimeString()
+                                    :
+                                    numberFormat(reservationInfo.payment.grandTotal) + ' until ' + new Date(new Date(reservationInfo.reservationDate).getTime() + 60 * 60 * 24 * 1000).toLocaleDateString() + " " + new Date(reservationInfo.reservationDate).toLocaleTimeString()
                                 :
-                                numberFormat(reservationInfo.payment.grandTotal) + ' until ' + new Date(new Date(reservationInfo.reservationDate).getTime() + 60 * 60 * 24 * 1000).toLocaleDateString() + " " + new Date(reservationInfo.reservationDate).toLocaleTimeString()
-                            :
-                            ''
-                        }.
-                    </b> <br></br><br></br> Please email your proof of payment to <a target='_blank' href='mailto: Rm.LuxeHotel@gmail.com'>Rm.LuxeHotel@gmail.com</a> or upload it to your user account by <a href='/login'>logging in</a> to our website and going to the PAYMENT SECTION so we can verify the payment. Once your payment has been verified, you will receive a booking confirmation.
-                </Title>
+                                ''
+                            }.
+                        </b> <br></br><br></br> Please email your proof of payment to <a target='_blank' href='mailto: Rm.LuxeHotel@gmail.com'>Rm.LuxeHotel@gmail.com</a> or upload it to your user account by <a href='/login'>logging in</a> to our website and going to the PAYMENT SECTION so we can verify the payment. Once your payment has been verified, you will receive a booking confirmation.
+                    </Title>
+                    <Title
+                        family='raleway, sans-serif'
+                        weight='400'
+                        fstyle='Normal'
+                        size='25px'
+                        color='#2e2e2e'
+                        align='center'
+                        margin='25px 200px'
+                    >
+                        For further information, please send an email to <a target='_blank' href='mailto: Rm.LuxeHotel@gmail.com'>Rm.LuxeHotel@gmail.com</a>, or <a href='/login'>message us</a> through your account. You will find the details of your reservation made below.
+                    </Title>
+                </BankContentContainer>
                 <Title
-                    family='raleway, sans-serif'
-                    weight='400'
+                    family='poppins, sans-serif'
+                    weight='700'
                     fstyle='Normal'
-                    size='25px'
-                    color='#2e2e2e'
+                    size='36px'
+                    color='#ff4040'
                     align='center'
-                    margin='25px 200px'
+                    margin='10px 0px 25px 0px'
                 >
-                    For further information, please send an email to <a target='_blank' href='mailto: Rm.LuxeHotel@gmail.com'>Rm.LuxeHotel@gmail.com</a>, or <a href='/login'>message us</a> through your account. You will find the details of your reservation made below.
+                    <b>***IMPORTANT***</b>
                 </Title>
-            </BankContentContainer>
-            <Title
-                family='poppins, sans-serif'
-                weight='700'
-                fstyle='Normal'
-                size='36px'
-                color='#ff4040'
-                align='center'
-                margin='10px 0px 25px 0px'
-            >
-                <b>***IMPORTANT***</b>
-            </Title>
-            <GeneratedAccountContainer>
-                {/* <Title
+                <GeneratedAccountContainer>
+                    {/* <Title
                     family='raleway, sans-serif'
                     weight='700'
                     fstyle='Normal'
@@ -382,36 +411,36 @@ function BookingConfirmationCont() {
                         </Title>
                     </GeneratedAccountContents>
                 </GeneratedAccountContentContainer> */}
+                    <Title
+                        family='raleway, sans-serif'
+                        weight='700'
+                        fstyle='Italic'
+                        size='25px'
+                        color='#2e2e2e'
+                        align='Center'
+                        margin='10px 60px 10px 60px'
+                    >
+                        <b>Please Check your email for your log in information to check your reservation status. Send your proof of payment, Check your informations, and message us.</b>
+                    </Title>
+                </GeneratedAccountContainer>
                 <Title
                     family='raleway, sans-serif'
                     weight='700'
-                    fstyle='Italic'
-                    size='25px'
+                    fstyle='Normal'
+                    size='36px'
                     color='#2e2e2e'
                     align='Center'
-                    margin='10px 60px 10px 60px'
+                    margin='60px 0px 0px 0px'
                 >
-                    <b>Please Check your email for your log in information to check your reservation status. Send your proof of payment, Check your informations, and message us.</b>
+                    <b>Reservation Information</b>
                 </Title>
-            </GeneratedAccountContainer>
-            <Title
-                family='raleway, sans-serif'
-                weight='700'
-                fstyle='Normal'
-                size='36px'
-                color='#2e2e2e'
-                align='Center'
-                margin='60px 0px 0px 0px'
-            >
-                <b>Reservation Information</b>
-            </Title>
-            <ReservationInformationContainer>
+                <ReservationInformationContainer>
 
-                <ReservationInformationContentsContainer>
-                    <ContainerGlobal
-                        justify='space-between'
-                    >
-                        {/* <Title
+                    <ReservationInformationContentsContainer>
+                        <ContainerGlobal
+                            justify='space-between'
+                        >
+                            {/* <Title
                             family='raleway, sans-serif'
                             weight='400'
                             fstyle='Normal'
@@ -431,325 +460,326 @@ function BookingConfirmationCont() {
                         >
                             <b>: 091234568</b>
                         </Title> */}
-                    </ContainerGlobal>
-                    <ContainerGlobal
-                        justify='space-between'
-                    >
-                        <Title
-                            family='raleway, sans-serif'
-                            weight='400'
-                            fstyle='Normal'
-                            size='25px'
-                            color='#2e2e2e'
-                            align='left'
+                        </ContainerGlobal>
+                        <ContainerGlobal
+                            justify='space-between'
                         >
-                            Reservation Number:
-                        </Title>
-                        <Title
-                            family='raleway, sans-serif'
-                            weight='700'
-                            fstyle='Normal'
-                            size='25px'
-                            color='#2e2e2e'
-                            align='left'
+                            <Title
+                                family='raleway, sans-serif'
+                                weight='400'
+                                fstyle='Normal'
+                                size='25px'
+                                color='#2e2e2e'
+                                align='left'
+                            >
+                                Reservation Number:
+                            </Title>
+                            <Title
+                                family='raleway, sans-serif'
+                                weight='700'
+                                fstyle='Normal'
+                                size='25px'
+                                color='#2e2e2e'
+                                align='left'
+                            >
+                                <b>{reservationInfo.length != 0 && reservationInfo.reservationReferenceNumber}</b>
+                            </Title>
+                        </ContainerGlobal>
+                        <ContainerGlobal
+                            justify='space-between'
                         >
-                            <b>{reservationInfo.length != 0 && reservationInfo.reservationReferenceNumber}</b>
-                        </Title>
-                    </ContainerGlobal>
-                    <ContainerGlobal
-                        justify='space-between'
-                    >
-                        <Title
-                            family='raleway, sans-serif'
-                            weight='400'
-                            fstyle='Normal'
-                            size='25px'
-                            color='#2e2e2e'
-                            align='left'
+                            <Title
+                                family='raleway, sans-serif'
+                                weight='400'
+                                fstyle='Normal'
+                                size='25px'
+                                color='#2e2e2e'
+                                align='left'
+                            >
+                                Reservation Date:
+                            </Title>
+                            <Title
+                                family='raleway, sans-serif'
+                                weight='700'
+                                fstyle='Normal'
+                                size='25px'
+                                color='#2e2e2e'
+                                align='left'
+                            >
+                                <b>{reservationInfo.length != 0 && new Date(reservationInfo.reservationDate).toLocaleDateString()}</b>
+                            </Title>
+                        </ContainerGlobal>
+                        <ContainerGlobal
+                            justify='space-between'
                         >
-                            Reservation Date:
-                        </Title>
-                        <Title
-                            family='raleway, sans-serif'
-                            weight='700'
-                            fstyle='Normal'
-                            size='25px'
-                            color='#2e2e2e'
-                            align='left'
+                            <Title
+                                family='raleway, sans-serif'
+                                weight='400'
+                                fstyle='Normal'
+                                size='25px'
+                                color='#2e2e2e'
+                                align='left'
+                            >
+                                Payment Mode:
+                            </Title>
+                            <Title
+                                family='raleway, sans-serif'
+                                weight='700'
+                                fstyle='Normal'
+                                size='25px'
+                                color='#2e2e2e'
+                                align='left'
+                            >
+                                <b>{reservationInfo.length != 0 && reservationInfo.payment.paymentMode.paymentMode}</b>
+                            </Title>
+                        </ContainerGlobal>
+                        <ContainerGlobal
+                            justify='space-between'
                         >
-                            <b>{reservationInfo.length != 0 && new Date(reservationInfo.reservationDate).toLocaleDateString()}</b>
-                        </Title>
-                    </ContainerGlobal>
-                    <ContainerGlobal
-                        justify='space-between'
-                    >
-                        <Title
-                            family='raleway, sans-serif'
-                            weight='400'
-                            fstyle='Normal'
-                            size='25px'
-                            color='#2e2e2e'
-                            align='left'
+                            <Title
+                                family='raleway, sans-serif'
+                                weight='400'
+                                fstyle='Normal'
+                                size='25px'
+                                color='#2e2e2e'
+                                align='left'
+                            >
+                                Payment Type:
+                            </Title>
+                            <Title
+                                family='raleway, sans-serif'
+                                weight='700'
+                                fstyle='Normal'
+                                size='25px'
+                                color='#2e2e2e'
+                                align='left'
+                            >
+                                <b>{reservationInfo.length != 0 && reservationInfo.payment.paymentType}</b>
+                            </Title>
+                        </ContainerGlobal>
+                        <ContainerGlobal
+                            justify='space-between'
                         >
-                            Payment Mode:
-                        </Title>
-                        <Title
-                            family='raleway, sans-serif'
-                            weight='700'
-                            fstyle='Normal'
-                            size='25px'
-                            color='#2e2e2e'
-                            align='left'
+                            <Title
+                                family='raleway, sans-serif'
+                                weight='400'
+                                fstyle='Normal'
+                                size='25px'
+                                color='#2e2e2e'
+                                align='left'
+                            >
+                                Guest Name:
+                            </Title>
+                            <Title
+                                family='raleway, sans-serif'
+                                weight='700'
+                                fstyle='Normal'
+                                size='25px'
+                                color='#2e2e2e'
+                                align='left'
+                            >
+                                <b>{reservationInfo.length != 0 && reservationInfo.guestInformation.firstName.toLowerCase()}  {reservationInfo.length != 0 && reservationInfo.guestInformation.lastName.toLowerCase()}</b>
+                            </Title>
+                        </ContainerGlobal>
+                        <ContainerGlobal
+                            justify='space-between'
                         >
-                            <b>{reservationInfo.length != 0 && reservationInfo.payment.paymentMode.paymentMode}</b>
-                        </Title>
-                    </ContainerGlobal>
-                    <ContainerGlobal
-                        justify='space-between'
-                    >
-                        <Title
-                            family='raleway, sans-serif'
-                            weight='400'
-                            fstyle='Normal'
-                            size='25px'
-                            color='#2e2e2e'
-                            align='left'
+                            <Title
+                                family='raleway, sans-serif'
+                                weight='400'
+                                fstyle='Normal'
+                                size='25px'
+                                color='#2e2e2e'
+                                align='left'
+                            >
+                                Birthdate:
+                            </Title>
+                            <Title
+                                family='raleway, sans-serif'
+                                weight='700'
+                                fstyle='Normal'
+                                size='25px'
+                                color='#2e2e2e'
+                                align='left'
+                            >
+                                <b>{reservationInfo.length != 0 && new Date(reservationInfo.guestInformation.birthDate).toLocaleDateString()}</b>
+                            </Title>
+                        </ContainerGlobal>
+                        <ContainerGlobal
+                            justify='space-between'
                         >
-                            Payment Type:
-                        </Title>
-                        <Title
-                            family='raleway, sans-serif'
-                            weight='700'
-                            fstyle='Normal'
-                            size='25px'
-                            color='#2e2e2e'
-                            align='left'
+                            <Title
+                                family='raleway, sans-serif'
+                                weight='400'
+                                fstyle='Normal'
+                                size='25px'
+                                color='#2e2e2e'
+                                align='left'
+                            >
+                                Nationality:
+                            </Title>
+                            <Title
+                                family='raleway, sans-serif'
+                                weight='700'
+                                fstyle='Normal'
+                                size='25px'
+                                color='#2e2e2e'
+                                align='left'
+                            >
+                                <b>{reservationInfo.length != 0 && reservationInfo.guestInformation.nationality.toLowerCase()}</b>
+                            </Title>
+                        </ContainerGlobal>
+                        <ContainerGlobal
+                            justify='space-between'
                         >
-                            <b>{reservationInfo.length != 0 && reservationInfo.payment.paymentType}</b>
-                        </Title>
-                    </ContainerGlobal>
-                    <ContainerGlobal
-                        justify='space-between'
-                    >
-                        <Title
-                            family='raleway, sans-serif'
-                            weight='400'
-                            fstyle='Normal'
-                            size='25px'
-                            color='#2e2e2e'
-                            align='left'
+                            <Title
+                                family='raleway, sans-serif'
+                                weight='400'
+                                fstyle='Normal'
+                                size='25px'
+                                color='#2e2e2e'
+                                align='left'
+                            >
+                                Email Address:
+                            </Title>
+                            <Title
+                                family='raleway, sans-serif'
+                                weight='700'
+                                fstyle='Normal'
+                                size='25px'
+                                color='#2e2e2e'
+                                align='left'
+                            >
+                                <b>{reservationInfo.length != 0 && reservationInfo.guestInformation.user.email.toLowerCase()}</b>
+                            </Title>
+                        </ContainerGlobal>
+                        <ContainerGlobal
+                            justify='space-between'
                         >
-                            Guest Name:
-                        </Title>
-                        <Title
-                            family='raleway, sans-serif'
-                            weight='700'
-                            fstyle='Normal'
-                            size='25px'
-                            color='#2e2e2e'
-                            align='left'
+                            <Title
+                                family='raleway, sans-serif'
+                                weight='400'
+                                fstyle='Normal'
+                                size='25px'
+                                color='#2e2e2e'
+                                align='left'
+                            >
+                                Address:
+                            </Title>
+                            <Title
+                                family='raleway, sans-serif'
+                                weight='700'
+                                fstyle='Normal'
+                                size='25px'
+                                color='#2e2e2e'
+                                align='left'
+                                width=''
+                            >
+                                <b>{reservationInfo.length != 0 && reservationInfo.guestInformation.address.toLowerCase()}</b>
+                            </Title>
+                        </ContainerGlobal>
+                        <ContainerGlobal
+                            justify='space-between'
                         >
-                            <b>{reservationInfo.length != 0 && reservationInfo.guestInformation.firstName.toLowerCase()}  {reservationInfo.length != 0 && reservationInfo.guestInformation.lastName.toLowerCase()}</b>
-                        </Title>
-                    </ContainerGlobal>
-                    <ContainerGlobal
-                        justify='space-between'
-                    >
-                        <Title
-                            family='raleway, sans-serif'
-                            weight='400'
-                            fstyle='Normal'
-                            size='25px'
-                            color='#2e2e2e'
-                            align='left'
-                        >
-                            Birthdate:
-                        </Title>
-                        <Title
-                            family='raleway, sans-serif'
-                            weight='700'
-                            fstyle='Normal'
-                            size='25px'
-                            color='#2e2e2e'
-                            align='left'
-                        >
-                            <b>{reservationInfo.length != 0 && new Date(reservationInfo.guestInformation.birthDate).toLocaleDateString()}</b>
-                        </Title>
-                    </ContainerGlobal>
-                    <ContainerGlobal
-                        justify='space-between'
-                    >
-                        <Title
-                            family='raleway, sans-serif'
-                            weight='400'
-                            fstyle='Normal'
-                            size='25px'
-                            color='#2e2e2e'
-                            align='left'
-                        >
-                            Nationality:
-                        </Title>
-                        <Title
-                            family='raleway, sans-serif'
-                            weight='700'
-                            fstyle='Normal'
-                            size='25px'
-                            color='#2e2e2e'
-                            align='left'
-                        >
-                            <b>{reservationInfo.length != 0 && reservationInfo.guestInformation.nationality.toLowerCase()}</b>
-                        </Title>
-                    </ContainerGlobal>
-                    <ContainerGlobal
-                        justify='space-between'
-                    >
-                        <Title
-                            family='raleway, sans-serif'
-                            weight='400'
-                            fstyle='Normal'
-                            size='25px'
-                            color='#2e2e2e'
-                            align='left'
-                        >
-                            Email Address:
-                        </Title>
-                        <Title
-                            family='raleway, sans-serif'
-                            weight='700'
-                            fstyle='Normal'
-                            size='25px'
-                            color='#2e2e2e'
-                            align='left'
-                        >
-                            <b>{reservationInfo.length != 0 && reservationInfo.guestInformation.user.email.toLowerCase()}</b>
-                        </Title>
-                    </ContainerGlobal>
-                    <ContainerGlobal
-                        justify='space-between'
-                    >
-                        <Title
-                            family='raleway, sans-serif'
-                            weight='400'
-                            fstyle='Normal'
-                            size='25px'
-                            color='#2e2e2e'
-                            align='left'
-                        >
-                            Address:
-                        </Title>
-                        <Title
-                            family='raleway, sans-serif'
-                            weight='700'
-                            fstyle='Normal'
-                            size='25px'
-                            color='#2e2e2e'
-                            align='left'
-                            width=''
-                        >
-                            <b>{reservationInfo.length != 0 && reservationInfo.guestInformation.address.toLowerCase()}</b>
-                        </Title>
-                    </ContainerGlobal>
-                    <ContainerGlobal
-                        justify='space-between'
-                    >
-                        <Title
-                            family='raleway, sans-serif'
-                            weight='400'
-                            fstyle='Normal'
-                            size='25px'
-                            color='#2e2e2e'
-                            align='left'
-                        >
-                            Contact Number:
-                        </Title>
-                        <Title
-                            family='raleway, sans-serif'
-                            weight='700'
-                            fstyle='Normal'
-                            size='25px'
-                            color='#2e2e2e'
-                            align='left'
-                        >
-                            <b>{reservationInfo.length != 0 && reservationInfo.guestInformation.user.contactNumber.toLowerCase()}</b>
-                        </Title>
-                    </ContainerGlobal>
+                            <Title
+                                family='raleway, sans-serif'
+                                weight='400'
+                                fstyle='Normal'
+                                size='25px'
+                                color='#2e2e2e'
+                                align='left'
+                            >
+                                Contact Number:
+                            </Title>
+                            <Title
+                                family='raleway, sans-serif'
+                                weight='700'
+                                fstyle='Normal'
+                                size='25px'
+                                color='#2e2e2e'
+                                align='left'
+                            >
+                                <b>{reservationInfo.length != 0 && reservationInfo.guestInformation.user.contactNumber.toLowerCase()}</b>
+                            </Title>
+                        </ContainerGlobal>
 
-                </ReservationInformationContentsContainer>
+                    </ReservationInformationContentsContainer>
 
 
 
-            </ReservationInformationContainer>
-            <Title
-                family='raleway, sans-serif'
-                weight='700'
-                fstyle='Normal'
-                size='36px'
-                color='#2e2e2e'
-                margin='0px 0px 30px 0px'
-                align='Center'
-            >
-                <b>Charge Summary</b>
-            </Title>
-            <ChargeSummaryContainer>
-                <TableContainer
-                    cellspacing="0"
-                    cellpadding="0">
-                    <Tr bg="transparent">
-                        <Th bg='transparent' color='#2e2e2e' align='center'>Room type</Th>
-                        <Th bg='transparent' color='#2e2e2e' align='center'>Check in</Th>
-                        <Th bg='transparent' color='#2e2e2e' align='center'>Check out</Th>
-                        <Th bg='transparent' color='#2e2e2e' align='center'>Total nights</Th>
-                        <Th bg='transparent' color='#2e2e2e' align='center'>Rate per night</Th>
-                        <Th bg='transparent' color='#2e2e2e' align='center'>Total amout due</Th>
-                    </Tr>
-                    {reservedBooking.map((item, index) => (
-
-                        <Tr style={index % 2 == 0 ? { backgroundColor: 'rgb(0,0,0,.1)' } : { backgroundColor: 'transparent' }}>
-
-                            <Td align='center'>{item.room.roomType.roomType}</Td>
-                            <Td align='center'>{new Date(item.checkInDate).toLocaleDateString()}</Td>
-                            <Td align='center'>{new Date(item.checkOutDate).toLocaleDateString()}</Td>
-                            <Td align='center'>{item.numberOfNights}</Td>
-                            <Td align='center'>{numberFormat(item.room.roomType.roomRate)}</Td>
-                            <Td align='center' style={{ color: 'red' }}>{numberFormat(item.room.roomType.roomRate * item.numberOfNights)}</Td>
+                </ReservationInformationContainer>
+                <Title
+                    family='raleway, sans-serif'
+                    weight='700'
+                    fstyle='Normal'
+                    size='36px'
+                    color='#2e2e2e'
+                    margin='0px 0px 30px 0px'
+                    align='Center'
+                >
+                    <b>Charge Summary</b>
+                </Title>
+                <ChargeSummaryContainer>
+                    <TableContainer
+                        cellspacing="0"
+                        cellpadding="0">
+                        <Tr bg="transparent">
+                            <Th bg='transparent' color='#2e2e2e' align='center'>Room type</Th>
+                            <Th bg='transparent' color='#2e2e2e' align='center'>Check in</Th>
+                            <Th bg='transparent' color='#2e2e2e' align='center'>Check out</Th>
+                            <Th bg='transparent' color='#2e2e2e' align='center'>Total nights</Th>
+                            <Th bg='transparent' color='#2e2e2e' align='center'>Rate per night</Th>
+                            <Th bg='transparent' color='#2e2e2e' align='center'>Total amout due</Th>
                         </Tr>
+                        {reservedBooking.map((item, index) => (
 
-                    ))}
-                </TableContainer>
-            </ChargeSummaryContainer>
-            <BrokenHorizontalLine></BrokenHorizontalLine>
-            <ChargeSummaryContainer>
-                <ChargeSummaryContentContainer>
-                    <Title
-                        family='raleway, sans-serif'
-                        weight='700'
-                        fstyle='Normal'
-                        size='30px'
-                        color='#2e2e2e'
-                        align='left'
-                        margin='0px 100px 0px 0px'
-                    >
-                        <b>Grand Total:</b>
-                    </Title>
-                </ChargeSummaryContentContainer>
-                <ChargeSummaryContentContainer>
-                    <Title
-                        family='raleway, sans-serif'
-                        weight='700'
-                        fstyle='Normal'
-                        size='30px'
-                        color='#13ed34'
-                        align='left'
-                        margin='0px 0px 0px 100px'
-                    >
-                        {numberFormat(grandTotal)}
-                    </Title>
-                </ChargeSummaryContentContainer>
+                            <Tr style={index % 2 == 0 ? { backgroundColor: 'rgb(0,0,0,.1)' } : { backgroundColor: 'transparent' }}>
 
-            </ChargeSummaryContainer>
-            <center style={{ marginBottom: '40px', }}>
-                <b>NOTE!:</b> Discount will only take effect upon check-in. Please present your valid id to our frontdesk to confirm your discount. Thank you
-            </center>
+                                <Td align='center'>{item.room.roomType.roomType}</Td>
+                                <Td align='center'>{new Date(item.checkInDate).toLocaleDateString()}</Td>
+                                <Td align='center'>{new Date(item.checkOutDate).toLocaleDateString()}</Td>
+                                <Td align='center'>{item.numberOfNights}</Td>
+                                <Td align='center'>{numberFormat(item.room.roomType.roomRate)}</Td>
+                                <Td align='center' style={{ color: 'red' }}>{numberFormat(item.room.roomType.roomRate * item.numberOfNights)}</Td>
+                            </Tr>
+
+                        ))}
+                    </TableContainer>
+                </ChargeSummaryContainer>
+                <BrokenHorizontalLine></BrokenHorizontalLine>
+                <ChargeSummaryContainer>
+                    <ChargeSummaryContentContainer>
+                        <Title
+                            family='raleway, sans-serif'
+                            weight='700'
+                            fstyle='Normal'
+                            size='30px'
+                            color='#2e2e2e'
+                            align='left'
+                            margin='0px 100px 0px 0px'
+                        >
+                            <b>Grand Total:</b>
+                        </Title>
+                    </ChargeSummaryContentContainer>
+                    <ChargeSummaryContentContainer>
+                        <Title
+                            family='raleway, sans-serif'
+                            weight='700'
+                            fstyle='Normal'
+                            size='30px'
+                            color='#13ed34'
+                            align='left'
+                            margin='0px 0px 0px 100px'
+                        >
+                            {numberFormat(grandTotal)}
+                        </Title>
+                    </ChargeSummaryContentContainer>
+
+                </ChargeSummaryContainer>
+                <center style={{ marginBottom: '40px', }}>
+                    <b>NOTE!:</b> Discount will only take effect upon check-in. Please present your valid id to our frontdesk to confirm your discount. Thank you
+                </center>
+            </div>
             <ButtonHolder>
                 <Button
                     whileHover={{ backgroundColor: "#302B20", color: "white" }}
@@ -764,9 +794,9 @@ function BookingConfirmationCont() {
                     margin='30px 100px 0px 0px'
                     fontsize='16px'
                     bg='#DFD3B9'
-                    href={logedIn == false? '/login' : '/client/profile'}
+                    href={logedIn == false ? '/login' : '/client/profile'}
                 >
-                    {logedIn == false? 'Login' : 'Go to profile'}
+                    {logedIn == false ? 'Login' : 'Go to profile'}
                 </Button>
                 <Button
                     whileHover={{ backgroundColor: "#White", color: "black" }}
@@ -781,6 +811,7 @@ function BookingConfirmationCont() {
                     margin='30px 0px 0px 100px'
                     fontsize='16px'
                     bg='#2e2e2e'
+                    onClick={handleDownloadImage}
                 >
                     Print/Save as PDF
                 </Button>

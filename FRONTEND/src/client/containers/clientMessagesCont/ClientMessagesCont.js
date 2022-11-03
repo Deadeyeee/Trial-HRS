@@ -74,17 +74,20 @@ const ClientMessagesCont = () => {
 
   const handleOpenViewMessage = (value) => {
 
-
-    axios.patch(apiKey + 'api/updateMessage/' + messagesDb.filter((obj) => obj.conversation_id == value.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].id, {
-      status: true,
-    })
-      .then((result) => {
-        console.log(result.data);
+    if (messagesDb.filter((obj) => obj.conversation_id == value.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].messageTo.user.role != 'ADMIN' && messagesDb.filter((obj) => obj.conversation_id == value.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].messageTo.user.role != 'STAFF') {
+      axios.patch(apiKey + 'api/updateMessage/' + messagesDb.filter((obj) => obj.conversation_id == value.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].id, {
+        status: true,
       })
-      .catch((err) => {
-        console.log(err);
+        .then((result) => {
+          console.log(result.data);
+        })
+        .catch((err) => {
+          console.log(err);
 
-      });
+        });
+    }
+
+
     setViewMessage(true)
     setConversationId(value)
     setMessage('')
@@ -499,7 +502,7 @@ const ClientMessagesCont = () => {
               messagesDb
                 .filter((obj) => obj.conversation_id == conversationId.id)
                 .sort((a, b) => new Date(a.created_at) - new Date(b.created_at))
-                .map((item, index, array) => ( 
+                .map((item, index, array) => (
                   item.message_to_guest_id == userInformation.id ?
                     <div style={{ display: 'flex', flexDirection: 'column', width: '50%', marginBottom: '30px' }}>
                       <ContainerGlobal
@@ -514,7 +517,7 @@ const ClientMessagesCont = () => {
                           align='left'
                           margin='0px 0px 0px 0px'
                         >
-                          <b>From:</b> RM luxe hotel
+                          <b>From:</b> RM Luxe Hotel
                         </Title>
                         <Title
                           size='16px'
@@ -541,7 +544,7 @@ const ClientMessagesCont = () => {
                         direction='column'
                         overflow='auto'
                       >
-                        <p style={{wordWrap:'break-word', width: '100%', margin:'0px', }}>{item.message}</p>
+                        <p style={{ wordWrap: 'break-word', width: '100%', margin: '0px', }}>{item.message}</p>
                       </ContainerGlobal>
                     </div>
                     :
@@ -571,7 +574,7 @@ const ClientMessagesCont = () => {
                           align='left'
                           margin='0px 0px 0px auto'
                         >
-                          <b>Reply to:</b> Rm luxe hotel
+                          <b>Reply to:</b> RM Luxe Hotel
                         </Title>
                       </ContainerGlobal>
                       <ContainerGlobal
@@ -584,7 +587,7 @@ const ClientMessagesCont = () => {
                         direction='column'
                         overflow='auto'
                       >
-                        <p style={{wordWrap:'break-word', width: '100%', margin:'0px', }}>{item.message}</p>
+                        <p style={{ wordWrap: 'break-word', width: '100%', margin: '0px', }}>{item.message}</p>
                       </ContainerGlobal>
                     </div>
 
