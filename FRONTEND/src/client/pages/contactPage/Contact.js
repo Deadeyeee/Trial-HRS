@@ -44,12 +44,13 @@ export const Contact = () => {
                                 color='#5b5b5b'
                                 align='Right'
                                 size='20px'
+                                weight='700'
                             >
-                                68 Cenacle Dr,<br></br>
+                                68 Cenacle Dr.<br></br>
                                 Quezon City, Metro Manila<br></br>
-                                info@mysite.com<br></br>
-                                Tel: 123-456-7890<br></br>
-                                Fax: 123-456-7890<br></br>
+                                <a href='mailTo: rm.luxehotel@gmail.com' style={{color:"#5b5b5b"}}> rm.luxehotel@gmail.com<br></br></a>
+                                Tel: (+632) 8628-0768<br></br>
+                                Cell No. +639176300113<br></br>
                             </Title>
                         </FlexboxItem1>
                     </FlexboxContainer1>

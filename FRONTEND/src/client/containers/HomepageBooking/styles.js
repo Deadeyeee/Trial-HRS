@@ -1,6 +1,9 @@
 import styled from "styled-components";
 import { motion } from "framer-motion";
 import BackgroundIMG from "../../images/backgroundImages/bg2.JPG";
+import F2 from '../../images/FamenitiesIMG/f2.jpg'
+import R1 from '../../images/FamenitiesIMG/r1.png'
+import L1 from '../../images/FamenitiesIMG/l1.JPG'
 
 export const Title = styled.h1`
 font-family: 'Playfair Display', serif;
@@ -59,17 +62,19 @@ export const HorizontalLine = styled(motion.div)`
 
 export const HorizontalLineMini = styled(motion.div)`
   width:10%;
-  background-color: black;
+  background-color: white;
   height: 2px;
   margin: 10%;
 `;
 export const FlexItems = styled(motion.div)`
   display: flex;
-  width: auto;
+  width: 55%;
+  flex-direction: column;
   height: auto;
   justify-content: center;
   margin: 50px 0px 80px 0px;
   gap: 30px;
+  align-items: center;
   @media (max-width: 1000px) {
     flex-direction: column;
     align-items: center;
@@ -84,11 +89,68 @@ export const Poster = styled(motion.div)`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 250px;
-    height: 320px;
-    background-color: #DFD3B9;
-    padding: 30px;
+    width: auto;
+    height: auto;
+    margin: 0px 0px 30px 0px;
+    padding-left: 60%;
+    
+    
     box-shadow: -3px 3px 10px black;
+
+    background-image: url(${F2});
+    background-size: cover;
+    background-position: center;
+
+
+    @media (max-width: 1000px) {
+    
+      width: 190px;
+    height: 220px;
+  }
+`;
+
+export const AlterPoster = styled(motion.div)`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: auto;
+    height: auto;
+    margin: 0px 0px 30px 0px;
+    padding-right: 60%;
+    
+    
+    box-shadow: -3px 3px 10px black;
+
+    background-image: url(${R1});
+    background-size: cover;
+    background-position: center;
+
+
+    @media (max-width: 1000px) {
+    
+      width: 190px;
+    height: 220px;
+  }
+`;
+
+export const OtherPoster = styled(motion.div)`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: auto;
+    height: auto;
+    margin: 0px 0px 30px 0px;
+    padding-left: 60%;
+    
+    
+    box-shadow: -3px 3px 10px black;
+
+    background-image: url(${L1});
+    background-size: cover;
+    background-position: center;
+
 
     @media (max-width: 1000px) {
     
@@ -100,8 +162,18 @@ export const Poster = styled(motion.div)`
 export const ContentDiv = styled(motion.div)`
     display: flex;
     flex-direction: column;
-    height: 240px;
+    align-items: center;
+    height: 100%;
     overflow: hidden;
+    background-color: #00000099;
+    padding: 20px;
+`;
+
+export const ContentDivMain = styled(motion.div)`
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: right;
+    height: auto;
 `;
 
 export const AccordionTitle = styled(motion.div)`

@@ -22,6 +22,7 @@ import ResetPasswordSuccessPage from './client/pages/resetPasswordSuccess/ResetP
 import BookingChildPage from './client/pages/bookingPage/bookingChildPage/BookingChildPage';
 import GuestInfoPage from './client/pages/guestInformationPage/GuestInfoPage';
 import FAmenitiesContent from './client/pages/famenitiesPage/fAmenitiesChild/FAmenitiesContent';
+import FAmenitiesContent2 from './client/pages/famenitiesPage/fAmenitiesChild/FAmenitiesContent2';
 import BookingConfirmationPage from './client/pages/bookingPage/bookingConfirmationPage/BookingConfirmationPage';
 import Profile from './client/pages/profilePage/Profile';
 import ClientBookingInfoPage from './client/pages/clientBookingInfoPage/ClientBookingInfoPage';
@@ -79,6 +80,7 @@ const App = () => {
         <Route path="/roomRate" element={<RoomPage />} />
         <Route path="/facilitiesAmenities" element={<FamenitiesPage />} />
         <Route path="/facilitiesAmenities/eventsPlace" element={<FAmenitiesContent />} />
+        <Route path="/facilitiesAmenities/coffeeshop" element={<FAmenitiesContent2 />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/registered/:id" element={<Registered />} />

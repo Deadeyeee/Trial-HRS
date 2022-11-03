@@ -350,19 +350,22 @@ const ClientProfileCont = () => {
             </Modal>
 
 
-
             <Title
-                color='#bfaa7e'
-                weight='400'
-                size='66px'
-                fstyle='Normal'
-                margin='100px 0px 10px 0px'
-                align='Center'
+                 padding='20px 80px 20px 80px'
+                 bg='#272727'
+                 family='Playfair Display'
+                 color='#BFAA7E'
+                 weight='400'
+                 size='50px'
+                 fstyle='Normal'
+                 margin='50px 0px 10px 0px'
+                 align='Center'
+                 w='86.7%'
             >
-                Welcome
+                Welcome to your profile!
             </Title>
-            <ProfileContentContainer>
-                <ProfileContent>
+            <ProfileContentContainer style={{width:"90%", justifyContent:"center"}}>
+                <ProfileContent style={{width:"90%"}}>
                     <ContainerGlobal
                         justify='space-between'
                     >
@@ -552,7 +555,7 @@ const ClientProfileCont = () => {
                             size='25px'
                             color='#2e2e2e'
                             align='right'
-                            width=''
+                            w='400px'
                         >
                             <b>{userInformation.length != 0 ? userInformation.address : ""}</b>
                         </Title>

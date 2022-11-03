@@ -1039,10 +1039,10 @@ const BillingSummaryContainer = () => {
     const output = (value) => {
         if (value == 'name') {
             if (window.sessionStorage.getItem('firstName') != null && window.sessionStorage.getItem('lastName') != null) {
-                return window.sessionStorage.getItem('firstName').toLocaleLowerCase() + " " + window.sessionStorage.getItem('lastName').toLocaleLowerCase();
+                return window.sessionStorage.getItem('firstName') + " " + window.sessionStorage.getItem('lastName');
             }
             else if (userInformation.length != 0) {
-                return userInformation.firstName.toLocaleLowerCase() + " " + userInformation.lastName.toLocaleLowerCase();
+                return userInformation.firstName + " " + userInformation.lastName;
             }
             else {
                 return " ";
@@ -1072,10 +1072,10 @@ const BillingSummaryContainer = () => {
         }
         else if (value == 'birthday') {
             if (window.sessionStorage.getItem('birthday') != null) {
-                return window.sessionStorage.getItem('birthday')
+                return new Date(window.sessionStorage.getItem('birthday')).toLocaleDateString()
             }
             else if (userInformation.length != 0) {
-                return userInformation.birthDate
+                return new Date(userInformation.birthDate).toLocaleDateString()
             }
             else {
                 return " "
@@ -1097,7 +1097,7 @@ const BillingSummaryContainer = () => {
                 return window.sessionStorage.getItem('gender')
             }
             else if (userInformation.length != 0) {
-                return userInformation.gender.toLocaleLowerCase()
+                return userInformation.gender
             }
             else {
                 return " "
