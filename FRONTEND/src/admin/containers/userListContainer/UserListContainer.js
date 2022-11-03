@@ -1228,7 +1228,7 @@ const UserListContainer = () => {
                             align='left'
                             margin='0px auto 0px 10px'
                         >
-                            Create admin account
+                            Edit admin account
                         </Title>
                         <CloseIcon
                             onClick={handleCloseEdit}

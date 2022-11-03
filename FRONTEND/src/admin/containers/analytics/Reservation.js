@@ -40,6 +40,7 @@ export const Reservation = (props) => {
             w='70%'
             h='auto'
             direction='column'
+            overflow='visible'
         >
             <Doughnut
                 data={data}

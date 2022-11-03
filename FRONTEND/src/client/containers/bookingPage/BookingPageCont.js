@@ -68,7 +68,6 @@ export const BookingPageCont = () => {
 
     useEffect(() => {
         axios.get(apiKey + 'api/getAllRoomTypeImages').then((result) => {
-            console.log(result.data)
             // for (let index = 0; index < result.data.length; index++) {
             //     if (result.data[index].roomType_id == id) {
             //         setRoomTypeImagesDb((oldData) => [...oldData, result.data[index].roomImages])
@@ -76,16 +75,12 @@ export const BookingPageCont = () => {
 
             // }
             setRoomTypeImagesDb(result.data)
-            console.log('TEST')
         }).catch((err) => {
             console.lot(err)
         });
 
         if (window.sessionStorage.getItem('endDate') != null || window.sessionStorage.getItem('kids') != null ||window.sessionStorage.getItem('guest') != null || window.sessionStorage.getItem('startDate') != null ) {
-            console.log(window.sessionStorage.getItem('endDate'))
-            console.log(window.sessionStorage.getItem('guest'))
-            console.log(window.sessionStorage.getItem('startDate'))
-
+        
             setEndDate(new Date(window.sessionStorage.getItem('endDate')))
             setStartDate(new Date(window.sessionStorage.getItem('startDate')))
             setAdults(parseInt(window.sessionStorage.getItem('guest')))
@@ -99,7 +94,6 @@ export const BookingPageCont = () => {
 
     useEffect(() => {
         if (bookedRooms.length != 0) {
-            console.log("MASAYANG BUHAY", bookedRooms)
             for (let index = 0; index < bookedRooms.length; index++) {
                 let systemDates = getDates(startDate, endDate);
                 systemDates.pop()
@@ -127,7 +121,6 @@ export const BookingPageCont = () => {
             }
         }
         else {
-            console.log("TANIGNANG BUHAY")
         }
     }, [bookedRooms])
     useEffect(() => {
@@ -142,12 +135,9 @@ export const BookingPageCont = () => {
         //     alert('ey')
         //     // setEndDate(new Date(Date.now(startDate)).setHours(0, 0, 0, 0) )
         // }
-        console.log("ugh: ", startDate)
-        console.log("ugh: ", endDate)
         // console.log("ugh: ", new Date(startDate).getTime() + 86400000)
         if (Date.parse(startDate) >= Date.parse(endDate)) {
             // setEndDate(new Date(startDate).getTime() + 86400000)
-            console.log('JSAPOJ', new Date(Date.now() + 86400000))
             setEndDate(new Date(Date.parse(startDate) + 86400000))
         }
         // if(startDate )
@@ -156,7 +146,6 @@ export const BookingPageCont = () => {
     const getNotAvailableRoom = async () => {
         try {
             let result = await axios.get(apiKey + 'api/getAllReservationSummary')
-            console.log("ASJDASPDJASOPJADPO", bookedRooms)
             for (let index = 0; index < result.data.length; index++) {
                 if (result.data[index].reservation.reservationStatus == "PENDING" || result.data[index].reservation.reservationStatus == "RESERVED" || result.data[index].reservation.reservationStatus == "BOOKED") {
                     let systemDates = getDates(startDate, endDate);
@@ -198,7 +187,6 @@ export const BookingPageCont = () => {
                 }
             })
 
-            console.log(room)
 
         } catch (error) {
             console.log(error.data)
@@ -227,7 +215,6 @@ export const BookingPageCont = () => {
         try {
             let res = await axios.get(apiKey + 'api/getAllUsedServices')
             setUsedServices(res.data)
-            console.log(usedServices)
 
         } catch (error) {
             console.log(error.data)
@@ -326,7 +313,6 @@ export const BookingPageCont = () => {
         room.map((value) => {
             // console.log(value.roomType.id)
             if (value.roomStatus !== "Maintenance") {
-                console.log(value.roomType.id)
                 setAvailableRoomType((oldData) => [...oldData, value.roomType.id])
             }
         })
@@ -378,7 +364,6 @@ export const BookingPageCont = () => {
     }, [availbleRoomType])
 
     const bookRoom = (roomTypeId) => {
-        console.log("roomTypeAvailableButton:", roomType)
         const checkIn = new Date(startDate)
         const checkOut = new Date(endDate)
         let roomThatCanBeReserve = [];
@@ -387,7 +372,6 @@ export const BookingPageCont = () => {
                 roomThatCanBeReserve.push(value.id)
             }
         })
-        console.log(roomThatCanBeReserve)
 
         window.sessionStorage.setItem('checkIn', checkIn.toLocaleDateString())
         window.sessionStorage.setItem('checkOut', checkOut.toLocaleDateString())
