@@ -22,6 +22,9 @@ function BookingConfirmationCont() {
             for (let index = 0; index < result.data.length; index++) {
                 if (id == result.data[index].reservation_id) {
                     setReservationBooking((oldData) => [...oldData, result.data[index]])
+                    if(result.data[index].reservationStatus != 'PENDING'){
+                        window.location = '/'
+                    }
                     console.log('ey')
                 }
             }
@@ -324,7 +327,7 @@ function BookingConfirmationCont() {
                                 :
                                 ''
                             }.
-                        </b> <br></br><br></br> Please email your proof of payment to <a target='_blank' href='mailto: Rm.LuxeHotel@gmail.com'>Rm.LuxeHotel@gmail.com</a> or upload it to your user account by <a href='/login'>logging in</a> to our website and going to the PAYMENT SECTION so we can verify the payment. Once your payment has been verified, you will receive a booking confirmation.
+                        </b> <br></br><br></br> Please email your proof of payment to <a target='_blank' href='mailto: Rm.LuxeHotel@gmail.com'>Rm.LuxeHotel@gmail.com</a> or upload it to your user account by <a href='/login'>logging in</a> to our website and going to the <a href='/client/paymentInfo'>Payment section</a> so we can verify the payment. Once your payment has been verified, you will receive a booking confirmation.
                     </Title>
                     <Title
                         family='raleway, sans-serif'
@@ -335,7 +338,7 @@ function BookingConfirmationCont() {
                         align='center'
                         margin='25px 200px'
                     >
-                        For further information, please send an email to <a target='_blank' href='mailto: Rm.LuxeHotel@gmail.com'>Rm.LuxeHotel@gmail.com</a>, or <a href='/login'>message us</a> through your account. You will find the details of your reservation made below.
+                        For further information, please send an email to <a target='_blank' href='mailto: Rm.LuxeHotel@gmail.com'>Rm.LuxeHotel@gmail.com</a>, or <a href='/client/messages'>message us</a> through your account. You will find the details of your reservation made below.
                     </Title>
                 </BankContentContainer>
                 <Title
@@ -673,8 +676,8 @@ function BookingConfirmationCont() {
                                 fstyle='Normal'
                                 size='25px'
                                 color='#2e2e2e'
-                                align='left'
-                                width=''
+                                align='right'
+                                w='500px'
                             >
                                 <b>{reservationInfo.length != 0 && reservationInfo.guestInformation.address.toLowerCase()}</b>
                             </Title>

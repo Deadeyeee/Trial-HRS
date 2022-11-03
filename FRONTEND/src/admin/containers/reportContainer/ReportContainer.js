@@ -1730,7 +1730,7 @@ export const ReportContainer = () => {
                                 }}
                                 disabled={
                                     reservationSummary != 0 ?
-                                        reservationSummary.filter((obj) => obj.reservation.reservationStatus == 'PENDING' || obj.reservation.reservationStatus == 'UNSETTLED'|| obj.reservation.reservationStatus == 'RESERVED').filter((obj) => {
+                                        reservationSummary.filter((obj) => obj.reservation.reservationStatus == 'PENDING' || obj.reservation.reservationStatus == 'UNSETTLED' || obj.reservation.reservationStatus == 'RESERVED').filter((obj) => {
                                             let filterDate = getDates(startDateDaily, endDateDaily);
 
                                             if (filterDate.includes(moment(obj.checkInDate).format('YYYY-MM-DD')) == true || filterDate.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) == true) {
@@ -1974,7 +1974,9 @@ export const ReportContainer = () => {
                             <Button
                                 variant="contained"
                                 size="large"
-
+                                onClick={() => {
+                                    window.open('/admin/generatedOccupancyReport/detailed' + '_' + reservationMenuDaily + '_' + new Date(fromOccupancyRate).toLocaleDateString().replaceAll('/', '-') + '_' + new Date(toOccupancyRate).toLocaleDateString().replaceAll('/', '-'), '_blank').focus();
+                                }}
                                 style={{ backgroundColor: '', margin: '15px 0px 0px auto' }}>
                                 Print Average Room Occupancy
                             </Button>
@@ -2264,7 +2266,9 @@ export const ReportContainer = () => {
                             <Button
                                 variant="contained"
                                 size="large"
-
+                                onClick={() => {
+                                    window.open('/admin/generatedOccupancyReport/visual' + '_' + reservationMenuDaily + '_' + new Date(yearOccupancyRate).toLocaleDateString().replaceAll('/', '-') + '_' + new Date(new Date(new Date(yearOccupancyRate).getFullYear(), 11, 31)).toLocaleDateString().replaceAll('/', '-'), '_blank').focus();
+                                }}
                                 style={{ backgroundColor: '', margin: '15px 0px 0px auto' }}>
                                 Print Room Occupancy Visual Report
                             </Button>

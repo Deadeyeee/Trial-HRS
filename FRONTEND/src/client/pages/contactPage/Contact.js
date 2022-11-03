@@ -45,6 +45,7 @@ export const Contact = () => {
                                 align='Right'
                                 size='20px'
                                 weight='700'
+                                line='30px'
                             >
                                 68 Cenacle Dr.<br></br>
                                 Quezon City, Metro Manila<br></br>

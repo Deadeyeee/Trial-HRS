@@ -513,6 +513,9 @@ const GeneratedReports = () => {
                             <Title family="Belleza" size="1.5vw" fstyle="none" weight="400">
                                 0956 672 8906
                             </Title>
+                            <Title family="Belleza" size="1.5vw" fstyle="none" weight="400">
+                                {new Date(Date.now()).toLocaleDateString()}
+                            </Title>
                         </ContainerGlobal>
                     </ContainerGlobal>
                 </ContainerGlobal>
