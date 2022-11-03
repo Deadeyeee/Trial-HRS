@@ -65,7 +65,7 @@ function ForgotPasswordCont() {
                 }
                 else {
                     if (i == res.data.length - 1) {
-                        setLoginStatus("Invalid email. Email is not yet registered or verified.");
+                        setLoginStatus("Invalid email. This is only applicable for those who have created their account.");
                         setLoginStatus2("");
                     }
                 }

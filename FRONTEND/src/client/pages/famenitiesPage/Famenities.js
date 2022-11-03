@@ -17,7 +17,7 @@ let imageLinks = [
 export const Famenities = () => {
     useEffect(() => {
         document.title = "Facilities & Ameneties"
-      }, [])
+    }, [])
     return (
         <Container>
             <NavigationBar facilities />
@@ -30,62 +30,62 @@ export const Famenities = () => {
                 Facilities & Amenities
             </Title>
             <PhotoHolderMain>
-            <PhotoHolder>
-            <div style={{ width: '100%'}}>
+                <PhotoHolder>
+                    <div style={{ width: '100%' }} onClick={()=> window.location= '/facilitiesAmenities/eventsPlace'}>
                         <ImageSlider4 />
                     </div>
-                <TitleHolder>
-                    <i>
-                        <a style={{
-                            textDecoration:"none", cursor:"pointer",
-                        }} href='/facilitiesAmenities/eventsPlace'>
-                        <Title
+                    <TitleHolder>
+                        <i>
+                            <a style={{
+                                textDecoration: "none", cursor: "pointer",
+                            }} href='/facilitiesAmenities/eventsPlace'>
+                                <Title
 
-                            family='Roboto Slab, Serif'
-                            color='white'
-                            size='46px'
-                            weight='400'
-                            align='left'
-                            margin="0px 0px 80px 300px"
-                            cursor="pointer"
+                                    family='Roboto Slab, Serif'
+                                    color='white'
+                                    size='46px'
+                                    weight='400'
+                                    align='left'
+                                    margin="0px 0px 80px 300px"
+                                    cursor="pointer"
 
-                        >
-                             
-                            EVENTS PLACE
-                        </Title>
-                        </a>
-                    </i>
-                </TitleHolder>
-            </PhotoHolder>
-            <PhotoHolder>
-            <div style={{ width: '100%' }}>
+                                >
+
+                                    EVENTS PLACE
+                                </Title>
+                            </a>
+                        </i>
+                    </TitleHolder>
+                </PhotoHolder>
+                <PhotoHolder>
+                    <div style={{ width: '100%' }} onClick={()=> window.location= '/facilitiesAmenities/coffeeShop'}>
                         <ImageSlider5 />
                     </div>
-                <TitleHolder
-                justifyContent="flex-end"
-                >
-                    <i>
-                        <a style={{
-                            textDecoration:"none", cursor:"pointer",
-                        }} href='/facilitiesAmenities/coffeeShop'>
-                        <Title
+                    <TitleHolder
+                        justifyContent="flex-end"
+                    >
+                        <i>
+                            <a style={{
+                                textDecoration: "none", cursor: "pointer",
+                            }} href='/facilitiesAmenities/coffeeShop'>
+                                <Title
 
-                            family='Roboto Slab, Serif'
-                            color='white'
-                            size='46px'
-                            weight='400'
-                            align='right'
-                            opc='100%'
-                            margin="0px 300px 0px 0px"
-                            cursor="pointer"
-                        >
-                            COFFEE SHOP
-                        </Title>
-                        </a>
-                    </i>
+                                    family='Roboto Slab, Serif'
+                                    color='white'
+                                    size='46px'
+                                    weight='400'
+                                    align='right'
+                                    opc='100%'
+                                    margin="0px 300px 0px 0px"
+                                    cursor="pointer"
+                                >
+                                    COFFEE SHOP
+                                </Title>
+                            </a>
+                        </i>
 
-                </TitleHolder>
-            </PhotoHolder>
+                    </TitleHolder>
+                </PhotoHolder>
             </PhotoHolderMain>
             <Footer />
         </Container>
