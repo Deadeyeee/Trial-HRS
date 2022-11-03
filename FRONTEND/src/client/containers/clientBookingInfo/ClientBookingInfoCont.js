@@ -271,7 +271,7 @@ const ClientBookingInfoCont = () => {
                         <b>Reservation Information</b>
                     </Title>
                     <ReservationInformationContainer
-                        w='100%'>
+                        w='100%' >
                         <ReservationInformationContentsContainer>
 
                             <ContainerGlobal
@@ -285,7 +285,7 @@ const ClientBookingInfoCont = () => {
                                     color='#2e2e2e'
                                     align='left'
                                 >
-                                    Reservation Number
+                                    Reservation Number:
                                 </Title>
                                 <Title
                                     family='raleway, sans-serif'
@@ -293,9 +293,10 @@ const ClientBookingInfoCont = () => {
                                     fstyle='Normal'
                                     size='25px'
                                     color='#2e2e2e'
-                                    align='left'
+                                    align='right'
+                                    w='400px'
                                 >
-                                    <b>: {activeReservation.reservationReferenceNumber}</b>
+                                    <b> {activeReservation.reservationReferenceNumber}</b>
                                 </Title>
                             </ContainerGlobal>
                             <ContainerGlobal
@@ -309,17 +310,17 @@ const ClientBookingInfoCont = () => {
                                     color='#2e2e2e'
                                     align='left'
                                 >
-                                    Reservation Date
+                                    Reservation Date:
                                 </Title>
                                 <Title
                                     family='raleway, sans-serif'
                                     weight='700'
                                     fstyle='Normal'
                                     size='25px'
-                                    color='#2e2e2e'
-                                    align='left'
+                                    align='right'
+                                    w='400px'
                                 >
-                                    <b>: {new Date(activeReservation.reservationDate).toLocaleDateString()}</b>
+                                    <b> {new Date(activeReservation.reservationDate).toLocaleDateString()}</b>
                                 </Title>
                             </ContainerGlobal>
                             <ContainerGlobal
@@ -333,7 +334,7 @@ const ClientBookingInfoCont = () => {
                                     color='#2e2e2e'
                                     align='left'
                                 >
-                                    Payment Mode
+                                    Payment Mode:
                                 </Title>
                                 <Title
                                     family='raleway, sans-serif'
@@ -341,9 +342,10 @@ const ClientBookingInfoCont = () => {
                                     fstyle='Normal'
                                     size='25px'
                                     color='#2e2e2e'
-                                    align='left'
+                                    align='right'
+                                    w='400px'
                                 >
-                                    <b>: {activeReservation.payment.paymentMode.paymentMode}</b>
+                                    <b> {activeReservation.payment.paymentMode.paymentMode}</b>
                                 </Title>
                             </ContainerGlobal>
                             <ContainerGlobal
@@ -357,7 +359,7 @@ const ClientBookingInfoCont = () => {
                                     color='#2e2e2e'
                                     align='left'
                                 >
-                                    Payment Type
+                                    Payment Type:
                                 </Title>
                                 <Title
                                     family='raleway, sans-serif'
@@ -365,9 +367,10 @@ const ClientBookingInfoCont = () => {
                                     fstyle='Normal'
                                     size='25px'
                                     color='#2e2e2e'
-                                    align='left'
+                                    align='right'
+                                    w='400px'
                                 >
-                                    <b>:  Down Payment</b>
+                                    <b>  Down Payment</b>
                                 </Title>
                             </ContainerGlobal>
                             <ContainerGlobal
@@ -381,7 +384,7 @@ const ClientBookingInfoCont = () => {
                                     color='#2e2e2e'
                                     align='left'
                                 >
-                                    Guest Name
+                                    Guest Name:
                                 </Title>
                                 <Title
                                     family='raleway, sans-serif'
@@ -389,9 +392,10 @@ const ClientBookingInfoCont = () => {
                                     fstyle='Normal'
                                     size='25px'
                                     color='#2e2e2e'
-                                    align='left'
+                                    align='right'
+                                    w='400px'
                                 >
-                                    <b>: {activeReservation.guestInformation.firstName.toLowerCase()}  {activeReservation.guestInformation.lastName.toLowerCase()}</b>
+                                    <b> {activeReservation.guestInformation.firstName}  {activeReservation.guestInformation.lastName}</b>
                                 </Title>
                             </ContainerGlobal>
                             <ContainerGlobal
@@ -405,7 +409,7 @@ const ClientBookingInfoCont = () => {
                                     color='#2e2e2e'
                                     align='left'
                                 >
-                                    Birthdate
+                                    Birthdate:
                                 </Title>
                                 <Title
                                     family='raleway, sans-serif'
@@ -413,9 +417,10 @@ const ClientBookingInfoCont = () => {
                                     fstyle='Normal'
                                     size='25px'
                                     color='#2e2e2e'
-                                    align='left'
+                                    align='right'
+                                    w='400px'
                                 >
-                                    <b>: {new Date(activeReservation.guestInformation.birthDate).toLocaleDateString()}</b>
+                                    <b> {new Date(activeReservation.guestInformation.birthDate).toLocaleDateString()}</b>
                                 </Title>
                             </ContainerGlobal>
                             <ContainerGlobal
@@ -429,7 +434,7 @@ const ClientBookingInfoCont = () => {
                                     color='#2e2e2e'
                                     align='left'
                                 >
-                                    Nationality
+                                    Nationality:
                                 </Title>
                                 <Title
                                     family='raleway, sans-serif'
@@ -437,9 +442,10 @@ const ClientBookingInfoCont = () => {
                                     fstyle='Normal'
                                     size='25px'
                                     color='#2e2e2e'
-                                    align='left'
+                                    align='right'
+                                    w='400px'
                                 >
-                                    <b>: {activeReservation.guestInformation.nationality.toLowerCase()}</b>
+                                    <b> {activeReservation.guestInformation.nationality}</b>
                                 </Title>
                             </ContainerGlobal>
                             <ContainerGlobal
@@ -453,7 +459,7 @@ const ClientBookingInfoCont = () => {
                                     color='#2e2e2e'
                                     align='left'
                                 >
-                                    Email Address
+                                    Email Address:
                                 </Title>
                                 <Title
                                     family='raleway, sans-serif'
@@ -461,9 +467,10 @@ const ClientBookingInfoCont = () => {
                                     fstyle='Normal'
                                     size='25px'
                                     color='#2e2e2e'
-                                    align='left'
+                                    align='right'
+                                    w='400px'
                                 >
-                                    <b>: {activeReservation.guestInformation.user.email.toLowerCase()}</b>
+                                    <b> {activeReservation.guestInformation.user.email.toLowerCase()}</b>
                                 </Title>
                             </ContainerGlobal>
                             <ContainerGlobal
@@ -477,7 +484,7 @@ const ClientBookingInfoCont = () => {
                                     color='#2e2e2e'
                                     align='left'
                                 >
-                                    Address
+                                    Address:
                                 </Title>
                                 <Title
                                     family='raleway, sans-serif'
@@ -485,10 +492,10 @@ const ClientBookingInfoCont = () => {
                                     fstyle='Normal'
                                     size='25px'
                                     color='#2e2e2e'
-                                    align='left'
-                                    width=''
+                                    align='right'
+                                    w='400px'
                                 >
-                                    <b>: {activeReservation.guestInformation.address.toLowerCase()}</b>
+                                    <b> {activeReservation.guestInformation.address}</b>
                                 </Title>
                             </ContainerGlobal>
                             <ContainerGlobal
@@ -502,7 +509,7 @@ const ClientBookingInfoCont = () => {
                                     color='#2e2e2e'
                                     align='left'
                                 >
-                                    Contact Number
+                                    Contact Number:
                                 </Title>
                                 <Title
                                     family='raleway, sans-serif'
@@ -512,7 +519,7 @@ const ClientBookingInfoCont = () => {
                                     color='#2e2e2e'
                                     align='left'
                                 >
-                                    <b>: {activeReservation.guestInformation.user.contactNumber.toLowerCase()}</b>
+                                    <b> {activeReservation.guestInformation.user.contactNumber}</b>
                                 </Title>
                             </ContainerGlobal>
 
@@ -573,7 +580,7 @@ const ClientBookingInfoCont = () => {
                                     color='#2e2e2e'
                                     align='left'
                                 >
-                                    <b>Discount</b>
+                                    <b>Discount:</b>
                                 </Title>
                                 <Title
                                     family='raleway, sans-serif'
@@ -583,7 +590,7 @@ const ClientBookingInfoCont = () => {
                                     // color='#13ed34'
                                     align='left'
                                 >
-                                    : {activeReservation.payment.discount.discountType}
+                                     {activeReservation.payment.discount.discountType}
                                 </Title>
                             </ContainerGlobal>
                             {activeReservation.payment.paymentType == 'Down Payment' ?
@@ -596,7 +603,7 @@ const ClientBookingInfoCont = () => {
                                         color='#2e2e2e'
                                         align='left'
                                     >
-                                        <b>Down Payment</b>
+                                        <b>Down Payment:</b>
                                     </Title>
                                     <Title
                                         family='Roboto Slab'
@@ -606,7 +613,7 @@ const ClientBookingInfoCont = () => {
                                         color='black'
                                         align='left'
                                     >
-                                        : {numberFormat(grandTotal / 2)}
+                                         {numberFormat(grandTotal / 2)}
                                     </Title>
                                 </ContainerGlobal>
                                 :
@@ -619,7 +626,7 @@ const ClientBookingInfoCont = () => {
                                         color='#2e2e2e'
                                         align='left'
                                     >
-                                        <b>Full Payment</b>
+                                        <b>Full Payment:</b>
                                     </Title>
                                     <Title
                                         family='Roboto Slab'
@@ -629,7 +636,7 @@ const ClientBookingInfoCont = () => {
                                         color='black'
                                         align='left'
                                     >
-                                        : {numberFormat(grandTotal)}
+                                         {numberFormat(grandTotal)}
                                     </Title>
                                 </ContainerGlobal>
                             }
@@ -642,7 +649,7 @@ const ClientBookingInfoCont = () => {
                                     color='#2e2e2e'
                                     align='left'
                                 >
-                                    <b>Amount Paid</b>
+                                    <b>Amount Paid:</b>
                                 </Title>
                                 <Title
                                     family='Roboto Slab'
@@ -652,7 +659,7 @@ const ClientBookingInfoCont = () => {
                                     color='#1C9E60'
                                     align='left'
                                 >
-                                    : {numberFormat(activeReservation.payment.paymentMade)}
+                                     {numberFormat(activeReservation.payment.paymentMade)}
                                 </Title>
                             </ContainerGlobal>
 
@@ -665,7 +672,7 @@ const ClientBookingInfoCont = () => {
                                     color='#2e2e2e'
                                     align='left'
                                 >
-                                    <b>Grand Total</b>
+                                    <b>Grand Total:</b>
                                 </Title>
                                 <Title
                                     family='Roboto Slab'
@@ -675,7 +682,7 @@ const ClientBookingInfoCont = () => {
                                     color='#000000'
                                     align='left'
                                 >
-                                    : {numberFormat(grandTotal)}
+                                     {numberFormat(grandTotal)}
                                 </Title>
                             </ContainerGlobal>
                             <HorizontalLine
@@ -692,7 +699,7 @@ const ClientBookingInfoCont = () => {
                                     color='#2e2e2e'
                                     align='left'
                                 >
-                                    <b>Remaining Balance</b>
+                                    <b>Remaining Balance:</b>
                                 </Title>
                                 <Title
                                     family='Roboto Slab'
@@ -702,7 +709,7 @@ const ClientBookingInfoCont = () => {
                                     color='red'
                                     align='left'
                                 >
-                                    : {numberFormat(activeReservation.payment.grandTotal - activeReservation.payment.paymentMade)}
+                                     {numberFormat(activeReservation.payment.grandTotal - activeReservation.payment.paymentMade)}
                                 </Title>
                             </ContainerGlobal>
                         </ChargeSummaryContentContainer>
@@ -780,7 +787,7 @@ const ClientBookingInfoCont = () => {
                                     color='#2e2e2e'
                                     align='left'
                                 >
-                                    Reservation Date.
+                                    Reservation Date:
                                 </Title>
                                 <Title
                                     family='raleway, sans-serif'
@@ -788,9 +795,10 @@ const ClientBookingInfoCont = () => {
                                     fstyle='Normal'
                                     size='25px'
                                     color='#2e2e2e'
-                                    align='left'
+                                    align='right'
+                                    w='400px'
                                 >
-                                    <b>: {new Date(activeReservation.reservationDate).toLocaleDateString()}</b>
+                                    <b> {new Date(activeReservation.reservationDate).toLocaleDateString()}</b>
                                 </Title>
                             </ContainerGlobal>
                             <ContainerGlobal
@@ -804,7 +812,7 @@ const ClientBookingInfoCont = () => {
                                     color='#2e2e2e'
                                     align='left'
                                 >
-                                    Payment Mode
+                                    Payment Mode:
                                 </Title>
                                 <Title
                                     family='raleway, sans-serif'
@@ -812,9 +820,10 @@ const ClientBookingInfoCont = () => {
                                     fstyle='Normal'
                                     size='25px'
                                     color='#2e2e2e'
-                                    align='left'
+                                    align='right'
+                                    w='400px'
                                 >
-                                    <b>: {activeReservation.payment.paymentMode.paymentMode}</b>
+                                    <b> {activeReservation.payment.paymentMode.paymentMode}</b>
                                 </Title>
                             </ContainerGlobal>
                             <ContainerGlobal
@@ -828,7 +837,7 @@ const ClientBookingInfoCont = () => {
                                     color='#2e2e2e'
                                     align='left'
                                 >
-                                    Payment Type
+                                    Payment Type:
                                 </Title>
                                 <Title
                                     family='raleway, sans-serif'
@@ -836,9 +845,10 @@ const ClientBookingInfoCont = () => {
                                     fstyle='Normal'
                                     size='25px'
                                     color='#2e2e2e'
-                                    align='left'
+                                    align='right'
+                                    w='400px'
                                 >
-                                    <b>:  Down Payment</b>
+                                    <b>Down Payment</b>
                                 </Title>
                             </ContainerGlobal>
                             <ContainerGlobal
@@ -852,7 +862,7 @@ const ClientBookingInfoCont = () => {
                                     color='#2e2e2e'
                                     align='left'
                                 >
-                                    Guest Name
+                                    Guest Name:
                                 </Title>
                                 <Title
                                     family='raleway, sans-serif'
@@ -860,9 +870,10 @@ const ClientBookingInfoCont = () => {
                                     fstyle='Normal'
                                     size='25px'
                                     color='#2e2e2e'
-                                    align='left'
+                                    align='right'
+                                    w='400px'
                                 >
-                                    <b>: {activeReservation.guestInformation.firstName.toLowerCase()}  {activeReservation.guestInformation.lastName.toLowerCase()}</b>
+                                    <b> {activeReservation.guestInformation.firstName}  {activeReservation.guestInformation.lastName}</b>
                                 </Title>
                             </ContainerGlobal>
                             <ContainerGlobal
@@ -876,7 +887,7 @@ const ClientBookingInfoCont = () => {
                                     color='#2e2e2e'
                                     align='left'
                                 >
-                                    Birthdate
+                                    Birthdate:
                                 </Title>
                                 <Title
                                     family='raleway, sans-serif'
@@ -884,9 +895,10 @@ const ClientBookingInfoCont = () => {
                                     fstyle='Normal'
                                     size='25px'
                                     color='#2e2e2e'
-                                    align='left'
+                                    align='right'
+                                    w='400px'
                                 >
-                                    <b>: {new Date(activeReservation.guestInformation.birthDate).toLocaleDateString()}</b>
+                                    <b> {new Date(activeReservation.guestInformation.birthDate).toLocaleDateString()}</b>
                                 </Title>
                             </ContainerGlobal>
                             <ContainerGlobal
@@ -900,7 +912,7 @@ const ClientBookingInfoCont = () => {
                                     color='#2e2e2e'
                                     align='left'
                                 >
-                                    Nationality
+                                    Nationality:
                                 </Title>
                                 <Title
                                     family='raleway, sans-serif'
@@ -908,9 +920,10 @@ const ClientBookingInfoCont = () => {
                                     fstyle='Normal'
                                     size='25px'
                                     color='#2e2e2e'
-                                    align='left'
+                                    align='right'
+                                    w='400px'
                                 >
-                                    <b>: {activeReservation.guestInformation.nationality.toLowerCase()}</b>
+                                    <b> {activeReservation.guestInformation.nationality}</b>
                                 </Title>
                             </ContainerGlobal>
                             <ContainerGlobal
@@ -924,7 +937,7 @@ const ClientBookingInfoCont = () => {
                                     color='#2e2e2e'
                                     align='left'
                                 >
-                                    Email Address
+                                    Email Address:
                                 </Title>
                                 <Title
                                     family='raleway, sans-serif'
@@ -932,9 +945,10 @@ const ClientBookingInfoCont = () => {
                                     fstyle='Normal'
                                     size='25px'
                                     color='#2e2e2e'
-                                    align='left'
+                                    align='right'
+                                    w='400px'
                                 >
-                                    <b>: {activeReservation.guestInformation.user.email.toLowerCase()}</b>
+                                    <b> {activeReservation.guestInformation.user.email.toLowerCase()}</b>
                                 </Title>
                             </ContainerGlobal>
                             <ContainerGlobal
@@ -948,7 +962,7 @@ const ClientBookingInfoCont = () => {
                                     color='#2e2e2e'
                                     align='left'
                                 >
-                                    Address
+                                    Address:
                                 </Title>
                                 <Title
                                     family='raleway, sans-serif'
@@ -956,10 +970,10 @@ const ClientBookingInfoCont = () => {
                                     fstyle='Normal'
                                     size='25px'
                                     color='#2e2e2e'
-                                    align='left'
-                                    width=''
+                                    align='right'
+                                    w='400px'
                                 >
-                                    <b>: {activeReservation.guestInformation.address.toLowerCase()}</b>
+                                    <b> {activeReservation.guestInformation.address}</b>
                                 </Title>
                             </ContainerGlobal>
                             <ContainerGlobal
@@ -973,7 +987,7 @@ const ClientBookingInfoCont = () => {
                                     color='#2e2e2e'
                                     align='left'
                                 >
-                                    Contact Number
+                                    Contact Number:
                                 </Title>
                                 <Title
                                     family='raleway, sans-serif'
@@ -981,9 +995,10 @@ const ClientBookingInfoCont = () => {
                                     fstyle='Normal'
                                     size='25px'
                                     color='#2e2e2e'
-                                    align='left'
+                                    align='right'
+                                    w='400px'
                                 >
-                                    <b>: {activeReservation.guestInformation.user.contactNumber.toLowerCase()}</b>
+                                    <b> {activeReservation.guestInformation.user.contactNumber}</b>
                                 </Title>
                             </ContainerGlobal>
 
@@ -1044,7 +1059,7 @@ const ClientBookingInfoCont = () => {
                                     color='#2e2e2e'
                                     align='left'
                                 >
-                                    <b>Discount</b>
+                                    <b>Discount:</b>
                                 </Title>
                                 <Title
                                     family='raleway, sans-serif'
@@ -1054,7 +1069,7 @@ const ClientBookingInfoCont = () => {
                                     // color='#13ed34'
                                     align='left'
                                 >
-                                    : {activeReservation.payment.discount.discountType}
+                                     {activeReservation.payment.discount.discountType}
                                 </Title>
                             </ContainerGlobal>
                             <ContainerGlobal justify='space-between' gap='70px'>
@@ -1066,7 +1081,7 @@ const ClientBookingInfoCont = () => {
                                     color='#2e2e2e'
                                     align='left'
                                 >
-                                    <b>Down Payment</b>
+                                    <b>Down Payment:</b>
                                 </Title>
                                 <Title
                                     family='Roboto Slab'
@@ -1076,7 +1091,7 @@ const ClientBookingInfoCont = () => {
                                     color='black'
                                     align='left'
                                 >
-                                    : {numberFormat(grandTotal / 2)}
+                                     {numberFormat(grandTotal / 2)}
                                 </Title>
                             </ContainerGlobal>
                             <ContainerGlobal justify='space-between' gap='70px'>
@@ -1088,7 +1103,7 @@ const ClientBookingInfoCont = () => {
                                     color='#2e2e2e'
                                     align='left'
                                 >
-                                    <b>Full Payment</b>
+                                    <b>Full Payment:</b>
                                 </Title>
                                 <Title
                                     family='Roboto Slab'
@@ -1098,7 +1113,7 @@ const ClientBookingInfoCont = () => {
                                     color='black'
                                     align='left'
                                 >
-                                    : {numberFormat(grandTotal)}
+                                     {numberFormat(grandTotal)}
                                 </Title>
                             </ContainerGlobal>
                             <ContainerGlobal justify='space-between' gap='70px'>
@@ -1110,7 +1125,7 @@ const ClientBookingInfoCont = () => {
                                     color='#2e2e2e'
                                     align='left'
                                 >
-                                    <b>Amount Paid</b>
+                                    <b>Amount Paid:</b>
                                 </Title>
                                 <Title
                                     family='Roboto Slab'
@@ -1120,7 +1135,7 @@ const ClientBookingInfoCont = () => {
                                     color='#1C9E60'
                                     align='left'
                                 >
-                                    : {numberFormat(grandTotal)}
+                                     {numberFormat(grandTotal)}
                                 </Title>
                             </ContainerGlobal>
                             <ContainerGlobal justify='space-between' gap='70px'>
@@ -1132,7 +1147,7 @@ const ClientBookingInfoCont = () => {
                                     color='#2e2e2e'
                                     align='left'
                                 >
-                                    <b>Remaining Balance</b>
+                                    <b>Remaining Balance:</b>
                                 </Title>
                                 <Title
                                     family='Roboto Slab'
@@ -1142,7 +1157,7 @@ const ClientBookingInfoCont = () => {
                                     color='red'
                                     align='left'
                                 >
-                                    : {numberFormat(grandTotal)}
+                                     {numberFormat(grandTotal)}
                                 </Title>
                             </ContainerGlobal>
                             <HorizontalLine
@@ -1158,7 +1173,7 @@ const ClientBookingInfoCont = () => {
                                     color='#2e2e2e'
                                     align='left'
                                 >
-                                    <b>Grand Total</b>
+                                    <b>Grand Total:</b>
                                 </Title>
                                 <Title
                                     family='Roboto Slab'
@@ -1168,7 +1183,7 @@ const ClientBookingInfoCont = () => {
                                     color='#000000'
                                     align='left'
                                 >
-                                    : {numberFormat(grandTotal)}
+                                         {numberFormat(grandTotal)}
                                 </Title>
                             </ContainerGlobal>
                         </ChargeSummaryContentContainer>
@@ -1231,7 +1246,7 @@ const ClientBookingInfoCont = () => {
                                     color='#2e2e2e'
                                     align='left'
                                 >
-                                    Reservation Date.
+                                    Reservation Date:
                                 </Title>
                                 <Title
                                     family='raleway, sans-serif'
@@ -1239,9 +1254,10 @@ const ClientBookingInfoCont = () => {
                                     fstyle='Normal'
                                     size='25px'
                                     color='#2e2e2e'
-                                    align='left'
+                                    align='right'
+                                    w='400px'
                                 >
-                                    <b>: {new Date(activeReservation.reservationDate).toLocaleDateString()}</b>
+                                    <b> {new Date(activeReservation.reservationDate).toLocaleDateString()}</b>
                                 </Title>
                             </ContainerGlobal>
                             <ContainerGlobal
@@ -1255,7 +1271,7 @@ const ClientBookingInfoCont = () => {
                                     color='#2e2e2e'
                                     align='left'
                                 >
-                                    Payment Mode
+                                    Payment Mode:
                                 </Title>
                                 <Title
                                     family='raleway, sans-serif'
@@ -1263,9 +1279,10 @@ const ClientBookingInfoCont = () => {
                                     fstyle='Normal'
                                     size='25px'
                                     color='#2e2e2e'
-                                    align='left'
+                                    align='right'
+                                    w='400px'
                                 >
-                                    <b>: {activeReservation.payment.paymentMode.paymentMode}</b>
+                                    <b> {activeReservation.payment.paymentMode.paymentMode}</b>
                                 </Title>
                             </ContainerGlobal>
                             <ContainerGlobal
@@ -1279,7 +1296,7 @@ const ClientBookingInfoCont = () => {
                                     color='#2e2e2e'
                                     align='left'
                                 >
-                                    Payment Type
+                                    Payment Type:
                                 </Title>
                                 <Title
                                     family='raleway, sans-serif'
@@ -1287,9 +1304,10 @@ const ClientBookingInfoCont = () => {
                                     fstyle='Normal'
                                     size='25px'
                                     color='#2e2e2e'
-                                    align='left'
+                                    align='right'
+                                    w='400px'
                                 >
-                                    <b>:  Down Payment</b>
+                                    <b>  Down Payment</b>
                                 </Title>
                             </ContainerGlobal>
                             <ContainerGlobal
@@ -1303,7 +1321,7 @@ const ClientBookingInfoCont = () => {
                                     color='#2e2e2e'
                                     align='left'
                                 >
-                                    Guest Name
+                                    Guest Name:
                                 </Title>
                                 <Title
                                     family='raleway, sans-serif'
@@ -1311,9 +1329,10 @@ const ClientBookingInfoCont = () => {
                                     fstyle='Normal'
                                     size='25px'
                                     color='#2e2e2e'
-                                    align='left'
+                                    align='right'
+                                    w='400px'
                                 >
-                                    <b>: {activeReservation.guestInformation.firstName.toLowerCase()}  {activeReservation.guestInformation.lastName.toLowerCase()}</b>
+                                    <b> {activeReservation.guestInformation.firstName}  {activeReservation.guestInformation.lastName}</b>
                                 </Title>
                             </ContainerGlobal>
                             <ContainerGlobal
@@ -1327,7 +1346,7 @@ const ClientBookingInfoCont = () => {
                                     color='#2e2e2e'
                                     align='left'
                                 >
-                                    Birthdate
+                                    Birthdate:
                                 </Title>
                                 <Title
                                     family='raleway, sans-serif'
@@ -1335,9 +1354,10 @@ const ClientBookingInfoCont = () => {
                                     fstyle='Normal'
                                     size='25px'
                                     color='#2e2e2e'
-                                    align='left'
+                                    align='right'
+                                    w='400px'
                                 >
-                                    <b>: {new Date(activeReservation.guestInformation.birthDate).toLocaleDateString()}</b>
+                                    <b> {new Date(activeReservation.guestInformation.birthDate).toLocaleDateString()}</b>
                                 </Title>
                             </ContainerGlobal>
                             <ContainerGlobal
@@ -1351,7 +1371,7 @@ const ClientBookingInfoCont = () => {
                                     color='#2e2e2e'
                                     align='left'
                                 >
-                                    Nationality
+                                    Nationality:
                                 </Title>
                                 <Title
                                     family='raleway, sans-serif'
@@ -1359,9 +1379,10 @@ const ClientBookingInfoCont = () => {
                                     fstyle='Normal'
                                     size='25px'
                                     color='#2e2e2e'
-                                    align='left'
+                                    align='right'
+                                    w='400px'
                                 >
-                                    <b>: {activeReservation.guestInformation.nationality.toLowerCase()}</b>
+                                    <b> {activeReservation.guestInformation.nationality}</b>
                                 </Title>
                             </ContainerGlobal>
                             <ContainerGlobal
@@ -1375,7 +1396,7 @@ const ClientBookingInfoCont = () => {
                                     color='#2e2e2e'
                                     align='left'
                                 >
-                                    Email Address
+                                    Email Address:
                                 </Title>
                                 <Title
                                     family='raleway, sans-serif'
@@ -1383,9 +1404,10 @@ const ClientBookingInfoCont = () => {
                                     fstyle='Normal'
                                     size='25px'
                                     color='#2e2e2e'
-                                    align='left'
+                                    align='right'
+                                    w='400px'
                                 >
-                                    <b>: {activeReservation.guestInformation.user.email.toLowerCase()}</b>
+                                    <b> {activeReservation.guestInformation.user.email.toLowerCase()}</b>
                                 </Title>
                             </ContainerGlobal>
                             <ContainerGlobal
@@ -1399,7 +1421,7 @@ const ClientBookingInfoCont = () => {
                                     color='#2e2e2e'
                                     align='left'
                                 >
-                                    Address
+                                    Address:
                                 </Title>
                                 <Title
                                     family='raleway, sans-serif'
@@ -1407,10 +1429,10 @@ const ClientBookingInfoCont = () => {
                                     fstyle='Normal'
                                     size='25px'
                                     color='#2e2e2e'
-                                    align='left'
-                                    width=''
+                                    align='right'
+                                    w='400px'
                                 >
-                                    <b>: {activeReservation.guestInformation.address.toLowerCase()}</b>
+                                    <b> {activeReservation.guestInformation.address}</b>
                                 </Title>
                             </ContainerGlobal>
                             <ContainerGlobal
@@ -1424,7 +1446,7 @@ const ClientBookingInfoCont = () => {
                                     color='#2e2e2e'
                                     align='left'
                                 >
-                                    Contact Number
+                                    Contact Number:
                                 </Title>
                                 <Title
                                     family='raleway, sans-serif'
@@ -1432,9 +1454,10 @@ const ClientBookingInfoCont = () => {
                                     fstyle='Normal'
                                     size='25px'
                                     color='#2e2e2e'
-                                    align='left'
+                                    align='right'
+                                    w='400px'
                                 >
-                                    <b>: {activeReservation.guestInformation.user.contactNumber.toLowerCase()}</b>
+                                    <b> {activeReservation.guestInformation.user.contactNumber}</b>
                                 </Title>
                             </ContainerGlobal>
 
@@ -1495,7 +1518,7 @@ const ClientBookingInfoCont = () => {
                                     color='#2e2e2e'
                                     align='left'
                                 >
-                                    <b>Discount</b>
+                                    <b>Discount:</b>
                                 </Title>
                                 <Title
                                     family='raleway, sans-serif'
@@ -1505,7 +1528,7 @@ const ClientBookingInfoCont = () => {
                                     // color='#13ed34'
                                     align='left'
                                 >
-                                    : {activeReservation.payment.discount.discountType}
+                                     {activeReservation.payment.discount.discountType}
                                 </Title>
                             </ContainerGlobal>
                             {activeReservation.payment.paymentType == 'Down Payment' ?
@@ -1518,7 +1541,7 @@ const ClientBookingInfoCont = () => {
                                         color='#2e2e2e'
                                         align='left'
                                     >
-                                        <b>Down Payment</b>
+                                        <b>Down Payment:</b>
                                     </Title>
                                     <Title
                                         family='Roboto Slab'
@@ -1528,7 +1551,7 @@ const ClientBookingInfoCont = () => {
                                         color='black'
                                         align='left'
                                     >
-                                        : {numberFormat(grandTotal / 2)}
+                                         {numberFormat(grandTotal / 2)}
                                     </Title>
                                 </ContainerGlobal>
                                 :
@@ -1541,7 +1564,7 @@ const ClientBookingInfoCont = () => {
                                         color='#2e2e2e'
                                         align='left'
                                     >
-                                        <b>Full Payment</b>
+                                        <b>Full Payment:</b>
                                     </Title>
                                     <Title
                                         family='Roboto Slab'
@@ -1551,7 +1574,7 @@ const ClientBookingInfoCont = () => {
                                         color='black'
                                         align='left'
                                     >
-                                        : {numberFormat(grandTotal)}
+                                         {numberFormat(grandTotal)}
                                     </Title>
                                 </ContainerGlobal>
                             }
@@ -1564,7 +1587,7 @@ const ClientBookingInfoCont = () => {
                                     color='#2e2e2e'
                                     align='left'
                                 >
-                                    <b>Amount Paid</b>
+                                    <b>Amount Paid:</b>
                                 </Title>
                                 <Title
                                     family='Roboto Slab'
@@ -1574,7 +1597,7 @@ const ClientBookingInfoCont = () => {
                                     color='#1C9E60'
                                     align='left'
                                 >
-                                    : {numberFormat(activeReservation.payment.paymentMade)}
+                                     {numberFormat(activeReservation.payment.paymentMade)}
                                 </Title>
                             </ContainerGlobal>
 
@@ -1587,7 +1610,7 @@ const ClientBookingInfoCont = () => {
                                     color='#2e2e2e'
                                     align='left'
                                 >
-                                    <b>Grand Total</b>
+                                    <b>Grand Total:</b>
                                 </Title>
                                 <Title
                                     family='Roboto Slab'
@@ -1597,7 +1620,7 @@ const ClientBookingInfoCont = () => {
                                     color='#000000'
                                     align='left'
                                 >
-                                    : {numberFormat(grandTotal)}
+                                     {numberFormat(grandTotal)}
                                 </Title>
                             </ContainerGlobal>
                             <HorizontalLine
@@ -1614,7 +1637,7 @@ const ClientBookingInfoCont = () => {
                                     color='#2e2e2e'
                                     align='left'
                                 >
-                                    <b>Remaining Balance</b>
+                                    <b>Remaining Balance:</b>
                                 </Title>
                                 <Title
                                     family='Roboto Slab'
@@ -1624,7 +1647,7 @@ const ClientBookingInfoCont = () => {
                                     color='red'
                                     align='left'
                                 >
-                                    : {numberFormat(activeReservation.payment.grandTotal - activeReservation.payment.paymentMade)}
+                                     {numberFormat(activeReservation.payment.grandTotal - activeReservation.payment.paymentMade)}
                                 </Title>
                             </ContainerGlobal>
                         </ChargeSummaryContentContainer>
@@ -1825,7 +1848,7 @@ const ClientBookingInfoCont = () => {
                                     color='#2e2e2e'
                                     align='left'
                                 >
-                                    Reservation Date.
+                                    Reservation Date:
                                 </Title>
                                 <Title
                                     family='raleway, sans-serif'
@@ -1833,9 +1856,10 @@ const ClientBookingInfoCont = () => {
                                     fstyle='Normal'
                                     size='25px'
                                     color='#2e2e2e'
-                                    align='left'
+                                    align='right'
+                                    w='400px'
                                 >
-                                    <b>: {new Date(activeReservation.reservationDate).toLocaleDateString()}</b>
+                                    <b> {new Date(activeReservation.reservationDate).toLocaleDateString()}</b>
                                 </Title>
                             </ContainerGlobal>
                             <ContainerGlobal
@@ -1849,7 +1873,7 @@ const ClientBookingInfoCont = () => {
                                     color='#2e2e2e'
                                     align='left'
                                 >
-                                    Payment Mode
+                                    Payment Mode:
                                 </Title>
                                 <Title
                                     family='raleway, sans-serif'
@@ -1857,9 +1881,10 @@ const ClientBookingInfoCont = () => {
                                     fstyle='Normal'
                                     size='25px'
                                     color='#2e2e2e'
-                                    align='left'
+                                    align='right'
+                                    w='400px'
                                 >
-                                    <b>: {activeReservation.payment.paymentMode.paymentMode}</b>
+                                    <b> {activeReservation.payment.paymentMode.paymentMode}</b>
                                 </Title>
                             </ContainerGlobal>
                             <ContainerGlobal
@@ -1873,7 +1898,7 @@ const ClientBookingInfoCont = () => {
                                     color='#2e2e2e'
                                     align='left'
                                 >
-                                    Payment Type
+                                    Payment Type:
                                 </Title>
                                 <Title
                                     family='raleway, sans-serif'
@@ -1881,9 +1906,10 @@ const ClientBookingInfoCont = () => {
                                     fstyle='Normal'
                                     size='25px'
                                     color='#2e2e2e'
-                                    align='left'
+                                    align='right'
+                                    w='400px'
                                 >
-                                    <b>:  Down Payment</b>
+                                    <b>  Down Payment</b>
                                 </Title>
                             </ContainerGlobal>
                             <ContainerGlobal
@@ -1897,7 +1923,7 @@ const ClientBookingInfoCont = () => {
                                     color='#2e2e2e'
                                     align='left'
                                 >
-                                    Guest Name
+                                    Guest Name:
                                 </Title>
                                 <Title
                                     family='raleway, sans-serif'
@@ -1905,9 +1931,10 @@ const ClientBookingInfoCont = () => {
                                     fstyle='Normal'
                                     size='25px'
                                     color='#2e2e2e'
-                                    align='left'
+                                    align='right'
+                                    w='400px'
                                 >
-                                    <b>: {activeReservation.guestInformation.firstName.toLowerCase()}  {activeReservation.guestInformation.lastName.toLowerCase()}</b>
+                                    <b> {activeReservation.guestInformation.firstName}  {activeReservation.guestInformation.lastName}</b>
                                 </Title>
                             </ContainerGlobal>
                             <ContainerGlobal
@@ -1921,7 +1948,7 @@ const ClientBookingInfoCont = () => {
                                     color='#2e2e2e'
                                     align='left'
                                 >
-                                    Birthdate
+                                    Birthdate:
                                 </Title>
                                 <Title
                                     family='raleway, sans-serif'
@@ -1929,9 +1956,10 @@ const ClientBookingInfoCont = () => {
                                     fstyle='Normal'
                                     size='25px'
                                     color='#2e2e2e'
-                                    align='left'
+                                    align='right'
+                                    w='400px'
                                 >
-                                    <b>: {new Date(activeReservation.guestInformation.birthDate).toLocaleDateString()}</b>
+                                    <b> {new Date(activeReservation.guestInformation.birthDate).toLocaleDateString()}</b>
                                 </Title>
                             </ContainerGlobal>
                             <ContainerGlobal
@@ -1945,7 +1973,7 @@ const ClientBookingInfoCont = () => {
                                     color='#2e2e2e'
                                     align='left'
                                 >
-                                    Nationality
+                                    Nationality:
                                 </Title>
                                 <Title
                                     family='raleway, sans-serif'
@@ -1953,9 +1981,10 @@ const ClientBookingInfoCont = () => {
                                     fstyle='Normal'
                                     size='25px'
                                     color='#2e2e2e'
-                                    align='left'
+                                    align='right'
+                                    w='400px'
                                 >
-                                    <b>: {activeReservation.guestInformation.nationality.toLowerCase()}</b>
+                                    <b> {activeReservation.guestInformation.nationality}</b>
                                 </Title>
                             </ContainerGlobal>
                             <ContainerGlobal
@@ -1969,7 +1998,7 @@ const ClientBookingInfoCont = () => {
                                     color='#2e2e2e'
                                     align='left'
                                 >
-                                    Email Address
+                                    Email Address:
                                 </Title>
                                 <Title
                                     family='raleway, sans-serif'
@@ -1977,9 +2006,10 @@ const ClientBookingInfoCont = () => {
                                     fstyle='Normal'
                                     size='25px'
                                     color='#2e2e2e'
-                                    align='left'
+                                    align='right'
+                                    w='400px'
                                 >
-                                    <b>: {activeReservation.guestInformation.user.email.toLowerCase()}</b>
+                                    <b> {activeReservation.guestInformation.user.email.toLowerCase()}</b>
                                 </Title>
                             </ContainerGlobal>
                             <ContainerGlobal
@@ -1993,7 +2023,7 @@ const ClientBookingInfoCont = () => {
                                     color='#2e2e2e'
                                     align='left'
                                 >
-                                    Address
+                                    Address:
                                 </Title>
                                 <Title
                                     family='raleway, sans-serif'
@@ -2001,10 +2031,10 @@ const ClientBookingInfoCont = () => {
                                     fstyle='Normal'
                                     size='25px'
                                     color='#2e2e2e'
-                                    align='left'
-                                    width=''
+                                    align='right'
+                                    w='400px'
                                 >
-                                    <b>: {activeReservation.guestInformation.address.toLowerCase()}</b>
+                                    <b> {activeReservation.guestInformation.address}</b>
                                 </Title>
                             </ContainerGlobal>
                             <ContainerGlobal
@@ -2018,7 +2048,7 @@ const ClientBookingInfoCont = () => {
                                     color='#2e2e2e'
                                     align='left'
                                 >
-                                    Contact Number
+                                    Contact Number:
                                 </Title>
                                 <Title
                                     family='raleway, sans-serif'
@@ -2026,9 +2056,10 @@ const ClientBookingInfoCont = () => {
                                     fstyle='Normal'
                                     size='25px'
                                     color='#2e2e2e'
-                                    align='left'
+                                    align='right'
+                                    w='400px'
                                 >
-                                    <b>: {activeReservation.guestInformation.user.contactNumber.toLowerCase()}</b>
+                                    <b> {activeReservation.guestInformation.user.contactNumber}</b>
                                 </Title>
                             </ContainerGlobal>
 
@@ -2089,7 +2120,7 @@ const ClientBookingInfoCont = () => {
                                     color='#2e2e2e'
                                     align='left'
                                 >
-                                    <b>Discount</b>
+                                    <b>Discount:</b>
                                 </Title>
                                 <Title
                                     family='raleway, sans-serif'
@@ -2099,7 +2130,7 @@ const ClientBookingInfoCont = () => {
                                     // color='#13ed34'
                                     align='left'
                                 >
-                                    : {activeReservation.payment.discount.discountType}
+                                     {activeReservation.payment.discount.discountType}
                                 </Title>
                             </ContainerGlobal>
                             {activeReservation.payment.paymentType == 'Down Payment' ?
@@ -2112,7 +2143,7 @@ const ClientBookingInfoCont = () => {
                                         color='#2e2e2e'
                                         align='left'
                                     >
-                                        <b>Down Payment</b>
+                                        <b>Down Payment:</b>
                                     </Title>
                                     <Title
                                         family='Roboto Slab'
@@ -2122,7 +2153,7 @@ const ClientBookingInfoCont = () => {
                                         color='black'
                                         align='left'
                                     >
-                                        : {numberFormat(grandTotal / 2)}
+                                         {numberFormat(grandTotal / 2)}
                                     </Title>
                                 </ContainerGlobal>
                                 :
@@ -2135,7 +2166,7 @@ const ClientBookingInfoCont = () => {
                                         color='#2e2e2e'
                                         align='left'
                                     >
-                                        <b>Full Payment</b>
+                                        <b>Full Payment:</b>
                                     </Title>
                                     <Title
                                         family='Roboto Slab'
@@ -2145,7 +2176,7 @@ const ClientBookingInfoCont = () => {
                                         color='black'
                                         align='left'
                                     >
-                                        : {numberFormat(grandTotal)}
+                                         {numberFormat(grandTotal)}
                                     </Title>
                                 </ContainerGlobal>
                             }
@@ -2158,7 +2189,7 @@ const ClientBookingInfoCont = () => {
                                     color='#2e2e2e'
                                     align='left'
                                 >
-                                    <b>Amount Paid</b>
+                                    <b>Amount Paid:</b>
                                 </Title>
                                 <Title
                                     family='Roboto Slab'
@@ -2168,7 +2199,7 @@ const ClientBookingInfoCont = () => {
                                     color='#1C9E60'
                                     align='left'
                                 >
-                                    : {numberFormat(activeReservation.payment.paymentMade)}
+                                     {numberFormat(activeReservation.payment.paymentMade)}
                                 </Title>
                             </ContainerGlobal>
 
@@ -2181,7 +2212,7 @@ const ClientBookingInfoCont = () => {
                                     color='#2e2e2e'
                                     align='left'
                                 >
-                                    <b>Grand Total</b>
+                                    <b>Grand Total:</b>
                                 </Title>
                                 <Title
                                     family='Roboto Slab'
@@ -2191,7 +2222,7 @@ const ClientBookingInfoCont = () => {
                                     color='#000000'
                                     align='left'
                                 >
-                                    : {numberFormat(grandTotal)}
+                                     {numberFormat(grandTotal)}
                                 </Title>
                             </ContainerGlobal>
                             <HorizontalLine
@@ -2208,7 +2239,7 @@ const ClientBookingInfoCont = () => {
                                     color='#2e2e2e'
                                     align='left'
                                 >
-                                    <b>Remaining Balance</b>
+                                    <b>Remaining Balance:</b>
                                 </Title>
                                 <Title
                                     family='Roboto Slab'
@@ -2218,7 +2249,7 @@ const ClientBookingInfoCont = () => {
                                     color='red'
                                     align='left'
                                 >
-                                    : {numberFormat(activeReservation.payment.grandTotal - activeReservation.payment.paymentMade)}
+                                     {numberFormat(activeReservation.payment.grandTotal - activeReservation.payment.paymentMade)}
                                 </Title>
                             </ContainerGlobal>
                         </ChargeSummaryContentContainer>
@@ -2294,7 +2325,7 @@ const ClientBookingInfoCont = () => {
                                     color='#2e2e2e'
                                     align='left'
                                 >
-                                    Reservation Date.
+                                    Reservation Date:
                                 </Title>
                                 <Title
                                     family='raleway, sans-serif'
@@ -2302,9 +2333,10 @@ const ClientBookingInfoCont = () => {
                                     fstyle='Normal'
                                     size='25px'
                                     color='#2e2e2e'
-                                    align='left'
+                                    align='right'
+                                    w='400px'
                                 >
-                                    <b>: {new Date(activeReservation.reservationDate).toLocaleDateString()}</b>
+                                    <b> {new Date(activeReservation.reservationDate).toLocaleDateString()}</b>
                                 </Title>
                             </ContainerGlobal>
                             <ContainerGlobal
@@ -2318,7 +2350,7 @@ const ClientBookingInfoCont = () => {
                                     color='#2e2e2e'
                                     align='left'
                                 >
-                                    Payment Mode
+                                    Payment Mode:
                                 </Title>
                                 <Title
                                     family='raleway, sans-serif'
@@ -2326,9 +2358,10 @@ const ClientBookingInfoCont = () => {
                                     fstyle='Normal'
                                     size='25px'
                                     color='#2e2e2e'
-                                    align='left'
+                                    align='right'
+                                    w='400px'
                                 >
-                                    <b>: {activeReservation.payment.paymentMode.paymentMode}</b>
+                                    <b> {activeReservation.payment.paymentMode.paymentMode}</b>
                                 </Title>
                             </ContainerGlobal>
                             <ContainerGlobal
@@ -2342,7 +2375,7 @@ const ClientBookingInfoCont = () => {
                                     color='#2e2e2e'
                                     align='left'
                                 >
-                                    Payment Type
+                                    Payment Type:
                                 </Title>
                                 <Title
                                     family='raleway, sans-serif'
@@ -2350,9 +2383,10 @@ const ClientBookingInfoCont = () => {
                                     fstyle='Normal'
                                     size='25px'
                                     color='#2e2e2e'
-                                    align='left'
+                                    align='right'
+                                    w='400px'
                                 >
-                                    <b>:  Down Payment</b>
+                                    <b>  Down Payment</b>
                                 </Title>
                             </ContainerGlobal>
                             <ContainerGlobal
@@ -2366,7 +2400,7 @@ const ClientBookingInfoCont = () => {
                                     color='#2e2e2e'
                                     align='left'
                                 >
-                                    Guest Name
+                                    Guest Name:
                                 </Title>
                                 <Title
                                     family='raleway, sans-serif'
@@ -2374,9 +2408,10 @@ const ClientBookingInfoCont = () => {
                                     fstyle='Normal'
                                     size='25px'
                                     color='#2e2e2e'
-                                    align='left'
+                                    align='right'
+                                    w='400px'
                                 >
-                                    <b>: {activeReservation.guestInformation.firstName.toLowerCase()}  {activeReservation.guestInformation.lastName.toLowerCase()}</b>
+                                    <b> {activeReservation.guestInformation.firstName}  {activeReservation.guestInformation.lastName}</b>
                                 </Title>
                             </ContainerGlobal>
                             <ContainerGlobal
@@ -2390,7 +2425,7 @@ const ClientBookingInfoCont = () => {
                                     color='#2e2e2e'
                                     align='left'
                                 >
-                                    Birthdate
+                                    Birthdate:
                                 </Title>
                                 <Title
                                     family='raleway, sans-serif'
@@ -2398,9 +2433,10 @@ const ClientBookingInfoCont = () => {
                                     fstyle='Normal'
                                     size='25px'
                                     color='#2e2e2e'
-                                    align='left'
+                                    align='right'
+                                    w='400px'
                                 >
-                                    <b>: {new Date(activeReservation.guestInformation.birthDate).toLocaleDateString()}</b>
+                                    <b> {new Date(activeReservation.guestInformation.birthDate).toLocaleDateString()}</b>
                                 </Title>
                             </ContainerGlobal>
                             <ContainerGlobal
@@ -2414,7 +2450,7 @@ const ClientBookingInfoCont = () => {
                                     color='#2e2e2e'
                                     align='left'
                                 >
-                                    Nationality
+                                    Nationality:
                                 </Title>
                                 <Title
                                     family='raleway, sans-serif'
@@ -2422,9 +2458,10 @@ const ClientBookingInfoCont = () => {
                                     fstyle='Normal'
                                     size='25px'
                                     color='#2e2e2e'
-                                    align='left'
+                                    align='right'
+                                    w='400px'
                                 >
-                                    <b>: {activeReservation.guestInformation.nationality.toLowerCase()}</b>
+                                    <b> {activeReservation.guestInformation.nationality}</b>
                                 </Title>
                             </ContainerGlobal>
                             <ContainerGlobal
@@ -2438,7 +2475,7 @@ const ClientBookingInfoCont = () => {
                                     color='#2e2e2e'
                                     align='left'
                                 >
-                                    Email Address
+                                    Email Address:
                                 </Title>
                                 <Title
                                     family='raleway, sans-serif'
@@ -2446,9 +2483,10 @@ const ClientBookingInfoCont = () => {
                                     fstyle='Normal'
                                     size='25px'
                                     color='#2e2e2e'
-                                    align='left'
+                                    align='right'
+                                    w='400px'
                                 >
-                                    <b>: {activeReservation.guestInformation.user.email.toLowerCase()}</b>
+                                    <b> {activeReservation.guestInformation.user.email.toLowerCase()}</b>
                                 </Title>
                             </ContainerGlobal>
                             <ContainerGlobal
@@ -2462,7 +2500,7 @@ const ClientBookingInfoCont = () => {
                                     color='#2e2e2e'
                                     align='left'
                                 >
-                                    Address
+                                    Address:
                                 </Title>
                                 <Title
                                     family='raleway, sans-serif'
@@ -2470,10 +2508,10 @@ const ClientBookingInfoCont = () => {
                                     fstyle='Normal'
                                     size='25px'
                                     color='#2e2e2e'
-                                    align='left'
-                                    width=''
+                                    align='right'
+                                    w='400px'
                                 >
-                                    <b>: {activeReservation.guestInformation.address.toLowerCase()}</b>
+                                    <b> {activeReservation.guestInformation.address}</b>
                                 </Title>
                             </ContainerGlobal>
                             <ContainerGlobal
@@ -2487,7 +2525,7 @@ const ClientBookingInfoCont = () => {
                                     color='#2e2e2e'
                                     align='left'
                                 >
-                                    Contact Number
+                                    Contact Number:
                                 </Title>
                                 <Title
                                     family='raleway, sans-serif'
@@ -2495,9 +2533,10 @@ const ClientBookingInfoCont = () => {
                                     fstyle='Normal'
                                     size='25px'
                                     color='#2e2e2e'
-                                    align='left'
+                                    align='right'
+                                    w='400px'
                                 >
-                                    <b>: {activeReservation.guestInformation.user.contactNumber.toLowerCase()}</b>
+                                    <b> {activeReservation.guestInformation.user.contactNumber}</b>
                                 </Title>
                             </ContainerGlobal>
 
@@ -2558,7 +2597,7 @@ const ClientBookingInfoCont = () => {
                                     color='#2e2e2e'
                                     align='left'
                                 >
-                                    <b>Discount</b>
+                                    <b>Discount:</b>
                                 </Title>
                                 <Title
                                     family='raleway, sans-serif'
@@ -2568,7 +2607,7 @@ const ClientBookingInfoCont = () => {
                                     // color='#13ed34'
                                     align='left'
                                 >
-                                    : {activeReservation.payment.discount.discountType}
+                                     {activeReservation.payment.discount.discountType}
                                 </Title>
                             </ContainerGlobal>
                             {activeReservation.payment.paymentType == 'Down Payment' ?
@@ -2581,7 +2620,7 @@ const ClientBookingInfoCont = () => {
                                         color='#2e2e2e'
                                         align='left'
                                     >
-                                        <b>Down Payment</b>
+                                        <b>Down Payment:</b>
                                     </Title>
                                     <Title
                                         family='Roboto Slab'
@@ -2591,7 +2630,7 @@ const ClientBookingInfoCont = () => {
                                         color='black'
                                         align='left'
                                     >
-                                        : {numberFormat(grandTotal / 2)}
+                                         {numberFormat(grandTotal / 2)}
                                     </Title>
                                 </ContainerGlobal>
                                 :
@@ -2604,7 +2643,7 @@ const ClientBookingInfoCont = () => {
                                         color='#2e2e2e'
                                         align='left'
                                     >
-                                        <b>Full Payment</b>
+                                        <b>Full Payment:</b>
                                     </Title>
                                     <Title
                                         family='Roboto Slab'
@@ -2614,7 +2653,7 @@ const ClientBookingInfoCont = () => {
                                         color='black'
                                         align='left'
                                     >
-                                        : {numberFormat(grandTotal)}
+                                         {numberFormat(grandTotal)}
                                     </Title>
                                 </ContainerGlobal>
                             }
@@ -2627,7 +2666,7 @@ const ClientBookingInfoCont = () => {
                                     color='#2e2e2e'
                                     align='left'
                                 >
-                                    <b>Amount Paid</b>
+                                    <b>Amount Paid:</b>
                                 </Title>
                                 <Title
                                     family='Roboto Slab'
@@ -2637,7 +2676,7 @@ const ClientBookingInfoCont = () => {
                                     color='#1C9E60'
                                     align='left'
                                 >
-                                    : {numberFormat(activeReservation.payment.paymentMade)}
+                                     {numberFormat(activeReservation.payment.paymentMade)}
                                 </Title>
                             </ContainerGlobal>
 
@@ -2650,7 +2689,7 @@ const ClientBookingInfoCont = () => {
                                     color='#2e2e2e'
                                     align='left'
                                 >
-                                    <b>Grand Total</b>
+                                    <b>Grand Total:</b>
                                 </Title>
                                 <Title
                                     family='Roboto Slab'
@@ -2660,7 +2699,7 @@ const ClientBookingInfoCont = () => {
                                     color='#000000'
                                     align='left'
                                 >
-                                    : {numberFormat(grandTotal)}
+                                     {numberFormat(grandTotal)}
                                 </Title>
                             </ContainerGlobal>
                             <HorizontalLine
@@ -2677,7 +2716,7 @@ const ClientBookingInfoCont = () => {
                                     color='#2e2e2e'
                                     align='left'
                                 >
-                                    <b>Remaining Balance</b>
+                                    <b>Remaining Balance:</b>
                                 </Title>
                                 <Title
                                     family='Roboto Slab'
@@ -2687,7 +2726,7 @@ const ClientBookingInfoCont = () => {
                                     color='red'
                                     align='left'
                                 >
-                                    : {numberFormat(activeReservation.payment.grandTotal - activeReservation.payment.paymentMade)}
+                                     {numberFormat(activeReservation.payment.grandTotal - activeReservation.payment.paymentMade)}
                                 </Title>
                             </ContainerGlobal>
                         </ChargeSummaryContentContainer>
@@ -2753,7 +2792,7 @@ const ClientBookingInfoCont = () => {
                                     color='#2e2e2e'
                                     align='left'
                                 >
-                                    Reservation Date.
+                                    Reservation Date:
                                 </Title>
                                 <Title
                                     family='raleway, sans-serif'
@@ -2761,9 +2800,10 @@ const ClientBookingInfoCont = () => {
                                     fstyle='Normal'
                                     size='25px'
                                     color='#2e2e2e'
-                                    align='left'
+                                    align='right'
+                                    w='400px'
                                 >
-                                    <b>: {new Date(activeReservation.reservationDate).toLocaleDateString()}</b>
+                                    <b> {new Date(activeReservation.reservationDate).toLocaleDateString()}</b>
                                 </Title>
                             </ContainerGlobal>
                             <ContainerGlobal
@@ -2777,7 +2817,7 @@ const ClientBookingInfoCont = () => {
                                     color='#2e2e2e'
                                     align='left'
                                 >
-                                    Payment Mode
+                                    Payment Mode:
                                 </Title>
                                 <Title
                                     family='raleway, sans-serif'
@@ -2785,9 +2825,10 @@ const ClientBookingInfoCont = () => {
                                     fstyle='Normal'
                                     size='25px'
                                     color='#2e2e2e'
-                                    align='left'
+                                    align='right'
+                                    w='400px'
                                 >
-                                    <b>: {activeReservation.payment.paymentMode.paymentMode}</b>
+                                    <b> {activeReservation.payment.paymentMode.paymentMode}</b>
                                 </Title>
                             </ContainerGlobal>
                             <ContainerGlobal
@@ -2801,7 +2842,7 @@ const ClientBookingInfoCont = () => {
                                     color='#2e2e2e'
                                     align='left'
                                 >
-                                    Payment Type
+                                    Payment Type:
                                 </Title>
                                 <Title
                                     family='raleway, sans-serif'
@@ -2809,9 +2850,10 @@ const ClientBookingInfoCont = () => {
                                     fstyle='Normal'
                                     size='25px'
                                     color='#2e2e2e'
-                                    align='left'
+                                    align='right'
+                                    w='400px'
                                 >
-                                    <b>:  Down Payment</b>
+                                    <b>  Down Payment</b>
                                 </Title>
                             </ContainerGlobal>
                             <ContainerGlobal
@@ -2825,7 +2867,7 @@ const ClientBookingInfoCont = () => {
                                     color='#2e2e2e'
                                     align='left'
                                 >
-                                    Guest Name
+                                    Guest Name:
                                 </Title>
                                 <Title
                                     family='raleway, sans-serif'
@@ -2833,9 +2875,10 @@ const ClientBookingInfoCont = () => {
                                     fstyle='Normal'
                                     size='25px'
                                     color='#2e2e2e'
-                                    align='left'
+                                    align='right'
+                                    w='400px'
                                 >
-                                    <b>: {activeReservation.guestInformation.firstName.toLowerCase()}  {activeReservation.guestInformation.lastName.toLowerCase()}</b>
+                                    <b> {activeReservation.guestInformation.firstName}  {activeReservation.guestInformation.lastName}</b>
                                 </Title>
                             </ContainerGlobal>
                             <ContainerGlobal
@@ -2849,7 +2892,7 @@ const ClientBookingInfoCont = () => {
                                     color='#2e2e2e'
                                     align='left'
                                 >
-                                    Birthdate
+                                    Birthdate:
                                 </Title>
                                 <Title
                                     family='raleway, sans-serif'
@@ -2857,9 +2900,10 @@ const ClientBookingInfoCont = () => {
                                     fstyle='Normal'
                                     size='25px'
                                     color='#2e2e2e'
-                                    align='left'
+                                    align='right'
+                                    w='400px'
                                 >
-                                    <b>: {new Date(activeReservation.guestInformation.birthDate).toLocaleDateString()}</b>
+                                    <b> {new Date(activeReservation.guestInformation.birthDate).toLocaleDateString()}</b>
                                 </Title>
                             </ContainerGlobal>
                             <ContainerGlobal
@@ -2873,7 +2917,7 @@ const ClientBookingInfoCont = () => {
                                     color='#2e2e2e'
                                     align='left'
                                 >
-                                    Nationality
+                                    Nationality:
                                 </Title>
                                 <Title
                                     family='raleway, sans-serif'
@@ -2881,9 +2925,10 @@ const ClientBookingInfoCont = () => {
                                     fstyle='Normal'
                                     size='25px'
                                     color='#2e2e2e'
-                                    align='left'
+                                    align='right'
+                                    w='400px'
                                 >
-                                    <b>: {activeReservation.guestInformation.nationality.toLowerCase()}</b>
+                                    <b> {activeReservation.guestInformation.nationality}</b>
                                 </Title>
                             </ContainerGlobal>
                             <ContainerGlobal
@@ -2897,7 +2942,7 @@ const ClientBookingInfoCont = () => {
                                     color='#2e2e2e'
                                     align='left'
                                 >
-                                    Email Address
+                                    Email Address:
                                 </Title>
                                 <Title
                                     family='raleway, sans-serif'
@@ -2905,9 +2950,10 @@ const ClientBookingInfoCont = () => {
                                     fstyle='Normal'
                                     size='25px'
                                     color='#2e2e2e'
-                                    align='left'
+                                    align='right'
+                                    w='400px'
                                 >
-                                    <b>: {activeReservation.guestInformation.user.email.toLowerCase()}</b>
+                                    <b> {activeReservation.guestInformation.user.email.toLowerCase()}</b>
                                 </Title>
                             </ContainerGlobal>
                             <ContainerGlobal
@@ -2921,7 +2967,7 @@ const ClientBookingInfoCont = () => {
                                     color='#2e2e2e'
                                     align='left'
                                 >
-                                    Address
+                                    Address:
                                 </Title>
                                 <Title
                                     family='raleway, sans-serif'
@@ -2929,10 +2975,10 @@ const ClientBookingInfoCont = () => {
                                     fstyle='Normal'
                                     size='25px'
                                     color='#2e2e2e'
-                                    align='left'
-                                    width=''
+                                    align='right'
+                                    w='400px'
                                 >
-                                    <b>: {activeReservation.guestInformation.address.toLowerCase()}</b>
+                                    <b> {activeReservation.guestInformation.address}</b>
                                 </Title>
                             </ContainerGlobal>
                             <ContainerGlobal
@@ -2946,7 +2992,7 @@ const ClientBookingInfoCont = () => {
                                     color='#2e2e2e'
                                     align='left'
                                 >
-                                    Contact Number
+                                    Contact Number:
                                 </Title>
                                 <Title
                                     family='raleway, sans-serif'
@@ -2954,9 +3000,10 @@ const ClientBookingInfoCont = () => {
                                     fstyle='Normal'
                                     size='25px'
                                     color='#2e2e2e'
-                                    align='left'
+                                    align='right'
+                                    w='400px'
                                 >
-                                    <b>: {activeReservation.guestInformation.user.contactNumber.toLowerCase()}</b>
+                                    <b> {activeReservation.guestInformation.user.contactNumber}</b>
                                 </Title>
                             </ContainerGlobal>
 
@@ -3014,7 +3061,7 @@ const ClientBookingInfoCont = () => {
                                     color='#2e2e2e'
                                     align='left'
                                 >
-                                    <b>Discount</b>
+                                    <b>Discount:</b>
                                 </Title>
                                 <Title
                                     family='raleway, sans-serif'
@@ -3024,7 +3071,7 @@ const ClientBookingInfoCont = () => {
                                     // color='#13ed34'
                                     align='left'
                                 >
-                                    : {activeReservation.payment.discount.discountType}
+                                     {activeReservation.payment.discount.discountType}
                                 </Title>
                             </ContainerGlobal>
                             {activeReservation.payment.paymentType == 'Down Payment' ?
@@ -3037,7 +3084,7 @@ const ClientBookingInfoCont = () => {
                                         color='#2e2e2e'
                                         align='left'
                                     >
-                                        <b>Down Payment</b>
+                                        <b>Down Payment:</b>
                                     </Title>
                                     <Title
                                         family='Roboto Slab'
@@ -3047,7 +3094,7 @@ const ClientBookingInfoCont = () => {
                                         color='black'
                                         align='left'
                                     >
-                                        : {numberFormat(grandTotal / 2)}
+                                         {numberFormat(grandTotal / 2)}
                                     </Title>
                                 </ContainerGlobal>
                                 :
@@ -3060,7 +3107,7 @@ const ClientBookingInfoCont = () => {
                                         color='#2e2e2e'
                                         align='left'
                                     >
-                                        <b>Full Payment</b>
+                                        <b>Full Payment:</b>
                                     </Title>
                                     <Title
                                         family='Roboto Slab'
@@ -3070,7 +3117,7 @@ const ClientBookingInfoCont = () => {
                                         color='black'
                                         align='left'
                                     >
-                                        : {numberFormat(grandTotal)}
+                                         {numberFormat(grandTotal)}
                                     </Title>
                                 </ContainerGlobal>
                             }
@@ -3083,7 +3130,7 @@ const ClientBookingInfoCont = () => {
                                     color='#2e2e2e'
                                     align='left'
                                 >
-                                    <b>Amount Paid</b>
+                                    <b>Amount Paid:</b>
                                 </Title>
                                 <Title
                                     family='Roboto Slab'
@@ -3093,7 +3140,7 @@ const ClientBookingInfoCont = () => {
                                     color='#1C9E60'
                                     align='left'
                                 >
-                                    : {numberFormat(activeReservation.payment.paymentMade)}
+                                     {numberFormat(activeReservation.payment.paymentMade)}
                                 </Title>
                             </ContainerGlobal>
 
@@ -3106,7 +3153,7 @@ const ClientBookingInfoCont = () => {
                                     color='#2e2e2e'
                                     align='left'
                                 >
-                                    <b>Grand Total</b>
+                                    <b>Grand Total:</b>
                                 </Title>
                                 <Title
                                     family='Roboto Slab'
@@ -3133,7 +3180,7 @@ const ClientBookingInfoCont = () => {
                                     color='#2e2e2e'
                                     align='left'
                                 >
-                                    <b>Remaining Balance</b>
+                                    <b>Remaining Balance:</b>
                                 </Title>
                                 <Title
                                     family='Roboto Slab'
@@ -3143,7 +3190,7 @@ const ClientBookingInfoCont = () => {
                                     color='red'
                                     align='left'
                                 >
-                                    : {numberFormat(activeReservation.payment.grandTotal - activeReservation.payment.paymentMade)}
+                                     {numberFormat(activeReservation.payment.grandTotal - activeReservation.payment.paymentMade)}
                                 </Title>
                             </ContainerGlobal>
                         </ChargeSummaryContentContainer>
@@ -3158,24 +3205,136 @@ const ClientBookingInfoCont = () => {
 
     const reservationStatusStyle = (value) => {
         if (value.length != 0) {
-            if (value.toLowerCase() == 'pending') {
-                return <p style={{ color: '#CDA141' }}>{value}</p>
-            }
-            else if (value.toLowerCase() == 'reserved') {
-                return <p style={{ color: 'green' }}>{value}</p>
-            }
-            else if (value.toLowerCase() == 'unsettled') {
-                return <p style={{ color: 'red' }}>{value}</p>
-            }
-            else if (value.toLowerCase() == 'booked') {
-                return <p style={{ color: 'blue' }}>{value}</p>
-            }
-            else if (value.toLowerCase() == 'departed') {
-                return <p style={{ color: 'black' }}>{value}</p>
-            }
-            else if (value.toLowerCase() == 'no show') {
-                return <p style={{ color: 'red' }}>{value}</p>
-            }
+            if (value == 'RESERVED') {
+            return <ContainerGlobal
+                w='100px'
+                h='auto'
+                margin='0px auto'
+                bg='rgb(158,242,156)'
+                direction='row'
+                padding='2px 0px'
+                justify='center'
+                align='center'
+                border='2px solid rgb(0, 0, 0)'
+                gap='10px'
+                borderRadius='.5rem'
+            >
+                <Title
+                    family='Helvetica'
+                    size='12px'
+                    color='BLACK'
+                    fstyle='normal'
+                    display='inline'
+                    padding='5px 10px'
+                >
+                    {value.toLowerCase()}
+                </Title>
+            </ContainerGlobal>
+        }
+        else if (value == 'PENDING') {
+            return <ContainerGlobal
+                w='100px'
+                h='auto'
+                margin='0px auto'
+                bg='rgb(210,217,28)'
+                direction='row'
+                padding='2px 0px'
+                justify='center'
+                align='center'
+                border='2px solid rgb(0, 0, 0)'
+                gap='10px'
+                borderRadius='.5rem'
+            >
+                <Title
+                    family='Helvetica'
+                    size='12px'
+                    color='BLACK'
+                    fstyle='normal'
+                    display='inline'
+                    padding='5px 10px'
+                >
+                    {value.toLowerCase()}
+                </Title>
+            </ContainerGlobal>
+        }
+        else if (value == 'DEPARTED') {
+            return <ContainerGlobal
+                w='100px'
+                h='auto'
+                margin='0px auto'
+                bg='rgb(0, 255, 0, .2)'
+                direction='row'
+                padding='2px 0px'
+                justify='center'
+                align='center'
+                border='2px solid rgb(0, 0, 0)'
+                gap='10px'
+                borderRadius='.5rem'
+            >
+                <Title
+                    family='Helvetica'
+                    size='12px'
+                    color='BLACK'
+                    fstyle='normal'
+                    display='inline'
+                    padding='5px 10px'
+                >
+                    {value.toLowerCase()}
+                </Title>
+            </ContainerGlobal>
+        }
+        else if (value == 'UNSETTLED') {
+            return <ContainerGlobal
+                w='100px'
+                h='auto'
+                margin='0px auto'
+                bg='rgb(245,82,54)'
+                direction='row'
+                padding='2px 0px'
+                justify='center'
+                align='center'
+                border='2px solid rgb(0, 0, 0)'
+                gap='10px'
+                borderRadius='.5rem'
+            >
+                <Title
+                    family='Helvetica'
+                    size='12px'
+                    color='BLACK'
+                    fstyle='normal'
+                    display='inline'
+                    padding='5px 10px'
+                >
+                    {value.toLowerCase()}
+                </Title>
+            </ContainerGlobal>
+        }
+        else if (value == 'NO SHOW') {
+            return <ContainerGlobal
+                w='100px'
+                h='auto'
+                margin='0px auto'
+                bg='rgb(255,40,0)'
+                direction='row'
+                padding='2px 0px'
+                justify='center'
+                align='center'
+                border='2px solid rgb(0, 0, 0)'
+                gap='10px'
+                borderRadius='.5rem'
+            >
+                <Title
+                    family='Helvetica'
+                    size='12px'
+                    color='BLACK'
+                    fstyle='normal'
+                    display='inline'
+                    padding='5px 10px'
+                >
+                    {value.toLowerCase()}
+                </Title>
+            </ContainerGlobal>
+        }
         }
     }
     return (
@@ -3185,15 +3344,17 @@ const ClientBookingInfoCont = () => {
 
             {activeReservation.length != 0 ? 
             <Title
-            padding='15px 80px 15px 80px'
+            padding='20px 80px 20px 80px'
             bg='#272727'
-            family='raleway, sans-serif'
-            color='white'
+            family='Playfair Display'
+            color='#BFAA7E'
             weight='400'
-            size='25px'
+            size='50px'
             fstyle='Normal'
             margin='50px 0px 10px 0px'
             align='Center'
+            w='86.7%'
+
         >
             Reservation Status
         </Title>
@@ -3255,7 +3416,7 @@ const ClientBookingInfoCont = () => {
                                 <Td style={item.id == activeReservation.id ? { backgroundColor: 'green', color: 'black' } : { backgroundColor: 'transparent' }} align='center'>{item.reservationReferenceNumber}</Td>
                                 <Td style={item.id == activeReservation.id ? { backgroundColor: 'green', color: 'black' } : { backgroundColor: 'transparent' }} align='center'>{new Date(item.reservationDate).toLocaleDateString()} {new Date(item.reservationDate).toLocaleTimeString()}</Td>
                                 <Td style={item.id == activeReservation.id ? { backgroundColor: 'green', color: 'black', fontWeight: 'bold' } : { backgroundColor: 'transparent' }} align='center'>{reservationStatusStyle(item.reservationStatus)}</Td>
-                                <Td style={item.id == activeReservation.id ? { backgroundColor: 'green', color: 'black' } : { backgroundColor: 'transparent' }} align='center'><a style={{ cursor: 'pointer', color: 'blue' }} onClick={() => { view(item.id) }}>view</a></Td>
+                                <Td style={item.id == activeReservation.id ? { backgroundColor: 'green', color: 'black' } : { backgroundColor: 'transparent' }} align='center'><a href="#" style={{ cursor: 'pointer', color: 'blue' }} onClick={() => { view(item.id) }}>View</a></Td>
                                 {/* <Td align='center'>{item.numberOfNights}</Td>
                             <Td align='center'>{numberFormat(item.room.roomType.roomRate)}</Td>
                             <Td align='center' style={{ color: 'red' }}>{numberFormat(item.room.roomType.roomRate * item.numberOfNights)}</Td> */}

@@ -2,12 +2,12 @@ import React from 'react'
 import { Container, FlexboxContainer, FlexboxContentMain, FlexboxMainPhotoLeft, FlexboxContent, Description, HorizontalLine, } from './Styles'
 import { Title } from '../../components/title/styles';
 import BackgroundIMG2 from "../../images/FamenitiesIMG/eventsplace.jpg";
-import ImageSlider from '../../components/imageSlider/ImageSlider';
-import ImageSlider2 from '../../components/imageSlider/ImageSlider2';
-export const FAmenitiesContentCont = () => {
+import ImageSlider3 from '../../components/imageSlider/ImageSlider3';
+
+export const FAmenitiesContentCont2 = () => {
 
     let imageLinks = [
-        "../../images/FamenitiesIMG/eventsplace.jpg",
+        "../../images/FamenitiesIMG/coffeeshop.jpg",
     ]
     return (
         <Container>
@@ -23,7 +23,7 @@ export const FAmenitiesContentCont = () => {
             <FlexboxContainer style={{overflow: 'visible'}}>
                 <FlexboxContentMain>
                     <div style={{ width: '550px', display: 'inline-block', }}>
-                        <ImageSlider2 />
+                        <ImageSlider3 />
                     </div>
                     {/* <FlexboxMainPhotoLeft
                     link={BackgroundIMG2}></FlexboxMainPhotoLeft> */}
@@ -36,19 +36,24 @@ export const FAmenitiesContentCont = () => {
                             align='left'
 
                         >
-                            Events Place
+                            Doctor's Blend
                         </Title>
                         <Description>
                             <i>
-                            Nothing beats a great venue for bringing people together. 
-                            There will never be a dull moment at RM Luxe Hotel because we have the ideal space for any of your events. 
-                            Celebrate your milestones at our open event space on the building's rooftop, which can be designed and customized 
-                            to your specifications.
+                            Try the premium healthy coffee offered by Doctors Blend Café, which is located directly in front of RM Luxe Hotel, 
+                            to improve your mood while staying with us. This café was founded by a perfect match of four doctors from different 
+                            disciplines collaborating for a common goal and a pastry enthusiast to help promote the Philippine coffee industry 
+                            while educating drinkers on its health benefits. 
                             </i>
                         </Description>
                         <Description>
                             <i>
-                            For inquiries, please message us thru inbox or email: rm.luxehotel@gmail.com. Thank you.
+                            Two medical experts who promote a balanced and healthy lifestyle. 
+                            An engineer who promotes business innovation through the use of locally produced technologies. 
+                            A coffee scientist who innovates to bring the farm-to-cup experience to more people. 
+                            A pastry enthusiast who is passionate about baking.Every Filipino deserves premium healthy coffee, 
+                            so along with two more important partners, we support our local coffee bean farmers by providing 
+                            healthy coffee blends and products that are both affordable and of the highest quality.
                             </i>
                         </Description>
                     </FlexboxContent>
@@ -58,4 +63,4 @@ export const FAmenitiesContentCont = () => {
     )
 }
 
-export default FAmenitiesContentCont;
+export default FAmenitiesContentCont2;

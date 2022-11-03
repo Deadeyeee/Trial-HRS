@@ -614,12 +614,13 @@ export const BookingPageCont = () => {
                     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexFlow: 'column' }}>
                         <Title
                             color='#898585'
-                            weight='normal'
+                            weight='500'
                             size='3vw'
                             margin='20px 0px 0px 0px'
+                            family='Roboto Slab'
 
                         >
-                            No rooms available in your preffered dates.
+                            No available rooms in your preffered date(s). Please pick another one.
 
                         </Title>
                         {/* <Button

@@ -26,6 +26,9 @@ export const Famenities = () => {
             link={BackgroundIMG2}>
                 <TitleHolder>
                     <i>
+                        <a style={{
+                            textDecoration:"none", cursor:"pointer",
+                        }} href='/facilitiesAmenities/eventsPlace'>
                         <Title
 
                             family='Roboto Slab, Serif'
@@ -34,20 +37,12 @@ export const Famenities = () => {
                             weight='400'
                             align='left'
                             margin="0px 0px 0px 300px"
+                            cursor="pointer"
                         >
+                             
                             EVENTS PLACE
                         </Title>
-                        <a href='/facilitiesAmenities/eventsPlace'><Title
-                            color='white'
-                            size='14px'
-                            align='left'
-                            weight='400'
-                            margin="0px 0px 0px 300px"
-                            style={{cursor: 'pointer'}}
-                        >
-                            See More
-                        </Title></a>
-
+                        </a>
                     </i>
                 </TitleHolder>
             </PhotoHolder>
@@ -58,6 +53,9 @@ export const Famenities = () => {
                 justifyContent="flex-end"
                 >
                     <i>
+                        <a style={{
+                            textDecoration:"none", cursor:"pointer",
+                        }} href='/facilitiesAmenities/coffeeShop'>
                         <Title
 
                             family='Roboto Slab, Serif'
@@ -70,15 +68,7 @@ export const Famenities = () => {
                         >
                             COFFEE SHOP
                         </Title>
-                        <Title
-                            color='white'
-                            size='14px'
-                            align='right'
-                            weight='400'
-                            margin="0px 300px 0px 0px"
-                        >
-                            See More
-                        </Title>
+                        </a>
                     </i>
 
                 </TitleHolder>

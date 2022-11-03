@@ -451,7 +451,8 @@ function BookingConfirmationCont() {
                             fstyle='Normal'
                             size='25px'
                             color='#2e2e2e'
-                            align='left'
+                            align='right'
+                            w='400px'
                         >
                             <b>{reservationInfo.length != 0 && reservationInfo.reservationReferenceNumber}</b>
                         </Title>
@@ -475,7 +476,8 @@ function BookingConfirmationCont() {
                             fstyle='Normal'
                             size='25px'
                             color='#2e2e2e'
-                            align='left'
+                            align='right'
+                            w='400px'
                         >
                             <b>{reservationInfo.length != 0 && new Date(reservationInfo.reservationDate).toLocaleDateString()}</b>
                         </Title>
@@ -499,7 +501,8 @@ function BookingConfirmationCont() {
                             fstyle='Normal'
                             size='25px'
                             color='#2e2e2e'
-                            align='left'
+                            align='right'
+                            w='400px'
                         >
                             <b>{reservationInfo.length != 0 && reservationInfo.payment.paymentMode.paymentMode}</b>
                         </Title>
@@ -523,7 +526,8 @@ function BookingConfirmationCont() {
                             fstyle='Normal'
                             size='25px'
                             color='#2e2e2e'
-                            align='left'
+                            align='right'
+                            w='400px'
                         >
                             <b>{reservationInfo.length != 0 && reservationInfo.payment.paymentType}</b>
                         </Title>
@@ -547,7 +551,8 @@ function BookingConfirmationCont() {
                             fstyle='Normal'
                             size='25px'
                             color='#2e2e2e'
-                            align='left'
+                            align='right'
+                            w='400px'
                         >
                             <b>{reservationInfo.length != 0 && reservationInfo.guestInformation.firstName.toLowerCase()}  {reservationInfo.length != 0 && reservationInfo.guestInformation.lastName.toLowerCase()}</b>
                         </Title>
@@ -571,7 +576,8 @@ function BookingConfirmationCont() {
                             fstyle='Normal'
                             size='25px'
                             color='#2e2e2e'
-                            align='left'
+                            align='right'
+                            w='400px'
                         >
                             <b>{reservationInfo.length != 0 && new Date(reservationInfo.guestInformation.birthDate).toLocaleDateString()}</b>
                         </Title>
@@ -595,7 +601,8 @@ function BookingConfirmationCont() {
                             fstyle='Normal'
                             size='25px'
                             color='#2e2e2e'
-                            align='left'
+                            align='right'
+                            w='400px'
                         >
                             <b>{reservationInfo.length != 0 && reservationInfo.guestInformation.nationality.toLowerCase()}</b>
                         </Title>
@@ -619,7 +626,8 @@ function BookingConfirmationCont() {
                             fstyle='Normal'
                             size='25px'
                             color='#2e2e2e'
-                            align='left'
+                            align='right'
+                            w='400px'
                         >
                             <b>{reservationInfo.length != 0 && reservationInfo.guestInformation.user.email.toLowerCase()}</b>
                         </Title>
@@ -643,8 +651,8 @@ function BookingConfirmationCont() {
                             fstyle='Normal'
                             size='25px'
                             color='#2e2e2e'
-                            align='left'
-                            width=''
+                            align='right'
+                            w='400px'
                         >
                             <b>{reservationInfo.length != 0 && reservationInfo.guestInformation.address.toLowerCase()}</b>
                         </Title>
@@ -668,7 +676,8 @@ function BookingConfirmationCont() {
                             fstyle='Normal'
                             size='25px'
                             color='#2e2e2e'
-                            align='left'
+                            align='right'
+                            w='400px'
                         >
                             <b>{reservationInfo.length != 0 && reservationInfo.guestInformation.user.contactNumber.toLowerCase()}</b>
                         </Title>
