@@ -17,7 +17,7 @@ export const Footer = () => {
                         transition={{ type: "spring", mass: 1, stiffness: 200, duration: .5, delay: .5 }}
                     >
 
-                        <a href="https://www.w3schools.com">
+                        <a target='_blank' href="https://www.facebook.com/profile.php?id=100087348667465">
                             <Icon
                                 style={{ scale: .9 }}
                                 whileHover={{ scale: 1, rotate: [0, 20, -20, 0,], }}
@@ -26,7 +26,7 @@ export const Footer = () => {
                                 src={facebookIcon}></Icon>
 
                         </a>
-                        <a href="https://www.w3schools.com">
+                        <a target='_blank' href="https://www.instagram.com/rmluxehotel/">
                             <Icon
                                 style={{ scale: .9 }}
                                 whileHover={{ scale: 1, rotate: [0, 20, -20, 0,], }}
@@ -35,7 +35,7 @@ export const Footer = () => {
                                 src={instagramIcon}></Icon>
 
                         </a>
-                        <a href="https://www.w3schools.com">
+                        <a target='_blank' href="https://twitter.com/RMLuxeHotel">
                             <Icon
                                 style={{ scale: .9 }}
                                 whileHover={{ scale: 1, rotate: [0, 20, -20, 0,], }}

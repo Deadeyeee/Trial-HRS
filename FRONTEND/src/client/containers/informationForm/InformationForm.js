@@ -596,7 +596,7 @@ const InformationForm = () => {
                             />
 
                         </InputContainer>
-                        <p><h1 style={{ display: 'inline' }}>Create an account </h1>(optional)*</p>
+                        <p><h1 style={{ display: 'inline' }}>Create an account </h1>(optional)</p>
                         <InputContainer>
                             <TextField
 

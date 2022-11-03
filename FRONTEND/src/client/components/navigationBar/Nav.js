@@ -10,6 +10,7 @@ import { apiKey } from '../../../apiKey';
 export const Nav = (props) => {
   
 
+  Axios.defaults.withCredentials = true;
   const [login, setLogin] = useState(true);
   const [dropDown, setdropDown] = useState("");
   const [userName, setUserName] = useState("");
@@ -29,14 +30,17 @@ export const Nav = (props) => {
     Axios.get(apiKey+"auth/verify-token").then((response)=>{
       setLogin(false);
       setdropDown("inline-flex")
-      setUserName(response.data.userName.charAt(0).toUpperCase()+ response.data.userName.slice(1));
-      
+      Axios.get(apiKey + 'api/getAllGuest').then((result) => {
+        setUserName(result.data.filter((obj)=> obj.user.id == response.data.id).map((item)=> item.firstName)[0].charAt(0).toUpperCase() + result.data.filter((obj)=> obj.user.id == response.data.id).map((item)=> item.firstName)[0].slice(1).toLowerCase())
+      }).catch((err) => {
+        console.log(err)
+      });
     }).catch((e) => {
       if(e.response.data === "Unauthorized"){
         setdropDown("none");
       }
     })
-});
+},[]);
   
   const variants = {
     visible: { y: 0, opacity:1 },
@@ -66,8 +70,8 @@ export const Nav = (props) => {
            <MenuItems><Link active={props.about == true} href="/aboutUs">About Us</Link></MenuItems>
 
            <ProfileDrop
-          display={dropDown}
-          userName={userName}
+          display={dropDown}          
+          userName={userName != '' ? userName:''}
           Logout={Logout}
           ></ProfileDrop>
            <Button href="/login"

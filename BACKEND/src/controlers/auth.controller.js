@@ -70,9 +70,9 @@ exports.Login = async (req, res) => {
             let token = jwt.sign(
                 { id: user_login.id, userName: user_login.userName, email: user_login.email, role: user_login.role },
                 config.auth.secret,
-                // {
-                //     expiresIn: 43200,
-                // }
+                {
+                    expiresIn: '365d',
+                }
             );
 
             req.session.user = token;
@@ -139,9 +139,9 @@ exports.LoginAdmin = async (req, res) => {
             let token = jwt.sign(
                 { id: user_login.id, userName: user_login.userName, email: user_login.email, role: user_login.role },
                 config.auth.secret,
-                // {
-                //     expiresIn: 43200,
-                // }
+                {
+                    expiresIn: '365d',
+                }
             );
 
             req.session.user = token;
@@ -201,7 +201,8 @@ exports.verifyEmailToken = async (req, res) => {
 
 exports.Logout = async (req, res) => {
     if (req.session) {
-        req.session.destroy();
+        // req.session.destroy();
+        delete req.session.user;
         res.send("successfully logedout");
     }
 }

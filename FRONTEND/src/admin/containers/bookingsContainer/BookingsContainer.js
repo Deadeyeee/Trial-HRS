@@ -1267,7 +1267,7 @@ const BookingsContainer = () => {
                             align='left'
                             margin='0px auto 0px 10px'
                         >
-                            View Reservation
+                            View Booking
                         </Title>
                         <CloseIcon
                             onClick={handleCloseView}
