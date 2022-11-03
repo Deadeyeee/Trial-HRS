@@ -37,6 +37,7 @@ export const HomeBooking = ({ title }) => {
   );
   const [nights, setNights] = useState();
   const [adults, setAdults] = useState(2);
+  const [kids, setKids] = useState(0);
   let minEndDate = new Date(startDate);
 
   useEffect(() => {
@@ -69,6 +70,7 @@ export const HomeBooking = ({ title }) => {
     window.sessionStorage.setItem("startDate", startDate);
     window.sessionStorage.setItem("endDate", endDate);
     window.sessionStorage.setItem("guest", adults);
+    window.sessionStorage.setItem("kids", kids);
 
     window.location = "/booking";
   };
@@ -116,7 +118,7 @@ export const HomeBooking = ({ title }) => {
           minDateEnd={minEndDate}
           maxDateEnd={new Date(Date.parse(startDate) + 15552000000)}
 
-          // minDate={new Date()}
+        // minDate={new Date()}
         />
 
         <Persons>
@@ -139,34 +141,34 @@ export const HomeBooking = ({ title }) => {
               height="3vw"
             ></TextInput>
             <Title size="1.1vw" weight="Bold">
-              No. of guest(s)
+              Adults
             </Title>
           </LabelDiv>
           <LabelDiv>
-            {/* <TextInput
-                            style={{ fontWeight: 'bold', fontSize: '1.1vw' }}
-                            family='Roboto Slab'
-                            width="5vw"
-                            placeholder="No. of Adults"
-                            align="center"
-                            borderColor='black'
-                            margins='0px'
-                            max={2}
-                            min={0}
-                            value={kids}
-                            type='number'
-                            onChange={(e) => {
-                                setKids(e.target.value);
-                            }}
-                            height='3vw'
-                        ></TextInput>
+            <TextInput
+              style={{ fontWeight: 'bold', fontSize: '1.1vw' }}
+              family='Roboto Slab'
+              width="5vw"
+              placeholder="No. of Kids"
+              align="center"
+              borderColor='black'
+              margins='0px'
+              max={2}
+              min={0}
+              value={kids}
+              type='number'
+              onChange={(e) => {
+                setKids(e.target.value);
+              }}
+              height='3vw'
+            ></TextInput>
 
-                        <Title
-                            size='1.1vw'
-                            weight="bold">
+            <Title
+              size='1.1vw'
+              weight="bold">
 
-                            Kids
-                        </Title> */}
+              Kids
+            </Title>
           </LabelDiv>
         </Persons>
         <Button
@@ -317,21 +319,21 @@ export const HomeBooking = ({ title }) => {
               </Description>
               <HorizontalLineMini></HorizontalLineMini>
               <Button
-              w="90%"
-              h="45px"
-              radius="0px"
-              border="none"
-              fontStyle="normal"
-              weight="bold"
-              fam="Roboto Slab"
-              bg="#302B20"
-              margin="auto 0px 0px 0px"
-              onClick={() => {
-                window.location.href = "/contactUs";
-              }}
-            >
-              Read More
-            </Button>
+                w="90%"
+                h="45px"
+                radius="0px"
+                border="none"
+                fontStyle="normal"
+                weight="bold"
+                fam="Roboto Slab"
+                bg="#302B20"
+                margin="auto 0px 0px 0px"
+                onClick={() => {
+                  window.location.href = "/contactUs";
+                }}
+              >
+                Read More
+              </Button>
             </ContentDiv>
           </OtherPoster>
         </FlexItems>
@@ -367,12 +369,12 @@ export const HomeBooking = ({ title }) => {
                 style={
                   openAnswer1 == true
                     ? {
-                        color: "white",
-                        transform: "rotate(90deg)",
-                      }
+                      color: "white",
+                      transform: "rotate(90deg)",
+                    }
                     : {
-                        color: "white",
-                      }
+                      color: "white",
+                    }
                 }
               />
             </Question>
@@ -381,8 +383,8 @@ export const HomeBooking = ({ title }) => {
                 openAnswer1 == true
                   ? {}
                   : {
-                      display: "none",
-                    }
+                    display: "none",
+                  }
               }
             >
               <Title
@@ -416,12 +418,12 @@ export const HomeBooking = ({ title }) => {
                 style={
                   openAnswer2 == true
                     ? {
-                        color: "white",
-                        transform: "rotate(90deg)",
-                      }
+                      color: "white",
+                      transform: "rotate(90deg)",
+                    }
                     : {
-                        color: "white",
-                      }
+                      color: "white",
+                    }
                 }
               />
             </Question>
@@ -430,8 +432,8 @@ export const HomeBooking = ({ title }) => {
                 openAnswer2 == true
                   ? {}
                   : {
-                      display: "none",
-                    }
+                    display: "none",
+                  }
               }
             >
               <Title
@@ -469,12 +471,12 @@ export const HomeBooking = ({ title }) => {
                 style={
                   openAnswer3 == true
                     ? {
-                        color: "white",
-                        transform: "rotate(90deg)",
-                      }
+                      color: "white",
+                      transform: "rotate(90deg)",
+                    }
                     : {
-                        color: "white",
-                      }
+                      color: "white",
+                    }
                 }
               />
             </Question>
@@ -483,8 +485,8 @@ export const HomeBooking = ({ title }) => {
                 openAnswer3 == true
                   ? {}
                   : {
-                      display: "none",
-                    }
+                    display: "none",
+                  }
               }
             >
               <Title
@@ -520,12 +522,12 @@ export const HomeBooking = ({ title }) => {
                 style={
                   openAnswer4 == true
                     ? {
-                        color: "white",
-                        transform: "rotate(90deg)",
-                      }
+                      color: "white",
+                      transform: "rotate(90deg)",
+                    }
                     : {
-                        color: "white",
-                      }
+                      color: "white",
+                    }
                 }
               />
             </Question>
@@ -534,8 +536,8 @@ export const HomeBooking = ({ title }) => {
                 openAnswer4 == true
                   ? {}
                   : {
-                      display: "none",
-                    }
+                    display: "none",
+                  }
               }
             >
               <Title
@@ -569,12 +571,12 @@ export const HomeBooking = ({ title }) => {
                 style={
                   openAnswer5 == true
                     ? {
-                        color: "white",
-                        transform: "rotate(90deg)",
-                      }
+                      color: "white",
+                      transform: "rotate(90deg)",
+                    }
                     : {
-                        color: "white",
-                      }
+                      color: "white",
+                    }
                 }
               />
             </Question>
@@ -583,8 +585,8 @@ export const HomeBooking = ({ title }) => {
                 openAnswer5 == true
                   ? {}
                   : {
-                      display: "none",
-                    }
+                    display: "none",
+                  }
               }
             >
               <Title

@@ -32,9 +32,9 @@ const ClientBookingInfoCont = () => {
     }, [reservedBooking])
 
     useEffect(() => {
-        axios.get(apiKey+'auth/verify-token').then((authUser) => {
+        axios.get(apiKey + 'auth/verify-token').then((authUser) => {
             console.log(authUser.data)
-            axios.get(apiKey+'api/getAllReservation').then((getAllReservation) => {
+            axios.get(apiKey + 'api/getAllReservation').then((getAllReservation) => {
                 setReservation([])
                 getAllReservation.data.map((item) => {
                     if (item.guestInformation.user.id == authUser.data.id) {
@@ -70,7 +70,7 @@ const ClientBookingInfoCont = () => {
 
     useEffect(() => {
         console.log("activeReservation", activeReservation)
-        axios.get(apiKey+'api/getAllReservationSummary').then((result) => {
+        axios.get(apiKey + 'api/getAllReservationSummary').then((result) => {
             setReservedBooking([])
             for (let index = 0; index < result.data.length; index++) {
                 if (activeReservation.id == result.data[index].reservation_id) {
@@ -234,7 +234,7 @@ const ClientBookingInfoCont = () => {
                         </ContainerGlobal>
 
                     </BankTitleContainer>
-                    <BankContentContainer >
+                    <BankContentContainer>
                         <Title
                             family='raleway, sans-serif'
                             weight='400'
@@ -242,10 +242,19 @@ const ClientBookingInfoCont = () => {
                             size='25px'
                             color='#2e2e2e'
                             align='center'
-                            margin='0px 20px'
+                            margin='0px 200px'
                         >
-
-                            To confirm your reservation, please make your deposit amounting within the next 24 hours. Please email your proof of payment to <b>rm.luxehotel@gmail.com</b> or upload it in the PAYMENT TAB section so we can verify the payment. Once your payment has been verified, you will receive a booking confirmation.
+                            To confirm your reservation, <b>
+                                please make your deposit amounting
+                                {activeReservation.length != 0 ?
+                                    activeReservation.payment.paymentType == 'Down Payment' ? ' ' +
+                                        numberFormat(activeReservation.payment.grandTotal / 2) + ' until ' + new Date(new Date(activeReservation.reservationDate).getTime() + 60 * 60 * 24 * 1000).toLocaleDateString() + " " + new Date(activeReservation.reservationDate).toLocaleTimeString()
+                                        :
+                                        numberFormat(activeReservation.payment.grandTotal) + ' until ' + new Date(new Date(activeReservation.reservationDate).getTime() + 60 * 60 * 24 * 1000).toLocaleDateString() + " " + new Date(activeReservation.reservationDate).toLocaleTimeString()
+                                    :
+                                    ''
+                                }.
+                            </b> <br></br><br></br> Please email your proof of payment to <a target='_blank' href='mailto: Rm.LuxeHotel@gmail.com'>Rm.LuxeHotel@gmail.com</a> or upload it to your user account by <a href='/login'>logging in</a> to our website and going to the PAYMENT SECTION so we can verify the payment. Once your payment has been verified, you will receive a booking confirmation.
                         </Title>
                         <Title
                             family='raleway, sans-serif'
@@ -254,9 +263,9 @@ const ClientBookingInfoCont = () => {
                             size='25px'
                             color='#2e2e2e'
                             align='center'
-                            margin='25px 20px'
+                            margin='25px 200px'
                         >
-                            For further information, please send an email to rm.luxehotel@gmail.com, or <a href='/login'>message us</a> through your account. You will find the details of your reservation made below.
+                            For further information, please send an email to <a target='_blank' href='mailto: Rm.LuxeHotel@gmail.com'>Rm.LuxeHotel@gmail.com</a>, or <a href='/login'>message us</a> through your account. You will find the details of your reservation made below.
                         </Title>
                     </BankContentContainer>
                     <Title
@@ -569,7 +578,7 @@ const ClientBookingInfoCont = () => {
                     <center>
                         <BrokenHorizontalLine></BrokenHorizontalLine>
                     </center>
-                    <ChargeSummaryContainer>
+                    <ChargeSummaryContainer style={{ margin: 'auto' }}>
                         <ChargeSummaryContentContainer>
                             <ContainerGlobal justify='space-between' gap='70px'>
                                 <Title
@@ -590,7 +599,7 @@ const ClientBookingInfoCont = () => {
                                     // color='#13ed34'
                                     align='left'
                                 >
-                                     {activeReservation.payment.discount.discountType}
+                                    {activeReservation.payment.discount.discountType}
                                 </Title>
                             </ContainerGlobal>
                             {activeReservation.payment.paymentType == 'Down Payment' ?
@@ -613,7 +622,7 @@ const ClientBookingInfoCont = () => {
                                         color='black'
                                         align='left'
                                     >
-                                         {numberFormat(grandTotal / 2)}
+                                        {numberFormat(grandTotal / 2)}
                                     </Title>
                                 </ContainerGlobal>
                                 :
@@ -636,7 +645,7 @@ const ClientBookingInfoCont = () => {
                                         color='black'
                                         align='left'
                                     >
-                                         {numberFormat(grandTotal)}
+                                        {numberFormat(grandTotal)}
                                     </Title>
                                 </ContainerGlobal>
                             }
@@ -659,7 +668,7 @@ const ClientBookingInfoCont = () => {
                                     color='#1C9E60'
                                     align='left'
                                 >
-                                     {numberFormat(activeReservation.payment.paymentMade)}
+                                    {numberFormat(activeReservation.payment.paymentMade)}
                                 </Title>
                             </ContainerGlobal>
 
@@ -682,7 +691,7 @@ const ClientBookingInfoCont = () => {
                                     color='#000000'
                                     align='left'
                                 >
-                                     {numberFormat(grandTotal)}
+                                    {numberFormat(grandTotal)}
                                 </Title>
                             </ContainerGlobal>
                             <HorizontalLine
@@ -709,12 +718,9 @@ const ClientBookingInfoCont = () => {
                                     color='red'
                                     align='left'
                                 >
-                                     {numberFormat(activeReservation.payment.grandTotal - activeReservation.payment.paymentMade)}
+                                    {numberFormat(activeReservation.payment.grandTotal - activeReservation.payment.paymentMade)}
                                 </Title>
                             </ContainerGlobal>
-                        </ChargeSummaryContentContainer>
-                        <ChargeSummaryContentContainer>
-
                         </ChargeSummaryContentContainer>
                     </ChargeSummaryContainer>
                     <div style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center' }}>
@@ -1069,7 +1075,7 @@ const ClientBookingInfoCont = () => {
                                     // color='#13ed34'
                                     align='left'
                                 >
-                                     {activeReservation.payment.discount.discountType}
+                                    {activeReservation.payment.discount.discountType}
                                 </Title>
                             </ContainerGlobal>
                             <ContainerGlobal justify='space-between' gap='70px'>
@@ -1091,7 +1097,7 @@ const ClientBookingInfoCont = () => {
                                     color='black'
                                     align='left'
                                 >
-                                     {numberFormat(grandTotal / 2)}
+                                    {numberFormat(grandTotal / 2)}
                                 </Title>
                             </ContainerGlobal>
                             <ContainerGlobal justify='space-between' gap='70px'>
@@ -1113,7 +1119,7 @@ const ClientBookingInfoCont = () => {
                                     color='black'
                                     align='left'
                                 >
-                                     {numberFormat(grandTotal)}
+                                    {numberFormat(grandTotal)}
                                 </Title>
                             </ContainerGlobal>
                             <ContainerGlobal justify='space-between' gap='70px'>
@@ -1135,7 +1141,7 @@ const ClientBookingInfoCont = () => {
                                     color='#1C9E60'
                                     align='left'
                                 >
-                                     {numberFormat(grandTotal)}
+                                    {numberFormat(grandTotal)}
                                 </Title>
                             </ContainerGlobal>
                             <ContainerGlobal justify='space-between' gap='70px'>
@@ -1157,7 +1163,7 @@ const ClientBookingInfoCont = () => {
                                     color='red'
                                     align='left'
                                 >
-                                     {numberFormat(grandTotal)}
+                                    {numberFormat(grandTotal)}
                                 </Title>
                             </ContainerGlobal>
                             <HorizontalLine
@@ -1183,7 +1189,7 @@ const ClientBookingInfoCont = () => {
                                     color='#000000'
                                     align='left'
                                 >
-                                         {numberFormat(grandTotal)}
+                                    {numberFormat(grandTotal)}
                                 </Title>
                             </ContainerGlobal>
                         </ChargeSummaryContentContainer>
@@ -1528,7 +1534,7 @@ const ClientBookingInfoCont = () => {
                                     // color='#13ed34'
                                     align='left'
                                 >
-                                     {activeReservation.payment.discount.discountType}
+                                    {activeReservation.payment.discount.discountType}
                                 </Title>
                             </ContainerGlobal>
                             {activeReservation.payment.paymentType == 'Down Payment' ?
@@ -1551,7 +1557,7 @@ const ClientBookingInfoCont = () => {
                                         color='black'
                                         align='left'
                                     >
-                                         {numberFormat(grandTotal / 2)}
+                                        {numberFormat(grandTotal / 2)}
                                     </Title>
                                 </ContainerGlobal>
                                 :
@@ -1574,7 +1580,7 @@ const ClientBookingInfoCont = () => {
                                         color='black'
                                         align='left'
                                     >
-                                         {numberFormat(grandTotal)}
+                                        {numberFormat(grandTotal)}
                                     </Title>
                                 </ContainerGlobal>
                             }
@@ -1597,7 +1603,7 @@ const ClientBookingInfoCont = () => {
                                     color='#1C9E60'
                                     align='left'
                                 >
-                                     {numberFormat(activeReservation.payment.paymentMade)}
+                                    {numberFormat(activeReservation.payment.paymentMade)}
                                 </Title>
                             </ContainerGlobal>
 
@@ -1620,7 +1626,7 @@ const ClientBookingInfoCont = () => {
                                     color='#000000'
                                     align='left'
                                 >
-                                     {numberFormat(grandTotal)}
+                                    {numberFormat(grandTotal)}
                                 </Title>
                             </ContainerGlobal>
                             <HorizontalLine
@@ -1647,7 +1653,7 @@ const ClientBookingInfoCont = () => {
                                     color='red'
                                     align='left'
                                 >
-                                     {numberFormat(activeReservation.payment.grandTotal - activeReservation.payment.paymentMade)}
+                                    {numberFormat(activeReservation.payment.grandTotal - activeReservation.payment.paymentMade)}
                                 </Title>
                             </ContainerGlobal>
                         </ChargeSummaryContentContainer>
@@ -2130,7 +2136,7 @@ const ClientBookingInfoCont = () => {
                                     // color='#13ed34'
                                     align='left'
                                 >
-                                     {activeReservation.payment.discount.discountType}
+                                    {activeReservation.payment.discount.discountType}
                                 </Title>
                             </ContainerGlobal>
                             {activeReservation.payment.paymentType == 'Down Payment' ?
@@ -2153,7 +2159,7 @@ const ClientBookingInfoCont = () => {
                                         color='black'
                                         align='left'
                                     >
-                                         {numberFormat(grandTotal / 2)}
+                                        {numberFormat(grandTotal / 2)}
                                     </Title>
                                 </ContainerGlobal>
                                 :
@@ -2176,7 +2182,7 @@ const ClientBookingInfoCont = () => {
                                         color='black'
                                         align='left'
                                     >
-                                         {numberFormat(grandTotal)}
+                                        {numberFormat(grandTotal)}
                                     </Title>
                                 </ContainerGlobal>
                             }
@@ -2199,7 +2205,7 @@ const ClientBookingInfoCont = () => {
                                     color='#1C9E60'
                                     align='left'
                                 >
-                                     {numberFormat(activeReservation.payment.paymentMade)}
+                                    {numberFormat(activeReservation.payment.paymentMade)}
                                 </Title>
                             </ContainerGlobal>
 
@@ -2222,7 +2228,7 @@ const ClientBookingInfoCont = () => {
                                     color='#000000'
                                     align='left'
                                 >
-                                     {numberFormat(grandTotal)}
+                                    {numberFormat(grandTotal)}
                                 </Title>
                             </ContainerGlobal>
                             <HorizontalLine
@@ -2249,7 +2255,7 @@ const ClientBookingInfoCont = () => {
                                     color='red'
                                     align='left'
                                 >
-                                     {numberFormat(activeReservation.payment.grandTotal - activeReservation.payment.paymentMade)}
+                                    {numberFormat(activeReservation.payment.grandTotal - activeReservation.payment.paymentMade)}
                                 </Title>
                             </ContainerGlobal>
                         </ChargeSummaryContentContainer>
@@ -2607,7 +2613,7 @@ const ClientBookingInfoCont = () => {
                                     // color='#13ed34'
                                     align='left'
                                 >
-                                     {activeReservation.payment.discount.discountType}
+                                    {activeReservation.payment.discount.discountType}
                                 </Title>
                             </ContainerGlobal>
                             {activeReservation.payment.paymentType == 'Down Payment' ?
@@ -2630,7 +2636,7 @@ const ClientBookingInfoCont = () => {
                                         color='black'
                                         align='left'
                                     >
-                                         {numberFormat(grandTotal / 2)}
+                                        {numberFormat(grandTotal / 2)}
                                     </Title>
                                 </ContainerGlobal>
                                 :
@@ -2653,7 +2659,7 @@ const ClientBookingInfoCont = () => {
                                         color='black'
                                         align='left'
                                     >
-                                         {numberFormat(grandTotal)}
+                                        {numberFormat(grandTotal)}
                                     </Title>
                                 </ContainerGlobal>
                             }
@@ -2676,7 +2682,7 @@ const ClientBookingInfoCont = () => {
                                     color='#1C9E60'
                                     align='left'
                                 >
-                                     {numberFormat(activeReservation.payment.paymentMade)}
+                                    {numberFormat(activeReservation.payment.paymentMade)}
                                 </Title>
                             </ContainerGlobal>
 
@@ -2699,7 +2705,7 @@ const ClientBookingInfoCont = () => {
                                     color='#000000'
                                     align='left'
                                 >
-                                     {numberFormat(grandTotal)}
+                                    {numberFormat(grandTotal)}
                                 </Title>
                             </ContainerGlobal>
                             <HorizontalLine
@@ -2726,7 +2732,7 @@ const ClientBookingInfoCont = () => {
                                     color='red'
                                     align='left'
                                 >
-                                     {numberFormat(activeReservation.payment.grandTotal - activeReservation.payment.paymentMade)}
+                                    {numberFormat(activeReservation.payment.grandTotal - activeReservation.payment.paymentMade)}
                                 </Title>
                             </ContainerGlobal>
                         </ChargeSummaryContentContainer>
@@ -3071,7 +3077,7 @@ const ClientBookingInfoCont = () => {
                                     // color='#13ed34'
                                     align='left'
                                 >
-                                     {activeReservation.payment.discount.discountType}
+                                    {activeReservation.payment.discount.discountType}
                                 </Title>
                             </ContainerGlobal>
                             {activeReservation.payment.paymentType == 'Down Payment' ?
@@ -3094,7 +3100,7 @@ const ClientBookingInfoCont = () => {
                                         color='black'
                                         align='left'
                                     >
-                                         {numberFormat(grandTotal / 2)}
+                                        {numberFormat(grandTotal / 2)}
                                     </Title>
                                 </ContainerGlobal>
                                 :
@@ -3117,7 +3123,7 @@ const ClientBookingInfoCont = () => {
                                         color='black'
                                         align='left'
                                     >
-                                         {numberFormat(grandTotal)}
+                                        {numberFormat(grandTotal)}
                                     </Title>
                                 </ContainerGlobal>
                             }
@@ -3140,7 +3146,7 @@ const ClientBookingInfoCont = () => {
                                     color='#1C9E60'
                                     align='left'
                                 >
-                                     {numberFormat(activeReservation.payment.paymentMade)}
+                                    {numberFormat(activeReservation.payment.paymentMade)}
                                 </Title>
                             </ContainerGlobal>
 
@@ -3190,7 +3196,7 @@ const ClientBookingInfoCont = () => {
                                     color='red'
                                     align='left'
                                 >
-                                     {numberFormat(activeReservation.payment.grandTotal - activeReservation.payment.paymentMade)}
+                                    {numberFormat(activeReservation.payment.grandTotal - activeReservation.payment.paymentMade)}
                                 </Title>
                             </ContainerGlobal>
                         </ChargeSummaryContentContainer>
@@ -3206,135 +3212,135 @@ const ClientBookingInfoCont = () => {
     const reservationStatusStyle = (value) => {
         if (value.length != 0) {
             if (value == 'RESERVED') {
-            return <ContainerGlobal
-                w='100px'
-                h='auto'
-                margin='0px auto'
-                bg='rgb(158,242,156)'
-                direction='row'
-                padding='2px 0px'
-                justify='center'
-                align='center'
-                border='2px solid rgb(0, 0, 0)'
-                gap='10px'
-                borderRadius='.5rem'
-            >
-                <Title
-                    family='Helvetica'
-                    size='12px'
-                    color='BLACK'
-                    fstyle='normal'
-                    display='inline'
-                    padding='5px 10px'
+                return <ContainerGlobal
+                    w='100px'
+                    h='auto'
+                    margin='0px auto'
+                    bg='rgb(158,242,156)'
+                    direction='row'
+                    padding='2px 0px'
+                    justify='center'
+                    align='center'
+                    border='2px solid rgb(0, 0, 0)'
+                    gap='10px'
+                    borderRadius='.5rem'
                 >
-                    {value.toLowerCase()}
-                </Title>
-            </ContainerGlobal>
-        }
-        else if (value == 'PENDING') {
-            return <ContainerGlobal
-                w='100px'
-                h='auto'
-                margin='0px auto'
-                bg='rgb(210,217,28)'
-                direction='row'
-                padding='2px 0px'
-                justify='center'
-                align='center'
-                border='2px solid rgb(0, 0, 0)'
-                gap='10px'
-                borderRadius='.5rem'
-            >
-                <Title
-                    family='Helvetica'
-                    size='12px'
-                    color='BLACK'
-                    fstyle='normal'
-                    display='inline'
-                    padding='5px 10px'
+                    <Title
+                        family='Helvetica'
+                        size='12px'
+                        color='BLACK'
+                        fstyle='normal'
+                        display='inline'
+                        padding='5px 10px'
+                    >
+                        {value.toLowerCase()}
+                    </Title>
+                </ContainerGlobal>
+            }
+            else if (value == 'PENDING') {
+                return <ContainerGlobal
+                    w='100px'
+                    h='auto'
+                    margin='0px auto'
+                    bg='rgb(210,217,28)'
+                    direction='row'
+                    padding='2px 0px'
+                    justify='center'
+                    align='center'
+                    border='2px solid rgb(0, 0, 0)'
+                    gap='10px'
+                    borderRadius='.5rem'
                 >
-                    {value.toLowerCase()}
-                </Title>
-            </ContainerGlobal>
-        }
-        else if (value == 'DEPARTED') {
-            return <ContainerGlobal
-                w='100px'
-                h='auto'
-                margin='0px auto'
-                bg='rgb(0, 255, 0, .2)'
-                direction='row'
-                padding='2px 0px'
-                justify='center'
-                align='center'
-                border='2px solid rgb(0, 0, 0)'
-                gap='10px'
-                borderRadius='.5rem'
-            >
-                <Title
-                    family='Helvetica'
-                    size='12px'
-                    color='BLACK'
-                    fstyle='normal'
-                    display='inline'
-                    padding='5px 10px'
+                    <Title
+                        family='Helvetica'
+                        size='12px'
+                        color='BLACK'
+                        fstyle='normal'
+                        display='inline'
+                        padding='5px 10px'
+                    >
+                        {value.toLowerCase()}
+                    </Title>
+                </ContainerGlobal>
+            }
+            else if (value == 'DEPARTED') {
+                return <ContainerGlobal
+                    w='100px'
+                    h='auto'
+                    margin='0px auto'
+                    bg='rgb(0, 255, 0, .2)'
+                    direction='row'
+                    padding='2px 0px'
+                    justify='center'
+                    align='center'
+                    border='2px solid rgb(0, 0, 0)'
+                    gap='10px'
+                    borderRadius='.5rem'
                 >
-                    {value.toLowerCase()}
-                </Title>
-            </ContainerGlobal>
-        }
-        else if (value == 'UNSETTLED') {
-            return <ContainerGlobal
-                w='100px'
-                h='auto'
-                margin='0px auto'
-                bg='rgb(245,82,54)'
-                direction='row'
-                padding='2px 0px'
-                justify='center'
-                align='center'
-                border='2px solid rgb(0, 0, 0)'
-                gap='10px'
-                borderRadius='.5rem'
-            >
-                <Title
-                    family='Helvetica'
-                    size='12px'
-                    color='BLACK'
-                    fstyle='normal'
-                    display='inline'
-                    padding='5px 10px'
+                    <Title
+                        family='Helvetica'
+                        size='12px'
+                        color='BLACK'
+                        fstyle='normal'
+                        display='inline'
+                        padding='5px 10px'
+                    >
+                        {value.toLowerCase()}
+                    </Title>
+                </ContainerGlobal>
+            }
+            else if (value == 'UNSETTLED') {
+                return <ContainerGlobal
+                    w='100px'
+                    h='auto'
+                    margin='0px auto'
+                    bg='rgb(245,82,54)'
+                    direction='row'
+                    padding='2px 0px'
+                    justify='center'
+                    align='center'
+                    border='2px solid rgb(0, 0, 0)'
+                    gap='10px'
+                    borderRadius='.5rem'
                 >
-                    {value.toLowerCase()}
-                </Title>
-            </ContainerGlobal>
-        }
-        else if (value == 'NO SHOW') {
-            return <ContainerGlobal
-                w='100px'
-                h='auto'
-                margin='0px auto'
-                bg='rgb(255,40,0)'
-                direction='row'
-                padding='2px 0px'
-                justify='center'
-                align='center'
-                border='2px solid rgb(0, 0, 0)'
-                gap='10px'
-                borderRadius='.5rem'
-            >
-                <Title
-                    family='Helvetica'
-                    size='12px'
-                    color='BLACK'
-                    fstyle='normal'
-                    display='inline'
-                    padding='5px 10px'
+                    <Title
+                        family='Helvetica'
+                        size='12px'
+                        color='BLACK'
+                        fstyle='normal'
+                        display='inline'
+                        padding='5px 10px'
+                    >
+                        {value.toLowerCase()}
+                    </Title>
+                </ContainerGlobal>
+            }
+            else if (value == 'NO SHOW') {
+                return <ContainerGlobal
+                    w='100px'
+                    h='auto'
+                    margin='0px auto'
+                    bg='rgb(255,40,0)'
+                    direction='row'
+                    padding='2px 0px'
+                    justify='center'
+                    align='center'
+                    border='2px solid rgb(0, 0, 0)'
+                    gap='10px'
+                    borderRadius='.5rem'
                 >
-                    {value.toLowerCase()}
-                </Title>
-            </ContainerGlobal>
-        }
+                    <Title
+                        family='Helvetica'
+                        size='12px'
+                        color='BLACK'
+                        fstyle='normal'
+                        display='inline'
+                        padding='5px 10px'
+                    >
+                        {value.toLowerCase()}
+                    </Title>
+                </ContainerGlobal>
+            }
         }
     }
     return (
@@ -3342,27 +3348,27 @@ const ClientBookingInfoCont = () => {
 
 
 
-            {activeReservation.length != 0 ? 
-            <Title
-            padding='20px 80px 20px 80px'
-            bg='#272727'
-            family='Playfair Display'
-            color='#BFAA7E'
-            weight='400'
-            size='50px'
-            fstyle='Normal'
-            margin='50px 0px 10px 0px'
-            align='Center'
-            w='86.7%'
+            {activeReservation.length != 0 ?
+                <Title
+                    padding='20px 80px 20px 80px'
+                    bg='#272727'
+                    family='Playfair Display'
+                    color='#BFAA7E'
+                    weight='400'
+                    size='50px'
+                    fstyle='Normal'
+                    margin='50px 0px 10px 0px'
+                    align='Center'
+                    w='86.7%'
 
-        >
-            Reservation Status
-        </Title>
-        :
-        ""}
+                >
+                    Reservation Status
+                </Title>
+                :
+                ""}
             {activeReservation.length != 0 ?
                 <div
-                style={{display: 'flex', justifyContent: 'center'}}
+                    style={{ display: 'flex', justifyContent: 'center' }}
                 >
                     {reservationStatus(activeReservation.reservationStatus)}
                 </div>

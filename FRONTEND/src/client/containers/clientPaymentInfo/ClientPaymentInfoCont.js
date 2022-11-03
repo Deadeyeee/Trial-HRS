@@ -96,7 +96,7 @@ const ClientPaymentInfoCont = () => {
               }
             });
           })
-          .catch((err) => {});
+          .catch((err) => { });
       })
       .catch((err) => {
         window.location = "/login";
@@ -164,8 +164,8 @@ const ClientPaymentInfoCont = () => {
             axios
               .patch(
                 apiKey +
-                  "api/updatePaymentPhoto/" +
-                  activeReservation.payment.id,
+                "api/updatePaymentPhoto/" +
+                activeReservation.payment.id,
                 formData
               )
               .then((result) => {
@@ -275,11 +275,11 @@ const ClientPaymentInfoCont = () => {
                 "
                 {value.length != 0
                   ? new Date(
-                      new Date(value.reservationDate).getTime() +
-                        60 * 60 * 24 * 1000
-                    ).toLocaleDateString() +
-                    " " +
-                    new Date(value.reservationDate).toLocaleTimeString()
+                    new Date(value.reservationDate).getTime() +
+                    60 * 60 * 24 * 1000
+                  ).toLocaleDateString() +
+                  " " +
+                  new Date(value.reservationDate).toLocaleTimeString()
                   : ""}
                 "
               </i>
@@ -700,7 +700,7 @@ const ClientPaymentInfoCont = () => {
             </a>
           </div>
           {activeReservation.payment.paymentStatus == "cancelled" ||
-          activeReservation.payment.paymentImage != null ? (
+            activeReservation.payment.paymentImage != null ? (
             ""
           ) : (
             <div
@@ -892,6 +892,7 @@ const ClientPaymentInfoCont = () => {
                   align="center"
                 >
                   <a
+                    href="#"
                     style={
                       item.id == activeReservation.id
                         ? { cursor: "normal", color: "black" }

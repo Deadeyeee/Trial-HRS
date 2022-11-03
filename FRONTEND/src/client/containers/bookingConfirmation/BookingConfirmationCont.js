@@ -131,7 +131,7 @@ function BookingConfirmationCont() {
         const data = canvas.toDataURL('image/png')
 
         const pdf = new jsPDF("p", "pt", "a4")
-        pdf.addImage(data, "JPEG", 1, 1, 600, 700)
+        pdf.addImage(data, "JPEG", 1, 1, 600, 800)
         pdf.save('RMLuxeHotel_BookingConfimation_PDF');
     };
 

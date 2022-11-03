@@ -77,7 +77,7 @@ export const BookingChildPageCont = () => {
         setTimeout(() => {
             setIsLoading(false);
             console.log(link)
-            if(link !== undefined){
+            if (link !== undefined) {
                 window.location = link;
             }
         }, 1000)
@@ -171,7 +171,7 @@ export const BookingChildPageCont = () => {
                 existingAvailedRooms.push(items)
                 window.sessionStorage.setItem('AvailedRoom', JSON.stringify(existingAvailedRooms))
                 // window.sessionStorage.setItem('AvailedRoom', JSON.stringify())
-                
+
 
             }
 
@@ -416,19 +416,40 @@ export const BookingChildPageCont = () => {
                             <ContainerGlobal
                                 align='flex-end'
                             >
+                                <TextInput
+                                    onChange={(e) => {
+                                        
+                                        if (e.target.value <= 0) {
+                                            setAdult(1);
+                                        }
+                                        else if (e.target.value >= roomType.maxAdultOccupancy-1) {
+                                            setAdult(roomType.maxAdultOccupancy-1);
+                                        }
+                                        else {
+                                            setAdult(e.target.value)
+                                        }
+                                    }}
+                                    value={adult}
+                                    family="Roboto Slab"
+                                    type="number"
+                                    // ref={emailref}
+                                    widthFocus="0px"
+                                    width='10%'
+                                    fontSize='25px'
+                                    indent='5px'
+                                    radiusFocus="0px"
+                                    border="0 0 1px"
+                                    align='center'
+                                    margins='0px 0px 0px 15px'
+                                    // defaultValue="1"
+                                    weight='bold'
+                                    height='100%'
+                                    min="1"
+                                    ref={adultRef}
+                                    max={roomType.maxAdultOccupancy-1}
+                                    required
 
-                                <Title
-                                    family='Times New Roman'
-                                    color='#292929'
-                                    weight='normal'
-                                    size='24px'
-                                    fstyle='Normal'
-                                    margin='0px 0px 0px 10px'
-                                    align='left'
-                                >
-                                    <b>{roomType.maxAdultOccupancy - 1} </b> guest(s) (max of {roomType.maxAdultOccupancy})
-                                </Title>
-
+                                ></TextInput>
                                 <Title
                                     family='Times New Roman, times, serif'
                                     color='#292929'
@@ -438,7 +459,51 @@ export const BookingChildPageCont = () => {
                                     margin='0px 0px 0px 5px'
                                     align='left'
                                 >
-                                    {/* <b></b> kid/s (max of {roomType.maxKidsOccupancy}) */}
+                                    <b></b> adult/s (max of {roomType.maxAdultOccupancy-1})
+                                </Title>
+                                <TextInput
+                                    onChange={(e) => {
+
+                                        if (e.target.value <= 0 || e.target.value <= null) {
+                                            setKid(0);
+                                        }
+                                        else if (e.target.value >= roomType.maxKidsOccupancy) {
+                                            setKid(roomType.maxKidsOccupancy);
+                                        }
+                                        else {
+                                            setKid(e.target.value)
+                                        }
+                                    }}
+                                    value={kid}
+                                    family="Roboto Slab"
+                                    type="number"
+                                    // ref={emailref}
+                                    widthFocus="0px"
+                                    width='10%'
+                                    fontSize='25px'
+                                    indent='5px'
+                                    radiusFocus="0px"
+                                    border="0 0 1px"
+                                    align='center'
+                                    margins='0px 0px 0px 15px'
+                                    // defaultValue="1"
+                                    weight='bold'
+                                    min="1"
+                                    ref={kidRef}
+                                    max={roomType.maxKidsOccupancy}
+                                    required
+
+                                ></TextInput>
+                                <Title
+                                    family='Times New Roman, times, serif'
+                                    color='#292929'
+                                    weight='normal'
+                                    size='20px'
+                                    fStyle='Normal'
+                                    margin='0px 0px 0px 5px'
+                                    align='left'
+                                >
+                                    <b></b> kid/s (max of {roomType.maxKidsOccupancy})
                                 </Title>
                             </ContainerGlobal>
                         </ContentContainerHolder>
@@ -479,7 +544,15 @@ export const BookingChildPageCont = () => {
                             </Title>
                             <TextInput
                                 onChange={(e) => {
-                                    setRoomQuantity(e.target.value);
+                                    if (e.target.value <= 0) {
+                                        setRoomQuantity(1);
+                                    }
+                                    else if (e.target.value >= availedRooms.length) {
+                                        setRoomQuantity(availedRooms.length);
+                                    }
+                                    else {
+                                        setRoomQuantity(e.target.value)
+                                    }
                                 }}
                                 value={roomQuantity}
                                 family="Roboto Slab"
@@ -535,7 +608,7 @@ export const BookingChildPageCont = () => {
                                 onChange={(e) => {
                                     setSpecialInstruction(e.target.value)
                                 }}
-                                
+
                                 inputProps={{ maxLength: 100 }}
                                 style={{ width: '95%', }}
                             />

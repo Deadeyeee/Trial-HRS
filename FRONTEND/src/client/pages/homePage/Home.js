@@ -13,17 +13,32 @@ export const Home = () => {
 
     useEffect(() => {
         setLightBox("flex")
-      }, []);
-      
-    const close = () =>{
+
+        if (window.localStorage.getItem('lightbox') != null) {
+            if (Date.parse(new Date) - parseInt(window.localStorage.getItem('lightbox')) >= (20 *60000)) {
+                setLightBox("flex")
+                window.localStorage.setItem('lightbox', Date.parse(new Date()))
+            }
+            else {
+                setLightBox("none")
+
+            }
+        } else {
+            setLightBox("flex")
+            window.localStorage.setItem('lightbox', Date.parse(new Date()))
+        }
+    }, []);
+
+    const close = () => {
         setLightBox("none")
     }
+
 
     return (
         <Container>
             <LightBox
-            display={lightBox}
-            onClick={close}
+                display={lightBox}
+                onClick={close}
             ></LightBox>
             <NavigationBar home />
             <BookingHome title="Book Now!" ></BookingHome>

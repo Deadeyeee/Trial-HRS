@@ -99,7 +99,7 @@ const InformationForm = () => {
     let letters = /^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/;
     let phoneNumberValidation = /^(09|\+639)\d{9}$/;
     let userNameValidation = /^\S*$/;
-    
+
     var Recaptcha = require('react-recaptcha');
 
     var callback = function () {
@@ -232,8 +232,8 @@ const InformationForm = () => {
                         }).then((user) => {
                             console.log(user.data);
                             axios.post(apiKey + 'api/addGuest', {
-                                firstName: firstName.toLocaleLowerCase(),
-                                lastName: lastName.toLocaleLowerCase(),
+                                firstName: firstName,
+                                lastName: lastName,
                                 birthDate: birthday,
                                 gender: gender,
                                 address: address,
@@ -279,6 +279,9 @@ const InformationForm = () => {
                             console.log(err)
                         });
                     }
+                    else {
+                        handleCloseIsLoading(3)
+                    }
 
                 }
                 else {
@@ -322,15 +325,15 @@ const InformationForm = () => {
                         if (item.role != 'NON-USER') {
 
                             let formatNumber;
-                                if (contactNumber.slice(0, 3) == "+63") {
+                            if (contactNumber.slice(0, 3) == "+63") {
 
-                                    formatNumber = contactNumber.replace("+63", "0");
+                                formatNumber = contactNumber.replace("+63", "0");
 
-                                }
-                                else {
-                                    formatNumber = contactNumber;
-                                }
-                            
+                            }
+                            else {
+                                formatNumber = contactNumber;
+                            }
+
 
                             if (item.email.toLowerCase() == email.toLowerCase()) {
                                 setEmailError("This email is already taken.")
@@ -404,7 +407,7 @@ const InformationForm = () => {
                                 inputRef={firstNameRef}
                                 variant="outlined"
                                 value={firstName}
-                                
+
                                 inputProps={{ maxLength: 80 }}
                                 onChange={(e) => {
                                     setFirstName(e.target.value)
@@ -450,8 +453,8 @@ const InformationForm = () => {
                                 label="Email"
                                 variant="outlined"
                                 type='email'
-                            inputProps={{ maxLength: 254 }}
-                            value={email}
+                                inputProps={{ maxLength: 254 }}
+                                value={email}
                                 onChange={(e) => {
                                     setEmail(e.target.value)
 
@@ -610,12 +613,12 @@ const InformationForm = () => {
                                         console.log('asda')
                                         setUserNameError("Invalid username.")
                                     }
-                                    else{
+                                    else {
 
                                         setUserNameError("")
                                     }
                                 }}
-                                
+
                                 inputProps={{ maxLength: 40 }}
                                 required={password.length != 0 ? true : false}
                                 style={{ width: '55%', }} />
