@@ -64,6 +64,7 @@ import OfficialReceipt from './admin/pages/officialReceipt/OfficialReceipt';
 import AcknowledgementReceipt from './admin/pages/acknowledgementReceipt/AcknowledgementReceipt';
 import GeneratedReports from './admin/pages/generateReports/GenerateReports';
 import LoginAdminStaff from './client/pages/login/LoginAdminStaff';
+import GeneratedReportsOcupancy from './admin/pages/generateReports/GeneratedReportsOcupancy';
 
 
 
@@ -125,6 +126,7 @@ const App = () => {
         <Route path="/admin/officialReceipt/:id" element={<OfficialReceipt />}/>
         <Route path="/admin/acknowledgementReceipt/:id" element={<AcknowledgementReceipt />}/>
         <Route path="/admin/generatedReport/:id" element={<GeneratedReports />}/>
+        <Route path="/admin/generatedOccupancyReport/:id" element={<GeneratedReportsOcupancy />}/>
 
 
 

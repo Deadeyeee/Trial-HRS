@@ -547,6 +547,7 @@ export const HomeBooking = ({ title }) => {
                 color="#FFFFFF"
                 family="Quicksand"
                 fstyle="none"
+                align="left"
               >
                 {" "}
                 How much do you charge for every extended hour after the
@@ -598,6 +599,7 @@ export const HomeBooking = ({ title }) => {
                 color="#FFFFFF"
                 family="Quicksand"
                 fstyle="none"
+                align="left"
               >
                 How much do you charge for an additional person per room?
               </Title>
