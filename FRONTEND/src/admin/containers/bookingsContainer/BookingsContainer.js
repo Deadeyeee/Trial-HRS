@@ -23,7 +23,7 @@ import ActionButton from '../../components/actionButton/ActionButton'
 import Grow from '@mui/material/Grow';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
-import { Badge, FormControlLabel, Radio, RadioGroup, TextareaAutosize, FormControl, Modal, Box, Checkbox, FormLabel } from '@mui/material'
+import { Badge, FormControlLabel, Radio, RadioGroup, TextareaAutosize, FormControl, Modal, Box, Checkbox, FormLabel, Pagination } from '@mui/material'
 import { nationalities } from '../../../nationalities'
 import { Global } from '@emotion/react'
 import axios from 'axios'
@@ -483,6 +483,7 @@ const BookingsContainer = () => {
 
     }, [startDate, endDate, reservationSummaryInfo])
 
+    const [roomPage, setRoomPage] = useState(1)
 
     useLayoutEffect(() => {
 
@@ -1088,19 +1089,8 @@ const BookingsContainer = () => {
 
                             <MenuItem value={'Check-in'} selected>Check-in</MenuItem>
                             <MenuItem value={'Check-out'}>Check-out</MenuItem>
-                            <MenuItem value={'Booked Date'}>Booked Date</MenuItem>
                         </Select>
                     </FormControl>
-                    <Button variant="contained"
-                        style={{ backgroundColor: 'rgb(80, 170, 50)' }}
-                        startIcon={<FilterAltIcon />}>
-                        Filter
-                    </Button>
-                    <Button variant="contained"
-                        style={{ backgroundColor: 'rgb(255, 36, 0)' }}
-                        startIcon={<CloseIcon />}>
-                        clear
-                    </Button>
 
 
 
@@ -1111,7 +1101,7 @@ const BookingsContainer = () => {
 
             <ContainerGlobal
                 w='90%'
-                h='60vh'
+                h='auto'
                 bg='white'
                 direction='column'
                 padding='30px'
@@ -1136,50 +1126,96 @@ const BookingsContainer = () => {
                 </HorizontalLine>
                 <TableContainer>
                     <Tr>
-                        <Th align='center'>Booking Number <ArrowDropDownIcon style={{ color: 'black' }} /> </Th>
-                        <Th align='center'>Guest's Name  <ArrowDropDownIcon style={{ color: 'black' }} /></Th>
-                        <Th align='center'>Room Type <ArrowDropDownIcon style={{ color: 'black' }} /></Th>
-                        <Th align='center'>Room Number  <ArrowDropDownIcon style={{ color: 'black' }} /></Th>
-                        {/* <Th align='center'>Reservation Number  <ArrowDropDownIcon style={{ color: 'black' }} /></Th> */}
-                        <Th align='center'>Check in <ArrowDropDownIcon style={{ color: 'black' }} /></Th>
-                        <Th align='center'>Check out <ArrowDropDownIcon style={{ color: 'black' }} /></Th>
-                        <Th align='center'>Payment Status  <ArrowDropDownIcon style={{ color: 'black' }} /></Th>
-                        <Th align='center'>Booking Status  <ArrowDropDownIcon style={{ color: 'black' }} /></Th>
+                        <Th align='center'>Booking Number </Th>
+                        <Th align='center'>Guest's Name </Th>
+                        <Th align='center'>Room Type</Th>
+                        <Th align='center'>Room Number </Th>
+                        {/* <Th align='center'>Reservation Number </Th> */}
+                        <Th align='center'>Check in</Th>
+                        <Th align='center'>Check out</Th>
+                        <Th align='center'>Payment Status </Th>
+                        <Th align='center'>Booking Status </Th>
                         <Th align='center'>Action</Th>
                     </Tr>
 
 
                     {reservationSummary.length != 0 ?
-                        reservationSummary.filter((obj) => (obj.bookingReferenceNumber).toString().includes(searchValue) || (obj.reservation.reservationReferenceNumber).toString().includes(searchValue) || (obj.reservation.guestInformation.firstName).includes(searchValue) || (obj.reservation.guestInformation.lastName).includes(searchValue)).map((item) => (
-                            <Tr>
-                                <Td align='center'>{item.bookingReferenceNumber}</Td>
-                                <Td align='center'>{item.reservation.guestInformation.firstName.toLowerCase()}, {item.reservation.guestInformation.lastName.toLowerCase()}</Td>
-                                <Td align='center'>{item.room.roomType.roomType}</Td>
-                                <Td align='center'>{item.room.roomNumber}</Td>
-                                {/* <Td align='center'>{item.reservation.reservationReferenceNumber}</Td> */}
-                                <Td align='center'>{new Date(item.checkInDate).toLocaleDateString()}</Td>
-                                <Td align='center'>{new Date(item.checkOutDate).toLocaleDateString()}</Td>
-                                <Td align='center'>
-                                    {paymentStatusStyle(item.reservation.payment.paymentStatus)}
-                                </Td>
-                                <Td align='center'>
-                                    {bookingStatusStyle(item.bookingStatus)}
-                                </Td>
-                                <Td align='center'>
-                                    <ActionButton
-                                        view={() => handleOpenView(item.id)}
-                                        edit={() => handleOpenEdit(item.id)}
-                                        delete={() => deleteBooking(item.id)}
-                                    />
-                                </Td>
-                            </Tr>
-                        ))
+                        reservationSummary
+                            .slice((roomPage - 1) * 10, roomPage * 10)
+
+                            .sort((a, b) => a.bookingReferenceNumber - b.bookingReferenceNumber)
+                            .filter((obj) => (obj.bookingReferenceNumber).toString().includes(searchValue) || (obj.reservation.reservationReferenceNumber).toString().includes(searchValue) || (obj.reservation.guestInformation.firstName).includes(searchValue) || (obj.reservation.guestInformation.lastName).includes(searchValue)).map((item) => (
+                                <Tr>
+                                    <Td align='center'>{item.bookingReferenceNumber}</Td>
+                                    <Td align='center'>{item.reservation.guestInformation.firstName.toLowerCase()}, {item.reservation.guestInformation.lastName.toLowerCase()}</Td>
+                                    <Td align='center'>{item.room.roomType.roomType}</Td>
+                                    <Td align='center'>{item.room.roomNumber}</Td>
+                                    {/* <Td align='center'>{item.reservation.reservationReferenceNumber}</Td> */}
+                                    <Td align='center'>{new Date(item.checkInDate).toLocaleDateString()}</Td>
+                                    <Td align='center'>{new Date(item.checkOutDate).toLocaleDateString()}</Td>
+                                    <Td align='center'>
+                                        {paymentStatusStyle(item.reservation.payment.paymentStatus)}
+                                    </Td>
+                                    <Td align='center'>
+                                        {bookingStatusStyle(item.bookingStatus)}
+                                    </Td>
+                                    <Td align='center'>
+                                        <ActionButton
+                                            view={() => handleOpenView(item.id)}
+                                            edit={() => handleOpenEdit(item.id)}
+                                            delete={() => deleteBooking(item.id)}
+                                        />
+                                    </Td>
+                                </Tr>
+                            ))
                         :
                         ''}
 
 
                 </TableContainer>
+                
+                <ContainerGlobal
+                    w='100%'
+                    justify='center'>
+                    <Pagination
+                        page={roomPage}
+                        count={reservationSummary.length != 0 && Math.ceil(reservationSummary.length / 10)}
+                        onChange={(e, value) => {
+
+                            setRoomPage(value)
+                        }}
+                    />
+                </ContainerGlobal>
             </ContainerGlobal>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
             <Modal
@@ -1820,7 +1856,7 @@ const BookingsContainer = () => {
                                 <TextField
                                     value={others}
                                     onChange={(e) => {
-                                            setOthers(e.target.value);
+                                        setOthers(e.target.value);
                                     }}
                                     type='number'
                                     id="outlined-basic"
@@ -1911,7 +1947,7 @@ const BookingsContainer = () => {
                                         }}
                                         multiline
                                         rows={4}
-                                        style={{ width: '95%', overflow: 'visible'}}
+                                        style={{ width: '95%', overflow: 'visible' }}
 
                                         InputProps={{
                                             readOnly: true,
@@ -2289,7 +2325,7 @@ const BookingsContainer = () => {
                                         readOnly: true,
                                     }}
                                     style={{ width: '55%', }}
-                                    required />
+                                    disabled />
 
                                 <TextField
                                     placeholder='Last Name'
@@ -2311,7 +2347,7 @@ const BookingsContainer = () => {
                                     InputProps={{
                                         readOnly: true,
                                     }}
-                                    required />
+                                    disabled />
                             </InputContainer>
 
 
@@ -2332,7 +2368,7 @@ const BookingsContainer = () => {
                                     InputProps={{
                                         readOnly: true,
                                     }}
-                                    required />
+                                    disabled />
 
                                 <TextField
                                     placeholder='Contact Number e.g. 09123456789 or +639123456789'
@@ -2354,7 +2390,7 @@ const BookingsContainer = () => {
                                     InputProps={{
                                         readOnly: true,
                                     }}
-                                    required />
+                                    disabled />
                             </InputContainer>
 
 
@@ -2379,7 +2415,7 @@ const BookingsContainer = () => {
                                                 InputProps={{
                                                     readOnly: true,
                                                 }}
-                                                required
+                                                disabled
                                             />
                                         }
                                     />
@@ -2398,11 +2434,11 @@ const BookingsContainer = () => {
                                             setNationality(event.target.value);
                                         }}
                                         disabled
-                                        required
+
                                     >
 
                                         {nationalities.map(({ nationality }, index) => (
-                                            <MenuItem value={nationality} >{nationality}</MenuItem>
+                                            <MenuItem value={nationality} disabled>{nationality}</MenuItem>
                                         ))}
                                     </Select>
                                 </FormControl>
@@ -2423,15 +2459,13 @@ const BookingsContainer = () => {
                                         onChange={(e) => {
                                             setGender(e.target.value)
                                         }}
-                                        required
+                                        disabled
                                     >
                                         <FormControlLabel
                                             value="male"
                                             control={<Radio
 
-                                                InputProps={{
-                                                    readOnly: true,
-                                                }}
+                                                disabled
                                             />}
                                             label="Male"
                                         />
@@ -2439,9 +2473,7 @@ const BookingsContainer = () => {
                                             value="female"
                                             control={<Radio
 
-                                                InputProps={{
-                                                    readOnly: true,
-                                                }}
+                                                disabled
                                             />}
                                             label="Female"
                                         />
@@ -2449,9 +2481,7 @@ const BookingsContainer = () => {
                                             value="other"
                                             control={<Radio
 
-                                                InputProps={{
-                                                    readOnly: true,
-                                                }}
+                                                disabled
                                             />}
                                             label="Other"
                                         />
@@ -2474,10 +2504,8 @@ const BookingsContainer = () => {
                                     rows={4}
                                     style={{ width: '95%', }}
 
-                                    InputProps={{
-                                        readOnly: true,
-                                    }}
-                                    required />
+
+                                    disabled />
 
                             </InputContainer>
 
@@ -3202,7 +3230,7 @@ const BookingsContainer = () => {
                                 <TextField
                                     value={others}
                                     onChange={(e) => {
-                                        
+
                                         setOthers(e.target.value);
                                     }}
                                     type='number'
@@ -3682,11 +3710,9 @@ const BookingsContainer = () => {
                                         }
                                     }}
 
-                                    InputProps={{
-                                        readOnly: true,
-                                    }}
+
                                     style={{ width: '55%', }}
-                                    required />
+                                    disabled />
 
                                 <TextField
                                     placeholder='Last Name'
@@ -3705,10 +3731,7 @@ const BookingsContainer = () => {
 
                                     }}
                                     style={{ width: '55%', }}
-                                    InputProps={{
-                                        readOnly: true,
-                                    }}
-                                    required />
+                                    disabled />
                             </InputContainer>
 
 
@@ -3726,10 +3749,7 @@ const BookingsContainer = () => {
                                     }}
                                     style={{ width: '55%', }}
                                     inputRef={emailRef}
-                                    InputProps={{
-                                        readOnly: true,
-                                    }}
-                                    required />
+                                    disabled />
 
                                 <TextField
                                     placeholder='Contact Number e.g. 09123456789 or +639123456789'
@@ -3748,10 +3768,7 @@ const BookingsContainer = () => {
                                     }}
                                     inputRef={contactNumberRef}
                                     style={{ width: '55%', }}
-                                    InputProps={{
-                                        readOnly: true,
-                                    }}
-                                    required />
+                                    disabled />
                             </InputContainer>
 
 
@@ -3766,6 +3783,7 @@ const BookingsContainer = () => {
                                         onChange={(newValue) => {
                                             setBirthDay(newValue);
                                         }}
+                                        disabled
                                         renderInput={(params) =>
                                             <TextField
                                                 {...params}
@@ -3775,7 +3793,7 @@ const BookingsContainer = () => {
                                                 InputProps={{
                                                     readOnly: true,
                                                 }}
-                                                required
+                                                disabled
                                             />
                                         }
                                     />
@@ -3796,11 +3814,11 @@ const BookingsContainer = () => {
                                         InputProps={{
                                             readOnly: true,
                                         }}
-                                        required
+                                        disabled
                                     >
 
                                         {nationalities.map(({ nationality }, index) => (
-                                            <MenuItem value={nationality} >{nationality}</MenuItem>
+                                            <MenuItem value={nationality} disabled>{nationality}</MenuItem>
                                         ))}
                                     </Select>
                                 </FormControl>
@@ -3821,15 +3839,13 @@ const BookingsContainer = () => {
                                         onChange={(e) => {
                                             setGender(e.target.value)
                                         }}
-                                        required
+                                        disabled
                                     >
                                         <FormControlLabel
                                             value="male"
                                             control={<Radio
 
-                                                InputProps={{
-                                                    readOnly: true,
-                                                }}
+                                                disabled
                                             />}
                                             label="Male"
                                         />
@@ -3837,9 +3853,7 @@ const BookingsContainer = () => {
                                             value="female"
                                             control={<Radio
 
-                                                InputProps={{
-                                                    readOnly: true,
-                                                }}
+                                                disabled
                                             />}
                                             label="Female"
                                         />
@@ -3847,9 +3861,7 @@ const BookingsContainer = () => {
                                             value="other"
                                             control={<Radio
 
-                                                InputProps={{
-                                                    readOnly: true,
-                                                }}
+                                                disabled
                                             />}
                                             label="Other"
                                         />
@@ -3871,11 +3883,8 @@ const BookingsContainer = () => {
                                     multiline
                                     rows={4}
                                     style={{ width: '95%', }}
-
-                                    InputProps={{
-                                        readOnly: true,
-                                    }}
-                                    required />
+                                    disabled
+                                />
 
                             </InputContainer>
 

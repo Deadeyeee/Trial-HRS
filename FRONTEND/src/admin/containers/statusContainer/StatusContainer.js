@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Title } from '../../../client/components/title/styles'
 import { ContainerGlobal } from '../../components/container/container'
 import { Container, HeadContainer, TableContainer, Td, Th, Tr } from './style'
@@ -14,7 +14,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import InputLabel from '@mui/material/InputLabel';
-import { FormControlLabel, FormControl } from '@mui/material';
+import { FormControlLabel, FormControl, Modal, Radio, FormLabel, RadioGroup, Link } from '@mui/material';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import Select from '@mui/material/Select';
 import { HorizontalLine } from '../../../client/components/horizontalLine/HorizontalLine'
@@ -23,186 +23,244 @@ import ActionButton from '../../components/actionButton/ActionButton';
 import InformationForm from '../../../client/containers/informationForm/InformationForm';
 import { AdminInformationForm, AdminInformationFormFilled, AdminInformationFormFilledEdit } from '../adminInformationForm/AdminInformationForm';
 import Grow from '@mui/material/Grow';
-
+import { apiKey } from '../../../apiKey';
+import axios from 'axios';
+import { Box } from '@mui/system';
+import { InputContainer } from '../../../client/containers/informationForm/style';
+import { Button2, FormButton } from '../../../client/components/button/styles';
+import { nationalities } from '../../../nationalities';
+import { Pagination } from '@mui/material'
 const StatusContainer = () => {
+    let letters = /^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/;
+    let phoneNumberValidation = /^(09|\+639)\d{9}$/;
+    let passwordValidation = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[-._!"`'#%&,:;<>=@{}~\$\(\)\*\+\/\\\?\[\]\^\| ])[A-Za-z\d -._!"`'#%&,:;<>=@{}~\$\(\)\*\+\/\\\?\[\]\^\|]{8,}/;
+    
+    const [roomPage, setRoomPage] = useState(1)
 
     const [value, setValue] = useState(Date.now());
     const color = "#c44242";
     const [age, setAge] = React.useState('');
-    
+
     const [showDetails, setShowDetails] = useState(false);
 
     const [showDetails2, setShowDetails2] = useState(false);
     const [showDetails3, setShowDetails3] = useState(false);
 
-    
-    const addUser = (
-        <ContainerGlobal
-            w='100%'
-            h='100%'
-            radius='none'
-            justify='center'
-            align='center'
-            bg='rgb(46, 46, 46, 0.9)'
-            index='1'
-            overflow='auto'
-            active
-        >
-            <ContainerGlobal
-                w='auto'
-                h='auto'
-                bg='white'
-                direction='column'
-                padding='30px'
-                gap='10px'
-                justify='center'
-                align='center'
-                margin='0px 0px 0px 0px'
-            >
-                <Title
-                    size='26px'
-                    color='black'
-                    family='Helvetica'
-                    fstyle='normal'
-                    weight='600'
-                    align='left'
-                >
-                    Create Guest Account
-                </Title>
-                <HorizontalLine
-                    bg='gray'
-                    w='100%'
-                    margin='0px 0px 20px 0px'
-                ></HorizontalLine>
-                <AdminInformationForm></AdminInformationForm>
-                <ContainerGlobal gap='30px' overflow='visible' margin='20px 0px 0px 0px'>
-                    <Button variant="contained" size="large"
-                        style={{ backgroundColor: '#50AA32' }}
-                        onClick={() => setShowDetails(prev => !prev)}>
-                        Create Account
-                    </Button>
-                    <Button variant="contained" size="large"
-                        style={{ backgroundColor: '#FF2400' }}
-                        onClick={() => setShowDetails(prev => !prev)}>
-                        Cancel
-                    </Button>
-                </ContainerGlobal>
-            </ContainerGlobal>
+    const [guests, setGuests] = useState([])
+    const [reservationSummary, setReservationSummary] = useState([])
 
-        </ContainerGlobal>
-    );
-
-
-    const viewUser = (
-        <ContainerGlobal
-            w='100%'
-            h='100%'
-            radius='none'
-            justify='center'
-            align='center'
-            bg='rgb(46, 46, 46, 0.9)'
-            index='1'
-            overflow='auto'
-            active
-        >
-            <ContainerGlobal
-                w='auto'
-                h='auto'
-                bg='white'
-                direction='column'
-                padding='30px'
-                gap='10px'
-                justify='center'
-                align='center'
-                margin='0px 0px 0px 0px'
-            >
-                <Title
-                    size='26px'
-                    color='black'
-                    family='Helvetica'
-                    fstyle='normal'
-                    weight='600'
-                    align='left'
-                >
-                    View Guest Account
-                </Title>
-                <HorizontalLine
-                    bg='gray'
-                    w='100%'
-                    margin='0px 0px 20px 0px'
-                ></HorizontalLine>
-                <AdminInformationFormFilled></AdminInformationFormFilled>
-                <ContainerGlobal gap='30px' overflow='visible' margin='20px 0px 0px 0px'>
-                    <Button variant="contained" size="large"
-                        style={{ backgroundColor: '#50AA32' }}
-                        onClick={() => setShowDetails2(prev => !prev)}>
-                        Ok
-                    </Button>
-                </ContainerGlobal>
-            </ContainerGlobal>
-
-        </ContainerGlobal>
-    );
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('Juan');
+    const [nationality, setNationality] = useState('');
+    const [contactNumber, setcontactNumber] = useState('');
+    const [address, setAddress] = useState('');
+    const [email, setEmail] = useState('');
+    const [username, setUsername] = useState('');
+    const [birthDay, setBirthDay] = useState('');
+    const [gender, setGender] = useState('');
+    const [oldPassword, setOldPassword] = useState('');
+    const [newPassword, setNewPassword] = useState('');
 
 
 
-    const editUser = (
-        <ContainerGlobal
-            w='100%'
-            h='100%'
-            radius='none'
-            justify='center'
-            align='center'
-            bg='rgb(46, 46, 46, 0.9)'
-            index='1'
-            overflow='auto'
-            active
-        >
-            <ContainerGlobal
-                w='auto'
-                h='auto'
-                bg='white'
-                direction='column'
-                padding='30px'
-                gap='10px'
-                justify='center'
-                align='center'
-                margin='0px 0px 0px 0px'
-            >
-                <Title
-                    size='26px'
-                    color='black'
-                    family='Helvetica'
-                    fstyle='normal'
-                    weight='600'
-                    align='left'
-                >
-                    Edit Guest Account
-                </Title>
-                <HorizontalLine
-                    bg='gray'
-                    w='100%'
-                    margin='0px 0px 20px 0px'
-                ></HorizontalLine><AdminInformationFormFilledEdit/>
-                <ContainerGlobal gap='30px' overflow='visible' margin='20px 0px 0px 0px'>
-                <Button variant="contained" size="large"
-                        style={{ backgroundColor: '#50AA32' }}
-                        onClick={() => setShowDetails3(prev => !prev)}>
-                        Save Changes
-                    </Button>
-                    <Button variant="contained" size="large"
-                        style={{ backgroundColor: '#FF2400' }}
-                        onClick={() => setShowDetails3(prev => !prev)}>
-                        Cancel
-                    </Button>
-                </ContainerGlobal>
-            </ContainerGlobal>
-
-        </ContainerGlobal>
-    );
+    const [userInformation, setUserInformation] = useState([])
 
 
 
+    const [firstNameError, setFirstNameError] = useState("");
+    const [lastNameError, setLastNameError] = useState("");
+    const [contactNumberError, setContactNumberError] = useState("");
+    const [emailError, setEmailError] = useState("");
+    const [genderError, setGenderError] = useState('male');
+    const [addressError, setAddressError] = useState("");
+    const [userNameError, setUserNameError] = useState("");
+    const [passwordError, setPasswordError] = useState("");
+    const [oldPasswordError, setOldPasswordError] = useState("");
+    const [newPasswordError, setNewPasswordError] = useState("");
+
+
+    const emailRef = useRef();
+    const contactNumberRef = useRef();
+    const userNameRef = useRef();
+    const firstNameRef = useRef();
+    const lastNameRef = useRef();
+    const oldPasswordRef = useRef();
+    const newPasswordRef = useRef();
+
+    useEffect(() => {
+
+        axios.get(apiKey + "api/getAllGuest").then((result) => {
+            setGuests(result.data.filter((obj) => obj.user.role != 'ADMIN' && obj.user.role != 'STAFF'))
+            axios.get(apiKey + "api/getAllReservationSummary").then((result) => {
+                setReservationSummary(result.data)
+            }).catch((err) => {
+                console.log(err)
+            });
+
+        }).catch((err) => {
+            console.log(err)
+        });
+
+    }, [])
+
+    const [open, setOpen] = React.useState(false);
+    const [open2, setOpen2] = React.useState(false);
+
+    const handleOpen = (value) => {
+        setOpen(true)
+        setFirstName(value.firstName);
+        setLastName(value.lastName);
+        setEmail(value.user.email);
+        setcontactNumber(value.user.contactNumber);
+        setBirthDay(value.birthDate);
+        setNationality(value.nationality);
+        setGender(value.gender);
+        setAddress(value.address);
+        setUserInformation(value)
+
+    };
+    const handleClose = () => {
+        setOpen(false)
+        setFirstName('');
+        setLastName('');
+        setEmail('');
+        setcontactNumber('');
+        setBirthDay('');
+        setNationality('');
+        setGender('');
+        setAddress('');
+        setUserInformation([])
+
+
+    };
+    const handleOpen2 = (value) => {
+        setOpen2(true)
+        setFirstName(value.firstName);
+        setLastName(value.lastName);
+        setEmail(value.user.email);
+        setcontactNumber(value.user.contactNumber);
+        setBirthDay(value.birthDate);
+        setNationality(value.nationality);
+        setGender(value.gender);
+        setAddress(value.address);
+        setUserInformation(value)
+
+    };
+    const handleClose2 = () => {
+        setOpen2(false)
+        setFirstName('');
+        setLastName('');
+        setEmail('');
+        setcontactNumber('');
+        setBirthDay('');
+        setNationality('');
+        setGender('');
+        setAddress('');
+        setUserInformation([])
+
+
+    };
+
+
+    const updateUser = (e) => {
+        e.preventDefault();
+        console.log('asdsa')
+        if (firstNameError.length != 0) {
+            firstNameRef.current.focus()
+        }
+        else if (lastNameError.length != 0) {
+            lastNameRef.current.focus()
+
+        }
+        else if (contactNumberError.length != 0) {
+            contactNumberRef.current.focus()
+
+        }
+        else {
+            // handleOpenIsLoading();
+            let formatNumber;
+            if (contactNumber.slice(0, 3) == "+63") {
+
+                formatNumber = contactNumber.replace("+63", "0");
+
+            }
+            else {
+                formatNumber = contactNumber;
+            }
+            if (emailError.length == 0 && contactNumberError.length == 0 && userNameError.length == 0) {
+                axios.patch(apiKey + 'api/updateUsers/' + userInformation.user.id, {
+                    email: email,
+                    contactNumber: formatNumber,
+
+                }).then((result) => {
+                    console.log(result.data);
+                    axios.patch(apiKey + 'api/updateGuest/' + userInformation.id, {
+                        firstName: firstName.toLocaleLowerCase(),
+                        lastName: lastName.toLocaleLowerCase(),
+                        birthDate: birthDay,
+                        gender: gender,
+                        address: address,
+                        nationality: nationality
+                    }).then((result) => {
+                        console.log(result.data);
+                        // handleCloseIsLoading(2, '')
+                        window.location.reload()
+                    }).catch((err) => {
+                        // handleCloseIsLoading(3)
+
+                    });
+                }).catch((err) => {
+                    // handleCloseIsLoading(3)
+
+                });
+
+
+            }
+        }
+
+    }
+
+
+
+
+    useEffect(() => {
+        if (userInformation.length != 0) {
+            if (userInformation.user.role != 'NON-USER') {
+
+                axios.get(apiKey + 'api/getAllUsers').then((res) => {
+                    console.log(res.data)
+                    if (res.data.length != 0) {
+                        res.data.map((item) => {
+                            if (item.role != 'NON-USER' && item.id != userInformation.user.id) {
+
+                                let formatNumber;
+                                if (contactNumber.slice(0, 3) == "+63") {
+
+                                    formatNumber = contactNumber.replace("+63", "0");
+
+                                }
+                                else {
+                                    formatNumber = contactNumber;
+                                }
+
+                                if (item.email.toLowerCase() == email.toLowerCase()) {
+                                    setEmailError("This email is already taken.")
+                                }
+                                else if (item.contactNumber == formatNumber) {
+                                    setContactNumberError("This number is already taken.")
+
+                                }
+                            }
+
+                        })
+                    }
+                }).catch((err) => {
+
+                });
+            }
+        }
+
+    }, [email, contactNumber, userInformation])
 
 
 
@@ -212,9 +270,8 @@ const StatusContainer = () => {
 
 
 
-
-    
     return (
+
         <Container>
             <HeadContainer>
                 <Title
@@ -226,7 +283,7 @@ const StatusContainer = () => {
                     align='left'
                     margin='20px 0px 20px 30px'
                 >
-                    Check Status of Guests
+                    Check guest list
                 </Title>
             </HeadContainer>
 
@@ -325,34 +382,6 @@ const StatusContainer = () => {
                         />
 
                     </LocalizationProvider>
-                    <FormControl sx={{ m: 1, minWidth: 120, }} size="small">
-                        <InputLabel id="demo-select-small" >Menu</InputLabel>
-                        <Select
-                            style={{ color: 'black', fontWeight: 'bold' }}
-                            labelId="roomType-select-small"
-                            id="demo-select-small"
-                            value={age}
-                            label="Menu"
-                            onChange={(event) => {
-                                setAge(event.target.value);
-                            }}
-
-                        >
-
-                            <MenuItem value={'Check-in'} selected>Account Created</MenuItem>
-                            <MenuItem value={'Check-out'}>Last Seen</MenuItem>
-                        </Select>
-                    </FormControl>
-                    <Button variant="contained"
-                        style={{ backgroundColor: 'rgb(80, 170, 50)' }}
-                        startIcon={<FilterAltIcon />}>
-                        Filter
-                    </Button>
-                    <Button variant="contained"
-                        style={{ backgroundColor: 'rgb(255, 36, 0)' }}
-                        startIcon={<CloseIcon />}>
-                        clear
-                    </Button>
 
 
 
@@ -362,7 +391,7 @@ const StatusContainer = () => {
 
             <ContainerGlobal
                 w='90%'
-                h='55vh'
+                h='auto'
                 bg='white'
                 direction='column'
                 padding='30px'
@@ -377,7 +406,7 @@ const StatusContainer = () => {
                     weight='600'
                     align='left'
                 >
-                    Guest Status
+                    Guest lists
                 </Title>
 
                 <HorizontalLine
@@ -391,221 +420,683 @@ const StatusContainer = () => {
 
                 <TableContainer>
                     <Tr>
-                        <Th align='center'>Name <ArrowDropDownIcon style={{ color: 'black' }} /></Th>
-                        <Th align='center'>Total Bookings <ArrowDropDownIcon style={{ color: 'black' }} /></Th>
-                        <Th align='center'>Status <ArrowDropDownIcon style={{ color: 'black' }} /></Th>
-                        <Th align='center'>Account Created <ArrowDropDownIcon style={{ color: 'black' }} /></Th>
-                        <Th align='center'>Last Seen <ArrowDropDownIcon style={{ color: 'black' }} /></Th>
+                        <Th align='center'>User Id</Th>
+                        <Th align='center'>User Name</Th>
+                        <Th align='center'>Guest Name</Th>
+                        <Th align='center'>Email</Th>
+                        <Th align='center'>Total Bookings</Th>
+                        <Th align='center'>Status</Th>
+                        <Th align='center'>Account Type</Th>
+                        <Th align='center'>Date Created</Th>
                         <Th align='center'>Action</Th>
                     </Tr>
-                    <Tr>
-                        <Td align='center'>Don G.</Td>
-                        <Td align='center'>5</Td>
-                        <Td align='center'>
-                            <ContainerGlobal
-                                w='100px'
-                                h='auto'
-                                margin='0px auto'
-                                bg='rgb(253, 161, 114, .2)'
-                                direction='row'
-                                padding='2px 0px'
-                                justify='center'
-                                align='center'
-                                border='2px solid rgb(255, 215, 0)'
-                                gap='10px'
-                                borderRadius='.5rem'
-                            >
 
-                                <Title
-                                    family='Helvetica'
-                                    size='12px'
-                                    color='BLACK'
-                                    fstyle='normal'
-                                    display='inline'
-                                    padding='5px 10px'
-                                >
-                                    Booked
-                                </Title></ContainerGlobal></Td>
-                        <Td align='center'>01/15/21</Td>
-                        <Td align='center'>10/24/21</Td>
-                        <Td align='center'><ActionButton view={() => setShowDetails2(prev => !prev)}
-                        edit={() => setShowDetails3(prev => !prev)}
-                        
-                        /></Td>
-                    </Tr>
-                    <Tr>
-                        <Td align='center'>Kwasimodo H.</Td>
-                        <Td align='center'>4</Td>
-                        <Td align='center'>
-                            <ContainerGlobal
-                                w='100px'
-                                h='auto'
-                                margin='0px auto'
-                                bg='rgb(253, 161, 114, .2)'
-                                direction='row'
-                                padding='2px 0px'
-                                justify='center'
-                                align='center'
-                                border='2px solid rgb(255, 215, 0)'
-                                gap='10px'
-                                borderRadius='.5rem'
-                            >
-                                <Title
-                                    family='Helvetica'
-                                    size='12px'
-                                    color='BLACK'
-                                    fstyle='normal'
-                                    display='inline'
-                                    padding='5px 10px'
-                                >
-                                    Booked
-                                </Title>
-                            </ContainerGlobal>
-                        </Td>
-                        <Td align='center'>04/15/21</Td>
-                        <Td align='center'>9/24/21</Td>
-                        <Td align='center'><ActionButton /></Td>
-                    </Tr>
-                    <Tr>
-                        <Td align='center'>Yumiyacha L.</Td>
-                        <Td align='center'>4</Td>
-                        <Td align='center'><ContainerGlobal
-                            w='100px'
-                            h='auto'
-                            margin='0px auto'
-                            bg='rgb(118, 185, 71, .2)'
-                            direction='row'
-                            padding='2px 0px'
-                            justify='center'
-                            align='center'
-                            border='2px solid rgb(118, 185, 71)'
-                            gap='10px'
-                            borderRadius='.5rem'
-                        >
 
-                            <Title
-                                family='Helvetica'
-                                size='12px'
-                                color='BLACK'
-                                fstyle='normal'
-                                display='inline'
-                                padding='5px 10px'
-                            >
-                                Active
-                            </Title></ContainerGlobal></Td>
-                        <Td align='center'>02/14/21</Td>
-                        <Td align='center'>10/27/21</Td>
-                        <Td align='center'><ActionButton /></Td>
-                    </Tr>
-                    <Tr>
-                        <Td align='center'>Don Gachapon.</Td>
-                        <Td align='center'>4</Td>
-                        <Td align='center'>
-                            <ContainerGlobal
-                                w='100px'
-                                h='auto'
-                                margin='0px auto'
-                                bg='rgb(244,194,194, .2)'
-                                direction='row'
-                                padding='2px 0px'
-                                justify='center'
-                                align='center'
-                                border='2px solid rgb(255, 36, 0)'
-                                gap='10px'
-                                borderRadius='.5rem'
-                            >
-                                <Title
-                                    family='Helvetica'
-                                    size='12px'
-                                    color='BLACK'
-                                    fstyle='normal'
-                                    display='inline'
-                                    padding='5px 10px'
-                                >
-                                    Inactive
-                                </Title>
-                            </ContainerGlobal>
-                        </Td>
-                        <Td align='center'>07/5/21</Td>
-                        <Td align='center'>9/2/21</Td>
-                        <Td align='center'><ActionButton /></Td>
-                    </Tr>
-                    <Tr>
-                        <Td align='center'>Crystal A.</Td>
-                        <Td align='center'>6</Td>
-                        <Td align='center'><ContainerGlobal
-                            w='100px'
-                            h='auto'
-                            margin='0px auto'
-                            bg='rgb(118, 185, 71, .2)'
-                            direction='row'
-                            padding='2px 0px'
-                            justify='center'
-                            align='center'
-                            border='2px solid rgb(118, 185, 71)'
-                            gap='10px'
-                            borderRadius='.5rem'
-                        >
+                    {guests.length != 0 ?
+                        guests
+                        .slice((roomPage - 1) * 10, roomPage * 10)
+                        .sort((a,b) => Date.parse(b.created_at) - Date.parse(a.created_at))
+                        .map((item) => (
+                            <Tr>
+                                <Td align='center'>{item.id.split('-')[0]}</Td>
+                                <Td align='center'>{item.user.userName}</Td>
+                                <Td align='center'>{item.firstName} {item.lastName}</Td>
+                                <Td align='center'>{item.user.email}</Td>
+                                <Td align='center'>{reservationSummary.length != 0 ? reservationSummary.filter((obj) => (obj.reservation.guest_id == item.id)).length : 0}</Td>
+                                <Td align='center'>{reservationSummary.length != 0 ?
+                                    reservationSummary.filter((obj) => (obj.reservation.guest_id == item.id && obj.bookingStatus == "CHECKED-IN")).length != 0 ?
+                                        <ContainerGlobal
+                                            w='100px'
+                                            h='auto'
+                                            margin='0px auto'
+                                            bg='rgb(0, 0, 0, .2)'
+                                            direction='row'
+                                            padding='2px 0px'
+                                            justify='center'
+                                            align='center'
+                                            border='2px solid rgb(0, 0, 0)'
+                                            gap='10px'
+                                            borderRadius='.5rem'
+                                        >
 
-                            <Title
-                                family='Helvetica'
-                                size='12px'
-                                color='BLACK'
-                                fstyle='normal'
-                                display='inline'
-                                padding='5px 10px'
-                            >
-                                Active
-                            </Title></ContainerGlobal></Td>
-                        <Td align='center'>09/18/21</Td>
-                        <Td align='center'>10/8/21</Td>
-                        <Td align='center'><ActionButton /></Td>
-                    </Tr>
-                    <Tr>
-                        <Td align='center'>Amelrie K.</Td>
-                        <Td align='center'>7</Td>
-                        <Td align='center'>
-                            <ContainerGlobal
-                                w='100px'
-                                h='auto'
-                                margin='0px auto'
-                                bg='rgb(244,194,194, .2)'
-                                direction='row'
-                                padding='2px 0px'
-                                justify='center'
-                                align='center'
-                                border='2px solid rgb(255, 36, 0)'
-                                gap='10px'
-                                borderRadius='.5rem'
-                            >
-                                <Title
-                                    family='Helvetica'
-                                    size='12px'
-                                    color='BLACK'
-                                    fstyle='normal'
-                                    display='inline'
-                                    padding='5px 10px'
-                                >
-                                    Inactive
-                                </Title>
-                            </ContainerGlobal>
-                        </Td>
-                        <Td align='center'>02/19/21</Td>
-                        <Td align='center'>07/2/21</Td>
-                        <Td align='center'><ActionButton /></Td>
-                    </Tr>
+                                            <Title
+                                                family='Helvetica'
+                                                size='12px'
+                                                color='BLACK'
+                                                fstyle='normal'
+                                                display='inline'
+                                                padding='5px 10px'
+                                            >
+                                                Not-booked
+                                            </Title></ContainerGlobal>
+                                        :
+                                        <ContainerGlobal
+                                            w='100px'
+                                            h='auto'
+                                            margin='0px auto'
+                                            bg='rgb(253, 161, 114, .2)'
+                                            direction='row'
+                                            padding='2px 0px'
+                                            justify='center'
+                                            align='center'
+                                            border='2px solid rgb(255, 215, 0)'
+                                            gap='10px'
+                                            borderRadius='.5rem'
+                                        >
+
+                                            <Title
+                                                family='Helvetica'
+                                                size='12px'
+                                                color='BLACK'
+                                                fstyle='normal'
+                                                display='inline'
+                                                padding='5px 10px'
+                                            >
+                                                Booked
+                                            </Title></ContainerGlobal>
+                                    : ''}
+                                </Td>
+                                <Td align='center'>{item.user.role == 'NON-USER' ? 'Non user' : 'User'}</Td>
+                                <Td align='center'>{new Date(item.created_at).toLocaleDateString()}</Td>
+                                <Td align='center'><ActionButton
+                                    view={() => handleOpen2(item)}
+                                    edit={() => handleOpen(item)}
+
+                                /></Td>
+                            </Tr>
+                        ))
+                        : 'No data'}
+
+
                 </TableContainer>
-            </ContainerGlobal>
-            <Button variant="contained" size="large"
-                style={{ backgroundColor: '#2E2E2E' }}
-                onClick={() => setShowDetails(prev => !prev)}>
-                Create Guest Account
-            </Button>
+                <ContainerGlobal
+                    w='100%'
+                    justify='center'>
+                    <Pagination
+                        page={roomPage}
+                        count={guests.length != 0 && Math.ceil(guests.length / 10)}
+                        onChange={(e, value) => {
 
-            
-            <Grow in={showDetails}>{addUser}</Grow>
-            <Grow in={showDetails2}>{viewUser}</Grow>
-            <Grow in={showDetails3}>{editUser}</Grow>
+                            setRoomPage(value)
+                        }}
+                    />
+                </ContainerGlobal>
+            </ContainerGlobal>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            <Modal
+                open={open}
+                onClose={handleClose}
+                style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                }}>
+                <Box
+                    component='form'
+                    onSubmit={updateUser}
+                    style={{
+                        height: 'auto',
+                        width: '60vw',
+                        backgroundColor: 'white',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        padding: '0px 0px 30px 0px',
+                        gap: '10px',
+                        justifyContent: 'flex-start',
+                        alignItems: 'center',
+                        overflowY: 'overlay',
+                        overflowX: 'hidden',
+                        borderRadius: '.5rem',
+                        position: 'relative',
+                        // margin: '50px 0px',
+
+                    }}>
+                    <div style={{
+                        width: '100%',
+                        height: '50px',
+                        position: 'sticky',
+                        top: 0,
+                        display: 'flex',
+                        justifyContent: 'flex-end',
+                        alignItems: 'center',
+                        backgroundColor: 'black',
+                        zIndex: '1',
+
+                    }}>
+                        <Title
+                            size='16px'
+                            color='white'
+                            family='Helvetica'
+                            fstyle='normal'
+                            weight='bold'
+                            align='left'
+                            margin='0px auto 0px 10px'
+                        >
+                            Edit Guest
+                        </Title>
+                        <CloseIcon
+                            onClick={handleClose}
+                            style={{
+                                color: 'white',
+                                cursor: 'pointer',
+                                margin: '10px',
+                            }} />
+                    </div>
+
+
+                    <InputContainer
+                        style={{
+                            margin: '50px 0px 0px 0px'
+                        }}>
+                        <TextField
+                            error={firstNameError.length != 0 ? true : false}
+                            helperText={firstNameError.length != 0 ? firstNameError : ""}
+                            placeholder='First Name'
+                            label="First Name"
+                            inputRef={firstNameRef}
+                            variant="outlined"
+                            value={firstName}
+
+                            inputProps={{ maxLength: 80 }}
+                            onChange={(e) => {
+                                setFirstName(e.target.value)
+                                if (!letters.test(e.target.value) && e.target.value.length != 0) {
+                                    setFirstNameError("Invalid first name. Please type letters only.")
+                                }
+                                else {
+                                    setFirstNameError("")
+                                }
+                            }}
+                            style={{ width: '55%', }}
+                            required />
+
+                        <TextField
+                            error={lastNameError.length != 0 ? true : false}
+                            helperText={lastNameError.length != 0 ? lastNameError : ""}
+                            placeholder='Last Name'
+                            label="Last Name"
+                            variant="outlined"
+                            inputRef={lastNameRef}
+                            value={lastName}
+                            inputProps={{ maxLength: 80 }}
+                            onChange={(e) => {
+                                setLastName(e.target.value)
+                                if (!letters.test(e.target.value) && e.target.value.length != 0) {
+                                    setLastNameError("Invalid last name. Please type letters only.")
+                                }
+                                else {
+                                    setLastNameError("")
+                                }
+
+                            }}
+                            style={{ width: '55%', }}
+                            required />
+                    </InputContainer>
+
+                    <InputContainer>
+                        <TextField
+                            error={emailError.length != 0 ? true : false}
+                            helperText={emailError.length != 0 ? emailError : ""}
+                            placeholder='Email'
+                            label="Email"
+                            variant="outlined"
+                            type='email'
+                            value={email}
+                            inputProps={{ maxLength: 254 }}
+
+                            onChange={(e) => {
+                                setEmail(e.target.value)
+
+                                setEmailError("")
+                            }}
+                            style={{ width: '55%', }}
+                            inputRef={emailRef}
+                            required />
+
+                        <TextField
+                            error={contactNumberError.length != 0 ? true : false}
+                            helperText={contactNumberError.length != 0 ? contactNumberError : "ex. 09123456789 or +639123456789"}
+                            placeholder='Contact Number e.g. 09123456789 or +639123456789'
+                            label="Contact Number"
+                            variant="outlined"
+                            value={contactNumber}
+                            onChange={(e) => {
+                                setcontactNumber(e.target.value)
+
+                                if (!phoneNumberValidation.test(e.target.value) && e.target.value.length != 0) {
+                                    console.log('asda')
+                                    setContactNumberError("Contact number is invalid. Please provide a valid contact number.")
+                                }
+                                else {
+                                    setContactNumberError("")
+                                }
+                            }}
+                            inputRef={contactNumberRef}
+
+                            inputProps={{ maxLength: 13 }}
+                            style={{ width: '55%', }}
+                            required />
+                    </InputContainer>
+
+
+                    <InputContainer>
+
+                        <LocalizationProvider dateAdapter={AdapterDateFns}>
+                            <DatePicker
+
+                                views={['day', 'month', 'year']}
+                                label="Birthday"
+                                value={birthDay}
+                                maxDate={new Date(Date.parse(new Date()) - 568025136000)}
+                                minDate={new Date(Date.parse(new Date()) - 2524556160000)}
+                                onChange={(newValue) => {
+                                    setBirthDay(newValue);
+                                }}
+                                renderInput={(params) =>
+                                    <TextField
+                                        {...params}
+                                        variant="standard"
+                                        style={{ width: "55%", margin: '5px 0px' }}
+                                        helperText={null}
+                                        required
+                                    />
+                                }
+                            />
+
+                        </LocalizationProvider>
+
+                        <FormControl sx={{ width: "55%", margin: '5px 0px' }} size="small" variant="standard">
+                            <InputLabel id="demo-select-small" >Nationality</InputLabel>
+                            <Select
+                                style={{ color: 'black', textAlign: 'left' }}
+                                labelId="demo-select-small"
+                                id="demo-select-small"
+                                value={nationality}
+                                label="Menu"
+                                required
+                                onChange={(event) => {
+                                    setNationality(event.target.value);
+                                }}
+                            >
+
+                                {nationalities.map(({ nationality }, index) => (
+                                    <MenuItem value={nationality} >{nationality}</MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl>
+                    </InputContainer>
+
+                    <InputContainer
+                        justify='center'>
+                        <FormControl>
+                            <FormLabel id="demo-row-radio-buttons-group-label"
+                                style={{ textAlign: 'center', }} >Gender</FormLabel>
+                            <RadioGroup
+                                row
+                                aria-labelledby="demo-row-radio-buttons-group-label"
+                                value={gender}
+                                required
+                                onChange={(e) => {
+                                    setGender(e.target.value)
+                                }}
+                                name="row-radio-buttons-group">
+                                <FormControlLabel
+                                    value="male"
+                                    control={<Radio />}
+                                    label="Male"
+                                />
+                                <FormControlLabel
+                                    value="female"
+                                    control={<Radio />}
+                                    label="Female"
+                                />
+                                <FormControlLabel
+                                    value="other"
+                                    control={<Radio />}
+                                    label="Other"
+                                />
+                            </RadioGroup>
+                        </FormControl>
+                    </InputContainer>
+
+                    <InputContainer>
+                        <TextField
+                            error={addressError.length != 0 ? true : false}
+                            helperText={addressError.length != 0 ? addressError : ""}
+                            placeholder='Complete Address'
+                            label="Complete Address"
+                            variant="outlined"
+                            type='text'
+                            value={address}
+                            onChange={(e) => {
+                                setAddress(e.target.value)
+                            }}
+                            multiline
+                            rows={4}
+                            style={{ width: '95%', }}
+                            required
+                            inputProps={{ maxLength: 255 }} />
+
+
+
+                    </InputContainer>
+
+                    <Button
+                        variant="contained"
+                        color='success'
+                        type='submit'
+                    >
+                        Update
+                    </Button>
+
+                    <Button
+                        variant="contained"
+                        color='error'
+                        onClick={handleClose}
+                    >
+                        Close
+                    </Button>
+                </Box>
+            </Modal>
+
+
+
+
+
+
+
+
+
+
+
+
+
+            <Modal
+                open={open2}
+                onClose={handleClose2}
+                style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                }}>
+                <Box
+                    component='form'
+                    onSubmit={updateUser}
+                    style={{
+                        height: 'auto',
+                        width: '60vw',
+                        backgroundColor: 'white',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        padding: '0px 0px 30px 0px',
+                        gap: '10px',
+                        justifyContent: 'flex-start',
+                        alignItems: 'center',
+                        overflowY: 'overlay',
+                        overflowX: 'hidden',
+                        borderRadius: '.5rem',
+                        position: 'relative',
+                        // margin: '50px 0px',
+
+                    }}>
+                    <div style={{
+                        width: '100%',
+                        height: '50px',
+                        position: 'sticky',
+                        top: 0,
+                        display: 'flex',
+                        justifyContent: 'flex-end',
+                        alignItems: 'center',
+                        backgroundColor: 'black',
+                        zIndex: '1',
+
+                    }}>
+                        <Title
+                            size='16px'
+                            color='white'
+                            family='Helvetica'
+                            fstyle='normal'
+                            weight='bold'
+                            align='left'
+                            margin='0px auto 0px 10px'
+                        >
+                            View Guest
+                        </Title>
+                        <CloseIcon
+                            onClick={handleClose2}
+                            style={{
+                                color: 'white',
+                                cursor: 'pointer',
+                                margin: '10px',
+                            }} />
+                    </div>
+
+
+                    <InputContainer
+                        style={{
+                            margin: '50px 0px 0px 0px'
+                        }}>
+                        <TextField
+                            error={firstNameError.length != 0 ? true : false}
+                            helperText={firstNameError.length != 0 ? firstNameError : ""}
+                            placeholder='First Name'
+                            label="First Name"
+                            inputRef={firstNameRef}
+                            variant="outlined"
+                            value={firstName}
+
+                            inputProps={{ maxLength: 80 }}
+                            onChange={(e) => {
+                                setFirstName(e.target.value)
+                                if (!letters.test(e.target.value) && e.target.value.length != 0) {
+                                    setFirstNameError("Invalid first name. Please type letters only.")
+                                }
+                                else {
+                                    setFirstNameError("")
+                                }
+                            }}
+                            style={{ width: '55%', }}
+                            disabled />
+
+                        <TextField
+                            error={lastNameError.length != 0 ? true : false}
+                            helperText={lastNameError.length != 0 ? lastNameError : ""}
+                            placeholder='Last Name'
+                            label="Last Name"
+                            variant="outlined"
+                            inputRef={lastNameRef}
+                            value={lastName}
+                            inputProps={{ maxLength: 80 }}
+                            onChange={(e) => {
+                                setLastName(e.target.value)
+                                if (!letters.test(e.target.value) && e.target.value.length != 0) {
+                                    setLastNameError("Invalid last name. Please type letters only.")
+                                }
+                                else {
+                                    setLastNameError("")
+                                }
+
+                            }}
+                            style={{ width: '55%', }}
+                            disabled />
+                    </InputContainer>
+
+                    <InputContainer>
+                        <TextField
+                            error={emailError.length != 0 ? true : false}
+                            helperText={emailError.length != 0 ? emailError : ""}
+                            placeholder='Email'
+                            label="Email"
+                            variant="outlined"
+                            type='email'
+                            value={email}
+                            inputProps={{ maxLength: 254 }}
+
+                            onChange={(e) => {
+                                setEmail(e.target.value)
+
+                                setEmailError("")
+                            }}
+                            style={{ width: '55%', }}
+                            inputRef={emailRef}
+                            disabled />
+
+                        <TextField
+                            error={contactNumberError.length != 0 ? true : false}
+                            helperText={contactNumberError.length != 0 ? contactNumberError : "ex. 09123456789 or +639123456789"}
+                            placeholder='Contact Number e.g. 09123456789 or +639123456789'
+                            label="Contact Number"
+                            variant="outlined"
+                            value={contactNumber}
+                            onChange={(e) => {
+                                setcontactNumber(e.target.value)
+
+                                if (!phoneNumberValidation.test(e.target.value) && e.target.value.length != 0) {
+                                    console.log('asda')
+                                    setContactNumberError("Contact number is invalid. Please provide a valid contact number.")
+                                }
+                                else {
+                                    setContactNumberError("")
+                                }
+                            }}
+                            inputRef={contactNumberRef}
+
+                            inputProps={{ maxLength: 13 }}
+                            style={{ width: '55%', }}
+                            disabled />
+                    </InputContainer>
+
+
+                    <InputContainer>
+
+                        <LocalizationProvider dateAdapter={AdapterDateFns}>
+                            <DatePicker
+
+                                views={['day', 'month', 'year']}
+                                label="Birthday"
+                                value={birthDay}
+                                maxDate={new Date(Date.parse(new Date()) - 568025136000)}
+                                minDate={new Date(Date.parse(new Date()) - 2524556160000)}
+                                onChange={(newValue) => {
+                                    setBirthDay(newValue);
+                                }}
+                                disabled
+                                renderInput={(params) =>
+                                    <TextField
+                                        {...params}
+                                        variant="standard"
+                                        style={{ width: "55%", margin: '5px 0px' }}
+                                        helperText={null}
+                                        disabled
+                                    />
+                                }
+                            />
+
+                        </LocalizationProvider>
+
+                        <FormControl sx={{ width: "55%", margin: '5px 0px' }} size="small" variant="standard">
+                            <InputLabel id="demo-select-small" >Nationality</InputLabel>
+                            <Select
+                                style={{ color: 'black', textAlign: 'left' }}
+                                labelId="demo-select-small"
+                                id="demo-select-small"
+                                value={nationality}
+                                label="Menu"
+                                disabled
+                                onChange={(event) => {
+                                    setNationality(event.target.value);
+                                }}
+                            >
+
+                                {nationalities.map(({ nationality }, index) => (
+                                    <MenuItem value={nationality} >{nationality}</MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl>
+                    </InputContainer>
+
+                    <InputContainer
+                        justify='center'>
+                        <FormControl>
+                            <FormLabel id="demo-row-radio-buttons-group-label"
+                                style={{ textAlign: 'center', }} >Gender</FormLabel>
+                            <RadioGroup
+                                row
+                                aria-labelledby="demo-row-radio-buttons-group-label"
+                                value={gender}
+                                disabled
+                                onChange={(e) => {
+                                    setGender(e.target.value)
+                                }}
+                                name="row-radio-buttons-group">
+                                <FormControlLabel
+                                    value="male"
+                                    control={<Radio disabled />}
+                                    label="Male"
+                                />
+                                <FormControlLabel
+                                    value="female"
+                                    control={<Radio disabled />}
+                                    label="Female"
+                                />
+                                <FormControlLabel
+                                    value="other"
+                                    control={<Radio disabled />}
+                                    label="Other"
+                                />
+                            </RadioGroup>
+                        </FormControl>
+                    </InputContainer>
+
+                    <InputContainer>
+                        <TextField
+                            error={addressError.length != 0 ? true : false}
+                            helperText={addressError.length != 0 ? addressError : ""}
+                            placeholder='Complete Address'
+                            label="Complete Address"
+                            variant="outlined"
+                            type='text'
+                            value={address}
+                            onChange={(e) => {
+                                setAddress(e.target.value)
+                            }}
+                            multiline
+                            rows={4}
+                            style={{ width: '95%', }}
+                            disabled
+                            inputProps={{ maxLength: 255 }} />
+
+
+
+                    </InputContainer>
+
+
+                    <Button
+                        variant="contained"
+                        color='error'
+                        onClick={handleClose2}
+                    >
+                        Close
+                    </Button>
+                </Box>
+            </Modal>
+
+
 
         </Container>
     )

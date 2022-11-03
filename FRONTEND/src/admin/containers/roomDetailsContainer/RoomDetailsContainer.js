@@ -38,7 +38,6 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import axios from 'axios';
 import { Alert, Fade, Pagination } from '@mui/material';
 import { apiKey } from '../../../apiKey';
-
 // import ssss from 'src/Images/rooms/'
 
 const style = {
@@ -165,6 +164,12 @@ const RoomDetailsContainer = () => {
     };
 
 
+    const numberFormat = (value) =>
+        new Intl.NumberFormat('en-CA', {
+            style: 'currency',
+            currency: 'PHP'
+        }).format(value);
+
     const [open3, setOpen3] = React.useState(false);
     const handleOpen3 = () => setOpen3(true);
     const handleClose3 = () => {
@@ -179,7 +184,7 @@ const RoomDetailsContainer = () => {
     const theme = useTheme();
     const [personName, setPersonName] = React.useState([]);
     const [serviceNameClip, setServiceNameClip] = React.useState([]);
-
+    const [roomPage, setRoomPage] = useState(1)
     const handleChange = (event) => {
         setSelectedServices(event.target.value)
         const {
@@ -810,7 +815,7 @@ const RoomDetailsContainer = () => {
                 >
                 </HorizontalLine>
 
-                <TableContainer style={{fontSize: '.8vw'}}>
+                <TableContainer style={{ fontSize: '.8vw' }}>
                     <Tr>
                         <Th align='center'>Room Type</Th>
                         <Th align='center'>Rate/Night</Th>
@@ -822,23 +827,25 @@ const RoomDetailsContainer = () => {
                     </Tr>
 
                     {roomType.length != 0 ?
-                        roomType.map((items) => (
+                        roomType
+                        .slice((roomPage - 1) * 10, roomPage * 10)
+                        .map((items) => (
                             <Tr>
                                 <Td align='center'>{items.roomType}</Td>
-                                <Td align='center'>{items.roomRate}</Td>
+                                <Td align='center'>{numberFormat(items.roomRate)}</Td>
                                 <Td align='center' style={{ display: 'flex', gap: '5px', width: '350px', justifyContent: 'flex-start', flexWrap: 'wrap' }}>
                                     {usedServices.length != 0 ?
                                         usedServices.map((items2) => {
                                             if (items.id === items2.roomType_id) {
-                                                return <Chip style={{width: '100px'}} key={items2.service.servicesName} label={items2.service.servicesName} />
+                                                return <Chip style={{ width: '100px' }} key={items2.service.servicesName} label={items2.service.servicesName} />
                                                 // <span style={{whiteSpace: 'nowrap',backgroundColor:"#948566", color: 'black', borderRadius: '.5em', padding: '5px', }}>{items2.service.servicesName + ", "}</span>
                                             }
                                         })
                                         : ""}
                                 </Td>
-                                <Td align='center' style={{width: '100px'}}>{items.maxAdultOccupancy}</Td>
+                                <Td align='center' style={{ width: '100px' }}>{items.maxAdultOccupancy}</Td>
                                 <Td align='center'>{items.maxKidsOccupancy}</Td>
-                                <Td align='center' ><p style={{ width:'300px', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis'}}>{items.roomDescription}</p></Td>
+                                <Td align='center' ><p style={{ width: '300px', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>{items.roomDescription}</p></Td>
                                 <Td align='center'><ActionButton
                                     view={() => {
                                         // setRoomTypeValue(items.roomType);
@@ -862,8 +869,20 @@ const RoomDetailsContainer = () => {
                         : ''}
                 </TableContainer>
 
+                <ContainerGlobal
+                    w='100%'
+                    justify='center'>
+                    <Pagination
+                        page={roomPage}
+                        count={roomType.length != 0 && Math.ceil(roomType.length / 10)}
+                        onChange={(e, value) => {
+
+                            setRoomPage(value)
+                        }}
+                    />
+                </ContainerGlobal>
             </ContainerGlobal>
-            <Pagination style={{ marginBottom: '40px' }} count={10} page={page} onChange={handleChangePagination} />
+
 
             <Button
                 variant="contained"
@@ -876,16 +895,61 @@ const RoomDetailsContainer = () => {
             <Modal
                 open={open}
                 onClose={handleClose}
-                aria-labelledby="modal-modal-title"
-                aria-describedby="modal-modal-description"
                 style={{
-                    overflow: 'scroll',
                     display: 'flex',
-                    alignItems: 'flex-start',
-                    justifyContent: 'flex-start',
-                }}
-            >
-                <Box sx={style}>
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                }}>
+                <Box
+                    style={{
+                        height: 'auto',
+                        width: '50vw',
+                        backgroundColor: 'white',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        padding: '0px 0px 30px 0px',
+                        gap: '10px',
+                        justifyContent: 'flex-start',
+                        alignItems: 'center',
+                        overflowY: 'overlay',
+                        overflowX: 'hidden',
+                        borderRadius: '.5rem',
+                        position: 'relative',
+                        maxHeight: '90vh',
+                        // margin: '50px 0px',
+
+                    }}>
+                    <div style={{
+                        width: '100%',
+                        height: '50px',
+                        position: 'sticky',
+                        top: 0,
+                        display: 'flex',
+                        justifyContent: 'flex-end',
+                        alignItems: 'center',
+                        backgroundColor: 'black',
+                        zIndex: '1',
+
+                    }}>
+                        <Title
+                            size='16px'
+                            color='white'
+                            family='Helvetica'
+                            fstyle='normal'
+                            weight='bold'
+                            align='left'
+                            margin='0px auto 0px 10px'
+                        >
+                            Add Room Type
+                        </Title>
+                        <CloseIcon
+                            onClick={handleClose}
+                            style={{
+                                color: 'white',
+                                cursor: 'pointer',
+                                margin: '10px',
+                            }} />
+                    </div>
                     <Box
                         onSubmit={addRoomType}
                         id="addRoomTypeForm"
@@ -897,23 +961,7 @@ const RoomDetailsContainer = () => {
                             alignItems: 'center',
                             justifyContent: 'flex-start',
                         }}>
-                        <Title
-                            size='33px'
-                            color='black'
-                            family='Helvetica'
-                            fstyle='normal'
-                            weight='600'
-                            align='left'
-                            margin='0px 0px 20px 0px'
-                        >
-                            Add Room Type
-                        </Title>
 
-                        <HorizontalLine
-                            bg='gray'
-                            w='100%'
-                            margin='0px 0px 40px 0px'
-                        ></HorizontalLine>
 
                         <InputContainer
                             w='90%'
@@ -938,7 +986,7 @@ const RoomDetailsContainer = () => {
                                     setRoomRate(e.target.value);
                                 }}
                                 InputProps={{
-                                    startAdornment: <InputAdornment position="start">PHP</InputAdornment>,
+                                    startAdornment: <InputAdornment position="start">₱</InputAdornment>,
                                 }}
                                 style={{ width: '55%', }}
                                 required
@@ -1118,11 +1166,61 @@ const RoomDetailsContainer = () => {
             <Modal
                 open={open2}
                 onClose={handleClose2}
-                aria-labelledby="modal-modal-title"
-                aria-describedby="modal-modal-description"
-                style={{ overflow: 'scroll' }}
-            >
-                <Box sx={style}>
+                style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                }}>
+                <Box
+                    style={{
+                        height: 'auto',
+                        width: '50vw',
+                        backgroundColor: 'white',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        padding: '0px 0px 30px 0px',
+                        gap: '10px',
+                        justifyContent: 'flex-start',
+                        alignItems: 'center',
+                        overflowY: 'overlay',
+                        overflowX: 'hidden',
+                        borderRadius: '.5rem',
+                        position: 'relative',
+                        maxHeight: '90vh',
+                        // margin: '50px 0px',
+
+                    }}>
+                    <div style={{
+                        width: '100%',
+                        height: '50px',
+                        position: 'sticky',
+                        top: 0,
+                        display: 'flex',
+                        justifyContent: 'flex-end',
+                        alignItems: 'center',
+                        backgroundColor: 'black',
+                        zIndex: '1',
+
+                    }}>
+                        <Title
+                            size='16px'
+                            color='white'
+                            family='Helvetica'
+                            fstyle='normal'
+                            weight='bold'
+                            align='left'
+                            margin='0px auto 0px 10px'
+                        >
+                            View Room Type
+                        </Title>
+                        <CloseIcon
+                            onClick={handleClose2}
+                            style={{
+                                color: 'white',
+                                cursor: 'pointer',
+                                margin: '10px',
+                            }} />
+                    </div>
                     <Box style={{
                         margin: '30px auto',
                         display: 'flex',
@@ -1130,24 +1228,6 @@ const RoomDetailsContainer = () => {
                         alignItems: 'center',
                         justifyContent: 'flex-start',
                     }}>
-                        <Title
-                            size='33px'
-                            color='black'
-                            family='Helvetica'
-                            fstyle='normal'
-                            weight='600'
-                            align='left'
-                            margin='0px 0px 20px 0px'
-                        >
-                            View Room Type
-                        </Title>
-
-                        <HorizontalLine
-                            bg='gray'
-                            w='100%'
-                            margin='0px 0px 40px 0px'
-                        ></HorizontalLine>
-
                         <InputContainer
                             w='90%'
                         >
@@ -1168,7 +1248,7 @@ const RoomDetailsContainer = () => {
                                 defaultValue={roomRate}
                                 InputProps={{
                                     readOnly: true,
-                                    startAdornment: <InputAdornment position="start">PHP</InputAdornment>,
+                                    startAdornment: <InputAdornment position="start">₱</InputAdornment>,
                                 }}
                                 style={{ width: '55%', }} />
                         </InputContainer>
@@ -1297,11 +1377,61 @@ const RoomDetailsContainer = () => {
             <Modal
                 open={open3}
                 onClose={handleClose3}
-                aria-labelledby="modal-modal-title"
-                aria-describedby="modal-modal-description"
-                style={{ overflow: 'scroll' }}
-            >
-                <Box sx={style}>
+                style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                }}>
+                <Box
+                    style={{
+                        height: 'auto',
+                        width: '50vw',
+                        backgroundColor: 'white',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        padding: '0px 0px 30px 0px',
+                        gap: '10px',
+                        justifyContent: 'flex-start',
+                        alignItems: 'center',
+                        overflowY: 'overlay',
+                        overflowX: 'hidden',
+                        borderRadius: '.5rem',
+                        position: 'relative',
+                        maxHeight: '90vh',
+                        // margin: '50px 0px',
+
+                    }}>
+                    <div style={{
+                        width: '100%',
+                        height: '50px',
+                        position: 'sticky',
+                        top: 0,
+                        display: 'flex',
+                        justifyContent: 'flex-end',
+                        alignItems: 'center',
+                        backgroundColor: 'black',
+                        zIndex: '1',
+
+                    }}>
+                        <Title
+                            size='16px'
+                            color='white'
+                            family='Helvetica'
+                            fstyle='normal'
+                            weight='bold'
+                            align='left'
+                            margin='0px auto 0px 10px'
+                        >
+                            Edit Room Type
+                        </Title>
+                        <CloseIcon
+                            onClick={handleClose3}
+                            style={{
+                                color: 'white',
+                                cursor: 'pointer',
+                                margin: '10px',
+                            }} />
+                    </div>
                     <Box
                         onSubmit={editRoomType}
                         id="editRoomTypeForm"
@@ -1313,24 +1443,6 @@ const RoomDetailsContainer = () => {
                             alignItems: 'center',
                             justifyContent: 'flex-start',
                         }}>
-                        <Title
-                            size='33px'
-                            color='black'
-                            family='Helvetica'
-                            fstyle='normal'
-                            weight='600'
-                            align='left'
-                            margin='0px 0px 20px 0px'
-                        >
-                            Edit Room Type
-                        </Title>
-
-                        <HorizontalLine
-                            bg='gray'
-                            w='100%'
-                            margin='0px 0px 40px 0px'
-                        ></HorizontalLine>
-
                         <InputContainer
                             w='90%'
                         >
@@ -1347,7 +1459,7 @@ const RoomDetailsContainer = () => {
                                     readOnly: false,
                                 }}
                                 required
-                                />
+                            />
 
                             <TextField
                                 placeholder='Rate per Night'
@@ -1359,7 +1471,7 @@ const RoomDetailsContainer = () => {
                                 }}
                                 InputProps={{
                                     readOnly: false,
-                                    startAdornment: <InputAdornment position="start">PHP</InputAdornment>,
+                                    startAdornment: <InputAdornment position="start">₱</InputAdornment>,
                                 }}
                                 style={{ width: '55%', }}
                                 required />
@@ -1595,7 +1707,7 @@ const RoomDetailsContainer = () => {
                                 defaultValue={roomRate}
                                 InputProps={{
                                     readOnly: false,
-                                    startAdornment: <InputAdornment position="start">PHP</InputAdornment>,
+                                    startAdornment: <InputAdornment position="start">₱</InputAdornment>,
                                 }}
                                 style={{ width: '55%', }} />
                         </InputContainer>

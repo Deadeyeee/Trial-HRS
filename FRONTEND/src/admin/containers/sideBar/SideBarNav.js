@@ -55,8 +55,16 @@ const SideBarNav = (props) => {
                                 console.log(conversationResult.data)
                                 Axios.get(apiKey + 'api/getAllMessage').then((messageResult) => {
                                     console.log(messageResult.data)
+                                    console.log('TEST UNREAD', conversationResult.data.filter((item2) => (
+                                        messageResult.data.filter((obj) => obj.conversation_id == item2.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].messageFrom.user.role != 'ADMIN' && messageResult.data.filter((obj) => obj.conversation_id == item2.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].messageFrom.user.role != 'STAFF'
+                                    )).map((item) => (
+                                        messageResult.data.filter((obj) => obj.messageTo.user.role == 'ADMIN' || obj.messageTo.user.role == 'STAFF').filter((obj) => obj.conversation_id == item.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].status
+                                    ))
+                                    )
                                     setUnreadMessage(
-                                        conversationResult.data.map((item) => (
+                                        conversationResult.data.filter((item2) => (
+                                            messageResult.data.filter((obj) => obj.conversation_id == item2.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].messageFrom.user.role != 'ADMIN' && messageResult.data.filter((obj) => obj.conversation_id == item2.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].messageFrom.user.role != 'STAFF'
+                                        )).map((item) => (
                                             messageResult.data.filter((obj) => obj.messageTo.user.role == 'ADMIN' || obj.messageTo.user.role == 'STAFF').filter((obj) => obj.conversation_id == item.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].status
                                         ))
                                     )
@@ -291,7 +299,7 @@ const SideBarNav = (props) => {
                     weight='600'
                     align='left'
                 >
-                    Guests
+                    Guest List
                 </Title>
             </MenuContainer>
 
@@ -359,7 +367,7 @@ const SideBarNav = (props) => {
                     weight='600'
                     align='left'
                 >
-                    Room Status
+                    Rooms
                 </Title>
             </MenuContainer>
 
@@ -381,7 +389,7 @@ const SideBarNav = (props) => {
                     weight='600'
                     align='left'
                 >
-                    Room Details
+                    Room Types
                 </Title>
             </MenuContainer>
 
