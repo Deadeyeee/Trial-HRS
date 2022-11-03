@@ -98,16 +98,26 @@ export const Poster = styled(motion.div)`
     box-shadow: -3px 3px 10px black;
 
     background-image: url(${F2});
+    opacity: 100%;
     background-size: cover;
     background-position: center;
+    
 
 
     @media (max-width: 1000px) {
     
       width: 190px;
     height: 220px;
+
+    @ keyframes slide {
+      25%{
+        background-image: url(${R1})
+      }
+    }
   }
 `;
+
+
 
 export const AlterPoster = styled(motion.div)`
     display: flex;

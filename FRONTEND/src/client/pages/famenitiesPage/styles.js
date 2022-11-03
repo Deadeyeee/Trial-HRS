@@ -8,11 +8,17 @@ export const Container = styled(motion.div)`
     align-items: center;
 `;
 
+export const PhotoHolderMain = styled(motion.div)`
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: auto;
+    margin-top: 180px;
+`;
+
+
 export const PhotoHolder = styled(motion.div)`
     display: flex;
-    background-image: url(${(props) => (props.link ? props.link : null)});
-    background-size: cover;
-    background-position: center;
     flex-direction: column;
     justify-content: flex-end;
     width: 100%;
@@ -22,7 +28,7 @@ export const PhotoHolder = styled(motion.div)`
 export const TitleHolder = styled(motion.div)`
     display:flex;
     justify-content: ${(props) => (props.justifyContent ? props.justifyContent : "flex-start")};
-    background-color: rgba(0, 0, 0, 0.8);
+    background-color: rgba(0, 0, 0, 1.0);
     width: 100%;
     z-index: 0;
     padding: 5px 0px;

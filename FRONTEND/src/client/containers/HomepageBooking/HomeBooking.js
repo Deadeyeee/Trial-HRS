@@ -14,7 +14,7 @@ import {
   Question,
   Answer,
   AlterPoster,
-  OtherPoster
+  OtherPoster,
 } from "./styles.js";
 import DateRangePicker from "../../components/datePicker/DateRangePicker.js";
 import { Button } from "../../components/button/styles.js";
@@ -28,6 +28,7 @@ import {
 } from "../bookingPage/Styles.js";
 import { TextInput } from "../../components/textBox/style.js";
 import { ArrowForwardIos } from "@mui/icons-material";
+
 export const HomeBooking = ({ title }) => {
   const [startDate, setStartDate] = useState(
     new Date(new Date().setHours(0, 0, 0, 0))
@@ -222,8 +223,16 @@ export const HomeBooking = ({ title }) => {
           great. Visit us to become one of our valuable guests. See you around!
         </Description>
         <FlexItems>
-          <Poster>
-            <ContentDivMain></ContentDivMain>
+          <Poster
+            whileHover={{ scale: [null, 1.1, 1.1] }}
+            transition={{
+              type: "spring",
+              stiffness: 400,
+              damping: 10,
+              duration: 0.3,
+            }}
+          >
+            <ContentDivMain />
             <ContentDiv>
               <Title
                 family="Roboto Slab"
@@ -243,6 +252,7 @@ export const HomeBooking = ({ title }) => {
               </Description>
               <HorizontalLineMini></HorizontalLineMini>
               <Button
+                whileHover={{ backgroundColor: "#8F805F", color: "white" }}
                 w="90%"
                 h="45px"
                 radius="0px"
@@ -260,7 +270,15 @@ export const HomeBooking = ({ title }) => {
               </Button>
             </ContentDiv>
           </Poster>
-          <AlterPoster>
+          <AlterPoster
+            whileHover={{ scale: [null, 1.1, 1.1] }}
+            transition={{
+              type: "spring",
+              stiffness: 400,
+              damping: 10,
+              duration: 0.3,
+            }}
+          >
             <ContentDiv>
               <Title
                 family="Roboto Slab"
@@ -282,6 +300,7 @@ export const HomeBooking = ({ title }) => {
               </Description>
               <HorizontalLineMini></HorizontalLineMini>
               <Button
+                whileHover={{ backgroundColor: "#8F805F", color: "white" }}
                 w="90%"
                 h="45px"
                 radius="0px"
@@ -299,7 +318,15 @@ export const HomeBooking = ({ title }) => {
               </Button>
             </ContentDiv>
           </AlterPoster>
-          <OtherPoster>
+          <OtherPoster
+            whileHover={{ scale: [null, 1.1, 1.1] }}
+            transition={{
+              type: "spring",
+              stiffness: 400,
+              damping: 10,
+              duration: 0.3,
+            }}
+          >
             <ContentDiv>
               <Title
                 family="Roboto Slab"
@@ -319,6 +346,7 @@ export const HomeBooking = ({ title }) => {
               </Description>
               <HorizontalLineMini></HorizontalLineMini>
               <Button
+                whileHover={{ backgroundColor: "#8F805F", color: "white" }}
                 w="90%"
                 h="45px"
                 radius="0px"
@@ -353,6 +381,12 @@ export const HomeBooking = ({ title }) => {
           <Faq
             onClick={() => {
               setOpenAnswer1(!openAnswer1);
+            }}
+            transition={{
+              type: "spring",
+              stiffness: 400,
+              damping: 10,
+              duration: 0.3,
             }}
           >
             <Question>
