@@ -47,8 +47,8 @@ export const FAmenitiesContentCont = () => {
                             </i>
                         </Description>
                         <Description>
-                            <i>
-                            For inquiries, please message us thru inbox or email: rm.luxehotel@gmail.com. Thank you.
+                            <i style={{fontWeight:"bold", fontSize: "18px"}}>
+                            For inquiries, please message us thru inbox or email:<a href='mailTo: rm.luxehotel@gmail.com' style={{color:"#8F8068"}}> rm.luxehotel@gmail.com</a> Thank you.
                             </i>
                         </Description>
                     </FlexboxContent>
