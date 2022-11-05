@@ -324,7 +324,7 @@ const BookingsContainer = () => {
 
         });
         axios.get(apiKey + 'api/getAllRoomType').then((result) => {
-            setRoomTypeDb(result.data)
+            setRoomTypeDb(result.data.filter((obj)=> obj.status == true))
         }).catch((err) => {
             console.log(err)
         });
@@ -488,7 +488,7 @@ const BookingsContainer = () => {
     useLayoutEffect(() => {
 
         axios.get(apiKey + 'api/getAllRoom').then((result) => {
-            setAvailableRooms(result.data.filter((obj) => (!notAvailableRoom.includes(obj.id) && obj.roomStatus != 'Maintenance' && obj.roomType.maxAdultOccupancy >= adults && obj.roomType.maxKidsOccupancy >= kids)))
+            setAvailableRooms(result.data.filter((obj) => (!notAvailableRoom.includes(obj.id) && obj.roomStatus != 'Maintenance' && obj.roomType.maxAdultOccupancy >= adults && obj.roomType.maxKidsOccupancy >= kids && obj.status != false)))
 
             // for (let index = 0; index < result.data.length; index++) {
             //     if (!notAvailableRoom.includes(result.data[index].id) && result.data[index].roomStatus != 'Maintenance' && result.data[index].roomType.maxAdultOccupancy >= adults && result.data[index].roomType.maxKidsOccupancy >= kids) {
@@ -960,7 +960,11 @@ const BookingsContainer = () => {
     const [searchValue, setSearchValue] = useState('')
 
     return (
-        <Container>
+        <Container
+        style={{
+            height: 'auto'
+        }}
+        >
             <HeadContainer>
                 <Title
                     size='20px'
@@ -1163,7 +1167,7 @@ const BookingsContainer = () => {
                                         <ActionButton
                                             view={() => handleOpenView(item.id)}
                                             edit={() => handleOpenEdit(item.id)}
-                                            delete={() => deleteBooking(item.id)}
+                                            dontShowDelete=''
                                         />
                                     </Td>
                                 </Tr>

@@ -105,11 +105,13 @@ const UserListContainer = () => {
 
     const handleOpenView = (value) => {
         setOpenView(true)
+        setAccountActive(value.user.status)
         setGuestInformation(value)
     }
 
     const handleCloseView = () => {
         setOpenView(false)
+        setAccountActive(true)
         setGuestInformation([])
 
     }
@@ -117,6 +119,7 @@ const UserListContainer = () => {
 
     const [openEdit, setOpenEdit] = useState(false);
 
+    const [accountActive, setAccountActive] = useState(true);
 
     const handleOpenEdit = (value) => {
         setOpenEdit(true)
@@ -130,6 +133,7 @@ const UserListContainer = () => {
         setGender(value.gender)
         setAddress(value.address)
         setAccountType(value.user.role)
+        setAccountActive(value.user.status)
     }
 
     const handleCloseEdit = () => {
@@ -144,6 +148,7 @@ const UserListContainer = () => {
         setGender('')
         setAddress('')
         setAccountType('')
+        setAccountActive(true)
 
     }
 
@@ -316,7 +321,17 @@ const UserListContainer = () => {
     }
 
 
+    const [accountInformation, setAccountInformation] = useState([]);
 
+    useEffect(() => {
+        axios.get(apiKey + "auth/verify-token").then((response) => {
+            setAccountInformation(response.data)
+        }).catch((e) => {
+            if (e.response.data === "Unauthorized") {
+                window.location = '/'
+            }
+        })
+    }, [])
 
 
 
@@ -353,6 +368,7 @@ const UserListContainer = () => {
                         email: email,
                         contactNumber: formatNumber,
                         userName: userName,
+                        status: accountActive,
                     }).then((result) => {
                         console.log(result.data);
                         axios.patch(apiKey + 'api/updateGuest/' + guestInformation.id, {
@@ -398,7 +414,10 @@ const UserListContainer = () => {
 
     return (
 
-        <Container>
+        <Container
+            style={{
+                height: 'auto'
+            }}>
 
             <Modal
                 open={openCreate}
@@ -1125,7 +1144,31 @@ const UserListContainer = () => {
                                 </FormControl>
                             </InputContainer>
 
+                            <InputContainer>
+                                <FormControl sx={{ width: 200, margin: '5px 0px' }} size="large" variant="standard">
+                                    <InputLabel id="demo-select-small" >Account Status</InputLabel>
+                                    <Select
+                                        style={{ color: 'black', textAlign: 'left', fontWeight: 'bold' }}
+                                        labelId="demo-select-small"
+                                        id="demo-select-small"
+                                        value={accountActive}
+                                        label="Menu"
+                                        onChange={(event) => {
+                                            setAccountActive(event.target.value);
+                                        }}
+                                        disabled
+                                    >
 
+                                        <MenuItem value={false} >
+                                            Disabled
+                                        </MenuItem>
+                                        <MenuItem value={true} >
+                                            Active
+                                        </MenuItem>
+                                    </Select>
+                                </FormControl>
+
+                            </InputContainer>
 
                             {/* <Recaptcha
                                 sitekey="6LdJnrkeAAAAAOt5k6Gz1_Op5iBm0Jm75Sl4PME_"
@@ -1502,7 +1545,31 @@ const UserListContainer = () => {
                                     </RadioGroup>
                                 </FormControl>
                             </InputContainer>
+                            <InputContainer>
+                                <FormControl sx={{ width: 200, margin: '5px 0px' }} size="large" variant="standard">
+                                    <InputLabel id="demo-select-small" >Account Status</InputLabel>
+                                    <Select
+                                        style={{ color: 'black', textAlign: 'left', fontWeight: 'bold' }}
+                                        labelId="demo-select-small"
+                                        id="demo-select-small"
+                                        value={accountActive}
+                                        label="Menu"
+                                        onChange={(event) => {
+                                            setAccountActive(event.target.value);
+                                        }}
 
+                                    >
+
+                                        <MenuItem value={false} >
+                                            Disabled
+                                        </MenuItem>
+                                        <MenuItem value={true} >
+                                            Active
+                                        </MenuItem>
+                                    </Select>
+                                </FormControl>
+
+                            </InputContainer>
 
 
                             {/* <Recaptcha
@@ -1663,19 +1730,73 @@ const UserListContainer = () => {
                         <Th align='center'>User Id</Th>
                         <Th align='center'>User Name</Th>
                         <Th align='center'>Name</Th>
+                        <Th align='center'>Status</Th>
                         <Th align='center'>Account Type</Th>
                         <Th align='center'>Action</Th>
                     </Tr>
-                    {guests.length != 0 ?
+                    {guests.length != 0 && accountInformation.length != 0 ?
                         guests
+                            .filter((obj) => obj.user.id != accountInformation.id )
                             .slice((roomPage - 1) * 10, roomPage * 10)
                             .map((item) => (
                                 <Tr>
                                     <Td align='center'>{item.id.split('-')[0]}</Td>
                                     <Td align='center'>{item.user.userName}</Td>
                                     <Td align='center'>{item.firstName} {item.lastName}</Td>
+                                    <Td align='center'>{item.user.status != false ?
+                                        <ContainerGlobal
+                                            w='100px'
+                                            h='auto'
+                                            margin='0px auto'
+                                            bg='rgb(0, 255, 0, .2)'
+                                            direction='row'
+                                            padding='2px 0px'
+                                            justify='center'
+                                            align='center'
+                                            border='2px solid rgb(0, 255, 0)'
+                                            gap='10px'
+                                            borderRadius='.5rem'
+                                        >
+
+                                            <Title
+                                                family='Helvetica'
+                                                size='12px'
+                                                color='BLACK'
+                                                fstyle='normal'
+                                                display='inline'
+                                                padding='5px 10px'
+                                            >
+                                                Active
+                                            </Title></ContainerGlobal>
+                                        :
+                                        <ContainerGlobal
+                                            w='100px'
+                                            h='auto'
+                                            margin='0px auto'
+                                            bg='rgb(0, 0, 0, .2)'
+                                            direction='row'
+                                            padding='2px 0px'
+                                            justify='center'
+                                            align='center'
+                                            border='2px solid rgb(0, 0, 0)'
+                                            gap='10px'
+                                            borderRadius='.5rem'
+                                        >
+
+                                            <Title
+                                                family='Helvetica'
+                                                size='12px'
+                                                color='BLACK'
+                                                fstyle='normal'
+                                                display='inline'
+                                                padding='5px 10px'
+                                            >
+                                                Disabled
+                                            </Title></ContainerGlobal>
+                                    }</Td>
                                     <Td align='center'>{item.user.role == "ADMIN" ? 'Admin' : 'Front Desk'}</Td>
                                     <Td align='center'><ActionButton
+                                        dontShowDelete=''
                                         view={() => handleOpenView(item)}
                                         edit={() => handleOpenEdit(item)}
 

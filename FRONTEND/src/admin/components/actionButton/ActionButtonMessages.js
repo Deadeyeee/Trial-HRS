@@ -10,7 +10,7 @@ import { HorizontalLine } from '../../../client/components/horizontalLine/Horizo
 import Button from '@mui/material/Button';
 
 
-function ActionButtonMessages() {
+function ActionButtonMessages(props) {
   const [show, setShow] = useState(false);
 
   const deleteModal = (
@@ -75,7 +75,7 @@ function ActionButtonMessages() {
         justify='center'
         gap='10px'
       >
-        <IconButton onClick={() => setShow(prev => !prev)} type="submit" sx={{ p: '8px', backgroundColor: 'rgb(255, 36, 0, 0.7)' }} aria-label="search" title='Delete'>
+        <IconButton onClick={props.delete} type="submit" sx={{ p: '8px', backgroundColor: 'rgb(255, 36, 0, 0.7)' }} aria-label="search" title='Delete'>
           <DeleteIcon style={{ color: '#2e2e2e', fontSize: '18px' }} title='View' />
         </IconButton>
 

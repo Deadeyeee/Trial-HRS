@@ -238,6 +238,8 @@ const AdditionalsContainer = () => {
                                 <Td align='center'>{item.amenityName}</Td>
                                 <Td align='center'>{numberFormat(item.amenityRate)}</Td>
                                 <Td align='center'><ActionButton
+                                        dontShowDelete=''
+
                                     view={() => handleOpen2(item)}
                                     edit={()=> handleOpen3(item)} /></Td>
                             </Tr>

@@ -221,6 +221,12 @@ const RoomDetailsContainer = () => {
 
     };
 
+
+
+    const [role, setRole] = useState('')
+
+
+
     const [services, setServices] = useState([]);
     const [servicesNames, setServicesNames] = useState([]);
     const [selectedServices, setSelectedServices] = useState([]);
@@ -230,6 +236,11 @@ const RoomDetailsContainer = () => {
 
 
     useEffect(() => {
+        Axios.get(apiKey + "auth/verify-token").then((result) => {
+            setRole(result.data.role)
+        }).catch((err) => {
+
+        });
         Axios.get(apiKey + "api/getAllServices").then((result) => {
             console.log('NEW API LINK', result.data)
         }).catch((err) => {
@@ -252,8 +263,8 @@ const RoomDetailsContainer = () => {
             console.log(err.res)
         })
         Axios.get(apiKey + "api/getAllRoomType").then((res) => {
-
-            setRoomType(res.data);
+            console.log(res.data)
+            setRoomType(res.data.filter((obj) => obj.status == true));
         })
     }, [])
 
@@ -706,6 +717,29 @@ const RoomDetailsContainer = () => {
     const handleChangePagination = (event, value) => {
         setPage(value);
     };
+
+
+
+    const deleteRoom = (value) => {
+        console.log(value)
+        if (window.confirm('are you sure you want to delete this Room Type?')) {
+            axios.patch(apiKey + 'api/updateRoomType/' + value, {
+                status: false
+            }).then((result) => {
+                console.log(result)
+                window.location = ''
+            }).catch((err) => {
+                console.log(err)
+
+            });
+        }
+    }
+
+
+
+
+
+
     return (
 
         <Container>
@@ -828,44 +862,72 @@ const RoomDetailsContainer = () => {
 
                     {roomType.length != 0 ?
                         roomType
-                        .slice((roomPage - 1) * 10, roomPage * 10)
-                        .map((items) => (
-                            <Tr>
-                                <Td align='center'>{items.roomType}</Td>
-                                <Td align='center'>{numberFormat(items.roomRate)}</Td>
-                                <Td align='center' style={{ display: 'flex', gap: '5px', width: '350px', justifyContent: 'flex-start', flexWrap: 'wrap' }}>
-                                    {usedServices.length != 0 ?
-                                        usedServices.map((items2) => {
-                                            if (items.id === items2.roomType_id) {
-                                                return <Chip style={{ width: '100px' }} key={items2.service.servicesName} label={items2.service.servicesName} />
-                                                // <span style={{whiteSpace: 'nowrap',backgroundColor:"#948566", color: 'black', borderRadius: '.5em', padding: '5px', }}>{items2.service.servicesName + ", "}</span>
-                                            }
-                                        })
-                                        : ""}
-                                </Td>
-                                <Td align='center' style={{ width: '100px' }}>{items.maxAdultOccupancy}</Td>
-                                <Td align='center'>{items.maxKidsOccupancy}</Td>
-                                <Td align='center' ><p style={{ width: '300px', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>{items.roomDescription}</p></Td>
-                                <Td align='center'><ActionButton
-                                    view={() => {
-                                        // setRoomTypeValue(items.roomType);
-                                        // setRoomRate(item.roomRate);
-                                        // setMaxAdultOccupancy(item.maxAdultOccupancy);
-                                        // setMaxKidsOccupancy(item.maxKidsOccupancy);
-                                        // setRoomDescription(item.roomDescription);
+                            .slice((roomPage - 1) * 10, roomPage * 10)
+                            .map((items) => (
+                                <Tr>
+                                    <Td align='center'>{items.roomType}</Td>
+                                    <Td align='center'>{numberFormat(items.roomRate)}</Td>
+                                    <Td align='center' style={{ display: 'flex', gap: '5px', width: '350px', justifyContent: 'flex-start', flexWrap: 'wrap' }}>
+                                        {usedServices.length != 0 ?
+                                            usedServices.map((items2) => {
+                                                if (items.id === items2.roomType_id) {
+                                                    return <Chip style={{ width: '100px' }} key={items2.service.servicesName} label={items2.service.servicesName} />
+                                                    // <span style={{whiteSpace: 'nowrap',backgroundColor:"#948566", color: 'black', borderRadius: '.5em', padding: '5px', }}>{items2.service.servicesName + ", "}</span>
+                                                }
+                                            })
+                                            : ""}
+                                    </Td>
+                                    <Td align='center' style={{ width: '100px' }}>{items.maxAdultOccupancy}</Td>
+                                    <Td align='center'>{items.maxKidsOccupancy}</Td>
+                                    <Td align='center' ><p style={{ width: '300px', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>{items.roomDescription}</p></Td>
+                                    <Td align='center'>
+                                        {role != '' ? role == 'STAFF' ?
+                                            <ActionButton
+
+                                                dontShowEdit=''
+                                                dontShowDelete=''
+                                                view={() => {
+                                                    // setRoomTypeValue(items.roomType);
+                                                    // setRoomRate(item.roomRate);
+                                                    // setMaxAdultOccupancy(item.maxAdultOccupancy);
+                                                    // setMaxKidsOccupancy(item.maxKidsOccupancy);
+                                                    // setRoomDescription(item.roomDescription);
 
 
-                                        view(items.id, items.roomType, items.roomRate, items.maxAdultOccupancy, items.maxKidsOccupancy, items.roomDescription, JSON.parse(items.roomImages));
-                                    }}
-                                    edit={() => {
-                                        handleOpen3();
+                                                    view(items.id, items.roomType, items.roomRate, items.maxAdultOccupancy, items.maxKidsOccupancy, items.roomDescription, JSON.parse(items.roomImages));
+                                                }}
+                                                edit={() => {
+                                                    handleOpen3();
 
-                                        edit(items.id, items.roomType, items.roomRate, items.maxAdultOccupancy, items.maxKidsOccupancy, items.roomDescription, JSON.parse(items.roomImages));
-                                    }}
-                                /></Td>
-                            </Tr>
+                                                    edit(items.id, items.roomType, items.roomRate, items.maxAdultOccupancy, items.maxKidsOccupancy, items.roomDescription, JSON.parse(items.roomImages));
+                                                }}
+                                            />
+                                            :
+                                            <ActionButton
+                                                delete={() => { deleteRoom(items.id) }}
 
-                        ))
+                                                view={() => {
+                                                    // setRoomTypeValue(items.roomType);
+                                                    // setRoomRate(item.roomRate);
+                                                    // setMaxAdultOccupancy(item.maxAdultOccupancy);
+                                                    // setMaxKidsOccupancy(item.maxKidsOccupancy);
+                                                    // setRoomDescription(item.roomDescription);
+
+
+                                                    view(items.id, items.roomType, items.roomRate, items.maxAdultOccupancy, items.maxKidsOccupancy, items.roomDescription, JSON.parse(items.roomImages));
+                                                }}
+                                                edit={() => {
+                                                    handleOpen3();
+
+                                                    edit(items.id, items.roomType, items.roomRate, items.maxAdultOccupancy, items.maxKidsOccupancy, items.roomDescription, JSON.parse(items.roomImages));
+                                                }}
+                                            />
+                                            : ''}
+
+                                    </Td>
+                                </Tr>
+
+                            ))
                         : ''}
                 </TableContainer>
 
@@ -884,13 +946,14 @@ const RoomDetailsContainer = () => {
             </ContainerGlobal>
 
 
-            <Button
+            {role != '' ? role == 'STAFF' ? '' : <Button
                 variant="contained"
                 size="large"
                 onClick={handleOpen}
                 style={{ backgroundColor: '#2E2E2E' }}>
                 Add Room Type
-            </Button>
+            </Button> : ''}
+
 
             <Modal
                 open={open}

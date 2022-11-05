@@ -6,7 +6,7 @@ import { Container } from './style'
 
 const RoomDetails = () => {
   useEffect(() => {
-    document.title = "Admin | Room Details"
+    document.title = "Admin | Room Types"
   }, [])
   return (
     <Container>

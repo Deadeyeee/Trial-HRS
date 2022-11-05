@@ -49,6 +49,8 @@ db.usedServices = require('./usedServices.model.js')(sequelize, Sequelize, DataT
 db.roomTypeImages = require('./roomTypeImages.model.js')(sequelize, Sequelize, DataTypes)
 db.conversation = require('./conversation.model.js')(sequelize, Sequelize, DataTypes)
 db.message = require('./message.model.js')(sequelize, Sequelize, DataTypes)
+db.deleteConversation = require('./deleteConversation.model.js')(sequelize, Sequelize, DataTypes)
+
 
 
 // db.amenities.bulkCreate([
@@ -280,6 +282,22 @@ db.message.belongsTo(db.guestInformation, {
     foreignKeyConstraint: true,
     as: "messageFrom",
 });
+
+
+
+db.deleteConversation.belongsTo(db.guestInformation, {
+    foreignKey: { name: "delete_conversation_to", allowNull: false },
+    foreignKeyConstraint: true,
+    as: "deleteConversationTo",
+});
+
+
+db.deleteConversation.belongsTo(db.message, {
+    foreignKey: { name: "message_id", allowNull: false },
+    foreignKeyConstraint: true,
+    as: "delete_message_id",
+});
+
 
 
 //conversation has manny guest

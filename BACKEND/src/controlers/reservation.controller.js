@@ -3,7 +3,7 @@ const db = require("../models");
 const Reservation = db.reservation;
 // import Logo from "../../../FRONTEND/src/images/logo.png";
 const schedules = require('node-schedule')
-
+const CronJob = require('cron').CronJob
 
 
 
@@ -32,7 +32,7 @@ const fetchUsers = async () => {
                 },
             })
 
-            
+
             reservationSummary.update({
                 bookingStatus: 'NO-SHOW'
             }, {
@@ -59,10 +59,21 @@ const fetchUsers = async () => {
 }
 
 
-schedules.scheduleJob('* 1 * * *', async () => {
+new CronJob('10 * * * * *', () => {
+    console.log('CHECKS')
     fetchUsers()
-    // console.log('YAWA')
-})
+},
+    null,
+    true,
+    'America/Los_Angeles'
+)
+
+
+
+// schedules.scheduleJob('* 1 * * *', async () => {
+//     fetchUsers()
+//     // console.log('YAWA')
+// })
 
 
 exports.create = async (req, res) => {

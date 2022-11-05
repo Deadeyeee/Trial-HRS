@@ -289,15 +289,15 @@ const BillingSummaryContainer = () => {
                             axios.post(apiKey + "api/addUser", {
 
                                 contactNumber: formatNumber,
-                                email: window.sessionStorage.getItem('email').toLocaleLowerCase(),
+                                email: window.sessionStorage.getItem('email'),
                                 role: "NON-USER",
 
                             }).then((user) => {
                                 console.log(user.data)
                                 axios.post(apiKey + "api/addGuest", {
                                     user_id: user.data.account.id,
-                                    firstName: window.sessionStorage.getItem('firstName').toLocaleLowerCase(),
-                                    lastName: window.sessionStorage.getItem('lastName').toLocaleLowerCase(),
+                                    firstName: window.sessionStorage.getItem('firstName'),
+                                    lastName: window.sessionStorage.getItem('lastName'),
                                     birthDate: window.sessionStorage.getItem('birthday'),
                                     gender: window.sessionStorage.getItem('gender'),
                                     address: window.sessionStorage.getItem('address'),
@@ -412,14 +412,14 @@ const BillingSummaryContainer = () => {
                                                                             paymentMade: getPayment.data.paymentMade,
                                                                         }).then((result) => {
                                                                             axios.post(apiKey + 'api/sendReservationEmail', {
-                                                                                email: user.data.account.email.toLocaleLowerCase(),
+                                                                                email: user.data.account.email,
                                                                                 birthDay: guest.data.new_guest.birthDate,
                                                                                 nationality: guest.data.new_guest.nationality,
-                                                                                emailAddress: user.data.account.email.toLocaleLowerCase(),
+                                                                                emailAddress: user.data.account.email,
                                                                                 address: guest.data.new_guest.address,
                                                                                 contactNumber: user.data.account.contactNumber,
-                                                                                firstName: guest.data.new_guest.firstName.toLocaleLowerCase(),
-                                                                                lastName: guest.data.new_guest.lastName.toLocaleLowerCase(),
+                                                                                firstName: guest.data.new_guest.firstName,
+                                                                                lastName: guest.data.new_guest.lastName,
                                                                                 reservationStatus: reservation.data.new_reservation.reservationStatus,
                                                                                 accountName: getPayment.data.paymentMode.accountName,
                                                                                 accountNumber: getPayment.data.paymentMode.accountNumber,
@@ -789,14 +789,14 @@ const BillingSummaryContainer = () => {
                                                                 }).then((result) => {
                                                                     console.log("new payment", result.data)
                                                                     axios.post(apiKey + 'api/sendReservationEmail', {
-                                                                        email: userInformation.user.email.toLocaleLowerCase(),
+                                                                        email: userInformation.user.email,
                                                                         birthDay: userInformation.birthDate,
                                                                         nationality: userInformation.nationality,
-                                                                        emailAddress: userInformation.user.email.toLocaleLowerCase(),
+                                                                        emailAddress: userInformation.user.email,
                                                                         address: userInformation.address,
                                                                         contactNumber: userInformation.user.contactNumber,
-                                                                        firstName: userInformation.firstName.toLocaleLowerCase(),
-                                                                        lastName: userInformation.lastName.toLocaleLowerCase(),
+                                                                        firstName: userInformation.firstName,
+                                                                        lastName: userInformation.lastName,
                                                                         reservationStatus: reservation.data.new_reservation.reservationStatus,
                                                                         accountName: getPayment.data.paymentMode.accountName,
                                                                         accountNumber: getPayment.data.paymentMode.accountNumber,
@@ -1227,7 +1227,7 @@ const BillingSummaryContainer = () => {
                                 align='left'
                                 margin='20px 30px'
                             >
-                                <b>Contact number:</b>{output('contact')}
+                                <b>Contact number: </b>{output('contact')}
                             </Title>
 
                             <Title
