@@ -355,7 +355,7 @@ export const ReservationContainer = () => {
         });
 
         axios.get(apiKey + 'api/getAllRoomType').then((result) => {
-            setRoomTypeDb(result.data)
+            setRoomTypeDb(result.data.filter((obj)=> obj.status == true))
         }).catch((err) => {
             console.log(err)
         });
@@ -637,7 +637,7 @@ export const ReservationContainer = () => {
             setAvailableRooms([])
             for (let index = 0; index < result.data.length; index++) {
                 // console.log(result.data[index].roomType.roomType)
-                if (!notAvailableRoom.includes(result.data[index].id) && result.data[index].roomStatus != 'Maintenance' && result.data[index].roomType.maxAdultOccupancy >= adults && result.data[index].roomType.maxKidsOccupancy >= kids) {
+                if (!notAvailableRoom.includes(result.data[index].id) && result.data[index].roomStatus != 'Maintenance' && result.data[index].roomType.maxAdultOccupancy >= adults && result.data[index].roomType.maxKidsOccupancy >= kids && result.data[index].status != false) {
                     setAvailableRooms((oldData) => [...oldData, result.data[index]])
                     // console.log(result.data[index])
                 }
@@ -1453,8 +1453,6 @@ export const ReservationContainer = () => {
                     });
                 }
                 else {
-
-
                     for (let index = 0; index < rooms.data.length; index++) {
 
                         axios.get(apiKey + 'api/getAllOrderedAmenities').then((result) => {
@@ -1521,7 +1519,12 @@ export const ReservationContainer = () => {
     }
 
     return (
-        <Container>
+        <Container
+        
+        style={{
+            height: 'auto'
+        }}
+        >
 
             <HeadContainer>
                 <Title
@@ -1692,9 +1695,10 @@ export const ReservationContainer = () => {
                                     </Td>
 
                                     <Td align='center'><ActionButtonReservation
-                                        delete={() => deleteReservation(item.id)}
                                         view={() => handleOpenView(item.id)}
                                         edit={() => handleOpenEdit(item.id)}
+                                        
+                                        dontShowDelete=''
                                     /></Td>
                                 </Tr>
                             ))
@@ -1718,7 +1722,7 @@ export const ReservationContainer = () => {
             </ContainerGlobal>
 
             <Button variant="contained" size="large"
-                style={{ backgroundColor: '#2E2E2E' }}
+                style={{ backgroundColor: '#2E2E2E', marginBottom:'20px' }}
                 onClick={() => {
                     handleOpenCreate()
                 }}>
@@ -4234,9 +4238,6 @@ export const ReservationContainer = () => {
                                                     >
                                                         <IconButton sx={{ p: '8px', backgroundColor: '#D2C3A4' }} aria-label="search" title='Edit' onClick={() => { EditRoom(item.id) }}>
                                                             <EditIcon style={{ color: '#2e2e2e', fontSize: '18px' }} title='View' />
-                                                        </IconButton>
-                                                        <IconButton sx={{ p: '8px', backgroundColor: '#FF664D' }} aria-label="search" title='Edit' onClick={() => { deleteBooking(item.id, item.reservation.payment.id, item.reservation.payment.paymentMade) }}>
-                                                            <DeleteIcon style={{ color: '#2e2e2e', fontSize: '18px' }} title='View' />
                                                         </IconButton>
                                                     </ContainerGlobal>}
 

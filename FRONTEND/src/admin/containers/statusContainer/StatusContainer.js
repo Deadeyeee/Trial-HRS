@@ -34,7 +34,7 @@ const StatusContainer = () => {
     let letters = /^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/;
     let phoneNumberValidation = /^(09|\+639)\d{9}$/;
     let passwordValidation = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[-._!"`'#%&,:;<>=@{}~\$\(\)\*\+\/\\\?\[\]\^\| ])[A-Za-z\d -._!"`'#%&,:;<>=@{}~\$\(\)\*\+\/\\\?\[\]\^\|]{8,}/;
-    
+
     const [roomPage, setRoomPage] = useState(1)
 
     const [value, setValue] = useState(Date.now());
@@ -87,6 +87,8 @@ const StatusContainer = () => {
     const oldPasswordRef = useRef();
     const newPasswordRef = useRef();
 
+    const [accountActive, setAccountActive] = useState(true);
+
     useEffect(() => {
 
         axios.get(apiKey + "api/getAllGuest").then((result) => {
@@ -116,6 +118,7 @@ const StatusContainer = () => {
         setNationality(value.nationality);
         setGender(value.gender);
         setAddress(value.address);
+        setAccountActive(value.user.status)
         setUserInformation(value)
 
     };
@@ -129,6 +132,7 @@ const StatusContainer = () => {
         setNationality('');
         setGender('');
         setAddress('');
+        setAccountActive(true)
         setUserInformation([])
 
 
@@ -144,6 +148,7 @@ const StatusContainer = () => {
         setGender(value.gender);
         setAddress(value.address);
         setUserInformation(value)
+        setAccountActive(value.user.status)
 
     };
     const handleClose2 = () => {
@@ -157,8 +162,7 @@ const StatusContainer = () => {
         setGender('');
         setAddress('');
         setUserInformation([])
-
-
+        setAccountActive(true)
     };
 
 
@@ -191,7 +195,7 @@ const StatusContainer = () => {
                 axios.patch(apiKey + 'api/updateUsers/' + userInformation.user.id, {
                     email: email,
                     contactNumber: formatNumber,
-
+                    status: accountActive,
                 }).then((result) => {
                     console.log(result.data);
                     axios.patch(apiKey + 'api/updateGuest/' + userInformation.id, {
@@ -272,7 +276,10 @@ const StatusContainer = () => {
 
     return (
 
-        <Container>
+        <Container
+            style={{
+                height: 'auto'
+            }}>
             <HeadContainer>
                 <Title
                     size='20px'
@@ -434,17 +441,41 @@ const StatusContainer = () => {
 
                     {guests.length != 0 ?
                         guests
-                        .slice((roomPage - 1) * 10, roomPage * 10)
-                        .sort((a,b) => Date.parse(b.created_at) - Date.parse(a.created_at))
-                        .map((item) => (
-                            <Tr>
-                                <Td align='center'>{item.id.split('-')[0]}</Td>
-                                <Td align='center'>{item.user.userName}</Td>
-                                <Td align='center'>{item.firstName} {item.lastName}</Td>
-                                <Td align='center'>{item.user.email}</Td>
-                                <Td align='center'>{reservationSummary.length != 0 ? reservationSummary.filter((obj) => (obj.reservation.guest_id == item.id)).length : 0}</Td>
-                                <Td align='center'>{reservationSummary.length != 0 ?
-                                    reservationSummary.filter((obj) => (obj.reservation.guest_id == item.id && obj.bookingStatus == "CHECKED-IN")).length != 0 ?
+                            .slice((roomPage - 1) * 10, roomPage * 10)
+                            .sort((a, b) => Date.parse(b.created_at) - Date.parse(a.created_at))
+                            .map((item) => (
+                                <Tr>
+                                    <Td align='center'>{item.id.split('-')[0]}</Td>
+                                    <Td align='center'>{item.user.userName}</Td>
+                                    <Td align='center'>{item.firstName} {item.lastName}</Td>
+                                    <Td align='center'>{item.user.email}</Td>
+                                    <Td align='center'>{reservationSummary.length != 0 ? reservationSummary.filter((obj) => (obj.reservation.guest_id == item.id)).length : 0}</Td>
+                                    <Td align='center'>{item.user.status != false ?
+                                        <ContainerGlobal
+                                            w='100px'
+                                            h='auto'
+                                            margin='0px auto'
+                                            bg='rgb(0, 255, 0, .2)'
+                                            direction='row'
+                                            padding='2px 0px'
+                                            justify='center'
+                                            align='center'
+                                            border='2px solid rgb(0, 255, 0)'
+                                            gap='10px'
+                                            borderRadius='.5rem'
+                                        >
+
+                                            <Title
+                                                family='Helvetica'
+                                                size='12px'
+                                                color='BLACK'
+                                                fstyle='normal'
+                                                display='inline'
+                                                padding='5px 10px'
+                                            >
+                                                Active
+                                            </Title></ContainerGlobal>
+                                        :
                                         <ContainerGlobal
                                             w='100px'
                                             h='auto'
@@ -467,44 +498,20 @@ const StatusContainer = () => {
                                                 display='inline'
                                                 padding='5px 10px'
                                             >
-                                                Not-booked
+                                                Disabled
                                             </Title></ContainerGlobal>
-                                        :
-                                        <ContainerGlobal
-                                            w='100px'
-                                            h='auto'
-                                            margin='0px auto'
-                                            bg='rgb(253, 161, 114, .2)'
-                                            direction='row'
-                                            padding='2px 0px'
-                                            justify='center'
-                                            align='center'
-                                            border='2px solid rgb(255, 215, 0)'
-                                            gap='10px'
-                                            borderRadius='.5rem'
-                                        >
+                                    }
+                                    </Td>
+                                    <Td align='center'>{item.user.role == 'NON-USER' ? 'Non user' : 'User'}</Td>
+                                    <Td align='center'>{new Date(item.created_at).toLocaleDateString()}</Td>
+                                    <Td align='center'><ActionButton
+                                        dontShowDelete=''
+                                        view={() => handleOpen2(item)}
+                                        edit={() => handleOpen(item)}
 
-                                            <Title
-                                                family='Helvetica'
-                                                size='12px'
-                                                color='BLACK'
-                                                fstyle='normal'
-                                                display='inline'
-                                                padding='5px 10px'
-                                            >
-                                                Booked
-                                            </Title></ContainerGlobal>
-                                    : ''}
-                                </Td>
-                                <Td align='center'>{item.user.role == 'NON-USER' ? 'Non user' : 'User'}</Td>
-                                <Td align='center'>{new Date(item.created_at).toLocaleDateString()}</Td>
-                                <Td align='center'><ActionButton
-                                    view={() => handleOpen2(item)}
-                                    edit={() => handleOpen(item)}
-
-                                /></Td>
-                            </Tr>
-                        ))
+                                    /></Td>
+                                </Tr>
+                            ))
                         : 'No data'}
 
 
@@ -795,6 +802,31 @@ const StatusContainer = () => {
 
 
                     </InputContainer>
+                    <InputContainer>
+                        <FormControl sx={{ width: 200, margin: '5px 0px' }} size="large" variant="standard">
+                            <InputLabel id="demo-select-small" >Account Status</InputLabel>
+                            <Select
+                                style={{ color: 'black', textAlign: 'left', fontWeight: 'bold' }}
+                                labelId="demo-select-small"
+                                id="demo-select-small"
+                                value={accountActive}
+                                label="Menu"
+                                onChange={(event) => {
+                                    setAccountActive(event.target.value);
+                                }}
+                                
+                            >
+
+                                <MenuItem value={false} >
+                                    Disabled
+                                </MenuItem>
+                                <MenuItem value={true} >
+                                    Active
+                                </MenuItem>
+                            </Select>
+                        </FormControl>
+
+                    </InputContainer>
 
                     <Button
                         variant="contained"
@@ -1082,6 +1114,31 @@ const StatusContainer = () => {
                             inputProps={{ maxLength: 255 }} />
 
 
+
+                    </InputContainer>
+                    <InputContainer>
+                        <FormControl sx={{ width: 200, margin: '5px 0px' }} size="large" variant="standard">
+                            <InputLabel id="demo-select-small" >Account Status</InputLabel>
+                            <Select
+                                style={{ color: 'black', textAlign: 'left', fontWeight: 'bold' }}
+                                labelId="demo-select-small"
+                                id="demo-select-small"
+                                value={accountActive}
+                                label="Menu"
+                                onChange={(event) => {
+                                    setAccountActive(event.target.value);
+                                }}
+                                disabled
+                            >
+
+                                <MenuItem value={false} >
+                                    Disabled
+                                </MenuItem>
+                                <MenuItem value={true} >
+                                    Active
+                                </MenuItem>
+                            </Select>
+                        </FormControl>
 
                     </InputContainer>
 

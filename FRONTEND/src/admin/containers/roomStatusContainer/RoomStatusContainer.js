@@ -102,17 +102,25 @@ const RoomStatusContainer = () => {
     const [roomTypeValue, setRoomTypeValue] = React.useState([])
     const [roomValue, setRoomValue] = React.useState([])
     const [reservationSummary, setReservationSummary] = React.useState([])
+    const [role, setRole] = useState('')
 
     useEffect(() => {
+
+
+        axios.get(apiKey + "auth/verify-token").then((result) => {
+            setRole(result.data.role)
+        }).catch((err) => {
+
+        });
         axios.get(apiKey + 'api/getAllRoomType').then((res) => {
-            setRoomTypeValue(res.data)
+            setRoomTypeValue(res.data.filter((obj) => obj.status == true))
             console.log(roomTypeValue)
         }).catch((err) => {
             console.log(err.res)
         })
 
         axios.get(apiKey + 'api/getAllRoom').then((res) => {
-            setRoomValue(res.data)
+            setRoomValue(res.data.filter((obj) => obj.status == true))
             console.log(roomValue)
         }).catch((err) => {
             console.log(err.res)
@@ -184,6 +192,7 @@ const RoomStatusContainer = () => {
         setRoomId(roomId)
         handleOpen2();
     }
+
     const edit = (roomId, roomNumber, roomType, roomStatus) => {
         setRoomNumber(roomNumber)
         setSelectedRoomType(roomType)
@@ -296,7 +305,7 @@ const RoomStatusContainer = () => {
             axios.get(apiKey + 'api/getAllRoom').then((result) => {
                 console.log(result.data)
                 console.log("SHABU", result.data.filter((obj) => obj.roomNumber == roomNumber && obj.id != roomId))
-                if (result.data.filter((obj) => obj.roomNumber == roomNumber && obj.id != roomId).length != 0) {
+                if (result.data.filter((obj) => obj.roomNumber == roomNumber && obj.id != roomId && obj.status == true).length != 0) {
                     setRoomNumberError('Room already exist!')
                 } else {
                     setRoomNumberError('')
@@ -308,7 +317,7 @@ const RoomStatusContainer = () => {
         } else {
             axios.get(apiKey + 'api/getAllRoom').then((result) => {
                 console.log(result.data)
-                if (result.data.filter((obj) => obj.roomNumber == roomNumber).length != 0) {
+                if (result.data.filter((obj) => obj.roomNumber == roomNumber && obj.status == true).length != 0) {
                     setRoomNumberError('Room already exist!')
                 }
                 else {
@@ -321,7 +330,19 @@ const RoomStatusContainer = () => {
     }, [roomNumber, roomId])
 
 
+    const deleteRoom = (value) => {
+        if (window.confirm('are you sure you want to delete this room?')) {
+            axios.patch(apiKey + 'api/updateRoom/' + value, {
+                status: false
+            }).then((result) => {
+                console.log(result)
+                window.location = ''
+            }).catch((err) => {
+                console.log(err)
 
+            });
+        }
+    }
 
 
     return (
@@ -505,29 +526,47 @@ const RoomStatusContainer = () => {
                         <Th align='center'>Action</Th>
                     </Tr>
                     {roomValue
-                    .slice((roomPage - 1) * 10, roomPage * 10)
-                    .sort((a, b) => a.roomNumber - b.roomNumber).map((item) => (
-                        <Tr>
-                            <Td align='center'>{item.roomNumber}</Td>
-                            <Td align='center'>{item.roomType.roomType}</Td>
-                            <Td align='center'>{reservationSummary.length != 0 ? reservationSummary.filter((obj) => obj.bookingStatus == 'CHECKED-IN' && obj.room_id == item.id).length != 0 ? new Date(reservationSummary.filter((obj) => obj.bookingStatus == 'CHECKED-IN' && obj.room_id == item.id).map((item2) => item2.checkInDate)).toLocaleDateString() : '.........' : '.........'}</Td>
-                            <Td align='center'>{reservationSummary.length != 0 ? reservationSummary.filter((obj) => obj.bookingStatus == 'CHECKED-IN' && obj.room_id == item.id).length != 0 ? new Date(reservationSummary.filter((obj) => obj.bookingStatus == 'CHECKED-IN' && obj.room_id == item.id).map((item2) => item2.checkOutDate)).toLocaleDateString() : '.........' : '.........'}</Td>
-                            {
-                                reservationSummary.length != 0 ? reservationSummary.filter((obj) => obj.bookingStatus == 'CHECKED-IN' && obj.room_id == item.id).length != 0 ? roomStatusDesign('Occupied') : roomStatusDesign(item.roomStatus) : '.........'
-                            }
+                        .slice((roomPage - 1) * 10, roomPage * 10)
+                        .sort((a, b) => a.roomNumber - b.roomNumber).map((item) => (
+                            <Tr>
+                                <Td align='center'>{item.roomNumber}</Td>
+                                <Td align='center'>{item.roomType.roomType}</Td>
+                                <Td align='center'>{reservationSummary.length != 0 ? reservationSummary.filter((obj) => obj.bookingStatus == 'CHECKED-IN' && obj.room_id == item.id).length != 0 ? new Date(reservationSummary.filter((obj) => obj.bookingStatus == 'CHECKED-IN' && obj.room_id == item.id).map((item2) => item2.checkInDate)).toLocaleDateString() : '.........' : '.........'}</Td>
+                                <Td align='center'>{reservationSummary.length != 0 ? reservationSummary.filter((obj) => obj.bookingStatus == 'CHECKED-IN' && obj.room_id == item.id).length != 0 ? new Date(reservationSummary.filter((obj) => obj.bookingStatus == 'CHECKED-IN' && obj.room_id == item.id).map((item2) => item2.checkOutDate)).toLocaleDateString() : '.........' : '.........'}</Td>
+                                {
+                                    reservationSummary.length != 0 ? reservationSummary.filter((obj) => obj.bookingStatus == 'CHECKED-IN' && obj.room_id == item.id).length != 0 ? roomStatusDesign('Occupied') : roomStatusDesign(item.roomStatus) : '.........'
+                                }
 
-                            <Td align='center'><ActionButton
-                                view={() => {
-                                    view(item.id, item.roomNumber, item.roomType.roomType, item.roomStatus);
+                                <Td align='center'>
+                                    {role != '' ? role == 'STAFF' ?
+                                        <ActionButton
+                                            dontShowDelete=''
+                                            view={() => {
+                                                view(item.id, item.roomNumber, item.roomType.roomType, item.roomStatus);
 
-                                }}
-                                edit={() => {
-                                    edit(item.id, item.roomNumber, item.roomType.roomType, item.roomStatus);
+                                            }}
+                                            edit={() => {
+                                                edit(item.id, item.roomNumber, item.roomType.roomType, item.roomStatus);
 
-                                }}
-                            /></Td>
-                        </Tr>
-                    ))}
+                                            }}
+                                        />
+                                        :
+                                        <ActionButton
+                                            delete={() => deleteRoom(item.id)}
+                                            view={() => {
+                                                view(item.id, item.roomNumber, item.roomType.roomType, item.roomStatus);
+
+                                            }}
+                                            edit={() => {
+                                                edit(item.id, item.roomNumber, item.roomType.roomType, item.roomStatus);
+
+                                            }}
+                                        />
+                                        : ''
+                                    }
+                                </Td>
+                            </Tr>
+                        ))}
 
                 </TableContainer>
                 <ContainerGlobal
@@ -543,13 +582,17 @@ const RoomStatusContainer = () => {
                     />
                 </ContainerGlobal>
             </ContainerGlobal>
-            <Button
+
+            {role != '' ? role == 'STAFF' ? '' : <Button
                 variant="contained"
                 size="large"
                 onClick={handleOpen}
                 style={{ backgroundColor: '#2E2E2E', marginBottom: '20px' }}>
                 Add Room
-            </Button>
+            </Button> : ''
+            }
+
+
 
 
 
@@ -993,7 +1036,7 @@ const RoomStatusContainer = () => {
 
 
 
-        </Container>
+        </Container >
     )
 }
 

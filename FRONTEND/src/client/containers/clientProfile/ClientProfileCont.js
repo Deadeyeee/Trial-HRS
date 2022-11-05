@@ -270,8 +270,8 @@ const ClientProfileCont = () => {
                 }).then((result) => {
                     console.log(result.data);
                     axios.patch(apiKey + 'api/updateGuest/' + userInformation.id, {
-                        firstName: firstName.toLocaleLowerCase(),
-                        lastName: lastName.toLocaleLowerCase(),
+                        firstName: firstName,
+                        lastName: lastName,
                         birthDate: birthDay,
                         gender: gender,
                         address: address,

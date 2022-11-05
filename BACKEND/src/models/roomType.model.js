@@ -31,6 +31,11 @@ module.exports = (sequelize, DataTypes, Sequelize) => {
             allowNull: true,
             type: DataTypes.JSON,
         },
+        status: {
+            allowNull: false,
+            type: DataTypes.BOOLEAN,
+            defaultValue: true,
+        },
     },
     {
         timestamps: true,

@@ -6,7 +6,7 @@ import { Container } from './style'
 
 const FrontRoomDetails = () => {
   useEffect(() => {
-    document.title = "Front Desk | Room Details"
+    document.title = "Front Desk | Room Types"
   }, [])
   return (
     <Container>

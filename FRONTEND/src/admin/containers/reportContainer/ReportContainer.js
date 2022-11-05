@@ -1020,7 +1020,189 @@ export const ReportContainer = () => {
                                 justify='center'>
                                 <Pagination
                                     page={reservationPageDaily}
-                                    count={reservationSummary.length != 0 && Math.ceil(reservationSummary.length / 10)}
+                                    count={reservationSummary.length != 0 && Math.ceil(reservationSummary.filter((obj) => {
+                                        let filterDates = getDates(startDateDaily, endDateDaily);
+
+                                        if (reservationMenuDaily == 'reservationDate' || reservationMenuDaily == 'all') {
+                                            if (filterDates.includes(moment(obj.reservation.reservationDate).format('YYYY-MM-DD'))) {
+                                                return obj;
+                                            }
+                                        }
+                                        else if (reservationMenuDaily == 'checkIn') {
+                                            if (filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
+                                                return obj;
+                                            }
+                                        }
+                                        else if (reservationMenuDaily == 'checkOut') {
+                                            if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD'))) {
+                                                return obj;
+                                            }
+                                        }
+                                        else if (reservationMenuDaily == 'RSreserved') {
+                                            if (filterDates.includes(moment(obj.reservation.reservationDate).format('YYYY-MM-DD'))) {
+                                                return obj;
+                                            }
+                                        }
+                                        else if (reservationMenuDaily == 'RSpending') {
+                                            if (filterDates.includes(moment(obj.reservation.reservationDate).format('YYYY-MM-DD'))) {
+                                                return obj;
+                                            }
+                                        }
+                                        else if (reservationMenuDaily == 'RScancelled') {
+                                            if (filterDates.includes(moment(obj.reservation.reservationDate).format('YYYY-MM-DD'))) {
+                                                return obj;
+                                            }
+                                        }
+                                        else if (reservationMenuDaily == 'BSpending') {
+                                            if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
+                                                return obj;
+                                            }
+                                        }
+                                        else if (reservationMenuDaily == 'BSreserved') {
+                                            if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
+                                                return obj;
+                                            }
+                                        }
+                                        else if (reservationMenuDaily == 'BScheckedIn') {
+                                            if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
+                                                return obj;
+                                            }
+                                        }
+                                        else if (reservationMenuDaily == 'BScheckedOut') {
+                                            if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
+                                                return obj;
+                                            }
+                                        }
+                                        else if (reservationMenuDaily == 'BSnoShow') {
+                                            if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
+                                                return obj;
+                                            }
+                                        }
+                                        else if (reservationMenuDaily == 'PSpartial') {
+                                            if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
+                                                return obj;
+                                            }
+                                        }
+                                        else if (reservationMenuDaily == 'PSfullyPaid') {
+                                            if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
+                                                return obj;
+                                            }
+                                        }
+                                        else if (reservationMenuDaily == 'PSreceiptDeclined') {
+                                            if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
+                                                return obj;
+                                            }
+                                        }
+                                        else if (reservationMenuDaily == 'PSpending') {
+                                            if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
+                                                return obj;
+                                            }
+                                        }
+                                        else if (reservationMenuDaily == 'PScancelled') {
+                                            if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
+                                                return obj;
+                                            }
+                                        }
+                                        else {
+                                            return obj;
+                                        }
+
+                                    })
+                                    .filter((obj) => {
+                                        if (reservationMenuDaily == 'RSreserved') {
+                                            if (obj.reservation.reservationStatus.toLowerCase() == 'reserved') {
+                                                return obj;
+                                            }
+                                        }
+                                        else if (reservationMenuDaily == 'RSpending') {
+                                            if (obj.reservation.reservationStatus.toLowerCase() == 'pending') {
+                                                return obj;
+                                            }
+                                        }
+                                        else if (reservationMenuDaily == 'RScancelled') {
+                                            if (obj.reservation.reservationStatus.toLowerCase() == 'cancelled') {
+                                                return obj;
+                                            }
+                                        }
+                                        else if (reservationMenuDaily == 'BSpending') {
+                                            if (obj.bookingStatus.toLowerCase() == 'pending') {
+                                                return obj;
+                                            }
+                                        }
+                                        else if (reservationMenuDaily == 'BSreserved') {
+                                            if (obj.bookingStatus.toLowerCase() == 'reserved') {
+                                                return obj;
+                                            }
+                                        }
+                                        else if (reservationMenuDaily == 'BScheckedIn') {
+                                            if (obj.bookingStatus.toLowerCase() == 'checked-in') {
+                                                return obj;
+                                            }
+                                        }
+                                        else if (reservationMenuDaily == 'BScheckedOut') {
+                                            if (obj.bookingStatus.toLowerCase() == 'checked-out') {
+                                                return obj;
+                                            }
+                                        }
+                                        else if (reservationMenuDaily == 'BSnoShow') {
+                                            if (obj.bookingStatus.toLowerCase() == 'no show') {
+                                                return obj;
+                                            }
+                                        }
+                                        else if (reservationMenuDaily == 'PSpartial') {
+                                            if (obj.reservation.payment.paymentStatus.toLowerCase() == 'partial') {
+                                                return obj;
+                                            }
+                                        }
+                                        else if (reservationMenuDaily == 'PSfullyPaid') {
+                                            if (obj.reservation.payment.paymentStatus.toLowerCase() == 'fully paid') {
+                                                return obj;
+                                            }
+                                        }
+                                        else if (reservationMenuDaily == 'PSreceiptDeclined') {
+                                            if (obj.reservation.payment.paymentStatus.toLowerCase() == 'reciept declined') {
+                                                return obj;
+                                            }
+                                        }
+                                        else if (reservationMenuDaily == 'PSpending') {
+                                            if (obj.reservation.payment.paymentStatus.toLowerCase() == 'pending') {
+                                                return obj;
+                                            }
+                                        }
+                                        else if (reservationMenuDaily == 'PScancelled') {
+                                            if (obj.reservation.payment.paymentStatus.toLowerCase() == 'cancelled') {
+                                                return obj;
+                                            }
+                                        }
+                                        else {
+                                            return obj;
+                                        }
+                                    })
+                                    .filter((obj) => {
+                                        if (searchDailyReservation != '') {
+                                            if (
+                                                (obj.bookingReferenceNumber).toString().includes(searchDailyReservation.toLowerCase()) ||
+                                                (new Date(obj.reservation.reservationDate).toLocaleDateString()).toString().includes(searchDailyReservation.toLowerCase()) ||
+                                                (obj.reservation.reservationStatus.toLowerCase()).toString().includes(searchDailyReservation.toLowerCase()) ||
+                                                (obj.reservation.guestInformation.firstName.toLowerCase()).toString().includes(searchDailyReservation.toLowerCase()) ||
+                                                (obj.reservation.guestInformation.firstName.toLowerCase() + ' ' + obj.reservation.guestInformation.lastName.toLowerCase()).toString().includes(searchDailyReservation.toLowerCase()) ||
+                                                (obj.reservation.guestInformation.lastName.toLowerCase()).toString().includes(searchDailyReservation.toLowerCase()) ||
+                                                (obj.room.roomType.roomType.toLowerCase()).toString().includes(searchDailyReservation.toLowerCase()) ||
+                                                (obj.room.roomNumber).toString().includes(searchDailyReservation) ||
+                                                (obj.room.roomType.roomRate).toString().includes(searchDailyReservation.toLowerCase()) ||
+                                                (new Date(obj.checkInDate).toLocaleDateString()).toString().includes(searchDailyReservation.toLowerCase()) ||
+                                                (new Date(obj.checkOutDate).toLocaleDateString()).toString().includes(searchDailyReservation.toLowerCase()) ||
+                                                (obj.numberOfNights).toString().includes(searchDailyReservation.toLowerCase()) ||
+                                                (obj.bookingStatus.toLowerCase()).toString().includes(searchDailyReservation.toLowerCase()) ||
+                                                (obj.reservation.payment.paymentStatus.toLowerCase()).toString().includes(searchDailyReservation.toLowerCase())
+                                            ) {
+                                                return obj;
+                                            }
+                                        }
+                                        else {
+                                            return obj;
+                                        }
+                                    }).length / 10)}
                                     onChange={(e, value) => {
 
                                         setReservationPageDaily(value)

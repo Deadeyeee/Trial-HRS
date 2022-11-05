@@ -266,7 +266,10 @@ const DashboardContainer = () => {
 
 
     return (
-        <Container>
+        <Container
+        style={{
+            height: 'auto'
+        }}>
             <HeadContainer>
                 <ContainerGlobal align='center'>
                     <ContainerGlobal direction='column'>
