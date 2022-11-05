@@ -47,6 +47,7 @@ exports.update = async (req, res) => {
             maxAdultOccupancy: req.body.maxAdultOccupancy,
             maxKidsOccupancy: req.body.maxKidsOccupancy,
             roomDescription: req.body.roomDescription,
+            status: req.body.status,
             // roomImages: JSON.parse(req.body.roomImages),
         }
         await RoomType.update(items, {

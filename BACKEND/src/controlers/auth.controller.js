@@ -16,7 +16,8 @@ exports.Login = async (req, res) => {
                     { userName: req.body.userName }
                 ],
 
-                role: 'CUSTOMER'
+                role: 'CUSTOMER',
+                status: true,
             },
         });
 
@@ -29,7 +30,8 @@ exports.Login = async (req, res) => {
                         { userName: req.body.userName }
                     ],
 
-                    role: 'NON-USER'
+                    role: 'NON-USER',
+                    status: true,
                 },
             });
             //nonuser
@@ -47,7 +49,8 @@ exports.Login = async (req, res) => {
                         { email: req.body.email },
                         { userName: req.body.userName }
                     ],
-                    role: 'NON-USER'
+                    role: 'NON-USER',
+                    status: true,
                 },
             });
             if (!user_login) {
@@ -71,7 +74,7 @@ exports.Login = async (req, res) => {
                 { id: user_login.id, userName: user_login.userName, email: user_login.email, role: user_login.role },
                 config.auth.secret,
                 {
-                    expiresIn: '365d',
+                    // expiresIn: '365d',
                 }
             );
 
@@ -110,8 +113,9 @@ exports.LoginAdmin = async (req, res) => {
                     { email: req.body.email },
                     { userName: req.body.userName }
                 ],
-                
-                role: {[Op.or]: ['ADMIN', 'STAFF']}
+
+                role: { [Op.or]: ['ADMIN', 'STAFF'] },
+                status: true,
                 // [Op.or]: [
                 //     { role: 'ADMIN' },
                 //     { role: 'STAFF' },
@@ -133,14 +137,14 @@ exports.LoginAdmin = async (req, res) => {
             });
         }
 
-        
+
         //our login secured authentication token
         if (user_login.emailVerified === true || user_login.emailVerified === false) {
             let token = jwt.sign(
                 { id: user_login.id, userName: user_login.userName, email: user_login.email, role: user_login.role },
                 config.auth.secret,
                 {
-                    expiresIn: '365d',
+                    // expiresIn: '365d',
                 }
             );
 
@@ -200,9 +204,11 @@ exports.verifyEmailToken = async (req, res) => {
 
 
 exports.Logout = async (req, res) => {
-    if (req.session) {
-        // req.session.destroy();
-        delete req.session.user;
-        res.send("successfully logedout");
+    // req.session.destroy();
+    try {
+        await delete req.session.user;
+        res.status(200).send("successfully logedout");
+    } catch (error) {
+        res.status(401).send("You are not loged in");
     }
 }

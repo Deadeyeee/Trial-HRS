@@ -39,7 +39,7 @@ exports.resendEmail = async (req, res) => {
                 expiresIn: 200,
             }
         );
-        const url = 'http://localhost:3000/registered/' + token;
+        const url = 'https://rmluxehotel.com/registered/' + token;
 
         EmailAuto.transporter.use('compile', hbs({
             viewEngine: {
@@ -275,7 +275,7 @@ exports.resetPassword = async (req, res) => {
             }
         );
 
-        const url = 'http://localhost:3000/newPassword/' + token;
+        const url = 'https://rmluxehotel.com/newPassword/' + token;
 
         EmailAuto.transporter.use('compile', hbs({
             viewEngine: {

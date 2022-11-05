@@ -28,6 +28,8 @@ import {
 } from "../bookingPage/Styles.js";
 import { TextInput } from "../../components/textBox/style.js";
 import { ArrowForwardIos } from "@mui/icons-material";
+import axios from "axios";
+import { apiKey } from "../../../apiKey.js";
 
 export const HomeBooking = ({ title }) => {
   const [startDate, setStartDate] = useState(
@@ -75,6 +77,17 @@ export const HomeBooking = ({ title }) => {
 
     window.location = "/booking";
   };
+
+
+  const [additionals, setAdditionals] = useState([])
+
+  useEffect(()=>{
+    axios.get(apiKey+ 'api/getAllAmenities').then((result) => {
+      setAdditionals(result.data)
+    }).catch((err) => {
+      
+    });
+  },[])
 
   const [openAnswer1, setOpenAnswer1] = useState(false);
   const [openAnswer2, setOpenAnswer2] = useState(false);

@@ -1079,7 +1079,10 @@ const PaymentContainer = () => {
         }
     }
     return (
-        <Container>
+        <Container
+        style={{
+            height: 'auto'
+        }}>
 
             {/*PAYMENT INFORMATION */}
             <HeadContainer>

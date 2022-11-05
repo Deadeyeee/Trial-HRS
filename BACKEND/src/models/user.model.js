@@ -36,6 +36,11 @@ module.exports = (sequelize, DataTypes, Sequelize) => {
             allowNull: true,
             type: DataTypes.STRING,
         },
+        status: {
+            allowNull: false,
+            type: DataTypes.BOOLEAN,
+            defaultValue: true,
+        },
         role: {
             type: DataTypes.ENUM({
               values: ["ADMIN", "STAFF", "CUSTOMER", "NON-USER"], //TODO - ADD MORE TYPES

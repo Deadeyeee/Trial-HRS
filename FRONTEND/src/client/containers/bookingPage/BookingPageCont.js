@@ -182,7 +182,7 @@ export const BookingPageCont = () => {
             let res = await axios.get(apiKey + 'api/getAllRoom')
             setRoom([])
             res.data.map((item) => {
-                if (item.roomStatus !== "Maintenance") {
+                if (item.roomStatus !== "Maintenance" && item.status != false) {
                     setRoom((oldData) => [...oldData, item])
                 }
             })
@@ -348,7 +348,7 @@ export const BookingPageCont = () => {
 
         axios.get(apiKey + 'api/getAllRoomType').then((res) => {
             setRoomType(res.data.filter((item) => {
-                if (item.maxAdultOccupancy >= adults && item.maxKidsOccupancy >= kids && uniqueAvailbleRoomType.includes(item.id) == true) {
+                if (item.maxAdultOccupancy >= adults && item.maxKidsOccupancy >= kids && uniqueAvailbleRoomType.includes(item.id) == true && item.status == true) {
                     return item;
                 }
             }

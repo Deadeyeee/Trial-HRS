@@ -21,9 +21,7 @@ function BookingConfirmationCont() {
             for (let index = 0; index < result.data.length; index++) {
                 if (id == result.data[index].reservation_id) {
                     setReservationBooking((oldData) => [...oldData, result.data[index]])
-                    if(result.data[index].reservationStatus != 'PENDING'){
-                        window.location = '/'
-                    }
+                    
                     console.log('ey')
                 }
             }
@@ -34,6 +32,9 @@ function BookingConfirmationCont() {
 
         axios.get(apiKey + 'api/getReservation/' + id).then((result) => {
             setReservationInfo(result.data)
+            if(result.data.reservationStatus != 'PENDING'){
+                window.location = '/'
+            }
         }).catch((err) => {
             console.log(err)
 

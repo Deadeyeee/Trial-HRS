@@ -64,7 +64,7 @@ const MessagesContainer = () => {
     const [guestList, setGuestList] = React.useState([]);
     const [autoCompleteValue, setAutoCompleteValue] = React.useState('');
     const [autoCompleteInputValue, setAutoCompleteInputValue] = React.useState('');
-
+    // const [deletedConversation, setDeletedConversation] = React.useState([]);
     useEffect(() => {
         axios.get(apiKey + 'auth/verify-token').then((result) => {
             axios.get(apiKey + 'api/getAllGuest').then((guest) => {
@@ -73,41 +73,110 @@ const MessagesContainer = () => {
                     if (result.data.id == item.user_id) {
 
                         setUserInformation(item)
-                        axios.get(apiKey + 'api/getAllMessage').then((messageResult) => {
-                            setMessagesDb(messageResult.data)
 
-                            axios.get(apiKey + 'api/getAllConversation').then((result) => {
-                                console.log("TEST1 :", result.data
-                                    .filter((obj) => obj.from_guest_id == item.id || obj.to_guest_id == item.id)
-                                    .filter((item2) => (
-                                        messageResult.data.filter((obj) => obj.conversation_id == item2.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].message_to_guest_id == item.id
-                                    )))
-                                console.log("TEST2 :", result.data
-                                    .filter((obj) => obj.from_guest_id == item.id || obj.to_guest_id == item.id)
-                                    .filter((item2) => (
-                                        messageResult.data.filter((obj) => obj.conversation_id == item2.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].message_to_guest_id != item.id
-                                    )))
-                                setInbox(result.data
-                                    // .filter((obj) => obj.from_guest_id == item.id || obj.to_guest_id == item.id)
-                                    .filter((item2) => (
-                                        messageResult.data.filter((obj) => obj.conversation_id == item2.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].messageFrom.user.role != 'ADMIN' && messageResult.data.filter((obj) => obj.conversation_id == item2.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].messageFrom.user.role != 'STAFF'
-                                    )))
-                                setSent(result.data
-                                    // .filter((obj) => obj.from_guest_id == item.id || obj.to_guest_id == item.id)
-                                    .filter((item2) => (
-                                        messageResult.data.filter((obj) => obj.conversation_id == item2.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].messageFrom.user.role == 'ADMIN' || messageResult.data.filter((obj) => obj.conversation_id == item2.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].messageFrom.user.role == 'STAFF'
-                                    )))
+                        axios.get(apiKey + 'api/getAllDeleteConversation').then((deletedConversaiton) => {
+                            // console.log('TEST3', deletedConversaiton.data.filter((obj) => obj.delete_conversation_to == userInformation.id).map((obj) => obj.conversation_id))
+                            axios.get(apiKey + 'api/getAllMessage').then((messageResult) => {
+                                // console.log('SHABU PA', messageResult.data.filter((obj)=> deletedConversaiton.data.filter((obj) => obj.delete_conversation_to == item.id).map((obj) => obj.conversation_id).includes(obj.conversation_id) == false).created_at)
+                                console.log('SHABU PA', messageResult.data.filter((obj) => deletedConversaiton.data.filter((obj) => obj.delete_conversation_to == item.id).map((obj) => obj.conversation_id).includes(obj.conversation_id) == false))
+                                setMessagesDb(messageResult.data.filter((obj1) => deletedConversaiton.data.filter((obj2) => obj2.message_id == obj1.id && obj2.delete_conversation_to == item.id).map((item) => item.message_id).includes(obj1.id) == false))
+                                // setMessagesDb(messageResult.data.filter((obj) => deletedConversaiton.data.filter((obj) => obj.delete_conversation_to == item.id).map((obj) => obj.conversation_id).includes(messageResult.conversation_id) == false && Date.parse(new Date(deletedConversaiton.data.filter((obj) => obj.delete_conversation_to == item.id).map((obj) => obj.conversation_id).created_at)) > Date.parse(new Date(obj.created_at))))
+
+                                axios.get(apiKey + 'api/getAllConversation').then((result) => {
+                                    console.log("TEST1 :", result.data
+                                        .filter((item2) => (
+                                            messageResult.data
+                                                .filter((obj) => obj.conversation_id == item2.id)
+                                                .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].messageFrom.user.role == 'ADMIN'
+                                            ||
+                                            messageResult.data
+                                                .filter((obj) => obj.conversation_id == item2.id)
+                                                .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].messageFrom.user.role == 'STAFF'
+                                            &&
+                                            deletedConversaiton.data.filter((obj1) => obj1.delete_conversation_to == item.id).map((obj2) => obj2.message_id)
+                                                .includes(
+                                                    messageResult.data
+                                                        .filter((obj) => obj.conversation_id == item2.id)
+                                                        .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].id
+                                                ) == false
+                                        )))
 
 
+
+
+
+                                    console.log("TEST2 :", result.data
+                                        .filter((item2) => (
+                                            messageResult.data
+                                                .filter((obj) => obj.conversation_id == item2.id)
+                                                .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].messageFrom.user.role != 'ADMIN'
+                                            &&
+                                            messageResult.data
+                                                .filter((obj) => obj.conversation_id == item2.id)
+                                                .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].messageFrom.user.role != 'STAFF'
+                                            &&
+                                            deletedConversaiton.data.filter((obj1) => obj1.delete_conversation_to == item.id).map((obj2) => obj2.message_id)
+                                                .includes(
+                                                    messageResult.data
+                                                        .filter((obj) => obj.conversation_id == item2.id)
+                                                        .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].id
+                                                ) == false
+
+                                        )))
+                                    setInbox(result.data.filter((item2) => (
+                                        messageResult.data
+                                            .filter((obj) => obj.conversation_id == item2.id)
+                                            .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].messageFrom.user.role != 'ADMIN'
+                                        &&
+                                        messageResult.data
+                                            .filter((obj) => obj.conversation_id == item2.id)
+                                            .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].messageFrom.user.role != 'STAFF'
+                                        &&
+                                        deletedConversaiton.data.filter((obj1) => obj1.delete_conversation_to == item.id).map((obj2) => obj2.message_id)
+                                            .includes(
+                                                messageResult.data
+                                                    .filter((obj) => obj.conversation_id == item2.id)
+                                                    .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].id
+                                            ) == false
+
+                                    )))
+                                    setSent(result.data
+                                        // .filter((obj) => obj.from_guest_id == item.id || obj.to_guest_id == item.id)
+                                        // .filter((obj2) => deletedConversaiton.data.filter((obj) => obj.delete_conversation_to == item.id).map((obj) => obj.conversation_id).includes(obj2.id) == false)
+                                        .filter((item2) => (
+                                            messageResult.data
+                                                .filter((obj) => obj.conversation_id == item2.id)
+                                                .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].messageFrom.user.role == 'ADMIN'
+                                            ||
+                                            messageResult.data
+                                                .filter((obj) => obj.conversation_id == item2.id)
+                                                .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].messageFrom.user.role == 'STAFF'
+                                            &&
+                                            deletedConversaiton.data.filter((obj1) => obj1.delete_conversation_to == item.id).map((obj2) => obj2.message_id)
+                                                .includes(
+                                                    messageResult.data
+                                                        .filter((obj) => obj.conversation_id == item2.id)
+                                                        .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].id
+                                                ) == false
+                                        )))
+
+
+
+
+                                    // setDeletedConversation(deletedConversaiton.data.filter((obj) => obj.delete_conversation_to == userInformation.id).map((obj) => obj.conversation_id))
+
+
+                                }).catch((err) => {
+                                    console.log(err)
+
+                                });
                             }).catch((err) => {
                                 console.log(err)
 
                             });
                         }).catch((err) => {
-                            console.log(err)
 
                         });
-
 
                     }
                 })
@@ -273,404 +342,42 @@ const MessagesContainer = () => {
 
 
 
-    // const viewMessage = (
+    const deleteConversation = (value) => {
+        if (window.confirm('Are you sure you want to delete this conversation?')) {
+            axios.get(apiKey + 'api/getAllMessage').then((result) => {
+                result.data.filter((obj) => obj.conversation_id == value).map((item, index, array) => {
 
-    //     <ContainerGlobal
-    //         w='100%'
-    //         h='100%'
-    //         radius='none'
-    //         justify='center'
-    //         align='center'
-    //         bg='rgb(46, 46, 46, 0.9)'
-    //         index='1'
-    //         overflow='auto'
-    //         active
-    //     >
-    //         <ContainerGlobal
-    //             w='900px'
-    //             h='700px'
-    //             bg='white'
-    //             direction='column'
-    //             gap='10px'
+                    axios.get(apiKey + 'api/getAllDeleteConversation').then((deletedMessages) => {
+                        if (deletedMessages.data.filter((obj) => obj.delete_conversation_to == userInformation.id && obj.message_id == item.id).length == 0) {
+                            axios.post(apiKey + 'api/addDeleteConversation', {
+                                delete_conversation_to: userInformation.id,
+                                message_id: item.id,
+                            }).then((result) => {
+                                console.log(result.data)
+                                if (index == array.length - 1) {
+                                    window.location = ''
+                                }
+                            }).catch((err) => {
+                                console.log(err)
 
-    //         >
-    //             <ContainerGlobal
-    //                 bg='#2e2e2e'
-    //                 radius='none'
-    //                 align='center'
-    //                 w='100%'>
-    //                 <Title
-    //                     size='20px'
-    //                     color='white'
-    //                     family='Helvetica'
-    //                     fstyle='normal'
-    //                     weight='600'
-    //                     align='left'
-    //                     bg='#2e2e2e'
-    //                     margin='20px'
-    //                 >
-    //                     Reservation Payment
-    //                 </Title>
-    //                 <IconButton aria-label="delete" size='large' style={{ color: 'white', margin: '0px 0px 0px auto' }}
+                            });
+                        }
+                    }).catch((err) => {
 
-    //                     onClick={() => setShow(prev => !prev)}
-    //                 >
-    //                     <CloseIcon />
-    //                 </IconButton>
+                    });
 
-    //             </ContainerGlobal>
+                })
 
-    //             <ContainerGlobal
-    //                 w='95%' overflow='visible' margin='5px auto'>
-    //                 <Title
-    //                     size='16px'
-    //                     color='black'
-    //                     family='Helvetica'
-    //                     fstyle='normal'
-    //                     weight='400'
-    //                     align='left'
-    //                     margin='0px 0px 0px 0px'
-    //                 >
-    //                     <b>From:</b> Pedrojuan001221
-    //                 </Title>
-    //                 <Title
-    //                     size='16px'
-    //                     color='black'
-    //                     family='Helvetica'
-    //                     fstyle='normal'
-    //                     weight='400'
-    //                     align='left'
-    //                     margin='0px 0px 0px auto'
-    //                 >
-    //                     04/20/21 - 12:26 PM
-    //                 </Title>
-    //             </ContainerGlobal>
-    //             <ContainerGlobal
-    //                 w='auto'
-    //                 h='450px'
-    //                 margin='0px 15px'
-    //                 bg='rgb(183, 183, 183,.3)'
-    //                 padding='10px'
-    //                 style={{ textAlign: 'justify' }}
-    //                 direction='column'
-    //                 overflow='auto'
-    //             >
-    //                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ut tellus id felis maximus semper vel non tellus. Ut rutrum nisi augue, eu efficitur tortor pellentesque sed. Suspendisse sed mi a dolor fringilla luctus non vitae augue. Duis consectetur finibus ultrices. Ut ac fermentum arcu. Sed commodo rhoncus lectus, a porttitor velit vehicula sed. Nullam bibendum purus eu mattis cursus. Cras porta sem sit amet eleifend malesuada. Nullam eu sagittis neque. Maecenas sagittis ornare nulla nec sagittis.
-    //                 <img style={{ margin: '20px 0px 0px 0px' }} width='30%' src={Recipt} />
-    //             </ContainerGlobal>
 
-    //             <ContainerGlobal
-    //                 w='auto'
-    //                 h='auto'
-    //                 bg='none'
-    //                 direction='row'
-    //                 gap='10px'
-    //                 justify='center'
-    //                 margin='auto'
-    //                 align='center'
-    //                 overflow='none'
-    //             >
-    //                 <Button variant="contained" size="large"
-    //                     style={{ backgroundColor: '#948566' }}
+            }).catch((err) => {
+                console.log(err)
 
-    //                     onClick={() => setShow(prev => !prev)}
-    //                 >
-    //                     Reply
-    //                 </Button>
-    //                 <Button variant="contained" size="large"
-    //                     style={{ backgroundColor: '#FF2400' }}
-
-    //                     onClick={() => setShow(prev => !prev)}
-    //                 >
-    //                     Delete
-    //                 </Button>
-    //             </ContainerGlobal>
-    //         </ContainerGlobal>
-
-    //     </ContainerGlobal>
-    // );
+            });
 
 
 
-
-
-
-    // const viewSentMessage = (
-
-    //     <ContainerGlobal
-    //         w='100%'
-    //         h='100%'
-    //         radius='none'
-    //         justify='center'
-    //         align='center'
-    //         bg='rgb(46, 46, 46, 0.9)'
-    //         index='1'
-    //         overflow='auto'
-    //         active
-    //     >
-    //         <ContainerGlobal
-    //             w='900px'
-    //             h='700px'
-    //             bg='white'
-    //             direction='column'
-    //             gap='10px'
-
-    //         >
-    //             <ContainerGlobal
-    //                 bg='#2e2e2e'
-    //                 radius='none'
-    //                 align='center'
-    //                 w='100%'>
-    //                 <Title
-    //                     size='20px'
-    //                     color='white'
-    //                     family='Helvetica'
-    //                     fstyle='normal'
-    //                     weight='600'
-    //                     align='left'
-    //                     bg='#2e2e2e'
-    //                     margin='20px'
-    //                 >
-    //                     Reservation Confirmation
-    //                 </Title>
-    //                 <IconButton aria-label="delete" size='large' style={{ color: 'white', margin: '0px 0px 0px auto' }}
-
-    //                     onClick={() => setShow2(prev => !prev)}
-    //                 >
-    //                     <CloseIcon />
-    //                 </IconButton>
-
-    //             </ContainerGlobal>
-
-    //             <ContainerGlobal
-    //                 w='95%' overflow='visible' margin='5px auto'>
-    //                 <Title
-    //                     size='16px'
-    //                     color='black'
-    //                     family='Helvetica'
-    //                     fstyle='normal'
-    //                     weight='400'
-    //                     align='left'
-    //                     margin='0px 0px 0px 0px'
-    //                 >
-    //                     <b>To:</b> Pedrojuan001221
-    //                 </Title>
-    //                 <Title
-    //                     size='16px'
-    //                     color='black'
-    //                     family='Helvetica'
-    //                     fstyle='normal'
-    //                     weight='400'
-    //                     align='left'
-    //                     margin='0px 0px 0px auto'
-    //                 >
-    //                     04/22/21 - 12:26 PM
-    //                 </Title>
-    //             </ContainerGlobal>
-    //             <ContainerGlobal
-    //                 w='95%'
-    //                 h='450px'
-    //                 margin='0px 15px'
-    //                 bg='rgb(183, 183, 183,.3)'
-    //                 padding='10px'
-    //                 style={{ textAlign: 'justify' }}
-    //                 direction='column'
-    //                 overflow='auto'
-    //             >
-    //                 Dear Pedro Juan, <br /><br />
-
-    //                 We are pleased to inform you that your RESERVATION [091234568] is confirmed.<br /><br />
-
-    //                 Your check-in : 04/26/2022<br />
-    //                 Your checkout : 04/27/2022<br /><br />
-
-    //                 Reservation details:<br /><br />
-
-    //                 Reservation Number: 091234568<br />
-    //                 Reservation Date: 03/01/2022<br />
-    //                 Payment Mode: Bank (MetroBank)<br />
-    //                 Payment Type: Down Payment<br />
-    //                 Guest Name: Pedro <br />
-    //                 Birthdate: 2000/12/21<br />
-    //                 Nationality: Filipino<br />
-    //                 Email Address: PedroJuan@gmail.com<br />
-    //                 Address: Cecilia Chapman 711 Philippines<br />
-    //                 Contact Number: 09292333312<br />
-    //                 Check-In Date: 03/04/2022<br />
-    //                 Check-Out Date: 03/08/2022<br />
-    //                 Night(s): 4 nights<br />
-    //                 Total No. of Rooms: 1<br />
-    //                 Total No. of adult: 2<br />
-    //                 Total No. of kids: 0<br />
-    //                 Special Request(s): none<br /><br />
-
-    //                 We are sincerely awaiting your visit, I hope you enjoy your stay with us.<br /><br />
-
-    //                 - Mr. Elbert<br />
-    //                 Hotel Manager
-    //             </ContainerGlobal>
-
-    //             <ContainerGlobal
-    //                 w='auto'
-    //                 h='auto'
-    //                 bg='none'
-    //                 direction='row'
-    //                 gap='10px'
-    //                 justify='center'
-    //                 margin='auto'
-    //                 align='center'
-    //                 overflow='none'
-    //             >
-    //                 <Button variant="contained" size="large"
-    //                     style={{ backgroundColor: '#948566' }}
-
-    //                     onClick={() => setShow2(prev => !prev)}
-    //                 >
-    //                     Reply
-    //                 </Button>
-    //                 <Button variant="contained" size="large"
-    //                     style={{ backgroundColor: '#FF2400' }}
-
-    //                     onClick={() => setShow2(prev => !prev)}
-    //                 >
-    //                     Delete
-    //                 </Button>
-    //             </ContainerGlobal>
-    //         </ContainerGlobal>
-
-    //     </ContainerGlobal>
-    // );
-
-
-
-    // const composeMessage = (
-    //     <ContainerGlobal
-    //         w='100%'
-    //         h='100%'
-    //         radius='none'
-    //         justify='center'
-    //         align='center'
-    //         bg='rgb(46, 46, 46, 0.9)'
-    //         index='1'
-    //         overflow='auto'
-    //         active
-    //     >
-    //         <ContainerGlobal
-    //             w='900px'
-    //             h='650px'
-    //             bg='white'
-    //             direction='column'
-    //             gap='10px'
-
-    //         >
-    //             <ContainerGlobal
-    //                 bg='#2e2e2e'
-    //                 radius='none'
-    //                 align='center'
-    //                 w='100%'>
-    //                 <Title
-    //                     size='20px'
-    //                     color='white'
-    //                     family='Helvetica'
-    //                     fstyle='normal'
-    //                     weight='600'
-    //                     align='left'
-    //                     bg='#2e2e2e'
-    //                     margin='20px'
-    //                 >
-    //                     Compose message
-    //                 </Title>
-    //                 <IconButton aria-label="delete" size='large' style={{ color: 'white', margin: '0px 0px 0px auto' }}
-    //                     onClick={() => setShowComposeMessage(prev => !prev)}
-    //                 >
-    //                     <CloseIcon />
-    //                 </IconButton>
-
-    //             </ContainerGlobal>
-
-    //             <ContainerGlobal
-    //                 w='95%' overflow='visible' margin='5px auto'
-    //                 align='center' gap='50px'>
-    //                 <Title
-    //                     size='16px'
-    //                     color='black'
-    //                     family='Helvetica'
-    //                     fstyle='normal'
-    //                     weight='400'
-    //                     align='left'
-    //                     margin='0px 0px 0px 0px'
-
-    //                 >
-    //                     <b>To:</b>
-    //                 </Title>
-    //                 <TextField id="outlined-basic" style={{ width: '200px' }} label="" variant="outlined" size='small' />
-    //             </ContainerGlobal>
-    //             <ContainerGlobal
-    //                 w='95%' overflow='visible' margin='5px auto'
-    //                 align='center' gap='10px'
-    //             >
-    //                 <Title
-    //                     size='16px'
-    //                     color='black'
-    //                     family='Helvetica'
-    //                     fstyle='normal'
-    //                     weight='400'
-    //                     align='left'
-    //                     margin='0px 0px 0px 0px'
-    //                 >
-    //                     <b>Subject:</b>
-    //                 </Title>
-    //                 <TextField id="outlined-basic" style={{ width: '400px' }} label="" variant="outlined" size='small' />
-    //             </ContainerGlobal>
-    //             <Title
-    //                 size='16px'
-    //                 color='black'
-    //                 family='Helvetica'
-    //                 fstyle='normal'
-    //                 weight='400'
-    //                 align='left' w='95%' margin='5px auto'
-    //             >
-    //                 <b>Message:</b>
-    //             </Title>
-    //             <TextField id="outlined-basic" label="Write your message here..." variant="outlined" multiline rows={10} style={{ width: '95%', margin: '0px auto' }} />
-
-    //             <IconButton aria-label="delete" size='large' style={{ color: 'black', margin: '0px 0px 0px 25px', border: '1px solid black' }}
-
-    //             >
-    //                 <AttachFileIcon />
-    //             </IconButton>
-    //             <ContainerGlobal
-    //                 w='auto'
-    //                 h='auto'
-    //                 bg='none'
-    //                 direction='row'
-    //                 gap='10px'
-    //                 justify='center'
-    //                 margin='auto'
-    //                 align='center'
-    //                 overflow='none'
-    //             >
-    //                 <Button variant="contained" size="large"
-    //                     style={{ backgroundColor: '#948566' }}
-
-    //                     onClick={() => setShowComposeMessage(prev => !prev)}
-    //                 >
-    //                     Send
-    //                 </Button>
-    //                 <Button variant="contained" size="large"
-    //                     style={{ backgroundColor: '#FF2400' }}
-
-    //                     onClick={() => setShowComposeMessage(prev => !prev)}
-    //                 >
-    //                     Cancel
-    //                 </Button>
-    //             </ContainerGlobal>
-    //         </ContainerGlobal>
-
-    //     </ContainerGlobal>
-    // );
-
-
+        }
+    }
 
 
     return (
@@ -1031,7 +738,7 @@ const MessagesContainer = () => {
                                                     align='left'
                                                     margin='0px 0px 0px auto'
                                                 >
-                                                    <b>Reply from:</b> {item.messageFrom.user.userName}
+                                                    <b>Reply from:</b> {item.messageFrom.user.userName}({item.messageFrom.user.role == 'ADMIN' ? 'Admin' : 'Front desk'})
                                                 </Title>
                                             </ContainerGlobal>
                                             <ContainerGlobal
@@ -1296,11 +1003,13 @@ const MessagesContainer = () => {
                                 </Tr>
                             </thead>
                             <tbody style={{ height: '10px', overflow: 'hidden' }}>
-                                {inbox.length != 0 && messagesDb.length != 0 ? inbox
+                                {inbox != 0 && messagesDb.length != 0 ? inbox
                                     // .filter((obj) => obj.to_guest_id == userInformation.id || obj.to_guest_id == userInformation.id)
                                     // .filter((obj) => obj.message.message_to_guest_id != userInformation.id)
                                     // .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
                                     .sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at))
+                                    // .filter((obj)=> console.log('deletedConversation', deletedConversation))
+                                    // .filter((obj) => deletedConversation.includes(obj.id) == false)
                                     // .filter((obj, index, array) => index != 0 ? array[index].id != array[index - 1].id : array[index])
                                     .slice((inboxPage - 1) * 6, inboxPage * 6)
                                     .map((item) => (
@@ -1318,7 +1027,7 @@ const MessagesContainer = () => {
                                             </Td>
                                             <Td align='center' normal={item.status == true && 'normal'}>{new Date(messagesDb.filter((obj) => obj.conversation_id == item.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].created_at).toLocaleDateString()} </Td>
                                             <Td align='center' normal={item.status == true && 'normal'}>{new Date(messagesDb.filter((obj) => obj.conversation_id == item.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].created_at).toLocaleTimeString().split(':')[0]}:{new Date(messagesDb.filter((obj) => obj.conversation_id == item.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].created_at).toLocaleTimeString().split(':')[1]} {new Date(messagesDb.filter((obj) => obj.conversation_id == item.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].created_at).toLocaleTimeString().split(' ')[1]}</Td>
-                                            <Td align='center' normal={item.status == true && 'normal'}><ActionButtonMessages /></Td>
+                                            <Td align='center' normal={item.status == true && 'normal'}><ActionButtonMessages style={{ zIndex: '3' }} delete={() => deleteConversation(item.id)} /></Td>
                                         </Tr>
                                     )) :
                                     <Tr
@@ -1388,7 +1097,7 @@ const MessagesContainer = () => {
                                         </Td>
                                         <Td align='center' normal>{new Date(messagesDb.filter((obj) => obj.conversation_id == item.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].created_at).toLocaleDateString()} </Td>
                                         <Td align='center' normal>{new Date(messagesDb.filter((obj) => obj.conversation_id == item.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].created_at).toLocaleTimeString().split(':')[0]}:{new Date(messagesDb.filter((obj) => obj.conversation_id == item.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].created_at).toLocaleTimeString().split(':')[1]} {new Date(messagesDb.filter((obj) => obj.conversation_id == item.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].created_at).toLocaleTimeString().split(' ')[1]}</Td>
-                                        <Td align='center' normal><ActionButtonMessages /></Td>
+                                        <Td align='center' normal><ActionButtonMessages style={{ zIndex: '3' }} delete={() => deleteConversation(item.id)} /></Td>
                                     </Tr>
                                 )) : <Tr
                                 >

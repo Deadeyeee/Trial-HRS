@@ -140,7 +140,6 @@ export const ProfileDrop = (props) => {
                         family="georgia">Messages</Title>
                 </Menu>
                 <Menu
-                    href='/login'
                     style={{ textDecoration: 'none', cursor: 'pointer' }}
                     onClick={props.Logout}
                     whileHover={{
@@ -149,7 +148,7 @@ export const ProfileDrop = (props) => {
                     }}
                 >
                     <ProfilePicture
-                        src={LogoutLogo} href="/"
+                        src={LogoutLogo}
                     ></ProfilePicture>
                     <Title
                         size="16px"
