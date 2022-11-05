@@ -78,7 +78,7 @@ const MessagesContainer = () => {
                             // console.log('TEST3', deletedConversaiton.data.filter((obj) => obj.delete_conversation_to == userInformation.id).map((obj) => obj.conversation_id))
                             axios.get(apiKey + 'api/getAllMessage').then((messageResult) => {
                                 // console.log('SHABU PA', messageResult.data.filter((obj)=> deletedConversaiton.data.filter((obj) => obj.delete_conversation_to == item.id).map((obj) => obj.conversation_id).includes(obj.conversation_id) == false).created_at)
-                                console.log('SHABU PA', messageResult.data.filter((obj) => deletedConversaiton.data.filter((obj) => obj.delete_conversation_to == item.id).map((obj) => obj.conversation_id).includes(obj.conversation_id) == false))
+                                console.log('SHABU PA', messageResult.data.filter((obj1) => deletedConversaiton.data.filter((obj2) => obj2.message_id == obj1.id && obj2.delete_conversation_to == item.id).map((item) => item.message_id).includes(obj1.id) == false))
                                 setMessagesDb(messageResult.data.filter((obj1) => deletedConversaiton.data.filter((obj2) => obj2.message_id == obj1.id && obj2.delete_conversation_to == item.id).map((item) => item.message_id).includes(obj1.id) == false))
                                 // setMessagesDb(messageResult.data.filter((obj) => deletedConversaiton.data.filter((obj) => obj.delete_conversation_to == item.id).map((obj) => obj.conversation_id).includes(messageResult.conversation_id) == false && Date.parse(new Date(deletedConversaiton.data.filter((obj) => obj.delete_conversation_to == item.id).map((obj) => obj.conversation_id).created_at)) > Date.parse(new Date(obj.created_at))))
 
@@ -1083,6 +1083,7 @@ const MessagesContainer = () => {
                                 // .filter((obj, index, array) => index != 0 ? array[index].id != array[index - 1].id : array[index])
                                 .slice((sentPage - 1) * 6, sentPage * 6)
                                 .map((item) => (
+                                    messagesDb.filter((obj) => obj.conversation_id == item.id).length != 0 &&
                                     <Tr
                                         whileHover={{ boxShadow: '0px 2px 2px gray' }}
                                         whileTap={{ boxShadow: 'none' }}
