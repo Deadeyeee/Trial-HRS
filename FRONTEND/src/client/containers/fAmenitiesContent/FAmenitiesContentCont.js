@@ -22,7 +22,7 @@ export const FAmenitiesContentCont = () => {
             <HorizontalLine></HorizontalLine>
             <FlexboxContainer style={{overflow: 'visible'}}>
                 <FlexboxContentMain>
-                    <div style={{ width: '550px', display: 'inline-block', }}>
+                    <div style={{ width: '500px', display: 'inline-block', }}>
                         <ImageSlider2 />
                     </div>
                     {/* <FlexboxMainPhotoLeft

@@ -6,6 +6,14 @@ export const Container = styled(motion.div)`
     flex-direction: column;
     justify-content: center;
     align-items: center;
+
+    @media (max-width: 1000px) {
+        width: 100%;
+        height: 100%;
+        align-items: center;
+        flex-direction: column;
+        justify-content: center;
+      }
 `;
 
 export const HorizontalLine = styled(motion.div)`
@@ -20,12 +28,29 @@ export const VerticalLine = styled(motion.div)`
     height: 250px;
     width: 1px;
     margin: 20px 50px; 
+
+    @media (max-width: 1000px) {
+        width: 100%;
+        height: 80%;
+        align-items: center;
+        flex-direction: column;
+        justify-content: center;
+      }
 `;
 
 export const FlexboxContainerMain = styled(motion.div)`
     display: flex;
     width: auto;
     overflow: hidden;
+
+    @media (max-width: 1000px) {
+        width: 100%;
+        height: 100%;
+        align-items: center;
+        flex-direction: column;
+        justify-content: center;
+      }
+
 
 `;
 export const FlexboxContainer1 = styled(motion.div)`    
@@ -41,7 +66,7 @@ export const FlexboxContainer2 = styled(motion.div)`
 `;
 
 export const FlexboxItem1 = styled(motion.div)`
-    width: 300px;
+    width: Auto;
     height: 300px;
 
 `;
@@ -57,7 +82,7 @@ export const FlexboxItem2 = styled(motion.div)`
 
 export const FlexboxTitle = styled(motion.div)`
     display: flex;
-    width: 100%;
+    width: auto;
     justify-content: flex-start;
     margin:0px 0px 0px 2%;
 `;
@@ -65,7 +90,16 @@ export const FlexboxTitle = styled(motion.div)`
 export const ContentContainer = styled(motion.div)`
     display: flex-start;
     height: auto;
+    width: auto;
     margin: 50px 0px 200px 0px;
+
+    @media (max-width: 1000px) {
+        width: 100%;
+        height: 100%;
+        align-items: center;
+        flex-direction: column;
+        justify-content: center;
+      }
 
 `;
 

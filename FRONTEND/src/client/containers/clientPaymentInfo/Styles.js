@@ -17,5 +17,5 @@ export const PhotoBox = styled(motion.div)`
     border: 2px solid #BFAA7E;
     margin: 10px 0px 10px 0px;
     height: 400px;
-    width: 700px;
+    width: 60%;
 `

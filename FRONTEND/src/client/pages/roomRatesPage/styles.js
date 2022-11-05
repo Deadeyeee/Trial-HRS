@@ -4,7 +4,8 @@ import { motion } from "framer-motion";
 export const Container = styled(motion.div)`
     display: flex;
     flex-direction: column;
-    
+
+
 `;
 
 export const FlexboxContainer = styled(motion.div)`
@@ -14,6 +15,12 @@ export const FlexboxContainer = styled(motion.div)`
     overflow: hidden;
     display: flex;
     margin-bottom: 100px;
+
+    @media (max-width: 1000px) {
+        width: 100%;
+        height: 100%;
+      }
+    
 `;
 
 export const FlexboxContentMain = styled(motion.div)`
@@ -23,6 +30,14 @@ export const FlexboxContentMain = styled(motion.div)`
     align-items: center;
     width: auto;
     gap: 40px;
+
+    @media (max-width: 1000px) {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
 `;
 
 export const FlexboxMainPhotoLeft = styled(motion.div)`
@@ -32,11 +47,23 @@ export const FlexboxMainPhotoLeft = styled(motion.div)`
     background-image: url(${(props) => (props.link ? props.link : null)});
     background-size: cover;
     background-position: center;
+    @media (max-width: 1000px) {
+        width: 100%;
+        height: 100%;
+      }
 `;
 
 export const FlexboxContent = styled(motion.div)`
     display: flex;
     flex-direction: column;
+    width: 300px
+
+    @media (max-width: 1000px) {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+      }
 `;
 
 
@@ -48,7 +75,7 @@ export const HorizontalLineShortLeft = styled(motion.div)`
 `;
 
 export const Description = styled.p`
-    width: 700px;
+    width: 70%;
     text-align: ${(props) => (props.align ? props.align : "left")};
 `;
 

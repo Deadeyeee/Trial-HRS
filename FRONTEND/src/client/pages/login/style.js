@@ -27,6 +27,11 @@ export const LoginBorder = styled(motion.div)`
     overflow: hidden;
     box-shadow: -5px 10px 5px black;
     padding: 20px 0px;
+
+    @media (max-width: 1000px) {
+        width: 90%;
+        height: 98%;
+      }
 `;
 
 export const Logo = styled(motion.img)`
@@ -44,4 +49,10 @@ export const RegistrationForm = styled.form`
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    width: 90%
+
+    @media (max-width: 1000px) {
+        width: 100%;
+        height: 100%;
+      }
 `;

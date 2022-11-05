@@ -369,14 +369,15 @@ const ClientProfileCont = () => {
                  fstyle='Normal'
                  margin='50px 0px 10px 0px'
                  align='Center'
-                 w='86.7%'
+                 w='50%'
             >
                 Welcome to your profile!
             </Title>
-            <ProfileContentContainer style={{width:"90%", justifyContent:"center"}}>
-                <ProfileContent style={{width:"90%"}}>
+            <ProfileContentContainer style={{width:"95%", justifyContent:"center"}}>
+                <ProfileContent style={{width:"80%"}}>
                     <ContainerGlobal
                         justify='space-between'
+                        
                     >
                         <Title
                             family='raleway, sans-serif'
@@ -575,7 +576,7 @@ const ClientProfileCont = () => {
             <ButtonHolder>
                 <Button
                     whileHover={{ backgroundColor: "#302B20", color: "white" }}
-                    w='125px'
+                    w='150px'
                     h='40px'
                     textcolor="white"
                     fam='raleway'

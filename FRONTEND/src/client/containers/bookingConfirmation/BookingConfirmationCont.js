@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import { BankContentContainer, BankDetailsContainer, BankTitleContainer, BrokenHorizontalLine, ButtonHolder, ChargeSummaryContainer, ChargeSummaryContentContainer, Container, GeneratedAccountContainer, GeneratedAccountContentContainer, GeneratedAccountContents, HorizontalLine, ReservationInformationContainer, ReservationInformationContentsContainer } from './Styles'
+import { BankContentContainer, BankDetailsContainer, BankTitleContainer, BrokenHorizontalLine, ButtonHolder, ChargeSummaryContainer, ChargeSummaryContentContainer, Container, GeneratedAccountContainer, GeneratedAccountContentContainer, GeneratedAccountContents, HorizontalLine, ReservationInformationContainer, ReservationInformationContentsContainer, TableContainer, Td, Th, Tr } from './Styles'
 import { Title } from '../../components/title/styles';
 import { Button } from '../../components/button/styles';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import { ContainerGlobal } from '../../../admin/components/container/container';
-import { TableContainer, Td, Th, Tr } from '../bookingCartPage/Styles'
 import { apiKey } from '../../../apiKey';
 import html2canvas from 'html2canvas';
 import { jsPDF } from "jspdf";
@@ -147,6 +146,7 @@ function BookingConfirmationCont() {
                     flexDirection: 'column',
                     alignItems: 'center',
                     justifyContent: 'center',
+                    width: '70%'
                 }}
                 id='RMLuxeHotel_BookingConfimation_PDF'>
                 <Title
@@ -756,8 +756,8 @@ function BookingConfirmationCont() {
                             fstyle='Normal'
                             size='30px'
                             color='#2e2e2e'
-                            align='right'
-                            w='400px'
+                            
+                            w='100%'
                         >
                             <b>Grand Total:</b>
                         </Title>
@@ -769,8 +769,8 @@ function BookingConfirmationCont() {
                             fstyle='Normal'
                             size='25px'
                             color='#2e2e2e'
-                            align='right'
-                            w='400px'
+        
+                            w='100%'
                         >
                             {numberFormat(grandTotal)}
                         </Title>
@@ -784,7 +784,7 @@ function BookingConfirmationCont() {
             <ButtonHolder>
                 <Button
                     whileHover={{ backgroundColor: "#302B20", color: "white" }}
-                    w='200px'
+                    w='40%'
                     h='60px'
                     textcolor="black"
                     fam='Times New Roman'
@@ -792,7 +792,7 @@ function BookingConfirmationCont() {
                     fontStyle='Italic'
                     radius="0px"
                     border="1px solid #8F805F"
-                    margin='30px 100px 0px 0px'
+                   
                     fontsize='16px'
                     bg='#DFD3B9'
                     href={logedIn == false ? '/login' : '/client/profile'}
@@ -801,7 +801,7 @@ function BookingConfirmationCont() {
                 </Button>
                 <Button
                     whileHover={{ backgroundColor: "#White", color: "black" }}
-                    w='200px'
+                    w='40%'
                     h='60px'
                     textcolor="white"
                     fam='Times New Roman'
@@ -809,7 +809,6 @@ function BookingConfirmationCont() {
                     fontStyle='Italic'
                     radius="0px"
                     border="1px solid #8F805F"
-                    margin='30px 0px 0px 100px'
                     fontsize='16px'
                     bg='#2e2e2e'
                     onClick={handleDownloadImage}

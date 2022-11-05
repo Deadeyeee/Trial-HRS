@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { Title } from '../../components/title/styles'
-import { BookingContent, BookingContentContainer, Container, PreviousBookingContainer, PreviousBookingContainerContent, Status, StatusContainer } from './Styles'
+import { BookingContent, BookingContentContainer, Container, PreviousBookingContainer, PreviousBookingContainerContent, Status, StatusContainer, BankContentContainer, BankTitleContainer, BrokenHorizontalLine, ChargeSummaryContainer, ChargeSummaryContentContainer, ReservationInformationContainer, ReservationInformationContentsContainer } from './Styles'
 import { Button } from '../../components/button/styles';
 import { MainContainer, MessagesTitleContainer } from '../clientMessagesCont/Styles';
 import { TableContainer, Td, Th, Tr } from '../bookingCartPage/Styles';
 import axios from 'axios';
 import { ContainerGlobal } from '../../../admin/components/container/container';
-import { BankContentContainer, BankTitleContainer, BrokenHorizontalLine, ChargeSummaryContainer, ChargeSummaryContentContainer, ReservationInformationContainer, ReservationInformationContentsContainer } from '../bookingConfirmation/Styles';
 import { HorizontalLine } from '../../components/horizontalLine/HorizontalLine';
 import { apiKey } from '../../../apiKey';
 
@@ -118,6 +117,7 @@ const ClientBookingInfoCont = () => {
                         margin='50px 0px 10px 0px'
                         align='Center'
                         overflow='visible'
+                        width='80%'
 
                     >
                         Your reservation is <b style={{ color: '#c9d81c' }}>{value}</b> until confirmation of Bank Deposit/Transfer is made.
@@ -716,7 +716,7 @@ const ClientBookingInfoCont = () => {
                                     fstyle='Normal'
                                     size='24px'
                                     color='red'
-                                    align='left'
+                                    align='left'to confi
                                 >
                                     {numberFormat(activeReservation.payment.grandTotal - activeReservation.payment.paymentMade)}
                                 </Title>
@@ -3359,7 +3359,7 @@ const ClientBookingInfoCont = () => {
                     fstyle='Normal'
                     margin='50px 0px 10px 0px'
                     align='Center'
-                    w='86.7%'
+                    w='65%'
 
                 >
                     Reservation Status
