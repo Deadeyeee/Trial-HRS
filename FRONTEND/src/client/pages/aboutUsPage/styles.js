@@ -28,20 +28,40 @@ export const FlexboxContainerMain = styled(motion.div)`
     display: flex;
     margin-bottom: 35px;
 
+    @media (max-width: 1000px) {
+        width: 100%;
+        height: 100%;
+      }
+
 `;
 export const FlexboxContainer1 = styled(motion.div)`    
     align-items: column;
+
+    @media (max-width: 1000px) {
+        width: 100%;
+        height: 100%;
+      }
     
 `
 
 export const FlexboxContainer2 = styled(motion.div)`
     align-items: column;
+
+    @media (max-width: 1000px) {
+        width: 100%;
+        height: 100%;
+      }
 `;
 
 export const FlexboxItem1 = styled(motion.div)`
     width: 500px;
     height: 300px;
     margin: 20px 20px 0px 20px;
+
+    @media (max-width: 1000px) {
+        width: 100%;
+        height: 100%;
+      }
 
 `;
 
@@ -58,6 +78,8 @@ export const FlexboxPhoto = styled(motion.div)`
     background-image: url(${(props) => (props.link ? props.link : null)});
     background-size: cover;
     background-position: right;
+
+    
 `;
 
 export const FlexboxTitle = styled(motion.div)`
@@ -69,6 +91,11 @@ export const FlexboxTitle = styled(motion.div)`
 
 export const ContentContainer = styled(motion.div)`
     display: flex-start;
+
+    @media (max-width: 1000px) {
+        width: 90%;
+        height: 50%;
+      }
 `;
 
 export const FlexboxTitleContainer = styled(motion.div)`

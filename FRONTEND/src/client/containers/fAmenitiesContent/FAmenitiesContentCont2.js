@@ -1,5 +1,5 @@
 import React from 'react'
-import { Container, FlexboxContainer, FlexboxContentMain, FlexboxMainPhotoLeft, FlexboxContent, Description, HorizontalLine, } from './Styles'
+import { Container, FlexboxContainer, FlexboxContentMain, FlexboxMainPhotoLeft, FlexboxContent, Description, HorizontalLine, PhotoMain, } from './Styles'
 import { Title } from '../../components/title/styles';
 import BackgroundIMG2 from "../../images/FamenitiesIMG/eventsplace.jpg";
 import ImageSlider3 from '../../components/imageSlider/ImageSlider3';
@@ -22,9 +22,11 @@ export const FAmenitiesContentCont2 = () => {
             <HorizontalLine></HorizontalLine>
             <FlexboxContainer style={{overflow: 'visible'}}>
                 <FlexboxContentMain>
-                    <div style={{ width: '550px', display: 'inline-block', }}>
+                <PhotoMain>
+                <div style={{ width: '500px', display: 'inline-block', }}>
                         <ImageSlider3 />
                     </div>
+                    </PhotoMain>
                     {/* <FlexboxMainPhotoLeft
                     link={BackgroundIMG2}></FlexboxMainPhotoLeft> */}
                     <FlexboxContent>

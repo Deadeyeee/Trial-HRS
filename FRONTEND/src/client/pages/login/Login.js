@@ -205,6 +205,7 @@ export const Login = () => {
                             fontSize='16px'
                             ref={incorrectEmail}
                             required
+                            width="80%"
                         ></TextInput>
                         <TextInput
 
@@ -220,6 +221,7 @@ export const Login = () => {
                             fontSize='16px'
                             required
                             ref={incorrectPassword}
+                            width="80%"
                         ></TextInput>
 
 
@@ -289,7 +291,7 @@ export const Login = () => {
                             value='Log in'
                             bg='#2E2E2E'
                             fontStyle='none'
-                            fontsize='1vw'
+                            fontsize='18px'
                             margin='0px 0px 10px 0px'
                             fam='Roboto'
                         ></FormButton>
@@ -305,7 +307,7 @@ export const Login = () => {
                         border='2px solid #2E2E2E'
                         fontStyle='none'
                         textcolor='#2E2E2E'
-                        fontsize="1vw"
+                        fontsize="18px"
                         fam='Roboto'
                     >Sign Up</Button>
 

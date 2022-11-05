@@ -15,7 +15,7 @@ export const ContentContainer = styled(motion.div)`
   display: flex;
     flex-direction: column;
     justify-content: center;
-  width: 1200px;
+  width: 100%;
   margin: 30px 0px;
   box-shadow: 2px 0px 10px gray;
   background-color: white;

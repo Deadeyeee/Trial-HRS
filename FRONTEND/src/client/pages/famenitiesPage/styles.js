@@ -6,6 +6,12 @@ export const Container = styled(motion.div)`
     display: flex;
     flex-direction: column;
     align-items: center;
+
+    @media (max-width: 1000px) {
+        width: 100%;
+        height: 100%;
+        align-items: center;
+      }
 `;
 
 export const PhotoHolderMain = styled(motion.div)`
@@ -13,7 +19,13 @@ export const PhotoHolderMain = styled(motion.div)`
     flex-direction: column;
     width: 100%;
     height: auto;
-    margin-top: 180px;
+
+
+    @media (max-width: 1000px) {
+        width: 100%;
+        height: 100%;
+        align-items: center;
+      }
 `;
 
 
@@ -22,7 +34,13 @@ export const PhotoHolder = styled(motion.div)`
     flex-direction: column;
     justify-content: flex-end;
     width: 100%;
-    height: 500px;
+    height: 575px;
+
+     @media (max-width: 1000px) {
+        width: 100%;
+        height: 100%;
+        align-items: center;
+      }
 `;
 
 export const TitleHolder = styled(motion.div)`
@@ -32,5 +50,12 @@ export const TitleHolder = styled(motion.div)`
     width: 100%;
     z-index: 0;
     padding: 5px 0px;
+
+    @media (max-width: 1000px) {
+        width: 100%;
+        height: 100%;
+        display: flex;  
+        align-items: center;
+      }
 `;
 

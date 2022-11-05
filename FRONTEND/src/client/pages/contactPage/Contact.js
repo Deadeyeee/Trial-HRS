@@ -25,8 +25,6 @@ export const Contact = () => {
             </Title>
             <HorizontalLine></HorizontalLine>
             <ContentContainer>
-                <FlexboxTitleContainer>
-                </FlexboxTitleContainer>
                 <FlexboxContainerMain>
                     <FlexboxContainer1>
                         <FlexboxItem1>

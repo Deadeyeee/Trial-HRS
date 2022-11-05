@@ -29,7 +29,7 @@ const ImageSlider2 = (props) => {
         customPaging: function (i) {
             return (
                 <a>
-                    <img style={{ width: '50px', height: '50px', objectFit: "cover" }} src={`${roomImages[i]}`} />
+                    <img style={{ width: '50px', height: '50px', objectFit: "cover", }} src={`${roomImages[i]}`} />
                 </a>
             );
         },
@@ -37,7 +37,9 @@ const ImageSlider2 = (props) => {
         dotsClass: "slick-dots slick-thumb custom-indicator",
         dots: true,
         className: "slider",
-        arrows: true,
+        arrows: false,
+        prevArrow: null,
+        nextArrow: null,
         infinite: true,
         speed: 500,
         autoplaySpeed: 5000,

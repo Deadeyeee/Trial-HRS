@@ -1,10 +1,22 @@
 import styled from "styled-components";
 import { motion } from "framer-motion";
 
+
+
 export const Container = styled(motion.div)`
     display: flex;
     flex-direction: column;
     align-items: center;
+
+    @media (max-width: 1000px) {
+        width: 100%;
+        height: 100%;
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+      }
+
+    
 
 `;
 
@@ -15,6 +27,12 @@ export const HorizontalLine = styled(motion.div)`
     width:${(props) => (props.w ? props.w : "60%")};
     margin: 30px 0px 10px 0px; 
     align: center;
+
+    @media (max-width: 1000px) {
+        width: 100%;
+        height: 100%;
+        align-items: center;
+      }
 `;
 
 export const TitleCalendarContainer = styled(motion.div)`
@@ -31,13 +49,17 @@ export const TitleCalendarContainer = styled(motion.div)`
     flex-direction: column;
     
     gap: 20px;
-    }
 `;
 
 export const Persons = styled.div`
   display: flex;
   gap: 20px;
 
+  @media (max-width: 1000px) {
+    width: 100%;
+    height: 100%;
+    align-items: center;
+  }
 `;
 
 export const LabelDiv = styled(motion.div)`
@@ -45,12 +67,24 @@ export const LabelDiv = styled(motion.div)`
     justify-content: center;
     flex-direction: column;
     align-items: center;
+
+    @media (max-width: 1000px) {
+        width: 100%;
+        height: 100%;
+        align-items: center;
+      }
 `;
 
 export const CalendarContainer = styled(motion.div)`
     display: flex;
     flex-direction: row;
     align-items: center;
+
+    @media (max-width: 1000px) {
+        width: 100%;
+        height: 100%;
+        align-items: center;
+      }
 `;
 
 export const RoomContainerMain = styled(motion.div)`
@@ -64,6 +98,17 @@ export const RoomContainerMain = styled(motion.div)`
     margin: 50px 0px;
     /* padding: 20px 50px;
     background-color: #2e2e2e; */
+
+    @media (max-width: 1000px) {
+        width: 100%;
+        height: 100%;
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+      }
+
+     
+      
 `;
 
 export const RoomContainer = styled(motion.div)`
@@ -72,11 +117,14 @@ export const RoomContainer = styled(motion.div)`
     /* align-items: center; */
     justify-content: center;
     gap: 50px;
+
     @media (max-width: 1000px) {
-    flex-direction: column;
-    
-    }
-    
+        width: 100%;
+        height: 100%;
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+      }
 `;
 
 export const RoomContainerContentPhoto = styled.img`
@@ -95,11 +143,23 @@ export const RoomContainerContentRight = styled(motion.div)`
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
+
+    @media (max-width: 1000px) {
+        width: 100%;
+        height: 100%;
+        align-items: center;
+      }
 `;
 
 export const RoomContainerContentLeft = styled(motion.div)`
     display: Flex;
     flex-direction: column;
+
+    @media (max-width: 1000px) {
+        width: 100%;
+        height: 100%;
+        align-items: center;
+      }
 `;
 
 export const RatingContainer = styled(motion.div)`
@@ -109,6 +169,12 @@ export const RatingContainer = styled(motion.div)`
     width: auto;
     height: 20px;
     margin: 10px 10px;
+
+    @media (max-width: 1000px) {
+        width: 100%;
+        height: 100%;
+        align-items: center;
+      }
 `;
 
 export const RatingContainerRight = styled(motion.div)`
@@ -117,6 +183,12 @@ export const RatingContainerRight = styled(motion.div)`
     width: 150px;
     height: 20px;
     margin: 10px 0px 10px 160px;
+
+    @media (max-width: 1000px) {
+        width: 100%;
+        height: 100%;
+        align-items: center;
+      }
 `;
 
 export const ServicesContainer = styled(motion.div)`
@@ -127,6 +199,14 @@ export const ServicesContainer = styled(motion.div)`
     flex-wrap: wrap;
     align-items: center;
     gap: 20px;
+
+    @media (max-width: 1000px) {
+        width: 40%;
+        height: 40%;
+        align-items: center;
+        display: flex;
+        flex-direction: row;
+      }
 `;
 
 export const Services = styled(motion.div)`
@@ -138,11 +218,27 @@ export const Services = styled(motion.div)`
     gap: 10px;
     height: 50px;
 
+    @media (max-width: 1000px) {
+        width: 40%;
+        height: 100%;
+        align-items: center;
+        display: flex;
+        flex-direction: row;
+      }
+
 `;
 
 export const ButtonHolder = styled(motion.div)`
     display: flex;
     flex-direction: Row;
+
+    @media (max-width: 1000px) {
+        width: 100%;
+        height: 100%;
+        align-items: center;
+        display: flex; 
+        flex-direction: column;
+      }
 `;
 
 export const BookingLegendsMain = styled(motion.div)`
@@ -154,6 +250,12 @@ display:flex;
     margin-top: 150px;
     height: auto;
     width: 100%;
+
+    @media (max-width: 1000px) {
+        width: 100%;
+        height: 100%;
+        align-items: center;
+      }
 `;
 
 export const BookingLegendsContainer = styled(motion.div)`
@@ -165,6 +267,12 @@ display: flex;
     gap: 40px;
     width: auto;
     flex-wrap: wrap;
+
+    @media (max-width: 1000px) {
+        width: 100%;
+        height: 100%;
+        align-items: center;
+      }
 `;
 
 export const BookingLegendsWhite = styled(motion.div)`
@@ -172,6 +280,12 @@ export const BookingLegendsWhite = styled(motion.div)`
     width: 20px;
     height: 20px;
     border-radius: 50%
+
+    @media (max-width: 1000px) {
+        width: 100%;
+        height: 100%;
+        align-items: center;
+      }
 `;
 
 export const BookingLegendsRed = styled(motion.div)`
@@ -179,6 +293,12 @@ export const BookingLegendsRed = styled(motion.div)`
     width: 20px;
     height: 20px;
     border-radius: 50%
+
+    @media (max-width: 1000px) {
+        width: 100%;
+        height: 100%;
+        align-items: center;
+      }
 `;
 
 export const BookingLegendsGreen = styled(motion.div)`
@@ -186,6 +306,12 @@ export const BookingLegendsGreen = styled(motion.div)`
     width: 20px;
     height: 20px;
     border-radius: 50%
+
+    @media (max-width: 1000px) {
+        width: 100%;
+        height: 100%;
+        align-items: center;
+      }
 `;
 
 export const BookingLegendsBlue = styled(motion.div)`
@@ -193,6 +319,12 @@ export const BookingLegendsBlue = styled(motion.div)`
     width: 20px;
     height: 20px;
     border-radius: 50%
+
+    @media (max-width: 1000px) {
+        width: 100%;
+        height: 100%;
+        align-items: center;
+      }
 `;
 
 export const BookingLegendsDarkJade = styled(motion.div)`
@@ -200,6 +332,12 @@ export const BookingLegendsDarkJade = styled(motion.div)`
     width: 20px;
     height: 20px;
     border-radius: 50%
+
+    @media (max-width: 1000px) {
+        width: 100%;
+        height: 100%;
+        align-items: center;
+      }
 `;
 
 export const LocationPinRed = styled(motion.div)`
@@ -207,6 +345,12 @@ export const LocationPinRed = styled(motion.div)`
     width: 20px;
     height: 30px;
     border-radius: 50% 50% 100% 100%
+
+    @media (max-width: 1000px) {
+        width: 100%;
+        height: 100%;
+        align-items: center;
+      }
 `;
 
 export const LocationPinGreen = styled(motion.div)`
@@ -214,4 +358,10 @@ export const LocationPinGreen = styled(motion.div)`
     width: 20px;
     height: 30px;
     border-radius: 100% 100% 100% 100%     
+
+    @media (max-width: 1000px) {
+        width: 100%;
+        height: 100%;
+        align-items: center;
+      }
 `;

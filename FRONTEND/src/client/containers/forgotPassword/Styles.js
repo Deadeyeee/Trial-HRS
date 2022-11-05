@@ -15,6 +15,12 @@ export const ChangePasswordHolder = styled(motion.div)`
     width: 400px;
     height: auto;
     margin: 100px;
+
+    @media (max-width: 1000px) {
+        width: 80%;
+        height: 50%;
+        
+      }
     
 `;
 

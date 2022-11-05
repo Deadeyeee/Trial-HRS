@@ -29,8 +29,6 @@ export const About = () => {
             >   About us
             </Title>
             <ContentContainer>
-                <FlexboxTitleContainer>
-                </FlexboxTitleContainer>
                 <FlexboxContainerMain>
                     <FlexboxContainer1>
                         <FlexboxTitle>

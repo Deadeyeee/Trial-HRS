@@ -32,7 +32,7 @@ export const Famenities = () => {
             <PhotoHolderMain>
                 <PhotoHolder>
                     <div style={{ width: '100%' }} onClick={()=> window.location= '/facilitiesAmenities/eventsPlace'}>
-                        <ImageSlider4 />
+                        <ImageSlider4/>
                     </div>
                     <TitleHolder>
                         <i>
@@ -46,9 +46,8 @@ export const Famenities = () => {
                                     size='46px'
                                     weight='400'
                                     align='left'
-                                    margin="0px 0px 80px 300px"
+                                    margin="0px 0px 0px 200px"
                                     cursor="pointer"
-
                                 >
 
                                     EVENTS PLACE
@@ -76,7 +75,7 @@ export const Famenities = () => {
                                     weight='400'
                                     align='right'
                                     opc='100%'
-                                    margin="0px 300px 0px 0px"
+                                    margin="0px 200px 0px 0px"
                                     cursor="pointer"
                                 >
                                     COFFEE SHOP

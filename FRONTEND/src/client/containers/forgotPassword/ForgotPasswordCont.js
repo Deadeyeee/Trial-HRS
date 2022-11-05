@@ -102,7 +102,7 @@ function ForgotPasswordCont() {
                 onSubmit={verifyEmail}
             >
                 <TextInput
-
+                    width='100%'
                     family='FontAwesome'
                     background='white'
                     type='email'

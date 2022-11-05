@@ -616,7 +616,7 @@ const ClientPaymentInfoCont = () => {
           fstyle="Normal"
           margin="50px 0px 10px 0px"
           align="Center"
-          w="86.7%"
+          w="65%"
         >
           Upload Proof of Payment
         </Title>
@@ -684,7 +684,7 @@ const ClientPaymentInfoCont = () => {
         >
           <div
             style={{
-              width: "700px",
+              width: "90%",
               display: "flex",
               justifyContent: "center",
             }}

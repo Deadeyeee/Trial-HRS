@@ -19,6 +19,12 @@ width: 100%;
 align-items: center;
 justify-content: center;
 flex-flow: column;
+
+@media (max-width: 1000px) {
+  width: 100%;
+  height: 100%;
+  align-items: center;
+}
 `;
 
 export const DatePickerContainer = styled(motion.div)`
@@ -105,14 +111,8 @@ export const Poster = styled(motion.div)`
 
 
     @media (max-width: 1000px) {
-    
       width: 190px;
-    height: 220px;
-
-    @ keyframes slide {
-      25%{
-        background-image: url(${R1})
-      }
+      height: 100%;
     }
   }
 `;
@@ -138,10 +138,9 @@ export const AlterPoster = styled(motion.div)`
 
 
     @media (max-width: 1000px) {
-    
       width: 190px;
-    height: 220px;
-  }
+      height: 100%;
+    }
 `;
 
 export const OtherPoster = styled(motion.div)`
@@ -163,9 +162,9 @@ export const OtherPoster = styled(motion.div)`
 
 
     @media (max-width: 1000px) {
-    
       width: 190px;
-    height: 220px;
+      height: 100%;
+    }
   }
 `;
 
@@ -177,6 +176,12 @@ export const ContentDiv = styled(motion.div)`
     overflow: hidden;
     background-color: #00000099;
     padding: 20px;
+
+    @media (max-width: 1000px) {
+      width: 190px;
+      height: 100%;
+    }
+  }
 `;
 
 export const ContentDivMain = styled(motion.div)`

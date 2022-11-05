@@ -65,7 +65,7 @@ export const RoomRates = () => {
                         <div style={{ display: 'block', justifyContent: 'center', gap: '100px' }}>
                             <FlexboxContentMain>
                                 <div
-                                    style={{ width: '550px', height: '350px', display: 'inline-block', overflow: 'hidden' }}
+                                    style={{ width: '90%', height: '350px', display: 'inline-block', overflow: 'hidden' }}
 
                                 >
                                     <ImageSlider roomImages={roomTypeImagesDb.length != 0 ? roomTypeImagesDb.filter((itemRoomImage) => (itemRoomImage.roomType_id == item.id)).map((obj) => (obj.roomImages)) : null} />

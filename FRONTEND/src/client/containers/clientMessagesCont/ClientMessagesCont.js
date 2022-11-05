@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Container, MainContainer, Messages, MessagesContent, MessagesContentContainer, MessagesTitleContainer, OptionContainer } from './Styles'
+import { Container, MainContainer, Messages, MessagesContent, MessagesContentContainer, MessagesTitleContainer, OptionContainer, Tr, TableContainer, TableFixHead, Td, Th } from './Styles'
 import { Title } from '../../components/title/styles'
 import { Button as Button2 } from '../../components/button/styles'
 import { ContainerGlobal, ContainerGlobal2 } from '../../../admin/components/container/container'
@@ -29,7 +29,6 @@ import IconButton from '@mui/material/IconButton';
 import Recipt from '../../images/sample_recipt.png';
 import axios from 'axios'
 import { apiKey } from '../../../apiKey'
-import { Tr, TableContainer, TableFixHead, Td, Th } from '../../../admin/containers/messagesContainer/styles'
 import ActionButtonMessages from '../../../admin/components/actionButton/ActionButtonMessages'
 import { borderRadius, display, margin, maxHeight } from '@mui/system'
 const ClientMessagesCont = () => {
