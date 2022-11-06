@@ -50,6 +50,7 @@ db.roomTypeImages = require('./roomTypeImages.model.js')(sequelize, Sequelize, D
 db.conversation = require('./conversation.model.js')(sequelize, Sequelize, DataTypes)
 db.message = require('./message.model.js')(sequelize, Sequelize, DataTypes)
 db.deleteConversation = require('./deleteConversation.model.js')(sequelize, Sequelize, DataTypes)
+db.receipt = require('./receipt.model.js')(sequelize, Sequelize, DataTypes)
 
 
 
@@ -318,6 +319,19 @@ db.conversation.belongsTo(db.guestInformation, {
     foreignKeyConstraint: true,
     as: "conversationTo",
 });
+
+
+
+
+
+db.receipt.belongsTo(db.reservation, {
+    foreignKey: { name: "reservation_id", allowNull: false },
+    foreignKeyConstraint: true,
+    as: "reservationReceipt",
+
+});
+
+
 
 // db.guestInformation.hasMany(db.conversation, {
 //     as: "conversationTo",

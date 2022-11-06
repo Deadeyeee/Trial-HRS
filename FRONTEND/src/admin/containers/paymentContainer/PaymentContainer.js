@@ -287,8 +287,81 @@ const PaymentContainer = () => {
     }
 
     const handleOpenPrint = (value) => {
-        setOpenPrint(true)
+        // setOpenPrint(true)
         setReservationInformation(value)
+
+        axios.get(apiKey + 'api/getAllReceipt').then((result) => {
+            if (result.data.length != 0) {
+                if (value.payment.paymentStatus == 'partial') {
+                    if (result.data.filter((obj) => obj.reservation_id == value.id && obj.type == 'ack').length == 0) {
+                        axios.post(apiKey + 'api/addReceipt', {
+                            reservation_id: value.id,
+                            type: 'ack',
+                        }).then((result) => {
+                            console.log(result.data)
+                            setOpenPrint(true)
+                        }).catch((err) => {
+                            console.log(err)
+
+                        });
+                    }
+                    else {
+                        setOpenPrint(true)
+
+                    }
+                }
+                else {
+                    if (result.data.filter((obj) => obj.reservation_id == value.id && obj.type == 'or').length == 0) {
+                        axios.post(apiKey + 'api/addReceipt', {
+                            reservation_id: value.id,
+                            type: 'or',
+                        }).then((result) => {
+                            console.log(result.data)
+                            setOpenPrint(true)
+                        }).catch((err) => {
+                            console.log(err)
+
+                        });
+                    }
+                    else {
+                        setOpenPrint(true)
+
+                    }
+                }
+            }
+            else {
+                if (value.payment.paymentStatus == 'partial') {
+                    axios.post(apiKey + 'api/addReceipt', {
+                        reservation_id: value.id,
+                        type: 'ack',
+                    }).then((result) => {
+                            console.log(result.data)
+                            setOpenPrint(true)
+
+                    }).catch((err) => {
+                        console.log(err)
+
+                    });
+                }
+                else {
+                    axios.post(apiKey + 'api/addReceipt', {
+                        reservation_id: value.id,
+                        type: 'or',
+                    }).then((result) => {
+                            console.log(result.data)
+                            setOpenPrint(true)
+
+                    }).catch((err) => {
+                        console.log(err)
+
+                    });
+                }
+            }
+        }).catch((err) => {
+            console.log(err)
+
+        });
+
     }
     const handleOpenUpdate = (value) => {
         setOpenUpdate(true)
@@ -1080,9 +1153,9 @@ const PaymentContainer = () => {
     }
     return (
         <Container
-        style={{
-            height: 'auto'
-        }}>
+            style={{
+                height: 'auto'
+            }}>
 
             {/*PAYMENT INFORMATION */}
             <HeadContainer>
@@ -2110,15 +2183,15 @@ const PaymentContainer = () => {
                                     reservationSummaryInfo.map((item, index) => (
                                         <Tr>
 
-                                            <Td align='left' style={item.id == editReservationId ? { backgroundColor: 'green', color: 'white' } : { backgroundColor: '', color: '' }}>{item.room.roomNumber}</Td>
-                                            <Td align='center' style={item.id == editReservationId ? { backgroundColor: 'green', color: 'white' } : { backgroundColor: '', color: '' }}>{item.room.roomType.roomType}</Td>
+                                            <Td align='left' style={item.id == editReservationId ? { backgroundColor: 'green', color: 'white' } : { backgroundColor: '', color: '' }}>{item.roomNumber}</Td>
+                                            <Td align='center' style={item.id == editReservationId ? { backgroundColor: 'green', color: 'white' } : { backgroundColor: '', color: '' }}>{item.roomType}</Td>
                                             {/* <Td align='center' style={item.id == editReservationId ? { backgroundColor: 'green', color: 'white' } : { backgroundColor: '', color: '' }}>{new Date(item.checkInDate).toLocaleDateString()}</Td>
                                             <Td align='center' style={item.id == editReservationId ? { backgroundColor: 'green', color: 'white' } : { backgroundColor: '', color: '' }}>{new Date(item.checkOutDate).toLocaleDateString()}</Td>
                                             <Td align='center' style={item.id == editReservationId ? { backgroundColor: 'green', color: 'white' } : { backgroundColor: '', color: '' }}>{item.adults}</Td>
                                             <Td align='center' style={item.id == editReservationId ? { backgroundColor: 'green', color: 'white' } : { backgroundColor: '', color: '' }}>{item.kids}</Td> */}
                                             <Td align='center' style={item.id == editReservationId ? { backgroundColor: 'green', color: 'white' } : { backgroundColor: '', color: '' }}>{item.numberOfNights}</Td>
-                                            <Td align='center' style={item.id == editReservationId ? { backgroundColor: 'green', color: 'white' } : { backgroundColor: '', color: '' }}>{numberFormat(item.room.roomType.roomRate)}</Td>
-                                            <Td align='right' style={item.id == editReservationId ? { backgroundColor: 'green', color: 'white' } : { backgroundColor: '', color: 'red' }}>{numberFormat(item.room.roomType.roomRate * item.numberOfNights)}</Td>
+                                            <Td align='center' style={item.id == editReservationId ? { backgroundColor: 'green', color: 'white' } : { backgroundColor: '', color: '' }}>{numberFormat(item.roomRate)}</Td>
+                                            <Td align='right' style={item.id == editReservationId ? { backgroundColor: 'green', color: 'white' } : { backgroundColor: '', color: 'red' }}>{numberFormat(item.total)}</Td>
 
 
                                         </Tr>
@@ -2414,8 +2487,8 @@ const PaymentContainer = () => {
 
                                             <Td align='left'>{item.amenityName}</Td>
                                             <Td align='center'>{orderedAmenities.filter((obj) => obj.amenity.amenityName == item.amenityName).map((item) => item.quantity).reduce((accumulator, value) => parseFloat(accumulator) + parseFloat(value), 0)}</Td>
-                                            <Td align='center'>{numberFormat(item.amenityRate)}</Td>
-                                            <Td align='right' style={{ color: 'red' }}>{numberFormat(item.amenityRate * orderedAmenities.filter((obj) => obj.amenity.amenityName == item.amenityName).map((item) => item.quantity).reduce((accumulator, value) => parseFloat(accumulator) + parseFloat(value), 0))}</Td>
+                                            <Td align='center'>{numberFormat(parseFloat(orderedAmenities.filter((obj) => obj.amenity.amenityName == item.amenityName).map((item, index, array) => index == 0 && item.amenityRate)))}</Td>
+                                            <Td align='right' style={{ color: 'red' }}>{numberFormat(orderedAmenities.filter((obj) => obj.amenity.amenityName == item.amenityName).map((item) => item.total).reduce((accumulator, value) => parseFloat(accumulator) + parseFloat(value), 0))}</Td>
                                             {/* <Td align='center'>{item.adults}</Td>
                                             <Td align='center'>{item.kids}</Td>
                                             <Td align='center'>{item.numberOfNights}</Td>
@@ -3287,15 +3360,15 @@ const PaymentContainer = () => {
                                     reservationSummaryInfo.map((item, index) => (
                                         <Tr>
 
-                                            <Td align='left' style={item.id == editReservationId ? { backgroundColor: 'green', color: 'white' } : { backgroundColor: '', color: '' }}>{item.room.roomNumber}</Td>
-                                            <Td align='center' style={item.id == editReservationId ? { backgroundColor: 'green', color: 'white' } : { backgroundColor: '', color: '' }}>{item.room.roomType.roomType}</Td>
+                                            <Td align='left' style={item.id == editReservationId ? { backgroundColor: 'green', color: 'white' } : { backgroundColor: '', color: '' }}>{item.roomNumber}</Td>
+                                            <Td align='center' style={item.id == editReservationId ? { backgroundColor: 'green', color: 'white' } : { backgroundColor: '', color: '' }}>{item.roomType}</Td>
                                             {/* <Td align='center' style={item.id == editReservationId ? { backgroundColor: 'green', color: 'white' } : { backgroundColor: '', color: '' }}>{new Date(item.checkInDate).toLocaleDateString()}</Td>
                                             <Td align='center' style={item.id == editReservationId ? { backgroundColor: 'green', color: 'white' } : { backgroundColor: '', color: '' }}>{new Date(item.checkOutDate).toLocaleDateString()}</Td>
                                             <Td align='center' style={item.id == editReservationId ? { backgroundColor: 'green', color: 'white' } : { backgroundColor: '', color: '' }}>{item.adults}</Td>
                                             <Td align='center' style={item.id == editReservationId ? { backgroundColor: 'green', color: 'white' } : { backgroundColor: '', color: '' }}>{item.kids}</Td> */}
                                             <Td align='center' style={item.id == editReservationId ? { backgroundColor: 'green', color: 'white' } : { backgroundColor: '', color: '' }}>{item.numberOfNights}</Td>
-                                            <Td align='center' style={item.id == editReservationId ? { backgroundColor: 'green', color: 'white' } : { backgroundColor: '', color: '' }}>{numberFormat(item.room.roomType.roomRate)}</Td>
-                                            <Td align='right' style={item.id == editReservationId ? { backgroundColor: 'green', color: 'white' } : { backgroundColor: '', color: 'red' }}>{numberFormat(item.room.roomType.roomRate * item.numberOfNights)}</Td>
+                                            <Td align='center' style={item.id == editReservationId ? { backgroundColor: 'green', color: 'white' } : { backgroundColor: '', color: '' }}>{numberFormat(item.roomRate)}</Td>
+                                            <Td align='right' style={item.id == editReservationId ? { backgroundColor: 'green', color: 'white' } : { backgroundColor: '', color: 'red' }}>{numberFormat(item.total)}</Td>
 
 
                                         </Tr>
@@ -3379,8 +3452,8 @@ const PaymentContainer = () => {
 
                                             <Td align='left'>{item.amenityName}</Td>
                                             <Td align='center'>{orderedAmenities.filter((obj) => obj.amenity.amenityName == item.amenityName).map((item) => item.quantity).reduce((accumulator, value) => parseFloat(accumulator) + parseFloat(value), 0)}</Td>
-                                            <Td align='center'>{numberFormat(item.amenityRate)}</Td>
-                                            <Td align='right' style={{ color: 'red' }}>{numberFormat(item.amenityRate * orderedAmenities.filter((obj) => obj.amenity.amenityName == item.amenityName).map((item) => item.quantity).reduce((accumulator, value) => parseFloat(accumulator) + parseFloat(value), 0))}</Td>
+                                            <Td align='center'>{numberFormat(parseFloat(orderedAmenities.filter((obj) => obj.amenity.amenityName == item.amenityName).map((item, index, array) => index == 0 && item.amenityRate)))}</Td>
+                                            <Td align='right' style={{ color: 'red' }}>{numberFormat(orderedAmenities.filter((obj) => obj.amenity.amenityName == item.amenityName).map((item) => item.total).reduce((accumulator, value) => parseFloat(accumulator) + parseFloat(value), 0))}</Td>
                                             {/* <Td align='center'>{item.adults}</Td>
                                             <Td align='center'>{item.kids}</Td>
                                             <Td align='center'>{item.numberOfNights}</Td>
@@ -4382,15 +4455,15 @@ const PaymentContainer = () => {
                                     reservationSummaryInfo.map((item, index) => (
                                         <Tr>
 
-                                            <Td align='left' style={item.id == editReservationId ? { backgroundColor: 'green', color: 'white' } : { backgroundColor: '', color: '' }}>{item.room.roomNumber}</Td>
-                                            <Td align='center' style={item.id == editReservationId ? { backgroundColor: 'green', color: 'white' } : { backgroundColor: '', color: '' }}>{item.room.roomType.roomType}</Td>
+                                            <Td align='left' style={item.id == editReservationId ? { backgroundColor: 'green', color: 'white' } : { backgroundColor: '', color: '' }}>{item.roomNumber}</Td>
+                                            <Td align='center' style={item.id == editReservationId ? { backgroundColor: 'green', color: 'white' } : { backgroundColor: '', color: '' }}>{item.roomType}</Td>
                                             {/* <Td align='center' style={item.id == editReservationId ? { backgroundColor: 'green', color: 'white' } : { backgroundColor: '', color: '' }}>{new Date(item.checkInDate).toLocaleDateString()}</Td>
                                             <Td align='center' style={item.id == editReservationId ? { backgroundColor: 'green', color: 'white' } : { backgroundColor: '', color: '' }}>{new Date(item.checkOutDate).toLocaleDateString()}</Td>
                                             <Td align='center' style={item.id == editReservationId ? { backgroundColor: 'green', color: 'white' } : { backgroundColor: '', color: '' }}>{item.adults}</Td>
                                             <Td align='center' style={item.id == editReservationId ? { backgroundColor: 'green', color: 'white' } : { backgroundColor: '', color: '' }}>{item.kids}</Td> */}
                                             <Td align='center' style={item.id == editReservationId ? { backgroundColor: 'green', color: 'white' } : { backgroundColor: '', color: '' }}>{item.numberOfNights}</Td>
-                                            <Td align='center' style={item.id == editReservationId ? { backgroundColor: 'green', color: 'white' } : { backgroundColor: '', color: '' }}>{numberFormat(item.room.roomType.roomRate)}</Td>
-                                            <Td align='right' style={item.id == editReservationId ? { backgroundColor: 'green', color: 'white' } : { backgroundColor: '', color: 'red' }}>{numberFormat(item.room.roomType.roomRate * item.numberOfNights)}</Td>
+                                            <Td align='center' style={item.id == editReservationId ? { backgroundColor: 'green', color: 'white' } : { backgroundColor: '', color: '' }}>{numberFormat(item.roomRate)}</Td>
+                                            <Td align='right' style={item.id == editReservationId ? { backgroundColor: 'green', color: 'white' } : { backgroundColor: '', color: 'red' }}>{numberFormat(item.total)}</Td>
 
 
                                         </Tr>
@@ -4481,8 +4554,8 @@ const PaymentContainer = () => {
 
                                             <Td align='left'>{item.amenityName}</Td>
                                             <Td align='center'>{orderedAmenities.filter((obj) => obj.amenity.amenityName == item.amenityName).map((item) => item.quantity).reduce((accumulator, value) => parseFloat(accumulator) + parseFloat(value), 0)}</Td>
-                                            <Td align='center'>{numberFormat(item.amenityRate)}</Td>
-                                            <Td align='right' style={{ color: 'red' }}>{numberFormat(item.amenityRate * orderedAmenities.filter((obj) => obj.amenity.amenityName == item.amenityName).map((item) => item.quantity).reduce((accumulator, value) => parseFloat(accumulator) + parseFloat(value), 0))}</Td>
+                                            <Td align='center'>{numberFormat(parseFloat(orderedAmenities.filter((obj) => obj.amenity.amenityName == item.amenityName).map((item, index, array) => index == 0 && item.amenityRate)))}</Td>
+                                            <Td align='right' style={{ color: 'red' }}>{numberFormat(orderedAmenities.filter((obj) => obj.amenity.amenityName == item.amenityName).map((item) => item.total).reduce((accumulator, value) => parseFloat(accumulator) + parseFloat(value), 0))}</Td>
                                             {/* <Td align='center'>{item.adults}</Td>
                                             <Td align='center'>{item.kids}</Td>
                                             <Td align='center'>{item.numberOfNights}</Td>

@@ -12,6 +12,18 @@ module.exports = (sequelize, DataTypes, Sequelize) => {
             allowNull: false,
             defaultValue: 0,
         },
+        amenityName: {
+            type: DataTypes.STRING,
+            allowNull: false,
+        },
+        amenityRate: {
+            type: DataTypes.DECIMAL(19, 4),
+            allowNull: false,
+        },
+        total: {
+            type: DataTypes.DECIMAL(19, 4),
+            allowNull: false,
+        },
     },
     {
         timestamps: true,

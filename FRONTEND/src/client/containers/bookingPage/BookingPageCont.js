@@ -140,6 +140,11 @@ export const BookingPageCont = () => {
             // setEndDate(new Date(startDate).getTime() + 86400000)
             setEndDate(new Date(Date.parse(startDate) + 86400000))
         }
+
+        if(Date.parse(endDate) - Date.parse(startDate) > 2629800000){
+            alert('For period of stay longer than 30 night(s), please call Tel:(+632) 8628-0768 / Cell No:(+63) 9176300113 or send an email to rm.luxehotel@gmail.com')
+            setEndDate(new Date(Date.parse(startDate) + 2629800000))
+        }
         // if(startDate )
     }, [startDate, endDate])
 
@@ -476,7 +481,9 @@ export const BookingPageCont = () => {
                     minDateStart={new Date()}
                     // maxDateStart={new Date(endDate)}
                     minDateEnd={minEndDate}
-                    maxDateEnd={new Date(Date.parse(startDate) + 15552000000)}
+                    maxDateStart={new Date(Date.now() + 31556926000)}
+
+                    // maxDateEnd={new Date(Date.parse(startDate) + 2629800000)}
                 // minDate={new Date()}
                 />
 
