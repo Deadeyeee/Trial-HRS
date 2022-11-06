@@ -65,7 +65,8 @@ const usedServices = require('./routes/usedServices.route.js');
 const roomTypeImages = require('./routes/roomTypeImages.route.js');
 const message = require('./routes/message.route.js');
 const conversation = require('./routes/conversation.route.js');
-const deleteConversation = require('./routes/deleteConversation.route.js')
+const deleteConversation = require('./routes/deleteConversation.route.js');
+const receipt = require('./routes/receipt.route.js');
 
 
 
@@ -88,6 +89,7 @@ app.use('/api', roomTypeImages);
 app.use('/api', message);
 app.use('/api', conversation);
 app.use('/api', deleteConversation);
+app.use('/api', receipt);
 
 
 //static image 

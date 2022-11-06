@@ -753,7 +753,7 @@ export const ReportContainer = () => {
 
 
                             </ContainerGlobal>
-                            <TableContainer>
+                            <TableContainer style={{width: 'auto', tableLayout: 'auto'}}>
                                 <Tr>
                                     <Th align='center'>Booking number</Th>
                                     <Th align='center'>Reservation date </Th>
@@ -981,12 +981,12 @@ export const ReportContainer = () => {
                                                         ?
                                                         item.reservation.payment.discountValid == true ?
                                                             numberFormat(
-                                                                parseFloat((((item.room.roomType.roomRate * item.numberOfNights) + (parseFloat(item.others)) + (orderedAmenity.filter((obj) => obj.reservationSummary_id == item.id).map((obj) => obj.quantity * parseFloat(obj.amenity.amenityRate)).reduce((accumulator, value) => parseFloat(accumulator) + parseFloat(value), 0))) / 1.12 * .80) / item.reservation.payment.grandTotal) * parseFloat(item.reservation.payment.paymentMade)
+                                                                parseFloat(((parseFloat(item.total) + (parseFloat(item.others)) + (orderedAmenity.filter((obj) => obj.reservationSummary_id == item.id).map((obj) => obj.total).reduce((accumulator, value) => parseFloat(accumulator) + parseFloat(value), 0))) / 1.12 * .80) / item.reservation.payment.grandTotal) * parseFloat(item.reservation.payment.paymentMade)
                                                             )
                                                             :
 
                                                             numberFormat(
-                                                                parseFloat((((item.room.roomType.roomRate * item.numberOfNights) + (parseFloat(item.others)) + (orderedAmenity.filter((obj) => obj.reservationSummary_id == item.id).map((obj) => obj.quantity * parseFloat(obj.amenity.amenityRate)).reduce((accumulator, value) => parseFloat(accumulator) + parseFloat(value), 0)))) / item.reservation.payment.grandTotal) * parseFloat(item.reservation.payment.paymentMade)
+                                                                parseFloat(((parseFloat(item.total) + (parseFloat(item.others)) + (orderedAmenity.filter((obj) => obj.reservationSummary_id == item.id).map((obj) => obj.total).reduce((accumulator, value) => parseFloat(accumulator) + parseFloat(value), 0)))) / item.reservation.payment.grandTotal) * parseFloat(item.reservation.payment.paymentMade)
                                                             )
                                                         :
                                                         ''
@@ -995,9 +995,9 @@ export const ReportContainer = () => {
                                                     orderedAmenity.length != 0
                                                         ?
                                                         item.reservation.payment.discountValid == true ?
-                                                            numberFormat(((item.room.roomType.roomRate * item.numberOfNights) + (parseFloat(item.others)) + (orderedAmenity.filter((obj) => obj.reservationSummary_id == item.id).map((obj) => obj.quantity * parseFloat(obj.amenity.amenityRate)).reduce((accumulator, value) => parseFloat(accumulator) + parseFloat(value), 0))) / 1.12 * .80)
+                                                            numberFormat((parseFloat(item.total) + (parseFloat(item.others)) + (orderedAmenity.filter((obj) => obj.reservationSummary_id == item.id).map((obj) => obj.total).reduce((accumulator, value) => parseFloat(accumulator) + parseFloat(value), 0))) / 1.12 * .80)
                                                             :
-                                                            numberFormat((item.room.roomType.roomRate * item.numberOfNights) + (parseFloat(item.others)) + (orderedAmenity.filter((obj) => obj.reservationSummary_id == item.id).map((obj) => obj.quantity * parseFloat(obj.amenity.amenityRate)).reduce((accumulator, value) => parseFloat(accumulator) + parseFloat(value), 0)))
+                                                            numberFormat(parseFloat(item.total) + (parseFloat(item.others)) + (orderedAmenity.filter((obj) => obj.reservationSummary_id == item.id).map((obj) => obj.total).reduce((accumulator, value) => parseFloat(accumulator) + parseFloat(value), 0)))
                                                         :
                                                         ''
                                                 }</Td>
@@ -1564,9 +1564,9 @@ export const ReportContainer = () => {
                                             .map((item) => (
                                                 orderedAmenity.length != 0 ?
                                                     item.reservation.payment.discountValid == true ?
-                                                        parseFloat((((item.room.roomType.roomRate * item.numberOfNights) + (parseFloat(item.others)) + (orderedAmenity.filter((obj) => obj.reservationSummary_id == item.id).map((obj) => obj.quantity * parseFloat(obj.amenity.amenityRate)).reduce((accumulator, value) => parseFloat(accumulator) + parseFloat(value), 0))) / 1.12 * .80) / item.reservation.payment.grandTotal) * parseFloat(item.reservation.payment.paymentMade)
+                                                        parseFloat(((parseFloat(item.total) + (parseFloat(item.others)) + (orderedAmenity.filter((obj) => obj.reservationSummary_id == item.id).map((obj) => obj.total).reduce((accumulator, value) => parseFloat(accumulator) + parseFloat(value), 0))) / 1.12 * .80) / item.reservation.payment.grandTotal) * parseFloat(item.reservation.payment.paymentMade)
                                                         :
-                                                        parseFloat((((item.room.roomType.roomRate * item.numberOfNights) + (parseFloat(item.others)) + (orderedAmenity.filter((obj) => obj.reservationSummary_id == item.id).map((obj) => obj.quantity * parseFloat(obj.amenity.amenityRate)).reduce((accumulator, value) => parseFloat(accumulator) + parseFloat(value), 0)))) / item.reservation.payment.grandTotal) * parseFloat(item.reservation.payment.paymentMade)
+                                                        parseFloat(((parseFloat(item.total) + (parseFloat(item.others)) + (orderedAmenity.filter((obj) => obj.reservationSummary_id == item.id).map((obj) => obj.total).reduce((accumulator, value) => parseFloat(accumulator) + parseFloat(value), 0)))) / item.reservation.payment.grandTotal) * parseFloat(item.reservation.payment.paymentMade)
 
                                                     : ''
                                             )).reduce((accumulator, value) => parseFloat(accumulator) + parseFloat(value), 0)
@@ -1785,25 +1785,7 @@ export const ReportContainer = () => {
                                 justify='center'
                                 gap='10px'
                             >
-                                <TextField
-                                    id="outlined-basic"
-                                    label="Search..."
-                                    variant="outlined"
-                                    sx={{
-                                        input: { color: 'black', fontWeight: 'bold' },
-
-                                    }}
-                                    InputProps={{
-                                        endAdornment: (
-                                            <InputAdornment position="end">
-                                                <IconButton type="submit" sx={{ p: '10px' }} aria-label="search">
-                                                    <SearchIcon />
-                                                </IconButton>
-                                            </InputAdornment>
-
-                                        ),
-                                    }}
-                                    style={{ width: 500 }} />
+                                
                                 <LocalizationProvider dateAdapter={AdapterDateFns}
                                 >
                                     <DatePicker

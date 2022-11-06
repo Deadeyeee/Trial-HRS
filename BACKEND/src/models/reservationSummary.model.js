@@ -46,6 +46,22 @@ module.exports = (sequelize, DataTypes, Sequelize) => {
             allowNull: false,
             defaultValue: 0,
         },
+        roomType: {
+            type: DataTypes.STRING,
+            allowNull: false,
+        },
+        roomNumber: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+        },
+        roomRate: {
+            type: DataTypes.DECIMAL(19, 2),
+            allowNull: false,
+        },
+        total: {
+            type: DataTypes.DECIMAL(19, 4),
+            allowNull: false,
+        },
 
     },
         {

@@ -1,6 +1,7 @@
 const db = require("../models");
 const ReservationSummary = db.reservationSummary;
-const moment = require('moment')
+const moment = require('moment');
+const { room, roomType } = require("../models");
 // import Logo from "../../../FRONTEND/src/images/logo.png";
 function getDates(startDate, stopDate) {
     var dateArray = [];
@@ -13,8 +14,37 @@ function getDates(startDate, stopDate) {
     return dateArray;
 }
 
+
+
+// const test = async () => {
+
+//     const roomData = await room.findByPk('2bdc7d55-830e-4366-8687-7c425499bc65', {
+//         include: roomType
+
+//     })
+//     console.log('\n\n\n\n\n', roomData.roomNumber, '\n\n\n\n\n',)
+//     console.log('\n\n\n\n\n', roomData.roomType.dataValues.roomRate, '\n\n\n\n\n',)
+//     console.log('\n\n\n\n\n', roomData.roomType.dataValues.roomType, '\n\n\n\n\n',)
+//     // console.log('\n\n\n\n\n', room.amenityRate, '\n\n\n\n\n',)
+//     // console.log('\n\n\n\n\n', room.amenityRate, '\n\n\n\n\n',)
+// }
+
+// test()
+
+
 exports.create = async (req, res) => {
     try {
+
+        let data = req.body;
+        const roomData = await room.findByPk(req.body.room_id, {
+            include: roomType
+
+        })
+        data.roomType = roomData.roomType.dataValues.roomType
+        data.roomNumber = roomData.roomNumber
+        data.roomRate = roomData.roomType.dataValues.roomRate
+        data.total = parseFloat(roomData.roomType.dataValues.roomRate) * req.body.numberOfNights
+
         const new_reservationSummary = await ReservationSummary.create(req.body,
             { include: { all: true, nested: true } });
         return res.status(200).send({ new_reservationSummary });
@@ -53,6 +83,26 @@ exports.findOne = async (req, res) => {
 
 exports.update = async (req, res) => {
     try {
+
+        let data = req.body;
+
+
+        if (req.body.room_id) {
+            const roomData = await room.findByPk(req.body.room_id, {
+                include: roomType
+            })
+
+
+
+
+            data.roomType = roomData.roomType.dataValues.roomType
+            data.roomNumber = roomData.roomNumber
+            data.roomRate = roomData.roomType.dataValues.roomRate
+
+            data.total = parseFloat(roomData.roomType.dataValues.roomRate) * req.body.numberOfNights
+
+
+        }
         await ReservationSummary.update(req.body, {
             where: {
                 id: req.params.id,
