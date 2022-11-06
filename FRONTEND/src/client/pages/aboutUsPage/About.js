@@ -18,6 +18,8 @@ export const About = () => {
                 weight='normal'
                 size='60px'
                 margin='60px 0px 30px 0px'
+                size1000='40px'
+                margin1000='20px 0px 0px 0px'
             >   Rm Luxe Hotel
             </Title>
             <HorizontalLine></HorizontalLine>
@@ -39,6 +41,8 @@ export const About = () => {
                                 alignSelf='center'
                                 fstyle='normal'
                                 color='black'
+                                size1000='20px'
+                                margin1000='20px 0px 0px 0px'
                             >
                                 RM LUXE HOTEL
                             </Title>

@@ -26,6 +26,8 @@ export const Famenities = () => {
                 weight='normal'
                 size='60px'
                 margin='60px 0px 60px 0px'
+                size1000='45px'
+                margin1000='20px 0px 20px 0px'
             >
                 Facilities & Amenities
             </Title>
@@ -48,6 +50,8 @@ export const Famenities = () => {
                                     align='left'
                                     margin="0px 0px 0px 200px"
                                     cursor="pointer"
+                                    size1000='30px'
+                                    margin1000='0px 0px 0px 50px'
                                 >
 
                                     EVENTS PLACE
@@ -77,6 +81,8 @@ export const Famenities = () => {
                                     opc='100%'
                                     margin="0px 200px 0px 0px"
                                     cursor="pointer"
+                                    size1000='30px'
+                                    margin1000='0px 50px 0px 0px'
                                 >
                                     COFFEE SHOP
                                 </Title>

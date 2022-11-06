@@ -141,7 +141,7 @@ const BookingCartPageCont = () => {
           size='50px'
           w='100%'
         >
-          Booking Details
+          Booking Cart
         </Title>
         <TableContainer
           cellspacing="0"

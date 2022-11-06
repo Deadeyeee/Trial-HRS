@@ -13,7 +13,7 @@ display: ${(props) => (props.display ? props.display : "block")};
 letter-spacing: ${(props) => (props.spacing ? props.spacing : "auto")};
 padding: ${(props) => (props.padding ? props.padding : "0px")};
 align-self: ${(props) => (props.alignSelf ? props.alignSelf : "auto")};
-line-height: ${(props) =>(props.line ? props.line : "auto")};
+line-height: ${(props) => (props.line ? props.line : "auto")};
 opacity: ${(props) => (props.opc ? props.opc : "100%")};
 text-shadow:  ${(props) => (props.shadow ? props.shadow : "none")};
 width:${(props) => (props.w ? props.w : "auto")};
@@ -27,6 +27,14 @@ white-space: ${(props) => (props.whiteSpace ? props.whiteSpace : "normal")};
 &:hover{
     color: ${(props) => (props.hoverColor ? props.hoverColor : "none")};;
   }
+
+
+  @media (max-width: 1000px) {
+    font-size: ${(props) => (props.size1000 ? props.size1000 : "auto")};
+    margin: ${(props) => (props.margin1000 ? props.margin1000 : "0px")};
+    
+    
+      }
 
 
   

@@ -56,6 +56,7 @@ export const RoomRates = () => {
                 weight='normal'
                 size='50px'
                 margin='60px 0px 60px 0px'
+                margin1000='20px 0px 20px 0px'
             >
                 Rooms & Rates
             </Title>
@@ -65,7 +66,7 @@ export const RoomRates = () => {
                         <div style={{ display: 'block', justifyContent: 'center', gap: '100px' }}>
                             <FlexboxContentMain>
                                 <div
-                                    style={{ width: '90%', height: '350px', display: 'inline-block', overflow: 'hidden' }}
+                                    style={{ width: '400px', height: '400px', display: 'inline-block', overflow: 'hidden' }}
 
                                 >
                                     <ImageSlider roomImages={roomTypeImagesDb.length != 0 ? roomTypeImagesDb.filter((itemRoomImage) => (itemRoomImage.roomType_id == item.id)).map((obj) => (obj.roomImages)) : null} />
@@ -75,7 +76,7 @@ export const RoomRates = () => {
                                     <Title
                                         family='Roboto Slab, serif'
                                         weight='700'
-                                        size='33px'
+                                        size='30px'
                                         color='#292929'
                                         align='left'
                                     >
