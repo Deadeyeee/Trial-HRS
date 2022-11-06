@@ -87,6 +87,7 @@ const AdditionalsContainer = () => {
         setOpen2(false)
         setSelectedAmenity([])
     };
+    const [role, setRole] = useState('')
 
 
     const [open3, setOpen3] = React.useState(false);
@@ -121,9 +122,19 @@ const AdditionalsContainer = () => {
 
         });
 
+
+
     }, [reloadData])
 
-    const editAmenityRate = (e)=>{
+
+    useEffect(() => {
+        axios.get(apiKey + "auth/verify-token").then((result) => {
+            setRole(result.data.role)
+        }).catch((err) => {
+
+        });
+    }, [])
+    const editAmenityRate = (e) => {
         e.preventDefault()
         axios.patch(apiKey + 'api/updateAmenities/' + selectedAmenity.id, {
             amenityRate: amenityRate,
@@ -132,7 +143,7 @@ const AdditionalsContainer = () => {
             handleClose3();
         }).catch((err) => {
             console.log(err)
-            
+
         });
     }
 
@@ -237,11 +248,23 @@ const AdditionalsContainer = () => {
                             <Tr>
                                 <Td align='center'>{item.amenityName}</Td>
                                 <Td align='center'>{numberFormat(item.amenityRate)}</Td>
-                                <Td align='center'><ActionButton
-                                        dontShowDelete=''
+                                <Td align='center'>
+                                    {role != '' ? role == 'STAFF' ?
+                                        <ActionButton
+                                            dontShowDelete=''
+                                            dontShowEdit=''
 
-                                    view={() => handleOpen2(item)}
-                                    edit={()=> handleOpen3(item)} /></Td>
+                                            view={() => handleOpen2(item)}
+                                            edit={() => handleOpen3(item)} />
+                                        :
+                                        <ActionButton
+                                            dontShowDelete=''
+                                            view={() => handleOpen2(item)}
+                                            edit={() => handleOpen3(item)} />
+                                        :
+                                        ''
+                                    }
+                                </Td>
                             </Tr>
                         ))
                         : 'empty'}
@@ -267,7 +290,7 @@ const AdditionalsContainer = () => {
             </ContainerGlobal>
 
 
-           
+
 
 
 
@@ -441,60 +464,60 @@ const AdditionalsContainer = () => {
                     </div>
 
                     <div style={{ display: 'flex', height: '100%', alignItems: 'center', flexDirection: 'column', justifyContent: 'center' }}>
-                    <InputContainer
-                        w='90%'
-                    >
-                        <TextField
-                            placeholder='Additional Name'
-                            label="Additional Name"
-                            variant="outlined"
-                            disabled
-                            value={selectedAmenity.amenityName}
-                            style={{ width: '55%', }} />
+                        <InputContainer
+                            w='90%'
+                        >
+                            <TextField
+                                placeholder='Additional Name'
+                                label="Additional Name"
+                                variant="outlined"
+                                disabled
+                                value={selectedAmenity.amenityName}
+                                style={{ width: '55%', }} />
 
-                        <TextField
-                            placeholder='Price'
-                            label="Price"
-                            variant="outlined"
-                            value={amenityRate}
-                            
-                            onChange={(e)=>{
-                                if(e.target.value < 0){
-                                    setAmenityRate(0)
-                                }
-                                else if(e.target.value > 999999999999){
-                                    setAmenityRate(999999999999)
-                                }
-                                else{
-                                    setAmenityRate(e.target.value)
-                                }
-                            }}
-                            required
-                            type='number'
-                            InputProps={{
-                                startAdornment: <InputAdornment position="start">₱</InputAdornment>,
-                            }}
-                            style={{ width: '55%', }} />
-                    </InputContainer>
+                            <TextField
+                                placeholder='Price'
+                                label="Price"
+                                variant="outlined"
+                                value={amenityRate}
 
-                    <InputContainer
-                        style={{ marginTop: '40px', }}>
+                                onChange={(e) => {
+                                    if (e.target.value < 0) {
+                                        setAmenityRate(0)
+                                    }
+                                    else if (e.target.value > 999999999999) {
+                                        setAmenityRate(999999999999)
+                                    }
+                                    else {
+                                        setAmenityRate(e.target.value)
+                                    }
+                                }}
+                                required
+                                type='number'
+                                InputProps={{
+                                    startAdornment: <InputAdornment position="start">₱</InputAdornment>,
+                                }}
+                                style={{ width: '55%', }} />
+                        </InputContainer>
 
-                        <Button variant="contained" size="large"
-                            style={{ backgroundColor: '#50AA32' }}
-                            type='submit'>
-                            Save Changes
-                        </Button>
-                        <Button variant="contained" size="large"
-                            style={{ backgroundColor: '#FF2400' }}
-                            onClick={handleClose3}>
-                            Cancel
-                        </Button>
+                        <InputContainer
+                            style={{ marginTop: '40px', }}>
 
-                    </InputContainer>
-                </div>
-            </Box>
-        </Modal>
+                            <Button variant="contained" size="large"
+                                style={{ backgroundColor: '#50AA32' }}
+                                type='submit'>
+                                Save Changes
+                            </Button>
+                            <Button variant="contained" size="large"
+                                style={{ backgroundColor: '#FF2400' }}
+                                onClick={handleClose3}>
+                                Cancel
+                            </Button>
+
+                        </InputContainer>
+                    </div>
+                </Box>
+            </Modal>
 
 
 

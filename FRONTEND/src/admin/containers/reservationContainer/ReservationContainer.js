@@ -923,6 +923,7 @@ export const ReservationContainer = () => {
             availedRoomData: availedRoom,
         }).then((result) => {
             if (result.data == true) {
+                console.log('EY')
                 if (contactNumber.slice(0, 3) == "+63") {
 
                     formatNumber = contactNumber.replace("+63", "0");
@@ -2870,7 +2871,7 @@ export const ReservationContainer = () => {
                                     required />
 
                             </InputContainer>
-                            <p><h1 style={{ display: 'inline' }}>Create an account </h1>(optional)*</p>
+                            {/* <p><h1 style={{ display: 'inline' }}>Create an account </h1>(optional)*</p>
                             <InputContainer>
                                 <TextField
 
@@ -2916,7 +2917,7 @@ export const ReservationContainer = () => {
                                     style={{ width: '55%', }}
                                     required={userName.length != 0 ? true : false}
                                 />
-                            </InputContainer>
+                            </InputContainer> */}
 
 
 

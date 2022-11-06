@@ -1471,8 +1471,8 @@ const PaymentContainer = () => {
                         </ContainerGlobal>
 
                         <ContainerGlobal gap='20px'>
-                            <Button disabled={reservationSelected.length != 0 ? reservationSelected.payment.paymentStatus == 'pending' || reservationSelected.payment.paymentStatus == 'reciept declined' ? false : true : ""} variant="contained" color="success" onClick={() => { approveReceipt() }}>Approve</Button>
-                            <Button disabled={reservationSelected.length != 0 ? reservationSelected.payment.paymentStatus == 'pending' || reservationSelected.payment.paymentStatus == 'reciept declined' ? false : true : ""} variant="contained" color="error" onClick={() => { declineReciept() }}>Decline</Button>
+                            <Button disabled={reservationSelected.length != 0 ? reservationSelected.payment.paymentStatus == 'pending' || reservationSelected.payment.paymentStatus == 'cancelled' || reservationSelected.payment.paymentStatus == 'reciept declined' ? false : true : ""} variant="contained" color="success" onClick={() => { approveReceipt() }}>Approve</Button>
+                            <Button disabled={reservationSelected.length != 0 ? reservationSelected.payment.paymentStatus == 'pending' || reservationSelected.payment.paymentStatus == 'cancelled'|| reservationSelected.payment.paymentStatus == 'reciept declined' ? false : true : ""} variant="contained" color="error" onClick={() => { declineReciept() }}>Decline</Button>
                         </ContainerGlobal>
                         <Button variant="contained" onClick={() => {
                             handleCloseUpload()
@@ -3865,7 +3865,7 @@ const PaymentContainer = () => {
                             </Title>
 
                             <FormControl sx={{ width: 200, margin: '5px 0px' }} size="large" variant="standard">
-                                <InputLabel id="demo-select-small" >Reservation Status</InputLabel>
+                                <InputLabel id="demo-select-small" >Payment Status</InputLabel>
                                 <Select
                                     style={{ color: 'black', textAlign: 'left', fontWeight: 'bold' }}
                                     labelId="demo-select-small"

@@ -528,7 +528,7 @@ const GeneratedReports = () => {
                             align="center"
                         >
                             <Title family="Roboto Slab" size="3vw" fstyle="none" weight="">
-                                Reservation report
+                                Reservation Report
                             </Title>
                         </ContainerGlobal>
                         <ContainerGlobal radius='0px'
@@ -575,6 +575,7 @@ const GeneratedReports = () => {
                                             <th>Total nights</th>
                                             <th>Booking status</th>
                                             <th>Payment status</th>
+                                            <th>Payment mode</th>
                                             <th>Paid amount</th>
                                             <th>Total amount</th>
                                         </tr>
@@ -757,17 +758,18 @@ const GeneratedReports = () => {
                                                         <td>{item.numberOfNights}</td>
                                                         <td>{bookingStatusStyle(item.bookingStatus)}</td>
                                                         <td>{paymentStatusStyle(item.reservation.payment.paymentStatus)}</td>
+                                                        <td>{item.reservation.payment.paymentMode.paymentMode}</td>
                                                         <td>{
                                                             orderedAmenity.length != 0
                                                                 ?
                                                                 item.reservation.payment.discountValid == true ?
                                                                     numberFormat(
-                                                                        parseFloat((((item.room.roomType.roomRate * item.numberOfNights) + (parseFloat(item.others)) + (orderedAmenity.filter((obj) => obj.reservationSummary_id == item.id).map((obj) => obj.quantity * parseFloat(obj.amenity.amenityRate)).reduce((accumulator, value) => parseFloat(accumulator) + parseFloat(value), 0))) / 1.12 * .80) / item.reservation.payment.grandTotal) * parseFloat(item.reservation.payment.paymentMade)
+                                                                        parseFloat(((parseFloat(item.total) + (parseFloat(item.others)) + (orderedAmenity.filter((obj) => obj.reservationSummary_id == item.id).map((obj) => obj.total).reduce((accumulator, value) => parseFloat(accumulator) + parseFloat(value), 0))) / 1.12 * .80) / item.reservation.payment.grandTotal) * parseFloat(item.reservation.payment.paymentMade)
                                                                     )
                                                                     :
 
                                                                     numberFormat(
-                                                                        parseFloat((((item.room.roomType.roomRate * item.numberOfNights) + (parseFloat(item.others)) + (orderedAmenity.filter((obj) => obj.reservationSummary_id == item.id).map((obj) => obj.quantity * parseFloat(obj.amenity.amenityRate)).reduce((accumulator, value) => parseFloat(accumulator) + parseFloat(value), 0)))) / item.reservation.payment.grandTotal) * parseFloat(item.reservation.payment.paymentMade)
+                                                                        parseFloat(((parseFloat(item.total) + (parseFloat(item.others)) + (orderedAmenity.filter((obj) => obj.reservationSummary_id == item.id).map((obj) => obj.total).reduce((accumulator, value) => parseFloat(accumulator) + parseFloat(value), 0)))) / item.reservation.payment.grandTotal) * parseFloat(item.reservation.payment.paymentMade)
                                                                     )
                                                                 :
                                                                 ''
@@ -777,9 +779,9 @@ const GeneratedReports = () => {
                                                             orderedAmenity.length != 0
                                                                 ?
                                                                 item.reservation.payment.discountValid == true ?
-                                                                    numberFormat(((item.room.roomType.roomRate * item.numberOfNights) + (parseFloat(item.others)) + (orderedAmenity.filter((obj) => obj.reservationSummary_id == item.id).map((obj) => obj.quantity * parseFloat(obj.amenity.amenityRate)).reduce((accumulator, value) => parseFloat(accumulator) + parseFloat(value), 0))) / 1.12 * .80)
+                                                                    numberFormat((parseFloat(item.total) + (parseFloat(item.others)) + (orderedAmenity.filter((obj) => obj.reservationSummary_id == item.id).map((obj) => obj.total).reduce((accumulator, value) => parseFloat(accumulator) + parseFloat(value), 0))) / 1.12 * .80)
                                                                     :
-                                                                    numberFormat((item.room.roomType.roomRate * item.numberOfNights) + (parseFloat(item.others)) + (orderedAmenity.filter((obj) => obj.reservationSummary_id == item.id).map((obj) => obj.quantity * parseFloat(obj.amenity.amenityRate)).reduce((accumulator, value) => parseFloat(accumulator) + parseFloat(value), 0)))
+                                                                    numberFormat(parseFloat(item.total) + (parseFloat(item.others)) + (orderedAmenity.filter((obj) => obj.reservationSummary_id == item.id).map((obj) => obj.total).reduce((accumulator, value) => parseFloat(accumulator) + parseFloat(value), 0)))
                                                                 :
                                                                 ''
                                                         }
@@ -1143,9 +1145,9 @@ const GeneratedReports = () => {
                                                 .map((item) => (
                                                     orderedAmenity.length != 0 ?
                                                         item.reservation.payment.discountValid == true ?
-                                                            parseFloat((((item.room.roomType.roomRate * item.numberOfNights) + (parseFloat(item.others)) + (orderedAmenity.filter((obj) => obj.reservationSummary_id == item.id).map((obj) => obj.quantity * parseFloat(obj.amenity.amenityRate)).reduce((accumulator, value) => parseFloat(accumulator) + parseFloat(value), 0))) / 1.12 * .80) / item.reservation.payment.grandTotal) * parseFloat(item.reservation.payment.paymentMade)
+                                                            parseFloat(((parseFloat(item.total) + (parseFloat(item.others)) + (orderedAmenity.filter((obj) => obj.reservationSummary_id == item.id).map((obj) => obj.total).reduce((accumulator, value) => parseFloat(accumulator) + parseFloat(value), 0))) / 1.12 * .80) / item.reservation.payment.grandTotal) * parseFloat(item.reservation.payment.paymentMade)
                                                             :
-                                                            parseFloat((((item.room.roomType.roomRate * item.numberOfNights) + (parseFloat(item.others)) + (orderedAmenity.filter((obj) => obj.reservationSummary_id == item.id).map((obj) => obj.quantity * parseFloat(obj.amenity.amenityRate)).reduce((accumulator, value) => parseFloat(accumulator) + parseFloat(value), 0)))) / item.reservation.payment.grandTotal) * parseFloat(item.reservation.payment.paymentMade)
+                                                            parseFloat(((parseFloat(item.total) + (parseFloat(item.others)) + (orderedAmenity.filter((obj) => obj.reservationSummary_id == item.id).map((obj) => obj.total).reduce((accumulator, value) => parseFloat(accumulator) + parseFloat(value), 0)))) / item.reservation.payment.grandTotal) * parseFloat(item.reservation.payment.paymentMade)
 
                                                         : ''
                                                 )).reduce((accumulator, value) => parseFloat(accumulator) + parseFloat(value), 0))
@@ -1163,7 +1165,7 @@ const GeneratedReports = () => {
                             align="center"
                         >
                             <Title family="Roboto Slab" size="3vw" fstyle="none" weight="">
-                                Reservation visual report
+                                Reservation Visual Report
                             </Title>
                         </ContainerGlobal>
                         <ContainerGlobal radius='0px'
@@ -1217,7 +1219,39 @@ const GeneratedReports = () => {
                                     : ''}
                             />
                         </ContainerGlobal>
+                        <ContainerGlobal radius='0px' w="700px" direction="column">
+                            <ContainerGlobal radius='0px'
+                                w="700px"
+                                direction="column"
+                                gap="10px"
+                                align="flex-end"
+                            >
+                                <ContainerGlobal radius='0px' w="40%" justify="space-between">
+                                    <Title family="Barlow Condensed" fstyle="none" size="2vw" weight="400">Total Reservation(s):</Title>
+                                    <Title family="Barlow Condensed" fstyle="none" size="2vw" weight="400" color="#074D25">
+                                        {
+                                            reservationSummary != 0 ?
+                                                reservationSummary.filter((obj) => obj.reservation.reservationStatus == 'PENDING' || obj.reservation.reservationStatus == 'UNSETTLED' || obj.reservation.reservationStatus == 'RESERVED').filter((obj) => {
+                                                    let filterDate = getDates(startDate, endDate);
 
+                                                    if (filterDate.includes(moment(obj.checkInDate).format('YYYY-MM-DD')) == true || filterDate.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) == true) {
+                                                        return obj
+                                                    }
+
+                                                }).length != 0 ? reservationSummary.filter((obj) => obj.reservation.reservationStatus == 'PENDING' || obj.reservation.reservationStatus == 'UNSETTLED' || obj.reservation.reservationStatus == 'RESERVED').filter((obj) => {
+                                                    let filterDate = getDates(startDate, endDate);
+
+                                                    if (filterDate.includes(moment(obj.checkInDate).format('YYYY-MM-DD')) == true || filterDate.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) == true) {
+                                                        return obj
+                                                    }
+
+                                                }).length : 0 : 0
+                                        }
+                                    </Title>
+                                </ContainerGlobal>
+
+                            </ContainerGlobal>
+                        </ContainerGlobal>
                         {/* <hr style={{ width: "100%" }} /> */}
 
 

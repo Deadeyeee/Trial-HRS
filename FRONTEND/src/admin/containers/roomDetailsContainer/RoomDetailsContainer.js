@@ -520,19 +520,7 @@ const RoomDetailsContainer = () => {
         ).then((res1) => {
 
             console.log(res1.data)
-            for (let index = 0; index < roomImageUpload.length; index++) {
-                const formData2 = new FormData();
-                console.log(roomImageUpload[index])
-                formData2.append('roomImages', roomImageUpload[index])
-                formData2.append('roomType_id', res1.data.new_roomType.id)
-                Axios.post(apiKey + "api/addRoomTypeImages", formData2).then((result) => {
-                    console.log(result.data)
-                }).catch((err) => {
-                    console.log(err)
 
-                });
-
-            }
             Axios.get(apiKey + 'api/getAllServices').then((services) => {
                 selectedServices.map((items) => {
                     for (let index = 0; index < services.data.length; index++) {
@@ -541,8 +529,30 @@ const RoomDetailsContainer = () => {
                             Axios.post(apiKey + 'api/addUsedServices', {
                                 roomType_id: res1.data.new_roomType.id,
                                 services_id: services.data[index].id,
+
                             }).then((res3) => {
                                 console.log(res3.data)
+
+                                if (index == services.data.length - 1) {
+                                    for (let index = 0; index < roomImageUpload.length; index++) {
+                                        const formData2 = new FormData();
+                                        console.log(roomImageUpload[index])
+                                        formData2.append('roomImages', roomImageUpload[index])
+                                        formData2.append('roomType_id', res1.data.new_roomType.id)
+                                        Axios.post(apiKey + "api/addRoomTypeImages", formData2).then((result) => {
+                                            console.log(result.data)
+
+                                            if (index == roomImageUpload.length - 1) {
+                                                window.location = ''
+
+                                            }
+                                        }).catch((err) => {
+                                            console.log(err)
+
+                                        });
+
+                                    }
+                                }
                             }).catch((err) => {
                                 console.log(err.res.data)
                             })
@@ -773,7 +783,7 @@ const RoomDetailsContainer = () => {
                     align='left'
                     margin='20px 0px 20px 30px'
                 >
-                    Room Details
+                    Manage Rooms
                 </Title>
             </HeadContainer>
 
@@ -840,7 +850,7 @@ const RoomDetailsContainer = () => {
                     weight='600'
                     align='left'
                 >
-                    Room Details
+                    Room Types
                 </Title>
                 <HorizontalLine
                     bg='gray'

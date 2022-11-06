@@ -3,6 +3,8 @@ const ReservationSummary = db.reservationSummary;
 const moment = require('moment');
 const { room, roomType } = require("../models");
 // import Logo from "../../../FRONTEND/src/images/logo.png";
+const { Op } = require("sequelize");
+
 function getDates(startDate, stopDate) {
     var dateArray = [];
     var currentDate = moment(startDate);
@@ -134,39 +136,46 @@ exports.checkUnavailableRoom = async (req, res) => {
 
 
         const reservationSummary = await ReservationSummary.findAll(
-            { include: { all: true, nested: true } }
+            {
+                where: {
+                    bookingStatus: { [Op.or]: ['PENDING', 'PENDING', 'CHECKED-IN'] },
+                },
+
+                include: { all: true, nested: true }
+            },
+            
         );
 
-        let item = {
-            checkIn: req.body.checkIn,
-            checkOut: req.body.checkOut,
-            roomId: req.body.roomId,
-        }
-        let isValid = true;
+    let item = {
+        checkIn: req.body.checkIn,
+        checkOut: req.body.checkOut,
+        roomId: req.body.roomId,
+    }
+    let isValid = true;
 
-        for (let index = 0; index < reservationSummary.length; index++) {
-            for (let index2 = 0; index2 < req.body.availedRoomData.length; index2++) {
-                if (reservationSummary[index].dataValues.room_id == req.body.availedRoomData[index2].id) {
-                    let reservationSummaryDates = getDates(reservationSummary[index].dataValues.checkInDate, reservationSummary[index].dataValues.checkOutDate)
-                    reservationSummaryDates.pop();
-                    let availedRoomDates = getDates(req.body.availedRoomData[index2].checkIn, req.body.availedRoomData[index2].checkOut)
-                    availedRoomDates.pop();
+    for (let index = 0; index < reservationSummary.length; index++) {
+        for (let index2 = 0; index2 < req.body.availedRoomData.length; index2++) {
+            if (reservationSummary[index].dataValues.room_id == req.body.availedRoomData[index2].id) {
+                let reservationSummaryDates = getDates(reservationSummary[index].dataValues.checkInDate, reservationSummary[index].dataValues.checkOutDate)
+                reservationSummaryDates.pop();
+                let availedRoomDates = getDates(req.body.availedRoomData[index2].checkIn, req.body.availedRoomData[index2].checkOut)
+                availedRoomDates.pop();
 
-                    for (let i = 0; i < reservationSummaryDates.length; i++) {
-                        for (let j = 0; j < availedRoomDates.length; j++) {
+                for (let i = 0; i < reservationSummaryDates.length; i++) {
+                    for (let j = 0; j < availedRoomDates.length; j++) {
 
-                            if (reservationSummaryDates[i] == availedRoomDates[j]) {
+                        if (reservationSummaryDates[i] == availedRoomDates[j]) {
 
-                                isValid = false;
-                            }
-
+                            isValid = false;
                         }
+
                     }
                 }
             }
         }
-        return res.status(200).send(isValid);
-    } catch (error) {
-        console.log(error)
     }
+    return res.status(200).send(isValid);
+} catch (error) {
+    console.log(error)
+}
 }
