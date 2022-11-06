@@ -318,13 +318,13 @@ const BookingsContainer = () => {
 
     useLayoutEffect(() => {
         axios(apiKey + 'api/getAllReservationSummary').then((result) => {
-            setReservarionSummary(result.data.filter((obj)=> obj.bookingStatus != 'PENDING'))
+            setReservarionSummary(result.data.filter((obj) => obj.reservation.reservationStatus == 'RESERVED'))
         }).catch((err) => {
             console.log(err)
 
         });
         axios.get(apiKey + 'api/getAllRoomType').then((result) => {
-            setRoomTypeDb(result.data.filter((obj)=> obj.status == true))
+            setRoomTypeDb(result.data.filter((obj) => obj.status == true))
         }).catch((err) => {
             console.log(err)
         });
@@ -624,21 +624,24 @@ const BookingsContainer = () => {
 
                                         });
                                     }
+
+
+                                    if (index == result.data.length - 1) {
+                                        axios.patch(apiKey + 'api/updateGrandTotal/' + reservationSummaryInfo.reservation.payment.id, {
+                                            paymentMade: reservationSummaryInfo.reservation.payment.paymentMade,
+                                        }).then((result) => {
+                                            console.log(result.data)
+                                            //partial
+                                            window.location.reload()
+                                        }).catch((err) => {
+                                            console.log(err)
+
+                                        })
+                                    }
                                 }
 
 
-                                if (index == result.data.length - 1) {
-                                    axios.patch(apiKey + 'api/updateGrandTotal/' + reservationSummaryInfo.reservation.payment.id, {
-                                        paymentMade: reservationSummaryInfo.reservation.payment.paymentMade,
-                                    }).then((result) => {
-                                        console.log(result.data)
-                                        //partial
-                                        window.location.reload()
-                                    }).catch((err) => {
-                                        console.log(err)
 
-                                    })
-                                }
                             }
                         }).catch((err) => {
                             console.log(err)
@@ -973,9 +976,9 @@ const BookingsContainer = () => {
 
     return (
         <Container
-        style={{
-            height: 'auto'
-        }}
+            style={{
+                height: 'auto'
+            }}
         >
             <HeadContainer>
                 <Title
@@ -1189,7 +1192,7 @@ const BookingsContainer = () => {
 
 
                 </TableContainer>
-                
+
                 <ContainerGlobal
                     w='100%'
                     justify='center'>
@@ -2712,13 +2715,13 @@ const BookingsContainer = () => {
                                     <MenuItem value='RESERVED' disabled={reservationSummaryInfo.length != 0 ? reservationSummaryInfo.reservation.reservationStatus == 'PENDING' || reservationSummaryInfo.reservation.reservationStatus == 'UNSETTLED' ? true : false : false}>
                                         Reserved
                                     </MenuItem>
-                                    <MenuItem value='CHECKED-IN' disabled={reservationSummaryInfo.length != 0 ? reservationSummaryInfo.reservation.reservationStatus == 'PENDING' || reservationSummaryInfo.reservation.reservationStatus == 'UNSETTLED' ? true : false : false}>
+                                    <MenuItem value='CHECKED-IN' disabled={reservationSummaryInfo.length != 0 ? reservationSummaryInfo.reservation.reservationStatus == 'PENDING' || reservationSummaryInfo.reservation.reservationStatus == 'UNSETTLED' || parseInt(reservationSummaryInfo.reservation.payment.balance) != 0 ? true : false : false}>
                                         Checked-in
                                     </MenuItem>
-                                    <MenuItem value='CHECKED-OUT' disabled={reservationSummaryInfo.length != 0 ? reservationSummaryInfo.reservation.payment.paymentStatus != 'fully paid' || reservationSummaryInfo.bookingStatus != 'CHECKED-IN'? true : false : false}>
+                                    <MenuItem value='CHECKED-OUT' disabled={reservationSummaryInfo.length != 0 ? reservationSummaryInfo.reservation.payment.paymentStatus != 'fully paid' || reservationSummaryInfo.bookingStatus != 'CHECKED-IN' ? true : false : false}>
                                         Checked-out
                                     </MenuItem>
-                                    <MenuItem value='NO-SHOW' disabled={reservationSummaryInfo.length != 0 ? reservationSummaryInfo.bookingStatus != 'PENDING' && reservationSummaryInfo.bookingStatus != 'RESERVED'   ? true : false : false}>
+                                    <MenuItem value='NO-SHOW' disabled={reservationSummaryInfo.length != 0 ? reservationSummaryInfo.bookingStatus != 'PENDING' && reservationSummaryInfo.bookingStatus != 'RESERVED' ? true : false : false}>
                                         No-Show
                                     </MenuItem>
 

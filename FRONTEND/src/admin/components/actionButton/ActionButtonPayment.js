@@ -76,7 +76,7 @@ function ActionButtonPayment(props) {
         justify='right'
         gap='10px'
       >
-        <IconButton onClick={props.print} type="submit" sx={{ display: props.printDisable == true ? 'none' : '', p: '8px', backgroundColor: props.printDisable == false ? 'rgb(0, 0, 255, 0.5)' : 'rgb(46, 46, 46, .2)' }} aria-label="search" title='Print receipt'>
+        <IconButton onClick={props.print} type="submit" disabled={props.printDisable == false ? false : true} sx={{p: '8px', backgroundColor: props.printDisable == false ? 'rgb(0, 0, 255, 0.5)' : 'rgb(46, 46, 46, .2)' }} aria-label="search" title='Print receipt'>
           <LocalPrintshopIcon style={{ color: '#2e2e2e', fontSize: '18px' }} title='View' />
         </IconButton>
         <IconButton onClick={props.pay} type="submit" sx={{ p: '8px', backgroundColor: props.paid == true ? 'rgb(46, 46, 46, .2)' : "rgb(80, 170, 50, 0.7)" }} aria-label="search" title='Payment'>

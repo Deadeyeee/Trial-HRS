@@ -30,12 +30,15 @@ const SideBarNav = (props) => {
     const [getUser, setGetUser] = useState([]);
 
     const signOut = () => {
-        Axios.delete(apiKey + "auth/Logout").then((response) => {
+        if (window.confirm('Are you sure you want to Log out?')) {
+            Axios.delete(apiKey + "auth/Logout").then((response) => {
 
-            window.location.reload();
-        })
+                window.location.reload();
+            })
+        }
+
     }
-
+    const [isloading, setIsLoading] = useState([])
     Axios.defaults.withCredentials = true;
     useLayoutEffect(() => {
         Axios.get(apiKey + "auth/verify-token").then((response1) => {
@@ -499,7 +502,7 @@ const SideBarNav = (props) => {
                     weight='600'
                     align='left'
                 >
-                    Logout
+                    Log out
                 </Title>
             </Logout>
 

@@ -176,7 +176,21 @@ exports.verifyToken = async (req, res) => {
         const token = req.session.user;
         try {
             let jwtPayLoad = jwt.verify(token, config.auth.secret);
+
             res.locals.user = jwtPayLoad;
+            console.log('\n\n\n\n\n\n jwt', jwtPayLoad, '\n\n\n\n\n\n')
+            let data = {
+                id: jwtPayLoad.id,
+                userName: jwtPayLoad.userName,
+                email: jwtPayLoad.email,
+                role: jwtPayLoad.role
+            }
+
+            console.log('\n\n\n\n\n\n data', data, '\n\n\n\n\n\n')
+
+            let refreshToken = jwt.sign(data, config.auth.secret, {})
+            req.session.user = refreshToken;
+
             res.status(200).send(res.locals.user);
         } catch (error) {
             res.status(401).send(error);
@@ -185,6 +199,23 @@ exports.verifyToken = async (req, res) => {
         }
     }
 };
+
+// exports.refreshToken = async (req, res) => {
+
+//     if (req.session) {
+//         const token = req.session.user;
+//         try {
+//             let jwtPayLoad = jwt.verify(token, config.auth.secret);
+//             res.locals.user = jwtPayLoad;
+//             res.status(200).send(res.locals.user);
+//         } catch (error) {
+//             res.status(401).send(error);
+//             res.locals.user = null;
+//             return;
+//         }
+//     }
+// };
+
 
 exports.verifyEmailToken = async (req, res) => {
 
