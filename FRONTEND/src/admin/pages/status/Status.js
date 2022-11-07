@@ -6,7 +6,7 @@ import { Container } from './style'
 
 const Status = () => {
   useEffect(() => {
-    document.title = "Admin | Client Status"
+    document.title = "Admin | Guest List"
   }, [])
   return (
     <Container>
