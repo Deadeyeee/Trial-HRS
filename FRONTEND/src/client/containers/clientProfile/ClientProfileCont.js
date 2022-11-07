@@ -272,7 +272,7 @@ const ClientProfileCont = () => {
                     axios.patch(apiKey + 'api/updateGuest/' + userInformation.id, {
                         firstName: firstName,
                         lastName: lastName,
-                        birthDate: birthDay,
+                        birthDate: new Date(new Date(birthDay).toLocaleDateString()),
                         gender: gender,
                         address: address,
                         nationality: nationality
@@ -789,6 +789,7 @@ const ClientProfileCont = () => {
                                 minDate={new Date(Date.parse(new Date()) - 2524556160000)}
                                 onChange={(newValue) => {
                                     setBirthDay(newValue);
+                                    console.log(newValue);
                                 }}
                                 renderInput={(params) =>
                                     <TextField
