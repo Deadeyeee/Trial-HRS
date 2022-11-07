@@ -15,3 +15,11 @@ table {
     margin-top: 25px;
     margin-bottom: 25px;
 }
+
+
+.acknowledgeReceipt{
+    width: 500px;
+    height: auto;
+}
+
+@media print {@page {size: portrait; margin:0px;}}

@@ -17,6 +17,8 @@ const AcknowledgementReceipt = () => {
   const [reservationSummaryInformation, setReservationSummaryInformation] = useState([])
   const [orderedAmenities, setOrderedAmenities] = useState([])
   const [amenities, setAmenities] = useState([])
+  const [receipt, setReceipt] = useState([])
+  const [recieptDate, setRecieptDate] = useState([])
 
   let url = id.split('_')
 
@@ -56,7 +58,12 @@ const AcknowledgementReceipt = () => {
 
           axios.get(apiKey + 'api/getAllAmenities').then((result) => {
             setAmenities(result.data)
-
+            axios.get(apiKey + 'api/getAllReceipt').then((result) => {
+              setReceipt(result.data.filter((obj)=> obj.reservation_id == url[0] && obj.type == 'ack'))
+              setRecieptDate(result.data.filter((obj)=> obj.reservation_id == url[0] && obj.type == 'ack').map((obj)=> obj.created_at))
+            }).catch((err) => {
+              console.log(err)
+            });
           }).catch((err) => {
             console.log(err)
           });
@@ -132,10 +139,13 @@ const AcknowledgementReceipt = () => {
             </ContainerGlobal>
             <ContainerGlobal radius='0px' direction="column">
               <Title family="Belleza" size="1.5vw" fstyle="none">
-                Receipt No.: 0001
+                Receipt No.: {receipt.length != 0 ? receipt.map((item)=> item.id) : '0'}
               </Title>
               <Title family="Belleza" size="1.5vw" fstyle="none">
-                Receipt Date.: {new Date().toLocaleDateString()}
+                Receipt Date.: {receipt.length != 0 ? receipt.map((item)=> (
+                  new Date(item.created_at).toLocaleDateString()
+                ))
+                 : ''}
               </Title>
             </ContainerGlobal>
           </ContainerGlobal>
@@ -205,10 +215,10 @@ const AcknowledgementReceipt = () => {
                 </tr>
                 {reservationSummaryInformation.length != 0 ? reservationSummaryInformation.map((item) => (
                   <tr>
-                    <td>{item.room.roomType.roomType}</td>
+                    <td>{item.roomType}</td>
                     <td>{item.numberOfNights}</td>
-                    <td>{numberFormat(item.room.roomType.roomRate)}</td>
-                    <td>{numberFormat(item.room.roomType.roomRate * item.numberOfNights)}</td>
+                    <td>{numberFormat(item.roomRate)}</td>
+                    <td>{numberFormat(item.total)}</td>
                   </tr>
                 )) : ''}
 
@@ -240,7 +250,7 @@ const AcknowledgementReceipt = () => {
               <ContainerGlobal radius='0px' w="100%" justify="space-between" align="flex-end" margin='20px 0px 0px 0px'>
                 <Title family="Barlow Condensed" fstyle="none" size="2vw" >Rooms:</Title>
 
-                <Title family="Barlow Condensed" fstyle="none" size="2vw" weight="400">{reservationSummaryInformation != 0 && numberFormat(reservationSummaryInformation.map((item) => item.room.roomType.roomRate).reduce((accumulator, value) => parseFloat(accumulator) + parseFloat(value)))}</Title>
+                <Title family="Barlow Condensed" fstyle="none" size="2vw" weight="400">{reservationSummaryInformation != 0 && numberFormat(reservationSummaryInformation.map((item) => item.total).reduce((accumulator, value) => parseFloat(accumulator) + parseFloat(value), 0))}</Title>
               </ContainerGlobal>
               <ContainerGlobal radius='0px' w="100%" justify="space-between" margin="10px 0px 40px 0px">
                 <Title family="Barlow Condensed" fstyle="none" size="2vw">Additional Charges:</Title>
@@ -248,10 +258,10 @@ const AcknowledgementReceipt = () => {
                 <ContainerGlobal radius='0px' w="40%" direction="column">
                   {orderedAmenities.length != 0 &&
                     amenities.map((item) => (
-                      orderedAmenities.filter((obj) => obj.amenity.amenityName == item.amenityName).map((item) => item.quantity).reduce((accumulator, value) => accumulator + value) != 0 &&
+                      orderedAmenities.filter((obj) => obj.amenity.amenityName == item.amenityName).map((item) => item.quantity).reduce((accumulator, value) => parseInt(accumulator) + parseInt(value), 0) != 0 &&
                       <ContainerGlobal radius='0px' w="100%" justify="space-between">
-                        <Title family="Barlow Condensed" fstyle="none" size="2vw" weight="400">{item.amenityName} x {orderedAmenities.filter((obj) => obj.amenity.amenityName == item.amenityName).map((item) => item.quantity).reduce((accumulator, value) => accumulator + value)}</Title>
-                        <Title family="Barlow Condensed" fstyle="none" size="2vw" weight="400">{numberFormat(parseFloat(item.amenityRate) * parseFloat(orderedAmenities.filter((obj) => obj.amenity.amenityName == item.amenityName).map((item) => item.quantity).reduce((accumulator, value) => accumulator + value)))}</Title>
+                        <Title family="Barlow Condensed" fstyle="none" size="2vw" weight="400">{item.amenityName} x {orderedAmenities.filter((obj) => obj.amenity.amenityName == item.amenityName).map((item) => item.quantity).reduce((accumulator, value) => parseInt(accumulator) + parseInt(value),0)}</Title>
+                        <Title family="Barlow Condensed" fstyle="none" size="2vw" weight="400">{numberFormat(parseFloat(orderedAmenities.filter((obj) => obj.amenity.amenityName == item.amenityName).map((item) => item.total).reduce((accumulator, value) => parseFloat(accumulator) + parseFloat(value),0)))}</Title>
                       </ContainerGlobal>
 
                     ))
@@ -259,10 +269,10 @@ const AcknowledgementReceipt = () => {
 
 
                   {reservationSummaryInformation.length != 0 &&
-                    reservationSummaryInformation.map((item) => item.others).reduce((accumulator, value) => parseFloat(accumulator) + parseFloat(value)) != 0 &&
+                    reservationSummaryInformation.map((item) => item.others).reduce((accumulator, value) => parseFloat(accumulator) + parseFloat(value), 0) != 0 &&
                     <ContainerGlobal radius='0px' w="100%" justify="space-between">
                       <Title family="Barlow Condensed" fstyle="none" size="2vw" weight="400">Others</Title>
-                      <Title family="Barlow Condensed" fstyle="none" size="2vw" weight="400">{numberFormat(reservationSummaryInformation.map((item) => item.others).reduce((accumulator, value) => parseFloat(accumulator) + parseFloat(value)))}</Title>
+                      <Title family="Barlow Condensed" fstyle="none" size="2vw" weight="400">{numberFormat(reservationSummaryInformation.map((item) => item.others).reduce((accumulator, value) => parseFloat(accumulator) + parseFloat(value), 0))}</Title>
                     </ContainerGlobal>
 
 

@@ -33,11 +33,20 @@ app.use(session({
     },
 }))
 
-
+let serverDatestarted = new Date();
 //test server
 app.get('/', (req, res) =>{
-    res.send('hELLO WORLD');
-    console.log(typeof(firstname))
+    res.send(req.cookies.cookieName);
+    // res.cookie('shabu', 'eyyy')
+    console.log(req.cookies.cookieName != null)
+    // console.log(req.cookies)
+});
+//test server
+app.get('/setCookie', (req, res) =>{
+    // res.send(serverDatestarted);
+    
+    res.cookie('cookieName', 'cookieValue').send('cookie set');
+    // console.log('success')
 });
 const PORT = process.env.PORT || 3001
 
@@ -65,7 +74,8 @@ const usedServices = require('./routes/usedServices.route.js');
 const roomTypeImages = require('./routes/roomTypeImages.route.js');
 const message = require('./routes/message.route.js');
 const conversation = require('./routes/conversation.route.js');
-const deleteConversation = require('./routes/deleteConversation.route.js')
+const deleteConversation = require('./routes/deleteConversation.route.js');
+const receipt = require('./routes/receipt.route.js');
 
 
 
@@ -88,6 +98,7 @@ app.use('/api', roomTypeImages);
 app.use('/api', message);
 app.use('/api', conversation);
 app.use('/api', deleteConversation);
+app.use('/api', receipt);
 
 
 //static image 

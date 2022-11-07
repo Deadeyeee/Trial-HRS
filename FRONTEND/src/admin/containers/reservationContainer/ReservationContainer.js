@@ -94,8 +94,8 @@ export const ReservationContainer = () => {
     const [adults, setAdults] = useState(2)
     const [kids, setKids] = useState(0)
 
-    const [startDate, setStartDate] = useState(new Date().setHours(0, 0, 0, 0));
-    const [endDate, setEndDate] = useState(new Date(new Date().getTime() + 86400000).setHours(0, 0, 0, 0));
+    const [startDate, setStartDate] = useState(new Date(new Date().setHours(0, 0, 0, 0)));
+    const [endDate, setEndDate] = useState(new Date(new Date(new Date().getTime() + 86400000).setHours(0, 0, 0, 0)));
     // const [nights, setNights] = useState();
     let minEndDate = new Date(startDate);
     minEndDate.setDate(minEndDate.getDate() + 1);
@@ -257,6 +257,8 @@ export const ReservationContainer = () => {
             console.log(err)
         });
     }
+
+
     const handleOpenEdit = (value) => {
         setOpenEdit(true)
         axios.get(apiKey + 'api/getReservation/' + value).then((result) => {
@@ -355,7 +357,7 @@ export const ReservationContainer = () => {
         });
 
         axios.get(apiKey + 'api/getAllRoomType').then((result) => {
-            setRoomTypeDb(result.data.filter((obj)=> obj.status == true))
+            setRoomTypeDb(result.data.filter((obj) => obj.status == true))
         }).catch((err) => {
             console.log(err)
         });
@@ -440,10 +442,12 @@ export const ReservationContainer = () => {
 
         if (roomType != '') {
             roomTypeDb.map((item) => (
+
                 item.roomType == roomType ? setRoomRate(item.roomRate) : ""
+
             ))
         }
-
+        console.log(roomRate)
 
         if (discountDb.length != 0) {
             discountDb.map((item) => {
@@ -480,9 +484,12 @@ export const ReservationContainer = () => {
             else {
 
                 availedRoom.map((item) => {
-                    setGrandTotal(grandTotal + ((item.roomRate * item.totalNights) * .80))
+                    setGrandTotal(grandTotal + ((item.roomRate * item.totalNights) / 0.80 * 1.12))
                 })
             }
+        }
+        else {
+            setGrandTotal(0)
         }
     }, [availedRoom, discountValid])
 
@@ -513,6 +520,18 @@ export const ReservationContainer = () => {
         else {
             setNights(0);
         }
+        // if () {
+        //     alert('ey')
+        //     // setEndDate(new Date(Date.now(startDate)).setHours(0, 0, 0, 0) )
+        // }
+        // console.log("ugh: ", new Date(startDate).getTime() + 86400000)
+        if (Date.parse(startDate) >= Date.parse(endDate)) {
+            // setEndDate(new Date(startDate).getTime() + 86400000)
+            setEndDate(new Date(Date.parse(startDate) + 86400000))
+        }
+
+
+        // if(startDate )
     }, [startDate, endDate])
 
     useEffect(() => {
@@ -786,7 +805,7 @@ export const ReservationContainer = () => {
                     display='inline'
                     padding='5px 10px'
                 >
-                    {value.toLowerCase()}
+                    cancelled
                 </Title>
             </ContainerGlobal>
         }
@@ -845,7 +864,7 @@ export const ReservationContainer = () => {
             setAdults(result.data.adults)
             setRoomType(result.data.room.roomType.roomType)
             setRoomNumber(result.data.room.roomNumber)
-            setRoomRate(result.data.roomType.roomRate)
+            setRoomRate(result.data.room.roomType.roomRate)
             setSpecialInstruction(result.data.specialInstrcution)
         }).catch((err) => {
 
@@ -904,6 +923,7 @@ export const ReservationContainer = () => {
             availedRoomData: availedRoom,
         }).then((result) => {
             if (result.data == true) {
+                console.log('EY')
                 if (contactNumber.slice(0, 3) == "+63") {
 
                     formatNumber = contactNumber.replace("+63", "0");
@@ -1348,7 +1368,6 @@ export const ReservationContainer = () => {
                         adults: adults,
                         specialInstrcution: specialInstrcution,
                         room_id: room.data[index].id,
-                        specialInstrcution: specialInstrcution,
                     }).then((result) => {
                         console.log(result.data)
                         axios.patch(apiKey + 'api/updateGrandTotal/' + editPaymentId, {
@@ -1387,7 +1406,7 @@ export const ReservationContainer = () => {
                         room_id: room.data[index].id,
                         specialInstrcution: specialInstrcution,
                         reservation_id: editReservationInfo.id,
-
+                        bookingStatus: editReservationInfo.reservationStatus == 'PENDING' || editReservationInfo.reservationStatus == 'RESERVED' ? editReservationInfo.reservationStatus : 'NO-SHOW'
                         // numberOfAdults:
                         // numberOfKids:
                     }
@@ -1520,10 +1539,10 @@ export const ReservationContainer = () => {
 
     return (
         <Container
-        
-        style={{
-            height: 'auto'
-        }}
+
+            style={{
+                height: 'auto'
+            }}
         >
 
             <HeadContainer>
@@ -1697,7 +1716,7 @@ export const ReservationContainer = () => {
                                     <Td align='center'><ActionButtonReservation
                                         view={() => handleOpenView(item.id)}
                                         edit={() => handleOpenEdit(item.id)}
-                                        
+
                                         dontShowDelete=''
                                     /></Td>
                                 </Tr>
@@ -1722,7 +1741,7 @@ export const ReservationContainer = () => {
             </ContainerGlobal>
 
             <Button variant="contained" size="large"
-                style={{ backgroundColor: '#2E2E2E', marginBottom:'20px' }}
+                style={{ backgroundColor: '#2E2E2E', marginBottom: '20px' }}
                 onClick={() => {
                     handleOpenCreate()
                 }}>
@@ -1838,7 +1857,6 @@ export const ReservationContainer = () => {
                             onChangeStartDate={(date) => setStartDate(date)}
                             onChangeEndDate={(date) => setEndDate(date)}
                             minDateStart={new Date()}
-                            maxDateStart={new Date(endDate)}
                             minDateEnd={minEndDate}
 
                         // minDate={new Date()}
@@ -2853,7 +2871,7 @@ export const ReservationContainer = () => {
                                     required />
 
                             </InputContainer>
-                            <p><h1 style={{ display: 'inline' }}>Create an account </h1>(optional)*</p>
+                            {/* <p><h1 style={{ display: 'inline' }}>Create an account </h1>(optional)*</p>
                             <InputContainer>
                                 <TextField
 
@@ -2899,7 +2917,7 @@ export const ReservationContainer = () => {
                                     style={{ width: '55%', }}
                                     required={userName.length != 0 ? true : false}
                                 />
-                            </InputContainer>
+                            </InputContainer> */}
 
 
 
@@ -2948,7 +2966,7 @@ export const ReservationContainer = () => {
                     </ContainerGlobalRow>
                     <br></br>
                     <Button variant="contained" color='success' type='submit' disabled={availedRoom.length == 0 ? true : false}>Create reservation</Button>
-                    <Button variant="contained" color='error' >Close</Button>
+                    <Button variant="contained" color='error' onClick={() => handleCloseCreate()}>Close</Button>
                 </Box>
             </Modal>
 
@@ -3064,6 +3082,60 @@ export const ReservationContainer = () => {
 
 
                     </ContainerGlobalRow>
+                    <Title
+                        size='26px'
+                        color='white'
+                        family='Helvetica'
+                        fstyle='normal'
+                        weight='600'
+                        align='left'
+                        bg='#2E2E2E'
+                        margin='40px 0px 0px 0px'
+                        padding='10px 15px'
+                        borderRadius='.5rem'
+                    >
+                        Reservation Status
+                    </Title>
+
+                    <ContainerGlobalRow
+                        style={{ marginTop: '10px' }}>
+
+                        <ContainerGlobalColumn>
+
+                            <ContainerGlobal
+                                w='auto'
+                                h='auto'
+                                direction='column'
+                                gap='10px'
+                                justify='space-between'
+                                align='center'
+                                overflow='auto'
+
+                            >
+
+
+                                <Title
+                                    size='26px'
+                                    color='Black'
+                                    family='Helvetica'
+                                    fstyle='Normal'
+                                    weight='bold'
+                                    align='left'
+                                    margin='15px 0px 20px 0px'
+                                >
+                                    {
+
+                                        reservationInfo.length != 0 ? reservationInfo.reservationStatus == 'UNSETTLED' ? 'CANCELLED' : reservationInfo.reservationStatus : ""
+                                    }
+                                </Title>
+                            </ContainerGlobal>
+
+
+
+                        </ContainerGlobalColumn>
+
+
+                    </ContainerGlobalRow>
 
                     <hr style={{ width: '100%' }}></hr>
                     <Title
@@ -3124,7 +3196,7 @@ export const ReservationContainer = () => {
                                             <Td align='center'>{item.kids}</Td>
                                             <Td align='center'>{item.numberOfNights}</Td>
                                             <Td align='center'>{numberFormat(item.room.roomType.roomRate)}</Td>
-                                            <Td align='center' style={{ color: 'red' }}>{numberFormat(item.room.roomType.roomRate * item.numberOfNights)}</Td>
+                                            <Td align='center' style={{ color: 'red' }}>{numberFormat(item.total)}</Td>
 
                                         </Tr>
 
@@ -3836,10 +3908,7 @@ export const ReservationContainer = () => {
                                         Reserved
                                     </MenuItem>
                                     <MenuItem value='UNSETTLED'>
-                                        Unsettled
-                                    </MenuItem>
-                                    <MenuItem value='DEPARTED'>
-                                        Departed
+                                        Cancelled
                                     </MenuItem>
 
 
@@ -3861,7 +3930,6 @@ export const ReservationContainer = () => {
                             onChangeStartDate={(date) => setStartDate(date)}
                             onChangeEndDate={(date) => setEndDate(date)}
                             minDateStart={new Date()}
-                            maxDateStart={new Date(endDate)}
                             minDateEnd={minEndDate}
 
                         // minDate={new Date()}
@@ -4214,7 +4282,7 @@ export const ReservationContainer = () => {
                                             <Td align='center' style={item.id == editReservationId ? { backgroundColor: 'green', color: 'white' } : { backgroundColor: '', color: '' }}>{item.kids}</Td>
                                             <Td align='center' style={item.id == editReservationId ? { backgroundColor: 'green', color: 'white' } : { backgroundColor: '', color: '' }}>{item.numberOfNights}</Td>
                                             <Td align='center' style={item.id == editReservationId ? { backgroundColor: 'green', color: 'white' } : { backgroundColor: '', color: '' }}>{numberFormat(item.room.roomType.roomRate)}</Td>
-                                            <Td align='center' style={item.id == editReservationId ? { backgroundColor: 'green', color: 'white' } : { backgroundColor: '', color: 'red' }}>{numberFormat(item.room.roomType.roomRate * item.numberOfNights)}</Td>
+                                            <Td align='center' style={item.id == editReservationId ? { backgroundColor: 'green', color: 'white' } : { backgroundColor: '', color: 'red' }}>{numberFormat(item.total)}</Td>
 
                                             <Td align='center' style={item.id == editReservationId ? { backgroundColor: 'green', color: 'white' } : { backgroundColor: '', color: '' }}>
 
@@ -4227,9 +4295,7 @@ export const ReservationContainer = () => {
                                                         <IconButton sx={{ p: '8px', backgroundColor: '#D2C3A4' }} aria-label="search" title='Edit' onClick={() => { setEditReservationId('') }}>
                                                             <CloseIcon style={{ color: '#2e2e2e', fontSize: '18px' }} title='View' />
                                                         </IconButton>
-                                                        <IconButton sx={{ p: '8px', backgroundColor: '#FF664D' }} aria-label="search" title='Edit' onClick={() => { deleteBooking(item.id, item.reservation.payment.id, item.reservation.payment.paymentMade) }}>
-                                                            <DeleteIcon style={{ color: '#2e2e2e', fontSize: '18px' }} title='View' />
-                                                        </IconButton>
+
                                                     </ContainerGlobal>
                                                     :
                                                     <ContainerGlobal

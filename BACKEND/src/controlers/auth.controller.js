@@ -79,6 +79,7 @@ exports.Login = async (req, res) => {
             );
 
             req.session.user = token;
+            res.cookie('accessToken', token)
             res.status(200).send({
                 id: user_login.id,
                 userName: user_login.userName,
@@ -86,6 +87,7 @@ exports.Login = async (req, res) => {
                 role: user_login.role,
                 cookieSession: req.session.user,
             });
+
         }
         else {
             res.status(400).send({ message: "Please verify your email address." })
@@ -149,6 +151,8 @@ exports.LoginAdmin = async (req, res) => {
             );
 
             req.session.user = token;
+            res.cookie('accessToken', token)
+
             res.status(200).send({
                 id: user_login.id,
                 userName: user_login.userName,
@@ -172,11 +176,13 @@ exports.LoginAdmin = async (req, res) => {
 
 exports.verifyToken = async (req, res) => {
 
-    if (req.session) {
-        const token = req.session.user;
+    if (req.cookies.accessToken != null) {
+        const token = req.cookies.accessToken;
         try {
             let jwtPayLoad = jwt.verify(token, config.auth.secret);
+
             res.locals.user = jwtPayLoad;
+
             res.status(200).send(res.locals.user);
         } catch (error) {
             res.status(401).send(error);
@@ -184,7 +190,29 @@ exports.verifyToken = async (req, res) => {
             return;
         }
     }
+    else{
+        res.status(401).send('unauthorized');
+            res.locals.user = null;
+            return;
+    }
 };
+
+// exports.refreshToken = async (req, res) => {
+
+//     if (req.session) {
+//         const token = req.session.user;
+//         try {
+//             let jwtPayLoad = jwt.verify(token, config.auth.secret);
+//             res.locals.user = jwtPayLoad;
+//             res.status(200).send(res.locals.user);
+//         } catch (error) {
+//             res.status(401).send(error);
+//             res.locals.user = null;
+//             return;
+//         }
+//     }
+// };
+
 
 exports.verifyEmailToken = async (req, res) => {
 
@@ -207,6 +235,7 @@ exports.Logout = async (req, res) => {
     // req.session.destroy();
     try {
         await delete req.session.user;
+        await res.clearCookie("accessToken");
         res.status(200).send("successfully logedout");
     } catch (error) {
         res.status(401).send("You are not loged in");

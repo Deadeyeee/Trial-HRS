@@ -91,8 +91,8 @@ const BookingsContainer = () => {
     const [adults, setAdults] = useState(2)
     const [kids, setKids] = useState(0)
 
-    const [startDate, setStartDate] = useState(new Date().setHours(0, 0, 0, 0));
-    const [endDate, setEndDate] = useState(new Date(new Date().getTime() + 86400000).setHours(0, 0, 0, 0));
+    const [startDate, setStartDate] = useState(new Date(new Date().setHours(0, 0, 0, 0)));
+    const [endDate, setEndDate] = useState(new Date(new Date(new Date().getTime() + 86400000).setHours(0, 0, 0, 0)));
     // const [nights, setNights] = useState();
     let minEndDate = new Date(startDate);
     minEndDate.setDate(minEndDate.getDate() + 1);
@@ -318,13 +318,13 @@ const BookingsContainer = () => {
 
     useLayoutEffect(() => {
         axios(apiKey + 'api/getAllReservationSummary').then((result) => {
-            setReservarionSummary(result.data)
+            setReservarionSummary(result.data.filter((obj) => obj.reservation.reservationStatus == 'RESERVED'))
         }).catch((err) => {
             console.log(err)
 
         });
         axios.get(apiKey + 'api/getAllRoomType').then((result) => {
-            setRoomTypeDb(result.data.filter((obj)=> obj.status == true))
+            setRoomTypeDb(result.data.filter((obj) => obj.status == true))
         }).catch((err) => {
             console.log(err)
         });
@@ -377,6 +377,18 @@ const BookingsContainer = () => {
         else {
             setNights(0);
         }
+        // if () {
+        //     alert('ey')
+        //     // setEndDate(new Date(Date.now(startDate)).setHours(0, 0, 0, 0) )
+        // }
+        // console.log("ugh: ", new Date(startDate).getTime() + 86400000)
+        if (Date.parse(startDate) >= Date.parse(endDate)) {
+            // setEndDate(new Date(startDate).getTime() + 86400000)
+            setEndDate(new Date(Date.parse(startDate) + 86400000))
+        }
+
+
+        // if(startDate )
     }, [startDate, endDate])
 
     const updadateBookingStatus = () => {
@@ -612,21 +624,24 @@ const BookingsContainer = () => {
 
                                         });
                                     }
+
+
+                                    if (index == result.data.length - 1) {
+                                        axios.patch(apiKey + 'api/updateGrandTotal/' + reservationSummaryInfo.reservation.payment.id, {
+                                            paymentMade: reservationSummaryInfo.reservation.payment.paymentMade,
+                                        }).then((result) => {
+                                            console.log(result.data)
+                                            //partial
+                                            window.location.reload()
+                                        }).catch((err) => {
+                                            console.log(err)
+
+                                        })
+                                    }
                                 }
 
 
-                                if (index == result.data.length - 1) {
-                                    axios.patch(apiKey + 'api/updateGrandTotal/' + reservationSummaryInfo.reservation.payment.id, {
-                                        paymentMade: reservationSummaryInfo.reservation.payment.paymentMade,
-                                    }).then((result) => {
-                                        console.log(result.data)
-                                        //partial
-                                        window.location.reload()
-                                    }).catch((err) => {
-                                        console.log(err)
 
-                                    })
-                                }
                             }
                         }).catch((err) => {
                             console.log(err)
@@ -961,9 +976,9 @@ const BookingsContainer = () => {
 
     return (
         <Container
-        style={{
-            height: 'auto'
-        }}
+            style={{
+                height: 'auto'
+            }}
         >
             <HeadContainer>
                 <Title
@@ -1177,7 +1192,7 @@ const BookingsContainer = () => {
 
 
                 </TableContainer>
-                
+
                 <ContainerGlobal
                     w='100%'
                     justify='center'>
@@ -2682,7 +2697,7 @@ const BookingsContainer = () => {
                             </Title>
 
                             <FormControl sx={{ width: 200, margin: '5px 0px' }} size="large" variant="standard">
-                                <InputLabel id="demo-select-small" >Reservation Status</InputLabel>
+                                <InputLabel id="demo-select-small" >Booking Status</InputLabel>
                                 <Select
                                     style={{ color: 'black', textAlign: 'left', fontWeight: 'bold' }}
                                     labelId="demo-select-small"
@@ -2700,13 +2715,13 @@ const BookingsContainer = () => {
                                     <MenuItem value='RESERVED' disabled={reservationSummaryInfo.length != 0 ? reservationSummaryInfo.reservation.reservationStatus == 'PENDING' || reservationSummaryInfo.reservation.reservationStatus == 'UNSETTLED' ? true : false : false}>
                                         Reserved
                                     </MenuItem>
-                                    <MenuItem value='CHECKED-IN' disabled={reservationSummaryInfo.length != 0 ? reservationSummaryInfo.reservation.reservationStatus == 'PENDING' || reservationSummaryInfo.reservation.reservationStatus == 'UNSETTLED' ? true : false : false}>
+                                    <MenuItem value='CHECKED-IN' disabled={reservationSummaryInfo.length != 0 ? reservationSummaryInfo.reservation.reservationStatus == 'PENDING' || reservationSummaryInfo.reservation.reservationStatus == 'UNSETTLED' || parseInt(reservationSummaryInfo.reservation.payment.balance) != 0 ? true : false : false}>
                                         Checked-in
                                     </MenuItem>
-                                    <MenuItem value='CHECKED-OUT' disabled={reservationSummaryInfo.length != 0 ? reservationSummaryInfo.reservation.reservationStatus == 'PENDING' || reservationSummaryInfo.reservation.reservationStatus == 'UNSETTLED' ? true : false : false}>
+                                    <MenuItem value='CHECKED-OUT' disabled={reservationSummaryInfo.length != 0 ? reservationSummaryInfo.reservation.payment.paymentStatus != 'fully paid' || reservationSummaryInfo.bookingStatus != 'CHECKED-IN' ? true : false : false}>
                                         Checked-out
                                     </MenuItem>
-                                    <MenuItem value='NO-SHOW' >
+                                    <MenuItem value='NO-SHOW' disabled={reservationSummaryInfo.length != 0 ? reservationSummaryInfo.bookingStatus != 'PENDING' && reservationSummaryInfo.bookingStatus != 'RESERVED' ? true : false : false}>
                                         No-Show
                                     </MenuItem>
 
@@ -2729,7 +2744,6 @@ const BookingsContainer = () => {
                             onChangeStartDate={(date) => setStartDate(date)}
                             onChangeEndDate={(date) => setEndDate(date)}
                             minDateStart={new Date()}
-                            maxDateStart={new Date(endDate)}
                             minDateEnd={minEndDate}
                             startDateDisabled={false}
                             endDateDisabled={false}

@@ -116,14 +116,16 @@ exports.updateGrandTotal = async (req, res) => {
 
         getTotal.map((item) => {
             if (req.params.id == item.dataValues.reservation.payment.id) {
-                grandTotal += (item.dataValues.room.roomType.roomRate * item.dataValues.numberOfNights) + parseInt(item.dataValues.others);
+                grandTotal += parseFloat(item.dataValues.total) + parseFloat(item.dataValues.others);
                 // console.log(item.dataValues.room.roomType.roomRate * item.Values.numberOfNights)
             }
+            console.log(item.dataValues.total, '\n\n\n\n')
         })
+        console.log('shabu',grandTotal, '\n\n\n\n')
 
         getamenitiesTotal.map((item)=>{
             if(req.params.id == item.dataValues.reservationSummary.reservation.payment.id){
-                grandTotal += (item.dataValues.quantity * item.dataValues.amenity.amenityRate)
+                grandTotal += parseFloat(item.dataValues.total)
             }
         })
 
