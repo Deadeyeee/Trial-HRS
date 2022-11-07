@@ -20,6 +20,9 @@ export const Contact = () => {
                 weight='normal'
                 size='60px'
                 margin='60px 0px 30px 0px'
+                size1000='50px'
+                margin1000='20px 0px 0px 0px'
+                
             >
                 Contact
             </Title>
@@ -33,6 +36,8 @@ export const Contact = () => {
                                 size='40px'
                                 color='#8F805F'
                                 align='Right'
+                                size1000='40px'
+                                margin1000='0px 0px 0px 0px'
                             >
                                 RM Luxe Hotel
                             </Title>
@@ -44,6 +49,8 @@ export const Contact = () => {
                                 size='20px'
                                 weight='700'
                                 line='30px'
+                                size1000='20px'
+                                margin1000='20px 0px 0px 0px'
                             >
                                 68 Cenacle Dr.<br></br>
                                 Quezon City, Metro Manila<br></br>

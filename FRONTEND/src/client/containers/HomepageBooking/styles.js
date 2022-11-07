@@ -44,6 +44,7 @@ export const WelcomeDiv = styled(motion.div)`
         align-items: center;
         flex-flow: column;
         position:relative;
+        
     &::before{
         content:'';
         width:100%;
@@ -222,5 +223,10 @@ export const Answer = styled(motion.div)`
     display: flex;
     justify-content: flex-start;
 
+    @media (max-width: 1000px) {
+      margin-bottom: 25px;
+    }
+
 `;
+
 

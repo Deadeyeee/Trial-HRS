@@ -370,6 +370,7 @@ const ClientProfileCont = () => {
                  margin='50px 0px 10px 0px'
                  align='Center'
                  w='50%'
+                 size1000='30px'
             >
                 Welcome to your profile!
             </Title>
@@ -386,6 +387,7 @@ const ClientProfileCont = () => {
                             size='25px'
                             color='#2e2e2e'
                             align='left'
+                            size1000='20px'
                         >
                             First Name:
                         </Title>
@@ -396,6 +398,7 @@ const ClientProfileCont = () => {
                             size='25px'
                             color='#2e2e2e'
                             align='right'
+                            size1000='20px'
                         >
                             <b>{userInformation.length != 0 ? userInformation.firstName.toLowerCase() : ""}</b>
                         </Title>
@@ -410,6 +413,7 @@ const ClientProfileCont = () => {
                             size='25px'
                             color='#2e2e2e'
                             align='left'
+                            size1000='20px'
                         >
                             Last Name:
                         </Title>
@@ -420,6 +424,7 @@ const ClientProfileCont = () => {
                             size='25px'
                             color='#2e2e2e'
                             align='right'
+                            size1000='20px'
                         >
                             <b>{userInformation.length != 0 ? userInformation.lastName.toLowerCase() : ""}</b>
                         </Title>
@@ -434,6 +439,7 @@ const ClientProfileCont = () => {
                             size='25px'
                             color='#2e2e2e'
                             align='left'
+                            size1000='20px'
                         >
                             Email Address:
                         </Title>
@@ -444,6 +450,7 @@ const ClientProfileCont = () => {
                             size='25px'
                             color='#2e2e2e'
                             align='right'
+                            size1000='20px'
                         >
                             <b>{userInformation.length != 0 ? userInformation.user.email.toLowerCase() : ""}</b>
                         </Title>
@@ -458,6 +465,7 @@ const ClientProfileCont = () => {
                             size='25px'
                             color='#2e2e2e'
                             align='left'
+                            size1000='20px'
                         >
                             Contact Number:
                         </Title>
@@ -468,6 +476,7 @@ const ClientProfileCont = () => {
                             size='25px'
                             color='#2e2e2e'
                             align='right'
+                            size1000='20px'
                         >
                             <b>{userInformation.length != 0 ? userInformation.user.contactNumber.toLowerCase() : ""}</b>
                         </Title>
@@ -482,6 +491,7 @@ const ClientProfileCont = () => {
                             size='25px'
                             color='#2e2e2e'
                             align='left'
+                            size1000='20px'
                         >
                             Birth Day:
                         </Title>
@@ -492,6 +502,7 @@ const ClientProfileCont = () => {
                             size='25px'
                             color='#2e2e2e'
                             align='right'
+                            size1000='20px'
                         >
                             <b>{userInformation.length != 0 ? new Date(userInformation.birthDate).toLocaleDateString() : ""}</b>
                         </Title>
@@ -506,6 +517,7 @@ const ClientProfileCont = () => {
                             size='25px'
                             color='#2e2e2e'
                             align='left'
+                            size1000='20px'
                         >
                             Nationality:
                         </Title>
@@ -516,6 +528,7 @@ const ClientProfileCont = () => {
                             size='25px'
                             color='#2e2e2e'
                             align='right'
+                            size1000='20px'
                         >
                             <b>{userInformation.length != 0 ? userInformation.nationality.toLowerCase() : ""}</b>
                         </Title>
@@ -530,6 +543,7 @@ const ClientProfileCont = () => {
                             size='25px'
                             color='#2e2e2e'
                             align='left'
+                            size1000='20px'
                         >
                             Gender:
                         </Title>
@@ -540,6 +554,7 @@ const ClientProfileCont = () => {
                             size='25px'
                             color='#2e2e2e'
                             align='right'
+                            size1000='20px'
                         >
                             <b>{userInformation.length != 0 ? userInformation.gender.toLowerCase() : ""}</b>
                         </Title>
@@ -555,6 +570,7 @@ const ClientProfileCont = () => {
                             size='25px'
                             color='#2e2e2e'
                             align='left'
+                            size1000='20px'
                         >
                             Address
                         </Title>
@@ -566,6 +582,7 @@ const ClientProfileCont = () => {
                             color='#2e2e2e'
                             align='right'
                             w='400px'
+                            size1000='20px'
                         >
                             <b>{userInformation.length != 0 ? userInformation.address : ""}</b>
                         </Title>

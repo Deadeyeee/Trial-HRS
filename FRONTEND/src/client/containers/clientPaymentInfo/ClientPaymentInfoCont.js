@@ -627,7 +627,10 @@ const ClientPaymentInfoCont = () => {
       {activeReservation.length != 0 ? (
         <div>{paymentStatusStyle(activeReservation)}</div>
       ) : (
-        <Title margin="100px">
+        <Title margin="100px"
+        size1000='30px'
+        margin1000='30px 0px 40px 0px'
+        >
           Sorry but you don't have any reservations to pay.
         </Title>
       )}

@@ -80,6 +80,7 @@ export const HorizontalLine = styled(motion.div)`
     @media (max-width: 1000px) {
         width: 95%;
         height: 100%;
+        margin: 10px 0px 30px 0;
         align-items: center;
       }
 `;

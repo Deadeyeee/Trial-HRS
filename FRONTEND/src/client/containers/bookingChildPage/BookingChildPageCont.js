@@ -584,7 +584,7 @@ export const BookingChildPageCont = () => {
                                 line="50px"
 
 
-                            ><b style={{ color: 'red' }}>{availedRooms.length} room left</b></Description>
+                            ><b style={{ color: 'red' }}>{availedRooms.length} room(s) left</b></Description>
                         </ContentContainerHolder>
                         <ContentContainerHolder>
                             <Title

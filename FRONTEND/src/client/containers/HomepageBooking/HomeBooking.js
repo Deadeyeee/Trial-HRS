@@ -30,6 +30,8 @@ import { TextInput } from "../../components/textBox/style.js";
 import { ArrowForwardIos } from "@mui/icons-material";
 import axios from "axios";
 import { apiKey } from "../../../apiKey.js";
+import Video from "../../images/EditedVideo/EDITED.mp4"
+
 
 export const HomeBooking = ({ title }) => {
   const [startDate, setStartDate] = useState(
@@ -235,6 +237,12 @@ export const HomeBooking = ({ title }) => {
           accommodate your upcoming events and a coffee shop to make your stay
           great. Visit us to become one of our valuable guests. See you around!
         </Description>
+
+        <div style={{width: "100%", height: "500px", overflow:"hidden", display: "flex", alignItems: "flex-end"}}>
+        <video src={Video} autoPlay loop muted width="100%" height="auto" />
+        </div>
+        
+
         <FlexItems>
           <Poster
             whileHover={{ scale: [null, 1.1, 1.1] }}
@@ -387,6 +395,7 @@ export const HomeBooking = ({ title }) => {
             shadow="1px 3px 2px black"
             family="Quicksand"
             fstyle="none"
+            size1000="25px"
           >
             Frequently Asked Questions
           </Title>
@@ -408,8 +417,10 @@ export const HomeBooking = ({ title }) => {
                 color="#FFFFFF"
                 family="Quicksand"
                 fstyle="none"
+                align="left"
+                size1000="100%"
               >
-                What time can I check-in and check-out?
+                What time can I Check-in and Check-out?
               </Title>
               {/* import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'; */}
               <ArrowForwardIos
@@ -440,9 +451,11 @@ export const HomeBooking = ({ title }) => {
                 family="Quicksand"
                 fstyle="none"
                 weight="normal"
+                align="left"
+                size1000="100%"
               >
                 {" "}
-                You can Check-In from 2pm to 4am and check-out before 12pm.
+                You can Check-In from 2pm to 4am and Check-out before 12pm.
               </Title>
             </Answer>
           </Faq>
@@ -458,6 +471,8 @@ export const HomeBooking = ({ title }) => {
                 color="#FFFFFF"
                 family="Quicksand"
                 fstyle="none"
+                align="left"
+                size1000="100%"
               >
                 Are pets allowed?
               </Title>
@@ -490,9 +505,11 @@ export const HomeBooking = ({ title }) => {
                 fstyle="none"
                 weight="normal"
                 padding="1rm 0rm 0rm 0rm"
+                align="left"
+                size1000="100%"
               >
                 {" "}
-                Sorry, we dont allow pets around the hotel's premises.
+                Sorry, we do not allow pets around the hotel's premises.
               </Title>
             </Answer>
           </Faq>
@@ -509,6 +526,7 @@ export const HomeBooking = ({ title }) => {
                 family="Quicksand"
                 fstyle="none"
                 align="left"
+                size1000="100%"
               >
                 {" "}
                 Does the hotel require a 50% downpayment to confirm my
@@ -542,6 +560,9 @@ export const HomeBooking = ({ title }) => {
                 family="Quicksand"
                 fstyle="none"
                 weight="normal"
+                align="left"
+                size1000="100%"
+
               >
                 {" "}
                 Yes, you can pay via Gcash or Bank Transfer.
@@ -561,10 +582,12 @@ export const HomeBooking = ({ title }) => {
                 family="Quicksand"
                 fstyle="none"
                 align="left"
+                size1000="100%"
+                
               >
                 {" "}
                 How much do you charge for every extended hour after the
-                check-out time?
+                Check-out time?
               </Title>
               <ArrowForwardIos
                 style={
@@ -594,6 +617,8 @@ export const HomeBooking = ({ title }) => {
                 family="Quicksand"
                 fstyle="none"
                 weight="normal"
+                align="left"
+                size1000="100%"
               >
                 {" "}
                 We charge 150 pesos per every hour of extension after 12NN.
@@ -613,6 +638,7 @@ export const HomeBooking = ({ title }) => {
                 family="Quicksand"
                 fstyle="none"
                 align="left"
+                size1000="100%"
               >
                 How much do you charge for an additional person per room?
               </Title>
@@ -644,6 +670,8 @@ export const HomeBooking = ({ title }) => {
                 family="Quicksand"
                 fstyle="none"
                 weight="normal"
+                align="left"
+                size1000="100%"
               >
                 {" "}
                 We charge 350 pesos per head for the additional person.

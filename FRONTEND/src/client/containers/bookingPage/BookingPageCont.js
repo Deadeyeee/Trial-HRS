@@ -563,6 +563,7 @@ export const BookingPageCont = () => {
                     color='#2e2e2e'
                     weight='normal'
                     size='3vw'
+                    size1000='40px'
 
                 >
                     Available Rooms
@@ -636,6 +637,7 @@ export const BookingPageCont = () => {
                                 margin='10px 0px 10px 0px'
                                 align='left'
                                 family='Roboto Slab'
+                                size1000='30px'
                             >
                                 {item.roomType}
                             </Title>
@@ -658,6 +660,9 @@ export const BookingPageCont = () => {
                                         fStyle='Normal'
                                         margin='10px 0px 0px 0px'
                                         align='left'
+                                        size1000='30px'
+                                        margin1000='20px 0px 20px 0px'
+                                        
                                     >
                                         Services
                                     </Title>
@@ -673,6 +678,8 @@ export const BookingPageCont = () => {
                                         fStyle='Normal'
                                         margin='10px 0px 0px 0px'
                                         align='left'
+                                        size1000='30px'
+                                        margin1000='20px 0px 0px 0px'
                                     >
                                         Occupancy
                                     </Title>
@@ -683,7 +690,7 @@ export const BookingPageCont = () => {
                                         size='17px'
                                         fStyle='Normal'
                                         margin='10px 0px 0px 10px'
-                                        align='left'
+                                        margin1000='0px 0px 20px 0px'
                                     >
                                         {item.maxAdultOccupancy - 1} Adult(s) and {item.maxKidsOccupancy} Kid(s) only
                                     </Title>
@@ -706,6 +713,7 @@ export const BookingPageCont = () => {
                                         fStyle='Normal'
                                         margin='15px 0px 0px 10px'
                                         align='left'
+                                        
                                     >
                                         {numberFormat(item.roomRate)}/night
                                     </Title>

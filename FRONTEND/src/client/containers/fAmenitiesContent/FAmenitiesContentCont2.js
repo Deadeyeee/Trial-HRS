@@ -16,6 +16,8 @@ export const FAmenitiesContentCont2 = () => {
                 weight='normal'
                 size='50px'
                 margin='60px 0px 60px 0px'
+                size1000='45px'
+                margin1000='20px 0px 0px 0px'
             >
                 Facilities and Amenities
             </Title>
@@ -36,6 +38,9 @@ export const FAmenitiesContentCont2 = () => {
                             size='56px'
                             color='#2e2e2e'
                             align='left'
+                            size1000='45px'
+                            margin1000='20px 0px 20px 0px'
+
 
                         >
                             Doctor's Blend
