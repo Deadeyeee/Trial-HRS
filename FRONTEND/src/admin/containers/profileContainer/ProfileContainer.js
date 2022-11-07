@@ -75,7 +75,7 @@ export const ProfileContainer = () => {
     const [address, setAddress] = useState('');
     const [email, setEmail] = useState('');
     const [username, setUsername] = useState('');
-    const [birthDay, setBirthDay] = useState('');
+    const [birthDay, setBirthDay] = useState(new Date(Date.parse(new Date()) - 568025136000));
     const [gender, setGender] = useState('');
     const [oldPassword, setOldPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
@@ -246,7 +246,7 @@ export const ProfileContainer = () => {
             setLastName(userInformation.lastName);
             setEmail(userInformation.user.email);
             setcontactNumber(userInformation.user.contactNumber);
-            setBirthDay(userInformation.birthDate);
+            setBirthDay(new Date(new Date(userInformation.birthDate).toLocaleDateString()));
             setNationality(userInformation.nationality.charAt(0).toUpperCase() + userInformation.nationality.slice(1));
             setGender(userInformation.gender);
             setAddress(userInformation.address);
@@ -291,7 +291,7 @@ export const ProfileContainer = () => {
                     axios.patch(apiKey + 'api/updateGuest/' + userInformation.id, {
                         firstName: firstName.toLocaleLowerCase(),
                         lastName: lastName.toLocaleLowerCase(),
-                        birthDate: birthDay,
+                        birthDate: new Date(new Date(birthDay).toLocaleDateString()),
                         gender: gender,
                         address: address,
                         nationality: nationality
@@ -698,6 +698,29 @@ export const ProfileContainer = () => {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             <Modal
                 open={open}
                 onClose={handleClose}
@@ -866,6 +889,8 @@ export const ProfileContainer = () => {
                                 minDate={new Date(Date.parse(new Date()) - 2524556160000)}
                                 onChange={(newValue) => {
                                     setBirthDay(newValue);
+                                    console.log(newValue)
+
                                 }}
                                 renderInput={(params) =>
                                     <TextField

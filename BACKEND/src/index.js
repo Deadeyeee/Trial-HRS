@@ -33,11 +33,20 @@ app.use(session({
     },
 }))
 
-
+let serverDatestarted = new Date();
 //test server
 app.get('/', (req, res) =>{
-    res.send('hELLO WORLD');
-    console.log(typeof(firstname))
+    res.send(req.cookies.cookieName);
+    // res.cookie('shabu', 'eyyy')
+    console.log(req.cookies.cookieName != null)
+    // console.log(req.cookies)
+});
+//test server
+app.get('/setCookie', (req, res) =>{
+    // res.send(serverDatestarted);
+    
+    res.cookie('cookieName', 'cookieValue').send('cookie set');
+    // console.log('success')
 });
 const PORT = process.env.PORT || 3001
 
