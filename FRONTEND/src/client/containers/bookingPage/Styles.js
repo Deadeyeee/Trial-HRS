@@ -49,6 +49,7 @@ export const TitleCalendarContainer = styled(motion.div)`
     flex-direction: column;
     
     gap: 20px;
+    }
 `;
 
 export const Persons = styled.div`
@@ -56,7 +57,7 @@ export const Persons = styled.div`
   gap: 20px;
 
   @media (max-width: 1000px) {
-    width: 100%;
+    width: auto;
     height: 100%;
     align-items: center;
   }
@@ -201,9 +202,10 @@ export const ServicesContainer = styled(motion.div)`
     gap: 20px;
 
     @media (max-width: 1000px) {
-        width: 40%;
-        height: 40%;
+        width: 90%;
+        height: auto;
         align-items: center;
+        justify-content: center;
         display: flex;
         flex-direction: row;
       }
@@ -219,11 +221,13 @@ export const Services = styled(motion.div)`
     height: 50px;
 
     @media (max-width: 1000px) {
-        width: 40%;
+        width: auto;
         height: 100%;
         align-items: center;
         display: flex;
         flex-direction: row;
+        justify-content: flex-start
+
       }
 
 `;
@@ -279,7 +283,7 @@ export const BookingLegendsWhite = styled(motion.div)`
     background-color: #F2F2F2;
     width: 20px;
     height: 20px;
-    border-radius: 50%
+    border-radius: 50%;
 
     @media (max-width: 1000px) {
         width: 100%;
@@ -292,7 +296,7 @@ export const BookingLegendsRed = styled(motion.div)`
     background-color: #FF4040;
     width: 20px;
     height: 20px;
-    border-radius: 50%
+    border-radius: 50%;
 
     @media (max-width: 1000px) {
         width: 100%;
@@ -305,7 +309,7 @@ export const BookingLegendsGreen = styled(motion.div)`
     background-color: #90B51D;
     width: 20px;
     height: 20px;
-    border-radius: 50%
+    border-radius: 50%;
 
     @media (max-width: 1000px) {
         width: 100%;
@@ -318,7 +322,7 @@ export const BookingLegendsBlue = styled(motion.div)`
     background-color: #008AFC;
     width: 20px;
     height: 20px;
-    border-radius: 50%
+    border-radius: 50%;
 
     @media (max-width: 1000px) {
         width: 100%;
@@ -331,7 +335,7 @@ export const BookingLegendsDarkJade = styled(motion.div)`
     background-color: #75928E;
     width: 20px;
     height: 20px;
-    border-radius: 50%
+    border-radius: 50%;
 
     @media (max-width: 1000px) {
         width: 100%;
@@ -344,7 +348,7 @@ export const LocationPinRed = styled(motion.div)`
     background-color: #FF4040;
     width: 20px;
     height: 30px;
-    border-radius: 50% 50% 100% 100%
+    border-radius: 50% 50% 100% 100%;
 
     @media (max-width: 1000px) {
         width: 100%;
@@ -357,7 +361,7 @@ export const LocationPinGreen = styled(motion.div)`
     background-color: #90B51D;
     width: 20px;
     height: 30px;
-    border-radius: 100% 100% 100% 100%     
+    border-radius: 100% 100% 100% 100%    ; 
 
     @media (max-width: 1000px) {
         width: 100%;

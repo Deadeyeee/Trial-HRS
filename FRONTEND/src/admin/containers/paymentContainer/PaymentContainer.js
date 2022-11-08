@@ -485,14 +485,14 @@ const PaymentContainer = () => {
                         });
                         if (index == arr.length - 1) {
                             axios.post(apiKey + 'api/sendReservationEmail', {
-                                email: item.reservation.guestInformation.user.email.toLocaleLowerCase(),
+                                email: item.reservation.guestInformation.user.email,
                                 birthDay: item.reservation.guestInformation.birthDate,
-                                nationality: item.reservation.guestInformation.nationality.toLocaleLowerCase(),
-                                emailAddress: item.reservation.guestInformation.user.email.toLocaleLowerCase(),
+                                nationality: item.reservation.guestInformation.nationality,
+                                emailAddress: item.reservation.guestInformation.user.email,
                                 address: item.reservation.guestInformation.address,
                                 contactNumber: item.reservation.guestInformation.user.contactNumber,
-                                firstName: item.reservation.guestInformation.firstName.toLocaleLowerCase(),
-                                lastName: item.reservation.guestInformation.lastName.toLocaleLowerCase(),
+                                firstName: item.reservation.guestInformation.firstName,
+                                lastName: item.reservation.guestInformation.lastName,
                                 reservationStatus: item.reservation.reservationStatus,
                                 accountName: item.reservation.payment.paymentMode.accountName,
                                 accountNumber: item.reservation.payment.paymentMode.accountNumber,
@@ -550,14 +550,14 @@ const PaymentContainer = () => {
                 console.log(result.data)
 
                 axios.post(apiKey + 'api/sendReservationEmail', {
-                    email: reservationSelected.guestInformation.user.email.toLocaleLowerCase(),
+                    email: reservationSelected.guestInformation.user.email,
                     birthDay: reservationSelected.guestInformation.birthDate,
-                    nationality: reservationSelected.guestInformation.nationality.toLocaleLowerCase(),
-                    emailAddress: reservationSelected.guestInformation.user.email.toLocaleLowerCase(),
+                    nationality: reservationSelected.guestInformation.nationality,
+                    emailAddress: reservationSelected.guestInformation.user.email,
                     address: reservationSelected.guestInformation.address,
                     contactNumber: reservationSelected.guestInformation.user.contactNumber,
-                    firstName: reservationSelected.guestInformation.firstName.toLocaleLowerCase(),
-                    lastName: reservationSelected.guestInformation.lastName.toLocaleLowerCase(),
+                    firstName: reservationSelected.guestInformation.firstName,
+                    lastName: reservationSelected.guestInformation.lastName,
                     reservationStatus: 'proof declined',
                     accountName: reservationSelected.payment.paymentMode.accountName,
                     accountNumber: reservationSelected.payment.paymentMode.accountNumber,
@@ -846,14 +846,14 @@ const PaymentContainer = () => {
                                     });
                                     if (index == arr.length - 1) {
                                         axios.post(apiKey + 'api/sendReservationEmail', {
-                                            email: item.reservation.guestInformation.user.email.toLocaleLowerCase(),
+                                            email: item.reservation.guestInformation.user.email,
                                             birthDay: item.reservation.guestInformation.birthDate,
-                                            nationality: item.reservation.guestInformation.nationality.toLocaleLowerCase(),
-                                            emailAddress: item.reservation.guestInformation.user.email.toLocaleLowerCase(),
+                                            nationality: item.reservation.guestInformation.nationality,
+                                            emailAddress: item.reservation.guestInformation.user.email,
                                             address: item.reservation.guestInformation.address,
                                             contactNumber: item.reservation.guestInformation.user.contactNumber,
-                                            firstName: item.reservation.guestInformation.firstName.toLocaleLowerCase(),
-                                            lastName: item.reservation.guestInformation.lastName.toLocaleLowerCase(),
+                                            firstName: item.reservation.guestInformation.firstName,
+                                            lastName: item.reservation.guestInformation.lastName,
                                             reservationStatus: item.reservation.reservationStatus,
                                             accountName: item.reservation.payment.paymentMode.accountName,
                                             accountNumber: item.reservation.payment.paymentMode.accountNumber,
@@ -921,14 +921,14 @@ const PaymentContainer = () => {
 
                                     if (index == arr.length - 1) {
                                         axios.post(apiKey + 'api/sendReservationEmail', {
-                                            email: item.reservation.guestInformation.user.email.toLocaleLowerCase(),
+                                            email: item.reservation.guestInformation.user.email,
                                             birthDay: item.reservation.guestInformation.birthDate,
-                                            nationality: item.reservation.guestInformation.nationality.toLocaleLowerCase(),
-                                            emailAddress: item.reservation.guestInformation.user.email.toLocaleLowerCase(),
+                                            nationality: item.reservation.guestInformation.nationality,
+                                            emailAddress: item.reservation.guestInformation.user.email,
                                             address: item.reservation.guestInformation.address,
                                             contactNumber: item.reservation.guestInformation.user.contactNumber,
-                                            firstName: item.reservation.guestInformation.firstName.toLocaleLowerCase(),
-                                            lastName: item.reservation.guestInformation.lastName.toLocaleLowerCase(),
+                                            firstName: item.reservation.guestInformation.firstName,
+                                            lastName: item.reservation.guestInformation.lastName,
                                             reservationStatus: item.reservation.reservationStatus,
                                             accountName: item.reservation.payment.paymentMode.accountName,
                                             accountNumber: item.reservation.payment.paymentMode.accountNumber,
@@ -1311,7 +1311,7 @@ const PaymentContainer = () => {
                         <Th align='center'>Remaining Balance</Th>
                         <Th align='center'>Proof of Payment</Th>
                         <Th align='center'>Payment Status</Th>
-                        <Th align='right'>Action</Th>
+                        <Th align='center'>Action</Th>
                     </Tr>
 
 
@@ -1335,7 +1335,7 @@ const PaymentContainer = () => {
                                         {paymentStatusStyle(item.payment.paymentStatus)}
 
                                     </Td>
-                                    <Td align='right'><ActionButtonPayment
+                                    <Td align='center'><ActionButtonPayment
                                         view={() => handleOpenView(item)}
                                         edit={() => handleOpenUpdate(item)}
                                         pay={() => handleOpenEdit(item)}

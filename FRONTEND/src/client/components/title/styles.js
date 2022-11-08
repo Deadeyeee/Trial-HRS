@@ -24,6 +24,7 @@ cursor:${(props) => (props.cursor ? props.cursor : "auto")};
 overflow: ${(props) => (props.overflow ? props.overflow : "visible")};
 text-overflow: ${(props) => (props.textOverflow ? props.textOverflow : "clip")};
 white-space: ${(props) => (props.whiteSpace ? props.whiteSpace : "normal")};
+word-wrap: ${(props) => (props.wordWrap ? props.wordWrap : "normal")};
 &:hover{
     color: ${(props) => (props.hoverColor ? props.hoverColor : "none")};;
   }

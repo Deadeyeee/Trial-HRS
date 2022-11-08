@@ -19,6 +19,7 @@ import { CheckCircleOutline, Close, HighlightOffSharp } from '@mui/icons-materia
 import logo from '../../images/logo.png';
 import { Box, CircularProgress, Grow, Modal, TextField } from '@mui/material';
 
+import "./billingsummary.css";
 
 
 const BillingSummaryContainer = () => {
@@ -47,7 +48,7 @@ const BillingSummaryContainer = () => {
             setNotAvailableRoom([])
 
             for (let index = 0; index < result.data.length; index++) {
-                if (result.data[index].reservation.reservationStatus == "PENDING" || result.data[index].reservation.reservationStatus == "RESERVED" || result.data[index].reservation.reservationStatus == "BOOKED") {
+                if (result.data[index].bookingStatus == "PENDING" || result.data[index].bookingStatus == "RESERVED" || result.data[index].bookingStatus == "CHECKED-IN") {
                     for (let k = 0; k < bookingInformation.length; k++) {
                         let systemDates = getDates(bookingInformation[k].checkIn, bookingInformation[k].checkOut);
                         systemDates.pop()
@@ -148,7 +149,12 @@ const BillingSummaryContainer = () => {
                 window.sessionStorage.removeItem('address');
                 window.sessionStorage.removeItem('nationality');
             }
-
+            else if(response.data.role == 'NON-USER'){
+                axios.delete(apiKey+"auth/Logout").then((response) => {
+        
+                    window.location.reload();
+                  })
+            }
             axios.get(apiKey + 'api/getAllGuest').then((guest) => {
                 console.log(guest.data)
                 guest.data.map((item) => {
@@ -1189,12 +1195,15 @@ const BillingSummaryContainer = () => {
                             weight='500'
                             align='left'
                             margin='20px 30px'
+                            margin1000='20px 30px'
                         >
                             Guest Information
                         </Title>
                     </HeadContainer>
-                    <TabContainer>
+                    <TabContainer
+                className='guestInformation'>
                         <TableContainer
+                className='guestInformation'
                         >
                             <Title
                                 size='18px'
@@ -1204,6 +1213,8 @@ const BillingSummaryContainer = () => {
                                 weight='500'
                                 align='left'
                                 margin='20px 30px'
+                                margin1000='30px 0px'
+                                size1000='100%'
                             >
                                 <b>Name:</b> {output('name')}
                             </Title>
@@ -1215,6 +1226,7 @@ const BillingSummaryContainer = () => {
                                 weight='500'
                                 align='left'
                                 margin='20px 30px'
+                                margin1000='30px 0px'
                             >
                                 <b>Email Address:</b> {output('email')}
                             </Title>
@@ -1226,6 +1238,7 @@ const BillingSummaryContainer = () => {
                                 weight='500'
                                 align='left'
                                 margin='20px 30px'
+                                margin1000='30px 0px'
                             >
                                 <b>Contact number: </b>{output('contact')}
                             </Title>
@@ -1238,6 +1251,7 @@ const BillingSummaryContainer = () => {
                                 weight='500'
                                 align='left'
                                 margin='20px 30px'
+                                margin1000='30px 0px'
                             >
                                 <b>Birthdate:</b> {output('birthday')}
                             </Title>
@@ -1251,6 +1265,7 @@ const BillingSummaryContainer = () => {
                                 weight='500'
                                 align='left'
                                 margin='20px 30px'
+                                margin1000='30px 0px'
                             >
                                 <b>Nationality:</b> {output('nationality')}
                             </Title>
@@ -1262,6 +1277,7 @@ const BillingSummaryContainer = () => {
                                 weight='500'
                                 align='left'
                                 margin='20px 30px'
+                                margin1000='30px 0px'
                             >
                                 <b>Gender:</b> {output('gender')}
                             </Title>
@@ -1273,6 +1289,7 @@ const BillingSummaryContainer = () => {
                                 weight='500'
                                 align='left'
                                 margin='20px 30px'
+                                margin1000='30px 0px'
                             >
                                 <b>Address:</b> {output('address')}
                             </Title>
@@ -1282,8 +1299,9 @@ const BillingSummaryContainer = () => {
                 <TabContainer
                     direction='column'
                     border='0.2px solid black'
+                    style={{overflowX: 'auto'}}
                 >
-                    <TabContainer w='100%'>
+                    <TabContainer style={{margin: '0px'}} w='100%'>
                         <HeadContainer>
                             <Title
                                 size='18px'
@@ -1293,6 +1311,7 @@ const BillingSummaryContainer = () => {
                                 weight='500'
                                 align='left'
                                 margin='20px 30px'
+                                margin1000='20px 30px'
                             >
                                 Mode of Payment:
                             </Title>
@@ -1306,12 +1325,15 @@ const BillingSummaryContainer = () => {
                                 weight='500'
                                 align='left'
                                 margin='20px 30px'
+                                margin1000='20px 30px'
+
                             >
                                 Type of Payment:
                             </Title>
                         </HeadContainer>
                     </TabContainer>
-                    <TabContainer>
+                    <TabContainer
+                    >
                         <TableContainer style={{ borderRight: '0.2px solid black' }}>
                             <RadioGroup
                                 aria-labelledby="demo-controlled-radio-buttons-group"
@@ -1324,7 +1346,7 @@ const BillingSummaryContainer = () => {
                                 style={{ margin: '0px 0px 0px 30px' }}
                             >
                                 {modeOfPayment.filter((obj) => obj.isActive == true).map((item) => (
-                                    item.paymentMode === "Cash" ? <FormControlLabel value={item.paymentMode} control={<Radio />} label={item.paymentMode} disabled={typeOfPayment === "Full Payment" ? true : false} /> : <FormControlLabel value={item.paymentMode} control={<Radio />} label={item.paymentMode} />
+                                    item.paymentMode === "Cash" ? <FormControlLabel style={{textAlign: 'left'}} value={item.paymentMode} control={<Radio />} label={item.paymentMode} disabled={typeOfPayment === "Full Payment" ? true : false} /> : <FormControlLabel style={{textAlign: 'left'}} value={item.paymentMode} control={<Radio />} label={item.paymentMode} />
                                 ))}
                             </RadioGroup>
                         </TableContainer>
@@ -1340,8 +1362,8 @@ const BillingSummaryContainer = () => {
                                 style={{ margin: '0px 0px 0px 30px' }}
 
                             >
-                                <FormControlLabel value="Down Payment" control={<Radio />} label="Down Payment" />
-                                <FormControlLabel value="Full Payment" control={<Radio />} label="Full Payment" disabled={modeOfPaymentValue === "Pay at The Hotel" ? true : false} />
+                                <FormControlLabel style={{textAlign: 'left'}} value="Down Payment" control={<Radio />} label="Down Payment" />
+                                <FormControlLabel style={{textAlign: 'left'}} value="Full Payment" control={<Radio />} label="Full Payment" disabled={modeOfPaymentValue === "Pay at The Hotel" ? true : false} />
                             </RadioGroup>
                         </TableContainer>
                     </TabContainer>
@@ -1361,6 +1383,7 @@ const BillingSummaryContainer = () => {
                             weight='500'
                             align='left'
                             margin='20px 30px'
+                            margin1000='20px 30px'
                         >
                             Discount:
                         </Title>
@@ -1377,7 +1400,7 @@ const BillingSummaryContainer = () => {
 
                         >
                             {discount.map((item) => (
-                                <FormControlLabel value={item.discountType} control={<Radio />} label={item.discountType} />
+                                <FormControlLabel style={{textAlign: 'left'}} value={item.discountType} control={<Radio />} label={item.discountType} />
                             ))}
 
                             <p><b><i>NOTE:</i></b> Discount will only be <b> applied upon check in</b>. Guest <b> must present their Senior citizen / PWD I.D</b>, Thank you!.</p>
@@ -1390,7 +1413,9 @@ const BillingSummaryContainer = () => {
 
                 <TabContainer
                     direction='column'
-                    border='0.2px solid black'>
+                    border='0.2px solid black'
+                    
+                    >
                     <HeadContainer>
                         <Title
                             size='18px'
@@ -1400,6 +1425,7 @@ const BillingSummaryContainer = () => {
                             weight='500'
                             align='left'
                             margin='20px 30px'
+                            margin1000='20px 30px'
                         >
                             Booking Summary:
                         </Title>
@@ -1407,6 +1433,7 @@ const BillingSummaryContainer = () => {
                     <TableContainer
                         border='0.2px solid black'
                         cellspacing="0"
+                        className='tableCart'
                         cellpadding="0">
                         <Tr>
                             <Th align='center'>Room type</Th>
@@ -1448,6 +1475,7 @@ const BillingSummaryContainer = () => {
                             weight='500'
                             align='left'
                             margin='20px 30px'
+                            margin1000='20px 30px'
                         >
                             Grand total:
                         </Title>

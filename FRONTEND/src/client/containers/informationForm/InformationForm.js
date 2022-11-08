@@ -163,6 +163,7 @@ const InformationForm = () => {
     useEffect(() => {
         handleOpenIsLoading()
         axios.get(apiKey + 'auth/verify-token').then((result) => {
+            console.log(result.data.role)
             if (result.data.role != 'NON-USER') {
                 handleCloseIsLoading();
                 window.location = '/billingSummary'
@@ -418,7 +419,7 @@ const InformationForm = () => {
                                         setFirstNameError("")
                                     }
                                 }}
-                                style={{ width: '55%', }}
+                                className='inputRegister'
                                 required />
 
                             <TextField
@@ -440,7 +441,7 @@ const InformationForm = () => {
                                     }
 
                                 }}
-                                style={{ width: '55%', }}
+                                className='inputRegister'
                                 required />
                         </InputContainer>
 
@@ -460,7 +461,7 @@ const InformationForm = () => {
 
                                     setEmailError("")
                                 }}
-                                style={{ width: '55%', }}
+                                className='inputRegister'
                                 inputRef={emailRef}
                                 required />
 
@@ -485,7 +486,7 @@ const InformationForm = () => {
                                 inputRef={contactNumberRef}
 
                                 inputProps={{ maxLength: 13 }}
-                                style={{ width: '55%', }}
+                                className='inputRegister'
                                 required />
                         </InputContainer>
 
@@ -507,7 +508,8 @@ const InformationForm = () => {
                                         <TextField
                                             {...params}
                                             variant="standard"
-                                            style={{ width: "55%", margin: '5px 0px' }}
+                                            style={{  margin: '5px 0px' }}
+                                            className='inputRegister'
                                             helperText={null}
                                             required
                                         />
@@ -516,7 +518,7 @@ const InformationForm = () => {
 
                             </LocalizationProvider>
 
-                            <FormControl sx={{ width: "55%", margin: '5px 0px' }} size="small" variant="standard">
+                            <FormControl  className='inputRegister' sx={{  margin: '5px 0px' }} size="small" variant="standard">
                                 <InputLabel id="demo-select-small" >Nationality</InputLabel>
                                 <Select
                                     style={{ color: 'black', textAlign: 'left' }}
@@ -621,7 +623,7 @@ const InformationForm = () => {
 
                                 inputProps={{ maxLength: 40 }}
                                 required={password.length != 0 ? true : false}
-                                style={{ width: '55%', }} />
+                                className='inputRegister' />
 
                             <TextField
                                 error={passwordError.length != 0 ? true : false}
@@ -640,7 +642,7 @@ const InformationForm = () => {
                                         setPasswordError("")
                                     }
                                 }}
-                                style={{ width: '55%', }}
+                                className='inputRegister'
                                 required={userName.length != 0 ? true : false}
                             />
                         </InputContainer>
@@ -663,7 +665,7 @@ const InformationForm = () => {
                                     required
                                 />
                             } />
-                            <p style={{ fontSize: '14px' }}>Kindly, check the box if you have read and agreed to RM Luxe Hotel's
+                            <p style={{ fontSize: '14px', textAlign: 'center' }}>Kindly, check the box if you have read and agreed to RM Luxe Hotel's
                                 <Link
                                     onClick={handleOpen}> Terms and Conditions
                                 </Link>

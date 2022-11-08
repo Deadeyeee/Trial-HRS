@@ -65,6 +65,7 @@ import AcknowledgementReceipt from './admin/pages/acknowledgementReceipt/Acknowl
 import GeneratedReports from './admin/pages/generateReports/GenerateReports';
 import LoginAdminStaff from './client/pages/login/LoginAdminStaff';
 import GeneratedReportsOcupancy from './admin/pages/generateReports/GeneratedReportsOcupancy';
+import LoginStaff from './client/pages/login/LoginStaff';
 
 
 
@@ -106,6 +107,7 @@ const App = () => {
 
 
         <Route path="/admin" element={<LoginAdminStaff />} />
+        <Route path="/frontDesk" element={<LoginStaff />} />
 
 
         <Route path="/admin/dashboard" element={<AdminProfile />} />
@@ -129,7 +131,7 @@ const App = () => {
         <Route path="/admin/generatedOccupancyReport/:id" element={<GeneratedReportsOcupancy />}/>
 
 
-
+{/* 
 
         <Route path="/frontdesk" element={<FrontDashboard />} />
         <Route path="/frontdesk/status" element={<FrontStatus />} />
@@ -140,7 +142,7 @@ const App = () => {
         <Route path="/frontdesk/roomDetails" element={<FrontRoomDetails />}/>
         <Route path="/frontdesk/profile" element={<ProfileFront />}/>
         <Route path="/frontdesk/messages" element={<FrontMessages />}/>
-        <Route path="/frontdesk/additionals" element={<FrontAdditional />}/>
+        <Route path="/frontdesk/additionals" element={<FrontAdditional />}/> */}
         <Route path="*" element={<Error404 />} />
 
       </Routes>

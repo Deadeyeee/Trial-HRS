@@ -267,9 +267,9 @@ const DashboardContainer = () => {
 
     return (
         <Container
-        style={{
-            height: 'auto'
-        }}>
+            style={{
+                height: 'auto'
+            }}>
             <HeadContainer>
                 <ContainerGlobal align='center'>
                     <ContainerGlobal direction='column'>
@@ -419,7 +419,7 @@ const DashboardContainer = () => {
                             weight='normal'
                             align='left'
                         >
-                            {reservationSummary.length != 0 ? reservationSummary.filter((obj) => obj.bookingStatus == 'CHECKED-OUT' && new Date(obj.checkOutDate).toLocaleDateString() == new Date().toLocaleDateString()).length : 0}
+                            {reservationSummary.length != 0 ? reservationSummary.filter((obj) => obj.bookingStatus == 'CHECKED-IN' && new Date(obj.checkOutDate).toLocaleDateString() == new Date().toLocaleDateString()).length : 0}
                         </Title>
                     </SummaryDescription>
                 </SummaryPlate>
@@ -495,7 +495,7 @@ const DashboardContainer = () => {
                         weight='600'
                         align='left'
                     >
-                        Reservations <a style={{ fontSize: '12px' }} href='/admin/report'>(view)</a>
+                        Reservations {userInformation.length != 0 ? userInformation.user.role == 'ADMIN' ? <a style={{ fontSize: '12px' }} href='/admin/report'>(view)</a> : '' : ''}
                     </Title>
 
 
@@ -517,27 +517,40 @@ const DashboardContainer = () => {
                         <Reservation
                             confirmed={reservationSummary != 0 ?
                                 reservationSummary.filter((obj) => obj.reservation.reservationStatus == 'RESERVED').filter((obj) => {
-                                    let filterDate = getDates(new Date(Date.now()), new Date(Date.now()));
+                                    // let filterDate = getDates(new Date(Date.now()), new Date(Date.now()));
 
-                                    if (filterDate.includes(moment(obj.checkInDate).format('YYYY-MM-DD')) == true || filterDate.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) == true) {
+                                    // if (filterDate.includes(moment(obj.checkInDate).format('YYYY-MM-DD')) == true || filterDate.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) == true) {
+                                    //     return obj
+                                    // }
+
+                                    if (Date.parse(new Date().toLocaleDateString()) >= Date.parse(new Date(new Date(obj.checkInDate).toLocaleDateString())) && Date.parse(new Date().toLocaleDateString()) <= Date.parse(new Date(new Date(obj.checkOutDate).toLocaleDateString()))) {
                                         return obj
                                     }
                                 }).length
                                 : ''}
                             cancelled={reservationSummary != 0 ?
                                 reservationSummary.filter((obj) => obj.reservation.reservationStatus == 'UNSETTLED').filter((obj) => {
-                                    let filterDate = getDates(new Date(Date.now()), new Date(Date.now()));
+                                    // let filterDate = getDates(new Date(Date.now()), new Date(Date.now()));
 
-                                    if (filterDate.includes(moment(obj.checkInDate).format('YYYY-MM-DD')) == true || filterDate.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) == true) {
+                                    // if (filterDate.includes(moment(obj.checkInDate).format('YYYY-MM-DD')) == true || filterDate.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) == true) {
+                                    //     return obj
+                                    // }
+
+                                    if (Date.parse(new Date().toLocaleDateString()) >= Date.parse(new Date(new Date(obj.checkInDate).toLocaleDateString())) && Date.parse(new Date().toLocaleDateString()) <= Date.parse(new Date(new Date(obj.checkOutDate).toLocaleDateString()))) {
                                         return obj
                                     }
                                 }).length
                                 : ''}
                             pending={reservationSummary != 0 ?
                                 reservationSummary.filter((obj) => obj.reservation.reservationStatus == 'PENDING').filter((obj) => {
-                                    let filterDate = getDates(new Date(Date.now()), new Date(Date.now()));
+                                    // let filterDate = getDates(new Date(Date.now()), new Date(Date.now()));
 
-                                    if (filterDate.includes(moment(obj.checkInDate).format('YYYY-MM-DD')) == true || filterDate.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) == true) {
+                                    // if (filterDate.includes(moment(obj.checkInDate).format('YYYY-MM-DD')) == true || filterDate.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) == true) {
+                                    //     return obj
+                                    // }
+
+
+                                    if (Date.parse(new Date().toLocaleDateString()) >= Date.parse(new Date(new Date(obj.checkInDate).toLocaleDateString())) && Date.parse(new Date().toLocaleDateString()) <= Date.parse(new Date(new Date(obj.checkOutDate).toLocaleDateString()))) {
                                         return obj
                                     }
                                 }).length
@@ -567,7 +580,7 @@ const DashboardContainer = () => {
                         weight='600'
                         align='left'
                     >
-                        Occupancy Rate <a style={{ fontSize: '12px' }} href='/admin/report'>(view)</a>
+                        Occupancy Rate {userInformation.length != 0 ? userInformation.user.role == 'ADMIN' ? <a style={{ fontSize: '12px' }} href='/admin/report'>(view)</a> : '' : ''}
                     </Title>
 
 
@@ -806,6 +819,7 @@ const DashboardContainer = () => {
                     <Tr>
                         <Th align='center'>Booking Number</Th>
                         <Th align='center'>Guest's Name</Th>
+                        <Th align='center'>Reservation Number</Th>
                         <Th align='center'>Room Number</Th>
                         <Th align='center'>Check in</Th>
                         <Th align='center'>Check out</Th>
@@ -813,24 +827,25 @@ const DashboardContainer = () => {
                     </Tr>
                     {reservationSummary.filter((obj) => obj.bookingStatus == 'RESERVED' && new Date(obj.checkInDate).toLocaleDateString() == new Date().toLocaleDateString()).length != 0 ?
                         reservationSummary.filter((obj) => obj.bookingStatus == 'RESERVED' && new Date(obj.checkInDate).toLocaleDateString() == new Date().toLocaleDateString())
-                        .slice(0, 2)
-                        .map((item) => (
-                            <Tr>
+                            .slice(0, 2)
+                            .map((item) => (
+                                <Tr>
 
-                                <Td align='center'>{item.bookingReferenceNumber}</Td>
-                                <Td align='center'>{item.reservation.guestInformation.firstName.toLowerCase()}, {item.reservation.guestInformation.lastName.toLowerCase()}</Td>
-                                <Td align='center'>{item.room.roomNumber}</Td>
-                                <Td align='center'>{new Date(item.checkInDate).toLocaleDateString()}</Td>
-                                <Td align='center'>{new Date(item.checkOutDate).toLocaleDateString()}</Td>
-                                <Td align='center'>
-                                    {bookingStatusStyle(item.bookingStatus)}
-                                </Td>
-                            </Tr>
-                        ))
+                                    <Td align='center'>{item.bookingReferenceNumber}</Td>
+                                    <Td align='center'>{item.reservation.guestInformation.firstName.toLowerCase()}, {item.reservation.guestInformation.lastName.toLowerCase()}</Td>
+                                    <Td align='center'>{item.reservation.reservationReferenceNumber}</Td>
+                                    <Td align='center'>{item.room.roomNumber}</Td>
+                                    <Td align='center'>{new Date(item.checkInDate).toLocaleDateString()}</Td>
+                                    <Td align='center'>{new Date(item.checkOutDate).toLocaleDateString()}</Td>
+                                    <Td align='center'>
+                                        {bookingStatusStyle(item.bookingStatus)}
+                                    </Td>
+                                </Tr>
+                            ))
                         :
                         <Tr>
 
-                            <Td align='center' colSpan={7}>No bookings available today</Td> 
+                            <Td align='center' colSpan={7}>No bookings available today</Td>
                         </Tr>
                     }
 

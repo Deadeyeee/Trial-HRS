@@ -78,8 +78,6 @@ export const Services = styled(motion.div)`
     height: 50px;
 
     @media (max-width: 1000px) {
-        width: 100%;
-        height: 100%;
         align-items: center;
       }
 
@@ -137,6 +135,7 @@ export const ServicesContainer = styled(motion.div)`
         display:flex;
         flex-direction: row;
         align-items: center;
+        justify-content: center;
       }
 `;
 
@@ -159,6 +158,8 @@ export const ContentContainerHolder = styled(motion.div)`
         width: 100%;
         height: 100%;
         align-items: center;
+        flex-direction: column;
+        gap: 10px;
       }
 `;
 

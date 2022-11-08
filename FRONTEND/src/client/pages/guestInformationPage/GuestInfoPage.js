@@ -14,7 +14,9 @@ const GuestInfoPage = () => {
             color='#bfaa7e'
             weight='normal'
             size='50px'
+            size1000='40px'
             margin='40px 0px 30px 0px'
+            margin1000='50px 0px 30px 0px'
             >
                 Guest Information
             </Title>
@@ -27,8 +29,10 @@ const GuestInfoPage = () => {
             weight='normal'
             fstyle='normal'
             size='16px'
+            size1000='12px'
             family='arial'
             margin="10PX 0PX 50PX 0PX"
+            margin1000="10PX 0PX 50PX 0PX"
             >
                Already have an account? please <a href='/login'><b>Log in</b></a>.
             </Title>

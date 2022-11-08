@@ -24,6 +24,7 @@ const DateRangePicker = (props) => {
 
         <Title
           size='1.1vw'
+          size1000='12px'
           weight="bold">
           Check-in date
         </Title>
@@ -44,6 +45,7 @@ const DateRangePicker = (props) => {
         />
         <Title 
           size='1.1vw'
+          size1000='12px'
           weight="bold">
           Check-out date
         </Title>
@@ -57,6 +59,7 @@ const DateRangePicker = (props) => {
           weight='bold'
           fStyle='normal'
           margin='auto 0px 0px 0px'
+          size1000='12px'
         >
           <b>{props.nights}</b> {props.nights == 1 || props.nights == 0 ? "night" : "night(s)"}
         </Title>

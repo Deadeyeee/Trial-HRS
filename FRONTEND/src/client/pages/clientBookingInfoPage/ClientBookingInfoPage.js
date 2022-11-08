@@ -15,7 +15,7 @@ const ClientBookingInfoPage = () => {
   return (
     <Container>
             <Navprofile/>
-            <ContentContainer book>
+            <ContentContainer book style={{overflow: 'hidden'}}>
               <ProfileContainer book></ProfileContainer>
             <ClientBookingInfoCont></ClientBookingInfoCont>
             </ContentContainer>

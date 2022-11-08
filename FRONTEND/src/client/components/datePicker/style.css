@@ -24,6 +24,6 @@
     .react-datepicker__input-container,
     .react-datepicker__input-container input {
 
-        font-size: 2vw;
+        font-size: 10px;
     }
 }

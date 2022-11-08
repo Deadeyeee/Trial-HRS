@@ -19,7 +19,7 @@ import {
   HighlightOffSharp,
 } from "@mui/icons-material";
 import logo from "../../images/logo.png";
-import { CircularProgress, Grow, Modal, TextField } from "@mui/material";
+import { CircularProgress, Grow, Modal, Pagination, TextField } from "@mui/material";
 
 const ClientPaymentInfoCont = () => {
   const [activeReservation, setActiveReservation] = useState([]);
@@ -80,6 +80,10 @@ const ClientPaymentInfoCont = () => {
       );
     }
   };
+
+
+  const [reservationPage, setReservationPage] = useState(1)
+
 
   useEffect(() => {
     axios
@@ -605,31 +609,28 @@ const ClientPaymentInfoCont = () => {
         </Box>
       </Modal>
 
-      {activeReservation.length != 0 ? (
-        <Title
-          padding="20px 80px 20px 80px"
-          bg="#272727"
-          family="Playfair Display"
-          color="#BFAA7E"
-          weight="400"
-          size="50px"
-          fstyle="Normal"
-          margin="50px 0px 10px 0px"
-          align="Center"
-          w="65%"
-        >
-          Upload Proof of Payment
-        </Title>
-      ) : (
-        ""
-      )}
+      <Title
+        padding="20px 0px 20px 0px"
+        bg="#272727"
+        family="Playfair Display"
+        color="#BFAA7E"
+        weight="400"
+        size="50px"
+        fstyle="Normal"
+        margin="50px 0px 10px 0px"
+        align="Center"
+        w="65%"
+        size1000="200%"
 
+      >
+        Upload Proof of Payment
+      </Title>
       {activeReservation.length != 0 ? (
         <div>{paymentStatusStyle(activeReservation)}</div>
       ) : (
         <Title margin="100px"
-        size1000='30px'
-        margin1000='30px 0px 40px 0px'
+          size1000='30px'
+          margin1000='30px 0px 40px 0px'
         >
           Sorry but you don't have any reservations to pay.
         </Title>
@@ -759,7 +760,7 @@ const ClientPaymentInfoCont = () => {
         ""
       )}
 
-      <MainContainer display="flex" height="450px">
+      <MainContainer display="flex" height="auto">
         <MessagesTitleContainer>
           <Title
             bg="#272727"
@@ -806,118 +807,137 @@ const ClientPaymentInfoCont = () => {
                 Actions
               </Th>
             </Tr>
-            {reservation.map((item, index) => (
-              <Tr
-                style={
-                  index % 2 == 0
-                    ? { backgroundColor: "transparent" }
-                    : { backgroundColor: "rgb(0,0,0,.1)" }
-                }
-              >
-                <Td
+            {reservation
+              .slice((reservationPage - 1) * 6, reservationPage * 6)
+              .sort((a, b)=> Date.parse(new Date(b.reservationDate)) - Date.parse(new Date(a.reservationDate)))
+
+              .map((item, index) => (
+                <Tr
                   style={
-                    item.id == activeReservation.id
-                      ? { backgroundColor: "green", color: "black" }
-                      : { backgroundColor: "transparent" }
+                    index % 2 == 0
+                      ? { backgroundColor: "transparent" }
+                      : { backgroundColor: "rgb(0,0,0,.1)" }
                   }
-                  align="center"
                 >
-                  {item.reservationReferenceNumber}
-                </Td>
-                <Td
-                  style={
-                    item.id == activeReservation.id
-                      ? { backgroundColor: "green", color: "black" }
-                      : { backgroundColor: "transparent" }
-                  }
-                  align="center"
-                >
-                  {item.payment.paymentType}
-                </Td>
-                <Td
-                  style={
-                    item.id == activeReservation.id
-                      ? { backgroundColor: "green", color: "black" }
-                      : { backgroundColor: "transparent" }
-                  }
-                  align="center"
-                >
-                  {numberFormat(item.payment.paymentMade)}
-                </Td>
-                <Td
-                  style={
-                    item.id == activeReservation.id
-                      ? { backgroundColor: "green", color: "black" }
-                      : { backgroundColor: "transparent" }
-                  }
-                  align="center"
-                >
-                  {numberFormat(item.payment.balance)}
-                </Td>
-                <Td
-                  style={
-                    item.id == activeReservation.id
-                      ? { backgroundColor: "green", color: "black" }
-                      : { backgroundColor: "transparent" }
-                  }
-                  align="center"
-                >
-                  {numberFormat(item.payment.grandTotal)}
-                </Td>
-                <Td
-                  style={
-                    item.id == activeReservation.id
-                      ? { backgroundColor: "green", color: "black" }
-                      : { backgroundColor: "transparent" }
-                  }
-                  align="center"
-                >
-                  {item.payment.paymentStatus}
-                </Td>
-                <Td
-                  style={
-                    item.id == activeReservation.id
-                      ? { backgroundColor: "green", color: "black" }
-                      : { backgroundColor: "transparent" }
-                  }
-                  align="center"
-                >
-                  {item.payment.paymentImage != null
-                    ? "Uploaded"
-                    : "Not uploaded"}
-                </Td>
-                <Td
-                  style={
-                    item.id == activeReservation.id
-                      ? { backgroundColor: "green", color: "black" }
-                      : { backgroundColor: "transparent" }
-                  }
-                  align="center"
-                >
-                  <a
-                    href="#"
+                  <Td
                     style={
                       item.id == activeReservation.id
-                        ? { cursor: "normal", color: "black" }
-                        : { cursor: "pointer", color: "blue" }
+                        ? { backgroundColor: "green", color: "black" }
+                        : { backgroundColor: "transparent" }
                     }
-                    onClick={() => {
-                      view(item.id);
-                      document.getElementById("upload").value = "";
-                      setPreviewImage("");
-                    }}
+                    align="center"
                   >
-                    view
-                  </a>
-                </Td>
-                {/* <Td align='center'>{item.numberOfNights}</Td>
+                    {item.reservationReferenceNumber}
+                  </Td>
+                  <Td
+                    style={
+                      item.id == activeReservation.id
+                        ? { backgroundColor: "green", color: "black" }
+                        : { backgroundColor: "transparent" }
+                    }
+                    align="center"
+                  >
+                    {item.payment.paymentType}
+                  </Td>
+                  <Td
+                    style={
+                      item.id == activeReservation.id
+                        ? { backgroundColor: "green", color: "black" }
+                        : { backgroundColor: "transparent" }
+                    }
+                    align="center"
+                  >
+                    {numberFormat(item.payment.paymentMade)}
+                  </Td>
+                  <Td
+                    style={
+                      item.id == activeReservation.id
+                        ? { backgroundColor: "green", color: "black" }
+                        : { backgroundColor: "transparent" }
+                    }
+                    align="center"
+                  >
+                    {numberFormat(item.payment.balance)}
+                  </Td>
+                  <Td
+                    style={
+                      item.id == activeReservation.id
+                        ? { backgroundColor: "green", color: "black" }
+                        : { backgroundColor: "transparent" }
+                    }
+                    align="center"
+                  >
+                    {numberFormat(item.payment.grandTotal)}
+                  </Td>
+                  <Td
+                    style={
+                      item.id == activeReservation.id
+                        ? { backgroundColor: "green", color: "black" }
+                        : { backgroundColor: "transparent" }
+                    }
+                    align="center"
+                  >
+                    {item.payment.paymentStatus}
+                  </Td>
+                  <Td
+                    style={
+                      item.id == activeReservation.id
+                        ? { backgroundColor: "green", color: "black" }
+                        : { backgroundColor: "transparent" }
+                    }
+                    align="center"
+                  >
+                    {item.payment.paymentImage != null
+                      ? "Uploaded"
+                      : "Not uploaded"}
+                  </Td>
+                  <Td
+                    style={
+                      item.id == activeReservation.id
+                        ? { backgroundColor: "green", color: "black" }
+                        : { backgroundColor: "transparent" }
+                    }
+                    align="center"
+                  >
+                    <a
+                      href="#"
+                      style={
+                        item.id == activeReservation.id
+                          ? { cursor: "normal", color: "black" }
+                          : { cursor: "pointer", color: "blue" }
+                      }
+                      onClick={() => {
+                        view(item.id);
+                        document.getElementById("upload").value = "";
+                        setPreviewImage("");
+                      }}
+                    >
+                      view
+                    </a>
+                  </Td>
+                  {/* <Td align='center'>{item.numberOfNights}</Td>
                                 <Td align='center'>{numberFormat(item.room.roomType.roomRate)}</Td>
                                 <Td align='center' style={{ color: 'red' }}>{numberFormat(item.room.roomType.roomRate * item.numberOfNights)}</Td> */}
-              </Tr>
-            ))}
+                </Tr>
+              ))}
           </TableContainer>
         </div>
       </MainContainer>
+
+      <Pagination
+        page={reservationPage}
+        count={reservation.length != 0 && Math.ceil(reservation.length / 6)}
+        onChange={(e, value) => {
+          setReservationPage(value)
+        }}
+
+        style={{
+          justifyContent: "center",
+          display: 'flex',
+          margin: '20px',
+        }}
+      />
+
     </Container>
   );
 };

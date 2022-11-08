@@ -31,13 +31,23 @@ const SideBarNav = (props) => {
 
     const signOut = () => {
         if (window.confirm('Are you sure you want to Log out?')) {
-            Axios.delete(apiKey + "auth/Logout").then((response) => {
+            if (getUser.user.role == 'STAFF') {
+                Axios.delete(apiKey + "auth/Logout").then((response) => {
 
-                window.location.reload();
-            })
+                    window.location = '/frontDesk';
+                })
+            }
+            else if (getUser.user.role == 'ADMIN') {
+                Axios.delete(apiKey + "auth/Logout").then((response) => {
+
+                    window.location = '/admin';
+                })
+            }
         }
 
     }
+
+
     const [isloading, setIsLoading] = useState([])
     Axios.defaults.withCredentials = true;
     useLayoutEffect(() => {
@@ -87,7 +97,7 @@ const SideBarNav = (props) => {
 
         }).catch((err) => {
             console.log(err.message)
-            window.location = '/admin'
+            window.location = '/404'
 
         });
 

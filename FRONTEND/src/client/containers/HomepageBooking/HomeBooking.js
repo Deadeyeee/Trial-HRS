@@ -65,10 +65,10 @@ export const HomeBooking = ({ title }) => {
     }
 
 
-    if(Date.parse(endDate) - Date.parse(startDate) > 2629800000){
+    if (Date.parse(endDate) - Date.parse(startDate) > 2629800000) {
       alert('For period of stay longer than 30 night(s), please call Tel:(+632) 8628-0768 / Cell No:(+63) 9176300113 or send an email to rm.luxehotel@gmail.com')
       setEndDate(new Date(Date.parse(startDate) + 2629800000))
-  }
+    }
     // if(startDate )
   }, [startDate, endDate]);
 
@@ -89,13 +89,13 @@ export const HomeBooking = ({ title }) => {
 
   const [additionals, setAdditionals] = useState([])
 
-  useEffect(()=>{
-    axios.get(apiKey+ 'api/getAllAmenities').then((result) => {
+  useEffect(() => {
+    axios.get(apiKey + 'api/getAllAmenities').then((result) => {
       setAdditionals(result.data)
     }).catch((err) => {
-      
+
     });
-  },[])
+  }, [])
 
   const [openAnswer1, setOpenAnswer1] = useState(false);
   const [openAnswer2, setOpenAnswer2] = useState(false);
@@ -146,14 +146,15 @@ export const HomeBooking = ({ title }) => {
         <Persons>
           <LabelDiv>
             <TextInput
-              style={{ fontWeight: "bold", fontSize: "1.1vw" }}
+              style={{ fontWeight: "bold" }}
               family="Roboto Slab"
-              width="6vw"
+              width="10vw"
               placeholder="No. of Adults"
               align="center"
               borderColor="black"
               margins="0px"
               value={adults}
+              fontSize='16px'
               max={4}
               min={1}
               type="number"
@@ -161,21 +162,28 @@ export const HomeBooking = ({ title }) => {
                 setAdults(e.target.value);
               }}
               height="3vw"
+              className='inputPerson'
+
             ></TextInput>
-            <Title size="1.1vw" weight="Bold">
+            <Title
+              size1000='12px'
+              size="1.1vw"
+              weight="Bold">
               Adults
             </Title>
           </LabelDiv>
           <LabelDiv>
             <TextInput
-              style={{ fontWeight: 'bold', fontSize: '1.1vw' }}
+              style={{ fontWeight: 'bold' }}
               family='Roboto Slab'
-              width="5vw"
+              width="10vw"
+
               placeholder="No. of Kids"
               align="center"
               borderColor='black'
               margins='0px'
               max={2}
+              fontSize='16px'
               min={0}
               value={kids}
               type='number'
@@ -183,9 +191,12 @@ export const HomeBooking = ({ title }) => {
                 setKids(e.target.value);
               }}
               height='3vw'
+              className='inputPerson'
+
             ></TextInput>
 
             <Title
+              size1000='12px'
               size='1.1vw'
               weight="bold">
 
@@ -195,15 +206,18 @@ export const HomeBooking = ({ title }) => {
         </Persons>
         <Button
           whileHover={{ backgroundColor: "#2E2E2E", color: "white" }}
-          w="10vw"
-          h="2vw"
+          w='auto'
+          h='auto'
           textcolor="black"
-          fam="Times New Roman"
-          weight="400"
-          fontStyle="Italic"
+          fam='Times New Roman'
+          weight='400'
+          fontStyle='Italic'
           radius="0px"
+          padding='10px 50px'
+
           border="1px solid #8F805F"
-          fontsize="1.1vw"
+          // fontsize='1.1vw'
+          className='buttonBook'
           onClick={() => {
             bookFilterDate();
           }}
@@ -244,10 +258,10 @@ export const HomeBooking = ({ title }) => {
           great. Visit us to become one of our valuable guests. See you around!
         </Description>
 
-        <div style={{width: "100%", height: "500px", overflow:"hidden", display: "flex", alignItems: "flex-end"}}>
-        <video src={Video} autoPlay loop muted width="100%" height="auto" />
+        <div style={{ width: "100%", height: "500px", overflow: "hidden", display: "flex", alignItems: "flex-end" }}>
+          <video src={Video} autoPlay loop muted width="100%" height="auto" />
         </div>
-        
+
 
         <FlexItems>
           <Poster
@@ -589,7 +603,7 @@ export const HomeBooking = ({ title }) => {
                 fstyle="none"
                 align="left"
                 size1000="100%"
-                
+
               >
                 {" "}
                 How much do you charge for every extended hour after the

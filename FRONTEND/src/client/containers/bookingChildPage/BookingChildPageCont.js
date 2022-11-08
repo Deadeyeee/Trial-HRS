@@ -100,31 +100,31 @@ export const BookingChildPageCont = () => {
         handleOpenIsLoading();
 
         if (roomQuantity > availedRooms.length) {
+            handleCloseIsLoading(3);
             setRoomQuantity(availedRooms.length);
             roomquantityRef.current.focus();
-            handleCloseIsLoading(3);
 
         }
         else if (roomQuantity < 1) {
-            setRoomQuantity(1);
             handleCloseIsLoading(3);
+            setRoomQuantity(1);
         }
         else if (kid > roomType.maxKidsOccupancy) {
+            handleCloseIsLoading(3);
             setKid(roomType.maxKidsOccupancy);
             kidRef.current.focus();
-            handleCloseIsLoading(3);
         }
         else if (kid < 0) {
             setKid(0);
         }
         else if (adult > roomType.maxAdultOccupancy) {
+            handleCloseIsLoading(3);
             setAdult(roomType.maxAdultOccupancy);
             adult.current.focus();
-            handleCloseIsLoading(3);
         }
         else if (adult < 1) {
-            setAdult(1);
             handleCloseIsLoading(3);
+            setAdult(1);
         }
         else {
             let listOfRoomAvail = [];
@@ -147,8 +147,8 @@ export const BookingChildPageCont = () => {
                         "adult": adult,
                         "specialInstruction": specialInstruction,
                     }]
-                window.sessionStorage.setItem('AvailedRoom', JSON.stringify(items))
                 handleCloseIsLoading(2);
+                window.sessionStorage.setItem('AvailedRoom', JSON.stringify(items))
 
             }
             else {
@@ -359,7 +359,7 @@ export const BookingChildPageCont = () => {
                 <RoomContainer>
 
                     <div
-                        style={{ width: '550px', display: 'inline-block', }}
+                        style={{ display: 'inline-block', }} className='imageSlider'
                     >
                         <ImageSlider roomImages={roomTypeImagesDb.length != 0 ? roomTypeImagesDb : null} />
                     </div>
@@ -378,7 +378,7 @@ export const BookingChildPageCont = () => {
                             </Title>
                             <Description
                                 align="left"
-                                width="450px"
+                                width="100%"
                                 size="20px"
 
                             >
@@ -415,15 +415,17 @@ export const BookingChildPageCont = () => {
                             </Title>
                             <ContainerGlobal
                                 align='flex-end'
+                                w='100%'
+                                justify='center'
                             >
                                 <TextInput
                                     onChange={(e) => {
-                                        
+
                                         if (e.target.value <= 0) {
                                             setAdult(1);
                                         }
-                                        else if (e.target.value >= roomType.maxAdultOccupancy-1) {
-                                            setAdult(roomType.maxAdultOccupancy-1);
+                                        else if (e.target.value >= roomType.maxAdultOccupancy) {
+                                            setAdult(roomType.maxAdultOccupancy);
                                         }
                                         else {
                                             setAdult(e.target.value)
@@ -446,7 +448,7 @@ export const BookingChildPageCont = () => {
                                     height='100%'
                                     min="1"
                                     ref={adultRef}
-                                    max={roomType.maxAdultOccupancy-1}
+                                    max={roomType.maxAdultOccupancy}
                                     required
 
                                 ></TextInput>
@@ -455,11 +457,12 @@ export const BookingChildPageCont = () => {
                                     color='#292929'
                                     weight='normal'
                                     size='20px'
+                                    size1000='12px'
                                     fStyle='Normal'
                                     margin='0px 0px 0px 5px'
                                     align='left'
                                 >
-                                    <b></b> adult/s (max of {roomType.maxAdultOccupancy-1})
+                                    <b></b> adult/s (max of {roomType.maxAdultOccupancy})
                                 </Title>
                                 <TextInput
                                     onChange={(e) => {
@@ -500,6 +503,7 @@ export const BookingChildPageCont = () => {
                                     weight='normal'
                                     size='20px'
                                     fStyle='Normal'
+                                    size1000='12px'
                                     margin='0px 0px 0px 5px'
                                     align='left'
                                 >

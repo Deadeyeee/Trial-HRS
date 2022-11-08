@@ -10,7 +10,7 @@ import { TextInput } from '../../components/textBox/style';
 import ReCAPTCHA from "react-google-recaptcha";
 import { apiKey } from '../../../apiKey';
 
-export const Login = () => {
+export const LoginStaff = () => {
     useEffect(() => {
         document.title = "Login"
     }, [])
@@ -53,53 +53,16 @@ export const Login = () => {
             captcha.current.focus();
         }
         else {
-            Axios.post(apiKey + 'auth/login',
+            Axios.post(apiKey + 'auth/loginStaff',
                 {
                     userName: userName,
                     email: email,
                     password: password,
                 },
             ).then((response) => {
-                if (response.data.role == 'NON-USER') {
-                    Axios.get(apiKey + 'api/getAllReservationSummary').then((result) => {
+                window.location.href = '/admin/dashboard';
 
-                        if (result.data
-                            .filter((obj) => {
-                                if (obj.reservation.guestInformation.user_id == response.data.id) {
-                                    return obj;
-                                }
-                            })
-                            .filter((obj) => obj.bookingReferenceNumber != 'NO-SHOW' && obj.bookingReferenceNumber != 'CANCELLED').length != 0) {
-
-                            window.location.href = '/';
-                            setLoginStatus("");
-                            console.log(response.data)
-                        }
-                        else {
-                            Axios.delete(apiKey + "auth/Logout").then((response) => {
-                                setLoginStatus("Username/Email or Password is incorrect. Please try again.")
-
-                                incorrectEmail.current.focus();
-                                incorrectEmail.current.select();
-                            })
-                        }
-
-
-                    }).catch((err) => {
-
-                    });
-                }
-                else {
-                    if(response.data.role == 'ADMIN' || response.data.role == 'STAFF'){
-                        
-                    window.location.href = '/admin';
-                    }
-                    else{
-                        
-                    window.location.href = '/';
-                    }
-                    setLoginStatus("");
-                }
+                setLoginStatus("");
             }).catch((err) => {
                 if (verifyCaptcha == false) {
                     e.preventDefault();
@@ -135,7 +98,12 @@ export const Login = () => {
     useEffect(() => {
         Axios.get(apiKey + "auth/verify-token").then((response) => {
             if (response.status === 200) {
-                window.location.href = '/';
+                if(response.data.role == 'STAFF'){
+                    window.location.href = '/admin/dashboard';
+                }
+                else{
+                    window.location.href = '/';
+                }
             }
         });
     }, []);
@@ -188,7 +156,7 @@ export const Login = () => {
                         margin="0px 0px 20px 0px"
                         fontSize='100%'
                         fstyle='none'
-                    >Welcome to RM Luxe Hotel</Title>
+                    >Front Desk Login</Title>
 
                     <RegistrationForm
                         onSubmit={checkAccount}>
@@ -205,7 +173,6 @@ export const Login = () => {
                             fontSize='16px'
                             ref={incorrectEmail}
                             required
-                            width="80%"
                         ></TextInput>
                         <TextInput
 
@@ -221,7 +188,6 @@ export const Login = () => {
                             fontSize='16px'
                             required
                             ref={incorrectPassword}
-                            width="80%"
                         ></TextInput>
 
 
@@ -291,25 +257,11 @@ export const Login = () => {
                             value='Log in'
                             bg='#2E2E2E'
                             fontStyle='none'
-                            fontsize='18px'
+                            fontsize='1vw'
                             margin='0px 0px 10px 0px'
                             fam='Roboto'
                         ></FormButton>
                     </RegistrationForm>
-                    <Button
-                        whileHover={{ scale: 1, color: "white", backgroundColor: "#757575", border: "2px solid white" }}
-                        whileTap={{ scale: 1, color: "rgb(220,220,220)" }}
-                        href='/register'
-                        w='140px'
-                        h='30px'
-                        radius='20px'
-                        weight='500'
-                        border='2px solid #2E2E2E'
-                        fontStyle='none'
-                        textcolor='#2E2E2E'
-                        fontsize="18px"
-                        fam='Roboto'
-                    >Sign Up</Button>
 
                 </LoginBorder>
 
@@ -322,4 +274,4 @@ export const Login = () => {
 }
 
 
-export default Login;
+export default LoginStaff;

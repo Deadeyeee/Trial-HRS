@@ -32,6 +32,12 @@ export const RegisterBorder = styled(motion.div)`
     overflow: hidden;
     padding: 30px 50px 30px 50px;
     box-shadow: -5px 10px 5px black;
+    @media (max-width: 1000px) {
+      justify-content: flex-start;
+    width: auto;
+    height: 80vh;
+    overflow: scroll;
+      }
 `;
 
 export const RegistrationForm = styled.form`

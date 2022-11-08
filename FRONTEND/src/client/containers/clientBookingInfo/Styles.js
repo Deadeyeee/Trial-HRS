@@ -59,6 +59,7 @@ export const StatusContainer = styled(motion.div)`
     @media (max-width: 1000px) {
         width: 100%;
         height: 100%;
+        flex-direction: column;
       }
 `;
 
@@ -113,7 +114,6 @@ export const ChargeSummaryContainer = styled(motion.div)`
 
     @media (max-width: 1000px) {
         width: 100%;
-        height: 100%;
       }
 `;
 
@@ -141,7 +141,6 @@ export const BankContentContainer = styled(motion.div)`
 
     @media (max-width: 1000px) {
         width: 100%;
-        height: 100%;
         margin: 0px;
       }
 `;
@@ -179,7 +178,6 @@ export const ReservationInformationContainer = styled(motion.div)`
 
     @media (max-width: 1000px) {
         width: 100%;
-        height: 100%;
       }
 `;
 

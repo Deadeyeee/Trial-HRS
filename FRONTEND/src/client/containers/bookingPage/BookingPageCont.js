@@ -79,8 +79,8 @@ export const BookingPageCont = () => {
             console.lot(err)
         });
 
-        if (window.sessionStorage.getItem('endDate') != null || window.sessionStorage.getItem('kids') != null ||window.sessionStorage.getItem('guest') != null || window.sessionStorage.getItem('startDate') != null ) {
-        
+        if (window.sessionStorage.getItem('endDate') != null || window.sessionStorage.getItem('kids') != null || window.sessionStorage.getItem('guest') != null || window.sessionStorage.getItem('startDate') != null) {
+
             setEndDate(new Date(window.sessionStorage.getItem('endDate')))
             setStartDate(new Date(window.sessionStorage.getItem('startDate')))
             setAdults(parseInt(window.sessionStorage.getItem('guest')))
@@ -141,7 +141,7 @@ export const BookingPageCont = () => {
             setEndDate(new Date(Date.parse(startDate) + 86400000))
         }
 
-        if(Date.parse(endDate) - Date.parse(startDate) > 2629800000){
+        if (Date.parse(endDate) - Date.parse(startDate) > 2629800000) {
             alert('For period of stay longer than 30 night(s), please call Tel:(+632) 8628-0768 / Cell No:(+63) 9176300113 or send an email to rm.luxehotel@gmail.com')
             setEndDate(new Date(Date.parse(startDate) + 2629800000))
         }
@@ -152,7 +152,7 @@ export const BookingPageCont = () => {
         try {
             let result = await axios.get(apiKey + 'api/getAllReservationSummary')
             for (let index = 0; index < result.data.length; index++) {
-                if (result.data[index].reservation.reservationStatus == "PENDING" || result.data[index].reservation.reservationStatus == "RESERVED" || result.data[index].reservation.reservationStatus == "BOOKED") {
+                if (result.data[index].bookingStatus == "PENDING" || result.data[index].bookingStatus == "RESERVED" || result.data[index].bookingStatus == "CHECKED-IN") {
                     let systemDates = getDates(startDate, endDate);
                     systemDates.pop()
                     let dataBaseDates = getDates(result.data[index].checkInDate, result.data[index].checkOutDate);
@@ -465,7 +465,9 @@ export const BookingPageCont = () => {
                 color='#bfaa7e'
                 weight='normal'
                 size='3.5vw'
+                size1000='40px'
                 margin='1vw 0px 1vw 0px'
+                margin1000='1vw 0px 1vw 0px'
             >
                 Bookings
             </Title>
@@ -483,19 +485,20 @@ export const BookingPageCont = () => {
                     minDateEnd={minEndDate}
                     maxDateStart={new Date(Date.now() + 31556926000)}
 
-                    // maxDateEnd={new Date(Date.parse(startDate) + 2629800000)}
+                // maxDateEnd={new Date(Date.parse(startDate) + 2629800000)}
                 // minDate={new Date()}
                 />
 
                 <Persons>
                     <LabelDiv>
                         <TextInput
-                            style={{ fontWeight: 'bold', fontSize: '1.1vw' }}
+                            style={{ fontWeight: 'bold' }}
                             family='Roboto Slab'
-                            width="5vw"
+                            width="10vw"
                             placeholder="No. of Adults"
                             align="center"
                             borderColor='black'
+                            fontSize='16px'
                             margins='0px'
                             value={adults}
                             max={4}
@@ -505,11 +508,14 @@ export const BookingPageCont = () => {
                                 setAdults(e.target.value);
                             }}
                             height='3vw'
+                            className='inputPerson'
                         >
 
                         </TextInput>
                         <Title
                             size='1.1vw'
+                            size1000='12px'
+
                             weight="Bold">
 
                             Adults
@@ -519,9 +525,10 @@ export const BookingPageCont = () => {
 
 
                         <TextInput
-                            style={{ fontWeight: 'bold', fontSize: '1.1vw' }}
+                            style={{ fontWeight: 'bold' }}
                             family='Roboto Slab'
-                            width="5vw"
+                             width="10vw"
+                             fontSize='16px'
                             placeholder="No. of Kids"
                             align="center"
                             borderColor='black'
@@ -534,9 +541,11 @@ export const BookingPageCont = () => {
                                 setKids(e.target.value);
                             }}
                             height='3vw'
+                            className='inputPerson'
                         ></TextInput>
 
                         <Title
+                            size1000='12px'
                             size='1.1vw'
                             weight="bold">
 
@@ -546,16 +555,18 @@ export const BookingPageCont = () => {
                 </Persons>
                 <Button
                     whileHover={{ backgroundColor: "#2E2E2E", color: "white" }}
-                    w='10vw'
-                    h='2vw'
+                    w='auto'
+                    h='auto'
                     textcolor="black"
                     fam='Times New Roman'
                     weight='400'
                     fontStyle='Italic'
                     radius="0px"
+                    padding='10px 50px'
+                    
                     border="1px solid #8F805F"
-                    fontsize='1.1vw'
-
+                    // fontsize='1.1vw'
+                    className='buttonBook'
                     onClick={() => { bookFilterDate(); }}
                 >
 
@@ -634,7 +645,7 @@ export const BookingPageCont = () => {
                         </Button> */}
                     </div>
                     :
-                    roomType.sort((a,b)=> a.roomRate - b.roomRate ).map((item, index, arr) => (
+                    roomType.sort((a, b) => a.roomRate - b.roomRate).map((item, index, arr) => (
                         <RoomContainerMain>
                             <Title
                                 color='#292929'
@@ -654,7 +665,8 @@ export const BookingPageCont = () => {
 
                                 </RoomContainerContentPhoto> */}
                                 <div
-                                    style={{ width: '550px', display: 'inline-block', }}
+                                    style={{ display: 'inline-block', }}
+                                    className='imageSlider'
                                 >
                                     <ImageSlider roomImages={roomTypeImagesDb.length != 0 ? roomTypeImagesDb.filter((itemRoomImage) => (itemRoomImage.roomType_id == item.id)).map((obj) => (obj.roomImages)) : null} />
                                 </div>
@@ -667,9 +679,9 @@ export const BookingPageCont = () => {
                                         fStyle='Normal'
                                         margin='10px 0px 0px 0px'
                                         align='left'
-                                        size1000='30px'
-                                        margin1000='20px 0px 20px 0px'
-                                        
+                                        size1000='20px'
+                                        margin1000='10px 0px 0px 0px'
+
                                     >
                                         Services
                                     </Title>
@@ -685,7 +697,7 @@ export const BookingPageCont = () => {
                                         fStyle='Normal'
                                         margin='10px 0px 0px 0px'
                                         align='left'
-                                        size1000='30px'
+                                        size1000='20px'
                                         margin1000='20px 0px 0px 0px'
                                     >
                                         Occupancy
@@ -697,9 +709,10 @@ export const BookingPageCont = () => {
                                         size='17px'
                                         fStyle='Normal'
                                         margin='10px 0px 0px 10px'
+                                        align='left'
                                         margin1000='0px 0px 20px 0px'
                                     >
-                                        {item.maxAdultOccupancy - 1} Adult(s) and {item.maxKidsOccupancy} Kid(s) only
+                                        {item.maxAdultOccupancy} Adult(s) and {item.maxKidsOccupancy} Kid(s) only
                                     </Title>
 
                                     <Title
@@ -707,6 +720,7 @@ export const BookingPageCont = () => {
                                         weight='700'
                                         size='20px'
                                         fstyle='Normal'
+                                        margin1000='20px 0px 0px 0px'
                                         margin='20px 0px 0px 0px'
                                         align='left'
                                     >
@@ -716,11 +730,13 @@ export const BookingPageCont = () => {
                                         family='Roboto Slab'
                                         color='#2e2e2e'
                                         weight='700'
+                                        size1000='17px'
                                         size='25px'
                                         fStyle='Normal'
+                                        margin1000='0px 0px 20px 0px'
                                         margin='15px 0px 0px 10px'
                                         align='left'
-                                        
+
                                     >
                                         {numberFormat(item.roomRate)}/night
                                     </Title>

@@ -37,7 +37,7 @@ export const Th = styled(motion.th)`
   text-align: ${(props) => (props.align ? props.align : "left")};
   font-family: Arial, Helvetica, sans-serif;
   width: 250px;
-  cursor: pointer;
+  /* cursor: pointer; */
 `;
 export const Td = styled(motion.td)`
   border: none;

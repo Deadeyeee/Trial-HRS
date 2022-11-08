@@ -378,6 +378,7 @@ const ClientProfileCont = () => {
                 <ProfileContent style={{width:"80%"}}>
                     <ContainerGlobal
                         justify='space-between'
+                        overflow='visible'
                         
                     >
                         <Title
@@ -387,7 +388,36 @@ const ClientProfileCont = () => {
                             size='25px'
                             color='#2e2e2e'
                             align='left'
-                            size1000='20px'
+                            size1000='100%'
+                        >
+                            User Name:
+                        </Title>
+                        <Title
+                            family='raleway, sans-serif'
+                            weight='700'
+                            fstyle='Normal'
+                            size='25px'
+                            color='#2e2e2e'
+                            align='right'
+                            size1000='100%'
+                            w='50%'
+                        >
+                            <b>{userInformation.length != 0 ? userInformation.user.userName : ""}</b>
+                        </Title>
+                    </ContainerGlobal>
+                    <ContainerGlobal
+                        justify='space-between'
+                        overflow='visible'
+                        
+                    >
+                        <Title
+                            family='raleway, sans-serif'
+                            weight='400'
+                            fstyle='Normal'
+                            size='25px'
+                            color='#2e2e2e'
+                            align='left'
+                            size1000='100%'
                         >
                             First Name:
                         </Title>
@@ -398,13 +428,15 @@ const ClientProfileCont = () => {
                             size='25px'
                             color='#2e2e2e'
                             align='right'
-                            size1000='20px'
+                            size1000='100%'
+                            w='50%'
                         >
                             <b>{userInformation.length != 0 ? userInformation.firstName.toLowerCase() : ""}</b>
                         </Title>
                     </ContainerGlobal>
                     <ContainerGlobal
                         justify='space-between'
+                        overflow='visible'
                     >
                         <Title
                             family='raleway, sans-serif'
@@ -413,7 +445,7 @@ const ClientProfileCont = () => {
                             size='25px'
                             color='#2e2e2e'
                             align='left'
-                            size1000='20px'
+                            size1000='100%'
                         >
                             Last Name:
                         </Title>
@@ -424,13 +456,15 @@ const ClientProfileCont = () => {
                             size='25px'
                             color='#2e2e2e'
                             align='right'
-                            size1000='20px'
+                            size1000='100%'
+                            w='50%'
                         >
                             <b>{userInformation.length != 0 ? userInformation.lastName.toLowerCase() : ""}</b>
                         </Title>
                     </ContainerGlobal>
                     <ContainerGlobal
                         justify='space-between'
+                        overflow='visible'
                     >
                         <Title
                             family='raleway, sans-serif'
@@ -439,7 +473,7 @@ const ClientProfileCont = () => {
                             size='25px'
                             color='#2e2e2e'
                             align='left'
-                            size1000='20px'
+                            size1000='100%'
                         >
                             Email Address:
                         </Title>
@@ -450,13 +484,15 @@ const ClientProfileCont = () => {
                             size='25px'
                             color='#2e2e2e'
                             align='right'
-                            size1000='20px'
+                            w='50%'
+                            size1000='100%'
                         >
                             <b>{userInformation.length != 0 ? userInformation.user.email.toLowerCase() : ""}</b>
                         </Title>
                     </ContainerGlobal>
                     <ContainerGlobal
                         justify='space-between'
+                        overflow='visible'
                     >
                         <Title
                             family='raleway, sans-serif'
@@ -465,7 +501,7 @@ const ClientProfileCont = () => {
                             size='25px'
                             color='#2e2e2e'
                             align='left'
-                            size1000='20px'
+                            size1000='100%'
                         >
                             Contact Number:
                         </Title>
@@ -476,13 +512,15 @@ const ClientProfileCont = () => {
                             size='25px'
                             color='#2e2e2e'
                             align='right'
-                            size1000='20px'
+                            size1000='100%'
+                            w='50%'
                         >
                             <b>{userInformation.length != 0 ? userInformation.user.contactNumber.toLowerCase() : ""}</b>
                         </Title>
                     </ContainerGlobal>
                     <ContainerGlobal
                         justify='space-between'
+                        overflow='visible'
                     >
                         <Title
                             family='raleway, sans-serif'
@@ -491,7 +529,7 @@ const ClientProfileCont = () => {
                             size='25px'
                             color='#2e2e2e'
                             align='left'
-                            size1000='20px'
+                            size1000='100%'
                         >
                             Birth Day:
                         </Title>
@@ -502,13 +540,15 @@ const ClientProfileCont = () => {
                             size='25px'
                             color='#2e2e2e'
                             align='right'
-                            size1000='20px'
+                            w='50%'
+                            size1000='100%'
                         >
                             <b>{userInformation.length != 0 ? new Date(userInformation.birthDate).toLocaleDateString() : ""}</b>
                         </Title>
                     </ContainerGlobal>
                     <ContainerGlobal
                         justify='space-between'
+                        overflow='visible'
                     >
                         <Title
                             family='raleway, sans-serif'
@@ -517,7 +557,7 @@ const ClientProfileCont = () => {
                             size='25px'
                             color='#2e2e2e'
                             align='left'
-                            size1000='20px'
+                            size1000='100%'
                         >
                             Nationality:
                         </Title>
@@ -528,13 +568,15 @@ const ClientProfileCont = () => {
                             size='25px'
                             color='#2e2e2e'
                             align='right'
-                            size1000='20px'
+                            size1000='100%'
+                            w='50%'
                         >
                             <b>{userInformation.length != 0 ? userInformation.nationality.toLowerCase() : ""}</b>
                         </Title>
                     </ContainerGlobal>
                     <ContainerGlobal
                         justify='space-between'
+                        overflow='visible'
                     >
                         <Title
                             family='raleway, sans-serif'
@@ -543,7 +585,7 @@ const ClientProfileCont = () => {
                             size='25px'
                             color='#2e2e2e'
                             align='left'
-                            size1000='20px'
+                            size1000='100%'
                         >
                             Gender:
                         </Title>
@@ -554,14 +596,15 @@ const ClientProfileCont = () => {
                             size='25px'
                             color='#2e2e2e'
                             align='right'
-                            size1000='20px'
+                            w='50%'
+                            size1000='100%'
                         >
                             <b>{userInformation.length != 0 ? userInformation.gender.toLowerCase() : ""}</b>
                         </Title>
                     </ContainerGlobal>
                     <ContainerGlobal
                         justify='space-between'
-                        gap='200px'
+                        overflow='visible'
                     >
                         <Title
                             family='raleway, sans-serif'
@@ -570,7 +613,7 @@ const ClientProfileCont = () => {
                             size='25px'
                             color='#2e2e2e'
                             align='left'
-                            size1000='20px'
+                            size1000='100%'
                         >
                             Address
                         </Title>
@@ -581,8 +624,8 @@ const ClientProfileCont = () => {
                             size='25px'
                             color='#2e2e2e'
                             align='right'
-                            w='400px'
-                            size1000='20px'
+                            w='50%'
+                            size1000='100%'
                         >
                             <b>{userInformation.length != 0 ? userInformation.address : ""}</b>
                         </Title>
@@ -669,6 +712,9 @@ const ClientProfileCont = () => {
                             weight='bold'
                             align='left'
                             margin='0px auto 0px 10px'
+                            style={{
+                                margin: '0px auto 0px 10px'
+                            }}
                         >
                             Edit Profile
                         </Title>
@@ -684,7 +730,7 @@ const ClientProfileCont = () => {
 
                     <InputContainer
                         style={{
-                            margin: '50px 0px 0px 0px'
+                            margin: '50px 0px 0px 0px',
                         }}>
                         <TextField
                             error={firstNameError.length != 0 ? true : false}
@@ -705,7 +751,7 @@ const ClientProfileCont = () => {
                                     setFirstNameError("")
                                 }
                             }}
-                            style={{ width: '55%', }}
+                            className='inputRegister'
                             required />
 
                         <TextField
@@ -727,7 +773,7 @@ const ClientProfileCont = () => {
                                 }
 
                             }}
-                            style={{ width: '55%', }}
+                            className='inputRegister'
                             required />
                     </InputContainer>
 
@@ -747,7 +793,7 @@ const ClientProfileCont = () => {
 
                                 setEmailError("")
                             }}
-                            style={{ width: '55%', }}
+                            className='inputRegister'
                             inputRef={emailRef}
                             required />
 
@@ -772,7 +818,7 @@ const ClientProfileCont = () => {
                             inputRef={contactNumberRef}
 
                             inputProps={{ maxLength: 13 }}
-                            style={{ width: '55%', }}
+                            className='inputRegister'
                             required />
                     </InputContainer>
 
@@ -795,7 +841,8 @@ const ClientProfileCont = () => {
                                     <TextField
                                         {...params}
                                         variant="standard"
-                                        style={{ width: "55%", margin: '5px 0px' }}
+                                        style={{  margin: '5px 0px' }}
+                                        className='inputRegister'
                                         helperText={null}
                                         required
                                     />
@@ -804,7 +851,7 @@ const ClientProfileCont = () => {
 
                         </LocalizationProvider>
 
-                        <FormControl sx={{ width: "55%", margin: '5px 0px' }} size="small" variant="standard">
+                        <FormControl className='inputRegister' sx={{  margin: '5px 0px' }} size="small" variant="standard">
                             <InputLabel id="demo-select-small" >Nationality</InputLabel>
                             <Select
                                 style={{ color: 'black', textAlign: 'left' }}
@@ -828,7 +875,7 @@ const ClientProfileCont = () => {
 
                     <InputContainer
                         justify='center'>
-                        <FormControl>
+                        <FormControl style={{width: '100%'}}>
                             <FormLabel id="demo-row-radio-buttons-group-label"
                                 style={{ textAlign: 'center', }} >Gender</FormLabel>
                             <RadioGroup
@@ -839,6 +886,7 @@ const ClientProfileCont = () => {
                                 onChange={(e) => {
                                     setGender(e.target.value)
                                 }}
+                                className='inputRegisterRadio'
                                 name="row-radio-buttons-group">
                                 <FormControlLabel
                                     value="male"
@@ -901,6 +949,7 @@ const ClientProfileCont = () => {
                         border="1px solid #8F805F"
                         margin='30px 0px 0px 0px'
                         fontsize='15px'
+                        padding='10px 0px'
                         type='submit'>
                         Update
                     </Button2>
@@ -1007,7 +1056,7 @@ const ClientProfileCont = () => {
                                 setOldPasswordError('')
 
                             }}
-                            style={{ width: '55%', }}
+                            className='inputRegister'
                             required />
 
                         <TextField
@@ -1029,7 +1078,7 @@ const ClientProfileCont = () => {
                                 }
 
                             }}
-                            style={{ width: '55%', }}
+                            className='inputRegister'
                             required />
                     </InputContainer>
 

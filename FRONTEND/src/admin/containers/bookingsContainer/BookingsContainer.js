@@ -579,6 +579,14 @@ const BookingsContainer = () => {
                                             quantity: extraMattress,
                                         }).then((result) => {
                                             console.log(result.data)
+                                            axios.patch(apiKey + 'api/updateGrandTotal/' + reservationSummaryInfo.reservation.payment.id, {
+                                                paymentMade: reservationSummaryInfo.reservation.payment.paymentMade,
+                                            }).then((result) => {
+                                                console.log(result.data)
+                                            }).catch((err) => {
+                                                console.log(err)
+
+                                            })
                                         }).catch((err) => {
                                             console.log(err)
 
@@ -589,6 +597,14 @@ const BookingsContainer = () => {
                                             quantity: extraBlanket,
                                         }).then((result) => {
                                             console.log(result.data)
+                                            axios.patch(apiKey + 'api/updateGrandTotal/' + reservationSummaryInfo.reservation.payment.id, {
+                                                paymentMade: reservationSummaryInfo.reservation.payment.paymentMade,
+                                            }).then((result) => {
+                                                console.log(result.data)
+                                            }).catch((err) => {
+                                                console.log(err)
+
+                                            })
                                         }).catch((err) => {
                                             console.log(err)
 
@@ -599,6 +615,14 @@ const BookingsContainer = () => {
                                             quantity: extraPillow,
                                         }).then((result) => {
                                             console.log(result.data)
+                                            axios.patch(apiKey + 'api/updateGrandTotal/' + reservationSummaryInfo.reservation.payment.id, {
+                                                paymentMade: reservationSummaryInfo.reservation.payment.paymentMade,
+                                            }).then((result) => {
+                                                console.log(result.data)
+                                            }).catch((err) => {
+                                                console.log(err)
+
+                                            })
                                         }).catch((err) => {
                                             console.log(err)
 
@@ -609,6 +633,14 @@ const BookingsContainer = () => {
                                             quantity: extraTime,
                                         }).then((result) => {
                                             console.log(result.data)
+                                            axios.patch(apiKey + 'api/updateGrandTotal/' + reservationSummaryInfo.reservation.payment.id, {
+                                                paymentMade: reservationSummaryInfo.reservation.payment.paymentMade,
+                                            }).then((result) => {
+                                                console.log(result.data)
+                                            }).catch((err) => {
+                                                console.log(err)
+
+                                            })
                                         }).catch((err) => {
                                             console.log(err)
 
@@ -619,6 +651,14 @@ const BookingsContainer = () => {
                                             quantity: extraPerson,
                                         }).then((result) => {
                                             console.log(result.data)
+                                            axios.patch(apiKey + 'api/updateGrandTotal/' + reservationSummaryInfo.reservation.payment.id, {
+                                                paymentMade: reservationSummaryInfo.reservation.payment.paymentMade,
+                                            }).then((result) => {
+                                                console.log(result.data)
+                                            }).catch((err) => {
+                                                console.log(err)
+
+                                            })
                                         }).catch((err) => {
                                             console.log(err)
 
@@ -626,18 +666,19 @@ const BookingsContainer = () => {
                                     }
 
 
-                                    if (index == result.data.length - 1) {
-                                        axios.patch(apiKey + 'api/updateGrandTotal/' + reservationSummaryInfo.reservation.payment.id, {
-                                            paymentMade: reservationSummaryInfo.reservation.payment.paymentMade,
-                                        }).then((result) => {
-                                            console.log(result.data)
-                                            //partial
-                                            window.location.reload()
-                                        }).catch((err) => {
-                                            console.log(err)
+                                }
 
-                                        })
-                                    }
+                                if (index == result.data.length - 1) {
+                                    axios.patch(apiKey + 'api/updateGrandTotal/' + reservationSummaryInfo.reservation.payment.id, {
+                                        paymentMade: reservationSummaryInfo.reservation.payment.paymentMade,
+                                    }).then((result) => {
+                                        console.log(result.data)
+                                        //partial
+                                        window.location.reload()
+                                    }).catch((err) => {
+                                        console.log(err)
+
+                                    })
                                 }
 
 
@@ -793,6 +834,7 @@ const BookingsContainer = () => {
     }
 
 
+
     const bookingStatusStyle = (value) => {
         if (value == 'PENDING') {
             return <ContainerGlobal
@@ -873,6 +915,32 @@ const BookingsContainer = () => {
             </ContainerGlobal>
         }
         else if (value == 'NO-SHOW') {
+            return <ContainerGlobal
+                w='100px'
+                h='auto'
+                margin='0px auto'
+                bg='rgb(255,165,0, .2)'
+                direction='row'
+                padding='2px 0px'
+                justify='center'
+                align='center'
+                border='2px solid rgb(255,165,0)'
+                gap='10px'
+                borderRadius='.5rem'
+            >
+                <Title
+                    family='Helvetica'
+                    size='12px'
+                    color='BLACK'
+                    fstyle='normal'
+                    display='inline'
+                    padding='5px 10px'
+                >
+                    {value.toLowerCase()}
+                </Title>
+            </ContainerGlobal>
+        }
+        else if (value == 'CANCELLED') {
             return <ContainerGlobal
                 w='100px'
                 h='auto'
@@ -1147,7 +1215,8 @@ const BookingsContainer = () => {
                     <Tr>
                         <Th align='center'>Booking Number </Th>
                         <Th align='center'>Guest's Name </Th>
-                        <Th align='center'>Room Type</Th>
+                        <Th align='center'>Reservation Number</Th>
+                        {/* <Th align='center'>Room Type</Th> */}
                         <Th align='center'>Room Number </Th>
                         {/* <Th align='center'>Reservation Number </Th> */}
                         <Th align='center'>Check in</Th>
@@ -1167,7 +1236,9 @@ const BookingsContainer = () => {
                                 <Tr>
                                     <Td align='center'>{item.bookingReferenceNumber}</Td>
                                     <Td align='center'>{item.reservation.guestInformation.firstName.toLowerCase()}, {item.reservation.guestInformation.lastName.toLowerCase()}</Td>
-                                    <Td align='center'>{item.room.roomType.roomType}</Td>
+                                    <Td align='center'>{item.reservation.reservationReferenceNumber}</Td>
+
+                                    {/* <Td align='center'>{item.room.roomType.roomType}</Td> */}
                                     <Td align='center'>{item.room.roomNumber}</Td>
                                     {/* <Td align='center'>{item.reservation.reservationReferenceNumber}</Td> */}
                                     <Td align='center'>{new Date(item.checkInDate).toLocaleDateString()}</Td>
@@ -1492,34 +1563,32 @@ const BookingsContainer = () => {
                                 >
                                     Room Type:
                                 </Title>
-                                <FormControl sx={{ width: 200, margin: '5px 0px' }} size="large" variant="standard">
+                                <Title
+                                    size='20px'
+                                    color='Black'
+                                    family='Helvetica'
+                                    fstyle='Normal'
+                                    weight='bold'
+                                    align='left'
+                                    margin='15px 0px 20px 0px'
+                                >
+                                    {reservationSummaryInfo.length != 0 ? reservationSummaryInfo.roomType : ''}
+                                </Title>
+                                {/* <FormControl sx={{ width: 200, margin: '5px 0px' }} size="large" variant="standard">
                                     <InputLabel id="demo-select-small" >Room Type</InputLabel>
                                     <Select
                                         style={{ color: 'black', textAlign: 'left' }}
                                         labelId="demo-select-small"
                                         id="demo-select-small"
-                                        value={roomType}
+                                        value={reservationSummaryInfo.length != 0 ? reservationSummaryInfo.roomType : ''}
                                         label="Menu"
-                                        onChange={(event) => {
-                                            setRoomType(event.target.value);
-                                        }}
                                         disabled
 
                                     >
-                                        {roomTypeDb.length != 0 ? roomTypeDb.map((item) => (
-                                            <MenuItem value={item.roomType}
-                                                disabled={badgeCount(item.roomType) == null ? true : false}
-                                            >
-                                                <ContainerGlobal
-                                                    margin='0px 15px 0px 0px'>
-                                                    {item.roomType}
-                                                </ContainerGlobal>
-                                            </MenuItem>))
-                                            :
-                                            ""}
+                                        
 
                                     </Select>
-                                </FormControl>
+                                </FormControl> */}
                             </ContainerGlobal>
                             <ContainerGlobal
                                 w='420px'
@@ -1529,7 +1598,6 @@ const BookingsContainer = () => {
                                 justify='space-between'
                                 align='center'
                                 overflow='auto'
-                                margin='0px 0px 20px 0px'
 
                             >
 
@@ -1544,44 +1612,18 @@ const BookingsContainer = () => {
                                 >
                                     Room Number:
                                 </Title>
-                                <FormControl sx={{ width: 200, margin: '5px 0px' }} size="large" variant="standard">
-                                    <InputLabel id="demo-select-small" >Room Number</InputLabel>
-                                    <Select
-                                        style={{ color: 'black', textAlign: 'left' }}
-                                        labelId="demo-select-small"
-                                        id="demo-select-small"
-                                        value={roomNumber}
-                                        label="Menu"
-                                        onChange={(event) => {
-                                            setRoomNumber(event.target.value);
-                                        }}
-                                        disabled
-                                    >
+                                <Title
+                                    size='20px'
+                                    color='Black'
+                                    family='Helvetica'
+                                    fstyle='Normal'
+                                    weight='bold'
+                                    align='left'
+                                    margin='15px 0px 20px 0px'
+                                >
+                                    {reservationSummaryInfo.length != 0 ? reservationSummaryInfo.roomNumber : ''}
+                                </Title>
 
-                                        {availableRooms.length != 0 || roomType != '' ?
-                                            availableRooms.map((item) => (
-                                                item.roomType.roomType == roomType ? <MenuItem value={item.roomNumber}>
-                                                    Room {item.roomNumber}
-                                                </MenuItem> : <MenuItem style={{ display: 'none' }}></MenuItem>
-                                            ))
-                                            : ""}
-                                        {/* <MenuItem value={'R101'} selected>
-                                            Room 101
-                                        </MenuItem> */}
-                                        {/* <MenuItem value={'R102'} >
-                                            Room 102
-                                        </MenuItem>
-                                        <MenuItem value={'R103'} disabled>
-                                            Room 103
-                                        </MenuItem>
-                                        <MenuItem value={'R104'} >
-                                            Room 104
-                                        </MenuItem>
-                                        <MenuItem value={'R105'} >
-                                            Room 105
-                                        </MenuItem> */}
-                                    </Select>
-                                </FormControl>
                             </ContainerGlobal>
                             <ContainerGlobal
                                 w='420px'
@@ -1605,7 +1647,18 @@ const BookingsContainer = () => {
                                 >
                                     Room rate per night:
                                 </Title>
-                                <TextField value={numberFormat(roomRate)} disabled id="outlined-basic" label="" variant="standard" style={{ width: 200, margin: '5px 0px' }} />
+                                <Title
+                                    size='20px'
+                                    color='Black'
+                                    family='Helvetica'
+                                    fstyle='Normal'
+                                    weight='bold'
+                                    align='left'
+                                    margin='15px 0px 20px 0px'
+                                >
+                                    {reservationSummaryInfo.length != 0 ? numberFormat(reservationSummaryInfo.roomRate) : ''}
+
+                                </Title>
 
                             </ContainerGlobal>
 
@@ -2723,6 +2776,9 @@ const BookingsContainer = () => {
                                     </MenuItem>
                                     <MenuItem value='NO-SHOW' disabled={reservationSummaryInfo.length != 0 ? reservationSummaryInfo.bookingStatus != 'PENDING' && reservationSummaryInfo.bookingStatus != 'RESERVED' ? true : false : false}>
                                         No-Show
+                                    </MenuItem>
+                                    <MenuItem value='CANCELLED' disabled={reservationSummaryInfo.length != 0 ? reservationSummaryInfo.bookingStatus != 'PENDING' && reservationSummaryInfo.bookingStatus != 'CANCELLED' ? true : false : false}>
+                                        Cancelled
                                     </MenuItem>
 
 

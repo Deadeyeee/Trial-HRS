@@ -154,6 +154,14 @@ export const ReservationContainer = () => {
     const [grandTotal, setGrandTotal] = useState(0);
 
 
+
+
+
+
+
+
+
+
     const [editPaymentId, setEditPaymentId] = useState('');
 
 
@@ -251,8 +259,64 @@ export const ReservationContainer = () => {
         axios.patch(apiKey + 'api/updateReservation/' + editReservationInfo.id, {
             reservationStatus: reservationStatus,
         }).then((result) => {
-            console.log(result.data)
-            window.location.reload()
+            console.log(reservationStatus)
+            if (reservationStatus == 'UNSETTLED') {
+                axios.get(apiKey + 'api/getReservation/' + editReservationInfo.id).then((result) => {
+                    axios.post(apiKey + 'api/sendReservationEmail', {
+                        email: result.data.guestInformation.user.email,
+                        birthDay: result.data.guestInformation.birthDate,
+                        nationality: result.data.guestInformation.nationality,
+                        emailAddress: result.data.guestInformation.user.email,
+                        address: result.data.guestInformation.address,
+                        contactNumber: result.data.guestInformation.user.contactNumber,
+                        firstName: result.data.guestInformation.firstName,
+                        lastName: result.data.guestInformation.lastName,
+                        reservationStatus: result.data.reservationStatus,
+                        accountName: result.data.payment.paymentMode.accountName,
+                        accountNumber: result.data.payment.paymentMode.accountNumber,
+                        paymentType: result.data.payment.paymentType,
+                        paymentMode: result.data.payment.paymentMode.paymentMode,
+                        reservationNumber: result.data.reservationReferenceNumber,
+                        reservationDate: new Date(result.data.reservationDate).toLocaleDateString() + " " + new Date(result.data.reservationDate).toLocaleTimeString(),
+                        reservationId: result.data.id,
+                        role: result.data.guestInformation.user.role,
+                        grandTotal: result.data.payment.grandTotal,
+                        discountType: result.data.payment.discount.discountType,
+                        expirationDate: new Date(new Date(result.data.reservationDate).getTime() + 60 * 60 * 24 * 1000).toLocaleDateString() + " " + new Date(result.data.reservationDate).toLocaleTimeString(),
+                        amountPaid: result.data.payment.paymentMade,
+                        // payment: ,
+                        // reservedRooms: ,
+                    }).then((result) => {
+                        console.log(result)
+                        axios.get(apiKey + 'api/getAllReservationSummary').then((result) => {
+                            result.data.filter((item) => item.reservation.id == editReservationInfo.id).map((item, index, array) => {
+                                axios.patch(apiKey + 'api/updateReservationSummary/' + item.id, {
+                                    bookingStatus: 'CANCELLED'
+                                }).then((result) => {
+                                    if (index == array.length - 1) {
+                                        window.location.reload();
+                                    }
+                                }).catch((err) => {
+                                    console.log(err)
+
+                                });
+                            })
+                        }).catch((err) => {
+                            console.log(err)
+
+                        });
+
+                    }).catch((err) => {
+                        console.log(err)
+
+                    });
+                }).catch((err) => {
+                    console.log(err)
+
+                });
+            } else {
+                window.location.reload()
+            }
         }).catch((err) => {
             console.log(err)
         });
@@ -476,15 +540,17 @@ export const ReservationContainer = () => {
                 console.log("item.id", item.id)
             })
             if (discountValid == false) {
-                availedRoom.map((item) => {
-                    setGrandTotal(0)
-                    setGrandTotal(grandTotal + (item.roomRate * item.totalNights))
-                })
+                setGrandTotal(availedRoom.reduce((accumulator, value) => parseFloat(accumulator) + parseFloat(value.roomRate * value.totalNights), 0))
+                // availedRoom.map((item) => {
+                //     setGrandTotal(availedRoom.reduce((accumulator, value)=> accumulator + (value.roomRate * value.totalNights)))
+                // })
             }
             else {
 
                 availedRoom.map((item) => {
-                    setGrandTotal(grandTotal + ((item.roomRate * item.totalNights) / 0.80 * 1.12))
+                    setGrandTotal(availedRoom.reduce((accumulator, value) => parseFloat(accumulator) + parseFloat(value.roomRate * value.totalNights), 0) / 1.12 * 0.80)
+
+                    // setGrandTotal(grandTotal + ((item.roomRate * item.totalNights) / 0.80 * 1.12))
                 })
             }
         }
@@ -531,8 +597,13 @@ export const ReservationContainer = () => {
         }
 
 
+
         // if(startDate )
     }, [startDate, endDate])
+
+
+
+
 
     useEffect(() => {
 
@@ -1025,14 +1096,14 @@ export const ReservationContainer = () => {
                                                             }).then((result) => {
                                                                 console.log(result.data)
                                                                 axios.post(apiKey + 'api/sendReservationEmail', {
-                                                                    email: user.data.account.email.toLocaleLowerCase(),
+                                                                    email: user.data.account.email,
                                                                     birthDay: guest.data.new_guest.birthDate,
                                                                     nationality: guest.data.new_guest.nationality,
-                                                                    emailAddress: user.data.account.email.toLocaleLowerCase(),
+                                                                    emailAddress: user.data.account.email,
                                                                     address: guest.data.new_guest.address,
                                                                     contactNumber: user.data.account.contactNumber,
-                                                                    firstName: guest.data.new_guest.firstName.toLocaleLowerCase(),
-                                                                    lastName: guest.data.new_guest.lastName.toLocaleLowerCase(),
+                                                                    firstName: guest.data.new_guest.firstName,
+                                                                    lastName: guest.data.new_guest.lastName,
                                                                     reservationStatus: reservation.data.new_reservation.reservationStatus,
                                                                     accountName: getPayment.data.paymentMode.accountName,
                                                                     accountNumber: getPayment.data.paymentMode.accountNumber,
@@ -1232,7 +1303,7 @@ export const ReservationContainer = () => {
                                                                     address: guest.data.new_guest.address,
                                                                     contactNumber: user.data.account.contactNumber,
                                                                     firstName: guest.data.new_guest.firstName.toLocaleLowerCase(),
-                                                                    lastName: guest.data.new_guest.lastName.toLocaleLowerCase(),
+                                                                    lastName: guest.data.new_guest.lastName,
                                                                     reservationStatus: reservation.data.new_reservation.reservationStatus,
                                                                     accountName: getPayment.data.paymentMode.accountName,
                                                                     accountNumber: getPayment.data.paymentMode.accountNumber,
@@ -1346,7 +1417,8 @@ export const ReservationContainer = () => {
             }
             else {
                 setAvailableRooms([])
-                window.alert('Sorry your rooms have been reserved.')
+                window.alert('Sorry the rooms have been reserved online.')
+                window.location = ''
             }
         }).catch((err) => {
 
@@ -1537,6 +1609,18 @@ export const ReservationContainer = () => {
         }
     }
 
+    const [search, setSearch] = useState('')
+    const [endDateFilter, setEndDateFilter] = useState(null)
+    const [startDateFilter, setStartDateFilter] = useState(null)
+
+    useEffect(() => {
+        if (startDateFilter != null && endDateFilter != null) {
+            if (Date.parse(startDateFilter) > Date.parse(endDateFilter)) {
+                // setEndDate(new Date(startDate).getTime() + 86400000)
+                setEndDateFilter(new Date(Date.parse(startDateFilter) + 86400000))
+            }
+        }
+    }, [startDateFilter, endDateFilter])
     return (
         <Container
 
@@ -1583,6 +1667,10 @@ export const ReservationContainer = () => {
                         id="outlined-basic"
                         label="Search..."
                         variant="outlined"
+                        value={search}
+                        onChange={(e) => {
+                            setSearch(e.target.value)
+                        }}
                         sx={{
                             input: { color: 'black', fontWeight: 'bold' },
 
@@ -1603,9 +1691,9 @@ export const ReservationContainer = () => {
                         <DatePicker
                             views={['day', 'month', 'year']}
                             label="Start Date"
-                            value={value}
+                            value={startDateFilter}
                             onChange={(newValue) => {
-                                setValue(newValue);
+                                setStartDateFilter(newValue);
                             }}
                             renderInput={(params) =>
                                 <TextField
@@ -1631,10 +1719,11 @@ export const ReservationContainer = () => {
 
                             views={['day', 'month', 'year']}
                             label="End Date"
-                            value={value}
+                            value={endDateFilter}
                             onChange={(newValue) => {
-                                setValue(newValue);
+                                setEndDateFilter(newValue);
                             }}
+                            minDate={startDateFilter}
                             renderInput={(params) =>
                                 <TextField
                                     {...params}
@@ -1654,7 +1743,15 @@ export const ReservationContainer = () => {
 
                     </LocalizationProvider>
 
-
+                    {startDateFilter != null && endDateFilter != null ?
+                        <IconButton onClick={() => {
+                            setStartDateFilter(null)
+                            setEndDateFilter(null)
+                            setSearch('')
+                        }}>
+                            <CloseIcon />
+                        </IconButton>
+                        : ''}
 
 
                 </ContainerGlobal>
@@ -1693,14 +1790,45 @@ export const ReservationContainer = () => {
                         <Th align='center'>Reservation Number </Th>
                         <Th align='center'>Guest's Name </Th>
                         <Th align='center'>No. of Rooms</Th>
-                        <Th align='center'>Remaining Balance<ArrowDropDownIcon style={{ color: 'black' }} /></Th>
+                        <Th align='center'>Remaining Balance</Th>
                         <Th align='center'>Reservation Status </Th>
                         <Th align='center'>Action</Th>
                     </Tr>
                     {reservation.length != 0 ?
                         reservation
                             .slice((roomPage - 1) * 10, roomPage * 10)
-                            .sort((a, b) => a.reservationReferenceNumber - b.reservationReferenceNumber)
+                            .filter((item) => {
+                                if (startDateFilter != null && endDateFilter != null) {
+                                    let filterDates = getDates(startDateFilter, endDateFilter);
+                                    if (filterDates.includes(moment(item.reservationDate).format('YYYY-MM-DD'))) {
+                                        return item
+                                    }
+                                }
+                                else {
+                                    return item
+                                }
+                            })
+                            .sort((a, b) => Date.parse(new Date(b.reservationDate)) - Date.parse(new Date(a.reservationDate)))
+                            .filter((item) => {
+                                if (search != '') {
+                                    if (new Date(item.reservationDate).toLocaleDateString().includes(search)
+                                        || item.reservationReferenceNumber.toString().includes(search)
+                                        || (item.guestInformation.firstName.toLowerCase()).toString().includes(search.toLowerCase())
+                                        || (item.guestInformation.firstName.toLowerCase() + ' ' + item.guestInformation.lastName.toLowerCase()).toString().includes(search.toLowerCase())
+                                        || (item.guestInformation.lastName.toLowerCase()).toString().includes(search.toLowerCase())
+                                        || (item.reservationStatus.toLowerCase()).toString().includes(search.toLowerCase())
+                                    ) {
+                                        return item;
+                                    }
+                                    else if ('cancelled'.includes(search.toLowerCase())) {
+                                        return item.reservationStatus == 'UNSETTLED'
+                                    }
+                                }
+
+                                else {
+                                    return item
+                                }
+                            })
                             .map((item) => (
                                 <Tr>
                                     <Td align='center'>{new Date(item.reservationDate).toLocaleDateString()}</Td>
@@ -1731,7 +1859,38 @@ export const ReservationContainer = () => {
                     justify='center'>
                     <Pagination
                         page={roomPage}
-                        count={reservation.length != 0 && Math.ceil(reservation.length / 10)}
+                        count={reservation.length != 0 && Math.ceil(reservation.filter((item) => {
+                            if (startDateFilter != null && endDateFilter != null) {
+                                let filterDates = getDates(startDateFilter, endDateFilter);
+                                if (filterDates.includes(moment(item.reservationDate).format('YYYY-MM-DD'))) {
+                                    return item
+                                }
+                            }
+                            else {
+                                return item
+                            }
+                        })
+                            .sort((a, b) => Date.parse(new Date(b.reservationDate)) - Date.parse(new Date(a.reservationDate)))
+                            .filter((item) => {
+                                if (search != '') {
+                                    if (new Date(item.reservationDate).toLocaleDateString().includes(search)
+                                        || item.reservationReferenceNumber.toString().includes(search)
+                                        || (item.guestInformation.firstName.toLowerCase()).toString().includes(search.toLowerCase())
+                                        || (item.guestInformation.firstName.toLowerCase() + ' ' + item.guestInformation.lastName.toLowerCase()).toString().includes(search.toLowerCase())
+                                        || (item.guestInformation.lastName.toLowerCase()).toString().includes(search.toLowerCase())
+                                        || (item.reservationStatus.toLowerCase()).toString().includes(search.toLowerCase())
+                                    ) {
+                                        return item;
+                                    }
+                                    else if ('cancelled'.includes(search.toLowerCase())) {
+                                        return item.reservationStatus == 'UNSETTLED'
+                                    }
+                                }
+
+                                else {
+                                    return item
+                                }
+                            }).length / 10)}
                         onChange={(e, value) => {
 
                             setRoomPage(value)
@@ -1879,9 +2038,6 @@ export const ReservationContainer = () => {
                                         if (e.target.value <= 0) {
                                             setAdults(1);
                                         }
-                                        else if (e.target.value >= 5) {
-                                            setAdults(4);
-                                        }
                                         else {
                                             setAdults(e.target.value);
                                         }
@@ -1915,9 +2071,6 @@ export const ReservationContainer = () => {
                                     onChange={(e) => {
                                         if (e.target.value <= 0) {
                                             setKids(0);
-                                        }
-                                        else if (e.target.value >= 3) {
-                                            setKids(2);
                                         }
                                         else {
                                             setKids(e.target.value);
@@ -3952,9 +4105,6 @@ export const ReservationContainer = () => {
                                         if (e.target.value <= 0) {
                                             setAdults(1);
                                         }
-                                        else if (e.target.value >= 5) {
-                                            setAdults(4);
-                                        }
                                         else {
                                             setAdults(e.target.value);
                                         }
@@ -3988,9 +4138,6 @@ export const ReservationContainer = () => {
                                     onChange={(e) => {
                                         if (e.target.value <= 0) {
                                             setKids(0);
-                                        }
-                                        else if (e.target.value >= 3) {
-                                            setKids(2);
                                         }
                                         else {
                                             setKids(e.target.value);
@@ -4938,6 +5085,9 @@ export const ReservationContainer = () => {
                     <Button variant="contained" color='error' onClick={handleCloseEdit}>Close</Button>
                 </Box>
             </Modal>
+
+
+
         </Container >
     )
 }

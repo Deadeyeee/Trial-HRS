@@ -15,7 +15,7 @@ const ClientMessagesPage = () => {
   return (
       <Container>
         <Navprofile/>
-        <ContentContainer>
+        <ContentContainer style={{overflow: 'hidden'}}>
           <ProfileContainer message></ProfileContainer>
           
         <ClientMessagesCont ></ClientMessagesCont>

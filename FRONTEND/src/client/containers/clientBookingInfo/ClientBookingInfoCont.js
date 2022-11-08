@@ -8,6 +8,7 @@ import axios from 'axios';
 import { ContainerGlobal } from '../../../admin/components/container/container';
 import { HorizontalLine } from '../../components/horizontalLine/HorizontalLine';
 import { apiKey } from '../../../apiKey';
+import { Pagination } from '@mui/material';
 
 const ClientBookingInfoCont = () => {
     useEffect(() => {
@@ -26,7 +27,7 @@ const ClientBookingInfoCont = () => {
     useEffect(() => {
         setGrandTotal(0);
         reservedBooking.map((item) => (
-            setGrandTotal((prevValue) => prevValue + (item.room.roomType.roomRate * item.numberOfNights))
+            setGrandTotal((prevValue) => prevValue + (item.reservation.payment.grandTotal))
         ))
     }, [reservedBooking])
 
@@ -95,7 +96,13 @@ const ClientBookingInfoCont = () => {
     const reservationStatus = (value) => {
         if (value != null) {
             if (value.toLowerCase() == 'pending') {
-                return <div style={{ width: '95%' }}>
+                return <div style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    width: '100%'
+                }}>
                     <Title
                         family='raleway, sans-serif'
                         color='#292929'
@@ -104,7 +111,10 @@ const ClientBookingInfoCont = () => {
                         fstyle='Normal'
                         margin='50px 0px 10px 0px'
                         align='Center'
-                        overflow='visible'
+                        size1000='20px'
+                        margin1000='50px 0px 10px 0px'
+
+
                     >
                         Thank you for staying with us.
                     </Title>
@@ -114,10 +124,9 @@ const ClientBookingInfoCont = () => {
                         weight='400'
                         size='25px'
                         fstyle='Normal'
-                        margin='50px 0px 10px 0px'
+                        size1000='20px'
+                        margin1000='50px 0px 10px 0px'
                         align='Center'
-                        overflow='visible'
-                        width='80%'
 
                     >
                         Your reservation is <b style={{ color: '#c9d81c' }}>{value}</b> until confirmation of Bank Deposit/Transfer is made.
@@ -129,15 +138,18 @@ const ClientBookingInfoCont = () => {
                         size='25px'
                         fstyle='Normal'
                         margin='25px 0px 40px 0px'
+                        size1000='20px'
+                        margin1000='20px 0px 40px 0px'
                         align='Center'
 
                     >
                         <b>Instructions on how to make the payment:</b>
                     </Title>
-                    <BankTitleContainer style={{ margin: 'auto', }}
+                    <BankTitleContainer style={{ margin: 'auto', height: 'auto', alignItems: 'center' }}
                         w='50%'>
                         <ContainerGlobal
-                            justify='space-between'>
+                            justify='space-between'
+                            w='80%'>
                             <Title
                                 family='raleway, sans-serif'
                                 weight='700'
@@ -146,6 +158,7 @@ const ClientBookingInfoCont = () => {
                                 size='25px'
                                 color='#2e2e2e'
                                 align='left'
+                                size1000='16px'
                             >
                                 <b>BANK / E-Payment: </b>
                             </Title>
@@ -155,14 +168,16 @@ const ClientBookingInfoCont = () => {
                                 fstyle='Normal'
                                 size='25px'
                                 color='#2e2e2e'
-                                align='left'
+                                align='right'
+                                size1000='16px'
                             >
                                 {activeReservation.length != 0 ? activeReservation.payment.paymentMode.billerName : ""}
                             </Title>
                         </ContainerGlobal>
 
                         <ContainerGlobal
-                            justify='space-between'>
+                            justify='space-between'
+                            w='80%'>
                             <Title
                                 family='raleway, sans-serif'
                                 weight='700'
@@ -170,6 +185,7 @@ const ClientBookingInfoCont = () => {
                                 size='25px'
                                 color='#2e2e2e'
                                 align='left'
+                                size1000='16px'
                             >
                                 <b>Bank Address: </b>
                             </Title>
@@ -179,14 +195,16 @@ const ClientBookingInfoCont = () => {
                                 fstyle='Normal'
                                 size='25px'
                                 color='#2e2e2e'
-                                align='left'
+                                align='right'
+                                size1000='16px'
                             >
                                 Quezon City
                             </Title>
                         </ContainerGlobal>
 
                         <ContainerGlobal
-                            justify='space-between'>
+                            justify='space-between'
+                            w='80%'>
                             <Title
                                 family='raleway, sans-serif'
                                 weight='700'
@@ -194,6 +212,7 @@ const ClientBookingInfoCont = () => {
                                 size='25px'
                                 color='#2e2e2e'
                                 align='left'
+                                size1000='16px'
                             >
                                 <b>Account Name: </b>
                             </Title>
@@ -203,14 +222,16 @@ const ClientBookingInfoCont = () => {
                                 fstyle='Normal'
                                 size='25px'
                                 color='#2e2e2e'
-                                align='left'
+                                align='right'
+                                size1000='16px'
                             >
                                 {activeReservation.length != 0 ? activeReservation.payment.paymentMode.accountName : " "}
                             </Title>
                         </ContainerGlobal>
 
                         <ContainerGlobal
-                            justify='space-between'>
+                            justify='space-between'
+                            w='80%'>
                             <Title
                                 family='raleway, sans-serif'
                                 weight='700'
@@ -218,6 +239,7 @@ const ClientBookingInfoCont = () => {
                                 size='25px'
                                 color='#2e2e2e'
                                 align='left'
+                                size1000='16px'
                             >
                                 <b>Account Number: </b>
                             </Title>
@@ -227,7 +249,8 @@ const ClientBookingInfoCont = () => {
                                 fstyle='Normal'
                                 size='25px'
                                 color='#2e2e2e'
-                                align='left'
+                                align='right'
+                                size1000='16px'
                             >
                                 {activeReservation.length != 0 ? activeReservation.payment.paymentMode.accountNumber : ""}
                             </Title>
@@ -243,6 +266,9 @@ const ClientBookingInfoCont = () => {
                             color='#2e2e2e'
                             align='center'
                             margin='0px 200px'
+                            margin1000='30px 0px 20px 0px'
+                            size1000='20px'
+                            w='80%'
                         >
                             To confirm your reservation, <b>
                                 please make your deposit amounting
@@ -264,6 +290,8 @@ const ClientBookingInfoCont = () => {
                             color='#2e2e2e'
                             align='center'
                             margin='25px 200px'
+                            margin1000='25px 100px'
+                            size1000='20px'
                         >
                             For further information, please send an email to <a target='_blank' href='mailto: Rm.LuxeHotel@gmail.com'>Rm.LuxeHotel@gmail.com</a>, or <a href='/login'>message us</a> through your account. You will find the details of your reservation made below.
                         </Title>
@@ -276,6 +304,8 @@ const ClientBookingInfoCont = () => {
                         color='#2e2e2e'
                         align='Center'
                         margin='60px 0px 0px 0px'
+                        margin1000='60px 0px 0px 0px'
+                        size1000='25px'
                     >
                         <b>Reservation Information</b>
                     </Title>
@@ -285,12 +315,14 @@ const ClientBookingInfoCont = () => {
 
                             <ContainerGlobal
                                 justify='space-between'
+                                w='100%'
                             >
                                 <Title
                                     family='raleway, sans-serif'
                                     weight='400'
                                     fstyle='Normal'
                                     size='25px'
+                                    size1000='100%'
                                     color='#2e2e2e'
                                     align='left'
                                 >
@@ -302,21 +334,23 @@ const ClientBookingInfoCont = () => {
                                     fstyle='Normal'
                                     size='25px'
                                     color='#2e2e2e'
+                                    size1000='100%'
                                     align='right'
-                                    w='400px'
+                                    w='50%'
                                 >
                                     <b> {activeReservation.reservationReferenceNumber}</b>
                                 </Title>
                             </ContainerGlobal>
                             <ContainerGlobal
                                 justify='space-between'
-                            >
+                                w='100%'>
                                 <Title
                                     family='raleway, sans-serif'
                                     weight='400'
                                     fstyle='Normal'
                                     size='25px'
                                     color='#2e2e2e'
+                                    size1000='16px'
                                     align='left'
                                 >
                                     Reservation Date:
@@ -326,20 +360,22 @@ const ClientBookingInfoCont = () => {
                                     weight='700'
                                     fstyle='Normal'
                                     size='25px'
+                                    size1000='16px'
                                     align='right'
-                                    w='400px'
+                                    w='50%'
                                 >
                                     <b> {new Date(activeReservation.reservationDate).toLocaleDateString()}</b>
                                 </Title>
                             </ContainerGlobal>
                             <ContainerGlobal
                                 justify='space-between'
-                            >
+                                w='100%'>
                                 <Title
                                     family='raleway, sans-serif'
                                     weight='400'
                                     fstyle='Normal'
                                     size='25px'
+                                    size1000='16px'
                                     color='#2e2e2e'
                                     align='left'
                                 >
@@ -350,21 +386,23 @@ const ClientBookingInfoCont = () => {
                                     weight='700'
                                     fstyle='Normal'
                                     size='25px'
+                                    size1000='16px'
                                     color='#2e2e2e'
                                     align='right'
-                                    w='400px'
+                                    w='50%'
                                 >
                                     <b> {activeReservation.payment.paymentMode.paymentMode}</b>
                                 </Title>
                             </ContainerGlobal>
                             <ContainerGlobal
                                 justify='space-between'
-                            >
+                                w='100%'>
                                 <Title
                                     family='raleway, sans-serif'
                                     weight='400'
                                     fstyle='Normal'
                                     size='25px'
+                                    size1000='16px'
                                     color='#2e2e2e'
                                     align='left'
                                 >
@@ -377,18 +415,20 @@ const ClientBookingInfoCont = () => {
                                     size='25px'
                                     color='#2e2e2e'
                                     align='right'
-                                    w='400px'
+                                    size1000='16px'
+                                    w='50%'
                                 >
                                     <b>  Down Payment</b>
                                 </Title>
                             </ContainerGlobal>
                             <ContainerGlobal
                                 justify='space-between'
-                            >
+                                w='100%'>
                                 <Title
                                     family='raleway, sans-serif'
                                     weight='400'
                                     fstyle='Normal'
+                                    size1000='16px'
                                     size='25px'
                                     color='#2e2e2e'
                                     align='left'
@@ -401,19 +441,21 @@ const ClientBookingInfoCont = () => {
                                     fstyle='Normal'
                                     size='25px'
                                     color='#2e2e2e'
+                                    size1000='16px'
                                     align='right'
-                                    w='400px'
+                                    w='50%'
                                 >
                                     <b> {activeReservation.guestInformation.firstName}  {activeReservation.guestInformation.lastName}</b>
                                 </Title>
                             </ContainerGlobal>
                             <ContainerGlobal
                                 justify='space-between'
-                            >
+                                w='100%'>
                                 <Title
                                     family='raleway, sans-serif'
                                     weight='400'
                                     fstyle='Normal'
+                                    size1000='16px'
                                     size='25px'
                                     color='#2e2e2e'
                                     align='left'
@@ -423,22 +465,24 @@ const ClientBookingInfoCont = () => {
                                 <Title
                                     family='raleway, sans-serif'
                                     weight='700'
+                                    size1000='16px'
                                     fstyle='Normal'
                                     size='25px'
                                     color='#2e2e2e'
                                     align='right'
-                                    w='400px'
+                                    w='50%'
                                 >
                                     <b> {new Date(activeReservation.guestInformation.birthDate).toLocaleDateString()}</b>
                                 </Title>
                             </ContainerGlobal>
                             <ContainerGlobal
                                 justify='space-between'
-                            >
+                                w='100%'>
                                 <Title
                                     family='raleway, sans-serif'
                                     weight='400'
                                     fstyle='Normal'
+                                    size1000='16px'
                                     size='25px'
                                     color='#2e2e2e'
                                     align='left'
@@ -450,21 +494,23 @@ const ClientBookingInfoCont = () => {
                                     weight='700'
                                     fstyle='Normal'
                                     size='25px'
+                                    size1000='16px'
                                     color='#2e2e2e'
                                     align='right'
-                                    w='400px'
+                                    w='50%'
                                 >
                                     <b> {activeReservation.guestInformation.nationality}</b>
                                 </Title>
                             </ContainerGlobal>
                             <ContainerGlobal
                                 justify='space-between'
-                            >
+                                w='100%'>
                                 <Title
                                     family='raleway, sans-serif'
                                     weight='400'
                                     fstyle='Normal'
                                     size='25px'
+                                    size1000='16px'
                                     color='#2e2e2e'
                                     align='left'
                                 >
@@ -476,18 +522,20 @@ const ClientBookingInfoCont = () => {
                                     fstyle='Normal'
                                     size='25px'
                                     color='#2e2e2e'
+                                    size1000='16px'
                                     align='right'
-                                    w='400px'
+                                    w='50%'
                                 >
                                     <b> {activeReservation.guestInformation.user.email.toLowerCase()}</b>
                                 </Title>
                             </ContainerGlobal>
                             <ContainerGlobal
                                 justify='space-between'
-                            >
+                                w='100%'>
                                 <Title
                                     family='raleway, sans-serif'
                                     weight='400'
+                                    size1000='16px'
                                     fstyle='Normal'
                                     size='25px'
                                     color='#2e2e2e'
@@ -501,18 +549,20 @@ const ClientBookingInfoCont = () => {
                                     fstyle='Normal'
                                     size='25px'
                                     color='#2e2e2e'
+                                    size1000='16px'
                                     align='right'
-                                    w='400px'
+                                    w='50%'
                                 >
                                     <b> {activeReservation.guestInformation.address}</b>
                                 </Title>
                             </ContainerGlobal>
                             <ContainerGlobal
                                 justify='space-between'
-                            >
+                                w='100%'>
                                 <Title
                                     family='raleway, sans-serif'
                                     weight='400'
+                                    size1000='16px'
                                     fstyle='Normal'
                                     size='25px'
                                     color='#2e2e2e'
@@ -525,6 +575,7 @@ const ClientBookingInfoCont = () => {
                                     weight='700'
                                     fstyle='Normal'
                                     size='25px'
+                                    size1000='16px'
                                     color='#2e2e2e'
                                     align='left'
                                 >
@@ -548,8 +599,10 @@ const ClientBookingInfoCont = () => {
                     >
                         <b>Charge Summary</b>
                     </Title>
-                    <ChargeSummaryContainer>
+                    <ChargeSummaryContainer style={{ width: '100%', }}>
                         <TableContainer
+                            className='tableCart'
+                            style={{ width: 'auto' }}
                             cellspacing="0"
                             cellpadding="0">
                             <Tr bg="transparent">
@@ -564,12 +617,12 @@ const ClientBookingInfoCont = () => {
 
                                 <Tr style={index % 2 == 0 ? { backgroundColor: 'rgb(0,0,0,.1)' } : { backgroundColor: 'transparent' }}>
 
-                                    <Td align='center'>{item.room.roomType.roomType}</Td>
+                                    <Td align='center'>{item.roomType}</Td>
                                     <Td align='center'>{new Date(item.checkInDate).toLocaleDateString()}</Td>
                                     <Td align='center'>{new Date(item.checkOutDate).toLocaleDateString()}</Td>
                                     <Td align='center'>{item.numberOfNights}</Td>
-                                    <Td align='center'>{numberFormat(item.room.roomType.roomRate)}</Td>
-                                    <Td align='center' style={{ color: 'red' }}>{numberFormat(item.room.roomType.roomRate * item.numberOfNights)}</Td>
+                                    <Td align='center'>{numberFormat(item.roomRate)}</Td>
+                                    <Td align='center' style={{ color: 'red' }}>{numberFormat(item.total)}</Td>
                                 </Tr>
 
                             ))}
@@ -588,6 +641,7 @@ const ClientBookingInfoCont = () => {
                                     size='26px'
                                     color='#2e2e2e'
                                     align='left'
+                                    size1000='16px'
                                 >
                                     <b>Discount:</b>
                                 </Title>
@@ -597,7 +651,8 @@ const ClientBookingInfoCont = () => {
                                     fstyle='Normal'
                                     size='24px'
                                     // color='#13ed34'
-                                    align='left'
+                                    align='right'
+                                    size1000='16px'
                                 >
                                     {activeReservation.payment.discount.discountType}
                                 </Title>
@@ -611,6 +666,7 @@ const ClientBookingInfoCont = () => {
                                         size='26px'
                                         color='#2e2e2e'
                                         align='left'
+                                        size1000='16px'
                                     >
                                         <b>Down Payment:</b>
                                     </Title>
@@ -620,7 +676,8 @@ const ClientBookingInfoCont = () => {
                                         fstyle='Normal'
                                         size='24px'
                                         color='black'
-                                        align='left'
+                                        align='right'
+                                        size1000='16px'
                                     >
                                         {numberFormat(grandTotal / 2)}
                                     </Title>
@@ -634,6 +691,7 @@ const ClientBookingInfoCont = () => {
                                         size='26px'
                                         color='#2e2e2e'
                                         align='left'
+                                        size1000='16px'
                                     >
                                         <b>Full Payment:</b>
                                     </Title>
@@ -643,7 +701,8 @@ const ClientBookingInfoCont = () => {
                                         fstyle='Normal'
                                         size='24px'
                                         color='black'
-                                        align='left'
+                                        align='right'
+                                        size1000='16px'
                                     >
                                         {numberFormat(grandTotal)}
                                     </Title>
@@ -657,6 +716,7 @@ const ClientBookingInfoCont = () => {
                                     size='24px'
                                     color='#2e2e2e'
                                     align='left'
+                                    size1000='16px'
                                 >
                                     <b>Amount Paid:</b>
                                 </Title>
@@ -666,7 +726,8 @@ const ClientBookingInfoCont = () => {
                                     fstyle='Normal'
                                     size='24px'
                                     color='#1C9E60'
-                                    align='left'
+                                    align='right'
+                                    size1000='16px'
                                 >
                                     {numberFormat(activeReservation.payment.paymentMade)}
                                 </Title>
@@ -680,6 +741,7 @@ const ClientBookingInfoCont = () => {
                                     size='24px'
                                     color='#2e2e2e'
                                     align='left'
+                                    size1000='16px'
                                 >
                                     <b>Grand Total:</b>
                                 </Title>
@@ -689,7 +751,8 @@ const ClientBookingInfoCont = () => {
                                     fstyle='Normal'
                                     size='24px'
                                     color='#000000'
-                                    align='left'
+                                    align='right'
+                                    size1000='16px'
                                 >
                                     {numberFormat(grandTotal)}
                                 </Title>
@@ -707,6 +770,7 @@ const ClientBookingInfoCont = () => {
                                     size='26px'
                                     color='#2e2e2e'
                                     align='left'
+                                    size1000='16px'
                                 >
                                     <b>Remaining Balance:</b>
                                 </Title>
@@ -716,14 +780,15 @@ const ClientBookingInfoCont = () => {
                                     fstyle='Normal'
                                     size='24px'
                                     color='red'
-                                    align='left'to confi
+                                    align='right'
+                                    size1000='16px'
                                 >
                                     {numberFormat(activeReservation.payment.grandTotal - activeReservation.payment.paymentMade)}
                                 </Title>
                             </ContainerGlobal>
                         </ChargeSummaryContentContainer>
                     </ChargeSummaryContainer>
-                    <div style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center' }}>
+                    <div style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center', width: '90%' }}>
                         <center >
                             <b style={{ fontSize: '19px' }}>Note that if you are eligible for a discount: </b>
                         </center>
@@ -738,7 +803,13 @@ const ClientBookingInfoCont = () => {
                 </div>
             }
             else if (value.toLowerCase() == 'unsettled') {
-                return <div style={{ width: '95%' }}>
+                return <div style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    width: '100%'
+                }}>
                     <Title
                         family='raleway, sans-serif'
                         color='#292929'
@@ -748,6 +819,8 @@ const ClientBookingInfoCont = () => {
                         margin='50px 0px 10px 0px'
                         align='Center'
                         overflow='visible'
+                        margin1000='50px 0px 10px 0px'
+                        size1000='25px'
                     >
                         Booking Reservation Cancelled
                     </Title>
@@ -759,6 +832,8 @@ const ClientBookingInfoCont = () => {
                         fstyle='Normal'
                         margin='50px 0px 10px 0px'
                         align='Center'
+                        margin1000='50px 0px 10px 0px'
+                        size1000='20px'
                         overflow='visible'
 
                     >
@@ -775,22 +850,53 @@ const ClientBookingInfoCont = () => {
                         color='#2e2e2e'
                         align='Center'
                         margin='60px 0px 0px 0px'
+                        margin1000='60px 0px 0px 0px'
+                        size1000='25px'
                     >
                         <b>Reservation Information</b>
                     </Title>
                     <ReservationInformationContainer
-                        w='100%'>
+                        w='100%' >
                         <ReservationInformationContentsContainer>
 
                             <ContainerGlobal
                                 justify='space-between'
+                                w='100%'
                             >
                                 <Title
                                     family='raleway, sans-serif'
                                     weight='400'
                                     fstyle='Normal'
                                     size='25px'
+                                    size1000='100%'
                                     color='#2e2e2e'
+                                    align='left'
+                                >
+                                    Reservation Number:
+                                </Title>
+                                <Title
+                                    family='raleway, sans-serif'
+                                    weight='700'
+                                    fstyle='Normal'
+                                    size='25px'
+                                    color='#2e2e2e'
+                                    size1000='100%'
+                                    align='right'
+                                    w='50%'
+                                >
+                                    <b> {activeReservation.reservationReferenceNumber}</b>
+                                </Title>
+                            </ContainerGlobal>
+                            <ContainerGlobal
+                                justify='space-between'
+                                w='100%'>
+                                <Title
+                                    family='raleway, sans-serif'
+                                    weight='400'
+                                    fstyle='Normal'
+                                    size='25px'
+                                    color='#2e2e2e'
+                                    size1000='16px'
                                     align='left'
                                 >
                                     Reservation Date:
@@ -800,21 +906,22 @@ const ClientBookingInfoCont = () => {
                                     weight='700'
                                     fstyle='Normal'
                                     size='25px'
-                                    color='#2e2e2e'
+                                    size1000='16px'
                                     align='right'
-                                    w='400px'
+                                    w='50%'
                                 >
                                     <b> {new Date(activeReservation.reservationDate).toLocaleDateString()}</b>
                                 </Title>
                             </ContainerGlobal>
                             <ContainerGlobal
                                 justify='space-between'
-                            >
+                                w='100%'>
                                 <Title
                                     family='raleway, sans-serif'
                                     weight='400'
                                     fstyle='Normal'
                                     size='25px'
+                                    size1000='16px'
                                     color='#2e2e2e'
                                     align='left'
                                 >
@@ -825,21 +932,23 @@ const ClientBookingInfoCont = () => {
                                     weight='700'
                                     fstyle='Normal'
                                     size='25px'
+                                    size1000='16px'
                                     color='#2e2e2e'
                                     align='right'
-                                    w='400px'
+                                    w='50%'
                                 >
                                     <b> {activeReservation.payment.paymentMode.paymentMode}</b>
                                 </Title>
                             </ContainerGlobal>
                             <ContainerGlobal
                                 justify='space-between'
-                            >
+                                w='100%'>
                                 <Title
                                     family='raleway, sans-serif'
                                     weight='400'
                                     fstyle='Normal'
                                     size='25px'
+                                    size1000='16px'
                                     color='#2e2e2e'
                                     align='left'
                                 >
@@ -852,18 +961,20 @@ const ClientBookingInfoCont = () => {
                                     size='25px'
                                     color='#2e2e2e'
                                     align='right'
-                                    w='400px'
+                                    size1000='16px'
+                                    w='50%'
                                 >
-                                    <b>Down Payment</b>
+                                    <b>  Down Payment</b>
                                 </Title>
                             </ContainerGlobal>
                             <ContainerGlobal
                                 justify='space-between'
-                            >
+                                w='100%'>
                                 <Title
                                     family='raleway, sans-serif'
                                     weight='400'
                                     fstyle='Normal'
+                                    size1000='16px'
                                     size='25px'
                                     color='#2e2e2e'
                                     align='left'
@@ -876,19 +987,21 @@ const ClientBookingInfoCont = () => {
                                     fstyle='Normal'
                                     size='25px'
                                     color='#2e2e2e'
+                                    size1000='16px'
                                     align='right'
-                                    w='400px'
+                                    w='50%'
                                 >
                                     <b> {activeReservation.guestInformation.firstName}  {activeReservation.guestInformation.lastName}</b>
                                 </Title>
                             </ContainerGlobal>
                             <ContainerGlobal
                                 justify='space-between'
-                            >
+                                w='100%'>
                                 <Title
                                     family='raleway, sans-serif'
                                     weight='400'
                                     fstyle='Normal'
+                                    size1000='16px'
                                     size='25px'
                                     color='#2e2e2e'
                                     align='left'
@@ -898,22 +1011,24 @@ const ClientBookingInfoCont = () => {
                                 <Title
                                     family='raleway, sans-serif'
                                     weight='700'
+                                    size1000='16px'
                                     fstyle='Normal'
                                     size='25px'
                                     color='#2e2e2e'
                                     align='right'
-                                    w='400px'
+                                    w='50%'
                                 >
                                     <b> {new Date(activeReservation.guestInformation.birthDate).toLocaleDateString()}</b>
                                 </Title>
                             </ContainerGlobal>
                             <ContainerGlobal
                                 justify='space-between'
-                            >
+                                w='100%'>
                                 <Title
                                     family='raleway, sans-serif'
                                     weight='400'
                                     fstyle='Normal'
+                                    size1000='16px'
                                     size='25px'
                                     color='#2e2e2e'
                                     align='left'
@@ -925,21 +1040,23 @@ const ClientBookingInfoCont = () => {
                                     weight='700'
                                     fstyle='Normal'
                                     size='25px'
+                                    size1000='16px'
                                     color='#2e2e2e'
                                     align='right'
-                                    w='400px'
+                                    w='50%'
                                 >
                                     <b> {activeReservation.guestInformation.nationality}</b>
                                 </Title>
                             </ContainerGlobal>
                             <ContainerGlobal
                                 justify='space-between'
-                            >
+                                w='100%'>
                                 <Title
                                     family='raleway, sans-serif'
                                     weight='400'
                                     fstyle='Normal'
                                     size='25px'
+                                    size1000='16px'
                                     color='#2e2e2e'
                                     align='left'
                                 >
@@ -951,18 +1068,20 @@ const ClientBookingInfoCont = () => {
                                     fstyle='Normal'
                                     size='25px'
                                     color='#2e2e2e'
+                                    size1000='16px'
                                     align='right'
-                                    w='400px'
+                                    w='50%'
                                 >
                                     <b> {activeReservation.guestInformation.user.email.toLowerCase()}</b>
                                 </Title>
                             </ContainerGlobal>
                             <ContainerGlobal
                                 justify='space-between'
-                            >
+                                w='100%'>
                                 <Title
                                     family='raleway, sans-serif'
                                     weight='400'
+                                    size1000='16px'
                                     fstyle='Normal'
                                     size='25px'
                                     color='#2e2e2e'
@@ -976,18 +1095,20 @@ const ClientBookingInfoCont = () => {
                                     fstyle='Normal'
                                     size='25px'
                                     color='#2e2e2e'
+                                    size1000='16px'
                                     align='right'
-                                    w='400px'
+                                    w='50%'
                                 >
                                     <b> {activeReservation.guestInformation.address}</b>
                                 </Title>
                             </ContainerGlobal>
                             <ContainerGlobal
                                 justify='space-between'
-                            >
+                                w='100%'>
                                 <Title
                                     family='raleway, sans-serif'
                                     weight='400'
+                                    size1000='16px'
                                     fstyle='Normal'
                                     size='25px'
                                     color='#2e2e2e'
@@ -1000,9 +1121,9 @@ const ClientBookingInfoCont = () => {
                                     weight='700'
                                     fstyle='Normal'
                                     size='25px'
+                                    size1000='16px'
                                     color='#2e2e2e'
-                                    align='right'
-                                    w='400px'
+                                    align='left'
                                 >
                                     <b> {activeReservation.guestInformation.user.contactNumber}</b>
                                 </Title>
@@ -1024,8 +1145,10 @@ const ClientBookingInfoCont = () => {
                     >
                         <b>Charge Summary</b>
                     </Title>
-                    <ChargeSummaryContainer>
+                    <ChargeSummaryContainer style={{ width: '100%', }}>
                         <TableContainer
+                            className='tableCart'
+                            style={{ width: 'auto' }}
                             cellspacing="0"
                             cellpadding="0">
                             <Tr bg="transparent">
@@ -1040,12 +1163,12 @@ const ClientBookingInfoCont = () => {
 
                                 <Tr style={index % 2 == 0 ? { backgroundColor: 'rgb(0,0,0,.1)' } : { backgroundColor: 'transparent' }}>
 
-                                    <Td align='center'>{item.room.roomType.roomType}</Td>
+                                    <Td align='center'>{item.roomType}</Td>
                                     <Td align='center'>{new Date(item.checkInDate).toLocaleDateString()}</Td>
                                     <Td align='center'>{new Date(item.checkOutDate).toLocaleDateString()}</Td>
                                     <Td align='center'>{item.numberOfNights}</Td>
-                                    <Td align='center'>{numberFormat(item.room.roomType.roomRate)}</Td>
-                                    <Td align='center' style={{ color: 'red' }}>{numberFormat(item.room.roomType.roomRate * item.numberOfNights)}</Td>
+                                    <Td align='center'>{numberFormat(item.roomRate)}</Td>
+                                    <Td align='center' style={{ color: 'red' }}>{numberFormat(item.total)}</Td>
                                 </Tr>
 
                             ))}
@@ -1054,7 +1177,7 @@ const ClientBookingInfoCont = () => {
                     <center>
                         <BrokenHorizontalLine></BrokenHorizontalLine>
                     </center>
-                    <ChargeSummaryContainer>
+                    <ChargeSummaryContainer style={{ margin: 'auto' }}>
                         <ChargeSummaryContentContainer>
                             <ContainerGlobal justify='space-between' gap='70px'>
                                 <Title
@@ -1064,6 +1187,7 @@ const ClientBookingInfoCont = () => {
                                     size='26px'
                                     color='#2e2e2e'
                                     align='left'
+                                    size1000='16px'
                                 >
                                     <b>Discount:</b>
                                 </Title>
@@ -1073,63 +1197,72 @@ const ClientBookingInfoCont = () => {
                                     fstyle='Normal'
                                     size='24px'
                                     // color='#13ed34'
-                                    align='left'
+                                    align='right'
+                                    size1000='16px'
                                 >
                                     {activeReservation.payment.discount.discountType}
                                 </Title>
                             </ContainerGlobal>
+                            {activeReservation.payment.paymentType == 'Down Payment' ?
+                                <ContainerGlobal justify='space-between' gap='70px'>
+                                    <Title
+                                        family='raleway, sans-serif'
+                                        weight='700'
+                                        fstyle='Normal'
+                                        size='26px'
+                                        color='#2e2e2e'
+                                        align='left'
+                                        size1000='16px'
+                                    >
+                                        <b>Down Payment:</b>
+                                    </Title>
+                                    <Title
+                                        family='Roboto Slab'
+                                        weight='400'
+                                        fstyle='Normal'
+                                        size='24px'
+                                        color='black'
+                                        align='right'
+                                        size1000='16px'
+                                    >
+                                        {numberFormat(grandTotal / 2)}
+                                    </Title>
+                                </ContainerGlobal>
+                                :
+                                <ContainerGlobal justify='space-between' gap='70px'>
+                                    <Title
+                                        family='raleway, sans-serif'
+                                        weight='700'
+                                        fstyle='Normal'
+                                        size='26px'
+                                        color='#2e2e2e'
+                                        align='left'
+                                        size1000='16px'
+                                    >
+                                        <b>Full Payment:</b>
+                                    </Title>
+                                    <Title
+                                        family='Roboto Slab'
+                                        weight='400'
+                                        fstyle='Normal'
+                                        size='24px'
+                                        color='black'
+                                        align='right'
+                                        size1000='16px'
+                                    >
+                                        {numberFormat(grandTotal)}
+                                    </Title>
+                                </ContainerGlobal>
+                            }
                             <ContainerGlobal justify='space-between' gap='70px'>
                                 <Title
                                     family='raleway, sans-serif'
                                     weight='700'
                                     fstyle='Normal'
-                                    size='26px'
-                                    color='#2e2e2e'
-                                    align='left'
-                                >
-                                    <b>Down Payment:</b>
-                                </Title>
-                                <Title
-                                    family='Roboto Slab'
-                                    weight='400'
-                                    fstyle='Normal'
-                                    size='24px'
-                                    color='black'
-                                    align='left'
-                                >
-                                    {numberFormat(grandTotal / 2)}
-                                </Title>
-                            </ContainerGlobal>
-                            <ContainerGlobal justify='space-between' gap='70px'>
-                                <Title
-                                    family='raleway, sans-serif'
-                                    weight='700'
-                                    fstyle='Normal'
-                                    size='26px'
-                                    color='#2e2e2e'
-                                    align='left'
-                                >
-                                    <b>Full Payment:</b>
-                                </Title>
-                                <Title
-                                    family='Roboto Slab'
-                                    weight='400'
-                                    fstyle='Normal'
-                                    size='24px'
-                                    color='black'
-                                    align='left'
-                                >
-                                    {numberFormat(grandTotal)}
-                                </Title>
-                            </ContainerGlobal>
-                            <ContainerGlobal justify='space-between' gap='70px'>
-                                <Title
-                                    family='raleway, sans-serif'
-                                    weight='700'
-                                    fstyle='Normal'
                                     size='24px'
                                     color='#2e2e2e'
                                     align='left'
+                                    size1000='16px'
                                 >
                                     <b>Amount Paid:</b>
                                 </Title>
@@ -1139,11 +1272,42 @@ const ClientBookingInfoCont = () => {
                                     fstyle='Normal'
                                     size='24px'
                                     color='#1C9E60'
+                                    align='right'
+                                    size1000='16px'
+                                >
+                                    {numberFormat(activeReservation.payment.paymentMade)}
+                                </Title>
+                            </ContainerGlobal>
+
+                            <ContainerGlobal justify='space-between' gap='70px'>
+                                <Title
+                                    family='raleway, sans-serif'
+                                    weight='400'
+                                    fstyle='Normal'
+                                    size='24px'
+                                    color='#2e2e2e'
                                     align='left'
+                                    size1000='16px'
+                                >
+                                    <b>Grand Total:</b>
+                                </Title>
+                                <Title
+                                    family='Roboto Slab'
+                                    weight='400'
+                                    fstyle='Normal'
+                                    size='24px'
+                                    color='#000000'
+                                    align='right'
+                                    size1000='16px'
                                 >
                                     {numberFormat(grandTotal)}
                                 </Title>
                             </ContainerGlobal>
+                            <HorizontalLine
+                                w='100%'
+                                margin='10px 0px 0px 0px'
+                            />
+
                             <ContainerGlobal justify='space-between' gap='70px'>
                                 <Title
                                     family='raleway, sans-serif'
@@ -1152,6 +1316,7 @@ const ClientBookingInfoCont = () => {
                                     size='26px'
                                     color='#2e2e2e'
                                     align='left'
+                                    size1000='16px'
                                 >
                                     <b>Remaining Balance:</b>
                                 </Title>
@@ -1161,53 +1326,33 @@ const ClientBookingInfoCont = () => {
                                     fstyle='Normal'
                                     size='24px'
                                     color='red'
-                                    align='left'
+                                    align='right'
+                                    size1000='16px'
                                 >
-                                    {numberFormat(grandTotal)}
+                                    {numberFormat(activeReservation.payment.grandTotal - activeReservation.payment.paymentMade)}
                                 </Title>
                             </ContainerGlobal>
-                            <HorizontalLine
-                                w='100%'
-                                margin='10px 0px 0px 0px'
-                            />
-                            <ContainerGlobal justify='space-between' gap='70px'>
-                                <Title
-                                    family='raleway, sans-serif'
-                                    weight='700'
-                                    fstyle='Normal'
-                                    size='30px'
-                                    color='#2e2e2e'
-                                    align='left'
-                                >
-                                    <b>Grand Total:</b>
-                                </Title>
-                                <Title
-                                    family='Roboto Slab'
-                                    weight='700'
-                                    fstyle='Normal'
-                                    size='30px'
-                                    color='#000000'
-                                    align='left'
-                                >
-                                    {numberFormat(grandTotal)}
-                                </Title>
-                            </ContainerGlobal>
-                        </ChargeSummaryContentContainer>
-                        <ChargeSummaryContentContainer>
-
                         </ChargeSummaryContentContainer>
                     </ChargeSummaryContainer>
                 </div>
             }
             else if (value.toLowerCase() == 'reserved') {
-                return <div style={{ width: '95%' }}>
+                return <div style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    width: '100%'
+                }}>
                     <Title
                         family='raleway, sans-serif'
                         color='#292929'
                         weight='400'
                         size='37px'
+                        size1000='25px'
                         fstyle='Normal'
                         margin='50px 0px 10px 0px'
+                        margin1000='25px 0px 10px 0px'
                         align='Center'
                         overflow='visible'
                     >
@@ -1218,8 +1363,10 @@ const ClientBookingInfoCont = () => {
                         color='#292929'
                         weight='400'
                         size='25px'
+                        size1000='25px'
                         fstyle='Normal'
                         margin='50px 0px 10px 0px'
+                        margin1000='50px 0px 10px 0px'
                         align='Center'
                         overflow='visible'
 
@@ -1234,22 +1381,53 @@ const ClientBookingInfoCont = () => {
                         color='#2e2e2e'
                         align='Center'
                         margin='60px 0px 0px 0px'
+                        margin1000='60px 0px 0px 0px'
+                        size1000='25px'
                     >
                         <b>Reservation Information</b>
                     </Title>
                     <ReservationInformationContainer
-                        w='100%'>
+                        w='100%' >
                         <ReservationInformationContentsContainer>
 
                             <ContainerGlobal
                                 justify='space-between'
+                                w='100%'
                             >
                                 <Title
                                     family='raleway, sans-serif'
                                     weight='400'
                                     fstyle='Normal'
                                     size='25px'
+                                    size1000='100%'
                                     color='#2e2e2e'
+                                    align='left'
+                                >
+                                    Reservation Number:
+                                </Title>
+                                <Title
+                                    family='raleway, sans-serif'
+                                    weight='700'
+                                    fstyle='Normal'
+                                    size='25px'
+                                    color='#2e2e2e'
+                                    size1000='100%'
+                                    align='right'
+                                    w='50%'
+                                >
+                                    <b> {activeReservation.reservationReferenceNumber}</b>
+                                </Title>
+                            </ContainerGlobal>
+                            <ContainerGlobal
+                                justify='space-between'
+                                w='100%'>
+                                <Title
+                                    family='raleway, sans-serif'
+                                    weight='400'
+                                    fstyle='Normal'
+                                    size='25px'
+                                    color='#2e2e2e'
+                                    size1000='16px'
                                     align='left'
                                 >
                                     Reservation Date:
@@ -1259,21 +1437,22 @@ const ClientBookingInfoCont = () => {
                                     weight='700'
                                     fstyle='Normal'
                                     size='25px'
-                                    color='#2e2e2e'
+                                    size1000='16px'
                                     align='right'
-                                    w='400px'
+                                    w='50%'
                                 >
                                     <b> {new Date(activeReservation.reservationDate).toLocaleDateString()}</b>
                                 </Title>
                             </ContainerGlobal>
                             <ContainerGlobal
                                 justify='space-between'
-                            >
+                                w='100%'>
                                 <Title
                                     family='raleway, sans-serif'
                                     weight='400'
                                     fstyle='Normal'
                                     size='25px'
+                                    size1000='16px'
                                     color='#2e2e2e'
                                     align='left'
                                 >
@@ -1284,21 +1463,23 @@ const ClientBookingInfoCont = () => {
                                     weight='700'
                                     fstyle='Normal'
                                     size='25px'
+                                    size1000='16px'
                                     color='#2e2e2e'
                                     align='right'
-                                    w='400px'
+                                    w='50%'
                                 >
                                     <b> {activeReservation.payment.paymentMode.paymentMode}</b>
                                 </Title>
                             </ContainerGlobal>
                             <ContainerGlobal
                                 justify='space-between'
-                            >
+                                w='100%'>
                                 <Title
                                     family='raleway, sans-serif'
                                     weight='400'
                                     fstyle='Normal'
                                     size='25px'
+                                    size1000='16px'
                                     color='#2e2e2e'
                                     align='left'
                                 >
@@ -1311,18 +1492,20 @@ const ClientBookingInfoCont = () => {
                                     size='25px'
                                     color='#2e2e2e'
                                     align='right'
-                                    w='400px'
+                                    size1000='16px'
+                                    w='50%'
                                 >
                                     <b>  Down Payment</b>
                                 </Title>
                             </ContainerGlobal>
                             <ContainerGlobal
                                 justify='space-between'
-                            >
+                                w='100%'>
                                 <Title
                                     family='raleway, sans-serif'
                                     weight='400'
                                     fstyle='Normal'
+                                    size1000='16px'
                                     size='25px'
                                     color='#2e2e2e'
                                     align='left'
@@ -1335,19 +1518,21 @@ const ClientBookingInfoCont = () => {
                                     fstyle='Normal'
                                     size='25px'
                                     color='#2e2e2e'
+                                    size1000='16px'
                                     align='right'
-                                    w='400px'
+                                    w='50%'
                                 >
                                     <b> {activeReservation.guestInformation.firstName}  {activeReservation.guestInformation.lastName}</b>
                                 </Title>
                             </ContainerGlobal>
                             <ContainerGlobal
                                 justify='space-between'
-                            >
+                                w='100%'>
                                 <Title
                                     family='raleway, sans-serif'
                                     weight='400'
                                     fstyle='Normal'
+                                    size1000='16px'
                                     size='25px'
                                     color='#2e2e2e'
                                     align='left'
@@ -1357,22 +1542,24 @@ const ClientBookingInfoCont = () => {
                                 <Title
                                     family='raleway, sans-serif'
                                     weight='700'
+                                    size1000='16px'
                                     fstyle='Normal'
                                     size='25px'
                                     color='#2e2e2e'
                                     align='right'
-                                    w='400px'
+                                    w='50%'
                                 >
                                     <b> {new Date(activeReservation.guestInformation.birthDate).toLocaleDateString()}</b>
                                 </Title>
                             </ContainerGlobal>
                             <ContainerGlobal
                                 justify='space-between'
-                            >
+                                w='100%'>
                                 <Title
                                     family='raleway, sans-serif'
                                     weight='400'
                                     fstyle='Normal'
+                                    size1000='16px'
                                     size='25px'
                                     color='#2e2e2e'
                                     align='left'
@@ -1384,21 +1571,23 @@ const ClientBookingInfoCont = () => {
                                     weight='700'
                                     fstyle='Normal'
                                     size='25px'
+                                    size1000='16px'
                                     color='#2e2e2e'
                                     align='right'
-                                    w='400px'
+                                    w='50%'
                                 >
                                     <b> {activeReservation.guestInformation.nationality}</b>
                                 </Title>
                             </ContainerGlobal>
                             <ContainerGlobal
                                 justify='space-between'
-                            >
+                                w='100%'>
                                 <Title
                                     family='raleway, sans-serif'
                                     weight='400'
                                     fstyle='Normal'
                                     size='25px'
+                                    size1000='16px'
                                     color='#2e2e2e'
                                     align='left'
                                 >
@@ -1410,18 +1599,20 @@ const ClientBookingInfoCont = () => {
                                     fstyle='Normal'
                                     size='25px'
                                     color='#2e2e2e'
+                                    size1000='16px'
                                     align='right'
-                                    w='400px'
+                                    w='50%'
                                 >
                                     <b> {activeReservation.guestInformation.user.email.toLowerCase()}</b>
                                 </Title>
                             </ContainerGlobal>
                             <ContainerGlobal
                                 justify='space-between'
-                            >
+                                w='100%'>
                                 <Title
                                     family='raleway, sans-serif'
                                     weight='400'
+                                    size1000='16px'
                                     fstyle='Normal'
                                     size='25px'
                                     color='#2e2e2e'
@@ -1435,18 +1626,20 @@ const ClientBookingInfoCont = () => {
                                     fstyle='Normal'
                                     size='25px'
                                     color='#2e2e2e'
+                                    size1000='16px'
                                     align='right'
-                                    w='400px'
+                                    w='50%'
                                 >
                                     <b> {activeReservation.guestInformation.address}</b>
                                 </Title>
                             </ContainerGlobal>
                             <ContainerGlobal
                                 justify='space-between'
-                            >
+                                w='100%'>
                                 <Title
                                     family='raleway, sans-serif'
                                     weight='400'
+                                    size1000='16px'
                                     fstyle='Normal'
                                     size='25px'
                                     color='#2e2e2e'
@@ -1459,9 +1652,9 @@ const ClientBookingInfoCont = () => {
                                     weight='700'
                                     fstyle='Normal'
                                     size='25px'
+                                    size1000='16px'
                                     color='#2e2e2e'
-                                    align='right'
-                                    w='400px'
+                                    align='left'
                                 >
                                     <b> {activeReservation.guestInformation.user.contactNumber}</b>
                                 </Title>
@@ -1483,8 +1676,10 @@ const ClientBookingInfoCont = () => {
                     >
                         <b>Charge Summary</b>
                     </Title>
-                    <ChargeSummaryContainer>
+                    <ChargeSummaryContainer style={{ width: '100%', }}>
                         <TableContainer
+                            className='tableCart'
+                            style={{ width: 'auto' }}
                             cellspacing="0"
                             cellpadding="0">
                             <Tr bg="transparent">
@@ -1499,12 +1694,12 @@ const ClientBookingInfoCont = () => {
 
                                 <Tr style={index % 2 == 0 ? { backgroundColor: 'rgb(0,0,0,.1)' } : { backgroundColor: 'transparent' }}>
 
-                                    <Td align='center'>{item.room.roomType.roomType}</Td>
+                                    <Td align='center'>{item.roomType}</Td>
                                     <Td align='center'>{new Date(item.checkInDate).toLocaleDateString()}</Td>
                                     <Td align='center'>{new Date(item.checkOutDate).toLocaleDateString()}</Td>
                                     <Td align='center'>{item.numberOfNights}</Td>
-                                    <Td align='center'>{numberFormat(item.room.roomType.roomRate)}</Td>
-                                    <Td align='center' style={{ color: 'red' }}>{numberFormat(item.room.roomType.roomRate * item.numberOfNights)}</Td>
+                                    <Td align='center'>{numberFormat(item.roomRate)}</Td>
+                                    <Td align='center' style={{ color: 'red' }}>{numberFormat(item.total)}</Td>
                                 </Tr>
 
                             ))}
@@ -1513,7 +1708,7 @@ const ClientBookingInfoCont = () => {
                     <center>
                         <BrokenHorizontalLine></BrokenHorizontalLine>
                     </center>
-                    <ChargeSummaryContainer>
+                    <ChargeSummaryContainer style={{ margin: 'auto' }}>
                         <ChargeSummaryContentContainer>
                             <ContainerGlobal justify='space-between' gap='70px'>
                                 <Title
@@ -1523,6 +1718,7 @@ const ClientBookingInfoCont = () => {
                                     size='26px'
                                     color='#2e2e2e'
                                     align='left'
+                                    size1000='16px'
                                 >
                                     <b>Discount:</b>
                                 </Title>
@@ -1532,7 +1728,8 @@ const ClientBookingInfoCont = () => {
                                     fstyle='Normal'
                                     size='24px'
                                     // color='#13ed34'
-                                    align='left'
+                                    align='right'
+                                    size1000='16px'
                                 >
                                     {activeReservation.payment.discount.discountType}
                                 </Title>
@@ -1546,6 +1743,7 @@ const ClientBookingInfoCont = () => {
                                         size='26px'
                                         color='#2e2e2e'
                                         align='left'
+                                        size1000='16px'
                                     >
                                         <b>Down Payment:</b>
                                     </Title>
@@ -1555,7 +1753,8 @@ const ClientBookingInfoCont = () => {
                                         fstyle='Normal'
                                         size='24px'
                                         color='black'
-                                        align='left'
+                                        align='right'
+                                        size1000='16px'
                                     >
                                         {numberFormat(grandTotal / 2)}
                                     </Title>
@@ -1569,6 +1768,7 @@ const ClientBookingInfoCont = () => {
                                         size='26px'
                                         color='#2e2e2e'
                                         align='left'
+                                        size1000='16px'
                                     >
                                         <b>Full Payment:</b>
                                     </Title>
@@ -1578,7 +1778,8 @@ const ClientBookingInfoCont = () => {
                                         fstyle='Normal'
                                         size='24px'
                                         color='black'
-                                        align='left'
+                                        align='right'
+                                        size1000='16px'
                                     >
                                         {numberFormat(grandTotal)}
                                     </Title>
@@ -1592,6 +1793,7 @@ const ClientBookingInfoCont = () => {
                                     size='24px'
                                     color='#2e2e2e'
                                     align='left'
+                                    size1000='16px'
                                 >
                                     <b>Amount Paid:</b>
                                 </Title>
@@ -1601,7 +1803,8 @@ const ClientBookingInfoCont = () => {
                                     fstyle='Normal'
                                     size='24px'
                                     color='#1C9E60'
-                                    align='left'
+                                    align='right'
+                                    size1000='16px'
                                 >
                                     {numberFormat(activeReservation.payment.paymentMade)}
                                 </Title>
@@ -1615,6 +1818,7 @@ const ClientBookingInfoCont = () => {
                                     size='24px'
                                     color='#2e2e2e'
                                     align='left'
+                                    size1000='16px'
                                 >
                                     <b>Grand Total:</b>
                                 </Title>
@@ -1624,7 +1828,8 @@ const ClientBookingInfoCont = () => {
                                     fstyle='Normal'
                                     size='24px'
                                     color='#000000'
-                                    align='left'
+                                    align='right'
+                                    size1000='16px'
                                 >
                                     {numberFormat(grandTotal)}
                                 </Title>
@@ -1642,6 +1847,7 @@ const ClientBookingInfoCont = () => {
                                     size='26px'
                                     color='#2e2e2e'
                                     align='left'
+                                    size1000='16px'
                                 >
                                     <b>Remaining Balance:</b>
                                 </Title>
@@ -1651,14 +1857,12 @@ const ClientBookingInfoCont = () => {
                                     fstyle='Normal'
                                     size='24px'
                                     color='red'
-                                    align='left'
+                                    align='right'
+                                    size1000='16px'
                                 >
                                     {numberFormat(activeReservation.payment.grandTotal - activeReservation.payment.paymentMade)}
                                 </Title>
                             </ContainerGlobal>
-                        </ChargeSummaryContentContainer>
-                        <ChargeSummaryContentContainer>
-
                         </ChargeSummaryContentContainer>
                     </ChargeSummaryContainer>
                     <div style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center' }}>
@@ -1675,1537 +1879,7 @@ const ClientBookingInfoCont = () => {
                     </div>
                 </div>
             }
-            else if (value.toLowerCase() == 'booked') {
-                return <div style={{ width: '95%' }}>
-                    <Title
-                        family='raleway, sans-serif'
-                        color='#292929'
-                        weight='400'
-                        size='37px'
-                        fstyle='Normal'
-                        margin='50px 0px 10px 0px'
-                        align='Center'
-                        overflow='visible'
-                    >
-                        Thank you for staying with us.
-                    </Title>
-                    <Title
-                        family='raleway, sans-serif'
-                        color='#292929'
-                        weight='400'
-                        size='25px'
-                        fstyle='Normal'
-                        margin='50px 0px 10px 0px'
-                        align='Center'
-                        overflow='visible'
 
-                    >
-                        Thank you for choosing RM Luxe Hotel! Your reservation is <b style={{ color: 'blue' }}>{value} </b>
-                        Please wait for an auto-generated email to verify that your booking is <b>confirmed</b> after your payment.
-                    </Title>
-                    <Title
-                        family='raleway, sans-serif'
-                        color='#292929'
-                        weight='400'
-                        size='25px'
-                        fstyle='Normal'
-                        margin='25px 0px 40px 0px'
-                        align='Center'
-
-                    >
-                        <b>Instructions on how to make the payment:</b>
-                    </Title>
-                    <BankTitleContainer style={{ margin: 'auto', }}
-                        w='50%'>
-                        <ContainerGlobal
-                            justify='space-between'>
-                            <Title
-                                family='raleway, sans-serif'
-                                weight='700'
-                                fstyle='Normal'
-                                overflow='visible'
-                                size='25px'
-                                color='#2e2e2e'
-                                align='left'
-                            >
-                                <b>BANK / E-Payment: </b>
-                            </Title>
-                            <Title
-                                family='raleway, sans-serif'
-                                weight='400'
-                                fstyle='Normal'
-                                size='25px'
-                                color='#2e2e2e'
-                                align='left'
-                            >
-                                {activeReservation.length != 0 ? activeReservation.payment.paymentMode.billerName : ""}
-                            </Title>
-                        </ContainerGlobal>
-
-                        <ContainerGlobal
-                            justify='space-between'>
-                            <Title
-                                family='raleway, sans-serif'
-                                weight='700'
-                                fstyle='Normal'
-                                size='25px'
-                                color='#2e2e2e'
-                                align='left'
-                            >
-                                <b>Bank Address: </b>
-                            </Title>
-                            <Title
-                                family='raleway, sans-serif'
-                                weight='400'
-                                fstyle='Normal'
-                                size='25px'
-                                color='#2e2e2e'
-                                align='left'
-                            >
-                                Quezon City
-                            </Title>
-                        </ContainerGlobal>
-
-                        <ContainerGlobal
-                            justify='space-between'>
-                            <Title
-                                family='raleway, sans-serif'
-                                weight='700'
-                                fstyle='Normal'
-                                size='25px'
-                                color='#2e2e2e'
-                                align='left'
-                            >
-                                <b>Account Name: </b>
-                            </Title>
-                            <Title
-                                family='raleway, sans-serif'
-                                weight='400'
-                                fstyle='Normal'
-                                size='25px'
-                                color='#2e2e2e'
-                                align='left'
-                            >
-                                {activeReservation.length != 0 ? activeReservation.payment.paymentMode.accountName : " "}
-                            </Title>
-                        </ContainerGlobal>
-
-                        <ContainerGlobal
-                            justify='space-between'>
-                            <Title
-                                family='raleway, sans-serif'
-                                weight='700'
-                                fstyle='Normal'
-                                size='25px'
-                                color='#2e2e2e'
-                                align='left'
-                            >
-                                <b>Account Number: </b>
-                            </Title>
-                            <Title
-                                family='raleway, sans-serif'
-                                weight='400'
-                                fstyle='Normal'
-                                size='25px'
-                                color='#2e2e2e'
-                                align='left'
-                            >
-                                {activeReservation.length != 0 ? activeReservation.payment.paymentMode.accountNumber : ""}
-                            </Title>
-                        </ContainerGlobal>
-
-                    </BankTitleContainer>
-                    <BankContentContainer >
-                        <Title
-                            family='raleway, sans-serif'
-                            weight='400'
-                            fstyle='Normal'
-                            size='25px'
-                            color='#2e2e2e'
-                            align='center'
-                            margin='25px 20px'
-                        >
-                            For further information, please send an email to rm.luxehotel@gmail.com, or <a href='/login'>message us</a> through your account. You will find the details of your reservation made below.
-                        </Title>
-                    </BankContentContainer>
-                    <Title
-                        family='raleway, sans-serif'
-                        weight='700'
-                        fstyle='Normal'
-                        size='36px'
-                        color='#2e2e2e'
-                        align='Center'
-                        margin='60px 0px 0px 0px'
-                    >
-                        <b>Reservation Information</b>
-                    </Title>
-                    <ReservationInformationContainer
-                        w='100%'>
-                        <ReservationInformationContentsContainer>
-
-                            <ContainerGlobal
-                                justify='space-between'
-                            >
-                                <Title
-                                    family='raleway, sans-serif'
-                                    weight='400'
-                                    fstyle='Normal'
-                                    size='25px'
-                                    color='#2e2e2e'
-                                    align='left'
-                                >
-                                    Reservation Date:
-                                </Title>
-                                <Title
-                                    family='raleway, sans-serif'
-                                    weight='700'
-                                    fstyle='Normal'
-                                    size='25px'
-                                    color='#2e2e2e'
-                                    align='right'
-                                    w='400px'
-                                >
-                                    <b> {new Date(activeReservation.reservationDate).toLocaleDateString()}</b>
-                                </Title>
-                            </ContainerGlobal>
-                            <ContainerGlobal
-                                justify='space-between'
-                            >
-                                <Title
-                                    family='raleway, sans-serif'
-                                    weight='400'
-                                    fstyle='Normal'
-                                    size='25px'
-                                    color='#2e2e2e'
-                                    align='left'
-                                >
-                                    Payment Mode:
-                                </Title>
-                                <Title
-                                    family='raleway, sans-serif'
-                                    weight='700'
-                                    fstyle='Normal'
-                                    size='25px'
-                                    color='#2e2e2e'
-                                    align='right'
-                                    w='400px'
-                                >
-                                    <b> {activeReservation.payment.paymentMode.paymentMode}</b>
-                                </Title>
-                            </ContainerGlobal>
-                            <ContainerGlobal
-                                justify='space-between'
-                            >
-                                <Title
-                                    family='raleway, sans-serif'
-                                    weight='400'
-                                    fstyle='Normal'
-                                    size='25px'
-                                    color='#2e2e2e'
-                                    align='left'
-                                >
-                                    Payment Type:
-                                </Title>
-                                <Title
-                                    family='raleway, sans-serif'
-                                    weight='700'
-                                    fstyle='Normal'
-                                    size='25px'
-                                    color='#2e2e2e'
-                                    align='right'
-                                    w='400px'
-                                >
-                                    <b>  Down Payment</b>
-                                </Title>
-                            </ContainerGlobal>
-                            <ContainerGlobal
-                                justify='space-between'
-                            >
-                                <Title
-                                    family='raleway, sans-serif'
-                                    weight='400'
-                                    fstyle='Normal'
-                                    size='25px'
-                                    color='#2e2e2e'
-                                    align='left'
-                                >
-                                    Guest Name:
-                                </Title>
-                                <Title
-                                    family='raleway, sans-serif'
-                                    weight='700'
-                                    fstyle='Normal'
-                                    size='25px'
-                                    color='#2e2e2e'
-                                    align='right'
-                                    w='400px'
-                                >
-                                    <b> {activeReservation.guestInformation.firstName}  {activeReservation.guestInformation.lastName}</b>
-                                </Title>
-                            </ContainerGlobal>
-                            <ContainerGlobal
-                                justify='space-between'
-                            >
-                                <Title
-                                    family='raleway, sans-serif'
-                                    weight='400'
-                                    fstyle='Normal'
-                                    size='25px'
-                                    color='#2e2e2e'
-                                    align='left'
-                                >
-                                    Birthdate:
-                                </Title>
-                                <Title
-                                    family='raleway, sans-serif'
-                                    weight='700'
-                                    fstyle='Normal'
-                                    size='25px'
-                                    color='#2e2e2e'
-                                    align='right'
-                                    w='400px'
-                                >
-                                    <b> {new Date(activeReservation.guestInformation.birthDate).toLocaleDateString()}</b>
-                                </Title>
-                            </ContainerGlobal>
-                            <ContainerGlobal
-                                justify='space-between'
-                            >
-                                <Title
-                                    family='raleway, sans-serif'
-                                    weight='400'
-                                    fstyle='Normal'
-                                    size='25px'
-                                    color='#2e2e2e'
-                                    align='left'
-                                >
-                                    Nationality:
-                                </Title>
-                                <Title
-                                    family='raleway, sans-serif'
-                                    weight='700'
-                                    fstyle='Normal'
-                                    size='25px'
-                                    color='#2e2e2e'
-                                    align='right'
-                                    w='400px'
-                                >
-                                    <b> {activeReservation.guestInformation.nationality}</b>
-                                </Title>
-                            </ContainerGlobal>
-                            <ContainerGlobal
-                                justify='space-between'
-                            >
-                                <Title
-                                    family='raleway, sans-serif'
-                                    weight='400'
-                                    fstyle='Normal'
-                                    size='25px'
-                                    color='#2e2e2e'
-                                    align='left'
-                                >
-                                    Email Address:
-                                </Title>
-                                <Title
-                                    family='raleway, sans-serif'
-                                    weight='700'
-                                    fstyle='Normal'
-                                    size='25px'
-                                    color='#2e2e2e'
-                                    align='right'
-                                    w='400px'
-                                >
-                                    <b> {activeReservation.guestInformation.user.email.toLowerCase()}</b>
-                                </Title>
-                            </ContainerGlobal>
-                            <ContainerGlobal
-                                justify='space-between'
-                            >
-                                <Title
-                                    family='raleway, sans-serif'
-                                    weight='400'
-                                    fstyle='Normal'
-                                    size='25px'
-                                    color='#2e2e2e'
-                                    align='left'
-                                >
-                                    Address:
-                                </Title>
-                                <Title
-                                    family='raleway, sans-serif'
-                                    weight='700'
-                                    fstyle='Normal'
-                                    size='25px'
-                                    color='#2e2e2e'
-                                    align='right'
-                                    w='400px'
-                                >
-                                    <b> {activeReservation.guestInformation.address}</b>
-                                </Title>
-                            </ContainerGlobal>
-                            <ContainerGlobal
-                                justify='space-between'
-                            >
-                                <Title
-                                    family='raleway, sans-serif'
-                                    weight='400'
-                                    fstyle='Normal'
-                                    size='25px'
-                                    color='#2e2e2e'
-                                    align='left'
-                                >
-                                    Contact Number:
-                                </Title>
-                                <Title
-                                    family='raleway, sans-serif'
-                                    weight='700'
-                                    fstyle='Normal'
-                                    size='25px'
-                                    color='#2e2e2e'
-                                    align='right'
-                                    w='400px'
-                                >
-                                    <b> {activeReservation.guestInformation.user.contactNumber}</b>
-                                </Title>
-                            </ContainerGlobal>
-
-                        </ReservationInformationContentsContainer>
-
-
-
-                    </ReservationInformationContainer>
-                    <Title
-                        family='raleway, sans-serif'
-                        weight='700'
-                        fstyle='Normal'
-                        size='36px'
-                        color='#2e2e2e'
-                        margin='0px 0px 30px 0px'
-                        align='Center'
-                    >
-                        <b>Charge Summary</b>
-                    </Title>
-                    <ChargeSummaryContainer>
-                        <TableContainer
-                            cellspacing="0"
-                            cellpadding="0">
-                            <Tr bg="transparent">
-                                <Th bg='#2E2E2E' color='white' align='center'>Room type</Th>
-                                <Th bg='#2E2E2E' color='white' align='center'>Check in</Th>
-                                <Th bg='#2E2E2E' color='white' align='center'>Check out</Th>
-                                <Th bg='#2E2E2E' color='white' align='center'>Total nights</Th>
-                                <Th bg='#2E2E2E' color='white' align='center'>Rate per night</Th>
-                                <Th bg='#2E2E2E' color='white' align='center'>Total amout due</Th>
-                            </Tr>
-                            {reservedBooking.map((item, index) => (
-
-                                <Tr style={index % 2 == 0 ? { backgroundColor: 'rgb(0,0,0,.1)' } : { backgroundColor: 'transparent' }}>
-
-                                    <Td align='center'>{item.room.roomType.roomType}</Td>
-                                    <Td align='center'>{new Date(item.checkInDate).toLocaleDateString()}</Td>
-                                    <Td align='center'>{new Date(item.checkOutDate).toLocaleDateString()}</Td>
-                                    <Td align='center'>{item.numberOfNights}</Td>
-                                    <Td align='center'>{numberFormat(item.room.roomType.roomRate)}</Td>
-                                    <Td align='center' style={{ color: 'red' }}>{numberFormat(item.room.roomType.roomRate * item.numberOfNights)}</Td>
-                                </Tr>
-
-                            ))}
-                        </TableContainer>
-                    </ChargeSummaryContainer>
-                    <center>
-                        <BrokenHorizontalLine></BrokenHorizontalLine>
-                    </center>
-                    <ChargeSummaryContainer>
-                        <ChargeSummaryContentContainer>
-                            <ContainerGlobal justify='space-between' gap='70px'>
-                                <Title
-                                    family='raleway, sans-serif'
-                                    weight='700'
-                                    fstyle='Normal'
-                                    size='26px'
-                                    color='#2e2e2e'
-                                    align='left'
-                                >
-                                    <b>Discount:</b>
-                                </Title>
-                                <Title
-                                    family='raleway, sans-serif'
-                                    weight='400'
-                                    fstyle='Normal'
-                                    size='24px'
-                                    // color='#13ed34'
-                                    align='left'
-                                >
-                                    {activeReservation.payment.discount.discountType}
-                                </Title>
-                            </ContainerGlobal>
-                            {activeReservation.payment.paymentType == 'Down Payment' ?
-                                <ContainerGlobal justify='space-between' gap='70px'>
-                                    <Title
-                                        family='raleway, sans-serif'
-                                        weight='700'
-                                        fstyle='Normal'
-                                        size='26px'
-                                        color='#2e2e2e'
-                                        align='left'
-                                    >
-                                        <b>Down Payment:</b>
-                                    </Title>
-                                    <Title
-                                        family='Roboto Slab'
-                                        weight='400'
-                                        fstyle='Normal'
-                                        size='24px'
-                                        color='black'
-                                        align='left'
-                                    >
-                                        {numberFormat(grandTotal / 2)}
-                                    </Title>
-                                </ContainerGlobal>
-                                :
-                                <ContainerGlobal justify='space-between' gap='70px'>
-                                    <Title
-                                        family='raleway, sans-serif'
-                                        weight='700'
-                                        fstyle='Normal'
-                                        size='26px'
-                                        color='#2e2e2e'
-                                        align='left'
-                                    >
-                                        <b>Full Payment:</b>
-                                    </Title>
-                                    <Title
-                                        family='Roboto Slab'
-                                        weight='400'
-                                        fstyle='Normal'
-                                        size='24px'
-                                        color='black'
-                                        align='left'
-                                    >
-                                        {numberFormat(grandTotal)}
-                                    </Title>
-                                </ContainerGlobal>
-                            }
-                            <ContainerGlobal justify='space-between' gap='70px'>
-                                <Title
-                                    family='raleway, sans-serif'
-                                    weight='700'
-                                    fstyle='Normal'
-                                    size='24px'
-                                    color='#2e2e2e'
-                                    align='left'
-                                >
-                                    <b>Amount Paid:</b>
-                                </Title>
-                                <Title
-                                    family='Roboto Slab'
-                                    weight='400'
-                                    fstyle='Normal'
-                                    size='24px'
-                                    color='#1C9E60'
-                                    align='left'
-                                >
-                                    {numberFormat(activeReservation.payment.paymentMade)}
-                                </Title>
-                            </ContainerGlobal>
-
-                            <ContainerGlobal justify='space-between' gap='70px'>
-                                <Title
-                                    family='raleway, sans-serif'
-                                    weight='400'
-                                    fstyle='Normal'
-                                    size='24px'
-                                    color='#2e2e2e'
-                                    align='left'
-                                >
-                                    <b>Grand Total:</b>
-                                </Title>
-                                <Title
-                                    family='Roboto Slab'
-                                    weight='400'
-                                    fstyle='Normal'
-                                    size='24px'
-                                    color='#000000'
-                                    align='left'
-                                >
-                                    {numberFormat(grandTotal)}
-                                </Title>
-                            </ContainerGlobal>
-                            <HorizontalLine
-                                w='100%'
-                                margin='10px 0px 0px 0px'
-                            />
-
-                            <ContainerGlobal justify='space-between' gap='70px'>
-                                <Title
-                                    family='raleway, sans-serif'
-                                    weight='700'
-                                    fstyle='Normal'
-                                    size='26px'
-                                    color='#2e2e2e'
-                                    align='left'
-                                >
-                                    <b>Remaining Balance:</b>
-                                </Title>
-                                <Title
-                                    family='Roboto Slab'
-                                    weight='400'
-                                    fstyle='Normal'
-                                    size='24px'
-                                    color='red'
-                                    align='left'
-                                >
-                                    {numberFormat(activeReservation.payment.grandTotal - activeReservation.payment.paymentMade)}
-                                </Title>
-                            </ContainerGlobal>
-                        </ChargeSummaryContentContainer>
-                        <ChargeSummaryContentContainer>
-
-                        </ChargeSummaryContentContainer>
-                    </ChargeSummaryContainer>
-                    <div style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center' }}>
-                        <center >
-                            <b style={{ fontSize: '19px' }}>Note that if you are eligible for a discount: </b>
-                        </center>
-                        <p style={{ fontSize: '17px' }}>
-                            <b>For Downpayment:</b> It will only be applied upon check-in. Kindly present your valid id to
-                            our frontdesk to confirm your discount. <br /><br />
-
-                            <b>For Full Payment:</b> You will be subject for a refund. Kindly present your valid id to
-                            our frontdesk to confirm your refund.
-                        </p>
-                    </div>
-                </div>
-            }
-            else if (value.toLowerCase() == 'departed') {
-                return <div style={{ width: '95%' }}>
-                    <Title
-                        family='raleway, sans-serif'
-                        color='#292929'
-                        weight='400'
-                        size='37px'
-                        fstyle='Normal'
-                        margin='50px 0px 10px 0px'
-                        align='Center'
-                        overflow='visible'
-                    >
-                        Thank you for staying with us.
-                    </Title>
-                    <Title
-                        family='raleway, sans-serif'
-                        color='#292929'
-                        weight='400'
-                        size='25px'
-                        fstyle='Normal'
-                        margin='50px 0px 10px 0px'
-                        align='Center'
-                        overflow='visible'
-
-                    >
-                        Thank you for staying in Reymiles Luxe Hotel. We are looking forward for your next visit!
-                        This is the complete transaction details of your stay.
-                    </Title>
-                    <Title
-                        family='raleway, sans-serif'
-                        weight='700'
-                        fstyle='Normal'
-                        size='36px'
-                        color='#2e2e2e'
-                        align='Center'
-                        margin='60px 0px 0px 0px'
-                    >
-                        <b>Transaction Information</b>
-                    </Title>
-                    <ReservationInformationContainer
-                        w='100%'>
-                        <ReservationInformationContentsContainer>
-
-                            <ContainerGlobal
-                                justify='space-between'
-                            >
-                                <Title
-                                    family='raleway, sans-serif'
-                                    weight='400'
-                                    fstyle='Normal'
-                                    size='25px'
-                                    color='#2e2e2e'
-                                    align='left'
-                                >
-                                    Reservation Date:
-                                </Title>
-                                <Title
-                                    family='raleway, sans-serif'
-                                    weight='700'
-                                    fstyle='Normal'
-                                    size='25px'
-                                    color='#2e2e2e'
-                                    align='right'
-                                    w='400px'
-                                >
-                                    <b> {new Date(activeReservation.reservationDate).toLocaleDateString()}</b>
-                                </Title>
-                            </ContainerGlobal>
-                            <ContainerGlobal
-                                justify='space-between'
-                            >
-                                <Title
-                                    family='raleway, sans-serif'
-                                    weight='400'
-                                    fstyle='Normal'
-                                    size='25px'
-                                    color='#2e2e2e'
-                                    align='left'
-                                >
-                                    Payment Mode:
-                                </Title>
-                                <Title
-                                    family='raleway, sans-serif'
-                                    weight='700'
-                                    fstyle='Normal'
-                                    size='25px'
-                                    color='#2e2e2e'
-                                    align='right'
-                                    w='400px'
-                                >
-                                    <b> {activeReservation.payment.paymentMode.paymentMode}</b>
-                                </Title>
-                            </ContainerGlobal>
-                            <ContainerGlobal
-                                justify='space-between'
-                            >
-                                <Title
-                                    family='raleway, sans-serif'
-                                    weight='400'
-                                    fstyle='Normal'
-                                    size='25px'
-                                    color='#2e2e2e'
-                                    align='left'
-                                >
-                                    Payment Type:
-                                </Title>
-                                <Title
-                                    family='raleway, sans-serif'
-                                    weight='700'
-                                    fstyle='Normal'
-                                    size='25px'
-                                    color='#2e2e2e'
-                                    align='right'
-                                    w='400px'
-                                >
-                                    <b>  Down Payment</b>
-                                </Title>
-                            </ContainerGlobal>
-                            <ContainerGlobal
-                                justify='space-between'
-                            >
-                                <Title
-                                    family='raleway, sans-serif'
-                                    weight='400'
-                                    fstyle='Normal'
-                                    size='25px'
-                                    color='#2e2e2e'
-                                    align='left'
-                                >
-                                    Guest Name:
-                                </Title>
-                                <Title
-                                    family='raleway, sans-serif'
-                                    weight='700'
-                                    fstyle='Normal'
-                                    size='25px'
-                                    color='#2e2e2e'
-                                    align='right'
-                                    w='400px'
-                                >
-                                    <b> {activeReservation.guestInformation.firstName}  {activeReservation.guestInformation.lastName}</b>
-                                </Title>
-                            </ContainerGlobal>
-                            <ContainerGlobal
-                                justify='space-between'
-                            >
-                                <Title
-                                    family='raleway, sans-serif'
-                                    weight='400'
-                                    fstyle='Normal'
-                                    size='25px'
-                                    color='#2e2e2e'
-                                    align='left'
-                                >
-                                    Birthdate:
-                                </Title>
-                                <Title
-                                    family='raleway, sans-serif'
-                                    weight='700'
-                                    fstyle='Normal'
-                                    size='25px'
-                                    color='#2e2e2e'
-                                    align='right'
-                                    w='400px'
-                                >
-                                    <b> {new Date(activeReservation.guestInformation.birthDate).toLocaleDateString()}</b>
-                                </Title>
-                            </ContainerGlobal>
-                            <ContainerGlobal
-                                justify='space-between'
-                            >
-                                <Title
-                                    family='raleway, sans-serif'
-                                    weight='400'
-                                    fstyle='Normal'
-                                    size='25px'
-                                    color='#2e2e2e'
-                                    align='left'
-                                >
-                                    Nationality:
-                                </Title>
-                                <Title
-                                    family='raleway, sans-serif'
-                                    weight='700'
-                                    fstyle='Normal'
-                                    size='25px'
-                                    color='#2e2e2e'
-                                    align='right'
-                                    w='400px'
-                                >
-                                    <b> {activeReservation.guestInformation.nationality}</b>
-                                </Title>
-                            </ContainerGlobal>
-                            <ContainerGlobal
-                                justify='space-between'
-                            >
-                                <Title
-                                    family='raleway, sans-serif'
-                                    weight='400'
-                                    fstyle='Normal'
-                                    size='25px'
-                                    color='#2e2e2e'
-                                    align='left'
-                                >
-                                    Email Address:
-                                </Title>
-                                <Title
-                                    family='raleway, sans-serif'
-                                    weight='700'
-                                    fstyle='Normal'
-                                    size='25px'
-                                    color='#2e2e2e'
-                                    align='right'
-                                    w='400px'
-                                >
-                                    <b> {activeReservation.guestInformation.user.email.toLowerCase()}</b>
-                                </Title>
-                            </ContainerGlobal>
-                            <ContainerGlobal
-                                justify='space-between'
-                            >
-                                <Title
-                                    family='raleway, sans-serif'
-                                    weight='400'
-                                    fstyle='Normal'
-                                    size='25px'
-                                    color='#2e2e2e'
-                                    align='left'
-                                >
-                                    Address:
-                                </Title>
-                                <Title
-                                    family='raleway, sans-serif'
-                                    weight='700'
-                                    fstyle='Normal'
-                                    size='25px'
-                                    color='#2e2e2e'
-                                    align='right'
-                                    w='400px'
-                                >
-                                    <b> {activeReservation.guestInformation.address}</b>
-                                </Title>
-                            </ContainerGlobal>
-                            <ContainerGlobal
-                                justify='space-between'
-                            >
-                                <Title
-                                    family='raleway, sans-serif'
-                                    weight='400'
-                                    fstyle='Normal'
-                                    size='25px'
-                                    color='#2e2e2e'
-                                    align='left'
-                                >
-                                    Contact Number:
-                                </Title>
-                                <Title
-                                    family='raleway, sans-serif'
-                                    weight='700'
-                                    fstyle='Normal'
-                                    size='25px'
-                                    color='#2e2e2e'
-                                    align='right'
-                                    w='400px'
-                                >
-                                    <b> {activeReservation.guestInformation.user.contactNumber}</b>
-                                </Title>
-                            </ContainerGlobal>
-
-                        </ReservationInformationContentsContainer>
-
-
-
-                    </ReservationInformationContainer>
-                    <Title
-                        family='raleway, sans-serif'
-                        weight='700'
-                        fstyle='Normal'
-                        size='36px'
-                        color='#2e2e2e'
-                        margin='0px 0px 30px 0px'
-                        align='Center'
-                    >
-                        <b>Transaction Summary</b>
-                    </Title>
-                    <ChargeSummaryContainer>
-                        <TableContainer
-                            cellspacing="0"
-                            cellpadding="0">
-                            <Tr bg="transparent">
-                                <Th bg='#2E2E2E' color='white' align='center'>Room type</Th>
-                                <Th bg='#2E2E2E' color='white' align='center'>Check in</Th>
-                                <Th bg='#2E2E2E' color='white' align='center'>Check out</Th>
-                                <Th bg='#2E2E2E' color='white' align='center'>Total nights</Th>
-                                <Th bg='#2E2E2E' color='white' align='center'>Rate per night</Th>
-                                <Th bg='#2E2E2E' color='white' align='center'>Total amout due</Th>
-                            </Tr>
-                            {reservedBooking.map((item, index) => (
-
-                                <Tr style={index % 2 == 0 ? { backgroundColor: 'rgb(0,0,0,.1)' } : { backgroundColor: 'transparent' }}>
-
-                                    <Td align='center'>{item.room.roomType.roomType}</Td>
-                                    <Td align='center'>{new Date(item.checkInDate).toLocaleDateString()}</Td>
-                                    <Td align='center'>{new Date(item.checkOutDate).toLocaleDateString()}</Td>
-                                    <Td align='center'>{item.numberOfNights}</Td>
-                                    <Td align='center'>{numberFormat(item.room.roomType.roomRate)}</Td>
-                                    <Td align='center' style={{ color: 'red' }}>{numberFormat(item.room.roomType.roomRate * item.numberOfNights)}</Td>
-                                </Tr>
-
-                            ))}
-                        </TableContainer>
-                    </ChargeSummaryContainer>
-                    <center>
-                        <BrokenHorizontalLine></BrokenHorizontalLine>
-                    </center>
-                    <ChargeSummaryContainer>
-                        <ChargeSummaryContentContainer>
-                            <ContainerGlobal justify='space-between' gap='70px'>
-                                <Title
-                                    family='raleway, sans-serif'
-                                    weight='700'
-                                    fstyle='Normal'
-                                    size='26px'
-                                    color='#2e2e2e'
-                                    align='left'
-                                >
-                                    <b>Discount:</b>
-                                </Title>
-                                <Title
-                                    family='raleway, sans-serif'
-                                    weight='400'
-                                    fstyle='Normal'
-                                    size='24px'
-                                    // color='#13ed34'
-                                    align='left'
-                                >
-                                    {activeReservation.payment.discount.discountType}
-                                </Title>
-                            </ContainerGlobal>
-                            {activeReservation.payment.paymentType == 'Down Payment' ?
-                                <ContainerGlobal justify='space-between' gap='70px'>
-                                    <Title
-                                        family='raleway, sans-serif'
-                                        weight='700'
-                                        fstyle='Normal'
-                                        size='26px'
-                                        color='#2e2e2e'
-                                        align='left'
-                                    >
-                                        <b>Down Payment:</b>
-                                    </Title>
-                                    <Title
-                                        family='Roboto Slab'
-                                        weight='400'
-                                        fstyle='Normal'
-                                        size='24px'
-                                        color='black'
-                                        align='left'
-                                    >
-                                        {numberFormat(grandTotal / 2)}
-                                    </Title>
-                                </ContainerGlobal>
-                                :
-                                <ContainerGlobal justify='space-between' gap='70px'>
-                                    <Title
-                                        family='raleway, sans-serif'
-                                        weight='700'
-                                        fstyle='Normal'
-                                        size='26px'
-                                        color='#2e2e2e'
-                                        align='left'
-                                    >
-                                        <b>Full Payment:</b>
-                                    </Title>
-                                    <Title
-                                        family='Roboto Slab'
-                                        weight='400'
-                                        fstyle='Normal'
-                                        size='24px'
-                                        color='black'
-                                        align='left'
-                                    >
-                                        {numberFormat(grandTotal)}
-                                    </Title>
-                                </ContainerGlobal>
-                            }
-                            <ContainerGlobal justify='space-between' gap='70px'>
-                                <Title
-                                    family='raleway, sans-serif'
-                                    weight='700'
-                                    fstyle='Normal'
-                                    size='24px'
-                                    color='#2e2e2e'
-                                    align='left'
-                                >
-                                    <b>Amount Paid:</b>
-                                </Title>
-                                <Title
-                                    family='Roboto Slab'
-                                    weight='400'
-                                    fstyle='Normal'
-                                    size='24px'
-                                    color='#1C9E60'
-                                    align='left'
-                                >
-                                    {numberFormat(activeReservation.payment.paymentMade)}
-                                </Title>
-                            </ContainerGlobal>
-
-                            <ContainerGlobal justify='space-between' gap='70px'>
-                                <Title
-                                    family='raleway, sans-serif'
-                                    weight='400'
-                                    fstyle='Normal'
-                                    size='24px'
-                                    color='#2e2e2e'
-                                    align='left'
-                                >
-                                    <b>Grand Total:</b>
-                                </Title>
-                                <Title
-                                    family='Roboto Slab'
-                                    weight='400'
-                                    fstyle='Normal'
-                                    size='24px'
-                                    color='#000000'
-                                    align='left'
-                                >
-                                    {numberFormat(grandTotal)}
-                                </Title>
-                            </ContainerGlobal>
-                            <HorizontalLine
-                                w='100%'
-                                margin='10px 0px 0px 0px'
-                            />
-
-                            <ContainerGlobal justify='space-between' gap='70px'>
-                                <Title
-                                    family='raleway, sans-serif'
-                                    weight='700'
-                                    fstyle='Normal'
-                                    size='26px'
-                                    color='#2e2e2e'
-                                    align='left'
-                                >
-                                    <b>Remaining Balance:</b>
-                                </Title>
-                                <Title
-                                    family='Roboto Slab'
-                                    weight='400'
-                                    fstyle='Normal'
-                                    size='24px'
-                                    color='red'
-                                    align='left'
-                                >
-                                    {numberFormat(activeReservation.payment.grandTotal - activeReservation.payment.paymentMade)}
-                                </Title>
-                            </ContainerGlobal>
-                        </ChargeSummaryContentContainer>
-                        <ChargeSummaryContentContainer>
-
-                        </ChargeSummaryContentContainer>
-                    </ChargeSummaryContainer>
-                </div>
-            }
-            else if (value.toLowerCase() == 'no show') {
-                return <div style={{ width: '95%' }}>
-                    <Title
-                        family='raleway, sans-serif'
-                        color='#292929'
-                        weight='400'
-                        size='37px'
-                        fstyle='Normal'
-                        margin='50px 0px 10px 0px'
-                        align='Center'
-                        overflow='visible'
-                    >
-                        Reservation Cancelled
-                    </Title>
-                    <Title
-                        family='raleway, sans-serif'
-                        color='#292929'
-                        weight='400'
-                        size='25px'
-                        fstyle='Normal'
-                        margin='50px 0px 10px 0px'
-                        align='Center'
-                        overflow='visible'
-
-                    >
-                        We are grateful that you picked RM Luxe Hotel. We regret to inform you that your reservation has already been
-                        <b style={{ color: 'red' }}> Cancelled</b> since you were unable to check-in during the allotted time for
-                        your hotel reservation. You can call or email us at the above-mentioned address if you have any additional inquiries.
-                        Thank you.
-                    </Title>
-                    <Title
-                        family='raleway, sans-serif'
-                        weight='700'
-                        fstyle='Normal'
-                        size='36px'
-                        color='#2e2e2e'
-                        align='Center'
-                        margin='60px 0px 0px 0px'
-                    >
-                        <b>Reservation Information</b>
-                    </Title>
-                    <ReservationInformationContainer
-                        w='100%'>
-                        <ReservationInformationContentsContainer>
-
-                            <ContainerGlobal
-                                justify='space-between'
-                            >
-                                <Title
-                                    family='raleway, sans-serif'
-                                    weight='400'
-                                    fstyle='Normal'
-                                    size='25px'
-                                    color='#2e2e2e'
-                                    align='left'
-                                >
-                                    Reservation Date:
-                                </Title>
-                                <Title
-                                    family='raleway, sans-serif'
-                                    weight='700'
-                                    fstyle='Normal'
-                                    size='25px'
-                                    color='#2e2e2e'
-                                    align='right'
-                                    w='400px'
-                                >
-                                    <b> {new Date(activeReservation.reservationDate).toLocaleDateString()}</b>
-                                </Title>
-                            </ContainerGlobal>
-                            <ContainerGlobal
-                                justify='space-between'
-                            >
-                                <Title
-                                    family='raleway, sans-serif'
-                                    weight='400'
-                                    fstyle='Normal'
-                                    size='25px'
-                                    color='#2e2e2e'
-                                    align='left'
-                                >
-                                    Payment Mode:
-                                </Title>
-                                <Title
-                                    family='raleway, sans-serif'
-                                    weight='700'
-                                    fstyle='Normal'
-                                    size='25px'
-                                    color='#2e2e2e'
-                                    align='right'
-                                    w='400px'
-                                >
-                                    <b> {activeReservation.payment.paymentMode.paymentMode}</b>
-                                </Title>
-                            </ContainerGlobal>
-                            <ContainerGlobal
-                                justify='space-between'
-                            >
-                                <Title
-                                    family='raleway, sans-serif'
-                                    weight='400'
-                                    fstyle='Normal'
-                                    size='25px'
-                                    color='#2e2e2e'
-                                    align='left'
-                                >
-                                    Payment Type:
-                                </Title>
-                                <Title
-                                    family='raleway, sans-serif'
-                                    weight='700'
-                                    fstyle='Normal'
-                                    size='25px'
-                                    color='#2e2e2e'
-                                    align='right'
-                                    w='400px'
-                                >
-                                    <b>  Down Payment</b>
-                                </Title>
-                            </ContainerGlobal>
-                            <ContainerGlobal
-                                justify='space-between'
-                            >
-                                <Title
-                                    family='raleway, sans-serif'
-                                    weight='400'
-                                    fstyle='Normal'
-                                    size='25px'
-                                    color='#2e2e2e'
-                                    align='left'
-                                >
-                                    Guest Name:
-                                </Title>
-                                <Title
-                                    family='raleway, sans-serif'
-                                    weight='700'
-                                    fstyle='Normal'
-                                    size='25px'
-                                    color='#2e2e2e'
-                                    align='right'
-                                    w='400px'
-                                >
-                                    <b> {activeReservation.guestInformation.firstName}  {activeReservation.guestInformation.lastName}</b>
-                                </Title>
-                            </ContainerGlobal>
-                            <ContainerGlobal
-                                justify='space-between'
-                            >
-                                <Title
-                                    family='raleway, sans-serif'
-                                    weight='400'
-                                    fstyle='Normal'
-                                    size='25px'
-                                    color='#2e2e2e'
-                                    align='left'
-                                >
-                                    Birthdate:
-                                </Title>
-                                <Title
-                                    family='raleway, sans-serif'
-                                    weight='700'
-                                    fstyle='Normal'
-                                    size='25px'
-                                    color='#2e2e2e'
-                                    align='right'
-                                    w='400px'
-                                >
-                                    <b> {new Date(activeReservation.guestInformation.birthDate).toLocaleDateString()}</b>
-                                </Title>
-                            </ContainerGlobal>
-                            <ContainerGlobal
-                                justify='space-between'
-                            >
-                                <Title
-                                    family='raleway, sans-serif'
-                                    weight='400'
-                                    fstyle='Normal'
-                                    size='25px'
-                                    color='#2e2e2e'
-                                    align='left'
-                                >
-                                    Nationality:
-                                </Title>
-                                <Title
-                                    family='raleway, sans-serif'
-                                    weight='700'
-                                    fstyle='Normal'
-                                    size='25px'
-                                    color='#2e2e2e'
-                                    align='right'
-                                    w='400px'
-                                >
-                                    <b> {activeReservation.guestInformation.nationality}</b>
-                                </Title>
-                            </ContainerGlobal>
-                            <ContainerGlobal
-                                justify='space-between'
-                            >
-                                <Title
-                                    family='raleway, sans-serif'
-                                    weight='400'
-                                    fstyle='Normal'
-                                    size='25px'
-                                    color='#2e2e2e'
-                                    align='left'
-                                >
-                                    Email Address:
-                                </Title>
-                                <Title
-                                    family='raleway, sans-serif'
-                                    weight='700'
-                                    fstyle='Normal'
-                                    size='25px'
-                                    color='#2e2e2e'
-                                    align='right'
-                                    w='400px'
-                                >
-                                    <b> {activeReservation.guestInformation.user.email.toLowerCase()}</b>
-                                </Title>
-                            </ContainerGlobal>
-                            <ContainerGlobal
-                                justify='space-between'
-                            >
-                                <Title
-                                    family='raleway, sans-serif'
-                                    weight='400'
-                                    fstyle='Normal'
-                                    size='25px'
-                                    color='#2e2e2e'
-                                    align='left'
-                                >
-                                    Address:
-                                </Title>
-                                <Title
-                                    family='raleway, sans-serif'
-                                    weight='700'
-                                    fstyle='Normal'
-                                    size='25px'
-                                    color='#2e2e2e'
-                                    align='right'
-                                    w='400px'
-                                >
-                                    <b> {activeReservation.guestInformation.address}</b>
-                                </Title>
-                            </ContainerGlobal>
-                            <ContainerGlobal
-                                justify='space-between'
-                            >
-                                <Title
-                                    family='raleway, sans-serif'
-                                    weight='400'
-                                    fstyle='Normal'
-                                    size='25px'
-                                    color='#2e2e2e'
-                                    align='left'
-                                >
-                                    Contact Number:
-                                </Title>
-                                <Title
-                                    family='raleway, sans-serif'
-                                    weight='700'
-                                    fstyle='Normal'
-                                    size='25px'
-                                    color='#2e2e2e'
-                                    align='right'
-                                    w='400px'
-                                >
-                                    <b> {activeReservation.guestInformation.user.contactNumber}</b>
-                                </Title>
-                            </ContainerGlobal>
-
-                        </ReservationInformationContentsContainer>
-                    </ReservationInformationContainer>
-                    <Title
-                        family='raleway, sans-serif'
-                        weight='700'
-                        fstyle='Normal'
-                        size='36px'
-                        color='#2e2e2e'
-                        margin='0px 0px 30px 0px'
-                        align='Center'
-                    >
-                        <b>Charge Summary</b>
-                    </Title>
-                    <ChargeSummaryContainer>
-                        <TableContainer
-                            cellspacing="0"
-                            cellpadding="0">
-                            <Tr bg="transparent">
-                                <Th bg='#2E2E2E' color='white' align='center'>Room type</Th>
-                                <Th bg='#2E2E2E' color='white' align='center'>Check in</Th>
-                                <Th bg='#2E2E2E' color='white' align='center'>Check out</Th>
-                                <Th bg='#2E2E2E' color='white' align='center'>Total nights</Th>
-                                <Th bg='#2E2E2E' color='white' align='center'>Rate per night</Th>
-                                <Th bg='#2E2E2E' color='white' align='center'>Total amout due</Th>
-                            </Tr>
-                            {reservedBooking.map((item, index) => (
-
-                                <Tr style={index % 2 == 0 ? { backgroundColor: 'rgb(0,0,0,.1)' } : { backgroundColor: 'transparent' }}>
-
-                                    <Td align='center'>{item.room.roomType.roomType}</Td>
-                                    <Td align='center'>{new Date(item.checkInDate).toLocaleDateString()}</Td>
-                                    <Td align='center'>{new Date(item.checkOutDate).toLocaleDateString()}</Td>
-                                    <Td align='center'>{item.numberOfNights}</Td>
-                                    <Td align='center'>{numberFormat(item.room.roomType.roomRate)}</Td>
-                                    <Td align='center' style={{ color: 'red' }}>{numberFormat(item.room.roomType.roomRate * item.numberOfNights)}</Td>
-                                </Tr>
-
-                            ))}
-                        </TableContainer>
-                    </ChargeSummaryContainer>
-                    <center>
-                        <BrokenHorizontalLine></BrokenHorizontalLine>
-                    </center>
-                    <ChargeSummaryContainer>
-                        <ChargeSummaryContentContainer>
-                            <ContainerGlobal justify='space-between' gap='70px'>
-                                <Title
-                                    family='raleway, sans-serif'
-                                    weight='700'
-                                    fstyle='Normal'
-                                    size='26px'
-                                    color='#2e2e2e'
-                                    align='left'
-                                >
-                                    <b>Discount:</b>
-                                </Title>
-                                <Title
-                                    family='raleway, sans-serif'
-                                    weight='400'
-                                    fstyle='Normal'
-                                    size='24px'
-                                    // color='#13ed34'
-                                    align='left'
-                                >
-                                    {activeReservation.payment.discount.discountType}
-                                </Title>
-                            </ContainerGlobal>
-                            {activeReservation.payment.paymentType == 'Down Payment' ?
-                                <ContainerGlobal justify='space-between' gap='70px'>
-                                    <Title
-                                        family='raleway, sans-serif'
-                                        weight='700'
-                                        fstyle='Normal'
-                                        size='26px'
-                                        color='#2e2e2e'
-                                        align='left'
-                                    >
-                                        <b>Down Payment:</b>
-                                    </Title>
-                                    <Title
-                                        family='Roboto Slab'
-                                        weight='400'
-                                        fstyle='Normal'
-                                        size='24px'
-                                        color='black'
-                                        align='left'
-                                    >
-                                        {numberFormat(grandTotal / 2)}
-                                    </Title>
-                                </ContainerGlobal>
-                                :
-                                <ContainerGlobal justify='space-between' gap='70px'>
-                                    <Title
-                                        family='raleway, sans-serif'
-                                        weight='700'
-                                        fstyle='Normal'
-                                        size='26px'
-                                        color='#2e2e2e'
-                                        align='left'
-                                    >
-                                        <b>Full Payment:</b>
-                                    </Title>
-                                    <Title
-                                        family='Roboto Slab'
-                                        weight='400'
-                                        fstyle='Normal'
-                                        size='24px'
-                                        color='black'
-                                        align='left'
-                                    >
-                                        {numberFormat(grandTotal)}
-                                    </Title>
-                                </ContainerGlobal>
-                            }
-                            <ContainerGlobal justify='space-between' gap='70px'>
-                                <Title
-                                    family='raleway, sans-serif'
-                                    weight='700'
-                                    fstyle='Normal'
-                                    size='24px'
-                                    color='#2e2e2e'
-                                    align='left'
-                                >
-                                    <b>Amount Paid:</b>
-                                </Title>
-                                <Title
-                                    family='Roboto Slab'
-                                    weight='400'
-                                    fstyle='Normal'
-                                    size='24px'
-                                    color='#1C9E60'
-                                    align='left'
-                                >
-                                    {numberFormat(activeReservation.payment.paymentMade)}
-                                </Title>
-                            </ContainerGlobal>
-
-                            <ContainerGlobal justify='space-between' gap='70px'>
-                                <Title
-                                    family='raleway, sans-serif'
-                                    weight='400'
-                                    fstyle='Normal'
-                                    size='24px'
-                                    color='#2e2e2e'
-                                    align='left'
-                                >
-                                    <b>Grand Total:</b>
-                                </Title>
-                                <Title
-                                    family='Roboto Slab'
-                                    weight='400'
-                                    fstyle='Normal'
-                                    size='24px'
-                                    color='#000000'
-                                    align='left'
-                                >
-                                    : {numberFormat(grandTotal)}
-                                </Title>
-                            </ContainerGlobal>
-                            <HorizontalLine
-                                w='100%'
-                                margin='10px 0px 0px 0px'
-                            />
-
-                            <ContainerGlobal justify='space-between' gap='70px'>
-                                <Title
-                                    family='raleway, sans-serif'
-                                    weight='700'
-                                    fstyle='Normal'
-                                    size='26px'
-                                    color='#2e2e2e'
-                                    align='left'
-                                >
-                                    <b>Remaining Balance:</b>
-                                </Title>
-                                <Title
-                                    family='Roboto Slab'
-                                    weight='400'
-                                    fstyle='Normal'
-                                    size='24px'
-                                    color='red'
-                                    align='left'
-                                >
-                                    {numberFormat(activeReservation.payment.grandTotal - activeReservation.payment.paymentMade)}
-                                </Title>
-                            </ContainerGlobal>
-                        </ChargeSummaryContentContainer>
-                        <ChargeSummaryContentContainer>
-
-                        </ChargeSummaryContentContainer>
-                    </ChargeSummaryContainer>
-                </div>
-            }
         }
     }
 
@@ -3343,6 +2017,9 @@ const ClientBookingInfoCont = () => {
             }
         }
     }
+
+
+    const [reservationPage, setReservationPage] = useState(1)
     return (
         <Container>
 
@@ -3350,16 +2027,17 @@ const ClientBookingInfoCont = () => {
 
             {activeReservation.length != 0 ?
                 <Title
-                    padding='20px 80px 20px 80px'
-                    bg='#272727'
-                    family='Playfair Display'
-                    color='#BFAA7E'
-                    weight='400'
-                    size='50px'
-                    fstyle='Normal'
-                    margin='50px 0px 10px 0px'
-                    align='Center'
-                    w='65%'
+                    padding="20px 0px 20px 0px"
+                    bg="#272727"
+                    family="Playfair Display"
+                    color="#BFAA7E"
+                    weight="400"
+                    size="50px"
+                    fstyle="Normal"
+                    margin="50px 0px 10px 0px"
+                    align="Center"
+                    w="65%"
+                    size1000="200%"
 
                 >
                     Reservation Status
@@ -3367,11 +2045,7 @@ const ClientBookingInfoCont = () => {
                 :
                 ""}
             {activeReservation.length != 0 ?
-                <div
-                    style={{ display: 'flex', justifyContent: 'center' }}
-                >
-                    {reservationStatus(activeReservation.reservationStatus)}
-                </div>
+                reservationStatus(activeReservation.reservationStatus)
                 :
                 <Title
                     margin='100px'
@@ -3417,25 +2091,42 @@ const ClientBookingInfoCont = () => {
                             <Th bg='#DFD3B9' color='#2e2e2e' align='center'>action</Th>
 
                         </Tr>
-                        {reservation.map((item, index) => (
+                        {reservation
+                            .slice((reservationPage - 1) * 6, reservationPage * 6)
+                            .sort((a, b)=> Date.parse(new Date(b.reservationDate)) - Date.parse(new Date(a.reservationDate)))
+                            .map((item, index) => (
 
-                            <Tr style={index % 2 == 0 ? { backgroundColor: 'transparent' } : { backgroundColor: 'rgb(0,0,0,.1)' }}>
+                                <Tr style={index % 2 == 0 ? { backgroundColor: 'transparent' } : { backgroundColor: 'rgb(0,0,0,.1)' }}>
 
-                                <Td style={item.id == activeReservation.id ? { backgroundColor: 'green', color: 'black' } : { backgroundColor: 'transparent' }} align='center'>{item.reservationReferenceNumber}</Td>
-                                <Td style={item.id == activeReservation.id ? { backgroundColor: 'green', color: 'black' } : { backgroundColor: 'transparent' }} align='center'>{new Date(item.reservationDate).toLocaleDateString()} {new Date(item.reservationDate).toLocaleTimeString()}</Td>
-                                <Td style={item.id == activeReservation.id ? { backgroundColor: 'green', color: 'black', fontWeight: 'bold' } : { backgroundColor: 'transparent' }} align='center'>{reservationStatusStyle(item.reservationStatus)}</Td>
-                                <Td style={item.id == activeReservation.id ? { backgroundColor: 'green', color: 'black' } : { backgroundColor: 'transparent' }} align='center'><a href="#" style={{ cursor: 'pointer', color: 'blue' }} onClick={() => { view(item.id) }}>View</a></Td>
-                                {/* <Td align='center'>{item.numberOfNights}</Td>
+                                    <Td style={item.id == activeReservation.id ? { backgroundColor: 'green', color: 'black' } : { backgroundColor: 'transparent' }} align='center'>{item.reservationReferenceNumber}</Td>
+                                    <Td style={item.id == activeReservation.id ? { backgroundColor: 'green', color: 'black' } : { backgroundColor: 'transparent' }} align='center'>{new Date(item.reservationDate).toLocaleDateString()} {new Date(item.reservationDate).toLocaleTimeString()}</Td>
+                                    <Td style={item.id == activeReservation.id ? { backgroundColor: 'green', color: 'black', fontWeight: 'bold' } : { backgroundColor: 'transparent' }} align='center'>{reservationStatusStyle(item.reservationStatus)}</Td>
+                                    <Td style={item.id == activeReservation.id ? { backgroundColor: 'green', color: 'black' } : { backgroundColor: 'transparent' }} align='center'><a href="#" style={{ cursor: 'pointer', color: 'blue' }} onClick={() => { view(item.id) }}>View</a></Td>
+                                    {/* <Td align='center'>{item.numberOfNights}</Td>
                             <Td align='center'>{numberFormat(item.room.roomType.roomRate)}</Td>
                             <Td align='center' style={{ color: 'red' }}>{numberFormat(item.room.roomType.roomRate * item.numberOfNights)}</Td> */}
-                            </Tr>
+                                </Tr>
 
-                        ))}
+                            ))}
                     </TableContainer>
+
                 </div>
 
             </MainContainer>
 
+            <Pagination
+                page={reservationPage}
+                count={reservation.length != 0 && Math.ceil(reservation.length / 6)}
+                onChange={(e, value) => {
+                    setReservationPage(value)
+                }}
+
+                style={{
+                    justifyContent: "center",
+                    display: 'flex',
+                    margin: '20px',
+                }}
+            />
 
 
         </Container>

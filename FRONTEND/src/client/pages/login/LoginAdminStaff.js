@@ -98,7 +98,12 @@ export const LoginAdminStaff = () => {
     useEffect(() => {
         Axios.get(apiKey + "auth/verify-token").then((response) => {
             if (response.status === 200) {
-                window.location.href = '/admin/dashboard';
+                if(response.data.role == 'ADMIN'){
+                    window.location.href = '/admin/dashboard';
+                }
+                else{
+                    window.location.href = '/';
+                }
             }
         });
     }, []);
@@ -151,7 +156,7 @@ export const LoginAdminStaff = () => {
                         margin="0px 0px 20px 0px"
                         fontSize='100%'
                         fstyle='none'
-                    >Admin/Front Desk Login</Title>
+                    >Admin Login</Title>
 
                     <RegistrationForm
                         onSubmit={checkAccount}>

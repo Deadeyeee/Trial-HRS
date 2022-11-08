@@ -9,6 +9,7 @@ import { CheckCircleOutline, Close, HighlightOffSharp } from '@mui/icons-materia
 import logo from '../../images/logo.png';
 
 import { useState } from 'react';
+import "./bookingCart.css";
 import { Box, CircularProgress, Grow, Modal } from '@mui/material';
 const BookingCartPageCont = () => {
   const [bookingInformation, setBookingInformation] = useState([])
@@ -92,7 +93,7 @@ const BookingCartPageCont = () => {
 
 
   return (
-    <Container>
+    <Container style={{width: '95%'}}>
 
 
       <Modal
@@ -134,7 +135,9 @@ const BookingCartPageCont = () => {
 
 
 
-      <FlexboxContainer>
+      <FlexboxContainer
+      style={{overflow: 'visible'}}
+      >
         <Title
           color='#2e2e2e'
           weight='normal'
@@ -144,6 +147,7 @@ const BookingCartPageCont = () => {
           Booking Cart
         </Title>
         <TableContainer
+        className='tableCart'
           cellspacing="0"
           cellpadding="0">
           <Tr>
@@ -180,7 +184,7 @@ const BookingCartPageCont = () => {
             <Td align='center'></Td>
             <Td align='center'></Td>
             <Td colSpan={2} align='center' style={{ fontSize: '40px' }}>Grand Total:</Td>
-            <Td align='center' style={{ fontSize: '40px', fontWeight: 'normal', color: 'red' }}>{numberFormat(grandTotal)}</Td>
+            <Td align='center' style={{ fontSize: '100%', fontWeight: 'normal', color: 'red' }}>{numberFormat(grandTotal)}</Td>
             <Td align='center'></Td>
           </Tr>
         </TableContainer>

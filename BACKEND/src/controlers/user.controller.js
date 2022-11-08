@@ -251,6 +251,53 @@ exports.sendReservationEmail = async (req, res) => {
                 }]
             };
         }
+        else if (req.body.reservationStatus == 'UNSETTLED') {
+
+            const reservationSummary = await ReservationSummary.findAll(
+                {
+                    where: { reservation_id: req.body.reservationId },
+                    include: { all: true, nested: true },
+                }
+            );
+            console.log("reservationSummary", req.body)
+            info = {
+                from: '"RM Luxe Hotel" "<Rm.LuxeHotel@gmail.com>"', // sender address
+                to: req.body.email,
+                subject: "Reservation Cancelled", // Subject line
+                template: 'reservationCancelled',
+                context: {
+                    firstName: req.body.firstName,
+                    accountName: req.body.accountName,
+                    accountNumber: req.body.accountNumber,
+                    payment: req.body.payment,
+                    reservationNumber: req.body.reservationNumber,
+                    bankName: req.body.paymentMode == 'Pay at The Hotel' ? 'Gcash' : req.body.paymentMode,
+                    paymentType: req.body.paymentType,
+                    lastName: req.body.lastName,
+                    reservationDate: req.body.reservationDate,
+                    paymentMode: req.body.paymentMode,
+                    birthDay: req.body.birthDay,
+                    nationality: req.body.nationality,
+                    emailAddress: req.body.emailAddress,
+                    address: req.body.address,
+                    contactNumber: req.body.contactNumber,
+                    reservedRooms: reservationSummary,
+                    isNonUser: req.body.role == 'NON-USER' ? true : false,
+                    isDownPayment: req.body.paymentType == 'Down Payment' ? true : false,
+                    grandTotal: req.body.grandTotal,
+                    discountType: req.body.discountType,
+                    expirationDate: req.body.expirationDate,
+                    amountPaid: req.body.amountPaid,
+
+                    logo: "cid:logo",
+                },
+                attachments: [{
+                    filename: 'logo.png',
+                    path: './src/controlers/logo.png',
+                    cid: 'logo'
+                }]
+            };
+        }
 
         EmailAuto.transporter.sendMail(info);
 

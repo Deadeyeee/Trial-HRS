@@ -21,7 +21,7 @@ function BookingConfirmationCont() {
             for (let index = 0; index < result.data.length; index++) {
                 if (id == result.data[index].reservation_id) {
                     setReservationBooking((oldData) => [...oldData, result.data[index]])
-                    
+
                     console.log('ey')
                 }
             }
@@ -32,7 +32,7 @@ function BookingConfirmationCont() {
 
         axios.get(apiKey + 'api/getReservation/' + id).then((result) => {
             setReservationInfo(result.data)
-            if(result.data.reservationStatus != 'PENDING'){
+            if (result.data.reservationStatus != 'PENDING') {
                 window.location = '/'
             }
         }).catch((err) => {
@@ -85,6 +85,8 @@ function BookingConfirmationCont() {
                     margin='50px 0px 10px 0px'
                     align='Center'
                     overflow='visible'
+                    margin1000='50px 0px 10px 0px'
+                    size1000='150%'
 
                 >
                     Your reservation is <b style={{ color: '#c9d81c' }}>{value}</b> until confirmation of Bank Deposit/Transfer is made.
@@ -100,6 +102,7 @@ function BookingConfirmationCont() {
                     margin='50px 0px 10px 0px'
                     align='Center'
                     overflow='visible'
+                    size1000='150%'
 
                 >
                     Sorry your reservation is <b style={{ color: '#d61b1b' }}>CANCELLED</b> due to unsetteled balance. Thank you.
@@ -115,6 +118,7 @@ function BookingConfirmationCont() {
                     margin='50px 0px 10px 0px'
                     align='Center'
                     overflow='visible'
+                    size1000='150%'
 
                 >
                     Your reservation status is now  <b style={{ color: '#1bd31b' }}>{value}</b> until confirmation of Bank Deposit/Transfer is made.
@@ -160,6 +164,8 @@ function BookingConfirmationCont() {
                     margin='100px 0px 10px 0px'
                     align='Center'
                     color='#bfaa7e'
+                    size1000='200%'
+                    margin1000='50px 0px 10px 0px'
                 >
                     Booking Confirmation
                 </Title>
@@ -173,6 +179,8 @@ function BookingConfirmationCont() {
                     margin='50px 0px 10px 0px'
                     align='Center'
                     overflow='visible'
+                    size1000='150%'
+                    margin1000='0px 0px 10px 0px'
                 >
                     Thank you for choosing <b>RM Luxe Hotel</b>
                 </Title>
@@ -187,6 +195,8 @@ function BookingConfirmationCont() {
                     fstyle='Normal'
                     margin='25px 0px 10px 0px'
                     align='Center'
+                    margin1000='20px 0px 10px 0px'
+                    size1000='100%'
 
                 >
                     <b>Instructions on how to make the payment:</b>
@@ -199,6 +209,7 @@ function BookingConfirmationCont() {
                     size='25px'
                     fstyle='Normal'
                     margin='25px 0px 10px 0px'
+                    size1000='100%'
                     align='Center'
 
                 >
@@ -206,9 +217,10 @@ function BookingConfirmationCont() {
                 </Title>
                 <BankDetailsContainer>
 
-                    <BankTitleContainer>
+                    <BankTitleContainer style={{ margin: '40px 0px' }}>
                         <ContainerGlobal
-                            justify='space-between'>
+                            justify='space-between'
+                            w='100%'>
                             <Title
                                 family='raleway, sans-serif'
                                 weight='700'
@@ -216,6 +228,7 @@ function BookingConfirmationCont() {
                                 overflow='visible'
                                 size='25px'
                                 color='#2e2e2e'
+                                size1000='100%'
                                 align='left'
                             >
                                 <b>BANK / E-Payment: </b>
@@ -226,6 +239,7 @@ function BookingConfirmationCont() {
                                 fstyle='Normal'
                                 size='25px'
                                 color='#2e2e2e'
+                                size1000='100%'
                                 align='left'
                             >
                                 {reservationInfo.length != 0 && reservationInfo.payment.paymentMode.billerName}
@@ -233,12 +247,14 @@ function BookingConfirmationCont() {
                         </ContainerGlobal>
 
                         <ContainerGlobal
-                            justify='space-between'>
+                            justify='space-between'
+                            w='100%'>
                             <Title
                                 family='raleway, sans-serif'
                                 weight='700'
                                 fstyle='Normal'
                                 size='25px'
+                                size1000='100%'
                                 color='#2e2e2e'
                                 align='left'
                             >
@@ -249,6 +265,7 @@ function BookingConfirmationCont() {
                                 weight='400'
                                 fstyle='Normal'
                                 size='25px'
+                                size1000='100%'
                                 color='#2e2e2e'
                                 align='left'
                             >
@@ -257,12 +274,14 @@ function BookingConfirmationCont() {
                         </ContainerGlobal>
 
                         <ContainerGlobal
-                            justify='space-between'>
+                            justify='space-between'
+                            w='100%'>
                             <Title
                                 family='raleway, sans-serif'
                                 weight='700'
                                 fstyle='Normal'
                                 size='25px'
+                                size1000='100%'
                                 color='#2e2e2e'
                                 align='left'
                             >
@@ -274,6 +293,7 @@ function BookingConfirmationCont() {
                                 fstyle='Normal'
                                 size='25px'
                                 color='#2e2e2e'
+                                size1000='100%'
                                 align='left'
                             >
                                 {reservationInfo.length != 0 && reservationInfo.payment.paymentMode.accountName}
@@ -281,12 +301,14 @@ function BookingConfirmationCont() {
                         </ContainerGlobal>
 
                         <ContainerGlobal
-                            justify='space-between'>
+                            justify='space-between'
+                            w='100%'>
                             <Title
                                 family='raleway, sans-serif'
                                 weight='700'
                                 fstyle='Normal'
                                 size='25px'
+                                size1000='100%'
                                 color='#2e2e2e'
                                 align='left'
                             >
@@ -298,6 +320,7 @@ function BookingConfirmationCont() {
                                 fstyle='Normal'
                                 size='25px'
                                 color='#2e2e2e'
+                                size1000='100%'
                                 align='left'
                             >
                                 {reservationInfo.length != 0 && reservationInfo.payment.paymentMode.accountNumber}
@@ -317,6 +340,7 @@ function BookingConfirmationCont() {
                         color='#2e2e2e'
                         align='center'
                         margin='0px 200px'
+                        size1000='100%'
                     >
                         To confirm your reservation, <b>
                             please make your deposit amounting
@@ -338,6 +362,7 @@ function BookingConfirmationCont() {
                         color='#2e2e2e'
                         align='center'
                         margin='25px 200px'
+                        size1000='100%'
                     >
                         For further information, please send an email to <a target='_blank' href='mailto: Rm.LuxeHotel@gmail.com'>Rm.LuxeHotel@gmail.com</a>, or <a href='/client/messages'>message us</a> through your account. You will find the details of your reservation made below.
                     </Title>
@@ -350,6 +375,7 @@ function BookingConfirmationCont() {
                     color='#ff4040'
                     align='center'
                     margin='10px 0px 25px 0px'
+                    size1000='200%'
                 >
                     <b>***IMPORTANT***</b>
                 </Title>
@@ -423,6 +449,8 @@ function BookingConfirmationCont() {
                         color='#2e2e2e'
                         align='Center'
                         margin='10px 60px 10px 60px'
+                        margin1000='10px 60px 10px 60px'
+                        size1000='100%'
                     >
                         <b>Please Check your email for your log in information to check your reservation status. Send your proof of payment, Check your informations, and message us.</b>
                     </Title>
@@ -434,38 +462,17 @@ function BookingConfirmationCont() {
                     size='36px'
                     color='#2e2e2e'
                     align='Center'
-                    margin='60px 0px 0px 0px'
+                    size1000='200%'
+                    margin1000='60px 0px 0px 0px'
                 >
                     <b>Reservation Information</b>
                 </Title>
                 <ReservationInformationContainer>
 
-                    <ReservationInformationContentsContainer>
-                        <ContainerGlobal
-                            justify='space-between'
-                        >
-                            {/* <Title
-                            family='raleway, sans-serif'
-                            weight='400'
-                            fstyle='Normal'
-                            size='25px'
-                            color='#2e2e2e'
-                            align='left'
-                        >
-                            Reservation Number.
-                        </Title>
-                        <Title
-                            family='raleway, sans-serif'
-                            weight='700'
-                            fstyle='Normal'
-                            size='25px'
-                            color='#2e2e2e'
-                            align='left'
-                        >
-                            <b>: 091234568</b>
-                        </Title> */}
-                        </ContainerGlobal>
-                        
+                    <ReservationInformationContentsContainer
+                    style={{margin: '50px 0px 90px 0px'}}>
+                       
+
                         <ContainerGlobal
                             justify='space-between'
                         >
@@ -475,6 +482,7 @@ function BookingConfirmationCont() {
                                 fstyle='Normal'
                                 size='25px'
                                 color='#2e2e2e'
+                                size1000='100%'
                                 align='left'
                             >
                                 Reservation Number:
@@ -485,7 +493,9 @@ function BookingConfirmationCont() {
                                 fstyle='Normal'
                                 size='25px'
                                 color='#2e2e2e'
-                                align='left'
+                                size1000='100%'
+                                align='right'
+                                w='50%'
                             >
                                 <b>{reservationInfo.length != 0 && reservationInfo.reservationReferenceNumber}</b>
                             </Title>
@@ -499,6 +509,7 @@ function BookingConfirmationCont() {
                                 fstyle='Normal'
                                 size='25px'
                                 color='#2e2e2e'
+                                size1000='100%'
                                 align='left'
                             >
                                 Reservation Date:
@@ -509,7 +520,9 @@ function BookingConfirmationCont() {
                                 fstyle='Normal'
                                 size='25px'
                                 color='#2e2e2e'
-                                align='left'
+                                size1000='100%'
+                                align='right'
+                                w='50%'
                             >
                                 <b>{reservationInfo.length != 0 && new Date(reservationInfo.reservationDate).toLocaleDateString()}</b>
                             </Title>
@@ -522,6 +535,7 @@ function BookingConfirmationCont() {
                                 weight='400'
                                 fstyle='Normal'
                                 size='25px'
+                                size1000='100%'
                                 color='#2e2e2e'
                                 align='left'
                             >
@@ -532,8 +546,10 @@ function BookingConfirmationCont() {
                                 weight='700'
                                 fstyle='Normal'
                                 size='25px'
+                                size1000='100%'
                                 color='#2e2e2e'
-                                align='left'
+                                align='right'
+                                w='50%'
                             >
                                 <b>{reservationInfo.length != 0 && reservationInfo.payment.paymentMode.paymentMode}</b>
                             </Title>
@@ -546,6 +562,7 @@ function BookingConfirmationCont() {
                                 weight='400'
                                 fstyle='Normal'
                                 size='25px'
+                                size1000='100%'
                                 color='#2e2e2e'
                                 align='left'
                             >
@@ -557,7 +574,9 @@ function BookingConfirmationCont() {
                                 fstyle='Normal'
                                 size='25px'
                                 color='#2e2e2e'
-                                align='left'
+                                size1000='100%'
+                                align='right'
+                                w='50%'
                             >
                                 <b>{reservationInfo.length != 0 && reservationInfo.payment.paymentType}</b>
                             </Title>
@@ -570,6 +589,7 @@ function BookingConfirmationCont() {
                                 weight='400'
                                 fstyle='Normal'
                                 size='25px'
+                                size1000='100%'
                                 color='#2e2e2e'
                                 align='left'
                             >
@@ -580,8 +600,10 @@ function BookingConfirmationCont() {
                                 weight='700'
                                 fstyle='Normal'
                                 size='25px'
+                                size1000='100%'
                                 color='#2e2e2e'
-                                align='left'
+                                align='right'
+                                w='50%'
                             >
                                 <b>{reservationInfo.length != 0 && reservationInfo.guestInformation.firstName.toLowerCase()}  {reservationInfo.length != 0 && reservationInfo.guestInformation.lastName.toLowerCase()}</b>
                             </Title>
@@ -594,6 +616,7 @@ function BookingConfirmationCont() {
                                 weight='400'
                                 fstyle='Normal'
                                 size='25px'
+                                size1000='100%'
                                 color='#2e2e2e'
                                 align='left'
                             >
@@ -604,8 +627,10 @@ function BookingConfirmationCont() {
                                 weight='700'
                                 fstyle='Normal'
                                 size='25px'
+                                size1000='100%'
                                 color='#2e2e2e'
-                                align='left'
+                                align='right'
+                                w='50%'
                             >
                                 <b>{reservationInfo.length != 0 && new Date(reservationInfo.guestInformation.birthDate).toLocaleDateString()}</b>
                             </Title>
@@ -618,6 +643,7 @@ function BookingConfirmationCont() {
                                 weight='400'
                                 fstyle='Normal'
                                 size='25px'
+                                size1000='100%'
                                 color='#2e2e2e'
                                 align='left'
                             >
@@ -628,8 +654,10 @@ function BookingConfirmationCont() {
                                 weight='700'
                                 fstyle='Normal'
                                 size='25px'
+                                size1000='100%'
                                 color='#2e2e2e'
-                                align='left'
+                                align='right'
+                                w='50%'
                             >
                                 <b>{reservationInfo.length != 0 && reservationInfo.guestInformation.nationality.toLowerCase()}</b>
                             </Title>
@@ -642,6 +670,7 @@ function BookingConfirmationCont() {
                                 weight='400'
                                 fstyle='Normal'
                                 size='25px'
+                                size1000='100%'
                                 color='#2e2e2e'
                                 align='left'
                             >
@@ -652,8 +681,10 @@ function BookingConfirmationCont() {
                                 weight='700'
                                 fstyle='Normal'
                                 size='25px'
+                                size1000='100%'
                                 color='#2e2e2e'
-                                align='left'
+                                align='right'
+                                w='50%'
                             >
                                 <b>{reservationInfo.length != 0 && reservationInfo.guestInformation.user.email.toLowerCase()}</b>
                             </Title>
@@ -666,6 +697,7 @@ function BookingConfirmationCont() {
                                 weight='400'
                                 fstyle='Normal'
                                 size='25px'
+                                size1000='100%'
                                 color='#2e2e2e'
                                 align='left'
                             >
@@ -676,9 +708,10 @@ function BookingConfirmationCont() {
                                 weight='700'
                                 fstyle='Normal'
                                 size='25px'
+                                size1000='100%'
                                 color='#2e2e2e'
                                 align='right'
-                                w='500px'
+                                w='50%'
                             >
                                 <b>{reservationInfo.length != 0 && reservationInfo.guestInformation.address.toLowerCase()}</b>
                             </Title>
@@ -690,6 +723,7 @@ function BookingConfirmationCont() {
                                 family='raleway, sans-serif'
                                 weight='400'
                                 fstyle='Normal'
+                                size1000='100%'
                                 size='25px'
                                 color='#2e2e2e'
                                 align='left'
@@ -700,9 +734,11 @@ function BookingConfirmationCont() {
                                 family='raleway, sans-serif'
                                 weight='700'
                                 fstyle='Normal'
+                                size1000='100%'
                                 size='25px'
                                 color='#2e2e2e'
-                                align='left'
+                                align='right'
+                                w='50%'
                             >
                                 <b>{reservationInfo.length != 0 && reservationInfo.guestInformation.user.contactNumber.toLowerCase()}</b>
                             </Title>
@@ -721,11 +757,14 @@ function BookingConfirmationCont() {
                     color='#2e2e2e'
                     margin='0px 0px 30px 0px'
                     align='Center'
+                    size1000='200%'
+
                 >
                     <b>Charge Summary</b>
                 </Title>
                 <ChargeSummaryContainer>
                     <TableContainer
+                        className='tableCart'
                         cellspacing="0"
                         cellpadding="0">
                         <Tr bg="transparent">
@@ -760,7 +799,8 @@ function BookingConfirmationCont() {
                             fstyle='Normal'
                             size='30px'
                             color='#2e2e2e'
-                            
+                            size1000='100%'
+
                             w='100%'
                         >
                             <b>Grand Total:</b>
@@ -773,7 +813,8 @@ function BookingConfirmationCont() {
                             fstyle='Normal'
                             size='25px'
                             color='#2e2e2e'
-        
+                            size1000='100%'
+
                             w='100%'
                         >
                             {numberFormat(grandTotal)}
@@ -796,7 +837,7 @@ function BookingConfirmationCont() {
                     fontStyle='Italic'
                     radius="0px"
                     border="1px solid #8F805F"
-                   
+
                     fontsize='16px'
                     bg='#DFD3B9'
                     href={logedIn == false ? '/login' : '/client/profile'}

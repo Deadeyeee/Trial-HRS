@@ -311,6 +311,7 @@ export const Register = () => {
 
           <Title
             margin="0px 0px 20px 0px"
+            margin1000="0px 0px 20px 0px"
             size="4vh"
             weight="normal"
           >Create your account</Title>
@@ -325,6 +326,7 @@ export const Register = () => {
 
               <InputContainer>
                 <TextField
+                className='inputRegister'
                   error={firstNameError.length != 0 ? true : false}
                   helperText={firstNameError.length != 0 ? firstNameError : ""}
                   placeholder='First Name'
@@ -343,7 +345,7 @@ export const Register = () => {
                       setFirstNameError("")
                     }
                   }}
-                  style={{ width: '55%', }}
+                  // className='inputRegister'
                   required />
 
                 <TextField
@@ -365,7 +367,7 @@ export const Register = () => {
                     }
 
                   }}
-                  style={{ width: '55%', }}
+                  className='inputRegister'
                   required />
               </InputContainer>
 
@@ -385,7 +387,7 @@ export const Register = () => {
 
                     setEmailError("")
                   }}
-                  style={{ width: '55%', }}
+                  className='inputRegister'
                   inputRef={emailRef}
                   required />
 
@@ -410,7 +412,7 @@ export const Register = () => {
                   inputRef={contactNumberRef}
 
                   inputProps={{ maxLength: 13 }}
-                  style={{ width: '55%', }}
+                  className='inputRegister'
                   required />
               </InputContainer>
 
@@ -432,7 +434,8 @@ export const Register = () => {
                       <TextField
                         {...params}
                         variant="standard"
-                        style={{ width: "55%", margin: '5px 0px' }}
+                        className='inputRegister'
+                        style={{ margin: '5px 0px' }}
                         helperText={null}
                         required
                       />
@@ -441,7 +444,7 @@ export const Register = () => {
 
                 </LocalizationProvider>
 
-                <FormControl sx={{ width: "55%", margin: '5px 0px' }} size="small" variant="standard">
+                <FormControl className='inputRegister' sx={{  margin: '5px 0px' }} size="small" variant="standard">
                   <InputLabel id="demo-select-small" >Nationality</InputLabel>
                   <Select
                     style={{ color: 'black', textAlign: 'left' }}
@@ -456,7 +459,7 @@ export const Register = () => {
                   >
 
                     {nationalities.map(({ nationality }, index) => (
-                      <MenuItem value={nationality} >{nationality}</MenuItem>
+                      <MenuItem  value={nationality} >{nationality}</MenuItem>
                     ))}
                   </Select>
                 </FormControl>
@@ -547,7 +550,7 @@ export const Register = () => {
 
                   inputProps={{ maxLength: 40 }}
                   required
-                  style={{ width: '55%', }} />
+                  className='inputRegister' />
 
                 <TextField
                   error={passwordError.length != 0 ? true : false}
@@ -566,7 +569,7 @@ export const Register = () => {
                       setPasswordError("")
                     }
                   }}
-                  style={{ width: '55%', }}
+                  className='inputRegister'
                   required
                 />
               </InputContainer>

@@ -114,6 +114,42 @@ const ClientMessagesCont = () => {
 
 
 
+  const deleteConversation = (value) => {
+    console.log(value)
+    if (window.confirm('Are you sure you want to delete this conversation?')) {
+      axios.get(apiKey + 'api/getAllMessage').then((result) => {
+        result.data.filter((obj) => obj.conversation_id == value).map((item, index, array) => {
+
+          axios.get(apiKey + 'api/getAllDeleteConversation').then((deletedMessages) => {
+            if (deletedMessages.data.filter((obj) => obj.delete_conversation_to == userInformation.id && obj.message_id == item.id).length == 0) {
+              axios.post(apiKey + 'api/addDeleteConversation', {
+                delete_conversation_to: userInformation.id,
+                message_id: item.id,
+              }).then((result) => {
+                console.log(result.data)
+                if (index == array.length - 1) {
+                  window.location = ''
+                }
+              }).catch((err) => {
+                console.log(err)
+
+              });
+            }
+          }).catch((err) => {
+            console.log(err)
+          });
+
+        })
+
+
+      }).catch((err) => {
+        console.log(err)
+
+      });
+
+    }
+  }
+
 
   useEffect(() => {
     axios.get(apiKey + 'auth/verify-token').then((result) => {
@@ -122,32 +158,47 @@ const ClientMessagesCont = () => {
           if (result.data.id == item.user_id) {
 
             setUserInformation(item)
-            axios.get(apiKey + 'api/getAllMessage').then((messageResult) => {
-              setMessagesDb(messageResult.data)
+            axios.get(apiKey + 'api/getAllDeleteConversation').then((deletedConversaiton) => {
+              axios.get(apiKey + 'api/getAllMessage').then((messageResult) => {
+                setMessagesDb(messageResult.data.filter((obj1) => deletedConversaiton.data.filter((obj2) => obj2.message_id == obj1.id && obj2.delete_conversation_to == item.id).map((item) => item.message_id).includes(obj1.id) == false))
 
-              axios.get(apiKey + 'api/getAllConversation').then((result) => {
-                console.log("TEST1 :", result.data
-                  .filter((obj) => obj.from_guest_id == item.id || obj.to_guest_id == item.id)
-                  .filter((item2) => (
-                    messageResult.data.filter((obj) => obj.conversation_id == item2.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].message_to_guest_id == item.id
-                  )))
-                console.log("TEST2 :", result.data
-                  .filter((obj) => obj.from_guest_id == item.id || obj.to_guest_id == item.id)
-                  .filter((item2) => (
-                    messageResult.data.filter((obj) => obj.conversation_id == item2.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].message_to_guest_id != item.id
-                  )))
-                setInbox(result.data
-                  .filter((obj) => obj.from_guest_id == item.id || obj.to_guest_id == item.id)
-                  .filter((item2) => (
-                    messageResult.data.filter((obj) => obj.conversation_id == item2.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].message_to_guest_id == item.id
-                  )))
-                setSent(result.data
-                  .filter((obj) => obj.from_guest_id == item.id || obj.to_guest_id == item.id)
-                  .filter((item2) => (
-                    messageResult.data.filter((obj) => obj.conversation_id == item2.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].message_to_guest_id != item.id
-                  )))
+                axios.get(apiKey + 'api/getAllConversation').then((result) => {
+                  console.log("TEST1 :", result.data
+                    .filter((obj) => obj.from_guest_id == item.id || obj.to_guest_id == item.id)
+                    .filter((item2) => (
+                      messageResult.data.filter((obj) => obj.conversation_id == item2.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].message_to_guest_id == item.id
+                    )))
+                  console.log("TEST2 :", result.data
+                    .filter((obj) => obj.from_guest_id == item.id || obj.to_guest_id == item.id)
+                    .filter((item2) => (
+                      messageResult.data.filter((obj) => obj.conversation_id == item2.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].message_to_guest_id != item.id
+                    )))
+                  setInbox(result.data
+                    .filter((obj) => obj.from_guest_id == item.id || obj.to_guest_id == item.id)
+                    .filter((item2) => (
+                      messageResult.data.filter((obj) => obj.conversation_id == item2.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].message_to_guest_id == item.id
+                      &&
+                      deletedConversaiton.data.filter((obj1) => obj1.delete_conversation_to == item.id).map((obj2) => obj2.message_id)
+                        .includes(
+                          messageResult.data.filter((obj) => obj.conversation_id == item2.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].id
+                        ) == false
+                    )))
+                  setSent(result.data
+                    .filter((obj) => obj.from_guest_id == item.id || obj.to_guest_id == item.id)
+                    .filter((item2) => (
+                      messageResult.data.filter((obj) => obj.conversation_id == item2.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].message_to_guest_id != item.id
+                      &&
+                      deletedConversaiton.data.filter((obj1) => obj1.delete_conversation_to == item.id).map((obj2) => obj2.message_id)
+                        .includes(
+                          messageResult.data.filter((obj) => obj.conversation_id == item2.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].id
+                        ) == false
+                    )))
 
 
+                }).catch((err) => {
+                  console.log(err)
+
+                });
               }).catch((err) => {
                 console.log(err)
 
@@ -156,7 +207,6 @@ const ClientMessagesCont = () => {
               console.log(err)
 
             });
-
 
           }
         })
@@ -267,11 +317,14 @@ const ClientMessagesCont = () => {
     }
   }
   return (
-    <Container>
+    <Container
+      style={{ width: 'auto', height: 'auto' }}
+    >
 
       <Modal
         open={openCompose}
         onClose={handleCloseCompose}
+
         style={{
           display: 'flex',
           justifyContent: 'center',
@@ -280,9 +333,11 @@ const ClientMessagesCont = () => {
         <Box
           component='form'
           onSubmit={sendComposeMessage}
+          className='conversation'
+
           style={{
             height: 'auto',
-            width: '50vw',
+            // width: '50vw',
             backgroundColor: 'white',
             display: 'flex',
             flexDirection: 'column',
@@ -419,11 +474,12 @@ const ClientMessagesCont = () => {
         }}>
         <Box
           component='form'
+          className='conversation'
           // onSubmit={updatePassword}
           style={{
             height: 'auto',
             maxHeight: '90vh',
-            width: '50vw',
+            // width: '50vw',
             backgroundColor: 'white',
             display: 'flex',
             flexDirection: 'column',
@@ -455,7 +511,7 @@ const ClientMessagesCont = () => {
               display: 'flex',
               gap: '10px',
               alignItems: 'center',
-              maxWidth: '600px'
+              maxWidth: '300px'
             }}>
               <Title
                 size='16px'
@@ -479,7 +535,6 @@ const ClientMessagesCont = () => {
                 weight='normal'
                 align='left'
                 style={{
-                  width: '400px',
                   whiteSpace: 'nowrap',
                   overflow: 'hidden',
                   textOverflow: 'ellipsis'
@@ -509,6 +564,7 @@ const ClientMessagesCont = () => {
                       >
                         <Title
                           size='16px'
+                          size1000='10px'
                           color='black'
                           family='Helvetica'
                           fstyle='normal'
@@ -520,12 +576,14 @@ const ClientMessagesCont = () => {
                         </Title>
                         <Title
                           size='16px'
+                          size1000='10px'
                           color='black'
                           family='Helvetica'
                           fstyle='normal'
                           weight='400'
                           align='left'
                           margin='0px 0px 0px auto'
+                          margin1000='0px 0px 0px auto'
                         >
                           {new Date(item.created_at).toLocaleDateString() + ' '}
                           {new Date(item.created_at).toLocaleTimeString().split(':')[0]}:{new Date(item.created_at).toLocaleTimeString().split(':')[0] + ' '}
@@ -554,6 +612,7 @@ const ClientMessagesCont = () => {
                         <Title
                           size='16px'
                           color='black'
+                          size1000='10px'
                           family='Helvetica'
                           fstyle='normal'
                           weight='400'
@@ -568,10 +627,12 @@ const ClientMessagesCont = () => {
                           size='16px'
                           color='black'
                           family='Helvetica'
+                          size1000='10px'
                           fstyle='normal'
                           weight='400'
                           align='left'
                           margin='0px 0px 0px auto'
+                          margin1000='0px 0px 0px auto'
                         >
                           <b>Reply to:</b> RM Luxe Hotel
                         </Title>
@@ -658,153 +719,154 @@ const ClientMessagesCont = () => {
 
 
 
-      <TabContext value={value2}>
-        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-          <TabList onChange={handleChange2} aria-label="lab API tabs example">
-            <Tab label="Inbox" value="1" />
-            <Tab label="Sent" value="2" />
-          </TabList>
-        </Box>
-        <TabPanel value="1" style={{ width: '100%', height: '500px', maxHeight: '500px' }} >
+      <div style={{ width: '90%', display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center' }}>
+        <TabContext value={value2}>
+          <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+            <TabList onChange={handleChange2} aria-label="lab API tabs example">
+              <Tab label="Inbox" value="1" />
+              <Tab label="Sent" value="2" />
+            </TabList>
+          </Box>
+          <TabPanel value="1" style={{ width: '100%', height: '500px', maxHeight: '500px' }} >
 
-          <TableContainer
-            cellspacing="0"
-            cellpadding="0"
-            style={{
-              width: '95%',
-              height: '10px',
-              overflow: 'hidden',
-              position: 'static',
-              tableLayout: 'auto',
-              margin: '0px auto',
-              border: '1px solid black'
+            <div style={{ width: '100%', overflow: 'scroll' }}>
+              <TableContainer
+                cellspacing="0"
+                cellpadding="0"
+                style={{
+                  width: '95%',
+                  height: '10px',
+                  overflow: 'hidden',
+                  position: 'static',
+                  tableLayout: 'auto',
+                  margin: '0px auto',
+                  // border: '1px solid black'
 
-            }}
-          >
-            <thead>
-              <Tr cursor='normal'>
-                <Th align='center' style={{ width: '20%' }}>Subject</Th>
-                <Th align='center' style={{ width: '45%' }} >Message</Th>
-                <Th align='center' style={{ width: '10%' }}>Date</Th>
-                <Th align='center' style={{ width: '10%' }}>Time</Th>
-                <Th align='center' style={{ width: '10%' }}>Action</Th>
-              </Tr>
-            </thead>
-            <tbody style={{ height: '10px', overflow: 'hidden' }}>
-              {inbox.length != 0 && messagesDb.length != 0 ? inbox
-                // .filter((obj) => obj.to_guest_id == userInformation.id || obj.to_guest_id == userInformation.id)
-                // .filter((obj) => obj.message.message_to_guest_id != userInformation.id)
-                // .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
-                .sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at))
-                // .filter((obj, index, array) => index != 0 ? array[index].id != array[index - 1].id : array[index])
-                .slice((inboxPage - 1) * 6, inboxPage * 6)
-                .map((item) => (
-                  <Tr
-                    whileHover={{ boxShadow: '0px 2px 2px gray' }}
-                    whileTap={{ boxShadow: 'none' }}
-                    style={messagesDb.filter((obj) => obj.conversation_id == item.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].status == true && { backgroundColor: 'rgb(40,40,40, .05', }}
-                    onClick={() => handleOpenViewMessage(item)}
-                  >
-                    <Td align='center' normal={messagesDb.filter((obj) => obj.conversation_id == item.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].status == true && 'normal'}>{item.subject}</Td>
-                    <Td align='center' normal={messagesDb.filter((obj) => obj.conversation_id == item.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].status == true && 'normal'}><p style={{ margin: 'auto', width: '300px', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>
-                      {messagesDb.filter((obj) => obj.conversation_id == item.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].message}
-                    </p>
-                    </Td>
-                    <Td align='center' normal={item.status == true && 'normal'}>{new Date(messagesDb.filter((obj) => obj.conversation_id == item.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].created_at).toLocaleDateString()} </Td>
-                    <Td align='center' normal={item.status == true && 'normal'}>{new Date(messagesDb.filter((obj) => obj.conversation_id == item.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].created_at).toLocaleTimeString().split(':')[0]}:{new Date(messagesDb.filter((obj) => obj.conversation_id == item.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].created_at).toLocaleTimeString().split(':')[1]} {new Date(messagesDb.filter((obj) => obj.conversation_id == item.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].created_at).toLocaleTimeString().split(' ')[1]}</Td>
-                    <Td align='center' normal={item.status == true && 'normal'}><ActionButtonMessages /></Td>
-                  </Tr>
-                )) :
-                <Tr
-                >
-                  <Td colSpan={5} align='center'>No Inbox</Td>
-                </Tr>
-              }
-
-            </tbody>
-          </TableContainer>
-          <Pagination
-            page={inboxPage}
-            count={inbox.length != 0 && Math.ceil(inbox.length / 6)}
-            onChange={(e, value) => {
-              setInboxPage(value)
-            }}
-            style={{
-              justifyContent: "center",
-              display: 'flex',
-              margin: '20px',
-            }}
-          />
-
-        </TabPanel>
-
-
-        <TabPanel value="2" style={{ width: '100%', height: '500px', maxHeight: '500px' }} >
-
-          <TableContainer
-            cellspacing="0"
-            cellpadding="0"
-            style={{
-              width: '95%',
-              height: '10px',
-              overflow: 'hidden',
-              position: 'static',
-              tableLayout: 'auto',
-              margin: '0px auto',
-              border: '1px solid black'
-
-            }}
-          >
-            <Tr>
-              <Th align='center' style={{ width: '20%' }}>Subject</Th>
-              <Th align='center' style={{ width: '45%' }} >Message</Th>
-              <Th align='center' style={{ width: '10%' }}>Date</Th>
-              <Th align='center' style={{ width: '10%' }}>Time</Th>
-              <Th align='center' style={{ width: '10%' }}>Action</Th>
-            </Tr>
-            {sent.length != 0 && messagesDb.length != 0 ? sent
-              // .filter((obj) => obj.to_guest_id == userInformation.id || obj.to_guest_id == userInformation.id)
-              // .filter((obj) => obj.message.message_to_guest_id != userInformation.id)
-              .sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at))
-              // .filter((obj, index, array) => index != 0 ? array[index].id != array[index - 1].id : array[index])
-              .slice((sentPage - 1) * 6, sentPage * 6)
-              .map((item) => (
-                <Tr
-                  whileHover={{ boxShadow: '0px 2px 2px gray' }}
-                  whileTap={{ boxShadow: 'none' }}
-                  style={{ backgroundColor: 'rgb(40,40,40, .05', }}
-                  onClick={() => handleOpenViewMessage(item)}
-                >
-                  <Td align='center' normal>{item.subject}</Td>
-                  <Td align='center' normal><p style={{ margin: 'auto', width: '300px', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>
-                    {messagesDb.filter((obj) => obj.conversation_id == item.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].message}
-                  </p>
-                  </Td>
-                  <Td align='center' normal>{new Date(messagesDb.filter((obj) => obj.conversation_id == item.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].created_at).toLocaleDateString()} </Td>
-                  <Td align='center' normal>{new Date(messagesDb.filter((obj) => obj.conversation_id == item.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].created_at).toLocaleTimeString().split(':')[0]}:{new Date(messagesDb.filter((obj) => obj.conversation_id == item.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].created_at).toLocaleTimeString().split(':')[1]} {new Date(messagesDb.filter((obj) => obj.conversation_id == item.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].created_at).toLocaleTimeString().split(' ')[1]}</Td>
-                  <Td align='center' normal><ActionButtonMessages /></Td>
-                </Tr>
-              )) : <Tr
+                }}
               >
-              <Td colSpan={5} align='center'>Empty, please check your inbox.</Td>
-            </Tr>}
+                <Tr cursor='normal'>
+                  <Th align='center' style={{ width: '20%' }}>Subject</Th>
+                  <Th align='center' style={{ width: '45%' }} >Message</Th>
+                  <Th align='center' style={{ width: '10%' }}>Date</Th>
+                  <Th align='center' style={{ width: '10%' }}>Time</Th>
+                  <Th align='center' style={{ width: '10%' }}>Action</Th>
+                </Tr>
+                {inbox.length != 0 && messagesDb.length != 0 ? inbox
+                  // .filter((obj) => obj.to_guest_id == userInformation.id || obj.to_guest_id == userInformation.id)
+                  // .filter((obj) => obj.message.message_to_guest_id != userInformation.id)
+                  // .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+                  .sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at))
+                  // .filter((obj, index, array) => index != 0 ? array[index].id != array[index - 1].id : array[index])
+                  .slice((inboxPage - 1) * 6, inboxPage * 6)
+                  .map((item) => (
+                    <Tr
+                      whileHover={{ boxShadow: '0px 2px 2px gray' }}
+                      whileTap={{ boxShadow: 'none' }}
+                      style={messagesDb.filter((obj) => obj.conversation_id == item.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].status == true && { backgroundColor: 'rgb(40,40,40, .05', }}
+                      onClick={() => handleOpenViewMessage(item)}
+                    >
+                      <Td align='center' normal={messagesDb.filter((obj) => obj.conversation_id == item.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].status == true && 'normal'}><p style={{ margin: 'auto', width: '300px', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>{item.subject}</p></Td>
+                      <Td align='center' normal={messagesDb.filter((obj) => obj.conversation_id == item.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].status == true && 'normal'}><p style={{ margin: 'auto', width: '300px', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>
+                        {messagesDb.filter((obj) => obj.conversation_id == item.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].message}
+                      </p>
+                      </Td>
+                      <Td align='center' normal={messagesDb.filter((obj) => obj.conversation_id == item.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].status == true && 'normal'}>{new Date(messagesDb.filter((obj) => obj.conversation_id == item.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].created_at).toLocaleDateString()} </Td>
+                      <Td align='center' normal={messagesDb.filter((obj) => obj.conversation_id == item.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].status == true && 'normal'}>{new Date(messagesDb.filter((obj) => obj.conversation_id == item.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].created_at).toLocaleTimeString().split(':')[0]}:{new Date(messagesDb.filter((obj) => obj.conversation_id == item.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].created_at).toLocaleTimeString().split(':')[1]} {new Date(messagesDb.filter((obj) => obj.conversation_id == item.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].created_at).toLocaleTimeString().split(' ')[1]}</Td>
+                      <Td align='center' normal={messagesDb.filter((obj) => obj.conversation_id == item.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].status == true && 'normal'}><ActionButtonMessages style={{ zIndex: '3' }} delete={() => deleteConversation(item.id)} /></Td>
+                    </Tr>
+                  )) :
+                  <Tr
+                  >
+                    <Td colSpan={5} align='center'>No Inbox</Td>
+                  </Tr>
+                }
 
-          </TableContainer>
-          <Pagination
-            page={sentPage}
-            count={sent.length != 0 && Math.ceil(sent.length / 6)}
-            onChange={(e, value) => {
-              setSentPage(value)
-            }}
+              </TableContainer>
+            </div>
+            <Pagination
+              page={inboxPage}
+              count={inbox.length != 0 && Math.ceil(inbox.length / 6)}
+              onChange={(e, value) => {
+                setInboxPage(value)
+              }}
+              style={{
+                justifyContent: "center",
+                display: 'flex',
+                margin: '20px',
+              }}
+            />
 
-            style={{
-              justifyContent: "center",
-              display: 'flex',
-              margin: '20px',
-            }}
-          />
-        </TabPanel>
-      </TabContext>
+          </TabPanel>
+
+
+          <TabPanel value="2" style={{ width: '100%', height: '500px', maxHeight: '500px' }} >
+            <div style={{ width: '100%', overflow: 'scroll' }}>
+              <TableContainer
+                cellspacing="0"
+                cellpadding="0"
+                style={{
+                  width: '95%',
+                  height: '10px',
+                  overflow: 'hidden',
+                  position: 'static',
+                  tableLayout: 'auto',
+                  margin: '0px auto',
+                  // border: '1px solid black'
+
+                }}
+              >
+                <Tr>
+                  <Th align='center' style={{ width: '20%' }}>Subject</Th>
+                  <Th align='center' style={{ width: '45%' }} >Message</Th>
+                  <Th align='center' style={{ width: '10%' }}>Date</Th>
+                  <Th align='center' style={{ width: '10%' }}>Time</Th>
+                  <Th align='center' style={{ width: '10%' }}>Action</Th>
+                </Tr>
+                {sent.length != 0 && messagesDb.length != 0 ? sent
+                  // .filter((obj) => obj.to_guest_id == userInformation.id || obj.to_guest_id == userInformation.id)
+                  // .filter((obj) => obj.message.message_to_guest_id != userInformation.id)
+                  .sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at))
+                  // .filter((obj, index, array) => index != 0 ? array[index].id != array[index - 1].id : array[index])
+                  .slice((sentPage - 1) * 6, sentPage * 6)
+                  .map((item) => (
+                    <Tr
+                      whileHover={{ boxShadow: '0px 2px 2px gray' }}
+                      whileTap={{ boxShadow: 'none' }}
+                      style={{ backgroundColor: 'rgb(40,40,40, .05', }}
+                      onClick={() => handleOpenViewMessage(item)}
+                    >
+                      <Td align='center' normal><p style={{ margin: 'auto', width: '300px', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>{item.subject}</p></Td>
+                      <Td align='center' normal><p style={{ margin: 'auto', width: '300px', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>
+                        {messagesDb.filter((obj) => obj.conversation_id == item.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].message}
+                      </p>
+                      </Td>
+                      <Td align='center' normal>{new Date(messagesDb.filter((obj) => obj.conversation_id == item.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].created_at).toLocaleDateString()} </Td>
+                      <Td align='center' normal>{new Date(messagesDb.filter((obj) => obj.conversation_id == item.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].created_at).toLocaleTimeString().split(':')[0]}:{new Date(messagesDb.filter((obj) => obj.conversation_id == item.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].created_at).toLocaleTimeString().split(':')[1]} {new Date(messagesDb.filter((obj) => obj.conversation_id == item.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].created_at).toLocaleTimeString().split(' ')[1]}</Td>
+                      <Td align='center' normal><ActionButtonMessages style={{ zIndex: '3' }} delete={() => deleteConversation(item.id)} /></Td>
+                    </Tr>
+                  )) : <Tr
+                  >
+                  <Td colSpan={5} align='center'>Empty, please check your inbox.</Td>
+                </Tr>}
+
+              </TableContainer>
+            </div>
+            <Pagination
+              page={sentPage}
+              count={sent.length != 0 && Math.ceil(sent.length / 6)}
+              onChange={(e, value) => {
+                setSentPage(value)
+              }}
+
+              style={{
+                justifyContent: "center",
+                display: 'flex',
+                margin: '20px',
+              }}
+            />
+          </TabPanel>
+        </TabContext>
+      </div>
       <Button2
         whileHover={{ backgroundColor: "#302B20", color: "white" }}
         w='auto'

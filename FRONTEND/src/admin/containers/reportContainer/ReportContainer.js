@@ -339,7 +339,7 @@ export const ReportContainer = () => {
                     display='inline'
                     padding='5px 10px'
                 >
-                    {value.toLowerCase()}
+                    cancelled
                 </Title>
             </ContainerGlobal>
         }
@@ -497,6 +497,32 @@ export const ReportContainer = () => {
                 w='100px'
                 h='auto'
                 margin='0px auto'
+                bg='rgb(255,165,0, .2)'
+                direction='row'
+                padding='2px 0px'
+                justify='center'
+                align='center'
+                border='2px solid rgb(255,165,0)'
+                gap='10px'
+                borderRadius='.5rem'
+            >
+                <Title
+                    family='Helvetica'
+                    size='12px'
+                    color='BLACK'
+                    fstyle='normal'
+                    display='inline'
+                    padding='5px 10px'
+                >
+                    {value.toLowerCase()}
+                </Title>
+            </ContainerGlobal>
+        }
+        else if (value == 'CANCELLED') {
+            return <ContainerGlobal
+                w='100px'
+                h='auto'
+                margin='0px auto'
                 bg='rgb(255, 0, 0, .2)'
                 direction='row'
                 padding='2px 0px'
@@ -545,6 +571,7 @@ export const ReportContainer = () => {
             </ContainerGlobal>
         }
     }
+
 
 
     const [ocupancyDates, setOcupancyDates] = useState([]);
@@ -737,6 +764,7 @@ export const ReportContainer = () => {
                                             <option value='BScheckedIn'>checked in</option>
                                             <option value='BScheckedOut'>checked out</option>
                                             <option value='BSnoShow'>no show</option>
+                                            <option value='BScancel'>cancelled</option>
                                         </optgroup>
                                         <optgroup label="Payment status">
                                             <option value='PSpartial'>parital</option>
@@ -808,53 +836,145 @@ export const ReportContainer = () => {
                                                     }
                                                 }
                                                 else if (reservationMenuDaily == 'BSpending') {
-                                                    if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
-                                                        return obj;
+                                                    // if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
+                                                    //     return obj;
+                                                    // }
+
+                                                    for (let index = 0; index < filterDates.length; index++) {
+                                                        if (Date.parse(new Date(filterDates[index]).toLocaleDateString()) >= Date.parse(new Date(new Date(obj.checkInDate).toLocaleDateString())) && Date.parse(new Date(filterDates[index]).toLocaleDateString()) <= Date.parse(new Date(new Date(obj.checkOutDate).toLocaleDateString()))) {
+                                                            return obj
+                                                            break;
+                                                        }
+
                                                     }
+
                                                 }
                                                 else if (reservationMenuDaily == 'BSreserved') {
-                                                    if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
-                                                        return obj;
+                                                    // if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
+                                                    //     return obj;
+                                                    // }
+
+                                                    for (let index = 0; index < filterDates.length; index++) {
+                                                        if (Date.parse(new Date(filterDates[index]).toLocaleDateString()) >= Date.parse(new Date(new Date(obj.checkInDate).toLocaleDateString())) && Date.parse(new Date(filterDates[index]).toLocaleDateString()) <= Date.parse(new Date(new Date(obj.checkOutDate).toLocaleDateString()))) {
+                                                            return obj
+                                                            break;
+                                                        }
+
                                                     }
                                                 }
                                                 else if (reservationMenuDaily == 'BScheckedIn') {
-                                                    if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
-                                                        return obj;
+                                                    // if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
+                                                    //     return obj;
+                                                    // }
+                                                    for (let index = 0; index < filterDates.length; index++) {
+                                                        if (Date.parse(new Date(filterDates[index]).toLocaleDateString()) >= Date.parse(new Date(new Date(obj.checkInDate).toLocaleDateString())) && Date.parse(new Date(filterDates[index]).toLocaleDateString()) <= Date.parse(new Date(new Date(obj.checkOutDate).toLocaleDateString()))) {
+                                                            return obj
+                                                            break;
+                                                        }
+
                                                     }
                                                 }
                                                 else if (reservationMenuDaily == 'BScheckedOut') {
-                                                    if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
-                                                        return obj;
+                                                    // if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
+                                                    //     return obj;
+                                                    // }
+
+                                                    for (let index = 0; index < filterDates.length; index++) {
+                                                        if (Date.parse(new Date(filterDates[index]).toLocaleDateString()) >= Date.parse(new Date(new Date(obj.checkInDate).toLocaleDateString())) && Date.parse(new Date(filterDates[index]).toLocaleDateString()) <= Date.parse(new Date(new Date(obj.checkOutDate).toLocaleDateString()))) {
+                                                            return obj
+                                                            break;
+                                                        }
+
                                                     }
                                                 }
                                                 else if (reservationMenuDaily == 'BSnoShow') {
-                                                    if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
-                                                        return obj;
+                                                    // if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
+                                                    //     return obj;
+                                                    // }
+
+                                                    for (let index = 0; index < filterDates.length; index++) {
+                                                        if (Date.parse(new Date(filterDates[index]).toLocaleDateString()) >= Date.parse(new Date(new Date(obj.checkInDate).toLocaleDateString())) && Date.parse(new Date(filterDates[index]).toLocaleDateString()) <= Date.parse(new Date(new Date(obj.checkOutDate).toLocaleDateString()))) {
+                                                            return obj
+                                                            break;
+                                                        }
+
+                                                    }
+                                                }
+                                                else if (reservationMenuDaily == 'BScancel') {
+                                                    // if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
+                                                    //     return obj;
+                                                    // }
+
+                                                    for (let index = 0; index < filterDates.length; index++) {
+                                                        if (Date.parse(new Date(filterDates[index]).toLocaleDateString()) >= Date.parse(new Date(new Date(obj.checkInDate).toLocaleDateString())) && Date.parse(new Date(filterDates[index]).toLocaleDateString()) <= Date.parse(new Date(new Date(obj.checkOutDate).toLocaleDateString()))) {
+                                                            return obj
+                                                            break;
+                                                        }
+
                                                     }
                                                 }
                                                 else if (reservationMenuDaily == 'PSpartial') {
-                                                    if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
-                                                        return obj;
+                                                    // if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
+                                                    //     return obj;
+                                                    // }
+                                                    for (let index = 0; index < filterDates.length; index++) {
+                                                        if (Date.parse(new Date(filterDates[index]).toLocaleDateString()) >= Date.parse(new Date(new Date(obj.checkInDate).toLocaleDateString())) && Date.parse(new Date(filterDates[index]).toLocaleDateString()) <= Date.parse(new Date(new Date(obj.checkOutDate).toLocaleDateString()))) {
+                                                            return obj
+                                                            break;
+                                                        }
+
                                                     }
                                                 }
                                                 else if (reservationMenuDaily == 'PSfullyPaid') {
-                                                    if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
-                                                        return obj;
+                                                    // if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
+                                                    //     return obj;
+                                                    // }
+
+                                                    for (let index = 0; index < filterDates.length; index++) {
+                                                        if (Date.parse(new Date(filterDates[index]).toLocaleDateString()) >= Date.parse(new Date(new Date(obj.checkInDate).toLocaleDateString())) && Date.parse(new Date(filterDates[index]).toLocaleDateString()) <= Date.parse(new Date(new Date(obj.checkOutDate).toLocaleDateString()))) {
+                                                            return obj
+                                                            break;
+                                                        }
+
                                                     }
                                                 }
                                                 else if (reservationMenuDaily == 'PSreceiptDeclined') {
-                                                    if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
-                                                        return obj;
+                                                    // if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
+                                                    //     return obj;
+                                                    // }
+
+                                                    for (let index = 0; index < filterDates.length; index++) {
+                                                        if (Date.parse(new Date(filterDates[index]).toLocaleDateString()) >= Date.parse(new Date(new Date(obj.checkInDate).toLocaleDateString())) && Date.parse(new Date(filterDates[index]).toLocaleDateString()) <= Date.parse(new Date(new Date(obj.checkOutDate).toLocaleDateString()))) {
+                                                            return obj
+                                                            break;
+                                                        }
+
                                                     }
                                                 }
                                                 else if (reservationMenuDaily == 'PSpending') {
-                                                    if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
-                                                        return obj;
+                                                    // if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
+                                                    //     return obj;
+                                                    // }
+
+                                                    for (let index = 0; index < filterDates.length; index++) {
+                                                        if (Date.parse(new Date(filterDates[index]).toLocaleDateString()) >= Date.parse(new Date(new Date(obj.checkInDate).toLocaleDateString())) && Date.parse(new Date(filterDates[index]).toLocaleDateString()) <= Date.parse(new Date(new Date(obj.checkOutDate).toLocaleDateString()))) {
+                                                            return obj
+                                                            break;
+                                                        }
+
                                                     }
                                                 }
                                                 else if (reservationMenuDaily == 'PScancelled') {
-                                                    if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
-                                                        return obj;
+                                                    // if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
+                                                    //     return obj;
+                                                    // }
+
+                                                    for (let index = 0; index < filterDates.length; index++) {
+                                                        if (Date.parse(new Date(filterDates[index]).toLocaleDateString()) >= Date.parse(new Date(new Date(obj.checkInDate).toLocaleDateString())) && Date.parse(new Date(filterDates[index]).toLocaleDateString()) <= Date.parse(new Date(new Date(obj.checkOutDate).toLocaleDateString()))) {
+                                                            return obj
+                                                            break;
+                                                        }
+
                                                     }
                                                 }
                                                 else {
@@ -874,7 +994,7 @@ export const ReportContainer = () => {
                                                     }
                                                 }
                                                 else if (reservationMenuDaily == 'RScancelled') {
-                                                    if (obj.reservation.reservationStatus.toLowerCase() == 'cancelled') {
+                                                    if (obj.reservation.reservationStatus.toLowerCase() == 'unsettled') {
                                                         return obj;
                                                     }
                                                 }
@@ -900,6 +1020,11 @@ export const ReportContainer = () => {
                                                 }
                                                 else if (reservationMenuDaily == 'BSnoShow') {
                                                     if (obj.bookingStatus.toLowerCase() == 'no show') {
+                                                        return obj;
+                                                    }
+                                                }
+                                                else if (reservationMenuDaily == 'BScancel') {
+                                                    if (obj.bookingStatus.toLowerCase() == 'cancelled') {
                                                         return obj;
                                                     }
                                                 }
@@ -952,13 +1077,17 @@ export const ReportContainer = () => {
                                                     ) {
                                                         return obj;
                                                     }
+
+                                                    // if('cancelled'.includes(searchDailyReservation.toLowerCase())){
+                                                    //     return obj
+                                                    // }
                                                 }
                                                 else {
                                                     return obj;
                                                 }
                                             })
                                             .sort((a, b) => {
-                                                if (a.bookingReferenceNumber < b.bookingReferenceNumber) {
+                                                if (b.bookingReferenceNumber < a.bookingReferenceNumber) {
                                                     return -1;
                                                 }
                                             })
@@ -1057,53 +1186,145 @@ export const ReportContainer = () => {
                                             }
                                         }
                                         else if (reservationMenuDaily == 'BSpending') {
-                                            if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
-                                                return obj;
+                                            // if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
+                                            //     return obj;
+                                            // }
+
+                                            for (let index = 0; index < filterDates.length; index++) {
+                                                if (Date.parse(new Date(filterDates[index]).toLocaleDateString()) >= Date.parse(new Date(new Date(obj.checkInDate).toLocaleDateString())) && Date.parse(new Date(filterDates[index]).toLocaleDateString()) <= Date.parse(new Date(new Date(obj.checkOutDate).toLocaleDateString()))) {
+                                                    return obj
+                                                    break;
+                                                }
+
                                             }
+
                                         }
                                         else if (reservationMenuDaily == 'BSreserved') {
-                                            if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
-                                                return obj;
+                                            // if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
+                                            //     return obj;
+                                            // }
+
+                                            for (let index = 0; index < filterDates.length; index++) {
+                                                if (Date.parse(new Date(filterDates[index]).toLocaleDateString()) >= Date.parse(new Date(new Date(obj.checkInDate).toLocaleDateString())) && Date.parse(new Date(filterDates[index]).toLocaleDateString()) <= Date.parse(new Date(new Date(obj.checkOutDate).toLocaleDateString()))) {
+                                                    return obj
+                                                    break;
+                                                }
+
                                             }
                                         }
                                         else if (reservationMenuDaily == 'BScheckedIn') {
-                                            if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
-                                                return obj;
+                                            // if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
+                                            //     return obj;
+                                            // }
+                                            for (let index = 0; index < filterDates.length; index++) {
+                                                if (Date.parse(new Date(filterDates[index]).toLocaleDateString()) >= Date.parse(new Date(new Date(obj.checkInDate).toLocaleDateString())) && Date.parse(new Date(filterDates[index]).toLocaleDateString()) <= Date.parse(new Date(new Date(obj.checkOutDate).toLocaleDateString()))) {
+                                                    return obj
+                                                    break;
+                                                }
+
                                             }
                                         }
                                         else if (reservationMenuDaily == 'BScheckedOut') {
-                                            if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
-                                                return obj;
+                                            // if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
+                                            //     return obj;
+                                            // }
+
+                                            for (let index = 0; index < filterDates.length; index++) {
+                                                if (Date.parse(new Date(filterDates[index]).toLocaleDateString()) >= Date.parse(new Date(new Date(obj.checkInDate).toLocaleDateString())) && Date.parse(new Date(filterDates[index]).toLocaleDateString()) <= Date.parse(new Date(new Date(obj.checkOutDate).toLocaleDateString()))) {
+                                                    return obj
+                                                    break;
+                                                }
+
                                             }
                                         }
                                         else if (reservationMenuDaily == 'BSnoShow') {
-                                            if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
-                                                return obj;
+                                            // if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
+                                            //     return obj;
+                                            // }
+
+                                            for (let index = 0; index < filterDates.length; index++) {
+                                                if (Date.parse(new Date(filterDates[index]).toLocaleDateString()) >= Date.parse(new Date(new Date(obj.checkInDate).toLocaleDateString())) && Date.parse(new Date(filterDates[index]).toLocaleDateString()) <= Date.parse(new Date(new Date(obj.checkOutDate).toLocaleDateString()))) {
+                                                    return obj
+                                                    break;
+                                                }
+
+                                            }
+                                        }
+                                        else if (reservationMenuDaily == 'BScancel') {
+                                            // if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
+                                            //     return obj;
+                                            // }
+
+                                            for (let index = 0; index < filterDates.length; index++) {
+                                                if (Date.parse(new Date(filterDates[index]).toLocaleDateString()) >= Date.parse(new Date(new Date(obj.checkInDate).toLocaleDateString())) && Date.parse(new Date(filterDates[index]).toLocaleDateString()) <= Date.parse(new Date(new Date(obj.checkOutDate).toLocaleDateString()))) {
+                                                    return obj
+                                                    break;
+                                                }
+
                                             }
                                         }
                                         else if (reservationMenuDaily == 'PSpartial') {
-                                            if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
-                                                return obj;
+                                            // if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
+                                            //     return obj;
+                                            // }
+                                            for (let index = 0; index < filterDates.length; index++) {
+                                                if (Date.parse(new Date(filterDates[index]).toLocaleDateString()) >= Date.parse(new Date(new Date(obj.checkInDate).toLocaleDateString())) && Date.parse(new Date(filterDates[index]).toLocaleDateString()) <= Date.parse(new Date(new Date(obj.checkOutDate).toLocaleDateString()))) {
+                                                    return obj
+                                                    break;
+                                                }
+
                                             }
                                         }
                                         else if (reservationMenuDaily == 'PSfullyPaid') {
-                                            if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
-                                                return obj;
+                                            // if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
+                                            //     return obj;
+                                            // }
+
+                                            for (let index = 0; index < filterDates.length; index++) {
+                                                if (Date.parse(new Date(filterDates[index]).toLocaleDateString()) >= Date.parse(new Date(new Date(obj.checkInDate).toLocaleDateString())) && Date.parse(new Date(filterDates[index]).toLocaleDateString()) <= Date.parse(new Date(new Date(obj.checkOutDate).toLocaleDateString()))) {
+                                                    return obj
+                                                    break;
+                                                }
+
                                             }
                                         }
                                         else if (reservationMenuDaily == 'PSreceiptDeclined') {
-                                            if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
-                                                return obj;
+                                            // if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
+                                            //     return obj;
+                                            // }
+
+                                            for (let index = 0; index < filterDates.length; index++) {
+                                                if (Date.parse(new Date(filterDates[index]).toLocaleDateString()) >= Date.parse(new Date(new Date(obj.checkInDate).toLocaleDateString())) && Date.parse(new Date(filterDates[index]).toLocaleDateString()) <= Date.parse(new Date(new Date(obj.checkOutDate).toLocaleDateString()))) {
+                                                    return obj
+                                                    break;
+                                                }
+
                                             }
                                         }
                                         else if (reservationMenuDaily == 'PSpending') {
-                                            if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
-                                                return obj;
+                                            // if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
+                                            //     return obj;
+                                            // }
+
+                                            for (let index = 0; index < filterDates.length; index++) {
+                                                if (Date.parse(new Date(filterDates[index]).toLocaleDateString()) >= Date.parse(new Date(new Date(obj.checkInDate).toLocaleDateString())) && Date.parse(new Date(filterDates[index]).toLocaleDateString()) <= Date.parse(new Date(new Date(obj.checkOutDate).toLocaleDateString()))) {
+                                                    return obj
+                                                    break;
+                                                }
+
                                             }
                                         }
                                         else if (reservationMenuDaily == 'PScancelled') {
-                                            if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
-                                                return obj;
+                                            // if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
+                                            //     return obj;
+                                            // }
+
+                                            for (let index = 0; index < filterDates.length; index++) {
+                                                if (Date.parse(new Date(filterDates[index]).toLocaleDateString()) >= Date.parse(new Date(new Date(obj.checkInDate).toLocaleDateString())) && Date.parse(new Date(filterDates[index]).toLocaleDateString()) <= Date.parse(new Date(new Date(obj.checkOutDate).toLocaleDateString()))) {
+                                                    return obj
+                                                    break;
+                                                }
+
                                             }
                                         }
                                         else {
@@ -1123,7 +1344,7 @@ export const ReportContainer = () => {
                                                 }
                                             }
                                             else if (reservationMenuDaily == 'RScancelled') {
-                                                if (obj.reservation.reservationStatus.toLowerCase() == 'cancelled') {
+                                                if (obj.reservation.reservationStatus.toLowerCase() == 'unsettled') {
                                                     return obj;
                                                 }
                                             }
@@ -1149,6 +1370,11 @@ export const ReportContainer = () => {
                                             }
                                             else if (reservationMenuDaily == 'BSnoShow') {
                                                 if (obj.bookingStatus.toLowerCase() == 'no show') {
+                                                    return obj;
+                                                }
+                                            }
+                                            else if (reservationMenuDaily == 'BScancel') {
+                                                if (obj.bookingStatus.toLowerCase() == 'cancelled') {
                                                     return obj;
                                                 }
                                             }
@@ -1257,53 +1483,145 @@ export const ReportContainer = () => {
                                                 }
                                             }
                                             else if (reservationMenuDaily == 'BSpending') {
-                                                if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
-                                                    return obj;
+                                                // if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
+                                                //     return obj;
+                                                // }
+
+                                                for (let index = 0; index < filterDates.length; index++) {
+                                                    if (Date.parse(new Date(filterDates[index]).toLocaleDateString()) >= Date.parse(new Date(new Date(obj.checkInDate).toLocaleDateString())) && Date.parse(new Date(filterDates[index]).toLocaleDateString()) <= Date.parse(new Date(new Date(obj.checkOutDate).toLocaleDateString()))) {
+                                                        return obj
+                                                        break;
+                                                    }
+
                                                 }
+
                                             }
                                             else if (reservationMenuDaily == 'BSreserved') {
-                                                if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
-                                                    return obj;
+                                                // if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
+                                                //     return obj;
+                                                // }
+
+                                                for (let index = 0; index < filterDates.length; index++) {
+                                                    if (Date.parse(new Date(filterDates[index]).toLocaleDateString()) >= Date.parse(new Date(new Date(obj.checkInDate).toLocaleDateString())) && Date.parse(new Date(filterDates[index]).toLocaleDateString()) <= Date.parse(new Date(new Date(obj.checkOutDate).toLocaleDateString()))) {
+                                                        return obj
+                                                        break;
+                                                    }
+
                                                 }
                                             }
                                             else if (reservationMenuDaily == 'BScheckedIn') {
-                                                if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
-                                                    return obj;
+                                                // if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
+                                                //     return obj;
+                                                // }
+                                                for (let index = 0; index < filterDates.length; index++) {
+                                                    if (Date.parse(new Date(filterDates[index]).toLocaleDateString()) >= Date.parse(new Date(new Date(obj.checkInDate).toLocaleDateString())) && Date.parse(new Date(filterDates[index]).toLocaleDateString()) <= Date.parse(new Date(new Date(obj.checkOutDate).toLocaleDateString()))) {
+                                                        return obj
+                                                        break;
+                                                    }
+
                                                 }
                                             }
                                             else if (reservationMenuDaily == 'BScheckedOut') {
-                                                if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
-                                                    return obj;
+                                                // if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
+                                                //     return obj;
+                                                // }
+
+                                                for (let index = 0; index < filterDates.length; index++) {
+                                                    if (Date.parse(new Date(filterDates[index]).toLocaleDateString()) >= Date.parse(new Date(new Date(obj.checkInDate).toLocaleDateString())) && Date.parse(new Date(filterDates[index]).toLocaleDateString()) <= Date.parse(new Date(new Date(obj.checkOutDate).toLocaleDateString()))) {
+                                                        return obj
+                                                        break;
+                                                    }
+
                                                 }
                                             }
                                             else if (reservationMenuDaily == 'BSnoShow') {
-                                                if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
-                                                    return obj;
+                                                // if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
+                                                //     return obj;
+                                                // }
+
+                                                for (let index = 0; index < filterDates.length; index++) {
+                                                    if (Date.parse(new Date(filterDates[index]).toLocaleDateString()) >= Date.parse(new Date(new Date(obj.checkInDate).toLocaleDateString())) && Date.parse(new Date(filterDates[index]).toLocaleDateString()) <= Date.parse(new Date(new Date(obj.checkOutDate).toLocaleDateString()))) {
+                                                        return obj
+                                                        break;
+                                                    }
+
+                                                }
+                                            }
+                                            else if (reservationMenuDaily == 'BScancel') {
+                                                // if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
+                                                //     return obj;
+                                                // }
+
+                                                for (let index = 0; index < filterDates.length; index++) {
+                                                    if (Date.parse(new Date(filterDates[index]).toLocaleDateString()) >= Date.parse(new Date(new Date(obj.checkInDate).toLocaleDateString())) && Date.parse(new Date(filterDates[index]).toLocaleDateString()) <= Date.parse(new Date(new Date(obj.checkOutDate).toLocaleDateString()))) {
+                                                        return obj
+                                                        break;
+                                                    }
+
                                                 }
                                             }
                                             else if (reservationMenuDaily == 'PSpartial') {
-                                                if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
-                                                    return obj;
+                                                // if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
+                                                //     return obj;
+                                                // }
+                                                for (let index = 0; index < filterDates.length; index++) {
+                                                    if (Date.parse(new Date(filterDates[index]).toLocaleDateString()) >= Date.parse(new Date(new Date(obj.checkInDate).toLocaleDateString())) && Date.parse(new Date(filterDates[index]).toLocaleDateString()) <= Date.parse(new Date(new Date(obj.checkOutDate).toLocaleDateString()))) {
+                                                        return obj
+                                                        break;
+                                                    }
+
                                                 }
                                             }
                                             else if (reservationMenuDaily == 'PSfullyPaid') {
-                                                if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
-                                                    return obj;
+                                                // if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
+                                                //     return obj;
+                                                // }
+
+                                                for (let index = 0; index < filterDates.length; index++) {
+                                                    if (Date.parse(new Date(filterDates[index]).toLocaleDateString()) >= Date.parse(new Date(new Date(obj.checkInDate).toLocaleDateString())) && Date.parse(new Date(filterDates[index]).toLocaleDateString()) <= Date.parse(new Date(new Date(obj.checkOutDate).toLocaleDateString()))) {
+                                                        return obj
+                                                        break;
+                                                    }
+
                                                 }
                                             }
                                             else if (reservationMenuDaily == 'PSreceiptDeclined') {
-                                                if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
-                                                    return obj;
+                                                // if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
+                                                //     return obj;
+                                                // }
+
+                                                for (let index = 0; index < filterDates.length; index++) {
+                                                    if (Date.parse(new Date(filterDates[index]).toLocaleDateString()) >= Date.parse(new Date(new Date(obj.checkInDate).toLocaleDateString())) && Date.parse(new Date(filterDates[index]).toLocaleDateString()) <= Date.parse(new Date(new Date(obj.checkOutDate).toLocaleDateString()))) {
+                                                        return obj
+                                                        break;
+                                                    }
+
                                                 }
                                             }
                                             else if (reservationMenuDaily == 'PSpending') {
-                                                if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
-                                                    return obj;
+                                                // if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
+                                                //     return obj;
+                                                // }
+
+                                                for (let index = 0; index < filterDates.length; index++) {
+                                                    if (Date.parse(new Date(filterDates[index]).toLocaleDateString()) >= Date.parse(new Date(new Date(obj.checkInDate).toLocaleDateString())) && Date.parse(new Date(filterDates[index]).toLocaleDateString()) <= Date.parse(new Date(new Date(obj.checkOutDate).toLocaleDateString()))) {
+                                                        return obj
+                                                        break;
+                                                    }
+
                                                 }
                                             }
                                             else if (reservationMenuDaily == 'PScancelled') {
-                                                if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
-                                                    return obj;
+                                                // if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
+                                                //     return obj;
+                                                // }
+
+                                                for (let index = 0; index < filterDates.length; index++) {
+                                                    if (Date.parse(new Date(filterDates[index]).toLocaleDateString()) >= Date.parse(new Date(new Date(obj.checkInDate).toLocaleDateString())) && Date.parse(new Date(filterDates[index]).toLocaleDateString()) <= Date.parse(new Date(new Date(obj.checkOutDate).toLocaleDateString()))) {
+                                                        return obj
+                                                        break;
+                                                    }
+
                                                 }
                                             }
                                             else {
@@ -1323,7 +1641,7 @@ export const ReportContainer = () => {
                                                 }
                                             }
                                             else if (reservationMenuDaily == 'RScancelled') {
-                                                if (obj.reservation.reservationStatus.toLowerCase() == 'cancelled') {
+                                                if (obj.reservation.reservationStatus.toLowerCase() == 'unsettled') {
                                                     return obj;
                                                 }
                                             }
@@ -1349,6 +1667,11 @@ export const ReportContainer = () => {
                                             }
                                             else if (reservationMenuDaily == 'BSnoShow') {
                                                 if (obj.bookingStatus.toLowerCase() == 'no show') {
+                                                    return obj;
+                                                }
+                                            }
+                                            else if (reservationMenuDaily == 'BScancel') {
+                                                if (obj.bookingStatus.toLowerCase() == 'cancelled') {
                                                     return obj;
                                                 }
                                             }
@@ -1381,11 +1704,6 @@ export const ReportContainer = () => {
                                                 return obj;
                                             }
                                         })
-                                        .sort((a, b) => {
-                                            if (a.bookingReferenceNumber < b.bookingReferenceNumber) {
-                                                return -1;
-                                            }
-                                        })
                                         .length : 0}</b>
                             </Title>
                             <Title
@@ -1400,6 +1718,286 @@ export const ReportContainer = () => {
                                 Total Income: <b style={{ color: 'green' }}>{reservationSummary.length != 0 ?
                                     numberFormat(
                                         reservationSummary
+                                        .filter((obj) => {
+                                            let filterDates = getDates(startDateDaily, endDateDaily);
+
+                                            if (reservationMenuDaily == 'reservationDate' || reservationMenuDaily == 'all') {
+                                                if (filterDates.includes(moment(obj.reservation.reservationDate).format('YYYY-MM-DD'))) {
+                                                    return obj;
+                                                }
+                                            }
+                                            else if (reservationMenuDaily == 'checkIn') {
+                                                if (filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
+                                                    return obj;
+                                                }
+                                            }
+                                            else if (reservationMenuDaily == 'checkOut') {
+                                                if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD'))) {
+                                                    return obj;
+                                                }
+                                            }
+                                            else if (reservationMenuDaily == 'RSreserved') {
+                                                if (filterDates.includes(moment(obj.reservation.reservationDate).format('YYYY-MM-DD'))) {
+                                                    return obj;
+                                                }
+                                            }
+                                            else if (reservationMenuDaily == 'RSpending') {
+                                                if (filterDates.includes(moment(obj.reservation.reservationDate).format('YYYY-MM-DD'))) {
+                                                    return obj;
+                                                }
+                                            }
+                                            else if (reservationMenuDaily == 'RScancelled') {
+                                                if (filterDates.includes(moment(obj.reservation.reservationDate).format('YYYY-MM-DD'))) {
+                                                    return obj;
+                                                }
+                                            }
+                                            else if (reservationMenuDaily == 'BSpending') {
+                                                // if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
+                                                //     return obj;
+                                                // }
+
+                                                for (let index = 0; index < filterDates.length; index++) {
+                                                    if(Date.parse(new Date(filterDates[index]).toLocaleDateString()) >= Date.parse(new Date(new Date(obj.checkInDate).toLocaleDateString())) && Date.parse(new Date(filterDates[index]).toLocaleDateString()) <= Date.parse(new Date(new Date(obj.checkOutDate).toLocaleDateString()))){
+                                                        return obj
+                                                        break;
+                                                    }
+                                                    
+                                                }
+
+                                            }
+                                            else if (reservationMenuDaily == 'BSreserved') {
+                                                // if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
+                                                //     return obj;
+                                                // }
+
+                                                for (let index = 0; index < filterDates.length; index++) {
+                                                    if(Date.parse(new Date(filterDates[index]).toLocaleDateString()) >= Date.parse(new Date(new Date(obj.checkInDate).toLocaleDateString())) && Date.parse(new Date(filterDates[index]).toLocaleDateString()) <= Date.parse(new Date(new Date(obj.checkOutDate).toLocaleDateString()))){
+                                                        return obj
+                                                        break;
+                                                    }
+                                                    
+                                                }
+                                            }
+                                            else if (reservationMenuDaily == 'BScheckedIn') {
+                                                // if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
+                                                //     return obj;
+                                                // }
+                                                for (let index = 0; index < filterDates.length; index++) {
+                                                    if(Date.parse(new Date(filterDates[index]).toLocaleDateString()) >= Date.parse(new Date(new Date(obj.checkInDate).toLocaleDateString())) && Date.parse(new Date(filterDates[index]).toLocaleDateString()) <= Date.parse(new Date(new Date(obj.checkOutDate).toLocaleDateString()))){
+                                                        return obj
+                                                        break;
+                                                    }
+                                                    
+                                                }
+                                            }
+                                            else if (reservationMenuDaily == 'BScheckedOut') {
+                                                // if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
+                                                //     return obj;
+                                                // }
+
+                                                for (let index = 0; index < filterDates.length; index++) {
+                                                    if(Date.parse(new Date(filterDates[index]).toLocaleDateString()) >= Date.parse(new Date(new Date(obj.checkInDate).toLocaleDateString())) && Date.parse(new Date(filterDates[index]).toLocaleDateString()) <= Date.parse(new Date(new Date(obj.checkOutDate).toLocaleDateString()))){
+                                                        return obj
+                                                        break;
+                                                    }
+                                                    
+                                                }
+                                            }
+                                            else if (reservationMenuDaily == 'BSnoShow') {
+                                                // if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
+                                                //     return obj;
+                                                // }
+
+                                                for (let index = 0; index < filterDates.length; index++) {
+                                                    if(Date.parse(new Date(filterDates[index]).toLocaleDateString()) >= Date.parse(new Date(new Date(obj.checkInDate).toLocaleDateString())) && Date.parse(new Date(filterDates[index]).toLocaleDateString()) <= Date.parse(new Date(new Date(obj.checkOutDate).toLocaleDateString()))){
+                                                        return obj
+                                                        break;
+                                                    }
+                                                    
+                                                }
+                                            }
+                                            else if (reservationMenuDaily == 'BScancel') {
+                                                // if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
+                                                //     return obj;
+                                                // }
+
+                                                for (let index = 0; index < filterDates.length; index++) {
+                                                    if(Date.parse(new Date(filterDates[index]).toLocaleDateString()) >= Date.parse(new Date(new Date(obj.checkInDate).toLocaleDateString())) && Date.parse(new Date(filterDates[index]).toLocaleDateString()) <= Date.parse(new Date(new Date(obj.checkOutDate).toLocaleDateString()))){
+                                                        return obj
+                                                        break;
+                                                    }
+                                                    
+                                                }
+                                            }
+                                            else if (reservationMenuDaily == 'PSpartial') {
+                                                // if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
+                                                //     return obj;
+                                                // }
+                                                for (let index = 0; index < filterDates.length; index++) {
+                                                    if(Date.parse(new Date(filterDates[index]).toLocaleDateString()) >= Date.parse(new Date(new Date(obj.checkInDate).toLocaleDateString())) && Date.parse(new Date(filterDates[index]).toLocaleDateString()) <= Date.parse(new Date(new Date(obj.checkOutDate).toLocaleDateString()))){
+                                                        return obj
+                                                        break;
+                                                    }
+                                                    
+                                                }
+                                            }
+                                            else if (reservationMenuDaily == 'PSfullyPaid') {
+                                                // if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
+                                                //     return obj;
+                                                // }
+
+                                                for (let index = 0; index < filterDates.length; index++) {
+                                                    if(Date.parse(new Date(filterDates[index]).toLocaleDateString()) >= Date.parse(new Date(new Date(obj.checkInDate).toLocaleDateString())) && Date.parse(new Date(filterDates[index]).toLocaleDateString()) <= Date.parse(new Date(new Date(obj.checkOutDate).toLocaleDateString()))){
+                                                        return obj
+                                                        break;
+                                                    }
+                                                    
+                                                }
+                                            }
+                                            else if (reservationMenuDaily == 'PSreceiptDeclined') {
+                                                // if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
+                                                //     return obj;
+                                                // }
+
+                                                for (let index = 0; index < filterDates.length; index++) {
+                                                    if(Date.parse(new Date(filterDates[index]).toLocaleDateString()) >= Date.parse(new Date(new Date(obj.checkInDate).toLocaleDateString())) && Date.parse(new Date(filterDates[index]).toLocaleDateString()) <= Date.parse(new Date(new Date(obj.checkOutDate).toLocaleDateString()))){
+                                                        return obj
+                                                        break;
+                                                    }
+                                                    
+                                                }
+                                            }
+                                            else if (reservationMenuDaily == 'PSpending') {
+                                                // if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
+                                                //     return obj;
+                                                // }
+
+                                                for (let index = 0; index < filterDates.length; index++) {
+                                                    if(Date.parse(new Date(filterDates[index]).toLocaleDateString()) >= Date.parse(new Date(new Date(obj.checkInDate).toLocaleDateString())) && Date.parse(new Date(filterDates[index]).toLocaleDateString()) <= Date.parse(new Date(new Date(obj.checkOutDate).toLocaleDateString()))){
+                                                        return obj
+                                                        break;
+                                                    }
+                                                    
+                                                }
+                                            }
+                                            else if (reservationMenuDaily == 'PScancelled') {
+                                                // if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
+                                                //     return obj;
+                                                // }
+
+                                                for (let index = 0; index < filterDates.length; index++) {
+                                                    if(Date.parse(new Date(filterDates[index]).toLocaleDateString()) >= Date.parse(new Date(new Date(obj.checkInDate).toLocaleDateString())) && Date.parse(new Date(filterDates[index]).toLocaleDateString()) <= Date.parse(new Date(new Date(obj.checkOutDate).toLocaleDateString()))){
+                                                        return obj
+                                                        break;
+                                                    }
+                                                    
+                                                }
+                                            }
+                                            else {
+                                                return obj;
+                                            }
+
+                                        })
+                                        .filter((obj) => {
+                                            if (reservationMenuDaily == 'RSreserved') {
+                                                if (obj.reservation.reservationStatus.toLowerCase() == 'reserved') {
+                                                    return obj;
+                                                }
+                                            }
+                                            else if (reservationMenuDaily == 'RSpending') {
+                                                if (obj.reservation.reservationStatus.toLowerCase() == 'pending') {
+                                                    return obj;
+                                                }
+                                            }
+                                            else if (reservationMenuDaily == 'RScancelled') {
+                                                if (obj.reservation.reservationStatus.toLowerCase() == 'unsettled') {
+                                                    return obj;
+                                                }
+                                            }
+                                            else if (reservationMenuDaily == 'BSpending') {
+                                                if (obj.bookingStatus.toLowerCase() == 'pending') {
+                                                    return obj;
+                                                }
+                                            }
+                                            else if (reservationMenuDaily == 'BSreserved') {
+                                                if (obj.bookingStatus.toLowerCase() == 'reserved') {
+                                                    return obj;
+                                                }
+                                            }
+                                            else if (reservationMenuDaily == 'BScheckedIn') {
+                                                if (obj.bookingStatus.toLowerCase() == 'checked-in') {
+                                                    return obj;
+                                                }
+                                            }
+                                            else if (reservationMenuDaily == 'BScheckedOut') {
+                                                if (obj.bookingStatus.toLowerCase() == 'checked-out') {
+                                                    return obj;
+                                                }
+                                            }
+                                            else if (reservationMenuDaily == 'BSnoShow') {
+                                                if (obj.bookingStatus.toLowerCase() == 'no show') {
+                                                    return obj;
+                                                }
+                                            }
+                                            else if (reservationMenuDaily == 'BScancel') {
+                                                if (obj.bookingStatus.toLowerCase() == 'cancelled') {
+                                                    return obj;
+                                                }
+                                            }
+                                            else if (reservationMenuDaily == 'PSpartial') {
+                                                if (obj.reservation.payment.paymentStatus.toLowerCase() == 'partial') {
+                                                    return obj;
+                                                }
+                                            }
+                                            else if (reservationMenuDaily == 'PSfullyPaid') {
+                                                if (obj.reservation.payment.paymentStatus.toLowerCase() == 'fully paid') {
+                                                    return obj;
+                                                }
+                                            }
+                                            else if (reservationMenuDaily == 'PSreceiptDeclined') {
+                                                if (obj.reservation.payment.paymentStatus.toLowerCase() == 'reciept declined') {
+                                                    return obj;
+                                                }
+                                            }
+                                            else if (reservationMenuDaily == 'PSpending') {
+                                                if (obj.reservation.payment.paymentStatus.toLowerCase() == 'pending') {
+                                                    return obj;
+                                                }
+                                            }
+                                            else if (reservationMenuDaily == 'PScancelled') {
+                                                if (obj.reservation.payment.paymentStatus.toLowerCase() == 'cancelled') {
+                                                    return obj;
+                                                }
+                                            }
+                                            else {
+                                                return obj;
+                                            }
+                                        })
+                                            .map((item) => (
+                                                orderedAmenity.length != 0 ?
+                                                    item.reservation.payment.discountValid == true ?
+                                                        parseFloat(((parseFloat(item.total) + (parseFloat(item.others)) + (orderedAmenity.filter((obj) => obj.reservationSummary_id == item.id).map((obj) => obj.total).reduce((accumulator, value) => parseFloat(accumulator) + parseFloat(value), 0))) / 1.12 * .80) / item.reservation.payment.grandTotal) * parseFloat(item.reservation.payment.paymentMade)
+                                                        :
+                                                        parseFloat(((parseFloat(item.total) + (parseFloat(item.others)) + (orderedAmenity.filter((obj) => obj.reservationSummary_id == item.id).map((obj) => obj.total).reduce((accumulator, value) => parseFloat(accumulator) + parseFloat(value), 0)))) / item.reservation.payment.grandTotal) * parseFloat(item.reservation.payment.paymentMade)
+
+                                                    : ''
+                                            )).reduce((accumulator, value) => parseFloat(accumulator) + parseFloat(value), 0)
+                                    )
+                                    :
+                                    numberFormat(0)}</b>
+                            </Title>
+
+                            <ContainerGlobal
+                                w='100%'>
+                                <Button
+                                    variant="contained"
+                                    size="large"
+                                    onClick={() => {
+                                        window.open('/admin/generatedReport/detailed' + '_' + reservationMenuDaily + '_' + new Date(startDateDaily).toLocaleDateString().replaceAll('/', '-') + '_' + new Date(endDateDaily).toLocaleDateString().replaceAll('/', '-'), '_blank').focus();
+                                    }}
+                                    disabled={
+                                        reservationSummary.length != 0 ?
+                                            reservationSummary
                                             .filter((obj) => {
                                                 let filterDates = getDates(startDateDaily, endDateDaily);
 
@@ -1434,53 +2032,145 @@ export const ReportContainer = () => {
                                                     }
                                                 }
                                                 else if (reservationMenuDaily == 'BSpending') {
-                                                    if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
-                                                        return obj;
+                                                    // if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
+                                                    //     return obj;
+                                                    // }
+
+                                                    for (let index = 0; index < filterDates.length; index++) {
+                                                        if(Date.parse(new Date(filterDates[index]).toLocaleDateString()) >= Date.parse(new Date(new Date(obj.checkInDate).toLocaleDateString())) && Date.parse(new Date(filterDates[index]).toLocaleDateString()) <= Date.parse(new Date(new Date(obj.checkOutDate).toLocaleDateString()))){
+                                                            return obj
+                                                            break;
+                                                        }
+                                                        
                                                     }
+
                                                 }
                                                 else if (reservationMenuDaily == 'BSreserved') {
-                                                    if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
-                                                        return obj;
+                                                    // if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
+                                                    //     return obj;
+                                                    // }
+
+                                                    for (let index = 0; index < filterDates.length; index++) {
+                                                        if(Date.parse(new Date(filterDates[index]).toLocaleDateString()) >= Date.parse(new Date(new Date(obj.checkInDate).toLocaleDateString())) && Date.parse(new Date(filterDates[index]).toLocaleDateString()) <= Date.parse(new Date(new Date(obj.checkOutDate).toLocaleDateString()))){
+                                                            return obj
+                                                            break;
+                                                        }
+                                                        
                                                     }
                                                 }
                                                 else if (reservationMenuDaily == 'BScheckedIn') {
-                                                    if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
-                                                        return obj;
+                                                    // if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
+                                                    //     return obj;
+                                                    // }
+                                                    for (let index = 0; index < filterDates.length; index++) {
+                                                        if(Date.parse(new Date(filterDates[index]).toLocaleDateString()) >= Date.parse(new Date(new Date(obj.checkInDate).toLocaleDateString())) && Date.parse(new Date(filterDates[index]).toLocaleDateString()) <= Date.parse(new Date(new Date(obj.checkOutDate).toLocaleDateString()))){
+                                                            return obj
+                                                            break;
+                                                        }
+                                                        
                                                     }
                                                 }
                                                 else if (reservationMenuDaily == 'BScheckedOut') {
-                                                    if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
-                                                        return obj;
+                                                    // if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
+                                                    //     return obj;
+                                                    // }
+
+                                                    for (let index = 0; index < filterDates.length; index++) {
+                                                        if(Date.parse(new Date(filterDates[index]).toLocaleDateString()) >= Date.parse(new Date(new Date(obj.checkInDate).toLocaleDateString())) && Date.parse(new Date(filterDates[index]).toLocaleDateString()) <= Date.parse(new Date(new Date(obj.checkOutDate).toLocaleDateString()))){
+                                                            return obj
+                                                            break;
+                                                        }
+                                                        
                                                     }
                                                 }
                                                 else if (reservationMenuDaily == 'BSnoShow') {
-                                                    if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
-                                                        return obj;
+                                                    // if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
+                                                    //     return obj;
+                                                    // }
+
+                                                    for (let index = 0; index < filterDates.length; index++) {
+                                                        if(Date.parse(new Date(filterDates[index]).toLocaleDateString()) >= Date.parse(new Date(new Date(obj.checkInDate).toLocaleDateString())) && Date.parse(new Date(filterDates[index]).toLocaleDateString()) <= Date.parse(new Date(new Date(obj.checkOutDate).toLocaleDateString()))){
+                                                            return obj
+                                                            break;
+                                                        }
+                                                        
+                                                    }
+                                                }
+                                                else if (reservationMenuDaily == 'BScancel') {
+                                                    // if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
+                                                    //     return obj;
+                                                    // }
+
+                                                    for (let index = 0; index < filterDates.length; index++) {
+                                                        if(Date.parse(new Date(filterDates[index]).toLocaleDateString()) >= Date.parse(new Date(new Date(obj.checkInDate).toLocaleDateString())) && Date.parse(new Date(filterDates[index]).toLocaleDateString()) <= Date.parse(new Date(new Date(obj.checkOutDate).toLocaleDateString()))){
+                                                            return obj
+                                                            break;
+                                                        }
+                                                        
                                                     }
                                                 }
                                                 else if (reservationMenuDaily == 'PSpartial') {
-                                                    if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
-                                                        return obj;
+                                                    // if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
+                                                    //     return obj;
+                                                    // }
+                                                    for (let index = 0; index < filterDates.length; index++) {
+                                                        if(Date.parse(new Date(filterDates[index]).toLocaleDateString()) >= Date.parse(new Date(new Date(obj.checkInDate).toLocaleDateString())) && Date.parse(new Date(filterDates[index]).toLocaleDateString()) <= Date.parse(new Date(new Date(obj.checkOutDate).toLocaleDateString()))){
+                                                            return obj
+                                                            break;
+                                                        }
+                                                        
                                                     }
                                                 }
                                                 else if (reservationMenuDaily == 'PSfullyPaid') {
-                                                    if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
-                                                        return obj;
+                                                    // if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
+                                                    //     return obj;
+                                                    // }
+
+                                                    for (let index = 0; index < filterDates.length; index++) {
+                                                        if(Date.parse(new Date(filterDates[index]).toLocaleDateString()) >= Date.parse(new Date(new Date(obj.checkInDate).toLocaleDateString())) && Date.parse(new Date(filterDates[index]).toLocaleDateString()) <= Date.parse(new Date(new Date(obj.checkOutDate).toLocaleDateString()))){
+                                                            return obj
+                                                            break;
+                                                        }
+                                                        
                                                     }
                                                 }
                                                 else if (reservationMenuDaily == 'PSreceiptDeclined') {
-                                                    if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
-                                                        return obj;
+                                                    // if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
+                                                    //     return obj;
+                                                    // }
+
+                                                    for (let index = 0; index < filterDates.length; index++) {
+                                                        if(Date.parse(new Date(filterDates[index]).toLocaleDateString()) >= Date.parse(new Date(new Date(obj.checkInDate).toLocaleDateString())) && Date.parse(new Date(filterDates[index]).toLocaleDateString()) <= Date.parse(new Date(new Date(obj.checkOutDate).toLocaleDateString()))){
+                                                            return obj
+                                                            break;
+                                                        }
+                                                        
                                                     }
                                                 }
                                                 else if (reservationMenuDaily == 'PSpending') {
-                                                    if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
-                                                        return obj;
+                                                    // if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
+                                                    //     return obj;
+                                                    // }
+
+                                                    for (let index = 0; index < filterDates.length; index++) {
+                                                        if(Date.parse(new Date(filterDates[index]).toLocaleDateString()) >= Date.parse(new Date(new Date(obj.checkInDate).toLocaleDateString())) && Date.parse(new Date(filterDates[index]).toLocaleDateString()) <= Date.parse(new Date(new Date(obj.checkOutDate).toLocaleDateString()))){
+                                                            return obj
+                                                            break;
+                                                        }
+                                                        
                                                     }
                                                 }
                                                 else if (reservationMenuDaily == 'PScancelled') {
-                                                    if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
-                                                        return obj;
+                                                    // if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
+                                                    //     return obj;
+                                                    // }
+
+                                                    for (let index = 0; index < filterDates.length; index++) {
+                                                        if(Date.parse(new Date(filterDates[index]).toLocaleDateString()) >= Date.parse(new Date(new Date(obj.checkInDate).toLocaleDateString())) && Date.parse(new Date(filterDates[index]).toLocaleDateString()) <= Date.parse(new Date(new Date(obj.checkOutDate).toLocaleDateString()))){
+                                                            return obj
+                                                            break;
+                                                        }
+                                                        
                                                     }
                                                 }
                                                 else {
@@ -1500,7 +2190,7 @@ export const ReportContainer = () => {
                                                     }
                                                 }
                                                 else if (reservationMenuDaily == 'RScancelled') {
-                                                    if (obj.reservation.reservationStatus.toLowerCase() == 'cancelled') {
+                                                    if (obj.reservation.reservationStatus.toLowerCase() == 'unsettled') {
                                                         return obj;
                                                     }
                                                 }
@@ -1526,6 +2216,11 @@ export const ReportContainer = () => {
                                                 }
                                                 else if (reservationMenuDaily == 'BSnoShow') {
                                                     if (obj.bookingStatus.toLowerCase() == 'no show') {
+                                                        return obj;
+                                                    }
+                                                }
+                                                else if (reservationMenuDaily == 'BScancel') {
+                                                    if (obj.bookingStatus.toLowerCase() == 'cancelled') {
                                                         return obj;
                                                     }
                                                 }
@@ -1558,200 +2253,6 @@ export const ReportContainer = () => {
                                                     return obj;
                                                 }
                                             })
-
-                                            .sort((a, b) => {
-                                                if (a.bookingReferenceNumber < b.bookingReferenceNumber) {
-                                                    return -1;
-                                                }
-                                            })
-                                            .map((item) => (
-                                                orderedAmenity.length != 0 ?
-                                                    item.reservation.payment.discountValid == true ?
-                                                        parseFloat(((parseFloat(item.total) + (parseFloat(item.others)) + (orderedAmenity.filter((obj) => obj.reservationSummary_id == item.id).map((obj) => obj.total).reduce((accumulator, value) => parseFloat(accumulator) + parseFloat(value), 0))) / 1.12 * .80) / item.reservation.payment.grandTotal) * parseFloat(item.reservation.payment.paymentMade)
-                                                        :
-                                                        parseFloat(((parseFloat(item.total) + (parseFloat(item.others)) + (orderedAmenity.filter((obj) => obj.reservationSummary_id == item.id).map((obj) => obj.total).reduce((accumulator, value) => parseFloat(accumulator) + parseFloat(value), 0)))) / item.reservation.payment.grandTotal) * parseFloat(item.reservation.payment.paymentMade)
-
-                                                    : ''
-                                            )).reduce((accumulator, value) => parseFloat(accumulator) + parseFloat(value), 0)
-                                    )
-                                    :
-                                    numberFormat(0)}</b>
-                            </Title>
-
-                            <ContainerGlobal
-                                w='100%'>
-                                <Button
-                                    variant="contained"
-                                    size="large"
-                                    onClick={() => {
-                                        window.open('/admin/generatedReport/detailed' + '_' + reservationMenuDaily + '_' + new Date(startDateDaily).toLocaleDateString().replaceAll('/', '-') + '_' + new Date(endDateDaily).toLocaleDateString().replaceAll('/', '-'), '_blank').focus();
-                                    }}
-                                    disabled={
-                                        reservationSummary.length != 0 ?
-                                            reservationSummary
-                                                .filter((obj) => {
-                                                    let filterDates = getDates(startDateDaily, endDateDaily);
-
-                                                    if (reservationMenuDaily == 'reservationDate' || reservationMenuDaily == 'all') {
-                                                        if (filterDates.includes(moment(obj.reservation.reservationDate).format('YYYY-MM-DD'))) {
-                                                            return obj;
-                                                        }
-                                                    }
-                                                    else if (reservationMenuDaily == 'checkIn') {
-                                                        if (filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
-                                                            return obj;
-                                                        }
-                                                    }
-                                                    else if (reservationMenuDaily == 'checkOut') {
-                                                        if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD'))) {
-                                                            return obj;
-                                                        }
-                                                    }
-                                                    else if (reservationMenuDaily == 'RSreserved') {
-                                                        if (filterDates.includes(moment(obj.reservation.reservationDate).format('YYYY-MM-DD'))) {
-                                                            return obj;
-                                                        }
-                                                    }
-                                                    else if (reservationMenuDaily == 'RSpending') {
-                                                        if (filterDates.includes(moment(obj.reservation.reservationDate).format('YYYY-MM-DD'))) {
-                                                            return obj;
-                                                        }
-                                                    }
-                                                    else if (reservationMenuDaily == 'RScancelled') {
-                                                        if (filterDates.includes(moment(obj.reservation.reservationDate).format('YYYY-MM-DD'))) {
-                                                            return obj;
-                                                        }
-                                                    }
-                                                    else if (reservationMenuDaily == 'BSpending') {
-                                                        if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
-                                                            return obj;
-                                                        }
-                                                    }
-                                                    else if (reservationMenuDaily == 'BSreserved') {
-                                                        if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
-                                                            return obj;
-                                                        }
-                                                    }
-                                                    else if (reservationMenuDaily == 'BScheckedIn') {
-                                                        if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
-                                                            return obj;
-                                                        }
-                                                    }
-                                                    else if (reservationMenuDaily == 'BScheckedOut') {
-                                                        if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
-                                                            return obj;
-                                                        }
-                                                    }
-                                                    else if (reservationMenuDaily == 'BSnoShow') {
-                                                        if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
-                                                            return obj;
-                                                        }
-                                                    }
-                                                    else if (reservationMenuDaily == 'PSpartial') {
-                                                        if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
-                                                            return obj;
-                                                        }
-                                                    }
-                                                    else if (reservationMenuDaily == 'PSfullyPaid') {
-                                                        if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
-                                                            return obj;
-                                                        }
-                                                    }
-                                                    else if (reservationMenuDaily == 'PSreceiptDeclined') {
-                                                        if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
-                                                            return obj;
-                                                        }
-                                                    }
-                                                    else if (reservationMenuDaily == 'PSpending') {
-                                                        if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
-                                                            return obj;
-                                                        }
-                                                    }
-                                                    else if (reservationMenuDaily == 'PScancelled') {
-                                                        if (filterDates.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) || filterDates.includes(moment(obj.checkInDate).format('YYYY-MM-DD'))) {
-                                                            return obj;
-                                                        }
-                                                    }
-                                                    else {
-                                                        return obj;
-                                                    }
-
-                                                })
-                                                .filter((obj) => {
-                                                    if (reservationMenuDaily == 'RSreserved') {
-                                                        if (obj.reservation.reservationStatus.toLowerCase() == 'reserved') {
-                                                            return obj;
-                                                        }
-                                                    }
-                                                    else if (reservationMenuDaily == 'RSpending') {
-                                                        if (obj.reservation.reservationStatus.toLowerCase() == 'pending') {
-                                                            return obj;
-                                                        }
-                                                    }
-                                                    else if (reservationMenuDaily == 'RScancelled') {
-                                                        if (obj.reservation.reservationStatus.toLowerCase() == 'cancelled') {
-                                                            return obj;
-                                                        }
-                                                    }
-                                                    else if (reservationMenuDaily == 'BSpending') {
-                                                        if (obj.bookingStatus.toLowerCase() == 'pending') {
-                                                            return obj;
-                                                        }
-                                                    }
-                                                    else if (reservationMenuDaily == 'BSreserved') {
-                                                        if (obj.bookingStatus.toLowerCase() == 'reserved') {
-                                                            return obj;
-                                                        }
-                                                    }
-                                                    else if (reservationMenuDaily == 'BScheckedIn') {
-                                                        if (obj.bookingStatus.toLowerCase() == 'checked-in') {
-                                                            return obj;
-                                                        }
-                                                    }
-                                                    else if (reservationMenuDaily == 'BScheckedOut') {
-                                                        if (obj.bookingStatus.toLowerCase() == 'checked-out') {
-                                                            return obj;
-                                                        }
-                                                    }
-                                                    else if (reservationMenuDaily == 'BSnoShow') {
-                                                        if (obj.bookingStatus.toLowerCase() == 'no show') {
-                                                            return obj;
-                                                        }
-                                                    }
-                                                    else if (reservationMenuDaily == 'PSpartial') {
-                                                        if (obj.reservation.payment.paymentStatus.toLowerCase() == 'partial') {
-                                                            return obj;
-                                                        }
-                                                    }
-                                                    else if (reservationMenuDaily == 'PSfullyPaid') {
-                                                        if (obj.reservation.payment.paymentStatus.toLowerCase() == 'fully paid') {
-                                                            return obj;
-                                                        }
-                                                    }
-                                                    else if (reservationMenuDaily == 'PSreceiptDeclined') {
-                                                        if (obj.reservation.payment.paymentStatus.toLowerCase() == 'reciept declined') {
-                                                            return obj;
-                                                        }
-                                                    }
-                                                    else if (reservationMenuDaily == 'PSpending') {
-                                                        if (obj.reservation.payment.paymentStatus.toLowerCase() == 'pending') {
-                                                            return obj;
-                                                        }
-                                                    }
-                                                    else if (reservationMenuDaily == 'PScancelled') {
-                                                        if (obj.reservation.payment.paymentStatus.toLowerCase() == 'cancelled') {
-                                                            return obj;
-                                                        }
-                                                    }
-                                                    else {
-                                                        return obj;
-                                                    }
-                                                })
-                                                .sort((a, b) => {
-                                                    if (a.bookingReferenceNumber < b.bookingReferenceNumber) {
-                                                        return -1;
-                                                    }
-                                                })
                                                 .length != 0 ? false : true : true
 
                                     }
@@ -1855,17 +2356,34 @@ export const ReportContainer = () => {
                                         reservationSummary.filter((obj) => obj.reservation.reservationStatus == 'RESERVED').filter((obj) => {
                                             let filterDate = getDates(startDateDaily, endDateDaily);
 
-                                            if (filterDate.includes(moment(obj.checkInDate).format('YYYY-MM-DD')) == true || filterDate.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) == true) {
-                                                return obj
+                                            // if (filterDate.includes(moment(obj.checkInDate).format('YYYY-MM-DD')) == true || filterDate.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) == true) {
+                                            //     return obj
+                                            // }
+
+
+                                            for (let index = 0; index < filterDate.length; index++) {
+                                                if (Date.parse(new Date(filterDate[index]).toLocaleDateString()) >= Date.parse(new Date(new Date(obj.checkInDate).toLocaleDateString())) && Date.parse(new Date(filterDate[index]).toLocaleDateString()) <= Date.parse(new Date(new Date(obj.checkOutDate).toLocaleDateString()))) {
+                                                    return obj
+                                                    break;
+                                                }
+
                                             }
+
                                         }).length
                                         : ''}
                                     cancelled={reservationSummary != 0 ?
                                         reservationSummary.filter((obj) => obj.reservation.reservationStatus == 'UNSETTLED').filter((obj) => {
                                             let filterDate = getDates(startDateDaily, endDateDaily);
 
-                                            if (filterDate.includes(moment(obj.checkInDate).format('YYYY-MM-DD')) == true || filterDate.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) == true) {
-                                                return obj
+                                            // if (filterDate.includes(moment(obj.checkInDate).format('YYYY-MM-DD')) == true || filterDate.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) == true) {
+                                            //     return obj
+                                            // }
+                                            for (let index = 0; index < filterDate.length; index++) {
+                                                if (Date.parse(new Date(filterDate[index]).toLocaleDateString()) >= Date.parse(new Date(new Date(obj.checkInDate).toLocaleDateString())) && Date.parse(new Date(filterDate[index]).toLocaleDateString()) <= Date.parse(new Date(new Date(obj.checkOutDate).toLocaleDateString()))) {
+                                                    return obj
+                                                    break;
+                                                }
+
                                             }
                                         }).length
                                         : ''}
@@ -1873,8 +2391,12 @@ export const ReportContainer = () => {
                                         reservationSummary.filter((obj) => obj.reservation.reservationStatus == 'PENDING').filter((obj) => {
                                             let filterDate = getDates(startDateDaily, endDateDaily);
 
-                                            if (filterDate.includes(moment(obj.checkInDate).format('YYYY-MM-DD')) == true || filterDate.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) == true) {
-                                                return obj
+                                            for (let index = 0; index < filterDate.length; index++) {
+                                                if (Date.parse(new Date(filterDate[index]).toLocaleDateString()) >= Date.parse(new Date(new Date(obj.checkInDate).toLocaleDateString())) && Date.parse(new Date(filterDate[index]).toLocaleDateString()) <= Date.parse(new Date(new Date(obj.checkOutDate).toLocaleDateString()))) {
+                                                    return obj
+                                                    break;
+                                                }
+
                                             }
                                         }).length
                                         : ''}
@@ -1903,15 +2425,23 @@ export const ReportContainer = () => {
                                                 reservationSummary.filter((obj) => obj.reservation.reservationStatus == 'PENDING' || obj.reservation.reservationStatus == 'UNSETTLED' || obj.reservation.reservationStatus == 'RESERVED').filter((obj) => {
                                                     let filterDate = getDates(startDateDaily, endDateDaily);
 
-                                                    if (filterDate.includes(moment(obj.checkInDate).format('YYYY-MM-DD')) == true || filterDate.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) == true) {
-                                                        return obj
+                                                    for (let index = 0; index < filterDate.length; index++) {
+                                                        if (Date.parse(new Date(filterDate[index]).toLocaleDateString()) >= Date.parse(new Date(new Date(obj.checkInDate).toLocaleDateString())) && Date.parse(new Date(filterDate[index]).toLocaleDateString()) <= Date.parse(new Date(new Date(obj.checkOutDate).toLocaleDateString()))) {
+                                                            return obj
+                                                            break;
+                                                        }
+
                                                     }
 
                                                 }).length != 0 ? reservationSummary.filter((obj) => obj.reservation.reservationStatus == 'PENDING' || obj.reservation.reservationStatus == 'UNSETTLED' || obj.reservation.reservationStatus == 'RESERVED').filter((obj) => {
                                                     let filterDate = getDates(startDateDaily, endDateDaily);
 
-                                                    if (filterDate.includes(moment(obj.checkInDate).format('YYYY-MM-DD')) == true || filterDate.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) == true) {
-                                                        return obj
+                                                    for (let index = 0; index < filterDate.length; index++) {
+                                                        if (Date.parse(new Date(filterDate[index]).toLocaleDateString()) >= Date.parse(new Date(new Date(obj.checkInDate).toLocaleDateString())) && Date.parse(new Date(filterDate[index]).toLocaleDateString()) <= Date.parse(new Date(new Date(obj.checkOutDate).toLocaleDateString()))) {
+                                                            return obj
+                                                            break;
+                                                        }
+
                                                     }
 
                                                 }).length : 0 : 0
@@ -1933,8 +2463,12 @@ export const ReportContainer = () => {
                                         reservationSummary.filter((obj) => obj.reservation.reservationStatus == 'PENDING' || obj.reservation.reservationStatus == 'UNSETTLED' || obj.reservation.reservationStatus == 'RESERVED').filter((obj) => {
                                             let filterDate = getDates(startDateDaily, endDateDaily);
 
-                                            if (filterDate.includes(moment(obj.checkInDate).format('YYYY-MM-DD')) == true || filterDate.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) == true) {
-                                                return obj
+                                            for (let index = 0; index < filterDate.length; index++) {
+                                                if (Date.parse(new Date(filterDate[index]).toLocaleDateString()) >= Date.parse(new Date(new Date(obj.checkInDate).toLocaleDateString())) && Date.parse(new Date(filterDate[index]).toLocaleDateString()) <= Date.parse(new Date(new Date(obj.checkOutDate).toLocaleDateString()))) {
+                                                    return obj
+                                                    break;
+                                                }
+
                                             }
 
                                         }).length != 0 ? false : true : true

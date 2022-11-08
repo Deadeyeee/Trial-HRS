@@ -1,0 +1,163 @@
+.tableCart{
+    width: 200px; 
+    display: block;
+    overflow-x: scroll;
+    white-space: nowrap;
+}
+
+.tableCart th{
+    font-size: 1vw;
+}
+
+.tableCart td{
+    font-size: 1vw;
+}
+
+@media (max-width: 1000px){
+    
+.tableCart th{
+    padding: 30px 10px;
+}
+.tableCart th{
+    font-size: 90%;
+}
+.tableCart td{
+    font-size: 90%;
+}
+}
+
+
+
+
+
+.inputRegister{
+    width: 55%;
+}
+
+
+.inputRegisterRadio{
+    width: 100%;
+    justify-content: center;
+}
+@media (max-width: 1000px){
+    
+
+.inputRegister{
+    width: 95%;
+}
+
+.inputRegisterRadio{
+    width: 100%;
+    justify-content: center;
+}
+
+}
+
+
+
+
+
+
+
+
+
+
+.messageTable{
+    width: 200px; 
+}
+
+.messageTable tr th{
+    font-size: 100%;
+    width: 500px;
+    height: 20px;
+}
+
+.messageTable td{
+    font-size: 100%;
+    height: 0px;
+    padding: 20px 0px;
+}
+
+@media (max-width: 1000px){
+    
+.messageTable th{
+    padding: 10px 10px;
+    font-size: 50%;
+    height: 20px;
+}
+.messageTable tr td{
+    font-size: 50%;
+    
+}
+}
+
+
+.bankContainer{
+    height: auto;
+}
+
+
+
+
+
+
+
+
+
+
+.conversation{
+    width: 50vw;
+}
+
+@media (max-width: 1000px){
+
+    .conversation{
+        width: 90vw;
+    }
+}
+
+
+
+
+
+.imageSlider{
+    width: 550px
+}
+
+@media (max-width: 1000px){
+
+    .imageSlider{
+        width: 90%;
+    }
+}
+
+
+
+
+
+
+.inputPerson{
+    font-size: 12px;
+    width: 5vw;
+}
+
+@media (max-width: 1000px){
+
+    .inputPerson{
+    font-size: 12px;
+    width: 100px;
+    }
+}
+
+
+.buttonBook{
+    font-size: 1.1vw;
+
+}
+
+@media (max-width: 1000px){
+
+    .buttonBook{
+    font-size: 16px;
+    }
+}
