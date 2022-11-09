@@ -9,6 +9,8 @@ import Background from '../../components/background/Background';
 import { TextInput } from '../../components/textBox/style';
 import ReCAPTCHA from "react-google-recaptcha";
 import { apiKey } from '../../../apiKey';
+import { IconButton } from '@mui/material';
+import { Close } from '@mui/icons-material';
 
 export const LoginStaff = () => {
     useEffect(() => {
@@ -98,10 +100,10 @@ export const LoginStaff = () => {
     useEffect(() => {
         Axios.get(apiKey + "auth/verify-token").then((response) => {
             if (response.status === 200) {
-                if(response.data.role == 'STAFF'){
+                if (response.data.role == 'STAFF') {
                     window.location.href = '/admin/dashboard';
                 }
-                else{
+                else {
                     window.location.href = '/';
                 }
             }
@@ -143,7 +145,11 @@ export const LoginStaff = () => {
                     variants={variants}
                     transition={{ duration: 1.5 }}
                 >
-
+                    <div style={{ width: '90%' }} onClick={() => window.location.href = '/'}>
+                        <IconButton style={{ float: 'right' }}>
+                            <Close />
+                        </IconButton>
+                    </div>
                     <a href="/">
                         <Logo
                             whileHover={{ backgroundColor: "#2E2E2E", borderRadius: "5px" }}

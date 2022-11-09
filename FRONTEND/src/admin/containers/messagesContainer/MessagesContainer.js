@@ -30,6 +30,7 @@ import Box from '@mui/material/Box';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 import { apiKey } from '../../../apiKey';
 import axios from 'axios';
+import moment from 'moment';
 
 const MessagesContainer = () => {
 
@@ -56,6 +57,27 @@ const MessagesContainer = () => {
 
 
     const [reloadData, setReloadData] = React.useState(0);
+
+
+
+
+
+
+    function getDates(startDate, stopDate) {
+        var dateArray = [];
+        var currentDate = moment(startDate);
+        var stopDate = moment(stopDate);
+        while (currentDate <= stopDate) {
+            dateArray.push(moment(currentDate).format('YYYY-MM-DD'))
+            currentDate = moment(currentDate).add(1, 'days');
+        }
+        return dateArray;
+    }
+
+
+
+
+
 
 
     const [subject, setSubject] = React.useState('');
@@ -248,7 +270,7 @@ const MessagesContainer = () => {
     const sendComposeMessage = (e) => {
         e.preventDefault()
         console.log('ASD')
-        console.log('guestList.filter((obj)=> obj.user.userName == autoCompleteValue).map((item) => item.id)', autoCompleteValue.match(/\((.*)\)/).pop() ,guestList.filter((obj) => obj.user.userName == autoCompleteValue.match(/\((.*)\)/).pop()).map((item) => item.id)[0])
+        console.log('guestList.filter((obj)=> obj.user.userName == autoCompleteValue).map((item) => item.id)', autoCompleteValue.match(/\((.*)\)/).pop(), guestList.filter((obj) => obj.user.userName == autoCompleteValue.match(/\((.*)\)/).pop()).map((item) => item.id)[0])
         axios.get(apiKey + 'api/getAllGuest').then((guest) => {
             if (guest.data.length != 0) {
                 guest.data.filter((obj) => obj.user.role == 'ADMIN').map((item, index) => {
@@ -302,7 +324,7 @@ const MessagesContainer = () => {
             }).then((result) => {
                 console.log(result.data);
                 axios.patch(apiKey + 'api/updateConversation/' + value.id, {
-                    updated_at: new Date(Date.now()),
+                    created_at: new Date(),
                 }).then((result) => {
                     console.log(result.data);
 
@@ -325,7 +347,7 @@ const MessagesContainer = () => {
             }).then((result) => {
                 console.log(result.data);
                 axios.patch(apiKey + 'api/updateConversation/' + value.id, {
-                    updated_at: new Date(Date.now()),
+                    created_at: new Date(Date.now()),
                 }).then((result) => {
                     console.log(result.data);
 
@@ -379,6 +401,23 @@ const MessagesContainer = () => {
 
         }
     }
+
+
+
+    const [search, setSearch] = useState('')
+    const [endDateFilter, setEndDateFilter] = useState(null)
+    const [startDateFilter, setStartDateFilter] = useState(null)
+    const [categoryMenu, setCategoryMenu] = useState(null)
+
+    useEffect(() => {
+        if (startDateFilter != null && endDateFilter != null) {
+            if (Date.parse(startDateFilter) > Date.parse(endDateFilter)) {
+                // setEndDate(new Date(startDate).getTime() + 86400000)
+                setEndDateFilter(new Date(Date.parse(startDateFilter) + 86400000))
+            }
+        }
+    }, [startDateFilter, endDateFilter])
+
 
 
     return (
@@ -488,7 +527,7 @@ const MessagesContainer = () => {
                                 setAutoCompleteInputValue(newInputValue);
                             }}
                             id="controllable-states-demo"
-                            options={guestList.map((item) => item.firstName + ' ' + item.lastName+ ' (' + item.user.userName + ') - ' + item.user.role)}
+                            options={guestList.map((item) => item.firstName + ' ' + item.lastName + ' (' + item.user.userName + ') - ' + item.user.role)}
                             fullWidth={true}
                             renderInput={(params) => <TextField {...params} label="Guests" placeholder='Choose guest' required />}
 
@@ -878,6 +917,10 @@ const MessagesContainer = () => {
                         id="outlined-basic"
                         label="Search..."
                         variant="outlined"
+                        value={search}
+                        onChange={(e) => {
+                            setSearch(e.target.value)
+                        }}
                         sx={{
                             input: { color: 'black', fontWeight: 'bold' },
 
@@ -898,9 +941,9 @@ const MessagesContainer = () => {
                         <DatePicker
                             views={['day', 'month', 'year']}
                             label="Start Date"
-                            value={value}
+                            value={startDateFilter}
                             onChange={(newValue) => {
-                                setValue(newValue);
+                                setStartDateFilter(newValue);
                             }}
                             renderInput={(params) =>
                                 <TextField
@@ -926,9 +969,10 @@ const MessagesContainer = () => {
 
                             views={['day', 'month', 'year']}
                             label="End Date"
-                            value={value}
+                            minDate={startDateFilter}
+                            value={endDateFilter}
                             onChange={(newValue) => {
-                                setValue(newValue);
+                                setEndDateFilter(newValue);
                             }}
                             renderInput={(params) =>
                                 <TextField
@@ -949,7 +993,15 @@ const MessagesContainer = () => {
 
                     </LocalizationProvider>
 
-
+                    {startDateFilter != null || endDateFilter != null ?
+                        <IconButton onClick={() => {
+                            setStartDateFilter(null)
+                            setEndDateFilter(null)
+                            setSearch('')
+                        }}>
+                            <CloseIcon />
+                        </IconButton>
+                        : ''}
 
 
                 </ContainerGlobal>
@@ -1016,33 +1068,69 @@ const MessagesContainer = () => {
                                 </Tr>
                             </thead>
                             <tbody style={{ height: '10px', overflow: 'hidden' }}>
-                                {inbox != 0 && messagesDb.length != 0 ? inbox
-                                    // .filter((obj) => obj.to_guest_id == userInformation.id || obj.to_guest_id == userInformation.id)
-                                    // .filter((obj) => obj.message.message_to_guest_id != userInformation.id)
-                                    // .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
-                                    .sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at))
-                                    // .filter((obj)=> console.log('deletedConversation', deletedConversation))
-                                    // .filter((obj) => deletedConversation.includes(obj.id) == false)
-                                    // .filter((obj, index, array) => index != 0 ? array[index].id != array[index - 1].id : array[index])
-                                    .slice((inboxPage - 1) * 6, inboxPage * 6)
-                                    .map((item) => (
-                                        <Tr
-                                            whileHover={{ boxShadow: '0px 2px 2px gray' }}
-                                            whileTap={{ boxShadow: 'none' }}
-                                            style={messagesDb.filter((obj) => obj.conversation_id == item.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].status == true && { backgroundColor: 'rgb(40,40,40, .05', }}
-                                            onClick={() => handleOpenViewMessage(item)}
-                                        >
-                                            <Td align='left' style={{ paddingLeft: '5px' }} normal={messagesDb.filter((obj) => obj.conversation_id == item.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].status == true && 'normal'}><p style={{ margin: 'auto', width: '300px', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>{messagesDb.filter((obj) => obj.conversation_id == item.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].messageFrom.user.userName}</p></Td>
-                                            <Td align='center' normal={messagesDb.filter((obj) => obj.conversation_id == item.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].status == true && 'normal'}><p style={{ margin: 'auto', width: '300px', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>{item.subject}</p></Td>
-                                            <Td align='center' normal={messagesDb.filter((obj) => obj.conversation_id == item.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].status == true && 'normal'}><p style={{ margin: 'auto', width: '300px', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>
-                                                {messagesDb.filter((obj) => obj.conversation_id == item.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].message}
-                                            </p>
-                                            </Td>
-                                            <Td align='center' normal={item.status == true && 'normal'}>{new Date(item.created_at).toLocaleDateString()} </Td>
-                                            <Td align='center' normal={item.status == true && 'normal'}>{new Date(item.created_at).toLocaleTimeString().split(':')[0]}:{new Date(messagesDb.filter((obj) => obj.conversation_id == item.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].created_at).toLocaleTimeString().split(':')[1]} {new Date(messagesDb.filter((obj) => obj.conversation_id == item.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].created_at).toLocaleTimeString().split(' ')[1]}</Td>
-                                            <Td align='center' normal={item.status == true && 'normal'}><ActionButtonMessages style={{ zIndex: '3' }} delete={() => deleteConversation(item.id)} /></Td>
-                                        </Tr>
-                                    )) :
+                                {inbox != 0 && messagesDb.length != 0 ?
+                                    inbox
+                                        .filter((item) => {
+                                            if (startDateFilter != null && endDateFilter != null) {
+                                                let filterDates = getDates(startDateFilter, endDateFilter);
+                                                if (filterDates.includes(moment(item.created_at).format('YYYY-MM-DD'))) {
+                                                    return item
+                                                }
+                                            }
+                                            else {
+                                                return item
+                                            }
+                                        })
+                                        .filter((item) => {
+                                            if (search != '') {
+                                                if (new Date(item.created_at).toLocaleDateString().includes(search)
+                                                    || (new Date(item.created_at).toLocaleTimeString().split(':')[0] + ':' + new Date(item.created_at).toLocaleTimeString().split(':')[1] + ' ' + new Date(item.created_at).toLocaleTimeString().split(' ')[1]).toLowerCase().includes(search.toLowerCase())
+                                                    || item.subject.toLowerCase().includes(search.toLowerCase())
+                                                ) {
+                                                    return item;
+                                                }
+                                                else if (messagesDb != 0) {
+                                                    if ((messagesDb.filter((obj) => obj.conversation_id == item.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].messageFrom.user.userName).toLowerCase().includes(search.toLowerCase())) {
+                                                        return messagesDb.filter((obj) => obj.conversation_id == item.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].conversation_id == item.id
+                                                    }
+                                                    else if ((messagesDb.filter((obj) => obj.conversation_id == item.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].message).toLowerCase().includes(search.toLowerCase())) {
+                                                        return messagesDb.filter((obj) => obj.conversation_id == item.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].conversation_id == item.id
+                                                    }
+                                                }
+                                            }
+                                            else {
+                                                return item
+                                            }
+                                        })
+                                        // .filter((obj) => obj.to_guest_id == userInformation.id || obj.to_guest_id == userInformation.id)
+                                        // .filter((obj) => obj.message.message_to_guest_id != userInformation.id)
+                                        // .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+                                        .sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at))
+                                        // .filter((obj)=> console.log('deletedConversation', deletedConversation))
+                                        // .filter((obj) => deletedConversation.includes(obj.id) == false)
+                                        // .filter((obj, index, array) => index != 0 ? array[index].id != array[index - 1].id : array[index])
+
+
+                                        .slice((inboxPage - 1) * 6, inboxPage * 6)
+                                        .map((item) => (
+                                            <Tr
+                                                whileHover={{ boxShadow: '0px 2px 2px gray' }}
+                                                whileTap={{ boxShadow: 'none' }}
+                                                style={messagesDb.filter((obj) => obj.conversation_id == item.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].status == true && { backgroundColor: 'rgb(40,40,40, .05', }}
+                                                onClick={() => handleOpenViewMessage(item)}
+                                            >
+                                                <Td align='left' style={{ paddingLeft: '5px' }} normal={messagesDb.filter((obj) => obj.conversation_id == item.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].status == true && 'normal'}><p style={{ margin: 'auto', width: '300px', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>{messagesDb.filter((obj) => obj.conversation_id == item.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].messageFrom.user.userName}</p></Td>
+                                                <Td align='center' normal={messagesDb.filter((obj) => obj.conversation_id == item.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].status == true && 'normal'}><p style={{ margin: 'auto', width: '300px', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>{item.subject}</p></Td>
+                                                <Td align='center' normal={messagesDb.filter((obj) => obj.conversation_id == item.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].status == true && 'normal'}><p style={{ margin: 'auto', width: '300px', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>
+                                                    {messagesDb.filter((obj) => obj.conversation_id == item.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].message}
+                                                </p>
+                                                </Td>
+                                                <Td align='center' normal={messagesDb.filter((obj) => obj.conversation_id == item.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].status == true && 'normal'}>{new Date(item.created_at).toLocaleDateString()} </Td>
+                                                {/* <Td align='center' normal={item.status == true && 'normal'}>{new Date(item.created_at).toLocaleTimeString().split(':')[0]}:{new Date(messagesDb.filter((obj) => obj.conversation_id == item.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].created_at).toLocaleTimeString().split(':')[1]} {new Date(messagesDb.filter((obj) => obj.conversation_id == item.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].created_at).toLocaleTimeString().split(' ')[1]}</Td> */}
+                                                <Td align='center' normal={messagesDb.filter((obj) => obj.conversation_id == item.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].status == true && 'normal'}>{new Date(item.created_at).toLocaleTimeString().split(':')[0]}:{new Date(item.created_at).toLocaleTimeString().split(':')[1]} {new Date(item.created_at).toLocaleTimeString().split(' ')[1]}</Td>
+                                                <Td align='center' normal={messagesDb.filter((obj) => obj.conversation_id == item.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].status == true && 'normal'}><ActionButtonMessages style={{ zIndex: '3' }} delete={() => deleteConversation(item.id)} /></Td>
+                                            </Tr>
+                                        )) :
                                     <Tr
                                     >
                                         <Td colSpan={5} align='center'>No Inbox</Td>
@@ -1053,7 +1141,39 @@ const MessagesContainer = () => {
                         </TableContainer>
                         <Pagination
                             page={inboxPage}
-                            count={inbox.length != 0 && Math.ceil(inbox.length / 6)}
+                            count={inbox.length != 0 && Math.ceil(inbox
+                                .filter((item) => {
+                                    if (startDateFilter != null && endDateFilter != null) {
+                                        let filterDates = getDates(startDateFilter, endDateFilter);
+                                        if (filterDates.includes(moment(item.created_at).format('YYYY-MM-DD'))) {
+                                            return item
+                                        }
+                                    }
+                                    else {
+                                        return item
+                                    }
+                                })
+                                .filter((item) => {
+                                    if (search != '') {
+                                        if (new Date(item.created_at).toLocaleDateString().includes(search)
+                                            || (new Date(item.created_at).toLocaleTimeString().split(':')[0] + ':' + new Date(item.created_at).toLocaleTimeString().split(':')[1] + ' ' + new Date(item.created_at).toLocaleTimeString().split(' ')[1]).toLowerCase().includes(search.toLowerCase())
+                                            || item.subject.toLowerCase().includes(search.toLowerCase())
+                                        ) {
+                                            return item;
+                                        }
+                                        else if (messagesDb != 0) {
+                                            if ((messagesDb.filter((obj) => obj.conversation_id == item.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].messageFrom.user.userName).toLowerCase().includes(search.toLowerCase())) {
+                                                return messagesDb.filter((obj) => obj.conversation_id == item.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].conversation_id == item.id
+                                            }
+                                            else if ((messagesDb.filter((obj) => obj.conversation_id == item.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].message).toLowerCase().includes(search.toLowerCase())) {
+                                                return messagesDb.filter((obj) => obj.conversation_id == item.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].conversation_id == item.id
+                                            }
+                                        }
+                                    }
+                                    else {
+                                        return item
+                                    }
+                                }).length / 6)}
                             onChange={(e, value) => {
                                 setInboxPage(value)
                             }}
@@ -1089,39 +1209,109 @@ const MessagesContainer = () => {
                                 <Th align='center' style={{ width: '10%' }}>Time</Th>
                                 <Th align='center' style={{ width: '10%' }}>Action</Th>
                             </Tr>
-                            {sent.length != 0 && messagesDb.length != 0 ? sent
-                                // .filter((obj) => obj.to_guest_id == userInformation.id || obj.to_guest_id == userInformation.id)
-                                // .filter((obj) => obj.message.message_to_guest_id != userInformation.id)
-                                .sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at))
-                                // .filter((obj, index, array) => index != 0 ? array[index].id != array[index - 1].id : array[index])
-                                .slice((sentPage - 1) * 6, sentPage * 6)
-                                .map((item) => (
-                                    messagesDb.filter((obj) => obj.conversation_id == item.id).length != 0 &&
-                                    <Tr
-                                        whileHover={{ boxShadow: '0px 2px 2px gray' }}
-                                        whileTap={{ boxShadow: 'none' }}
-                                        style={{ backgroundColor: 'rgb(40,40,40, .05', }}
-                                        onClick={() => handleOpenViewMessage(item)}
+                            {sent.length != 0 && messagesDb.length != 0 ?
+                                sent
+                                    .filter((item) => {
+                                        if (startDateFilter != null && endDateFilter != null) {
+                                            let filterDates = getDates(startDateFilter, endDateFilter);
+                                            if (filterDates.includes(moment(item.created_at).format('YYYY-MM-DD'))) {
+                                                return item
+                                            }
+                                        }
+                                        else {
+                                            return item
+                                        }
+                                    })
+                                    .filter((item) => {
+                                        if (search != '') {
+                                            if (new Date(item.created_at).toLocaleDateString().includes(search)
+                                                || (new Date(item.created_at).toLocaleTimeString().split(':')[0] + ':' + new Date(item.created_at).toLocaleTimeString().split(':')[1] + ' ' + new Date(item.created_at).toLocaleTimeString().split(' ')[1]).toLowerCase().includes(search.toLowerCase())
+                                                || item.subject.toLowerCase().includes(search.toLowerCase())
+                                            ) {
+                                                return item;
+                                            }
+                                            else if (messagesDb != 0) {
+                                                if ((messagesDb.filter((obj) => obj.conversation_id == item.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].messageTo.user.userName).toLowerCase().includes(search.toLowerCase())) {
+                                                    return messagesDb.filter((obj) => obj.conversation_id == item.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].conversation_id == item.id
+                                                }
+                                                else if ((messagesDb.filter((obj) => obj.conversation_id == item.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].message).toLowerCase().includes(search.toLowerCase())) {
+                                                    return messagesDb.filter((obj) => obj.conversation_id == item.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].conversation_id == item.id
+                                                }
+                                            }
+                                        }
+                                        else {
+                                            return item
+                                        }
+                                    })
+                                    // .filter((obj) => obj.to_guest_id == userInformation.id || obj.to_guest_id == userInformation.id)
+                                    // .filter((obj) => obj.message.message_to_guest_id != userInformation.id)
+                                    .sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at))
+                                    // .filter((obj, index, array) => index != 0 ? array[index].id != array[index - 1].id : array[index])
+                                    .slice((sentPage - 1) * 6, sentPage * 6)
+                                    .map((item) => (
+                                        messagesDb.filter((obj) => obj.conversation_id == item.id).length != 0 &&
+                                        <Tr
+                                            whileHover={{ boxShadow: '0px 2px 2px gray' }}
+                                            whileTap={{ boxShadow: 'none' }}
+                                            style={{ backgroundColor: 'rgb(40,40,40, .05', }}
+                                            onClick={() => handleOpenViewMessage(item)}
+                                        >
+                                            <Td align='left' style={{ paddingLeft: '5px' }} normal><p style={{ margin: 'auto', width: '300px', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>{messagesDb.filter((obj) => obj.conversation_id == item.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].messageTo.user.userName}</p></Td>
+                                            <Td align='center' normal><p style={{ margin: 'auto', width: '300px', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>{item.subject}</p></Td>
+                                            <Td align='center' normal><p style={{ margin: 'auto', width: '300px', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>
+                                                {messagesDb.filter((obj) => obj.conversation_id == item.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].message}
+                                            </p>
+                                            </Td>
+                                            <Td align='center' normal>{new Date(item.created_at).toLocaleDateString()} </Td>
+                                            {/* <Td align='center' normal>{new Date(item.created_at).toLocaleTimeString().split(':')[0]}:{new Date(messagesDb.filter((obj) => obj.conversation_id == item.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].created_at).toLocaleTimeString().split(':')[1]} {new Date(messagesDb.filter((obj) => obj.conversation_id == item.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].created_at).toLocaleTimeString().split(' ')[1]}</Td> */}
+                                            <Td align='center' normal>{new Date(item.created_at).toLocaleTimeString().split(':')[0]}:{new Date(item.created_at).toLocaleTimeString().split(':')[1]} {new Date(item.created_at).toLocaleTimeString().split(' ')[1]}</Td>
+                                            <Td align='center' normal><ActionButtonMessages style={{ zIndex: '3' }} delete={() => deleteConversation(item.id)} /></Td>
+                                        </Tr>
+                                    )) : <Tr
                                     >
-                                        <Td align='left' style={{ paddingLeft: '5px' }} normal><p style={{ margin: 'auto', width: '300px', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>{messagesDb.filter((obj) => obj.conversation_id == item.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].messageTo.user.userName}</p></Td>
-                                        <Td align='center' normal><p style={{ margin: 'auto', width: '300px', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>{item.subject}</p></Td>
-                                        <Td align='center' normal><p style={{ margin: 'auto', width: '300px', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>
-                                            {messagesDb.filter((obj) => obj.conversation_id == item.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].message}
-                                        </p>
-                                        </Td>
-                                        <Td align='center' normal>{new Date(item.created_at).toLocaleDateString()} </Td>
-                                        <Td align='center' normal>{new Date(item.created_at).toLocaleTimeString().split(':')[0]}:{new Date(messagesDb.filter((obj) => obj.conversation_id == item.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].created_at).toLocaleTimeString().split(':')[1]} {new Date(messagesDb.filter((obj) => obj.conversation_id == item.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].created_at).toLocaleTimeString().split(' ')[1]}</Td>
-                                        <Td align='center' normal><ActionButtonMessages style={{ zIndex: '3' }} delete={() => deleteConversation(item.id)} /></Td>
-                                    </Tr>
-                                )) : <Tr
-                                >
-                                <Td colSpan={5} align='center'>Empty, please check your inbox.</Td>
-                            </Tr>}
+                                    <Td colSpan={5} align='center'>Empty, please check your inbox.</Td>
+                                </Tr>}
 
                         </TableContainer>
                         <Pagination
                             page={sentPage}
-                            count={sent.length != 0 && Math.ceil(sent.length / 6)}
+                            count={sent.length != 0 && Math.ceil(sent
+                                .filter((item) => {
+                                    if (startDateFilter != null && endDateFilter != null) {
+                                        let filterDates = getDates(startDateFilter, endDateFilter);
+                                        if (filterDates.includes(moment(item.created_at).format('YYYY-MM-DD'))) {
+                                            return item
+                                        }
+                                    }
+                                    else {
+                                        return item
+                                    }
+                                })
+                                .filter((item) => {
+                                    if (search != '') {
+                                        if (new Date(item.created_at).toLocaleDateString().includes(search)
+                                            || (new Date(item.created_at).toLocaleTimeString().split(':')[0] + ':' + new Date(item.created_at).toLocaleTimeString().split(':')[1] + ' ' + new Date(item.created_at).toLocaleTimeString().split(' ')[1]).toLowerCase().includes(search.toLowerCase())
+                                            || item.subject.toLowerCase().includes(search.toLowerCase())
+                                        ) {
+                                            return item;
+                                        }
+                                        else if (messagesDb != 0) {
+                                            if ((messagesDb.filter((obj) => obj.conversation_id == item.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].messageTo.user.userName).toLowerCase().includes(search.toLowerCase())) {
+                                                return messagesDb.filter((obj) => obj.conversation_id == item.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].conversation_id == item.id
+                                            }
+                                            else if ((messagesDb.filter((obj) => obj.conversation_id == item.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].message).toLowerCase().includes(search.toLowerCase())) {
+                                                return messagesDb.filter((obj) => obj.conversation_id == item.id).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0].conversation_id == item.id
+                                            }
+                                        }
+                                    }
+                                    else {
+                                        return item
+                                    }
+                                }).filter((item) => {
+                                    if (messagesDb.filter((obj) => obj.conversation_id == item.id).length != 0) {
+                                        return item
+                                    }
+                                }).length / 6)}
                             onChange={(e, value) => {
                                 setSentPage(value)
                             }}

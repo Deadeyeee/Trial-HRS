@@ -641,7 +641,7 @@ export const HomeBooking = ({ title }) => {
                 size1000="100%"
               >
                 {" "}
-                We charge 150 pesos per every hour of extension after 12NN.
+                We charge {additionals.length != 0 ? additionals.filter((obj)=> obj.amenityName == 'Extra Time(Rate/hour)').map((item)=> parseFloat(item.amenityRate).toFixed(2)) : 0} pesos per every hour of extension after 12NN.
               </Title>
             </Answer>
           </Faq>
@@ -694,7 +694,7 @@ export const HomeBooking = ({ title }) => {
                 size1000="100%"
               >
                 {" "}
-                We charge 350 pesos per head for the additional person.
+                We charge {additionals.length != 0 ? additionals.filter((obj)=> obj.amenityName == 'Extra Person').map((item)=> parseFloat(item.amenityRate).toFixed(2)) : 0} pesos per head for the additional person.
               </Title>
             </Answer>
           </Faq>

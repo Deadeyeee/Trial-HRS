@@ -335,8 +335,8 @@ const PaymentContainer = () => {
                         reservation_id: value.id,
                         type: 'ack',
                     }).then((result) => {
-                            console.log(result.data)
-                            setOpenPrint(true)
+                        console.log(result.data)
+                        setOpenPrint(true)
 
                     }).catch((err) => {
                         console.log(err)
@@ -348,8 +348,8 @@ const PaymentContainer = () => {
                         reservation_id: value.id,
                         type: 'or',
                     }).then((result) => {
-                            console.log(result.data)
-                            setOpenPrint(true)
+                        console.log(result.data)
+                        setOpenPrint(true)
 
                     }).catch((err) => {
                         console.log(err)
@@ -989,6 +989,9 @@ const PaymentContainer = () => {
             setPreviewImage(null)
             setPreviewImageError('No image selected.')
         }
+        else if (e.target.files[0].size > 10485760) {
+          alert('File is too large. please upload file less than 10mb in size.')
+        }
         else {
             let selectedFile = e.target.files[0];
             if (selectedFile) {
@@ -1151,6 +1154,24 @@ const PaymentContainer = () => {
             handleClosePrint();
         }
     }
+
+
+
+    const [search, setSearch] = useState('')
+    const [endDateFilter, setEndDateFilter] = useState(null)
+    const [startDateFilter, setStartDateFilter] = useState(null)
+    const [categoryMenu, setCategoryMenu] = useState(null)
+
+    useEffect(() => {
+        if (startDateFilter != null && endDateFilter != null) {
+            if (Date.parse(startDateFilter) > Date.parse(endDateFilter)) {
+                // setEndDate(new Date(startDate).getTime() + 86400000)
+                setEndDateFilter(new Date(Date.parse(startDateFilter) + 86400000))
+            }
+        }
+    }, [startDateFilter, endDateFilter])
+
+
     return (
         <Container
             style={{
@@ -1195,6 +1216,10 @@ const PaymentContainer = () => {
                         id="outlined-basic"
                         label="Search..."
                         variant="outlined"
+                        value={search}
+                        onChange={(e) => {
+                            setSearch(e.target.value)
+                        }}
                         sx={{
                             input: { color: 'black', fontWeight: 'bold' },
 
@@ -1215,9 +1240,9 @@ const PaymentContainer = () => {
                         <DatePicker
                             views={['day', 'month', 'year']}
                             label="Start Date"
-                            value={value}
+                            value={startDateFilter}
                             onChange={(newValue) => {
-                                setValue(newValue);
+                                setStartDateFilter(newValue);
                             }}
                             renderInput={(params) =>
                                 <TextField
@@ -1243,9 +1268,10 @@ const PaymentContainer = () => {
 
                             views={['day', 'month', 'year']}
                             label="End Date"
-                            value={value}
+                            minDate={startDateFilter}
+                            value={endDateFilter}
                             onChange={(newValue) => {
-                                setValue(newValue);
+                                setEndDateFilter(newValue);
                             }}
                             renderInput={(params) =>
                                 <TextField
@@ -1267,7 +1293,15 @@ const PaymentContainer = () => {
                     </LocalizationProvider>
 
 
-
+                    {startDateFilter != null || endDateFilter != null ?
+                        <IconButton onClick={() => {
+                            setStartDateFilter(null)
+                            setEndDateFilter(null)
+                            setSearch('')
+                        }}>
+                            <CloseIcon />
+                        </IconButton>
+                        : ''}
 
                 </ContainerGlobal>
             </ContainerGlobal>
@@ -1318,7 +1352,43 @@ const PaymentContainer = () => {
                     {reservations.length != 0 ?
                         reservations
                             .slice((roomPage - 1) * 10, roomPage * 10)
-                            .sort((a, b) => a.reservationReferenceNumber - b.reservationReferenceNumber)
+                            .sort((a, b) => Date.parse(new Date(b.reservationDate)) - Date.parse(new Date(a.reservationDate)))
+                            .filter((item) => {
+                                if (startDateFilter != null && endDateFilter != null) {
+                                    let filterDates = getDates(startDateFilter, endDateFilter);
+                                    if (filterDates.includes(moment(item.reservationDate).format('YYYY-MM-DD'))) {
+                                        return item
+                                    }
+                                }
+                                else {
+                                    return item
+                                }
+                            })
+                            .filter((item) => {
+                                if (search != '') {
+                                    if (new Date(item.reservationDate).toLocaleDateString().includes(search)
+                                        || item.reservationReferenceNumber.toString().includes(search)
+                                        || (item.guestInformation.firstName.toLowerCase()).toString().includes(search.toLowerCase())
+                                        || (item.guestInformation.firstName.toLowerCase() + ' ' + item.guestInformation.lastName.toLowerCase()).toString().includes(search.toLowerCase())
+                                        || (item.guestInformation.lastName.toLowerCase()).toString().includes(search.toLowerCase())
+                                        || (item.payment.paymentType.toLowerCase()).toString().includes(search.toLowerCase())
+                                        || (item.payment.discount.discountType.toLowerCase()).toString().includes(search.toLowerCase())
+                                        || (item.payment.paymentStatus.toLowerCase()).toString().includes(search.toLowerCase())
+                                    ) {
+                                        return item;
+                                    }
+                                    else if ('uploaded'.includes(search.toLowerCase())) {
+                                        return item.payment.paymentImage != null
+                                    }
+                                    else if ('empty'.includes(search.toLowerCase())) {
+                                        return item.payment.paymentImage == null
+                                    }
+                                }
+
+                                else {
+                                    return item
+                                }
+                            })
                             .map((item) => (
                                 <Tr>
                                     <Td align='center'>{new Date(item.reservationDate).toLocaleDateString()}</Td>
@@ -1357,7 +1427,42 @@ const PaymentContainer = () => {
                     justify='center'>
                     <Pagination
                         page={roomPage}
-                        count={reservations.length != 0 && Math.ceil(reservations.length / 10)}
+                        count={reservations.length != 0 && Math.ceil(reservations.filter((item) => {
+                            if (startDateFilter != null && endDateFilter != null) {
+                                let filterDates = getDates(startDateFilter, endDateFilter);
+                                if (filterDates.includes(moment(item.reservationDate).format('YYYY-MM-DD'))) {
+                                    return item
+                                }
+                            }
+                            else {
+                                return item
+                            }
+                        })
+                            .filter((item) => {
+                                if (search != '') {
+                                    if (new Date(item.reservationDate).toLocaleDateString().includes(search)
+                                        || item.reservationReferenceNumber.toString().includes(search)
+                                        || (item.guestInformation.firstName.toLowerCase()).toString().includes(search.toLowerCase())
+                                        || (item.guestInformation.firstName.toLowerCase() + ' ' + item.guestInformation.lastName.toLowerCase()).toString().includes(search.toLowerCase())
+                                        || (item.guestInformation.lastName.toLowerCase()).toString().includes(search.toLowerCase())
+                                        || (item.payment.paymentType.toLowerCase()).toString().includes(search.toLowerCase())
+                                        || (item.payment.discount.discountType.toLowerCase()).toString().includes(search.toLowerCase())
+                                        || (item.payment.paymentStatus.toLowerCase()).toString().includes(search.toLowerCase())
+                                    ) {
+                                        return item;
+                                    }
+                                    else if ('uploaded'.includes(search.toLowerCase())) {
+                                        return item.payment.paymentImage != null
+                                    }
+                                    else if ('empty'.includes(search.toLowerCase())) {
+                                        return item.payment.paymentImage == null
+                                    }
+                                }
+
+                                else {
+                                    return item
+                                }
+                            }).length / 10)}
                         onChange={(e, value) => {
 
                             setRoomPage(value)
@@ -1472,7 +1577,7 @@ const PaymentContainer = () => {
 
                         <ContainerGlobal gap='20px'>
                             <Button disabled={reservationSelected.length != 0 ? reservationSelected.payment.paymentStatus == 'pending' || reservationSelected.payment.paymentStatus == 'cancelled' || reservationSelected.payment.paymentStatus == 'reciept declined' ? false : true : ""} variant="contained" color="success" onClick={() => { approveReceipt() }}>Approve</Button>
-                            <Button disabled={reservationSelected.length != 0 ? reservationSelected.payment.paymentStatus == 'pending' || reservationSelected.payment.paymentStatus == 'cancelled'|| reservationSelected.payment.paymentStatus == 'reciept declined' ? false : true : ""} variant="contained" color="error" onClick={() => { declineReciept() }}>Decline</Button>
+                            <Button disabled={reservationSelected.length != 0 ? reservationSelected.payment.paymentStatus == 'pending' || reservationSelected.payment.paymentStatus == 'cancelled' || reservationSelected.payment.paymentStatus == 'reciept declined' ? false : true : ""} variant="contained" color="error" onClick={() => { declineReciept() }}>Decline</Button>
                         </ContainerGlobal>
                         <Button variant="contained" onClick={() => {
                             handleCloseUpload()

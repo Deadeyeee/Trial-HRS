@@ -135,20 +135,31 @@ const ClientPaymentInfoCont = () => {
   const imgTypes = ["image/png", "image/jpeg"];
 
   const handleUpload = (e) => {
-    setImageToUpload(e.target.files[0]);
-    console.log(e.target.files[0]);
-    let selectedFile = e.target.files[0];
-    if (selectedFile) {
-      if (selectedFile && imgTypes.includes(selectedFile.type)) {
-        setPreviewImage(URL.createObjectURL(selectedFile));
-        setPreviewImageError("");
+
+    if (e.target.files.length == 0) {
+      setPreviewImage(null)
+      setPreviewImageError('No image selected.')
+    }
+    else if (e.target.files[0].size > 10485760) {
+      alert('File is too large. please upload file less than 10mb in size.')
+    }
+    else {
+      setImageToUpload(e.target.files[0]);
+      console.log(e.target.files[0]);
+      let selectedFile = e.target.files[0];
+      if (selectedFile) {
+        if (selectedFile && imgTypes.includes(selectedFile.type)) {
+          setPreviewImage(URL.createObjectURL(selectedFile));
+          setPreviewImageError("");
+        } else {
+          setPreviewImage(null);
+          setPreviewImageError(
+            "Invalid file type. Please provide jpg/jpeg/png image type only."
+          );
+        }
       } else {
-        setPreviewImage(null);
-        setPreviewImageError(
-          "Invalid file type. Please provide jpg/jpeg/png image type only."
-        );
+
       }
-    } else {
     }
   };
 
@@ -809,7 +820,7 @@ const ClientPaymentInfoCont = () => {
             </Tr>
             {reservation
               .slice((reservationPage - 1) * 6, reservationPage * 6)
-              .sort((a, b)=> Date.parse(new Date(b.reservationDate)) - Date.parse(new Date(a.reservationDate)))
+              .sort((a, b) => Date.parse(new Date(b.reservationDate)) - Date.parse(new Date(a.reservationDate)))
 
               .map((item, index) => (
                 <Tr

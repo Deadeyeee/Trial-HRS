@@ -9,6 +9,8 @@ import Background from '../../components/background/Background';
 import { TextInput } from '../../components/textBox/style';
 import ReCAPTCHA from "react-google-recaptcha";
 import { apiKey } from '../../../apiKey';
+import { IconButton } from '@mui/material';
+import { Close } from '@mui/icons-material';
 
 export const Login = () => {
     useEffect(() => {
@@ -90,13 +92,13 @@ export const Login = () => {
                     });
                 }
                 else {
-                    if(response.data.role == 'ADMIN' || response.data.role == 'STAFF'){
-                        
-                    window.location.href = '/admin';
+                    if (response.data.role == 'ADMIN' || response.data.role == 'STAFF') {
+
+                        window.location.href = '/admin';
                     }
-                    else{
-                        
-                    window.location.href = '/';
+                    else {
+
+                        window.location.href = '/';
                     }
                     setLoginStatus("");
                 }
@@ -175,7 +177,11 @@ export const Login = () => {
                     variants={variants}
                     transition={{ duration: 1.5 }}
                 >
-
+                    <div style={{ width: '90%' }} onClick={() => window.location.href = '/'}>
+                        <IconButton style={{ float: 'right' }}>
+                            <Close />
+                        </IconButton>
+                    </div>
                     <a href="/">
                         <Logo
                             whileHover={{ backgroundColor: "#2E2E2E", borderRadius: "5px" }}

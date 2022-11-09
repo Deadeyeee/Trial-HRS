@@ -344,6 +344,7 @@ const RoomStatusContainer = () => {
         }
     }
 
+    const [search, setSearch] = useState('')
 
     return (
         <Container>
@@ -386,6 +387,10 @@ const RoomStatusContainer = () => {
                         id="outlined-basic"
                         label="Search..."
                         variant="outlined"
+                        value={search}
+                        onChange={(e) => {
+                            setSearch(e.target.value)
+                        }}
                         sx={{
                             input: { color: 'black', fontWeight: 'bold' },
 
@@ -527,6 +532,41 @@ const RoomStatusContainer = () => {
                     </Tr>
                     {roomValue
                         .slice((roomPage - 1) * 10, roomPage * 10)
+                        .filter((item) => {
+                            if (search != '') {
+                                if (
+                                    (item.roomNumber).toString().includes(search.toLowerCase())
+                                    || 
+                                    (item.roomType.roomType.toLowerCase()).toString().includes(search.toLowerCase())
+                                ) {
+                                    return item;
+                                }
+                                else if ('vacant'.includes(search.toLowerCase())) {
+                                    if (reservationSummary.length != 0) {
+                                        if (reservationSummary.filter((obj) => obj.bookingStatus == 'CHECKED-IN' && obj.room_id == item.id).length == 0 && item.roomStatus != 'Maintenance') {
+                                            return item;
+                                        }
+                                    }
+                                }
+                                else if ('occupied'.includes(search.toLowerCase())) {
+                                    if (reservationSummary.length != 0) {
+                                        if (reservationSummary.filter((obj) => obj.bookingStatus == 'CHECKED-IN' && obj.room_id == item.id).length != 0) {
+                                            return item;
+                                        }
+                                    }
+                                }
+                                else if ('maintenance'.includes(search.toLowerCase())) {
+
+                                    return item.roomStatus == 'Maintenance';
+
+                                }
+
+                            }
+
+                            else {
+                                return item
+                            }
+                        })
                         .sort((a, b) => a.roomNumber - b.roomNumber).map((item) => (
                             <Tr>
                                 <Td align='center'>{item.roomNumber}</Td>
@@ -574,7 +614,41 @@ const RoomStatusContainer = () => {
                     justify='center'>
                     <Pagination
                         page={roomPage}
-                        count={roomValue.length != 0 && Math.ceil(roomValue.length / 10)}
+                        count={roomValue.length != 0 && Math.ceil(roomValue.filter((item) => {
+                            if (search != '') {
+                                if (
+                                    (item.roomNumber).toString().includes(search.toLowerCase())
+                                    || 
+                                    (item.roomType.roomType.toLowerCase()).toString().includes(search.toLowerCase())
+                                ) {
+                                    return item;
+                                }
+                                else if ('vacant'.includes(search.toLowerCase())) {
+                                    if (reservationSummary.length != 0) {
+                                        if (reservationSummary.filter((obj) => obj.bookingStatus == 'CHECKED-IN' && obj.room_id == item.id).length == 0 && item.roomStatus != 'Maintenance') {
+                                            return item;
+                                        }
+                                    }
+                                }
+                                else if ('occupied'.includes(search.toLowerCase())) {
+                                    if (reservationSummary.length != 0) {
+                                        if (reservationSummary.filter((obj) => obj.bookingStatus == 'CHECKED-IN' && obj.room_id == item.id).length != 0) {
+                                            return item;
+                                        }
+                                    }
+                                }
+                                else if ('maintenance'.includes(search.toLowerCase())) {
+
+                                    return item.roomStatus == 'Maintenance';
+
+                                }
+
+                            }
+
+                            else {
+                                return item
+                            }
+                        }).length / 10)}
                         onChange={(e, value) => {
 
                             setRoomPage(value)

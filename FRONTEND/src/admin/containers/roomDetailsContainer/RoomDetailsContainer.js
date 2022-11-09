@@ -749,6 +749,7 @@ const RoomDetailsContainer = () => {
 
 
 
+    const [search, setSearch] = useState('')
 
     return (
 
@@ -816,6 +817,10 @@ const RoomDetailsContainer = () => {
                             input: { color: 'black', fontWeight: 'bold' },
 
                         }}
+                        value={search}
+                        onChange={(e) => {
+                            setSearch(e.target.value)
+                        }}
                         InputProps={{
                             endAdornment: (
                                 <InputAdornment position="end">
@@ -873,6 +878,32 @@ const RoomDetailsContainer = () => {
                     {roomType.length != 0 ?
                         roomType
                             .slice((roomPage - 1) * 10, roomPage * 10)
+                            .filter((item) => {
+                                if (search != '') {
+                                    if (
+                                        (item.roomType.toLowerCase()).toString().includes(search.toLowerCase())
+                                        || 
+                                        (item.roomRate).toString().includes(search.toLowerCase())
+                                        || 
+                                        (numberFormat(item.roomRate)).toString().includes(search.toLowerCase())
+                                        || 
+                                        (item.maxAdultOccupancy).toString().includes(search.toLowerCase())
+                                        ||
+                                        (item.maxKidsOccupancy).toString().includes(search.toLowerCase())
+                                        ||
+                                        (item.roomDescription.toLowerCase()).toString().includes(search.toLowerCase())
+                                    ) {
+                                        return item;
+                                    }
+                                    
+    
+                                }
+    
+                                else {
+                                    return item
+                                }
+                            })
+                            .sort((a, b)=> b.roomRate - a.roomRate)
                             .map((items) => (
                                 <Tr>
                                     <Td align='center'>{items.roomType}</Td>
@@ -946,7 +977,31 @@ const RoomDetailsContainer = () => {
                     justify='center'>
                     <Pagination
                         page={roomPage}
-                        count={roomType.length != 0 && Math.ceil(roomType.length / 10)}
+                        count={roomType.length != 0 && Math.ceil(roomType.filter((item) => {
+                            if (search != '') {
+                                if (
+                                    (item.roomType.toLowerCase()).toString().includes(search.toLowerCase())
+                                    || 
+                                    (item.roomRate).toString().includes(search.toLowerCase())
+                                    || 
+                                    (numberFormat(item.roomRate)).toString().includes(search.toLowerCase())
+                                    || 
+                                    (item.maxAdultOccupancy).toString().includes(search.toLowerCase())
+                                    ||
+                                    (item.maxKidsOccupancy).toString().includes(search.toLowerCase())
+                                    ||
+                                    (item.roomDescription.toLowerCase()).toString().includes(search.toLowerCase())
+                                ) {
+                                    return item;
+                                }
+                                
+
+                            }
+
+                            else {
+                                return item
+                            }
+                        }).length / 10)}
                         onChange={(e, value) => {
 
                             setRoomPage(value)

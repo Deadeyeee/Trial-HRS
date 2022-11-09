@@ -207,14 +207,14 @@ const ClientProfileCont = () => {
                 axios.get(apiKey + 'api/getAllUsers').then((res) => {
                     if (res.data.length != 0) {
                         let formatNumber;
-                                if (contactNumber.slice(0, 3) == "+63") {
+                        if (contactNumber.slice(0, 3) == "+63") {
 
-                                    formatNumber = contactNumber.replace("+63", "0");
+                            formatNumber = contactNumber.replace("+63", "0");
 
-                                }
-                                else {
-                                    formatNumber = contactNumber;
-                                }
+                        }
+                        else {
+                            formatNumber = contactNumber;
+                        }
                         res.data.map((item) => {
                             if (item.role != 'NON-USER' && item.id != userInformation.user.id) {
                                 if (item.email.toLowerCase() == email.toLowerCase()) {
@@ -251,46 +251,55 @@ const ClientProfileCont = () => {
             contactNumberRef.current.focus()
 
         }
+        else if (emailError.length != 0) {
+            emailRef.current.focus()
+
+        }
         else {
-            handleOpenIsLoading();
-            let formatNumber;
-            if (contactNumber.slice(0, 3) == "+63") {
+                handleOpenIsLoading();
+                let formatNumber;
+                if (contactNumber.slice(0, 3) == "+63") {
 
-                formatNumber = contactNumber.replace("+63", "0");
+                    formatNumber = contactNumber.replace("+63", "0");
 
-            }
-            else {
-                formatNumber = contactNumber;
-            }
-            if (emailError.length == 0 && contactNumberError.length == 0 && userNameError.length == 0) {
-                axios.patch(apiKey + 'api/updateUsers/' + userInformation.user.id, {
-                    email: email,
-                    contactNumber: formatNumber,
+                }
+                else {
+                    formatNumber = contactNumber;
+                }
+                if (emailError.length == 0 && contactNumberError.length == 0 && userNameError.length == 0) {
+                    axios.patch(apiKey + 'api/updateUsers/' + userInformation.user.id, {
+                        email: email,
+                        contactNumber: formatNumber,
 
-                }).then((result) => {
-                    console.log(result.data);
-                    axios.patch(apiKey + 'api/updateGuest/' + userInformation.id, {
-                        firstName: firstName,
-                        lastName: lastName,
-                        birthDate: new Date(new Date(birthDay).toLocaleDateString()),
-                        gender: gender,
-                        address: address,
-                        nationality: nationality
                     }).then((result) => {
                         console.log(result.data);
-                        handleCloseIsLoading(2, '')
-                        // window.location.reload()
+                        axios.patch(apiKey + 'api/updateGuest/' + userInformation.id, {
+                            firstName: firstName,
+                            lastName: lastName,
+                            birthDate: new Date(new Date(birthDay).toLocaleDateString()),
+                            gender: gender,
+                            address: address,
+                            nationality: nationality
+                        }).then((result) => {
+                            console.log(result.data);
+                            handleCloseIsLoading(2, '')
+                            // window.location.reload()
+                        }).catch((err) => {
+                            handleCloseIsLoading(3)
+
+                        });
                     }).catch((err) => {
                         handleCloseIsLoading(3)
 
                     });
-                }).catch((err) => {
-                    handleCloseIsLoading(3)
-
-                });
 
 
-            }
+                }
+                else{
+                handleCloseIsLoading(3)
+
+                }
+
         }
 
     }
@@ -312,9 +321,9 @@ const ClientProfileCont = () => {
             });
         }
         else {
-            if(oldPasswordError != ''){
+            if (oldPasswordError != '') {
                 oldPasswordRef.current.focus()
-            }else{
+            } else {
                 newPasswordRef.current.focus()
             }
         }
@@ -360,26 +369,26 @@ const ClientProfileCont = () => {
 
 
             <Title
-                 padding='20px 80px 20px 80px'
-                 bg='#272727'
-                 family='Playfair Display'
-                 color='#BFAA7E'
-                 weight='400'
-                 size='50px'
-                 fstyle='Normal'
-                 margin='50px 0px 10px 0px'
-                 align='Center'
-                 w='50%'
-                 size1000='30px'
+                padding='20px 80px 20px 80px'
+                bg='#272727'
+                family='Playfair Display'
+                color='#BFAA7E'
+                weight='400'
+                size='50px'
+                fstyle='Normal'
+                margin='50px 0px 10px 0px'
+                align='Center'
+                w='50%'
+                size1000='30px'
             >
                 Welcome to your profile!
             </Title>
-            <ProfileContentContainer style={{width:"95%", justifyContent:"center"}}>
-                <ProfileContent style={{width:"80%"}}>
+            <ProfileContentContainer style={{ width: "95%", justifyContent: "center" }}>
+                <ProfileContent style={{ width: "80%" }}>
                     <ContainerGlobal
                         justify='space-between'
                         overflow='visible'
-                        
+
                     >
                         <Title
                             family='raleway, sans-serif'
@@ -408,7 +417,7 @@ const ClientProfileCont = () => {
                     <ContainerGlobal
                         justify='space-between'
                         overflow='visible'
-                        
+
                     >
                         <Title
                             family='raleway, sans-serif'
@@ -841,7 +850,7 @@ const ClientProfileCont = () => {
                                     <TextField
                                         {...params}
                                         variant="standard"
-                                        style={{  margin: '5px 0px' }}
+                                        style={{ margin: '5px 0px' }}
                                         className='inputRegister'
                                         helperText={null}
                                         required
@@ -851,7 +860,7 @@ const ClientProfileCont = () => {
 
                         </LocalizationProvider>
 
-                        <FormControl className='inputRegister' sx={{  margin: '5px 0px' }} size="small" variant="standard">
+                        <FormControl className='inputRegister' sx={{ margin: '5px 0px' }} size="small" variant="standard">
                             <InputLabel id="demo-select-small" >Nationality</InputLabel>
                             <Select
                                 style={{ color: 'black', textAlign: 'left' }}
@@ -875,7 +884,7 @@ const ClientProfileCont = () => {
 
                     <InputContainer
                         justify='center'>
-                        <FormControl style={{width: '100%'}}>
+                        <FormControl style={{ width: '100%' }}>
                             <FormLabel id="demo-row-radio-buttons-group-label"
                                 style={{ textAlign: 'center', }} >Gender</FormLabel>
                             <RadioGroup

@@ -411,6 +411,7 @@ const UserListContainer = () => {
 
     }
 
+    const [search, setSearch] = useState('')
 
     return (
 
@@ -1675,6 +1676,10 @@ const UserListContainer = () => {
                         id="outlined-basic"
                         label="Search..."
                         variant="outlined"
+                        value={search}
+                        onChange={(e) => {
+                            setSearch(e.target.value)
+                        }}
                         sx={{
                             input: { color: 'black', fontWeight: 'bold' },
 
@@ -1736,8 +1741,38 @@ const UserListContainer = () => {
                     </Tr>
                     {guests.length != 0 && accountInformation.length != 0 ?
                         guests
-                            .filter((obj) => obj.user.id != accountInformation.id )
                             .slice((roomPage - 1) * 10, roomPage * 10)
+                            .filter((obj) => obj.user.id != accountInformation.id )
+                            .filter((item) => {
+                                if (search != '') {
+                                    if ((item.firstName.toLowerCase()).toString().includes(search.toLowerCase())
+                                        || (item.firstName.toLowerCase() + ' ' + item.lastName.toLowerCase()).toString().includes(search.toLowerCase())
+                                        || (item.lastName.toLowerCase()).toString().includes(search.toLowerCase())
+                                        || (item.user.userName.toLowerCase()).toString().includes(search.toLowerCase())
+                                        || (item.id.split('-')[0].toLowerCase()).toString().includes(search.toLowerCase())
+                                    ) {
+                                        return item;
+                                    }
+                                    else if ('front desk'.includes(search.toLowerCase())) {
+                                        return item.user.role == 'STAFF'
+                                    }
+                                    else if ('admin'.includes(search.toLowerCase())) {
+                                        return item.user.role == 'ADMIN'
+                                    }
+                                    else if ('active'.includes(search.toLowerCase())) {
+                                        return item.user.status == true
+                                    }
+                                    else if ('disabled'.includes(search.toLowerCase())) {
+                                        return item.user.status == false
+                                    }
+                                    
+                                }
+
+                                else {
+                                    return item
+                                }
+                            })
+                            .sort((a, b) => a.firstName.localeCompare(b.firstName))
                             .map((item) => (
                                 <Tr>
                                     <Td align='center'>{item.id.split('-')[0]}</Td>
@@ -1812,7 +1847,36 @@ const UserListContainer = () => {
                     justify='center'>
                     <Pagination
                         page={roomPage}
-                        count={guests.length != 0 && Math.ceil(guests.length / 10)}
+                        count={guests.length != 0 && Math.ceil(guests.filter((obj) => obj.user.id != accountInformation.id )
+                            .filter((item) => {
+                                if (search != '') {
+                                    if ((item.firstName.toLowerCase()).toString().includes(search.toLowerCase())
+                                        || (item.firstName.toLowerCase() + ' ' + item.lastName.toLowerCase()).toString().includes(search.toLowerCase())
+                                        || (item.lastName.toLowerCase()).toString().includes(search.toLowerCase())
+                                        || (item.user.userName.toLowerCase()).toString().includes(search.toLowerCase())
+                                        || (item.id.split('-')[0].toLowerCase()).toString().includes(search.toLowerCase())
+                                    ) {
+                                        return item;
+                                    }
+                                    else if ('front desk'.includes(search.toLowerCase())) {
+                                        return item.user.role == 'STAFF'
+                                    }
+                                    else if ('admin'.includes(search.toLowerCase())) {
+                                        return item.user.role == 'ADMIN'
+                                    }
+                                    else if ('active'.includes(search.toLowerCase())) {
+                                        return item.user.status == true
+                                    }
+                                    else if ('disabled'.includes(search.toLowerCase())) {
+                                        return item.user.status == false
+                                    }
+                                    
+                                }
+
+                                else {
+                                    return item
+                                }
+                            }).length / 10)}
                         onChange={(e, value) => {
 
                             setRoomPage(value)

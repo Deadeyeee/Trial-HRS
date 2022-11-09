@@ -17,6 +17,7 @@ import logo from '../../../images/logo.png';
 import { Box, CircularProgress, Grow, Modal } from '@mui/material';
 
 
+import { IconButton } from '@mui/material';
 export const Register = () => {
 
 
@@ -208,8 +209,8 @@ export const Register = () => {
               user_id: user.data.account.id,
             }).then((guest) => {
               console.log(guest.data);
-              // window.location.reload();
-              handleCloseIsLoading(2, '/login')
+              window.location.href = '/registered/' + guest.data.new_guest.id;
+              handleCloseIsLoading(2)
 
             }).catch((err) => {
               Axios.delete(apiKey + 'api/deleteUser/' + user.data.account.id).then((result) => {
@@ -309,317 +310,323 @@ export const Register = () => {
         transition={{ duration: 1.5 }}
       >
 
-          <Title
-            margin="0px 0px 20px 0px"
-            margin1000="0px 0px 20px 0px"
-            size="4vh"
-            weight="normal"
-          >Create your account</Title>
+        <div style={{ width: '100%' }} onClick={() => window.location.href = '/login'}>
+          <IconButton style={{ float: 'right' }}>
+            <Close />
+          </IconButton>
+        </div>
 
-          <ContainerForm
+        <Title
+          margin="0px 0px 20px 0px"
+          margin1000="0px 0px 20px 0px"
+          size="4vh"
+          weight="normal"
+        >Create your account</Title>
+
+        <ContainerForm
+          style={{ gap: '10px' }}
+          onSubmit={createGuestInformation}>
+          <ContainerFormContent
+
             style={{ gap: '10px' }}
-            onSubmit={createGuestInformation}>
-            <ContainerFormContent
+          >
 
-              style={{ gap: '10px' }}
+            <InputContainer>
+              <TextField
+                className='inputRegister'
+                error={firstNameError.length != 0 ? true : false}
+                helperText={firstNameError.length != 0 ? firstNameError : ""}
+                placeholder='First Name'
+                label="First Name"
+                inputRef={firstNameRef}
+                variant="outlined"
+                value={firstName}
+
+                inputProps={{ maxLength: 80 }}
+                onChange={(e) => {
+                  setFirstName(e.target.value)
+                  if (!letters.test(e.target.value) && e.target.value.length != 0) {
+                    setFirstNameError("Invalid first name. Please type letters only.")
+                  }
+                  else {
+                    setFirstNameError("")
+                  }
+                }}
+                // className='inputRegister'
+                required />
+
+              <TextField
+                error={lastNameError.length != 0 ? true : false}
+                helperText={lastNameError.length != 0 ? lastNameError : ""}
+                placeholder='Last Name'
+                label="Last Name"
+                variant="outlined"
+                inputRef={lastNameRef}
+                value={lastName}
+                inputProps={{ maxLength: 80 }}
+                onChange={(e) => {
+                  setLastName(e.target.value)
+                  if (!letters.test(e.target.value) && e.target.value.length != 0) {
+                    setLastNameError("Invalid last name. Please type letters only.")
+                  }
+                  else {
+                    setLastNameError("")
+                  }
+
+                }}
+                className='inputRegister'
+                required />
+            </InputContainer>
+
+
+            <InputContainer>
+              <TextField
+                error={emailError.length != 0 ? true : false}
+                helperText={emailError.length != 0 ? emailError : ""}
+                placeholder='Email'
+                label="Email"
+                variant="outlined"
+                type='email'
+                inputProps={{ maxLength: 254 }}
+                value={email}
+                onChange={(e) => {
+                  setEmail(e.target.value)
+
+                  setEmailError("")
+                }}
+                className='inputRegister'
+                inputRef={emailRef}
+                required />
+
+              <TextField
+                error={contactNumberError.length != 0 ? true : false}
+                helperText={contactNumberError.length != 0 ? contactNumberError : "ex. 09123456789 or +639123456789"}
+                placeholder='Contact Number e.g. 09123456789 or +639123456789'
+                label="Contact Number"
+                variant="outlined"
+                value={contactNumber}
+                onChange={(e) => {
+                  setContactNumber(e.target.value)
+
+                  if (!phoneNumberValidation.test(e.target.value) && e.target.value.length != 0) {
+                    console.log('asda')
+                    setContactNumberError("Contact number is invalid. Please provide a valid contact number.")
+                  }
+                  else {
+                    setContactNumberError("")
+                  }
+                }}
+                inputRef={contactNumberRef}
+
+                inputProps={{ maxLength: 13 }}
+                className='inputRegister'
+                required />
+            </InputContainer>
+
+
+            <InputContainer>
+
+              <LocalizationProvider dateAdapter={AdapterDateFns}>
+                <DatePicker
+
+                  views={['day', 'month', 'year']}
+                  label="Birthday"
+                  value={birthday}
+                  maxDate={new Date(Date.parse(new Date()) - 568025136000)}
+                  minDate={new Date(Date.parse(new Date()) - 2524556160000)}
+                  onChange={(newValue) => {
+                    setBirthDay(newValue);
+                  }}
+                  renderInput={(params) =>
+                    <TextField
+                      {...params}
+                      variant="standard"
+                      className='inputRegister'
+                      style={{ margin: '5px 0px' }}
+                      helperText={null}
+                      required
+                    />
+                  }
+                />
+
+              </LocalizationProvider>
+
+              <FormControl className='inputRegister' sx={{ margin: '5px 0px' }} size="small" variant="standard">
+                <InputLabel id="demo-select-small" >Nationality</InputLabel>
+                <Select
+                  style={{ color: 'black', textAlign: 'left' }}
+                  labelId="demo-select-small"
+                  id="demo-select-small"
+                  value={nationality}
+                  label="Menu"
+                  onChange={(event) => {
+                    setNationality(event.target.value);
+                  }}
+                  required
+                >
+
+                  {nationalities.map(({ nationality }, index) => (
+                    <MenuItem value={nationality} >{nationality}</MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </InputContainer>
+
+            <InputContainer
+              justify='center'>
+              <FormControl>
+                <FormLabel id="demo-row-radio-buttons-group-label"
+                  style={{ textAlign: 'center', }} >Gender</FormLabel>
+                <RadioGroup
+                  row
+
+                  error={genderError.length != 0 ? true : false}
+                  helperText={genderError.length != 0 ? genderError : ""}
+                  aria-labelledby="demo-row-radio-buttons-group-label"
+                  defaultValue="male"
+                  value={gender}
+                  name="row-radio-buttons-group"
+                  onChange={(e) => {
+                    setGender(e.target.value)
+                  }}
+                  required
+                >
+                  <FormControlLabel
+                    value="male"
+                    control={<Radio />}
+                    label="Male"
+                  />
+                  <FormControlLabel
+                    value="female"
+                    control={<Radio />}
+                    label="Female"
+                  />
+                  <FormControlLabel
+                    value="other"
+                    control={<Radio />}
+                    label="Other"
+                  />
+                </RadioGroup>
+              </FormControl>
+            </InputContainer>
+
+
+            <InputContainer>
+              <TextField
+                error={addressError.length != 0 ? true : false}
+                helperText={addressError.length != 0 ? addressError : ""}
+                placeholder='Complete Address'
+                label="Complete Address"
+                variant="outlined"
+                type='text'
+                value={address}
+                onChange={(e) => {
+                  setAddress(e.target.value)
+                }}
+                multiline
+                rows={4}
+                style={{ width: '95%', }}
+                required
+                inputProps={{ maxLength: 255 }}
+              />
+
+            </InputContainer>
+            <InputContainer style={{
+              marginTop: '20px'
+            }}>
+              <TextField
+
+                error={userNameError.length != 0 ? true : false}
+                helperText={userNameError.length != 0 ? userNameError : ""}
+                placeholder='Username'
+                label="Username"
+                variant="outlined"
+                inputRef={userNameRef}
+                value={userName}
+                onChange={(e) => {
+                  setUserName(e.target.value)
+                  if (!userNameValidation.test(e.target.value) && e.target.value.length != 0) {
+                    console.log('asda')
+                    setUserNameError("Invalid username.")
+                  }
+                  else {
+
+                    setUserNameError("")
+                  }
+                }}
+
+                inputProps={{ maxLength: 40 }}
+                required
+                className='inputRegister' />
+
+              <TextField
+                error={passwordError.length != 0 ? true : false}
+                helperText={passwordError.length != 0 ? passwordError : ""}
+                placeholder='Password'
+                label="Password"
+                type='password'
+                variant="outlined"
+                value={password}
+                onChange={(e) => {
+                  setPassword(e.target.value)
+                  if (!passwordValidation.test(e.target.value) && e.target.value.length != 0) {
+                    setPasswordError("Password must have a minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character.")
+                  }
+                  else {
+                    setPasswordError("")
+                  }
+                }}
+                className='inputRegister'
+                required
+              />
+            </InputContainer>
+
+
+
+
+
+
+            <FormButton
+              whileHover={{ scale: 1.1, color: "rgb(255, 255, 255)" }}
+              whileTap={{ scale: 1.05, backgroundColor: "#8F805F" }}
+              w='290px'
+              h='30px'
+              margin='10px 0 0 0'
+              textcolor='white'
+              radius='5px'
+              weight='bold'
+              bg="green"
+              border='none'
+              type='submit'
+              padding='5px 5px'
+              value="Create account"
             >
 
-              <InputContainer>
-                <TextField
-                className='inputRegister'
-                  error={firstNameError.length != 0 ? true : false}
-                  helperText={firstNameError.length != 0 ? firstNameError : ""}
-                  placeholder='First Name'
-                  label="First Name"
-                  inputRef={firstNameRef}
-                  variant="outlined"
-                  value={firstName}
 
-                  inputProps={{ maxLength: 80 }}
-                  onChange={(e) => {
-                    setFirstName(e.target.value)
-                    if (!letters.test(e.target.value) && e.target.value.length != 0) {
-                      setFirstNameError("Invalid first name. Please type letters only.")
-                    }
-                    else {
-                      setFirstNameError("")
-                    }
-                  }}
-                  // className='inputRegister'
-                  required />
+            </FormButton>
 
-                <TextField
-                  error={lastNameError.length != 0 ? true : false}
-                  helperText={lastNameError.length != 0 ? lastNameError : ""}
-                  placeholder='Last Name'
-                  label="Last Name"
-                  variant="outlined"
-                  inputRef={lastNameRef}
-                  value={lastName}
-                  inputProps={{ maxLength: 80 }}
-                  onChange={(e) => {
-                    setLastName(e.target.value)
-                    if (!letters.test(e.target.value) && e.target.value.length != 0) {
-                      setLastNameError("Invalid last name. Please type letters only.")
-                    }
-                    else {
-                      setLastNameError("")
-                    }
+            <Title
+              size="10px"
+              margin="20px 0px 10px 0px"
+            >OR</Title>
 
-                  }}
-                  className='inputRegister'
-                  required />
-              </InputContainer>
+            <Button
+              whileHover={{ scale: 1.2, color: "rgb(0,0,255)" }}
+              whileTap={{ scale: 1, color: "rgb(220,220,220)" }}
+              w='60px'
+              h='30px'
+              textcolor='black'
+              radius='5px'
+              weight='bold'
+              border='none'
+              href='/login'
+            >Log in</Button>
 
-
-              <InputContainer>
-                <TextField
-                  error={emailError.length != 0 ? true : false}
-                  helperText={emailError.length != 0 ? emailError : ""}
-                  placeholder='Email'
-                  label="Email"
-                  variant="outlined"
-                  type='email'
-                  inputProps={{ maxLength: 254 }}
-                  value={email}
-                  onChange={(e) => {
-                    setEmail(e.target.value)
-
-                    setEmailError("")
-                  }}
-                  className='inputRegister'
-                  inputRef={emailRef}
-                  required />
-
-                <TextField
-                  error={contactNumberError.length != 0 ? true : false}
-                  helperText={contactNumberError.length != 0 ? contactNumberError : "ex. 09123456789 or +639123456789"}
-                  placeholder='Contact Number e.g. 09123456789 or +639123456789'
-                  label="Contact Number"
-                  variant="outlined"
-                  value={contactNumber}
-                  onChange={(e) => {
-                    setContactNumber(e.target.value)
-
-                    if (!phoneNumberValidation.test(e.target.value) && e.target.value.length != 0) {
-                      console.log('asda')
-                      setContactNumberError("Contact number is invalid. Please provide a valid contact number.")
-                    }
-                    else {
-                      setContactNumberError("")
-                    }
-                  }}
-                  inputRef={contactNumberRef}
-
-                  inputProps={{ maxLength: 13 }}
-                  className='inputRegister'
-                  required />
-              </InputContainer>
-
-
-              <InputContainer>
-
-                <LocalizationProvider dateAdapter={AdapterDateFns}>
-                  <DatePicker
-
-                    views={['day', 'month', 'year']}
-                    label="Birthday"
-                    value={birthday}
-                    maxDate={new Date(Date.parse(new Date()) - 568025136000)}
-                    minDate={new Date(Date.parse(new Date()) - 2524556160000)}
-                    onChange={(newValue) => {
-                      setBirthDay(newValue);
-                    }}
-                    renderInput={(params) =>
-                      <TextField
-                        {...params}
-                        variant="standard"
-                        className='inputRegister'
-                        style={{ margin: '5px 0px' }}
-                        helperText={null}
-                        required
-                      />
-                    }
-                  />
-
-                </LocalizationProvider>
-
-                <FormControl className='inputRegister' sx={{  margin: '5px 0px' }} size="small" variant="standard">
-                  <InputLabel id="demo-select-small" >Nationality</InputLabel>
-                  <Select
-                    style={{ color: 'black', textAlign: 'left' }}
-                    labelId="demo-select-small"
-                    id="demo-select-small"
-                    value={nationality}
-                    label="Menu"
-                    onChange={(event) => {
-                      setNationality(event.target.value);
-                    }}
-                    required
-                  >
-
-                    {nationalities.map(({ nationality }, index) => (
-                      <MenuItem  value={nationality} >{nationality}</MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              </InputContainer>
-
-              <InputContainer
-                justify='center'>
-                <FormControl>
-                  <FormLabel id="demo-row-radio-buttons-group-label"
-                    style={{ textAlign: 'center', }} >Gender</FormLabel>
-                  <RadioGroup
-                    row
-
-                    error={genderError.length != 0 ? true : false}
-                    helperText={genderError.length != 0 ? genderError : ""}
-                    aria-labelledby="demo-row-radio-buttons-group-label"
-                    defaultValue="male"
-                    value={gender}
-                    name="row-radio-buttons-group"
-                    onChange={(e) => {
-                      setGender(e.target.value)
-                    }}
-                    required
-                  >
-                    <FormControlLabel
-                      value="male"
-                      control={<Radio />}
-                      label="Male"
-                    />
-                    <FormControlLabel
-                      value="female"
-                      control={<Radio />}
-                      label="Female"
-                    />
-                    <FormControlLabel
-                      value="other"
-                      control={<Radio />}
-                      label="Other"
-                    />
-                  </RadioGroup>
-                </FormControl>
-              </InputContainer>
-
-
-              <InputContainer>
-                <TextField
-                  error={addressError.length != 0 ? true : false}
-                  helperText={addressError.length != 0 ? addressError : ""}
-                  placeholder='Complete Address'
-                  label="Complete Address"
-                  variant="outlined"
-                  type='text'
-                  value={address}
-                  onChange={(e) => {
-                    setAddress(e.target.value)
-                  }}
-                  multiline
-                  rows={4}
-                  style={{ width: '95%', }}
-                  required
-                  inputProps={{ maxLength: 255 }}
-                />
-
-              </InputContainer>
-              <InputContainer style={{
-                marginTop: '20px'
-              }}>
-                <TextField
-
-                  error={userNameError.length != 0 ? true : false}
-                  helperText={userNameError.length != 0 ? userNameError : ""}
-                  placeholder='Username'
-                  label="Username"
-                  variant="outlined"
-                  inputRef={userNameRef}
-                  value={userName}
-                  onChange={(e) => {
-                    setUserName(e.target.value)
-                    if (!userNameValidation.test(e.target.value) && e.target.value.length != 0) {
-                      console.log('asda')
-                      setUserNameError("Invalid username.")
-                    }
-                    else {
-
-                      setUserNameError("")
-                    }
-                  }}
-
-                  inputProps={{ maxLength: 40 }}
-                  required
-                  className='inputRegister' />
-
-                <TextField
-                  error={passwordError.length != 0 ? true : false}
-                  helperText={passwordError.length != 0 ? passwordError : ""}
-                  placeholder='Password'
-                  label="Password"
-                  type='password'
-                  variant="outlined"
-                  value={password}
-                  onChange={(e) => {
-                    setPassword(e.target.value)
-                    if (!passwordValidation.test(e.target.value) && e.target.value.length != 0) {
-                      setPasswordError("Password must have a minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character.")
-                    }
-                    else {
-                      setPasswordError("")
-                    }
-                  }}
-                  className='inputRegister'
-                  required
-                />
-              </InputContainer>
+          </ContainerFormContent>
 
 
 
-
-
-
-              <FormButton
-                whileHover={{ scale: 1.1, color: "rgb(255, 255, 255)" }}
-                whileTap={{ scale: 1.05, backgroundColor: "#8F805F" }}
-                w='290px'
-                h='30px'
-                margin='10px 0 0 0'
-                textcolor='white'
-                radius='5px'
-                weight='bold'
-                bg="green"
-                border='none'
-                type='submit'
-                padding='5px 5px'
-                value="Create account"
-              >
-
-
-              </FormButton>
-
-              <Title
-                size="10px"
-                margin="20px 0px 10px 0px"
-              >OR</Title>
-
-              <Button
-                whileHover={{ scale: 1.2, color: "rgb(0,0,255)" }}
-                whileTap={{ scale: 1, color: "rgb(220,220,220)" }}
-                w='60px'
-                h='30px'
-                textcolor='black'
-                radius='5px'
-                weight='bold'
-                border='none'
-                href='/login'
-              >Log in</Button>
-
-            </ContainerFormContent>
-
-
-
-          </ContainerForm>
+        </ContainerForm>
       </RegisterBorder>
       <Background></Background>
     </Container>

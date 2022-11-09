@@ -314,7 +314,118 @@ export const ReservationContainer = () => {
                     console.log(err)
 
                 });
-            } else {
+            }
+            else if (reservationStatus == 'RESERVED') {
+                axios.get(apiKey + 'api/getReservation/' + editReservationInfo.id).then((result) => {
+                    axios.post(apiKey + 'api/sendReservationEmail', {
+                        email: result.data.guestInformation.user.email,
+                        birthDay: result.data.guestInformation.birthDate,
+                        nationality: result.data.guestInformation.nationality,
+                        emailAddress: result.data.guestInformation.user.email,
+                        address: result.data.guestInformation.address,
+                        contactNumber: result.data.guestInformation.user.contactNumber,
+                        firstName: result.data.guestInformation.firstName,
+                        lastName: result.data.guestInformation.lastName,
+                        reservationStatus: result.data.reservationStatus,
+                        accountName: result.data.payment.paymentMode.accountName,
+                        accountNumber: result.data.payment.paymentMode.accountNumber,
+                        paymentType: result.data.payment.paymentType,
+                        paymentMode: result.data.payment.paymentMode.paymentMode,
+                        reservationNumber: result.data.reservationReferenceNumber,
+                        reservationDate: new Date(result.data.reservationDate).toLocaleDateString() + " " + new Date(result.data.reservationDate).toLocaleTimeString(),
+                        reservationId: result.data.id,
+                        role: result.data.guestInformation.user.role,
+                        grandTotal: result.data.payment.grandTotal,
+                        discountType: result.data.payment.discount.discountType,
+                        expirationDate: new Date(new Date(result.data.reservationDate).getTime() + 60 * 60 * 24 * 1000).toLocaleDateString() + " " + new Date(result.data.reservationDate).toLocaleTimeString(),
+                        amountPaid: result.data.payment.paymentMade,
+                        // payment: ,
+                        // reservedRooms: ,
+                    }).then((result) => {
+                        console.log(result)
+                        axios.get(apiKey + 'api/getAllReservationSummary').then((result) => {
+                            result.data.filter((item) => item.reservation.id == editReservationInfo.id).map((item, index, array) => {
+                                axios.patch(apiKey + 'api/updateReservationSummary/' + item.id, {
+                                    bookingStatus: 'RESERVED'
+                                }).then((result) => {
+                                    if (index == array.length - 1) {
+                                        window.location.reload();
+                                    }
+                                }).catch((err) => {
+                                    console.log(err)
+
+                                });
+                            })
+                        }).catch((err) => {
+                            console.log(err)
+
+                        });
+
+                    }).catch((err) => {
+                        console.log(err)
+
+                    });
+                }).catch((err) => {
+                    console.log(err)
+
+                });
+            }
+            else if (reservationStatus == 'PENDING') {
+                axios.get(apiKey + 'api/getReservation/' + editReservationInfo.id).then((result) => {
+                    axios.post(apiKey + 'api/sendReservationEmail', {
+                        email: result.data.guestInformation.user.email,
+                        birthDay: result.data.guestInformation.birthDate,
+                        nationality: result.data.guestInformation.nationality,
+                        emailAddress: result.data.guestInformation.user.email,
+                        address: result.data.guestInformation.address,
+                        contactNumber: result.data.guestInformation.user.contactNumber,
+                        firstName: result.data.guestInformation.firstName,
+                        lastName: result.data.guestInformation.lastName,
+                        reservationStatus: result.data.reservationStatus,
+                        accountName: result.data.payment.paymentMode.accountName,
+                        accountNumber: result.data.payment.paymentMode.accountNumber,
+                        paymentType: result.data.payment.paymentType,
+                        paymentMode: result.data.payment.paymentMode.paymentMode,
+                        reservationNumber: result.data.reservationReferenceNumber,
+                        reservationDate: new Date(result.data.reservationDate).toLocaleDateString() + " " + new Date(result.data.reservationDate).toLocaleTimeString(),
+                        reservationId: result.data.id,
+                        role: result.data.guestInformation.user.role,
+                        grandTotal: result.data.payment.grandTotal,
+                        discountType: result.data.payment.discount.discountType,
+                        expirationDate: new Date(new Date(result.data.reservationDate).getTime() + 60 * 60 * 24 * 1000).toLocaleDateString() + " " + new Date(result.data.reservationDate).toLocaleTimeString(),
+                        amountPaid: result.data.payment.paymentMade,
+                        // payment: ,
+                        // reservedRooms: ,
+                    }).then((result) => {
+                        console.log(result)
+                        axios.get(apiKey + 'api/getAllReservationSummary').then((result) => {
+                            result.data.filter((item) => item.reservation.id == editReservationInfo.id).map((item, index, array) => {
+                                axios.patch(apiKey + 'api/updateReservationSummary/' + item.id, {
+                                    bookingStatus: 'PENDING'
+                                }).then((result) => {
+                                    if (index == array.length - 1) {
+                                        window.location.reload();
+                                    }
+                                }).catch((err) => {
+                                    console.log(err)
+
+                                });
+                            })
+                        }).catch((err) => {
+                            console.log(err)
+
+                        });
+
+                    }).catch((err) => {
+                        console.log(err)
+
+                    });
+                }).catch((err) => {
+                    console.log(err)
+
+                });
+            }
+            else {
                 window.location.reload()
             }
         }).catch((err) => {
@@ -1743,7 +1854,7 @@ export const ReservationContainer = () => {
 
                     </LocalizationProvider>
 
-                    {startDateFilter != null && endDateFilter != null ?
+                    {startDateFilter != null || endDateFilter != null ?
                         <IconButton onClick={() => {
                             setStartDateFilter(null)
                             setEndDateFilter(null)
@@ -1870,27 +1981,27 @@ export const ReservationContainer = () => {
                                 return item
                             }
                         })
-                            .sort((a, b) => Date.parse(new Date(b.reservationDate)) - Date.parse(new Date(a.reservationDate)))
-                            .filter((item) => {
-                                if (search != '') {
-                                    if (new Date(item.reservationDate).toLocaleDateString().includes(search)
-                                        || item.reservationReferenceNumber.toString().includes(search)
-                                        || (item.guestInformation.firstName.toLowerCase()).toString().includes(search.toLowerCase())
-                                        || (item.guestInformation.firstName.toLowerCase() + ' ' + item.guestInformation.lastName.toLowerCase()).toString().includes(search.toLowerCase())
-                                        || (item.guestInformation.lastName.toLowerCase()).toString().includes(search.toLowerCase())
-                                        || (item.reservationStatus.toLowerCase()).toString().includes(search.toLowerCase())
-                                    ) {
-                                        return item;
-                                    }
-                                    else if ('cancelled'.includes(search.toLowerCase())) {
-                                        return item.reservationStatus == 'UNSETTLED'
-                                    }
+                        .sort((a, b) => Date.parse(new Date(b.reservationDate)) - Date.parse(new Date(a.reservationDate)))
+                        .filter((item) => {
+                            if (search != '') {
+                                if (new Date(item.reservationDate).toLocaleDateString().includes(search)
+                                    || item.reservationReferenceNumber.toString().includes(search)
+                                    || (item.guestInformation.firstName.toLowerCase()).toString().includes(search.toLowerCase())
+                                    || (item.guestInformation.firstName.toLowerCase() + ' ' + item.guestInformation.lastName.toLowerCase()).toString().includes(search.toLowerCase())
+                                    || (item.guestInformation.lastName.toLowerCase()).toString().includes(search.toLowerCase())
+                                    || (item.reservationStatus.toLowerCase()).toString().includes(search.toLowerCase())
+                                ) {
+                                    return item;
                                 }
+                                else if ('cancelled'.includes(search.toLowerCase())) {
+                                    return item.reservationStatus == 'UNSETTLED'
+                                }
+                            }
 
-                                else {
-                                    return item
-                                }
-                            }).length / 10)}
+                            else {
+                                return item
+                            }
+                        }).length / 10)}
                         onChange={(e, value) => {
 
                             setRoomPage(value)
@@ -4054,10 +4165,14 @@ export const ReservationContainer = () => {
                                     }}
                                 >
 
-                                    <MenuItem value='PENDING'>
+                                    <MenuItem value='PENDING' 
+                                    disabled={editReservationInfo.length != 0 ? editReservationInfo.payment.paymentStatus == 'pending' || editReservationInfo.payment.paymentStatus == 'reciept declined' || editReservationInfo.reservationStatus == 'PENDING' ? false: true : false}
+                                    >
                                         Pending
                                     </MenuItem>
-                                    <MenuItem value='RESERVED'>
+                                    <MenuItem value='RESERVED' 
+                                    disabled={editReservationInfo.length != 0 ? editReservationInfo.payment.paymentStatus == 'partial' || editReservationInfo.payment.paymentStatus == 'fully paid' || editReservationInfo.reservationStatus == 'RESERVED' ? false: true : false}
+                                    >
                                         Reserved
                                     </MenuItem>
                                     <MenuItem value='UNSETTLED'>

@@ -1042,6 +1042,22 @@ const BookingsContainer = () => {
     }
     const [searchValue, setSearchValue] = useState('')
 
+
+
+    const [search, setSearch] = useState('')
+    const [endDateFilter, setEndDateFilter] = useState(null)
+    const [startDateFilter, setStartDateFilter] = useState(null)
+    const [categoryMenu, setCategoryMenu] = useState(null)
+
+    useEffect(() => {
+        if (startDateFilter != null && endDateFilter != null) {
+            if (Date.parse(startDateFilter) > Date.parse(endDateFilter)) {
+                // setEndDate(new Date(startDate).getTime() + 86400000)
+                setEndDateFilter(new Date(Date.parse(startDateFilter) + 86400000))
+            }
+        }
+    }, [startDateFilter, endDateFilter])
+
     return (
         <Container
             style={{
@@ -1090,9 +1106,9 @@ const BookingsContainer = () => {
                             input: { color: 'black', fontWeight: 'bold' },
 
                         }}
-                        value={searchValue}
+                        value={search}
                         onChange={(e) => {
-                            setSearchValue(e.target.value)
+                            setSearch(e.target.value)
                         }}
                         InputProps={{
                             endAdornment: (
@@ -1110,9 +1126,9 @@ const BookingsContainer = () => {
                         <DatePicker
                             views={['day', 'month', 'year']}
                             label="Start Date"
-                            value={value}
+                            value={startDateFilter}
                             onChange={(newValue) => {
-                                setValue(newValue);
+                                setStartDateFilter(newValue);
                             }}
                             renderInput={(params) =>
                                 <TextField
@@ -1138,9 +1154,10 @@ const BookingsContainer = () => {
 
                             views={['day', 'month', 'year']}
                             label="End Date"
-                            value={value}
+                            minDate={startDateFilter}
+                            value={endDateFilter}
                             onChange={(newValue) => {
-                                setValue(newValue);
+                                setEndDateFilter(newValue);
                             }}
                             renderInput={(params) =>
                                 <TextField
@@ -1161,15 +1178,15 @@ const BookingsContainer = () => {
 
                     </LocalizationProvider>
                     <FormControl sx={{ m: 1, minWidth: 120, }} size="small">
-                        <InputLabel id="demo-select-small" >Menu</InputLabel>
+                        <InputLabel id="demo-select-small" >Category</InputLabel>
                         <Select
                             style={{ color: 'black', fontWeight: 'bold' }}
                             labelId="roomType-select-small"
                             id="demo-select-small"
-                            value={age}
+                            value={categoryMenu}
                             label="Menu"
                             onChange={(event) => {
-                                setAge(event.target.value);
+                                setCategoryMenu(event.target.value);
                             }}
 
                         >
@@ -1179,7 +1196,16 @@ const BookingsContainer = () => {
                         </Select>
                     </FormControl>
 
-
+                    {startDateFilter != null || endDateFilter != null || categoryMenu != null ?
+                        <IconButton onClick={() => {
+                            setStartDateFilter(null)
+                            setEndDateFilter(null)
+                            setCategoryMenu(null)
+                            setSearch('')
+                        }}>
+                            <CloseIcon />
+                        </IconButton>
+                        : ''}
 
                 </ContainerGlobal>
             </ContainerGlobal>
@@ -1230,9 +1256,55 @@ const BookingsContainer = () => {
                     {reservationSummary.length != 0 ?
                         reservationSummary
                             .slice((roomPage - 1) * 10, roomPage * 10)
+                            .filter((item) => {
 
-                            .sort((a, b) => a.bookingReferenceNumber - b.bookingReferenceNumber)
-                            .filter((obj) => (obj.bookingReferenceNumber).toString().includes(searchValue) || (obj.reservation.reservationReferenceNumber).toString().includes(searchValue) || (obj.reservation.guestInformation.firstName).includes(searchValue) || (obj.reservation.guestInformation.lastName).includes(searchValue)).map((item) => (
+
+                                if (startDateFilter != null && endDateFilter != null && categoryMenu != null) {
+                                    if (categoryMenu == 'Check-in') {
+                                        let filterDates = getDates(startDateFilter, endDateFilter);
+                                        if (filterDates.includes(moment(item.checkInDate).format('YYYY-MM-DD'))) {
+                                            return item
+                                        }
+                                    }
+                                    else if (categoryMenu == 'Check-out') {
+                                        let filterDates = getDates(startDateFilter, endDateFilter);
+                                        if (filterDates.includes(moment(item.checkOutDate).format('YYYY-MM-DD'))) {
+                                            return item
+                                        }
+                                    }
+                                }
+                                else {
+                                    return item
+                                }
+                            })
+                            .filter((item) => {
+                                if (search != '') {
+                                    if (
+                                        new Date(item.checkInDate).toLocaleDateString().includes(search)
+                                        || new Date(item.checkOutDate).toLocaleDateString().includes(search)
+                                        || item.reservation.reservationReferenceNumber.toString().includes(search)
+                                        || item.bookingReferenceNumber.toString().includes(search)
+                                        || (item.reservation.guestInformation.firstName.toLowerCase()).toString().includes(search.toLowerCase())
+                                        || (item.reservation.guestInformation.firstName.toLowerCase() + ' ' + item.reservation.guestInformation.lastName.toLowerCase()).toString().includes(search.toLowerCase())
+                                        || (item.reservation.guestInformation.lastName.toLowerCase()).toString().includes(search.toLowerCase())
+                                        || (item.bookingStatus.toLowerCase()).toString().includes(search.toLowerCase())
+                                        || (item.reservation.payment.paymentStatus.toLowerCase()).toString().includes(search.toLowerCase())
+                                        || (item.roomNumber).toString().includes(search.toLowerCase())
+                                    ) {
+                                        return item;
+                                    }
+                                    else if ('cancelled'.includes(search.toLowerCase())) {
+                                        return item.reservationStatus == 'UNSETTLED'
+                                    }
+                                }
+
+                                else {
+                                    return item
+                                }
+                            })
+                            .filter((obj) => (obj.bookingReferenceNumber).toString().includes(searchValue) || (obj.reservation.reservationReferenceNumber).toString().includes(searchValue) || (obj.reservation.guestInformation.firstName).includes(searchValue) || (obj.reservation.guestInformation.lastName).includes(searchValue))
+                            .sort((a, b) => b.bookingReferenceNumber - a.bookingReferenceNumber)
+                            .map((item) => (
                                 <Tr>
                                     <Td align='center'>{item.bookingReferenceNumber}</Td>
                                     <Td align='center'>{item.reservation.guestInformation.firstName.toLowerCase()}, {item.reservation.guestInformation.lastName.toLowerCase()}</Td>
@@ -1269,7 +1341,53 @@ const BookingsContainer = () => {
                     justify='center'>
                     <Pagination
                         page={roomPage}
-                        count={reservationSummary.length != 0 && Math.ceil(reservationSummary.length / 10)}
+                        count={reservationSummary.length != 0 && Math.ceil(reservationSummary.filter((item) => {
+
+
+                            if (startDateFilter != null && endDateFilter != null && categoryMenu != null) {
+                                if (categoryMenu == 'Check-in') {
+                                    let filterDates = getDates(startDateFilter, endDateFilter);
+                                    if (filterDates.includes(moment(item.checkInDate).format('YYYY-MM-DD'))) {
+                                        return item
+                                    }
+                                }
+                                else if (categoryMenu == 'Check-out') {
+                                    let filterDates = getDates(startDateFilter, endDateFilter);
+                                    if (filterDates.includes(moment(item.checkOutDate).format('YYYY-MM-DD'))) {
+                                        return item
+                                    }
+                                }
+                            }
+                            else {
+                                return item
+                            }
+                        })
+                            .filter((item) => {
+                                if (search != '') {
+                                    if (
+                                        new Date(item.checkInDate).toLocaleDateString().includes(search)
+                                        || new Date(item.checkOutDate).toLocaleDateString().includes(search)
+                                        || item.reservation.reservationReferenceNumber.toString().includes(search)
+                                        || item.bookingReferenceNumber.toString().includes(search)
+                                        || (item.reservation.guestInformation.firstName.toLowerCase()).toString().includes(search.toLowerCase())
+                                        || (item.reservation.guestInformation.firstName.toLowerCase() + ' ' + item.reservation.guestInformation.lastName.toLowerCase()).toString().includes(search.toLowerCase())
+                                        || (item.reservation.guestInformation.lastName.toLowerCase()).toString().includes(search.toLowerCase())
+                                        || (item.bookingStatus.toLowerCase()).toString().includes(search.toLowerCase())
+                                        || (item.reservation.payment.paymentStatus.toLowerCase()).toString().includes(search.toLowerCase())
+                                        || (item.roomNumber).toString().includes(search.toLowerCase())
+                                    ) {
+                                        return item;
+                                    }
+                                    else if ('cancelled'.includes(search.toLowerCase())) {
+                                        return item.reservationStatus == 'UNSETTLED'
+                                    }
+                                }
+
+                                else {
+                                    return item
+                                }
+                            })
+                            .filter((obj) => (obj.bookingReferenceNumber).toString().includes(searchValue) || (obj.reservation.reservationReferenceNumber).toString().includes(searchValue) || (obj.reservation.guestInformation.firstName).includes(searchValue) || (obj.reservation.guestInformation.lastName).includes(searchValue)).length / 10)}
                         onChange={(e, value) => {
 
                             setRoomPage(value)

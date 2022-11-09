@@ -165,51 +165,7 @@ const AdditionalsContainer = () => {
                 </Title>
             </HeadContainer>
 
-            <ContainerGlobal
-
-                w='90%'
-                h='auto'
-                bg='WHITE'
-                direction='column'
-                align='center'
-                padding='10px 30px'
-                margin='20px 0px 10px 0px'
-                gap='10px'
-            >
-
-                <ContainerGlobal
-                    w='100%'
-                    h='7vh'
-                    bg='none'
-                    direction='row'
-                    overflow='visible'
-                    align='center'
-                    justify='center'
-                    gap='10px'
-                >
-                    <TextField
-                        id="outlined-basic"
-                        label="Search..."
-                        variant="outlined"
-                        sx={{
-                            input: { color: 'black', fontWeight: 'bold' },
-
-                        }}
-                        InputProps={{
-                            endAdornment: (
-                                <InputAdornment position="end">
-                                    <IconButton type="submit" sx={{ p: '10px' }} aria-label="search">
-                                        <SearchIcon />
-                                    </IconButton>
-                                </InputAdornment>
-
-                            ),
-                        }}
-                        style={{ width: '98%' }} />
-
-
-                </ContainerGlobal>
-            </ContainerGlobal>
+            
 
             <ContainerGlobal
                 w='90%'

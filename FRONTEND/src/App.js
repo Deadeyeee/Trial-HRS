@@ -66,12 +66,29 @@ import GeneratedReports from './admin/pages/generateReports/GenerateReports';
 import LoginAdminStaff from './client/pages/login/LoginAdminStaff';
 import GeneratedReportsOcupancy from './admin/pages/generateReports/GeneratedReportsOcupancy';
 import LoginStaff from './client/pages/login/LoginStaff';
+import axios from 'axios';
+import { apiKey } from './apiKey';
+import { useEffect, useState } from 'react';
 
 
 
-//frontDesk
+//frontDesk\
 
 const App = () => {
+
+  const [role, setRole] = useState('');
+
+
+  useEffect(() => {
+    axios.get(apiKey + "auth/verify-token").then((response) => {
+      if (response.status === 200) {
+        setRole(response.data.role)
+      }
+    });
+  }, []);
+
+  
+
   return (
     <Router>
       <Routes>
@@ -89,18 +106,19 @@ const App = () => {
         <Route path="/forgotPassword" element={<ForgotPasswordPage />} />
         <Route path="/newPassword/:id" element={<ConfirmNewPassword />} />
         <Route path="/verifyEmail" element={<VerificationEmail />} />
-        <Route path="/resetPasswordSuccess" element={<ResetPasswordSuccessPage />}/>
+        <Route path="/resetPasswordSuccess" element={<ResetPasswordSuccessPage />} />
         <Route path="/booking/room/:id" element={<BookingChildPage />} />
         <Route path="/guestInformation" element={<GuestInfoPage />} />
         <Route path="/booking/confirmation/:id" element={<BookingConfirmationPage />} />
         <Route path="/billingSummary" element={<BillingSummaryPage />} />
         <Route path="/bookingCart" element={<BookingCartPage />} />
 
+
         <Route path="/client/profile" element={<Profile />} />
         <Route path="/client/bookingInfo" element={<ClientBookingInfoPage />} />
         <Route path="/client/paymentInfo" element={<ClientPaymentInfoPage />} />
         <Route path="/client/messages" element={<ClientMessagesPage />} />
-      
+
 
 
 
@@ -112,37 +130,25 @@ const App = () => {
 
         <Route path="/admin/dashboard" element={<AdminProfile />} />
         <Route path="/admin/status" element={<Status />} />
-        <Route path="/admin/payments" element={<Payment/>} />
+        <Route path="/admin/payments" element={<Payment />} />
         <Route path="/admin/guests" element={<Guest />} />
-        <Route path="/admin/booking" element={<Bookings/>}/>
-        <Route path="/admin/reservation" element={<Reservation/>}/>
+        <Route path="/admin/booking" element={<Bookings />} />
+        <Route path="/admin/reservation" element={<Reservation />} />
         <Route path="/admin/userLogs" element={<UserLogs />} />
         <Route path="/admin/userList" element={<UserList />} />
-        <Route path="/admin/roomStatus" element={<RoomStatus />}/>
-        <Route path="/admin/roomDetails" element={<RoomDetails />}/>
-        <Route path="/admin/profile" element={<ProfileAdmin />}/>
-        <Route path="/admin/messages" element={<Messages />}/>
-        <Route path="/admin/report" element={<Reports />}/>
-        <Route path="/admin/additionals" element={<Additional />}/>
-        
-        <Route path="/admin/officialReceipt/:id" element={<OfficialReceipt />}/>
-        <Route path="/admin/acknowledgementReceipt/:id" element={<AcknowledgementReceipt />}/>
-        <Route path="/admin/generatedReport/:id" element={<GeneratedReports />}/>
-        <Route path="/admin/generatedOccupancyReport/:id" element={<GeneratedReportsOcupancy />}/>
+        <Route path="/admin/roomStatus" element={<RoomStatus />} />
+        <Route path="/admin/roomDetails" element={<RoomDetails />} />
+        <Route path="/admin/profile" element={<ProfileAdmin />} />
+        <Route path="/admin/messages" element={<Messages />} />
+        <Route path="/admin/report" element={<Reports />} />
+        <Route path="/admin/additionals" element={<Additional />} />
+
+        <Route path="/admin/officialReceipt/:id" element={<OfficialReceipt />} />
+        <Route path="/admin/acknowledgementReceipt/:id" element={<AcknowledgementReceipt />} />
+        <Route path="/admin/generatedReport/:id" element={<GeneratedReports />} />
+        <Route path="/admin/generatedOccupancyReport/:id" element={<GeneratedReportsOcupancy />} />
 
 
-{/* 
-
-        <Route path="/frontdesk" element={<FrontDashboard />} />
-        <Route path="/frontdesk/status" element={<FrontStatus />} />
-        <Route path="/frontdesk/payments" element={<FrontPayment/>} />
-        <Route path="/frontdesk/booking" element={<FrontBookings/>}/>
-        <Route path="/frontdesk/reservation" element={<FrontReservation/>}/>
-        <Route path="/frontdesk/roomStatus" element={<FrontRoomStatus />}/>
-        <Route path="/frontdesk/roomDetails" element={<FrontRoomDetails />}/>
-        <Route path="/frontdesk/profile" element={<ProfileFront />}/>
-        <Route path="/frontdesk/messages" element={<FrontMessages />}/>
-        <Route path="/frontdesk/additionals" element={<FrontAdditional />}/> */}
         <Route path="*" element={<Error404 />} />
 
       </Routes>

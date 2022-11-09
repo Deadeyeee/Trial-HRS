@@ -16,7 +16,7 @@
 
                 {
                     {
-                     !-- background-color: #2e2e2e;
+                    !-- background-color: #2e2e2e;
                     --
                 }
             }
@@ -111,7 +111,7 @@
                 Tel: (+632) 8628-0768<br />
                 Cel: +63 917 630 0113<br />
             </address>
-                <br><br>
+            <br><br>
 
 
             Hi <b>{{firstName}}</b>,
@@ -213,7 +213,8 @@
 
                 <table style="width: 100%;" class="roomTable">
                     <tr>
-                        <th style="text-align: left;">Room Type</th>
+                        <th style="text-align: left;">Booking number</th>
+                        <th style="text-align: left;">Room type</th>
                         <th style="text-align: left;">Check in</th>
                         <th style="text-align: left;">Check out</th>
                         <th style="text-align: left;">Total nights</th>
@@ -222,6 +223,7 @@
                     </tr>
                     {{#each reservedRooms}}
                     <tr>
+                        <td>{{dataValues.bookingReferenceNumber}}</td>
                         <td>{{dataValues.room.dataValues.roomType.dataValues.roomType}}</td>
                         <td>{{dateFormat dataValues.checkInDate}}</td>
                         <td>{{dateFormat dataValues.checkOutDate}}</td>
@@ -265,8 +267,12 @@
                         </td>
                     </tr>
                     <tr style="height: 90px;">
-                        <td><h2><b>Remaining Balance:</b></h2></td>
-                        <td style="color: red;"><h2><b>{{remainingBalance grandTotal amountPaid}}</b></h2></td>
+                        <td>
+                            <h2><b>Remaining Balance:</b></h2>
+                        </td>
+                        <td style="color: red;">
+                            <h2><b>{{remainingBalance grandTotal amountPaid}}</b></h2>
+                        </td>
                     </tr>
                 </table>
             </div>
@@ -274,6 +280,13 @@
             <b>NOTE!: </b>Discount will only take effect upon check-in. Please present your valid id to our frontdesk to
             confirm your discount. Thank you.
             <br />
+            <br />
+            <h3>Hotel reminders:</h3>
+            <ol>
+                <li>To all guests and visitors, Upon Check-in, kindly present this email booking confirmation to hotel's front-desk together with your one (1) valid ID.</li>
+                <br>
+                <li>Visitors are allowed until 10:00 PM only.</li>
+            </ol> 
             <br />
             <h3>House policy:</h3>
             <ol>

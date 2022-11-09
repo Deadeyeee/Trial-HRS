@@ -973,22 +973,6 @@ export const BookingPageCont = () => {
                             <b>Check-out before</b>: 12 pm
                         </Title>
                     </ContainerGlobal>
-                    <ContainerGlobal
-                        justify='center'
-                        align='center'
-                    >
-                        <PersonIcon
-                        />
-                        <Title
-                            family='Noticia Text, serif'
-                            weight='400'
-                            size='12px'
-                            fStyle='normal'
-                            align='center'
-                        >
-                            <b>age</b>: 18 y/o to 65 y/o
-                        </Title>
-                    </ContainerGlobal>
                 </BookingLegendsContainer>
 
             </BookingLegendsMain>

@@ -30,10 +30,25 @@ import { InputContainer } from '../../../client/containers/informationForm/style
 import { Button2, FormButton } from '../../../client/components/button/styles';
 import { nationalities } from '../../../nationalities';
 import { Pagination } from '@mui/material'
+import moment from 'moment';
 const StatusContainer = () => {
     let letters = /^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/;
     let phoneNumberValidation = /^(09|\+639)\d{9}$/;
     let passwordValidation = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[-._!"`'#%&,:;<>=@{}~\$\(\)\*\+\/\\\?\[\]\^\| ])[A-Za-z\d -._!"`'#%&,:;<>=@{}~\$\(\)\*\+\/\\\?\[\]\^\|]{8,}/;
+
+
+
+
+    function getDates(startDate, stopDate) {
+        var dateArray = [];
+        var currentDate = moment(startDate);
+        var stopDate = moment(stopDate);
+        while (currentDate <= stopDate) {
+            dateArray.push(moment(currentDate).format('YYYY-MM-DD'))
+            currentDate = moment(currentDate).add(1, 'days');
+        }
+        return dateArray;
+    }
 
     const [roomPage, setRoomPage] = useState(1)
 
@@ -272,6 +287,21 @@ const StatusContainer = () => {
 
 
 
+    const [search, setSearch] = useState('')
+    const [endDateFilter, setEndDateFilter] = useState(null)
+    const [startDateFilter, setStartDateFilter] = useState(null)
+    const [categoryMenu, setCategoryMenu] = useState(null)
+
+    useEffect(() => {
+        if (startDateFilter != null && endDateFilter != null) {
+            if (Date.parse(startDateFilter) > Date.parse(endDateFilter)) {
+                // setEndDate(new Date(startDate).getTime() + 86400000)
+                setEndDateFilter(new Date(Date.parse(startDateFilter) + 86400000))
+            }
+        }
+    }, [startDateFilter, endDateFilter])
+
+
 
 
     return (
@@ -319,6 +349,10 @@ const StatusContainer = () => {
                         id="outlined-basic"
                         label="Search..."
                         variant="outlined"
+                        value={search}
+                        onChange={(e) => {
+                            setSearch(e.target.value)
+                        }}
                         sx={{
                             input: { color: 'black', fontWeight: 'bold' },
 
@@ -339,9 +373,9 @@ const StatusContainer = () => {
                         <DatePicker
                             views={['day', 'month', 'year']}
                             label="Start Date"
-                            value={value}
+                            value={startDateFilter}
                             onChange={(newValue) => {
-                                setValue(newValue);
+                                setStartDateFilter(newValue);
                             }}
                             renderInput={(params) =>
                                 <TextField
@@ -367,9 +401,10 @@ const StatusContainer = () => {
 
                             views={['day', 'month', 'year']}
                             label="End Date"
-                            value={value}
+                            minDate={startDateFilter}
+                            value={endDateFilter}
                             onChange={(newValue) => {
-                                setValue(newValue);
+                                setEndDateFilter(newValue);
                             }}
                             renderInput={(params) =>
                                 <TextField
@@ -390,6 +425,15 @@ const StatusContainer = () => {
 
                     </LocalizationProvider>
 
+                    {startDateFilter != null || endDateFilter != null ?
+                        <IconButton onClick={() => {
+                            setStartDateFilter(null)
+                            setEndDateFilter(null)
+                            setSearch('')
+                        }}>
+                            <CloseIcon />
+                        </IconButton>
+                        : ''}
 
 
                 </ContainerGlobal>
@@ -442,7 +486,49 @@ const StatusContainer = () => {
                     {guests.length != 0 ?
                         guests
                             .slice((roomPage - 1) * 10, roomPage * 10)
-                            .sort((a, b) => Date.parse(b.created_at) - Date.parse(a.created_at))
+                            .sort((a, b) => a.firstName.localeCompare(b.firstName))
+                            .filter((item) => {
+                                if (startDateFilter != null && endDateFilter != null) {
+                                    let filterDates = getDates(startDateFilter, endDateFilter);
+                                    if (filterDates.includes(moment(item.created_at).format('YYYY-MM-DD'))) {
+                                        return item
+                                    }
+                                }
+                                else {
+                                    return item
+                                }
+                            })
+                            .filter((item) => {
+                                if (search != '') {
+                                    if (new Date(item.created_at).toLocaleDateString().includes(search)
+                                        || (item.firstName.toLowerCase()).toString().includes(search.toLowerCase())
+                                        || (item.firstName.toLowerCase() + ' ' + item.lastName.toLowerCase()).toString().includes(search.toLowerCase())
+                                        || (item.lastName.toLowerCase()).toString().includes(search.toLowerCase())
+                                        || (item.user.email.toLowerCase()).toString().includes(search.toLowerCase())
+                                        || (item.user.userName.toLowerCase()).toString().includes(search.toLowerCase())
+                                        || (item.id.split('-')[0].toLowerCase()).toString().includes(search.toLowerCase())
+                                    ) {
+                                        return item;
+                                    }
+                                    else if ('non user'.includes(search.toLowerCase())) {
+                                        return item.user.role == 'NON-USER'
+                                    }
+                                    else if ('user'.includes(search.toLowerCase())) {
+                                        return item.user.role == 'CUSTOMER'
+                                    }
+                                    else if ('active'.includes(search.toLowerCase())) {
+                                        return item.user.status == true
+                                    }
+                                    else if ('disabled'.includes(search.toLowerCase())) {
+                                        return item.user.status == false
+                                    }
+                                    
+                                }
+
+                                else {
+                                    return item
+                                }
+                            })
                             .map((item) => (
                                 <Tr>
                                     <Td align='center'>{item.id.split('-')[0]}</Td>
@@ -521,7 +607,48 @@ const StatusContainer = () => {
                     justify='center'>
                     <Pagination
                         page={roomPage}
-                        count={guests.length != 0 && Math.ceil(guests.length / 10)}
+                        count={guests.length != 0 && Math.ceil(guests.filter((item) => {
+                            if (startDateFilter != null && endDateFilter != null) {
+                                let filterDates = getDates(startDateFilter, endDateFilter);
+                                if (filterDates.includes(moment(item.created_at).format('YYYY-MM-DD'))) {
+                                    return item
+                                }
+                            }
+                            else {
+                                return item
+                            }
+                        })
+                        .filter((item) => {
+                            if (search != '') {
+                                if (new Date(item.created_at).toLocaleDateString().includes(search)
+                                    || (item.firstName.toLowerCase()).toString().includes(search.toLowerCase())
+                                    || (item.firstName.toLowerCase() + ' ' + item.lastName.toLowerCase()).toString().includes(search.toLowerCase())
+                                    || (item.lastName.toLowerCase()).toString().includes(search.toLowerCase())
+                                    || (item.user.email.toLowerCase()).toString().includes(search.toLowerCase())
+                                    || (item.user.userName.toLowerCase()).toString().includes(search.toLowerCase())
+                                    || (item.id.split('-')[0].toLowerCase()).toString().includes(search.toLowerCase())
+                                ) {
+                                    return item;
+                                }
+                                else if ('non user'.includes(search.toLowerCase())) {
+                                    return item.user.role == 'NON-USER'
+                                }
+                                else if ('user'.includes(search.toLowerCase())) {
+                                    return item.user.role == 'CUSTOMER'
+                                }
+                                else if ('active'.includes(search.toLowerCase())) {
+                                    return item.user.status == true
+                                }
+                                else if ('disabled'.includes(search.toLowerCase())) {
+                                    return item.user.status == false
+                                }
+                                
+                            }
+
+                            else {
+                                return item
+                            }
+                        }).length / 10)}
                         onChange={(e, value) => {
 
                             setRoomPage(value)
@@ -814,7 +941,7 @@ const StatusContainer = () => {
                                 onChange={(event) => {
                                     setAccountActive(event.target.value);
                                 }}
-                                
+
                             >
 
                                 <MenuItem value={false} >

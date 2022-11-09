@@ -30,7 +30,7 @@ export const LoginBorder = styled(motion.div)`
 
     @media (max-width: 1000px) {
         width: 90%;
-        height: 98%;
+        height: 80vh;
       }
 `;
 
