@@ -298,9 +298,18 @@ export const ReservationContainer = () => {
                                 axios.patch(apiKey + 'api/updateReservationSummary/' + item.id, {
                                     bookingStatus: 'CANCELLED'
                                 }).then((result) => {
+
                                     if (index == array.length - 1) {
                                         // window.location.reload();
-                                        handleCloseIsLoading(2, '')
+                                        axios.patch(apiKey + 'api/updatePayment/' + editReservationInfo.payment.id, {
+                                            paymentStatus: 'cancelled'
+                                        }).then((result) => {
+
+                                            handleCloseIsLoading(2, '')
+                                        }).catch((err) => {
+
+                                            handleCloseIsLoading(3)
+                                        });
                                     }
                                 }).catch((err) => {
                                     handleCloseIsLoading(3)
@@ -1168,7 +1177,7 @@ export const ReservationContainer = () => {
                                 axios.post(apiKey + 'api/addGuest', {
                                     firstName: firstName,
                                     lastName: lastName,
-                                    birthDate: birthday,
+                                    birthDate: new Date(Date.parse(new Date(birthday)) + 86400000),
                                     gender: gender,
                                     address: address,
                                     nationality: nationality,
@@ -1385,7 +1394,7 @@ export const ReservationContainer = () => {
                                 axios.post(apiKey + 'api/addGuest', {
                                     firstName: firstName,
                                     lastName: lastName,
-                                    birthDate: birthday,
+                                    birthDate: new Date(Date.parse(new Date(birthday)) + 86400000),
                                     gender: gender,
                                     address: address,
                                     nationality: nationality,

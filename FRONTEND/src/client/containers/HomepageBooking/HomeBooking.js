@@ -41,7 +41,7 @@ export const HomeBooking = ({ title }) => {
     new Date(new Date(new Date().getTime() + 86400000).setHours(0, 0, 0, 0))
   );
   const [nights, setNights] = useState();
-  const [adults, setAdults] = useState(2);
+  const [adults, setAdults] = useState(1);
   const [kids, setKids] = useState(0);
   let minEndDate = new Date(startDate);
 
@@ -155,11 +155,18 @@ export const HomeBooking = ({ title }) => {
               margins="0px"
               value={adults}
               fontSize='16px'
-              max={4}
               min={1}
               type="number"
               onChange={(e) => {
-                setAdults(e.target.value);
+                if (e.target.value > 99) {
+                  setAdults(99)
+                }
+                else if (e.target.value < 1) {
+                  setAdults(1)
+                }
+                else {
+                  setAdults(e.target.value)
+                }
               }}
               height="3vw"
               className='inputPerson'
@@ -182,13 +189,20 @@ export const HomeBooking = ({ title }) => {
               align="center"
               borderColor='black'
               margins='0px'
-              max={2}
               fontSize='16px'
               min={0}
               value={kids}
               type='number'
               onChange={(e) => {
-                setKids(e.target.value);
+                if (e.target.value > 99) {
+                  setKids(99)
+                }
+                else if (e.target.value < 0) {
+                  setKids(0)
+                }
+                else {
+                  setKids(e.target.value)
+                }
               }}
               height='3vw'
               className='inputPerson'
@@ -641,7 +655,7 @@ export const HomeBooking = ({ title }) => {
                 size1000="100%"
               >
                 {" "}
-                We charge {additionals.length != 0 ? additionals.filter((obj)=> obj.amenityName == 'Extra Time(Rate/hour)').map((item)=> parseFloat(item.amenityRate).toFixed(2)) : 0} pesos per every hour of extension after 12NN.
+                We charge {additionals.length != 0 ? additionals.filter((obj) => obj.amenityName == 'Extra Time(Rate/hour)').map((item) => parseFloat(item.amenityRate).toFixed(2)) : 0} pesos per every hour of extension after 12NN.
               </Title>
             </Answer>
           </Faq>
@@ -694,7 +708,7 @@ export const HomeBooking = ({ title }) => {
                 size1000="100%"
               >
                 {" "}
-                We charge {additionals.length != 0 ? additionals.filter((obj)=> obj.amenityName == 'Extra Person').map((item)=> parseFloat(item.amenityRate).toFixed(2)) : 0} pesos per head for the additional person.
+                We charge {additionals.length != 0 ? additionals.filter((obj) => obj.amenityName == 'Extra Person').map((item) => parseFloat(item.amenityRate).toFixed(2)) : 0} pesos per head for the additional person.
               </Title>
             </Answer>
           </Faq>

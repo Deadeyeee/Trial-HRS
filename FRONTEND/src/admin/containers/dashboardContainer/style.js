@@ -29,7 +29,7 @@ export const SummaryPlate = styled(motion.div)`
   align-items: center;
   background-color: white;
   border-radius: .5rem;
-  cursor: pointer;
+  /* cursor: pointer; */
   overflow: hidden;
 `;
 

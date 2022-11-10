@@ -220,7 +220,7 @@ const StatusContainer = () => {
                     axios.patch(apiKey + 'api/updateGuest/' + userInformation.id, {
                         firstName: firstName.toLocaleLowerCase(),
                         lastName: lastName.toLocaleLowerCase(),
-                        birthDate: new Date(new Date(birthDay).toLocaleDateString()),
+                        birthDate: new Date(Date.parse(new Date(birthDay))+ 86400000),
                         gender: gender,
                         address: address,
                         nationality: nationality

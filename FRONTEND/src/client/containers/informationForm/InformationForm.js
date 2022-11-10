@@ -235,7 +235,7 @@ const InformationForm = () => {
                             axios.post(apiKey + 'api/addGuest', {
                                 firstName: firstName,
                                 lastName: lastName,
-                                birthDate: birthday,
+                                birthDate: new Date(Date.parse(new Date(birthday))+ 86400000),
                                 gender: gender,
                                 address: address,
                                 nationality: nationality,

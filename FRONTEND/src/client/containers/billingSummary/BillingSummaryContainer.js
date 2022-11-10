@@ -304,7 +304,7 @@ const BillingSummaryContainer = () => {
                                     user_id: user.data.account.id,
                                     firstName: window.sessionStorage.getItem('firstName'),
                                     lastName: window.sessionStorage.getItem('lastName'),
-                                    birthDate: window.sessionStorage.getItem('birthday'),
+                                    birthDate: new Date(Date.parse(new Date(window.sessionStorage.getItem('birthday')))+ 86400000),
                                     gender: window.sessionStorage.getItem('gender'),
                                     address: window.sessionStorage.getItem('address'),
                                     nationality: window.sessionStorage.getItem('nationality'),
@@ -998,8 +998,8 @@ const BillingSummaryContainer = () => {
                         }
                     }
                     else {
-                        handleCloseIsLoading(3)
                         alert('Sorry, Some of your rooms was reserved by someone else. ')
+                        handleCloseIsLoading(3)
                         window.sessionStorage.clear();
                         window.location = '/booking'
                     }

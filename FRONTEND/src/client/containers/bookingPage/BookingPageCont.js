@@ -28,13 +28,14 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import PendingIcon from '@mui/icons-material/Pending';
 import ImageSlider from '../../components/imageSlider/ImageSlider';
 import * as moment from 'moment';
-import { Badge } from '@mui/material';
+import { Badge, ClickAwayListener, Tooltip } from '@mui/material';
 import { borderRadius } from '@mui/system';
 import { apiKey } from '../../../apiKey';
+import { Info } from '@mui/icons-material';
 export const BookingPageCont = () => {
     const ratingValue = 3.6;
     const [roomType, setRoomType] = useState([])
-    const [adults, setAdults] = useState(2)
+    const [adults, setAdults] = useState(1)
     const [kids, setKids] = useState(0)
     const [usedServices, setUsedServices] = useState([])
     const [startDate, setStartDate] = useState(new Date(new Date().setHours(0, 0, 0, 0)));
@@ -49,6 +50,19 @@ export const BookingPageCont = () => {
     const [roomTypeImagesDb, setRoomTypeImagesDb] = useState([])
 
     let uniqueAvailbleRoomType = [... new Set(availbleRoomType)]
+
+
+
+    const [open, setOpen] = React.useState(false);
+
+    const handleTooltipClose = () => {
+        setOpen(false);
+    };
+
+    const handleTooltipOpen = () => {
+        setOpen(true);
+    };
+
 
     useEffect(() => {
         if (window.sessionStorage.getItem('AvailedRoom') != null) {
@@ -501,11 +515,18 @@ export const BookingPageCont = () => {
                             fontSize='16px'
                             margins='0px'
                             value={adults}
-                            max={4}
                             min={1}
                             type='number'
                             onChange={(e) => {
-                                setAdults(e.target.value);
+                                if (e.target.value > 99) {
+                                    setAdults(99)
+                                }
+                                else if (e.target.value < 1) {
+                                    setAdults(1)
+                                }
+                                else {
+                                    setAdults(e.target.value)
+                                }
                             }}
                             height='3vw'
                             className='inputPerson'
@@ -521,24 +542,33 @@ export const BookingPageCont = () => {
                             Adults
                         </Title>
                     </LabelDiv>
-                    <LabelDiv>
-
+                    <LabelDiv >
+                        {/* <Tooltip title='Kids 8 years old and below are free.'>
+                            <Info style={{ position: 'absolute', right: 0, top: 0, color: 'gray', width: '16px' }} />
+                        </Tooltip> */}
 
                         <TextInput
                             style={{ fontWeight: 'bold' }}
                             family='Roboto Slab'
-                             width="10vw"
-                             fontSize='16px'
+                            width="10vw"
+                            fontSize='16px'
                             placeholder="No. of Kids"
                             align="center"
                             borderColor='black'
                             margins='0px'
-                            max={2}
                             min={0}
                             value={kids}
                             type='number'
                             onChange={(e) => {
-                                setKids(e.target.value);
+                                if (e.target.value > 99) {
+                                    setKids(99)
+                                }
+                                else if (e.target.value < 0 || e.target.value == null) {
+                                    setKids(0)
+                                }
+                                else {
+                                    setKids(e.target.value)
+                                }
                             }}
                             height='3vw'
                             className='inputPerson'
@@ -563,7 +593,7 @@ export const BookingPageCont = () => {
                     fontStyle='Italic'
                     radius="0px"
                     padding='10px 50px'
-                    
+
                     border="1px solid #8F805F"
                     // fontsize='1.1vw'
                     className='buttonBook'
@@ -690,6 +720,7 @@ export const BookingPageCont = () => {
                                             usedServicesItem.roomType_id === item.id ? serviceIcon(usedServicesItem.service.servicesName) : ""
                                         ))}
                                     </ServicesContainer>
+
                                     <Title
                                         color='#8f805f'
                                         weight='700'
@@ -711,8 +742,25 @@ export const BookingPageCont = () => {
                                         margin='10px 0px 0px 10px'
                                         align='left'
                                         margin1000='0px 0px 20px 0px'
+                                    // onClick={handleTooltipOpen}
                                     >
-                                        {item.maxAdultOccupancy} Adult(s) and {item.maxKidsOccupancy} Kid(s) only
+                                        {/* <ClickAwayListener onClickAway={handleTooltipClose}>
+                                            <Tooltip title='Kids 8 years old and below are free' placement="top"
+
+                                                onClose={handleTooltipClose}
+                                                open={open}
+                                            >
+                                                <Badge badgeContent='i' color="primary" style={{paddingRight: '8px'}}>
+                                                    {item.maxAdultOccupancy} Adult(s) and {item.maxKidsOccupancy} Kid(s) only </Badge>
+                                            </Tooltip>
+                                        </ClickAwayListener> */}
+                                        <Tooltip title='Kids 8 years old and below are free' placement="top"
+                                            // onClose={handleTooltipClose}
+                                            // open={open}
+                                        >
+                                            <Badge badgeContent='i' color="primary" style={{ paddingRight: '8px' }}>
+                                                {item.maxAdultOccupancy} Adult(s) and {item.maxKidsOccupancy} Kid(s) only </Badge>
+                                        </Tooltip>
                                     </Title>
 
                                     <Title

@@ -384,7 +384,7 @@ const UserListContainer = () => {
                         axios.patch(apiKey + 'api/updateGuest/' + guestInformation.id, {
                             firstName: firstName,
                             lastName: lastName,
-                            birthDate: new Date(new Date(birthday).toLocaleDateString()),
+                            birthDate: new Date(Date.parse(new Date(birthday))+ 86400000),
                             gender: gender,
                             address: address,
                             nationality: nationality,

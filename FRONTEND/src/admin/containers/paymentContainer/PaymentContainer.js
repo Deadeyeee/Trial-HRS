@@ -4116,14 +4116,24 @@ const PaymentContainer = () => {
                                 color='Black'
                                 family='Helvetica'
                                 fstyle='Normal'
-                                weight='400'
+                                weight='bold'
                                 align='left'
                             // margin='15px 0px 20px 0px'
                             >
                                 Payment Status:
                             </Title>
+                            <Title
+                                size='20px'
+                                color='Black'
+                                family='Helvetica'
+                                weight='400'
+                                align='right'
+                            // margin='15px 0px 20px 0px'
+                            >
+                                {reservationStatus}
+                            </Title>
 
-                            <FormControl sx={{ width: 200, margin: '5px 0px' }} size="large" variant="standard">
+                            {/* <FormControl sx={{ width: 200, margin: '5px 0px' }} size="large" variant="standard">
                                 <InputLabel id="demo-select-small" >Payment Status</InputLabel>
                                 <Select
                                     style={{ color: 'black', textAlign: 'left', fontWeight: 'bold' }}
@@ -4155,7 +4165,7 @@ const PaymentContainer = () => {
 
                                 </Select>
                             </FormControl>
-                            <Button onClick={() => { updadatePaymentStatus() }} size="small" variant='contained' style={reservationInformation.length != 0 && reservationInformation.payment.paymentStatus == reservationStatus ? { display: 'none' } : { display: '' }}>Update</Button>
+                            <Button onClick={() => { updadatePaymentStatus() }} size="small" variant='contained' style={reservationInformation.length != 0 && reservationInformation.payment.paymentStatus == reservationStatus ? { display: 'none' } : { display: '' }}>Update</Button> */}
                         </ContainerGlobal>
                     </ContainerGlobalRow>
                     <ContainerGlobalRow
