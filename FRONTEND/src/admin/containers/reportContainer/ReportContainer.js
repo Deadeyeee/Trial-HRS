@@ -2624,10 +2624,10 @@ export const ReportContainer = () => {
                             </ContainerGlobal>
                             <TableContainer>
                                 <Tr>
-                                    <Th align='center'>Date <ArrowDropDownIcon style={{ color: 'black' }} /> </Th>
-                                    <Th align='center'>Total rooms occupied  <ArrowDropDownIcon style={{ color: 'black' }} /></Th>
-                                    <Th align='center'>Total Number of Rooms  <ArrowDropDownIcon style={{ color: 'black' }} /></Th>
-                                    <Th align='center'>Average Room Occupied  <ArrowDropDownIcon style={{ color: 'black' }} /></Th>
+                                    <Th align='center'>Date </Th>
+                                    <Th align='center'>Total rooms occupied</Th>
+                                    <Th align='center'>Total Number of Rooms</Th>
+                                    <Th align='center'>Average Room Occupied</Th>
                                 </Tr>
                                 {console.log(ocupancyDates)}
                                 {ocupancyDates.length != 0 ?

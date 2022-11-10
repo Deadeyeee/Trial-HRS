@@ -135,6 +135,21 @@
 
 
 
+.imageSlider2{
+    width: 750px
+}
+
+@media (max-width: 1000px){
+
+    .imageSlider2{
+        width: 90%;
+    }
+}
+
+
+
+
+
 
 .inputPerson{
     font-size: 12px;

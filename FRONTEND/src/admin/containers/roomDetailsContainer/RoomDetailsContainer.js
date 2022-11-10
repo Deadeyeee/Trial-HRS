@@ -308,7 +308,7 @@ const RoomDetailsContainer = () => {
                         formData2.append('roomType_id', roomTypeValueId)
                         Axios.post(apiKey + "api/addRoomTypeImages", formData2).then((result) => {
                             console.log(result.data)
-                            if(index == roomImageUpload.length -1){
+                            if (index == roomImageUpload.length - 1) {
                                 handleCloseIsLoading(2, '')
                             }
                         }).catch((err) => {
@@ -450,7 +450,7 @@ const RoomDetailsContainer = () => {
                 })
 
                 setTimeout(() => {
-                        handleCloseIsLoading(1, '')
+                    handleCloseIsLoading(1, '')
                 }, 40000);
             }).catch((err) => {
                 handleCloseIsLoading(3)
@@ -1061,7 +1061,9 @@ const RoomDetailsContainer = () => {
                                 </Tr>
 
                             ))
-                        : ''}
+                        : <Tr>
+                            <Td align='center' colSpan={7}>Rooms type is empty</Td>
+                        </Tr>}
                 </TableContainer>
 
                 <ContainerGlobal

@@ -63,11 +63,11 @@ export const RoomRates = () => {
             <FlexboxContainer>
                 {roomType.length != 0 ? roomType.map((item, index) => (
                     index % 2 == 0 ?
-                        <div style={{ display: 'block', justifyContent: 'center', gap: '100px', width: '60%' }}>
+                        <div style={{ display: 'block', justifyContent: 'center', gap: '100px', width: '70%' }}>
                             <FlexboxContentMain>
                                 <div
                                     style={{ display: 'inline-block', overflow: 'hidden' }}
-                                    className='imageSlider'
+                                    className='imageSlider2'
                                 >
                                     <ImageSlider roomImages={roomTypeImagesDb.length != 0 ? roomTypeImagesDb.filter((itemRoomImage) => (itemRoomImage.roomType_id == item.id)).map((obj) => (obj.roomImages)) : null} />
                                 </div>
@@ -122,7 +122,7 @@ export const RoomRates = () => {
                             <HorizontalLineShortLeft></HorizontalLineShortLeft>
                         </div>
                         :
-                        <div style={{ display: 'block', justifyContent: 'center', gap: '100px', width: '60%' }}>
+                        <div style={{ display: 'block', justifyContent: 'center', gap: '100px', width: '70%' }}>
                             <FlexboxContentMain>
                                 <FlexboxContent>
                                     <Title
@@ -176,7 +176,7 @@ export const RoomRates = () => {
                                 </FlexboxContent>
                                 <div
                                     style={{ display: 'inline-block', overflow: 'hidden' }}
-                                    className='imageSlider'
+                                    className='imageSlider2'
                                 >
                                     <ImageSlider roomImages={roomTypeImagesDb.length != 0 ? roomTypeImagesDb.filter((itemRoomImage) => (itemRoomImage.roomType_id == item.id)).map((obj) => (obj.roomImages)) : null} />
                                 </div>  ``

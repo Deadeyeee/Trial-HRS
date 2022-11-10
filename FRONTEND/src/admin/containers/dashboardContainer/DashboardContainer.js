@@ -458,7 +458,7 @@ const DashboardContainer = () => {
                             align='left'
                         >
                             {room.length != 0 && reservationSummary.length != 0 ?
-                                room.filter((obj) => obj.roomStatus == 'Vacant').length - reservationSummary.filter((item2) => item2.bookingStatus == 'CHECKED-IN').length :
+                                room.filter((obj) => obj.roomStatus == 'Vacant' && obj.status == true).length - reservationSummary.filter((item2) => item2.bookingStatus == 'CHECKED-IN').length :
                                 0
                             }
                         </Title>

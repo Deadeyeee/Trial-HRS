@@ -346,7 +346,7 @@ const RoomStatusContainer = () => {
             }).then((result) => {
                 console.log(result)
                 // window.location = ''
-                handleCloseIsLoading(2,'')
+                handleCloseIsLoading(2, '')
             }).catch((err) => {
                 handleCloseIsLoading(3)
                 console.log(err)
@@ -363,7 +363,7 @@ const RoomStatusContainer = () => {
 
 
 
-	const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
     const [loadingMessage, setLoadingMessage] = useState('Please wait...')
     const [status, setStatus] = useState('loading')
 
@@ -648,7 +648,7 @@ const RoomStatusContainer = () => {
                         <Th align='center'>Room Status</Th>
                         <Th align='center'>Action</Th>
                     </Tr>
-                    {roomValue
+                    {roomValue.length != 0 ? roomValue
                         .slice((roomPage - 1) * 10, roomPage * 10)
                         .filter((item) => {
                             if (search != '') {
@@ -724,7 +724,11 @@ const RoomStatusContainer = () => {
                                     }
                                 </Td>
                             </Tr>
-                        ))}
+                        ))
+                        :
+                        <Tr>
+                            <Td align='center' colSpan={6}>Rooms is empty</Td>
+                        </Tr>}
 
                 </TableContainer>
                 <ContainerGlobal
