@@ -31,6 +31,9 @@ import AttachFileIcon from '@mui/icons-material/AttachFile';
 import { apiKey } from '../../../apiKey';
 import axios from 'axios';
 import moment from 'moment';
+import logo from '../../../client/images/logo.png'
+import { CircularProgress } from '@mui/material';
+import { CheckCircleOutline, Close, HighlightOffSharp } from '@mui/icons-material';
 
 const MessagesContainer = () => {
 
@@ -275,6 +278,7 @@ const MessagesContainer = () => {
             if (guest.data.length != 0) {
                 guest.data.filter((obj) => obj.user.role == 'ADMIN').map((item, index) => {
                     if (index == 0) {
+                        handleOpenIsLoading()
                         axios.post(apiKey + 'api/addConversation', {
                             from_guest_id: userInformation.id,
                             to_guest_id: guestList.filter((obj) => obj.user.userName == autoCompleteValue.match(/\((.*)\)/).pop()).map((item) => item.id)[0],
@@ -289,13 +293,14 @@ const MessagesContainer = () => {
                             }).then((result) => {
                                 console.log(result.data);
                                 // window.location.reload()
-
+                                handleCloseIsLoading(2, '')
                                 handleCloseCompose()
                             }).catch((err) => {
+                                handleCloseIsLoading(3)
                                 console.log(err);
-
                             });
                         }).catch((err) => {
+                            handleCloseIsLoading(3)
                             console.log(err);
 
                         });
@@ -304,9 +309,11 @@ const MessagesContainer = () => {
                 })
             }
             else {
+                handleCloseIsLoading(3)
                 console.log('no users')
             }
         }).catch((err) => {
+            handleCloseIsLoading(3)
             console.log(err);
         });
 
@@ -316,6 +323,7 @@ const MessagesContainer = () => {
     const sendReply = (value) => {
         console.log(value.id)
         if (value.conversationFrom.user.role == 'CUSTOMER' || value.conversationFrom.user.role == 'NON-USER') {
+            handleOpenIsLoading()
             axios.post(apiKey + 'api/addMessage', {
                 message: message,
                 conversation_id: value.id,
@@ -329,16 +337,20 @@ const MessagesContainer = () => {
                     console.log(result.data);
 
                     handleCloseViewMessage()
+                    handleCloseIsLoading(2, '')
                 }).catch((err) => {
+                    handleCloseIsLoading(3)
                     console.log(err);
 
                 });
             }).catch((err) => {
+                handleCloseIsLoading(3)
                 console.log(err);
 
             });
         }
         else {
+            handleOpenIsLoading()
             axios.post(apiKey + 'api/addMessage', {
                 message: message,
                 conversation_id: value.id,
@@ -352,11 +364,14 @@ const MessagesContainer = () => {
                     console.log(result.data);
 
                     handleCloseViewMessage()
+                    handleCloseIsLoading(2, '')
                 }).catch((err) => {
+                    handleCloseIsLoading(3)
                     console.log(err);
 
                 });
             }).catch((err) => {
+                handleCloseIsLoading(3)
                 console.log(err);
 
             });
@@ -369,18 +384,21 @@ const MessagesContainer = () => {
         if (window.confirm('Are you sure you want to delete this conversation?')) {
             axios.get(apiKey + 'api/getAllMessage').then((result) => {
                 result.data.filter((obj) => obj.conversation_id == value).map((item, index, array) => {
-
+                    
                     axios.get(apiKey + 'api/getAllDeleteConversation').then((deletedMessages) => {
                         if (deletedMessages.data.filter((obj) => obj.delete_conversation_to == userInformation.id && obj.message_id == item.id).length == 0) {
+                            handleOpenIsLoading()
                             axios.post(apiKey + 'api/addDeleteConversation', {
                                 delete_conversation_to: userInformation.id,
                                 message_id: item.id,
                             }).then((result) => {
                                 console.log(result.data)
                                 if (index == array.length - 1) {
-                                    window.location = ''
+                                    // window.location = ''
+                                    handleCloseIsLoading(2, '')
                                 }
                             }).catch((err) => {
+                                handleCloseIsLoading(3)
                                 console.log(err)
 
                             });
@@ -420,6 +438,59 @@ const MessagesContainer = () => {
 
 
 
+    const [isLoading, setIsLoading] = useState(false);
+    const [loadingMessage, setLoadingMessage] = useState('Please wait...')
+    const [status, setStatus] = useState('loading')
+
+
+    const handleOpenIsLoading = () => {
+        setIsLoading(true);
+        setStatus('loading')
+        setLoadingMessage('Please wait...')
+
+
+        setTimeout(() => {
+            handleCloseIsLoading(3)
+        }, 90000)
+    }
+
+
+
+    const handleCloseIsLoading = (status, link) => {
+
+        if (status == 1 || status === undefined) {
+            setStatus('loading')
+            setLoadingMessage('')
+        }
+        else if (status == 2) {
+            setStatus('success')
+            setLoadingMessage('')
+        }
+        else if (status == 3) {
+            setStatus('failed')
+            setLoadingMessage('Sorry, Something went wrong.')
+        }
+
+        setTimeout(() => {
+            setIsLoading(false);
+            console.log(link)
+            if (link !== undefined) {
+                window.location = link;
+            }
+        }, 1000)
+    }
+
+    const loadingStatus = (value) => {
+        if (value == 'loading') {
+            return <CircularProgress></CircularProgress>;
+        }
+        else if (value == 'success') {
+            return <Grow in={true}><CheckCircleOutline style={{ color: 'green', fontSize: '80px' }} /></Grow>;
+        }
+        else if (value == 'failed') {
+            return <Grow in={true}><HighlightOffSharp style={{ color: 'red', fontSize: '80px' }} /></Grow>;
+        }
+    }
     return (
 
         <Container
@@ -427,6 +498,41 @@ const MessagesContainer = () => {
         >
 
 
+
+            <Modal
+                open={isLoading}
+                style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    border: 'none'
+                }}>
+                <Box
+                    component='form'
+                    style={{
+                        height: '300px',
+                        width: '400px',
+                        backgroundColor: 'white',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: '10px',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        overflowY: 'overlay',
+                        overflowX: 'hidden',
+                        borderRadius: '.5rem',
+                        position: 'relative',
+                        border: 'none'
+                        // margin: '50px 0px',
+
+                    }}>
+                    <div style={{ margin: '10px', display: 'flex', width: '400px', height: '350px', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', }}>
+                        <img src={logo} width="35%"></img>
+                        {loadingStatus(status)}
+                        <h1 style={{ fontWeight: 'normal', margin: '0px' }}>{loadingMessage}</h1>
+                    </div>
+                </Box>
+            </Modal>
 
 
             <Modal

@@ -30,6 +30,9 @@ import { ContainerGlobalRow } from '../reservationContainer/style';
 import { ContainerForm, ContainerFormContent, InputContainer } from '../adminInformationForm/style';
 import { nationalities } from '../../../nationalities';
 import { Pagination } from '@mui/material'
+import logo from '../../../client/images/logo.png'
+import { CircularProgress } from '@mui/material';
+import { CheckCircleOutline, Close, HighlightOffSharp } from '@mui/icons-material';
 const UserListContainer = () => {
     let passwordValidation = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[-._!"`'#%&,:;<>=@{}~\$\(\)\*\+\/\\\?\[\]\^\| ])[A-Za-z\d -._!"`'#%&,:;<>=@{}~\$\(\)\*\+\/\\\?\[\]\^\|]{8,}/;
     let letters = /^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/;
@@ -270,6 +273,7 @@ const UserListContainer = () => {
         else {
             axios.get(apiKey + 'api/getAllUsers').then((res) => {
                 if (emailError.length == 0 && contactNumberError.length == 0 && userNameError.length == 0) {
+                    handleOpenIsLoading()
                     axios.post(apiKey + 'api/addUser', {
                         userName: userName,
                         contactNumber: formatNumber,
@@ -288,15 +292,20 @@ const UserListContainer = () => {
                             user_id: user.data.account.id,
                         }).then((guest) => {
                             console.log(guest.data);
-                            window.location.reload();
+                                handleCloseCreate()
+                                // window.location.reload();
+                            handleCloseIsLoading(2, '')
                         }).catch((err) => {
                             axios.delete(apiKey + 'api/deleteUser/' + user.data.account.id).then((result) => {
+                                handleCloseIsLoading(3)
                                 console.log(result)
                             }).catch((err) => {
+                                handleCloseIsLoading(3)
                                 console.log(err)
                             });
                         });
                     }).catch((err) => {
+                        handleCloseIsLoading(3)
                         console.log(err)
                     });
                 }
@@ -364,6 +373,7 @@ const UserListContainer = () => {
         else {
             axios.get(apiKey + 'api/getAllUsers').then((res) => {
                 if (emailError.length == 0 && contactNumberError.length == 0 && userNameError.length == 0) {
+                    handleOpenIsLoading()
                     axios.patch(apiKey + 'api/updateUsers/' + guestInformation.user.id, {
                         email: email,
                         contactNumber: formatNumber,
@@ -380,12 +390,16 @@ const UserListContainer = () => {
                             nationality: nationality,
                         }).then((result) => {
                             console.log(result.data);
-                            window.location.reload()
+                            handleCloseEdit()
+                            // window.location.reload()
+                            handleCloseIsLoading(2, '')
                         }).catch((err) => {
+                            handleCloseIsLoading(3)
                             console.log(err);
 
                         });
                     }).catch((err) => {
+                        handleCloseIsLoading(3)
                         console.log(err);
 
 
@@ -413,12 +427,111 @@ const UserListContainer = () => {
 
     const [search, setSearch] = useState('')
 
+
+
+
+    const [isLoading, setIsLoading] = useState(false);
+    const [loadingMessage, setLoadingMessage] = useState('Please wait...')
+    const [status, setStatus] = useState('loading')
+
+
+    const handleOpenIsLoading = () => {
+        setIsLoading(true);
+        setStatus('loading')
+        setLoadingMessage('Please wait...')
+
+
+        setTimeout(() => {
+            handleCloseIsLoading(3)
+        }, 90000)
+    }
+
+
+
+    const handleCloseIsLoading = (status, link) => {
+
+        if (status == 1 || status === undefined) {
+            setStatus('loading')
+            setLoadingMessage('')
+        }
+        else if (status == 2) {
+            setStatus('success')
+            setLoadingMessage('')
+        }
+        else if (status == 3) {
+            setStatus('failed')
+            setLoadingMessage('Sorry, Something went wrong.')
+        }
+
+        setTimeout(() => {
+            setIsLoading(false);
+            console.log(link)
+            if (link !== undefined) {
+                window.location = link;
+            }
+        }, 1000)
+    }
+
+    const loadingStatus = (value) => {
+        if (value == 'loading') {
+            return <CircularProgress></CircularProgress>;
+        }
+        else if (value == 'success') {
+            return <Grow in={true}><CheckCircleOutline style={{ color: 'green', fontSize: '80px' }} /></Grow>;
+        }
+        else if (value == 'failed') {
+            return <Grow in={true}><HighlightOffSharp style={{ color: 'red', fontSize: '80px' }} /></Grow>;
+        }
+    }
+
+
+
+
     return (
 
         <Container
             style={{
                 height: 'auto'
             }}>
+
+
+
+            <Modal
+                open={isLoading}
+                style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    border: 'none'
+                }}>
+                <Box
+                    component='form'
+                    style={{
+                        height: '300px',
+                        width: '400px',
+                        backgroundColor: 'white',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: '10px',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        overflowY: 'overlay',
+                        overflowX: 'hidden',
+                        borderRadius: '.5rem',
+                        position: 'relative',
+                        border: 'none'
+                        // margin: '50px 0px',
+
+                    }}>
+                    <div style={{ margin: '10px', display: 'flex', width: '400px', height: '350px', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', }}>
+                        <img src={logo} width="35%"></img>
+                        {loadingStatus(status)}
+                        <h1 style={{ fontWeight: 'normal', margin: '0px' }}>{loadingMessage}</h1>
+                    </div>
+                </Box>
+            </Modal>
+
+
 
             <Modal
                 open={openCreate}
@@ -1742,7 +1855,7 @@ const UserListContainer = () => {
                     {guests.length != 0 && accountInformation.length != 0 ?
                         guests
                             .slice((roomPage - 1) * 10, roomPage * 10)
-                            .filter((obj) => obj.user.id != accountInformation.id )
+                            .filter((obj) => obj.user.id != accountInformation.id)
                             .filter((item) => {
                                 if (search != '') {
                                     if ((item.firstName.toLowerCase()).toString().includes(search.toLowerCase())
@@ -1765,7 +1878,7 @@ const UserListContainer = () => {
                                     else if ('disabled'.includes(search.toLowerCase())) {
                                         return item.user.status == false
                                     }
-                                    
+
                                 }
 
                                 else {
@@ -1838,7 +1951,9 @@ const UserListContainer = () => {
                                     /></Td>
                                 </Tr>
                             ))
-                        : ''}
+                        : <Tr>
+                        <Td align='center' colSpan={6}>Hotel user list is empty</Td>
+                    </Tr>}
 
                 </TableContainer>
 
@@ -1847,7 +1962,7 @@ const UserListContainer = () => {
                     justify='center'>
                     <Pagination
                         page={roomPage}
-                        count={guests.length != 0 && Math.ceil(guests.filter((obj) => obj.user.id != accountInformation.id )
+                        count={guests.length != 0 && Math.ceil(guests.filter((obj) => obj.user.id != accountInformation.id)
                             .filter((item) => {
                                 if (search != '') {
                                     if ((item.firstName.toLowerCase()).toString().includes(search.toLowerCase())
@@ -1870,7 +1985,7 @@ const UserListContainer = () => {
                                     else if ('disabled'.includes(search.toLowerCase())) {
                                         return item.user.status == false
                                     }
-                                    
+
                                 }
 
                                 else {

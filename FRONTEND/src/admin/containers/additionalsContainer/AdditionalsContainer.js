@@ -35,6 +35,9 @@ import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import ActionButton from '../../components/actionButton/ActionButton';
 import axios from 'axios';
 import { apiKey } from '../../../apiKey';
+import logo from '../../../client/images/logo.png'
+import { CircularProgress, Grow } from '@mui/material';
+import { CheckCircleOutline, Close, HighlightOffSharp } from '@mui/icons-material';
 
 
 
@@ -134,23 +137,120 @@ const AdditionalsContainer = () => {
 
         });
     }, [])
+
     const editAmenityRate = (e) => {
         e.preventDefault()
+        handleOpenIsLoading()
         axios.patch(apiKey + 'api/updateAmenities/' + selectedAmenity.id, {
             amenityRate: amenityRate,
         }).then((result) => {
             console.log(result.data)
             handleClose3();
+            handleCloseIsLoading(2, '')
         }).catch((err) => {
             console.log(err)
-
+            handleCloseIsLoading(3)
         });
+    }
+
+
+
+
+    const [isLoading, setIsLoading] = useState(false);
+    const [loadingMessage, setLoadingMessage] = useState('Please wait...')
+    const [status, setStatus] = useState('loading')
+
+
+    const handleOpenIsLoading = () => {
+        setIsLoading(true);
+        setStatus('loading')
+        setLoadingMessage('Please wait...')
+
+
+        setTimeout(() => {
+            handleCloseIsLoading(3)
+        }, 90000)
+    }
+
+
+
+    const handleCloseIsLoading = (status, link) => {
+
+        if (status == 1 || status === undefined) {
+            setStatus('loading')
+            setLoadingMessage('')
+        }
+        else if (status == 2) {
+            setStatus('success')
+            setLoadingMessage('')
+        }
+        else if (status == 3) {
+            setStatus('failed')
+            setLoadingMessage('Sorry, Something went wrong.')
+        }
+
+        setTimeout(() => {
+            setIsLoading(false);
+            console.log(link)
+            if (link !== undefined) {
+                window.location = link;
+            }
+        }, 1000)
+    }
+
+    const loadingStatus = (value) => {
+        if (value == 'loading') {
+            return <CircularProgress></CircularProgress>;
+        }
+        else if (value == 'success') {
+            return <Grow in={true}><CheckCircleOutline style={{ color: 'green', fontSize: '80px' }} /></Grow>;
+        }
+        else if (value == 'failed') {
+            return <Grow in={true}><HighlightOffSharp style={{ color: 'red', fontSize: '80px' }} /></Grow>;
+        }
     }
 
 
     return (
 
         <Container>
+
+
+            <Modal
+                open={isLoading}
+                style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    border: 'none'
+                }}>
+                <Box
+                    component='form'
+                    style={{
+                        height: '300px',
+                        width: '400px',
+                        backgroundColor: 'white',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: '10px',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        overflowY: 'overlay',
+                        overflowX: 'hidden',
+                        borderRadius: '.5rem',
+                        position: 'relative',
+                        border: 'none'
+                        // margin: '50px 0px',
+
+                    }}>
+                    <div style={{ margin: '10px', display: 'flex', width: '400px', height: '350px', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', }}>
+                        <img src={logo} width="35%"></img>
+                        {loadingStatus(status)}
+                        <h1 style={{ fontWeight: 'normal', margin: '0px' }}>{loadingMessage}</h1>
+                    </div>
+                </Box>
+            </Modal>
+
             <HeadContainer>
                 <Title
                     size='20px'
@@ -165,7 +265,7 @@ const AdditionalsContainer = () => {
                 </Title>
             </HeadContainer>
 
-            
+
 
             <ContainerGlobal
                 w='90%'

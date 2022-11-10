@@ -56,7 +56,7 @@ export const FlexboxMainPhotoLeft = styled(motion.div)`
 export const FlexboxContent = styled(motion.div)`
     display: flex;
     flex-direction: column;
-    width: 300px
+    width: 100%;
 
     @media (max-width: 1000px) {
         width: 100%;

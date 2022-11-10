@@ -39,6 +39,10 @@ import EditIcon from '@mui/icons-material/Edit';
 import { apiKey } from '../../../apiKey'
 
 
+import logo from '../../../client/images/logo.png'
+import { CircularProgress } from '@mui/material';
+import { CheckCircleOutline, Close, HighlightOffSharp } from '@mui/icons-material';
+
 export const ReservationContainer = () => {
     let passwordValidation = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[-._!"`'#%&,:;<>=@{}~\$\(\)\*\+\/\\\?\[\]\^\| ])[A-Za-z\d -._!"`'#%&,:;<>=@{}~\$\(\)\*\+\/\\\?\[\]\^\|]{8,}/;
     let letters = /^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/;
@@ -256,6 +260,7 @@ export const ReservationContainer = () => {
 
 
     const updadateReservationStatus = () => {
+        handleOpenIsLoading()
         axios.patch(apiKey + 'api/updateReservation/' + editReservationInfo.id, {
             reservationStatus: reservationStatus,
         }).then((result) => {
@@ -294,23 +299,28 @@ export const ReservationContainer = () => {
                                     bookingStatus: 'CANCELLED'
                                 }).then((result) => {
                                     if (index == array.length - 1) {
-                                        window.location.reload();
+                                        // window.location.reload();
+                                        handleCloseIsLoading(2, '')
                                     }
                                 }).catch((err) => {
+                                    handleCloseIsLoading(3)
                                     console.log(err)
 
                                 });
                             })
                         }).catch((err) => {
+                            handleCloseIsLoading(3)
                             console.log(err)
 
                         });
 
                     }).catch((err) => {
+                        handleCloseIsLoading(3)
                         console.log(err)
 
                     });
                 }).catch((err) => {
+                    handleCloseIsLoading(3)
                     console.log(err)
 
                 });
@@ -349,23 +359,28 @@ export const ReservationContainer = () => {
                                     bookingStatus: 'RESERVED'
                                 }).then((result) => {
                                     if (index == array.length - 1) {
-                                        window.location.reload();
+                                        // window.location.reload();
+                                        handleCloseIsLoading(2, '')
                                     }
                                 }).catch((err) => {
+                                    handleCloseIsLoading(3)
                                     console.log(err)
 
                                 });
                             })
                         }).catch((err) => {
+                            handleCloseIsLoading(3)
                             console.log(err)
 
                         });
 
                     }).catch((err) => {
+                        handleCloseIsLoading(3)
                         console.log(err)
 
                     });
                 }).catch((err) => {
+                    handleCloseIsLoading(3)
                     console.log(err)
 
                 });
@@ -404,31 +419,38 @@ export const ReservationContainer = () => {
                                     bookingStatus: 'PENDING'
                                 }).then((result) => {
                                     if (index == array.length - 1) {
-                                        window.location.reload();
+                                        // window.location.reload();
+                                        handleCloseIsLoading(2, '')
                                     }
                                 }).catch((err) => {
+                                    handleCloseIsLoading(3)
                                     console.log(err)
 
                                 });
                             })
                         }).catch((err) => {
+                            handleCloseIsLoading(3)
                             console.log(err)
 
                         });
 
                     }).catch((err) => {
+                        handleCloseIsLoading(3)
                         console.log(err)
 
                     });
                 }).catch((err) => {
+                    handleCloseIsLoading(3)
                     console.log(err)
 
                 });
             }
             else {
-                window.location.reload()
+                // window.location.reload()
+                handleCloseIsLoading(2, '')
             }
         }).catch((err) => {
+            handleCloseIsLoading(3)
             console.log(err)
         });
     }
@@ -1034,6 +1056,7 @@ export const ReservationContainer = () => {
             return obj.id !== index;
         }));
     }
+
     const EditRoom = (value) => {
         // setAvailedRoom(availedRoom.filter((o, i) => index !== i));
         setEditReservationId(value)
@@ -1134,6 +1157,7 @@ export const ReservationContainer = () => {
                 else {
                     if (userName != '' || password != '') {
                         if (emailError.length == 0 && contactNumberError.length == 0 && userNameError.length == 0) {
+                            handleOpenIsLoading()
                             axios.post(apiKey + 'api/addUser', {
                                 userName: userName,
                                 contactNumber: formatNumber,
@@ -1191,6 +1215,7 @@ export const ReservationContainer = () => {
                                                             }).then((result) => {
                                                                 console.log(result.data)
                                                             }).catch((err) => {
+                                                                handleCloseIsLoading(3)
                                                                 console.log(err)
 
                                                             });
@@ -1233,8 +1258,10 @@ export const ReservationContainer = () => {
                                                                 }).then((result) => {
                                                                     console.log(result)
                                                                     console.log(reservationSummary.data)
-                                                                    window.location.reload()
+                                                                    // window.location.reload()
+                                                                    handleCloseIsLoading(2, '')
                                                                 }).catch((err) => {
+                                                                    handleCloseIsLoading(3)
                                                                     console.log(err)
 
                                                                 });
@@ -1249,21 +1276,27 @@ export const ReservationContainer = () => {
                                                                                 console.log(result)
                                                                                 axios.delete(apiKey + 'api/deleteUser/' + user.data.account.id).then((result) => {
 
+                                                                                    handleCloseIsLoading(3)
                                                                                     console.log(result)
 
                                                                                 }).catch((err) => {
+                                                                                    handleCloseIsLoading(3)
                                                                                     console.log(err)
                                                                                 });
                                                                             }).catch((err) => {
+                                                                                handleCloseIsLoading(3)
                                                                                 console.log(err)
                                                                             });
                                                                         }).catch((err) => {
+                                                                            handleCloseIsLoading(3)
                                                                             console.log(err)
                                                                         });
                                                                     }).catch((err) => {
+                                                                        handleCloseIsLoading(3)
                                                                         console.log(err)
                                                                     });
                                                                 }).catch((err) => {
+                                                                    handleCloseIsLoading(3)
                                                                     console.log(err)
                                                                 });
 
@@ -1271,29 +1304,36 @@ export const ReservationContainer = () => {
                                                             });
                                                         }
                                                     }).catch((err) => {
+                                                        handleCloseIsLoading(3)
                                                         console.log(err)
 
                                                     })
                                                 }).catch((err) => {
+                                                    handleCloseIsLoading(3)
                                                     console.log(err)
 
                                                 });
                                             }
                                         }).catch((err) => {
+                                            handleCloseIsLoading(3)
                                             console.log(err)
                                             axios.delete(apiKey + 'api/deletePayment/' + payment.data.new_payment.id).then((result) => {
                                                 console.log(result)
                                                 axios.delete(apiKey + 'api/deleteGuest/' + guest.data.new_guest.id).then((result) => {
                                                     console.log(result)
                                                     axios.delete(apiKey + 'api/deleteUser/' + user.data.account.id).then((result) => {
+                                                        handleCloseIsLoading(3)
                                                         console.log(result)
                                                     }).catch((err) => {
+                                                        handleCloseIsLoading(3)
                                                         console.log(err)
                                                     });
                                                 }).catch((err) => {
+                                                    handleCloseIsLoading(3)
                                                     console.log(err)
                                                 });
                                             }).catch((err) => {
+                                                handleCloseIsLoading(3)
                                                 console.log(err)
                                             });
 
@@ -1303,23 +1343,29 @@ export const ReservationContainer = () => {
                                         axios.delete(apiKey + 'api/deleteGuest/' + guest.data.new_guest.id).then((result) => {
                                             console.log(result)
                                             axios.delete(apiKey + 'api/deleteUser/' + user.data.account.id).then((result) => {
+                                                handleCloseIsLoading(3)
                                                 console.log(result)
                                             }).catch((err) => {
+                                                handleCloseIsLoading(3)
                                                 console.log(err)
                                             });
                                         }).catch((err) => {
+                                            handleCloseIsLoading(3)
                                             console.log(err)
                                         });
 
                                     });
                                 }).catch((err) => {
                                     axios.delete(apiKey + 'api/deleteUser/' + user.data.account.id).then((result) => {
+                                        handleCloseIsLoading(3)
                                         console.log(result)
                                     }).catch((err) => {
+                                        handleCloseIsLoading(3)
                                         console.log(err)
                                     });
                                 });
                             }).catch((err) => {
+                                handleCloseIsLoading(3)
                                 console.log(err.res)
                             });
                         }
@@ -1327,6 +1373,7 @@ export const ReservationContainer = () => {
                     }
                     else {
                         if (emailError.length == 0 && contactNumberError.length == 0 && userNameError.length == 0) {
+                            handleOpenIsLoading()
                             axios.post(apiKey + 'api/addUser', {
                                 userName: null,
                                 contactNumber: formatNumber,
@@ -1367,6 +1414,7 @@ export const ReservationContainer = () => {
                                             }).then((patchUser) => {
                                                 console.log(patchUser.data)
                                             }).catch((err) => {
+                                                handleCloseIsLoading(3)
                                                 console.log(err)
                                             });
                                             for (let index = 0; index < availedRoom.length; index++) {
@@ -1392,11 +1440,13 @@ export const ReservationContainer = () => {
                                                             }).then((result) => {
                                                                 console.log(result.data)
                                                             }).catch((err) => {
+                                                                handleCloseIsLoading(3)
                                                                 console.log(err)
 
                                                             });
                                                         }
                                                     }).catch((err) => {
+                                                        handleCloseIsLoading(3)
                                                         console.log(err)
                                                     });
                                                     axios.get(apiKey + 'api/getPayment/' + payment.data.new_payment.id).then((getPayment) => {
@@ -1433,8 +1483,10 @@ export const ReservationContainer = () => {
                                                                 }).then((result) => {
                                                                     console.log(result)
                                                                     console.log(reservationSummary.data)
-                                                                    window.location.reload()
+                                                                    // window.location.reload()
+                                                                    handleCloseIsLoading(2, '')
                                                                 }).catch((err) => {
+                                                                    handleCloseIsLoading(3)
                                                                     console.log(err)
 
                                                                 });
@@ -1449,21 +1501,27 @@ export const ReservationContainer = () => {
                                                                                 console.log(result)
                                                                                 axios.delete(apiKey + 'api/deleteUser/' + user.data.account.id).then((result) => {
 
+                                                                                    handleCloseIsLoading(3)
                                                                                     console.log(result)
 
                                                                                 }).catch((err) => {
+                                                                                    handleCloseIsLoading(3)
                                                                                     console.log(err)
                                                                                 });
                                                                             }).catch((err) => {
+                                                                                handleCloseIsLoading(3)
                                                                                 console.log(err)
                                                                             });
                                                                         }).catch((err) => {
+                                                                            handleCloseIsLoading(3)
                                                                             console.log(err)
                                                                         });
                                                                     }).catch((err) => {
+                                                                        handleCloseIsLoading(3)
                                                                         console.log(err)
                                                                     });
                                                                 }).catch((err) => {
+                                                                    handleCloseIsLoading(3)
                                                                     console.log(err)
                                                                 });
 
@@ -1471,10 +1529,12 @@ export const ReservationContainer = () => {
                                                             });
                                                         }
                                                     }).catch((err) => {
+                                                        handleCloseIsLoading(3)
                                                         console.log(err)
 
                                                     })
                                                 }).catch((err) => {
+                                                    handleCloseIsLoading(3)
                                                     console.log(err)
 
                                                 });
@@ -1486,14 +1546,18 @@ export const ReservationContainer = () => {
                                                 axios.delete(apiKey + 'api/deleteGuest/' + guest.data.new_guest.id).then((result) => {
                                                     console.log(result)
                                                     axios.delete(apiKey + 'api/deleteUser/' + user.data.account.id).then((result) => {
+                                                        handleCloseIsLoading(3)
                                                         console.log(result)
                                                     }).catch((err) => {
+                                                        handleCloseIsLoading(3)
                                                         console.log(err)
                                                     });
                                                 }).catch((err) => {
+                                                    handleCloseIsLoading(3)
                                                     console.log(err)
                                                 });
                                             }).catch((err) => {
+                                                handleCloseIsLoading(3)
                                                 console.log(err)
                                             });
 
@@ -1503,23 +1567,29 @@ export const ReservationContainer = () => {
                                         axios.delete(apiKey + 'api/deleteGuest/' + guest.data.new_guest.id).then((result) => {
                                             console.log(result)
                                             axios.delete(apiKey + 'api/deleteUser/' + user.data.account.id).then((result) => {
+                                                handleCloseIsLoading(3)
                                                 console.log(result)
                                             }).catch((err) => {
+                                                handleCloseIsLoading(3)
                                                 console.log(err)
                                             });
                                         }).catch((err) => {
+                                            handleCloseIsLoading(3)
                                             console.log(err)
                                         });
 
                                     });
                                 }).catch((err) => {
                                     axios.delete(apiKey + 'api/deleteUser/' + user.data.account.id).then((result) => {
+                                        handleCloseIsLoading(3)
                                         console.log(result)
                                     }).catch((err) => {
+                                        handleCloseIsLoading(3)
                                         console.log(err)
                                     });
                                 });
                             }).catch((err) => {
+                                handleCloseIsLoading(3)
                                 console.log(err.res)
                             });
                         }
@@ -1543,6 +1613,7 @@ export const ReservationContainer = () => {
         axios.get(apiKey + 'api/getAllRoom').then((room) => {
             for (let index = 0; index < room.data.length; index++) {
                 if (room.data[index].roomNumber == roomNumber) {
+                    handleOpenIsLoading()
                     axios.patch(apiKey + 'api/updateReservationSummary/' + editReservationId, {
                         checkInDate: startDate,
                         checkOutDate: endDate,
@@ -1558,12 +1629,16 @@ export const ReservationContainer = () => {
                         }).then((result) => {
                             console.log(result.data)
                             //partial
-                            window.location.reload()
+                            // window.location.reload()
+
+                            handleCloseIsLoading(2, '')
                         }).catch((err) => {
+                            handleCloseIsLoading(3)
                             console.log(err)
 
                         })
                     }).catch((err) => {
+                        handleCloseIsLoading(3)
                         console.log(err)
                     });
                 }
@@ -1593,6 +1668,7 @@ export const ReservationContainer = () => {
                         // numberOfAdults:
                         // numberOfKids:
                     }
+                    handleOpenIsLoading()
                     axios.post(apiKey + "api/addReservationSummary", items).then((reservationSummary) => {
                         console.log(reservationSummary.data)
                         axios.get(apiKey + "api/getAllAmenities").then((amenities) => {
@@ -1608,22 +1684,27 @@ export const ReservationContainer = () => {
                                         }).then((result) => {
                                             console.log(result.data)
                                             //partial
-                                            window.location.reload()
+                                            // window.location.reload()
+                                            handleCloseIsLoading(2, '')
                                         }).catch((err) => {
+                                            handleCloseIsLoading(3)
                                             console.log(err)
 
                                         })
                                     }
                                 }).catch((err) => {
+                                    handleCloseIsLoading(3)
                                     console.log(err)
 
                                 });
                             }
                         }).catch((err) => {
+                            handleCloseIsLoading(3)
                             console.log(err)
                         });
 
                     }).catch((err) => {
+                        handleCloseIsLoading(3)
                         console.log(err)
 
                     })
@@ -1732,6 +1813,72 @@ export const ReservationContainer = () => {
             }
         }
     }, [startDateFilter, endDateFilter])
+
+
+
+
+
+
+
+
+
+
+    const [isLoading, setIsLoading] = useState(false);
+    const [loadingMessage, setLoadingMessage] = useState('Please wait...')
+    const [status, setStatus] = useState('loading')
+
+
+    const handleOpenIsLoading = () => {
+        setIsLoading(true);
+        setStatus('loading')
+        setLoadingMessage('Please wait...')
+
+
+        setTimeout(() => {
+            handleCloseIsLoading(3)
+        }, 90000)
+    }
+
+
+
+    const handleCloseIsLoading = (status, link) => {
+
+        if (status == 1 || status === undefined) {
+            setStatus('loading')
+            setLoadingMessage('')
+        }
+        else if (status == 2) {
+            setStatus('success')
+            setLoadingMessage('')
+        }
+        else if (status == 3) {
+            setStatus('failed')
+            setLoadingMessage('Sorry, Something went wrong.')
+        }
+
+        setTimeout(() => {
+            setIsLoading(false);
+            console.log(link)
+            if (link !== undefined) {
+                window.location = link;
+            }
+        }, 1000)
+    }
+
+    const loadingStatus = (value) => {
+        if (value == 'loading') {
+            return <CircularProgress></CircularProgress>;
+        }
+        else if (value == 'success') {
+            return <Grow in={true}><CheckCircleOutline style={{ color: 'green', fontSize: '80px' }} /></Grow>;
+        }
+        else if (value == 'failed') {
+            return <Grow in={true}><HighlightOffSharp style={{ color: 'red', fontSize: '80px' }} /></Grow>;
+        }
+    }
+
+
+
     return (
         <Container
 
@@ -1739,6 +1886,44 @@ export const ReservationContainer = () => {
                 height: 'auto'
             }}
         >
+
+
+            <Modal
+                open={isLoading}
+                style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    border: 'none'
+                }}>
+                <Box
+                    component='form'
+                    style={{
+                        height: '300px',
+                        width: '400px',
+                        backgroundColor: 'white',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: '10px',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        overflowY: 'overlay',
+                        overflowX: 'hidden',
+                        borderRadius: '.5rem',
+                        position: 'relative',
+                        border: 'none'
+                        // margin: '50px 0px',
+
+                    }}>
+                    <div style={{ margin: '10px', display: 'flex', width: '400px', height: '350px', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', }}>
+                        <img src={logo} width="35%"></img>
+                        {loadingStatus(status)}
+                        <h1 style={{ fontWeight: 'normal', margin: '0px' }}>{loadingMessage}</h1>
+                    </div>
+                </Box>
+            </Modal>
+
+
 
             <HeadContainer>
                 <Title
@@ -1960,7 +2145,11 @@ export const ReservationContainer = () => {
                                     /></Td>
                                 </Tr>
                             ))
-                        : ""}
+                        :
+
+                        <Tr>
+                            <Td align='center' colSpan={7}>Reservation is empty</Td>
+                        </Tr>}
 
 
 
@@ -1981,27 +2170,27 @@ export const ReservationContainer = () => {
                                 return item
                             }
                         })
-                        .sort((a, b) => Date.parse(new Date(b.reservationDate)) - Date.parse(new Date(a.reservationDate)))
-                        .filter((item) => {
-                            if (search != '') {
-                                if (new Date(item.reservationDate).toLocaleDateString().includes(search)
-                                    || item.reservationReferenceNumber.toString().includes(search)
-                                    || (item.guestInformation.firstName.toLowerCase()).toString().includes(search.toLowerCase())
-                                    || (item.guestInformation.firstName.toLowerCase() + ' ' + item.guestInformation.lastName.toLowerCase()).toString().includes(search.toLowerCase())
-                                    || (item.guestInformation.lastName.toLowerCase()).toString().includes(search.toLowerCase())
-                                    || (item.reservationStatus.toLowerCase()).toString().includes(search.toLowerCase())
-                                ) {
-                                    return item;
+                            .sort((a, b) => Date.parse(new Date(b.reservationDate)) - Date.parse(new Date(a.reservationDate)))
+                            .filter((item) => {
+                                if (search != '') {
+                                    if (new Date(item.reservationDate).toLocaleDateString().includes(search)
+                                        || item.reservationReferenceNumber.toString().includes(search)
+                                        || (item.guestInformation.firstName.toLowerCase()).toString().includes(search.toLowerCase())
+                                        || (item.guestInformation.firstName.toLowerCase() + ' ' + item.guestInformation.lastName.toLowerCase()).toString().includes(search.toLowerCase())
+                                        || (item.guestInformation.lastName.toLowerCase()).toString().includes(search.toLowerCase())
+                                        || (item.reservationStatus.toLowerCase()).toString().includes(search.toLowerCase())
+                                    ) {
+                                        return item;
+                                    }
+                                    else if ('cancelled'.includes(search.toLowerCase())) {
+                                        return item.reservationStatus == 'UNSETTLED'
+                                    }
                                 }
-                                else if ('cancelled'.includes(search.toLowerCase())) {
-                                    return item.reservationStatus == 'UNSETTLED'
-                                }
-                            }
 
-                            else {
-                                return item
-                            }
-                        }).length / 10)}
+                                else {
+                                    return item
+                                }
+                            }).length / 10)}
                         onChange={(e, value) => {
 
                             setRoomPage(value)
@@ -4165,13 +4354,13 @@ export const ReservationContainer = () => {
                                     }}
                                 >
 
-                                    <MenuItem value='PENDING' 
-                                    disabled={editReservationInfo.length != 0 ? editReservationInfo.payment.paymentStatus == 'pending' || editReservationInfo.payment.paymentStatus == 'reciept declined' || editReservationInfo.reservationStatus == 'PENDING' ? false: true : false}
+                                    <MenuItem value='PENDING'
+                                        disabled={editReservationInfo.length != 0 ? editReservationInfo.payment.paymentStatus == 'pending' || editReservationInfo.payment.paymentStatus == 'reciept declined' || editReservationInfo.reservationStatus == 'PENDING' ? false : true : false}
                                     >
                                         Pending
                                     </MenuItem>
-                                    <MenuItem value='RESERVED' 
-                                    disabled={editReservationInfo.length != 0 ? editReservationInfo.payment.paymentStatus == 'partial' || editReservationInfo.payment.paymentStatus == 'fully paid' || editReservationInfo.reservationStatus == 'RESERVED' ? false: true : false}
+                                    <MenuItem value='RESERVED'
+                                        disabled={editReservationInfo.length != 0 ? editReservationInfo.payment.paymentStatus == 'partial' || editReservationInfo.payment.paymentStatus == 'fully paid' || editReservationInfo.reservationStatus == 'RESERVED' ? false : true : false}
                                     >
                                         Reserved
                                     </MenuItem>

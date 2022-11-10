@@ -256,49 +256,50 @@ const ClientProfileCont = () => {
 
         }
         else {
+            let formatNumber;
+            if (contactNumber.slice(0, 3) == "+63") {
+
+                formatNumber = contactNumber.replace("+63", "0");
+
+            }
+            else {
+                formatNumber = contactNumber;
+            }
+            if (emailError.length == 0 && contactNumberError.length == 0 && userNameError.length == 0) {
                 handleOpenIsLoading();
-                let formatNumber;
-                if (contactNumber.slice(0, 3) == "+63") {
 
-                    formatNumber = contactNumber.replace("+63", "0");
+                axios.patch(apiKey + 'api/updateUsers/' + userInformation.user.id, {
+                    email: email,
+                    contactNumber: formatNumber,
 
-                }
-                else {
-                    formatNumber = contactNumber;
-                }
-                if (emailError.length == 0 && contactNumberError.length == 0 && userNameError.length == 0) {
-                    axios.patch(apiKey + 'api/updateUsers/' + userInformation.user.id, {
-                        email: email,
-                        contactNumber: formatNumber,
-
+                }).then((result) => {
+                    console.log(result.data);
+                    axios.patch(apiKey + 'api/updateGuest/' + userInformation.id, {
+                        firstName: firstName,
+                        lastName: lastName,
+                        birthDate: new Date(new Date(birthDay).toLocaleDateString()),
+                        gender: gender,
+                        address: address,
+                        nationality: nationality
                     }).then((result) => {
                         console.log(result.data);
-                        axios.patch(apiKey + 'api/updateGuest/' + userInformation.id, {
-                            firstName: firstName,
-                            lastName: lastName,
-                            birthDate: new Date(new Date(birthDay).toLocaleDateString()),
-                            gender: gender,
-                            address: address,
-                            nationality: nationality
-                        }).then((result) => {
-                            console.log(result.data);
-                            handleCloseIsLoading(2, '')
-                            // window.location.reload()
-                        }).catch((err) => {
-                            handleCloseIsLoading(3)
-
-                        });
+                        handleCloseIsLoading(2, '')
+                        // window.location.reload()
                     }).catch((err) => {
                         handleCloseIsLoading(3)
 
                     });
+                }).catch((err) => {
+                    handleCloseIsLoading(3)
+
+                });
 
 
-                }
-                else{
+            }
+            else {
                 handleCloseIsLoading(3)
 
-                }
+            }
 
         }
 

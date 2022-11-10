@@ -13,6 +13,11 @@ export const Container = styled(motion.div)`
     width: 15%;
     background-color: #2E2E2E;
     z-index: 2;
+    @media (max-width: 1300px) {
+    gap: 3px
+    
+    
+      }
 `;
 
 export const ContainerInvisible = styled(motion.div)`
@@ -40,6 +45,14 @@ export const ProfileContainer = styled(motion.a)`
   &:hover {
     background-color: ${props => props.active ? "none" : "rgb(186, 242, 233, .1)"};
   }
+
+  @media (max-width: 1300px) {
+    margin: 10px 0px 5px 0px;
+
+    padding: 0px 0px 0px 10px;
+    
+    
+      }
 `;
 
 export const Image = styled(motion.img)`
@@ -71,6 +84,14 @@ export const MenuContainer = styled(motion.a)`
   &:hover {
     background-color: ${props => props.active ? "none" : "rgb(186, 242, 233, .1)"};
   }
+
+
+  @media (max-width: 1300px) {
+  padding: 5px 0px 5px 5px;
+    
+    
+    
+      }
 `;
 
 

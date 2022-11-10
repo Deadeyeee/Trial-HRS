@@ -291,7 +291,7 @@ export const ProfileContainer = () => {
                     axios.patch(apiKey + 'api/updateGuest/' + userInformation.id, {
                         firstName: firstName.toLocaleLowerCase(),
                         lastName: lastName.toLocaleLowerCase(),
-                        birthDate: new Date(new Date(birthDay).toLocaleDateString()),
+                        birthDate: new Date(Date.parse(new Date(birthDay))+ 86400000),
                         gender: gender,
                         address: address,
                         nationality: nationality
@@ -429,6 +429,64 @@ export const ProfileContainer = () => {
                     margin='0px'
                 >
                 </HorizontalLine>
+                <ProfileContentContainer
+                    style={{ flexDirection: 'column', gap: '20px', marginBottom: '10px', marginTop: '20px'}}>
+                    <ContainerGlobal
+                        justify='space-between'
+                        gap='200px'
+                        w="100%"
+                    >
+                        <Title
+                            family='raleway, sans-serif'
+                            weight='400'
+                            fstyle='Normal'
+                            size='25px'
+                            color='#2e2e2e'
+                            align='left'
+                        >
+                            User Name
+                        </Title>
+                        <Title
+                            family='raleway, sans-serif'
+                            weight='700'
+                            fstyle='Normal'
+                            size='25px'
+                            color='#2e2e2e'
+                            align='right'
+                            width=''
+                        >
+                            <b>{userInformation.length != 0 ? userInformation.user.userName : ""}</b>
+                        </Title>
+                    </ContainerGlobal>
+                    <ContainerGlobal
+                        justify='space-between'
+                        gap='200px'
+                        w="100%"
+                    >
+                        <Title
+                            family='raleway, sans-serif'
+                            weight='400'
+                            fstyle='Normal'
+                            size='25px'
+                            color='#2e2e2e'
+                            align='left'
+                        >
+                            Account Type:
+                        </Title>
+                        <Title
+                            family='raleway, sans-serif'
+                            weight='700'
+                            fstyle='Normal'
+                            size='25px'
+                            color='#2e2e2e'
+                            align='right'
+                            width=''
+                        >
+                            <b>{userInformation.length != 0 ? userInformation.user.role == 'ADMIN' ? 'Admin' : 'Front Desk' : ""}</b>
+                        </Title>
+                    </ContainerGlobal>
+                </ProfileContentContainer>
+                <hr style={{width: '50%'}}></hr>
                 <ProfileContentContainer
                     style={{ width: '90%' }}
                 >
@@ -632,63 +690,7 @@ export const ProfileContainer = () => {
 
                     </ProfileContent>
                 </ProfileContentContainer>
-                <ProfileContentContainer
-                    style={{ flexDirection: 'column', gap: '20px', marginBottom: '10px' }}>
-                    <ContainerGlobal
-                        justify='space-between'
-                        gap='200px'
-                        w="100%"
-                    >
-                        <Title
-                            family='raleway, sans-serif'
-                            weight='400'
-                            fstyle='Normal'
-                            size='25px'
-                            color='#2e2e2e'
-                            align='left'
-                        >
-                            User Name
-                        </Title>
-                        <Title
-                            family='raleway, sans-serif'
-                            weight='700'
-                            fstyle='Normal'
-                            size='25px'
-                            color='#2e2e2e'
-                            align='right'
-                            width=''
-                        >
-                            <b>{userInformation.length != 0 ? userInformation.user.userName : ""}</b>
-                        </Title>
-                    </ContainerGlobal>
-                    <ContainerGlobal
-                        justify='space-between'
-                        gap='200px'
-                        w="100%"
-                    >
-                        <Title
-                            family='raleway, sans-serif'
-                            weight='400'
-                            fstyle='Normal'
-                            size='25px'
-                            color='#2e2e2e'
-                            align='left'
-                        >
-                            Account type:
-                        </Title>
-                        <Title
-                            family='raleway, sans-serif'
-                            weight='700'
-                            fstyle='Normal'
-                            size='25px'
-                            color='#2e2e2e'
-                            align='right'
-                            width=''
-                        >
-                            <b>{userInformation.length != 0 ? userInformation.user.role == 'ADMIN' ? 'Admin' : 'Front Desk' : ""}</b>
-                        </Title>
-                    </ContainerGlobal>
-                </ProfileContentContainer>
+
             </ContainerGlobal>
             <Button variant="contained" size="large"
                 style={{ backgroundColor: '#2E2E2E' }}

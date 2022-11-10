@@ -11,9 +11,9 @@ const Dashboard = () => {
   return (
     <Container>
       <ContainerInvisible></ContainerInvisible>
-    <SideBarNav dashboard/>
-    <DashboardContainer/>
-</Container>
+      <SideBarNav dashboard />
+      <DashboardContainer />
+    </Container>
   )
 }
 

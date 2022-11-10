@@ -40,6 +40,10 @@ import { FlexboxContainer } from '../../../client/containers/bookingCartPage/Sty
 import { PhotoBox } from '../../../client/containers/clientPaymentInfo/Styles'
 
 import { Pagination } from '@mui/material'
+import logo from '../../../client/images/logo.png'
+import { CircularProgress } from '@mui/material';
+import { CheckCircleOutline, Close, HighlightOffSharp } from '@mui/icons-material';
+
 
 const style = {
     position: 'absolute',
@@ -459,6 +463,7 @@ const PaymentContainer = () => {
         else if (reservationSelected.payment.paymentType == "Full Payment") {
             paymentMade = reservationSelected.payment.grandTotal;
         }
+        handleOpenIsLoading();
         axios.patch(apiKey + 'api/updateGrandTotal/' + reservationSelected.payment.id, {
             paymentMade: paymentMade,
         }).then((result) => {
@@ -510,9 +515,11 @@ const PaymentContainer = () => {
                                 // reservedRooms: ,
                             }).then((result) => {
                                 console.log(result)
-                                window.location.reload();
+                                // window.location.reload();
+                                handleCloseIsLoading(2, '')
 
                             }).catch((err) => {
+                                handleCloseIsLoading(3)
                                 console.log(err)
 
                             });
@@ -520,16 +527,19 @@ const PaymentContainer = () => {
                         }
                     })
                 }).catch((err) => {
+                    handleCloseIsLoading(3)
                     console.log(err)
 
                 });
             }).catch((err) => {
+                handleCloseIsLoading(3)
                 console.log(err)
 
             });
 
 
         }).catch((err) => {
+            handleCloseIsLoading(3)
             console.log(err)
         });
     }
@@ -542,6 +552,8 @@ const PaymentContainer = () => {
 
         formData.append('paymentImage', 'asdsa');
         formData.append('paymentStatus', 'reciept declined');
+
+        handleCloseIsLoading(3)
         axios.post(apiKey + 'api/deleteImage', {
             filePath: reservationSelected.payment.paymentImage
         }).then((result) => {
@@ -575,18 +587,22 @@ const PaymentContainer = () => {
                     // reservedRooms: ,
                 }).then((result) => {
                     console.log(result)
-                    window.location.reload();
+                    // window.location.reload();
+                    handleCloseIsLoading(2, '')
 
                 }).catch((err) => {
+                    handleCloseIsLoading(3)
                     console.log(err)
 
                 });
             }).catch((err) => {
+                handleCloseIsLoading(3)
                 console.log(err.data)
 
             });
         }).catch((err) => {
-
+            handleCloseIsLoading(3)
+            console.log(err.data)
         })
 
 
@@ -814,7 +830,7 @@ const PaymentContainer = () => {
     const payNow = () => {
         console.log('reservationInformation.payment.id', reservationInformation.payment.paymentMade)
         console.log('reservationInformation.payment.id', parseFloat(reservationInformation.payment.paymentMade) + parseFloat(paymentValue))
-
+        handleOpenIsLoading();
         axios.patch(apiKey + 'api/updateGrandTotal/' + reservationInformation.payment.id, {
             paymentMade: parseFloat(reservationInformation.payment.paymentMade) + parseFloat(paymentValue),
         }).then((result) => {
@@ -841,6 +857,7 @@ const PaymentContainer = () => {
                                         // console.log(index)
 
                                     }).catch((err) => {
+                                        handleCloseIsLoading(3)
                                         console.log(err)
 
                                     });
@@ -871,9 +888,11 @@ const PaymentContainer = () => {
                                             // reservedRooms: ,
                                         }).then((result) => {
                                             console.log(result)
-                                            window.location.reload();
+                                            // window.location.reload();
+                                            handleCloseIsLoading(2, '')
 
                                         }).catch((err) => {
+                                            handleCloseIsLoading(3)
                                             console.log(err)
 
                                         });
@@ -881,17 +900,21 @@ const PaymentContainer = () => {
                                     }
                                 })
                             }).catch((err) => {
+                                handleCloseIsLoading(3)
                                 console.log(err)
 
                             });
                         }).catch((err) => {
+                            handleCloseIsLoading(3)
                             console.log(err)
 
                         });
 
                     }
                     else {
-                        window.location.reload();
+                        // window.location.reload();
+                        handleCloseIsLoading(2, '')
+
 
                     }
                 }
@@ -915,6 +938,7 @@ const PaymentContainer = () => {
                                         // console.log(index)
 
                                     }).catch((err) => {
+                                        handleCloseIsLoading(3)
                                         console.log(err)
 
                                     });
@@ -946,9 +970,13 @@ const PaymentContainer = () => {
                                             // reservedRooms: ,
                                         }).then((result) => {
                                             console.log(result)
-                                            window.location.reload();
+                                            // window.location.reload();
+                                            handleCloseIsLoading(2, '')
+
 
                                         }).catch((err) => {
+                                            handleCloseIsLoading(3)
+
                                             console.log(err)
 
                                         });
@@ -956,26 +984,32 @@ const PaymentContainer = () => {
                                     }
                                 })
                             }).catch((err) => {
+                                handleCloseIsLoading(3)
                                 console.log(err)
 
                             });
                         }).catch((err) => {
+                            handleCloseIsLoading(3)
                             console.log(err)
 
                         });
 
                     }
                     else {
-                        window.location.reload();
+                        // window.location.reload();
+                        handleCloseIsLoading(2, '')
+
 
                     }
                 }
             }
             else {
+                // window.location.reload()
+                handleCloseIsLoading(2, '')
 
-                window.location.reload()
             }
         }).catch((err) => {
+            handleCloseIsLoading(3)
             console.log(err)
         })
     }
@@ -990,7 +1024,7 @@ const PaymentContainer = () => {
             setPreviewImageError('No image selected.')
         }
         else if (e.target.files[0].size > 10485760) {
-          alert('File is too large. please upload file less than 10mb in size.')
+            alert('File is too large. please upload file less than 10mb in size.')
         }
         else {
             let selectedFile = e.target.files[0];
@@ -1017,28 +1051,35 @@ const PaymentContainer = () => {
         formData.append('paymentImage', imageToUpload)
         if (previewImageError.length == 0 && imageToUpload.length != 0) {
             if (reservationInformation.payment.paymentImage != null) {
+                handleOpenIsLoading()
                 axios.post(apiKey + 'api/deleteImage', {
                     filePath: reservationInformation.payment.paymentImage,
                 }).then((result) => {
                     console.log(result.data)
                     axios.patch(apiKey + 'api/updatePaymentPhoto/' + reservationInformation.payment.id, formData).then((result) => {
                         console.log(result.data)
-                        window.location.reload()
+                        // window.location.reload()
+                        handleCloseIsLoading(2, '')
                     }).catch((err) => {
+                        handleCloseIsLoading(3)
                         console.log(err.data)
 
                     });
                 }).catch((err) => {
+                    handleCloseIsLoading(3)
                     console.log(err.data)
 
                 });
             }
             else {
+                handleOpenIsLoading()
                 console.log(reservationInformation.payment.paymentImage)
                 axios.patch(apiKey + 'api/updatePaymentPhoto/' + reservationInformation.payment.id, formData).then((result) => {
                     console.log(result.data)
-                    window.location.reload()
+                    // window.location.reload()
+                    handleCloseIsLoading(2, '')
                 }).catch((err) => {
+                    handleCloseIsLoading(3)
                     console.log(err.data)
 
                 });
@@ -1048,7 +1089,7 @@ const PaymentContainer = () => {
 
     const savePayment = (e) => {
         e.preventDefault();
-
+        handleOpenIsLoading()
         axios.patch(apiKey + "api/updatePayment/" + reservationInformation.payment.id, {
             discount_id: discountId,
             paymentMode_id: paymentModeId,
@@ -1070,12 +1111,16 @@ const PaymentContainer = () => {
                                 console.log(result.data)
                                 axios.patch(apiKey + 'api/updatePaymentPhoto/' + reservationInformation.payment.id, formData).then((result) => {
                                     console.log(result.data)
-                                    window.location.reload()
+                                    // window.location.reload()
+
+                                    handleCloseIsLoading(2, '')
                                 }).catch((err) => {
+                                    handleCloseIsLoading(3)
                                     console.log(err.data)
 
                                 });
                             }).catch((err) => {
+                                handleCloseIsLoading(3)
                                 console.log(err.data)
 
                             });
@@ -1084,16 +1129,23 @@ const PaymentContainer = () => {
                             console.log(reservationInformation.payment.paymentImage)
                             axios.patch(apiKey + 'api/updatePaymentPhoto/' + reservationInformation.payment.id, formData).then((result) => {
                                 console.log(result.data)
-                                window.location.reload()
+                                // window.location.reload()
+                                handleCloseIsLoading(2, '')
                             }).catch((err) => {
+                                handleCloseIsLoading(3)
                                 console.log(err.data)
 
                             });
                         }
                     }
+                    else{
+                        
+                        handleCloseIsLoading(3, '')
+                    }
                 }
                 else {
-                    window.location.reload()
+                    // window.location.reload()
+                    handleCloseIsLoading(2, '')
                 }
             }).catch((err) => {
                 console.log(err)
@@ -1109,15 +1161,18 @@ const PaymentContainer = () => {
     }
 
     const updadatePaymentStatus = () => {
+        handleOpenIsLoading()
         axios.patch(apiKey + 'api/updatePayment/' + reservationInformation.payment.id, {
             paymentStatus: reservationStatus,
             grandTotal: reservationInformation.payment.grandTotal,
             paymentMade: reservationInformation.payment.paymentMade,
         }).then((result) => {
             console.log(result.data)
-            window.location.reload()
+            // window.location.reload()
+                        handleCloseIsLoading(2, '')
         }).catch((err) => {
             console.log(err)
+            handleCloseIsLoading(3)
         });
     }
 
@@ -1172,11 +1227,108 @@ const PaymentContainer = () => {
     }, [startDateFilter, endDateFilter])
 
 
+
+    const [isLoading, setIsLoading] = useState(false);
+    const [loadingMessage, setLoadingMessage] = useState('Please wait...')
+    const [status, setStatus] = useState('loading')
+
+
+    const handleOpenIsLoading = () => {
+        setIsLoading(true);
+        setStatus('loading')
+        setLoadingMessage('Please wait...')
+
+
+        setTimeout(() => {
+            handleCloseIsLoading(3)
+        }, 90000)
+    }
+
+
+
+    const handleCloseIsLoading = (status, link) => {
+
+        if (status == 1 || status === undefined) {
+            setStatus('loading')
+            setLoadingMessage('')
+        }
+        else if (status == 2) {
+            setStatus('success')
+            setLoadingMessage('')
+        }
+        else if (status == 3) {
+            setStatus('failed')
+            setLoadingMessage('Sorry, Something went wrong.')
+        }
+
+        setTimeout(() => {
+            setIsLoading(false);
+            console.log(link)
+            if (link !== undefined) {
+                window.location = link;
+            }
+        }, 1000)
+    }
+
+    const loadingStatus = (value) => {
+        if (value == 'loading') {
+            return <CircularProgress></CircularProgress>;
+        }
+        else if (value == 'success') {
+            return <Grow in={true}><CheckCircleOutline style={{ color: 'green', fontSize: '80px' }} /></Grow>;
+        }
+        else if (value == 'failed') {
+            return <Grow in={true}><HighlightOffSharp style={{ color: 'red', fontSize: '80px' }} /></Grow>;
+        }
+    }
+
+
+
+
+
+
     return (
         <Container
             style={{
                 height: 'auto'
             }}>
+
+            <Modal
+                open={isLoading}
+                style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    border: 'none'
+                }}>
+                <Box
+                    component='form'
+                    style={{
+                        height: '300px',
+                        width: '400px',
+                        backgroundColor: 'white',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: '10px',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        overflowY: 'overlay',
+                        overflowX: 'hidden',
+                        borderRadius: '.5rem',
+                        position: 'relative',
+                        border: 'none'
+                        // margin: '50px 0px',
+
+                    }}>
+                    <div style={{ margin: '10px', display: 'flex', width: '400px', height: '350px', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', }}>
+                        <img src={logo} width="35%"></img>
+                        {loadingStatus(status)}
+                        <h1 style={{ fontWeight: 'normal', margin: '0px' }}>{loadingMessage}</h1>
+                    </div>
+                </Box>
+            </Modal>
+
+
 
             {/*PAYMENT INFORMATION */}
             <HeadContainer>
@@ -1419,7 +1571,9 @@ const PaymentContainer = () => {
                                 </Tr>
                             ))
                         :
-                        ""}
+                        <Tr>
+                            <Td align='center' colSpan={11}>Payment is empty</Td>
+                        </Tr>}
 
                 </TableContainer>
                 <ContainerGlobal

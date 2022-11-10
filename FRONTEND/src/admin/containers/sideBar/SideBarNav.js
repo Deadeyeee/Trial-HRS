@@ -165,12 +165,6 @@ const SideBarNav = (props) => {
 
 
 
-    const messageBadgeCount = () => {
-
-
-
-
-    }
     return (
         <Container>
             <ProfileContainer

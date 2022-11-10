@@ -31,6 +31,9 @@ import { Button2, FormButton } from '../../../client/components/button/styles';
 import { nationalities } from '../../../nationalities';
 import { Pagination } from '@mui/material'
 import moment from 'moment';
+import logo from '../../../client/images/logo.png'
+import { CircularProgress } from '@mui/material';
+import { CheckCircleOutline, Close, HighlightOffSharp } from '@mui/icons-material';
 const StatusContainer = () => {
     let letters = /^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/;
     let phoneNumberValidation = /^(09|\+639)\d{9}$/;
@@ -207,6 +210,7 @@ const StatusContainer = () => {
                 formatNumber = contactNumber;
             }
             if (emailError.length == 0 && contactNumberError.length == 0 && userNameError.length == 0) {
+                handleOpenIsLoading();
                 axios.patch(apiKey + 'api/updateUsers/' + userInformation.user.id, {
                     email: email,
                     contactNumber: formatNumber,
@@ -222,14 +226,15 @@ const StatusContainer = () => {
                         nationality: nationality
                     }).then((result) => {
                         console.log(result.data);
-                        // handleCloseIsLoading(2, '')
+                        handleClose()
+                        handleCloseIsLoading(2, '')
                         window.location.reload()
                     }).catch((err) => {
-                        // handleCloseIsLoading(3)
+                        handleCloseIsLoading(3)
 
                     });
                 }).catch((err) => {
-                    // handleCloseIsLoading(3)
+                    handleCloseIsLoading(3)
 
                 });
 
@@ -303,6 +308,61 @@ const StatusContainer = () => {
 
 
 
+    const [isLoading, setIsLoading] = useState(false);
+    const [loadingMessage, setLoadingMessage] = useState('Please wait...')
+    const [status, setStatus] = useState('loading')
+
+
+    const handleOpenIsLoading = () => {
+        setIsLoading(true);
+        setStatus('loading')
+        setLoadingMessage('Please wait...')
+
+
+        setTimeout(() => {
+            handleCloseIsLoading(3)
+        }, 90000)
+    }
+
+
+
+    const handleCloseIsLoading = (status, link) => {
+
+        if (status == 1 || status === undefined) {
+            setStatus('loading')
+            setLoadingMessage('')
+        }
+        else if (status == 2) {
+            setStatus('success')
+            setLoadingMessage('')
+        }
+        else if (status == 3) {
+            setStatus('failed')
+            setLoadingMessage('Sorry, Something went wrong.')
+        }
+
+        setTimeout(() => {
+            setIsLoading(false);
+            console.log(link)
+            if (link !== undefined) {
+                window.location = link;
+            }
+        }, 1000)
+    }
+
+    const loadingStatus = (value) => {
+        if (value == 'loading') {
+            return <CircularProgress></CircularProgress>;
+        }
+        else if (value == 'success') {
+            return <Grow in={true}><CheckCircleOutline style={{ color: 'green', fontSize: '80px' }} /></Grow>;
+        }
+        else if (value == 'failed') {
+            return <Grow in={true}><HighlightOffSharp style={{ color: 'red', fontSize: '80px' }} /></Grow>;
+        }
+    }
+
+
 
     return (
 
@@ -310,6 +370,44 @@ const StatusContainer = () => {
             style={{
                 height: 'auto'
             }}>
+
+
+
+            <Modal
+                open={isLoading}
+                style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    border: 'none'
+                }}>
+                <Box
+                    component='form'
+                    style={{
+                        height: '300px',
+                        width: '400px',
+                        backgroundColor: 'white',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: '10px',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        overflowY: 'overlay',
+                        overflowX: 'hidden',
+                        borderRadius: '.5rem',
+                        position: 'relative',
+                        border: 'none'
+                        // margin: '50px 0px',
+
+                    }}>
+                    <div style={{ margin: '10px', display: 'flex', width: '400px', height: '350px', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', }}>
+                        <img src={logo} width="35%"></img>
+                        {loadingStatus(status)}
+                        <h1 style={{ fontWeight: 'normal', margin: '0px' }}>{loadingMessage}</h1>
+                    </div>
+                </Box>
+            </Modal>
+
             <HeadContainer>
                 <Title
                     size='20px'
@@ -522,7 +620,7 @@ const StatusContainer = () => {
                                     else if ('disabled'.includes(search.toLowerCase())) {
                                         return item.user.status == false
                                     }
-                                    
+
                                 }
 
                                 else {
@@ -598,7 +696,9 @@ const StatusContainer = () => {
                                     /></Td>
                                 </Tr>
                             ))
-                        : 'No data'}
+                        : <Tr>
+                            <Td align='center' colSpan={9}>Guest list is empty</Td>
+                        </Tr>}
 
 
                 </TableContainer>
@@ -618,37 +718,37 @@ const StatusContainer = () => {
                                 return item
                             }
                         })
-                        .filter((item) => {
-                            if (search != '') {
-                                if (new Date(item.created_at).toLocaleDateString().includes(search)
-                                    || (item.firstName.toLowerCase()).toString().includes(search.toLowerCase())
-                                    || (item.firstName.toLowerCase() + ' ' + item.lastName.toLowerCase()).toString().includes(search.toLowerCase())
-                                    || (item.lastName.toLowerCase()).toString().includes(search.toLowerCase())
-                                    || (item.user.email.toLowerCase()).toString().includes(search.toLowerCase())
-                                    || (item.user.userName.toLowerCase()).toString().includes(search.toLowerCase())
-                                    || (item.id.split('-')[0].toLowerCase()).toString().includes(search.toLowerCase())
-                                ) {
-                                    return item;
-                                }
-                                else if ('non user'.includes(search.toLowerCase())) {
-                                    return item.user.role == 'NON-USER'
-                                }
-                                else if ('user'.includes(search.toLowerCase())) {
-                                    return item.user.role == 'CUSTOMER'
-                                }
-                                else if ('active'.includes(search.toLowerCase())) {
-                                    return item.user.status == true
-                                }
-                                else if ('disabled'.includes(search.toLowerCase())) {
-                                    return item.user.status == false
-                                }
-                                
-                            }
+                            .filter((item) => {
+                                if (search != '') {
+                                    if (new Date(item.created_at).toLocaleDateString().includes(search)
+                                        || (item.firstName.toLowerCase()).toString().includes(search.toLowerCase())
+                                        || (item.firstName.toLowerCase() + ' ' + item.lastName.toLowerCase()).toString().includes(search.toLowerCase())
+                                        || (item.lastName.toLowerCase()).toString().includes(search.toLowerCase())
+                                        || (item.user.email.toLowerCase()).toString().includes(search.toLowerCase())
+                                        || (item.user.userName.toLowerCase()).toString().includes(search.toLowerCase())
+                                        || (item.id.split('-')[0].toLowerCase()).toString().includes(search.toLowerCase())
+                                    ) {
+                                        return item;
+                                    }
+                                    else if ('non user'.includes(search.toLowerCase())) {
+                                        return item.user.role == 'NON-USER'
+                                    }
+                                    else if ('user'.includes(search.toLowerCase())) {
+                                        return item.user.role == 'CUSTOMER'
+                                    }
+                                    else if ('active'.includes(search.toLowerCase())) {
+                                        return item.user.status == true
+                                    }
+                                    else if ('disabled'.includes(search.toLowerCase())) {
+                                        return item.user.status == false
+                                    }
 
-                            else {
-                                return item
-                            }
-                        }).length / 10)}
+                                }
+
+                                else {
+                                    return item
+                                }
+                            }).length / 10)}
                         onChange={(e, value) => {
 
                             setRoomPage(value)

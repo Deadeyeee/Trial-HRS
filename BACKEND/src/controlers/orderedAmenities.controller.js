@@ -50,7 +50,10 @@ exports.update = async (req, res) => {
         let data = req.body
 
         const orderedAmenitiesdata = await OrderedAmenities.findByPk(req.params.id)
-
+        const amenity = await amenities.findByPk(orderedAmenitiesdata.amenity_id)
+        console.log(amenity)
+        data.amenityName = amenity.amenityName
+        data.amenityRate = amenity.amenityRate
         data.total = parseFloat(orderedAmenitiesdata.amenityRate) * req.body.quantity
 
         await OrderedAmenities.update(req.body, {

@@ -63,11 +63,11 @@ export const RoomRates = () => {
             <FlexboxContainer>
                 {roomType.length != 0 ? roomType.map((item, index) => (
                     index % 2 == 0 ?
-                        <div style={{ display: 'block', justifyContent: 'center', gap: '100px' }}>
+                        <div style={{ display: 'block', justifyContent: 'center', gap: '100px', width: '60%' }}>
                             <FlexboxContentMain>
                                 <div
-                                    style={{ width: '400px', height: '400px', display: 'inline-block', overflow: 'hidden' }}
-
+                                    style={{ display: 'inline-block', overflow: 'hidden' }}
+                                    className='imageSlider'
                                 >
                                     <ImageSlider roomImages={roomTypeImagesDb.length != 0 ? roomTypeImagesDb.filter((itemRoomImage) => (itemRoomImage.roomType_id == item.id)).map((obj) => (obj.roomImages)) : null} />
                                 </div>
@@ -83,6 +83,7 @@ export const RoomRates = () => {
                                         {item.roomType}
                                     </Title>
                                     <Description
+                                        style={{ width: '100%' }}
                                         align='left'
                                     >
                                         <i style={{ fontSize: '20px' }}>
@@ -121,7 +122,7 @@ export const RoomRates = () => {
                             <HorizontalLineShortLeft></HorizontalLineShortLeft>
                         </div>
                         :
-                        <div>
+                        <div style={{ display: 'block', justifyContent: 'center', gap: '100px', width: '60%' }}>
                             <FlexboxContentMain>
                                 <FlexboxContent>
                                     <Title
@@ -135,6 +136,7 @@ export const RoomRates = () => {
                                     </Title>
                                     <Description
                                         align='right'
+                                        style={{ width: '100%' }}
                                     >
                                         <i style={{ fontSize: '20px' }}>
                                             {item.roomDescription}
@@ -173,7 +175,8 @@ export const RoomRates = () => {
                                     </FlexButtonPrice>
                                 </FlexboxContent>
                                 <div
-                                    style={{ width: '550px', height: '350px', display: 'inline-block', overflow: 'hidden' }}
+                                    style={{ display: 'inline-block', overflow: 'hidden' }}
+                                    className='imageSlider'
                                 >
                                     <ImageSlider roomImages={roomTypeImagesDb.length != 0 ? roomTypeImagesDb.filter((itemRoomImage) => (itemRoomImage.roomType_id == item.id)).map((obj) => (obj.roomImages)) : null} />
                                 </div>  ``

@@ -35,6 +35,9 @@ import { ContainerFormContent, InputContainer } from '../../../client/containers
 import DateRangePicker from '../../../client/components/datePicker/DateRangePicker'
 import { LabelDiv, Persons, TitleCalendarContainer } from '../../../client/containers/bookingPage/Styles'
 
+import logo from '../../../client/images/logo.png'
+import { CircularProgress } from '@mui/material';
+import { CheckCircleOutline, Close, HighlightOffSharp } from '@mui/icons-material';
 
 const BookingsContainer = () => {
     const [value, setValue] = useState(Date.now());
@@ -369,6 +372,7 @@ const BookingsContainer = () => {
         // }
 
     }, [roomType])
+
     useEffect(() => {
 
         if (startDate !== null && endDate !== null) {
@@ -392,12 +396,15 @@ const BookingsContainer = () => {
     }, [startDate, endDate])
 
     const updadateBookingStatus = () => {
+        handleOpenIsLoading()
         axios.patch(apiKey + 'api/updateReservationSummary/' + reservationSummaryInfo.id, {
             bookingStatus: reservationStatus,
         }).then((result) => {
             console.log(result.data)
-            window.location.reload()
+            // window.location.reload()
+            handleCloseIsLoading(2, '')
         }).catch((err) => {
+            handleCloseIsLoading(3)
             console.log(err)
         });
     }
@@ -556,10 +563,13 @@ const BookingsContainer = () => {
         }
     }
 
+
+
     const saveReservationSummary = () => {
         axios.get(apiKey + 'api/getAllRoom').then((room) => {
             for (let index = 0; index < room.data.length; index++) {
                 if (room.data[index].roomNumber == roomNumber) {
+                    handleOpenIsLoading();
                     axios.patch(apiKey + 'api/updateReservationSummary/' + reservationSummaryInfo.id, {
                         checkInDate: startDate,
                         checkOutDate: endDate,
@@ -584,10 +594,12 @@ const BookingsContainer = () => {
                                             }).then((result) => {
                                                 console.log(result.data)
                                             }).catch((err) => {
+                                                handleCloseIsLoading(3)
                                                 console.log(err)
 
                                             })
                                         }).catch((err) => {
+                                            handleCloseIsLoading(3)
                                             console.log(err)
 
                                         });
@@ -602,10 +614,12 @@ const BookingsContainer = () => {
                                             }).then((result) => {
                                                 console.log(result.data)
                                             }).catch((err) => {
+                                                handleCloseIsLoading(3)
                                                 console.log(err)
 
                                             })
                                         }).catch((err) => {
+                                            handleCloseIsLoading(3)
                                             console.log(err)
 
                                         });
@@ -620,10 +634,12 @@ const BookingsContainer = () => {
                                             }).then((result) => {
                                                 console.log(result.data)
                                             }).catch((err) => {
+                                                handleCloseIsLoading(3)
                                                 console.log(err)
 
                                             })
                                         }).catch((err) => {
+                                            handleCloseIsLoading(3)
                                             console.log(err)
 
                                         });
@@ -638,10 +654,12 @@ const BookingsContainer = () => {
                                             }).then((result) => {
                                                 console.log(result.data)
                                             }).catch((err) => {
+                                                handleCloseIsLoading(3)
                                                 console.log(err)
 
                                             })
                                         }).catch((err) => {
+                                            handleCloseIsLoading(3)
                                             console.log(err)
 
                                         });
@@ -656,10 +674,12 @@ const BookingsContainer = () => {
                                             }).then((result) => {
                                                 console.log(result.data)
                                             }).catch((err) => {
+                                                handleCloseIsLoading(3)
                                                 console.log(err)
 
                                             })
                                         }).catch((err) => {
+                                            handleCloseIsLoading(3)
                                             console.log(err)
 
                                         });
@@ -674,8 +694,10 @@ const BookingsContainer = () => {
                                     }).then((result) => {
                                         console.log(result.data)
                                         //partial
-                                        window.location.reload()
+                                        // window.location.reload()
+                                        handleCloseIsLoading(2, '')
                                     }).catch((err) => {
+                                        handleCloseIsLoading(3)
                                         console.log(err)
 
                                     })
@@ -685,16 +707,19 @@ const BookingsContainer = () => {
 
                             }
                         }).catch((err) => {
+                            handleCloseIsLoading(3)
                             console.log(err)
                         });
 
                     }).catch((err) => {
+                        handleCloseIsLoading(3)
                         console.log(err)
                     });
                 }
 
             }
         }).catch((err) => {
+            handleCloseIsLoading(3)
             console.log(err)
 
         });
@@ -1058,12 +1083,115 @@ const BookingsContainer = () => {
         }
     }, [startDateFilter, endDateFilter])
 
+
+
+    const [isLoading, setIsLoading] = useState(false);
+    const [loadingMessage, setLoadingMessage] = useState('Please wait...')
+    const [status, setStatus] = useState('loading')
+
+
+    const handleOpenIsLoading = () => {
+        setIsLoading(true);
+        setStatus('loading')
+        setLoadingMessage('Please wait...')
+
+
+        setTimeout(() => {
+            handleCloseIsLoading(3)
+        }, 90000)
+    }
+
+
+
+    const handleCloseIsLoading = (status, link) => {
+
+        if (status == 1 || status === undefined) {
+            setStatus('loading')
+            setLoadingMessage('')
+        }
+        else if (status == 2) {
+            setStatus('success')
+            setLoadingMessage('')
+        }
+        else if (status == 3) {
+            setStatus('failed')
+            setLoadingMessage('Sorry, Something went wrong.')
+        }
+
+        setTimeout(() => {
+            setIsLoading(false);
+            console.log(link)
+            if (link !== undefined) {
+                window.location = link;
+            }
+        }, 1000)
+    }
+
+    const loadingStatus = (value) => {
+        if (value == 'loading') {
+            return <CircularProgress></CircularProgress>;
+        }
+        else if (value == 'success') {
+            return <Grow in={true}><CheckCircleOutline style={{ color: 'green', fontSize: '80px' }} /></Grow>;
+        }
+        else if (value == 'failed') {
+            return <Grow in={true}><HighlightOffSharp style={{ color: 'red', fontSize: '80px' }} /></Grow>;
+        }
+    }
+
+
+
+
+
     return (
         <Container
             style={{
                 height: 'auto'
             }}
         >
+
+
+            <Modal
+                open={isLoading}
+                style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    border: 'none'
+                }}>
+                <Box
+                    component='form'
+                    style={{
+                        height: '300px',
+                        width: '400px',
+                        backgroundColor: 'white',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: '10px',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        overflowY: 'overlay',
+                        overflowX: 'hidden',
+                        borderRadius: '.5rem',
+                        position: 'relative',
+                        border: 'none'
+                        // margin: '50px 0px',
+
+                    }}>
+                    <div style={{ margin: '10px', display: 'flex', width: '400px', height: '350px', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', }}>
+                        <img src={logo} width="35%"></img>
+                        {loadingStatus(status)}
+                        <h1 style={{ fontWeight: 'normal', margin: '0px' }}>{loadingMessage}</h1>
+                    </div>
+                </Box>
+            </Modal>
+
+
+
+
+
+
+
             <HeadContainer>
                 <Title
                     size='20px'
@@ -1331,7 +1459,10 @@ const BookingsContainer = () => {
                                 </Tr>
                             ))
                         :
-                        ''}
+                        <Tr>
+                            <Td align='center' colSpan={9}>Booking is empty</Td>
+                        </Tr>
+                    }
 
 
                 </TableContainer>
@@ -2196,7 +2327,7 @@ const BookingsContainer = () => {
                                     family='Helvetica'
                                     fstyle='Normal'
                                     weight='bold'
-                                    align='left'
+                                    align='right'
                                     margin='15px 0px 20px 0px'
                                 >
                                     {reservationSummaryInfo.length != 0 ? reservationSummaryInfo.reservation.payment.paymentMode.paymentMode : ""}
@@ -2231,7 +2362,7 @@ const BookingsContainer = () => {
                                     family='Helvetica'
                                     fstyle='Normal'
                                     weight='bold'
-                                    align='left'
+                                    align='right'
                                     margin='15px 0px 20px 0px'
                                 >
                                     {reservationSummaryInfo.length != 0 ? reservationSummaryInfo.reservation.payment.paymentType : ""}
@@ -2267,7 +2398,7 @@ const BookingsContainer = () => {
                                     family='Helvetica'
                                     fstyle='Normal'
                                     weight='bold'
-                                    align='left'
+                                    align='right'
                                     margin='15px 0px 20px 0px'
                                 >
                                     {reservationSummaryInfo.length != 0 ? reservationSummaryInfo.reservation.payment.discount.discountType : ""}
@@ -3047,7 +3178,7 @@ const BookingsContainer = () => {
                                             <MenuItem value={item.roomType}
                                                 disabled={badgeCount(item.roomType) == null ? true : false}
                                             >
-                                                <Badge badgeContent={badgeCount(item.roomType)} color="success" style={{ marginTop: 10 }} title='40 Available rooms'>
+                                                <Badge badgeContent={badgeCount(item.roomType)} color="success" style={{ marginTop: 10, zIndex: 0 }} title='40 Available rooms'>
                                                     <ContainerGlobal
                                                         margin='0px 15px 0px 0px'>
                                                         {item.roomType}
@@ -3587,7 +3718,7 @@ const BookingsContainer = () => {
                                     family='Helvetica'
                                     fstyle='Normal'
                                     weight='bold'
-                                    align='left'
+                                    align='right'
                                     margin='15px 0px 20px 0px'
                                 >
                                     {reservationSummaryInfo.length != 0 ? reservationSummaryInfo.reservation.payment.paymentMode.paymentMode : ""}
@@ -3622,7 +3753,7 @@ const BookingsContainer = () => {
                                     family='Helvetica'
                                     fstyle='Normal'
                                     weight='bold'
-                                    align='left'
+                                    align='right'
                                     margin='15px 0px 20px 0px'
                                 >
                                     {reservationSummaryInfo.length != 0 ? reservationSummaryInfo.reservation.payment.paymentType : ""}
@@ -3658,7 +3789,7 @@ const BookingsContainer = () => {
                                     family='Helvetica'
                                     fstyle='Normal'
                                     weight='bold'
-                                    align='left'
+                                    align='right'
                                     margin='15px 0px 20px 0px'
                                 >
                                     {reservationSummaryInfo.length != 0 ? reservationSummaryInfo.reservation.payment.discount.discountType : ""}
