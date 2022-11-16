@@ -62,36 +62,36 @@ export const Login = () => {
                     password: password,
                 },
             ).then((response) => {
-                if (response.data.role == 'NON-USER') {
-                    Axios.get(apiKey + 'api/getAllReservationSummary').then((result) => {
+                // if (response.data.role == 'NON-USER') {
+                //     Axios.get(apiKey + 'api/getAllReservationSummary').then((result) => {
 
-                        if (result.data
-                            .filter((obj) => {
-                                if (obj.reservation.guestInformation.user_id == response.data.id) {
-                                    return obj;
-                                }
-                            })
-                            .filter((obj) => obj.bookingReferenceNumber != 'NO-SHOW' && obj.bookingReferenceNumber != 'CANCELLED').length != 0) {
+                //         if (result.data
+                //             .filter((obj) => {
+                //                 if (obj.reservation.guestInformation.user_id == response.data.id) {
+                //                     return obj;
+                //                 }
+                //             })
+                //             .filter((obj) => obj.bookingReferenceNumber != 'NO-SHOW' && obj.bookingReferenceNumber != 'CANCELLED').length != 0) {
 
-                            window.location.href = '/';
-                            setLoginStatus("");
-                            console.log(response.data)
-                        }
-                        else {
-                            Axios.delete(apiKey + "auth/Logout").then((response) => {
-                                setLoginStatus("Username/Email or Password is incorrect. Please try again.")
+                //             window.location.href = '/';
+                //             setLoginStatus("");
+                //             console.log(response.data)
+                //         }
+                //         else {
+                //             Axios.delete(apiKey + "auth/Logout").then((response) => {
+                //                 setLoginStatus("Username/Email or Password is incorrect. Please try again.")
 
-                                incorrectEmail.current.focus();
-                                incorrectEmail.current.select();
-                            })
-                        }
+                //                 incorrectEmail.current.focus();
+                //                 incorrectEmail.current.select();
+                //             })
+                //         }
 
 
-                    }).catch((err) => {
+                //     }).catch((err) => {
 
-                    });
-                }
-                else {
+                //     });
+                // }
+                // else {
                     if (response.data.role == 'ADMIN' || response.data.role == 'STAFF') {
 
                         window.location.href = '/admin';
@@ -101,7 +101,7 @@ export const Login = () => {
                         window.location.href = '/';
                     }
                     setLoginStatus("");
-                }
+                // }
             }).catch((err) => {
                 if (verifyCaptcha == false) {
                     e.preventDefault();

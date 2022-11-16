@@ -215,6 +215,32 @@ const DashboardContainer = () => {
                 w='100px'
                 h='auto'
                 margin='0px auto'
+                bg='rgb(255,165,0, .2)'
+                direction='row'
+                padding='2px 0px'
+                justify='center'
+                align='center'
+                border='2px solid rgb(255,165,0)'
+                gap='10px'
+                borderRadius='.5rem'
+            >
+                <Title
+                    family='Helvetica'
+                    size='12px'
+                    color='BLACK'
+                    fstyle='normal'
+                    display='inline'
+                    padding='5px 10px'
+                >
+                    {value.toLowerCase()}
+                </Title>
+            </ContainerGlobal>
+        }
+        else if (value == 'CANCELLED') {
+            return <ContainerGlobal
+                w='100px'
+                h='auto'
+                margin='0px auto'
                 bg='rgb(255, 0, 0, .2)'
                 direction='row'
                 padding='2px 0px'
@@ -281,6 +307,8 @@ const DashboardContainer = () => {
                             weight='600'
                             align='left'
                             margin='20px 0px 10px 30px'
+                            margin1000='20px 0px 10px 30px'
+                            size1000='16px'
                         >
                             DASHBOARD
                         </Title>
@@ -292,6 +320,8 @@ const DashboardContainer = () => {
                             weight='normal'
                             align='left'
                             margin='0px 0px 20px 30px'
+                            margin1000='0px 0px 20px 30px'
+                            size1000='16px'
                         >
                             Hello, <b>{userInformation.length != 0 ? userInformation.firstName + ' ' + userInformation.lastName : ''}!</b> Welcome back! Here's what's going on with your business.
                         </Title>
@@ -304,6 +334,8 @@ const DashboardContainer = () => {
                         weight='400'
                         align='left'
                         margin='0px 20px 0px auto'
+                        margin1000='0px 20px 0px auto'
+                        size1000='16px'
                     >
                         {dashBoardDate.toDateString()} {dashBoardDate.toLocaleTimeString().split(':')[0]}:{dashBoardDate.toLocaleTimeString().split(':')[1]} {dashBoardDate.toLocaleTimeString().split(' ')[1]}
                     </Title>
@@ -517,40 +549,42 @@ const DashboardContainer = () => {
                         <Reservation
                             confirmed={reservationSummary != 0 ?
                                 reservationSummary.filter((obj) => obj.reservation.reservationStatus == 'RESERVED').filter((obj) => {
-                                    // let filterDate = getDates(new Date(Date.now()), new Date(Date.now()));
-
+                                    let filterDate = getDates(new Date(Date.now()), new Date(Date.now()));
+                                    if (filterDate.includes(moment(obj.reservation.reservationDate).format('YYYY-MM-DD')) == true) {
+                                        return obj
+                                    }
                                     // if (filterDate.includes(moment(obj.checkInDate).format('YYYY-MM-DD')) == true || filterDate.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) == true) {
                                     //     return obj
                                     // }
 
-                                    if (Date.parse(new Date().toLocaleDateString()) >= Date.parse(new Date(new Date(obj.checkInDate).toLocaleDateString())) && Date.parse(new Date().toLocaleDateString()) <= Date.parse(new Date(new Date(obj.checkOutDate).toLocaleDateString()))) {
-                                        return obj
-                                    }
+                                    // if (Date.parse(new Date().toLocaleDateString()) >= Date.parse(new Date(new Date(obj.checkInDate).toLocaleDateString())) && Date.parse(new Date().toLocaleDateString()) <= Date.parse(new Date(new Date(obj.checkOutDate).toLocaleDateString()))) {
+                                    //     return obj
+                                    // }
                                 }).length
                                 : ''}
                             cancelled={reservationSummary != 0 ?
                                 reservationSummary.filter((obj) => obj.reservation.reservationStatus == 'UNSETTLED').filter((obj) => {
-                                    // let filterDate = getDates(new Date(Date.now()), new Date(Date.now()));
+                                    let filterDate = getDates(new Date(Date.now()), new Date(Date.now()));
 
                                     // if (filterDate.includes(moment(obj.checkInDate).format('YYYY-MM-DD')) == true || filterDate.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) == true) {
                                     //     return obj
                                     // }
 
-                                    if (Date.parse(new Date().toLocaleDateString()) >= Date.parse(new Date(new Date(obj.checkInDate).toLocaleDateString())) && Date.parse(new Date().toLocaleDateString()) <= Date.parse(new Date(new Date(obj.checkOutDate).toLocaleDateString()))) {
+                                    if (filterDate.includes(moment(obj.reservation.reservationDate).format('YYYY-MM-DD')) == true) {
                                         return obj
                                     }
                                 }).length
                                 : ''}
                             pending={reservationSummary != 0 ?
                                 reservationSummary.filter((obj) => obj.reservation.reservationStatus == 'PENDING').filter((obj) => {
-                                    // let filterDate = getDates(new Date(Date.now()), new Date(Date.now()));
+                                    let filterDate = getDates(new Date(Date.now()), new Date(Date.now()));
 
                                     // if (filterDate.includes(moment(obj.checkInDate).format('YYYY-MM-DD')) == true || filterDate.includes(moment(obj.checkOutDate).format('YYYY-MM-DD')) == true) {
                                     //     return obj
                                     // }
 
 
-                                    if (Date.parse(new Date().toLocaleDateString()) >= Date.parse(new Date(new Date(obj.checkInDate).toLocaleDateString())) && Date.parse(new Date().toLocaleDateString()) <= Date.parse(new Date(new Date(obj.checkOutDate).toLocaleDateString()))) {
+                                    if (filterDate.includes(moment(obj.reservation.reservationDate).format('YYYY-MM-DD')) == true) {
                                         return obj
                                     }
                                 }).length

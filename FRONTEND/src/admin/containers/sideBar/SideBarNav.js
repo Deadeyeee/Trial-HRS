@@ -167,6 +167,13 @@ const SideBarNav = (props) => {
 
     return (
         <Container>
+            <style>
+            {`@media (max-width: 1300px) {
+                .tabText{
+                    font-size: 10px;
+                }
+                }`}
+            </style>
             <ProfileContainer
                 href='/admin/profile'
                 whileTap={{ scale: 0.98 }}
@@ -175,13 +182,18 @@ const SideBarNav = (props) => {
                 <Image src={logo} />
                 <DescriptionContainer>
                     <Title
+                    style={{textTransform: 'capitalize', overflow: 'hidden', textOverflow: 'ellipsis'}}
+                    className='tabText'
+                    whiteSpace='nowrap'
                         size='16px'
                         color='white'
                         family='arial'
                         fstyle='normal'
                         cursor='pointer'
+                        w='50%'
                     >{getUser.length != 0 ? getUser.firstName.toLowerCase() + " " + getUser.lastName.toLowerCase() : ""}</Title>
                     <Title
+                    className='tabText'
                         size='12px'
                         color='white'
                         family='arial'
@@ -211,6 +223,7 @@ const SideBarNav = (props) => {
                 />
 
                 <Title
+                    className='tabText'
                     size='14px'
                     color='white'
                     family='Helvetica'
@@ -233,6 +246,7 @@ const SideBarNav = (props) => {
                 />
 
                 <Title
+                    className='tabText'
                     size='14px'
                     color='white'
                     family='Helvetica'
@@ -255,6 +269,7 @@ const SideBarNav = (props) => {
                 />
 
                 <Title
+                    className='tabText'
                     size='14px'
                     color='white'
                     family='Helvetica'
@@ -276,6 +291,7 @@ const SideBarNav = (props) => {
                 />
 
                 <Title
+                    className='tabText'
                     size='14px'
                     color='white'
                     family='Helvetica'
@@ -298,6 +314,7 @@ const SideBarNav = (props) => {
                 />
 
                 <Title
+                    className='tabText'
                     size='14px'
                     color='white'
                     family='Helvetica'
@@ -320,6 +337,7 @@ const SideBarNav = (props) => {
                 />
 
                 <Title
+                    className='tabText'
                     size='14px'
                     color='white'
                     family='Helvetica'
@@ -366,6 +384,7 @@ const SideBarNav = (props) => {
                 />
 
                 <Title
+                    className='tabText'
                     size='14px'
                     color='white'
                     family='Helvetica'
@@ -388,6 +407,7 @@ const SideBarNav = (props) => {
                 />
 
                 <Title
+                    className='tabText'
                     size='14px'
                     color='white'
                     family='Helvetica'
@@ -409,6 +429,7 @@ const SideBarNav = (props) => {
                     style={{ color: props.additional == true ? "#2E2E2E" : "#dddddd" }}
                 />
                 <Title
+                    className='tabText'
                     size='14px'
                     color='white'
                     family='Helvetica'
@@ -433,6 +454,7 @@ const SideBarNav = (props) => {
 
                     <Badge badgeContent={0} color="warning">
                         <Title
+                    className='tabText'
                             size='14px'
                             color='white'
                             family='Helvetica'
@@ -449,6 +471,7 @@ const SideBarNav = (props) => {
                     :
                     <Badge badgeContent={unreadMessage.length != 0 ? unreadMessage.filter((obj) => obj == false).length : 0} color="warning">
                         <Title
+                    className='tabText'
                             size='14px'
                             color='white'
                             family='Helvetica'
@@ -471,10 +494,11 @@ const SideBarNav = (props) => {
                     whileTap={{ scale: 0.98 }}
                     active={props.report == true}>
                     <AssessmentIcon
-                        style={{ color: props.report == true ? "#2E2E2E" : "#dddddd" }}
+                        style={{ color: props.report == true ? "#2E2E2E" : "#dddddd",  }}
                     />
 
                     <Title
+                    className='tabText'
                         size='14px'
                         color='white'
                         family='Helvetica'
@@ -498,6 +522,7 @@ const SideBarNav = (props) => {
                 />
 
                 <Title
+                    className='tabText'
                     size='14px'
                     color='white'
                     family='Helvetica'

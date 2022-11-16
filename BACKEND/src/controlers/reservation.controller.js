@@ -151,9 +151,72 @@ const fetchUsers = async () => {
 }
 
 
-new CronJob('10 * * * * *', () => {
-    console.log('CHECKS')
+
+const disableGuest = async () => {
+    const users = await user.findAll({
+        where: {
+            role: 'NON-USER',
+            status: true,
+        }
+    });
+    console.log(users)
+
+
+    users.map(async (userData) => {
+        const reservationSummaryData = await reservationSummary.findAll(
+            {
+                include: { all: true, nested: true },
+            }
+        );
+
+        if (
+            reservationSummaryData
+                .filter((item) => item.dataValues.reservation.dataValues.guestInformation.dataValues.user.dataValues.id == userData.dataValues.id)
+                .sort((a, b) => Date.parse(new Date(b.dataValues.created_at)) - Date.parse(new Date(b.dataValues.created_at)))
+                .map((item) => Date.parse(new Date(item.dataValues.checkOutDate).toLocaleDateString()) - Date.parse(new Date(new Date().toLocaleDateString())))
+                .filter((obj, index) => index == 0).length != 0
+        ) {
+            console.log(reservationSummaryData
+                .filter((item) => item.dataValues.reservation.dataValues.guestInformation.dataValues.user.dataValues.id == userData.dataValues.id)
+                .sort((a, b) => Date.parse(new Date(b.dataValues.created_at)) - Date.parse(new Date(b.dataValues.created_at)))
+                .map((item) => item.bookingReferenceNumber)
+                .filter((obj, index) => index == 0)[0])
+
+
+            if (
+                reservationSummaryData
+                    .filter((item) => item.dataValues.reservation.dataValues.guestInformation.dataValues.user.dataValues.id == userData.dataValues.id)
+                    .sort((a, b) => Date.parse(new Date(b.dataValues.created_at)) - Date.parse(new Date(b.dataValues.created_at)))
+                    .map((item) => Date.parse(new Date(item.dataValues.checkOutDate).toLocaleDateString()) - Date.parse(new Date(new Date().toLocaleDateString())))
+                    .filter((obj, index) => index == 0)[0] < 0
+            ) {
+                user.update({
+                    status: false,
+                }, {
+                    where: {
+                        id: userData.id,
+                    },
+                });
+            }
+        }
+
+
+
+    })
+
+}
+
+
+new CronJob('* 1 * * * *', () => {
     fetchUsers()
+},
+    null,
+    true,
+    'America/Los_Angeles'
+)
+
+new CronJob('* 1 * * * *', () => {
+    disableGuest();
 },
     null,
     true,

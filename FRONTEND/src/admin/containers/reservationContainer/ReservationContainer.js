@@ -718,7 +718,7 @@ export const ReservationContainer = () => {
                 }
             })
         }
-    }, [discount, paymentMode])
+    }, [discount, paymentMethod])
 
     useEffect(() => {
 
@@ -2101,7 +2101,6 @@ export const ReservationContainer = () => {
                     </Tr>
                     {reservation.length != 0 ?
                         reservation
-                            .slice((roomPage - 1) * 10, roomPage * 10)
                             .filter((item) => {
                                 if (startDateFilter != null && endDateFilter != null) {
                                     let filterDates = getDates(startDateFilter, endDateFilter);
@@ -2134,11 +2133,12 @@ export const ReservationContainer = () => {
                                     return item
                                 }
                             })
+                            .slice((roomPage - 1) * 10, roomPage * 10)
                             .map((item) => (
                                 <Tr>
                                     <Td align='center'>{new Date(item.reservationDate).toLocaleDateString()}</Td>
                                     <Td align='center'>{item.reservationReferenceNumber}</Td>
-                                    <Td align='center'>{item.guestInformation.firstName}, {item.guestInformation.lastName}</Td>
+                                    <Td align='center' style={{textTransform: 'capitalize'}}>{item.guestInformation.firstName.toLowerCase()} {item.guestInformation.lastName.toLowerCase()}</Td>
                                     <Td align='center'>{numberOfRooms.length != 0 ? numberOfRooms.filter((obj) => obj.reservation_id == item.id).length : ''}</Td>
                                     <Td align='center'>{numberFormat(item.payment.balance)}</Td>
                                     <Td align='center'>
@@ -4233,7 +4233,20 @@ export const ReservationContainer = () => {
                                     disabled />
 
                             </InputContainer>
+                            <InputContainer>
+                                <TextField
 
+                                    placeholder='Username'
+                                    label="Username"
+                                    variant="outlined"
+                                    inputRef={userNameRef}
+                                    value={reservationInfo.length != 0 ? reservationInfo.guestInformation.user.userName : ""}
+                                    
+
+                                    disabled
+                                    style={{ width: '55%', }} />
+
+                            </InputContainer>
 
 
 

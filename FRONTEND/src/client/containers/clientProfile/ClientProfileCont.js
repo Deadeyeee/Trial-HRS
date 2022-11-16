@@ -53,6 +53,7 @@ const ClientProfileCont = () => {
     let letters = /^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/;
     let phoneNumberValidation = /^(09|\+639)\d{9}$/;
     let passwordValidation = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[-._!"`'#%&,:;<>=@{}~\$\(\)\*\+\/\\\?\[\]\^\| ])[A-Za-z\d -._!"`'#%&,:;<>=@{}~\$\(\)\*\+\/\\\?\[\]\^\|]{8,}/;
+    let userNameValidation = /^\S*$/;
 
     const [paymentOption, setPaymentOption] = useState("");
     const [displayBanks, setDisplayBanks] = useState("");
@@ -195,6 +196,7 @@ const ClientProfileCont = () => {
             setNationality(userInformation.nationality.charAt(0).toUpperCase() + userInformation.nationality.slice(1));
             setGender(userInformation.gender);
             setAddress(userInformation.address);
+            setUsername(userInformation.user.userName)
         }
     }, [userInformation, open])
 
@@ -222,6 +224,10 @@ const ClientProfileCont = () => {
                                 }
                                 else if (item.contactNumber == formatNumber) {
                                     setContactNumberError("This number is already taken.")
+
+                                }
+                                else if (item.userName.toLowerCase() == username.toLowerCase()) {
+                                    setUserNameError("This userName is already taken.")
 
                                 }
                             }
@@ -271,13 +277,14 @@ const ClientProfileCont = () => {
                 axios.patch(apiKey + 'api/updateUsers/' + userInformation.user.id, {
                     email: email,
                     contactNumber: formatNumber,
+                    userName: username,
 
                 }).then((result) => {
                     console.log(result.data);
                     axios.patch(apiKey + 'api/updateGuest/' + userInformation.id, {
                         firstName: firstName,
                         lastName: lastName,
-                        birthDate: new Date(Date.parse(new Date(birthDay))+ 86400000),
+                        birthDate: new Date(Date.parse(new Date(birthDay)) + 86400000),
                         gender: gender,
                         address: address,
                         nationality: nationality
@@ -935,6 +942,35 @@ const ClientProfileCont = () => {
                             required
                             inputProps={{ maxLength: 255 }} />
 
+
+
+                    </InputContainer>
+                    <InputContainer>
+                        <TextField
+
+                            error={userNameError.length != 0 ? true : false}
+                            helperText={userNameError.length != 0 ? userNameError : ""}
+                            placeholder='Username'
+                            label="Username"
+                            variant="outlined"
+                            inputRef={userNameRef}
+                            value={username}
+                            onChange={(e) => {
+                                setUsername(e.target.value)
+
+                                if (!userNameValidation.test(e.target.value) && e.target.value.length != 0) {
+                                    console.log('asda')
+                                    setUserNameError("Invalid username.")
+                                }
+                                else {
+                                    setUserNameError("")
+                                }
+                            }}
+                            inputProps={{ maxLength: 40 }}
+
+                            required
+                            disabled={userInformation.length != 0 && userInformation.user.role != 'NON-USER' ? false : true}
+                            style={{ width: '55%', }} />
 
 
                     </InputContainer>

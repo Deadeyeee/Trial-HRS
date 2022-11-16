@@ -25,7 +25,9 @@ export const FAmenitiesContentCont2 = () => {
             <FlexboxContainer style={{overflow: 'visible'}}>
                 <FlexboxContentMain>
                 <PhotoMain>
-                <div style={{ width: '500px', display: 'inline-block', }}>
+                <div style={{display: 'inline-block', }}
+                 className='imageSlider'
+                >
                         <ImageSlider3 />
                     </div>
                     </PhotoMain>

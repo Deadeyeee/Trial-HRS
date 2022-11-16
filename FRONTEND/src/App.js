@@ -69,6 +69,7 @@ import LoginStaff from './client/pages/login/LoginStaff';
 import axios from 'axios';
 import { apiKey } from './apiKey';
 import { useEffect, useState } from 'react';
+import BookingConfirmationPrint from './client/containers/bookingConfirmation/BookingConfirmationPrint';
 
 
 
@@ -110,6 +111,7 @@ const App = () => {
         <Route path="/booking/room/:id" element={<BookingChildPage />} />
         <Route path="/guestInformation" element={<GuestInfoPage />} />
         <Route path="/booking/confirmation/:id" element={<BookingConfirmationPage />} />
+        <Route path="/booking/confirmation/print/:id" element={<BookingConfirmationPrint />} />
         <Route path="/billingSummary" element={<BillingSummaryPage />} />
         <Route path="/bookingCart" element={<BookingCartPage />} />
 

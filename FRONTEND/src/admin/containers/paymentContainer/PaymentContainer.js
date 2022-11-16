@@ -437,7 +437,7 @@ const PaymentContainer = () => {
                 }
             })
         }
-    }, [discount, paymentMode])
+    }, [discount, paymentMethod])
 
 
     const handleOpenUpload = (value) => {
@@ -819,7 +819,7 @@ const PaymentContainer = () => {
                     display='inline'
                     padding='5px 10px'
                 >
-                    {value}
+                    receipt declined
                 </Title>
             </ContainerGlobal>
         }
@@ -1503,7 +1503,6 @@ const PaymentContainer = () => {
 
                     {reservations.length != 0 ?
                         reservations
-                            .slice((roomPage - 1) * 10, roomPage * 10)
                             .sort((a, b) => Date.parse(new Date(b.reservationDate)) - Date.parse(new Date(a.reservationDate)))
                             .filter((item) => {
                                 if (startDateFilter != null && endDateFilter != null) {
@@ -1541,11 +1540,12 @@ const PaymentContainer = () => {
                                     return item
                                 }
                             })
+                            .slice((roomPage - 1) * 10, roomPage * 10)
                             .map((item) => (
                                 <Tr>
                                     <Td align='center'>{new Date(item.reservationDate).toLocaleDateString()}</Td>
                                     <Td align='center'>{item.reservationReferenceNumber}</Td>
-                                    <Td align='center'>{item.guestInformation.firstName.toLowerCase()}, {item.guestInformation.lastName.toLowerCase()}</Td>
+                                    <Td align='center' style={{textTransform: 'capitalize'}} >{item.guestInformation.firstName.toLowerCase()} {item.guestInformation.lastName.toLowerCase()}</Td>
                                     <Td align='center'>{item.payment.paymentType}</Td>
                                     <Td align='center'>{item.payment.discount.discountType}</Td>
 
@@ -1929,7 +1929,7 @@ const PaymentContainer = () => {
                                     family='Helvetica'
                                     fstyle='Normal'
                                     weight='bold'
-                                    align='left'
+                                    align='right'
                                     margin='15px 0px 20px 0px'
                                 >
                                     {reservationInformation.length != 0 ? reservationInformation.payment.paymentMode.paymentMode : ""}
@@ -1964,7 +1964,7 @@ const PaymentContainer = () => {
                                     family='Helvetica'
                                     fstyle='Normal'
                                     weight='bold'
-                                    align='left'
+                                    align='right'
                                     margin='15px 0px 20px 0px'
                                 >
                                     {reservationInformation.length != 0 ? reservationInformation.payment.paymentType : ""}
@@ -2000,7 +2000,7 @@ const PaymentContainer = () => {
                                     family='Helvetica'
                                     fstyle='Normal'
                                     weight='bold'
-                                    align='left'
+                                    align='right'
                                     margin='15px 0px 20px 0px'
                                 >
                                     {reservationInformation.length != 0 ? reservationInformation.payment.discount.discountType : ""}
@@ -3002,6 +3002,19 @@ const PaymentContainer = () => {
 
                             </InputContainer>
 
+                            <InputContainer>
+                                <TextField
+
+                                    placeholder='Username'
+                                    label="Username"
+                                    variant="outlined"
+                                    value={reservationInformation.length != 0 ? reservationInformation.guestInformation.user.userName : ""}
+                                    
+
+                                    disabled
+                                    style={{ width: '55%', }} />
+
+                            </InputContainer>
 
 
 
@@ -3201,7 +3214,7 @@ const PaymentContainer = () => {
                                     family='Helvetica'
                                     fstyle='Normal'
                                     weight='bold'
-                                    align='left'
+                                    align='right'
                                     margin='15px 0px 20px 0px'
                                 >
                                     {reservationInformation.length != 0 ? reservationInformation.payment.paymentMode.paymentMode : ""}
@@ -3236,7 +3249,7 @@ const PaymentContainer = () => {
                                     family='Helvetica'
                                     fstyle='Normal'
                                     weight='bold'
-                                    align='left'
+                                    align='right'
                                     margin='15px 0px 20px 0px'
                                 >
                                     {reservationInformation.length != 0 ? reservationInformation.payment.paymentType : ""}
@@ -3272,7 +3285,7 @@ const PaymentContainer = () => {
                                     family='Helvetica'
                                     fstyle='Normal'
                                     weight='bold'
-                                    align='left'
+                                    align='right'
                                     margin='15px 0px 20px 0px'
                                 >
                                     {reservationInformation.length != 0 ? reservationInformation.payment.discount.discountType : ""}
@@ -3966,7 +3979,19 @@ const PaymentContainer = () => {
                                     disabled />
 
                             </InputContainer>
+                            <InputContainer>
+                                <TextField
 
+                                    placeholder='Username'
+                                    label="Username"
+                                    variant="outlined"
+                                    value={reservationInformation.length != 0 ? reservationInformation.guestInformation.user.userName : ""}
+                                    
+
+                                    disabled
+                                    style={{ width: '55%', }} />
+
+                            </InputContainer>
 
 
 
@@ -4095,10 +4120,44 @@ const PaymentContainer = () => {
                                 </Title>
 
                             </ContainerGlobal>
+                            <ContainerGlobal
+                                w='auto'
+                                h='auto'
+                                direction='row'
+                                gap='10px'
+                                justify='space-between'
+                                align='center'
+                                overflow='auto'
 
+                            >
+
+                                <Title
+                                    size='20px'
+                                    color='Black'
+                                    family='Helvetica'
+                                    fstyle='Normal'
+                                    weight='bold'
+                                    align='left'
+                                    margin='15px 0px 20px 0px'
+                                >
+                                    Payment Status:
+                                </Title>
+                                <Title
+                                    size='20px'
+                                    color='Black'
+                                    family='Helvetica'
+                                    fstyle='italic'
+                                    weight='normal'
+                                    align='left'
+                                    margin='15px 0px 20px 0px'
+                                >
+                                    {reservationStatus}
+                                </Title>
+
+                            </ContainerGlobal>
                         </ContainerGlobalColumn>
                     </ContainerGlobalRow>
-                    <ContainerGlobalRow>
+                    {/* <ContainerGlobalRow>
                         <ContainerGlobal
                             w='auto'
                             h='auto'
@@ -4133,7 +4192,7 @@ const PaymentContainer = () => {
                                 {reservationStatus}
                             </Title>
 
-                            {/* <FormControl sx={{ width: 200, margin: '5px 0px' }} size="large" variant="standard">
+                            <FormControl sx={{ width: 200, margin: '5px 0px' }} size="large" variant="standard">
                                 <InputLabel id="demo-select-small" >Payment Status</InputLabel>
                                 <Select
                                     style={{ color: 'black', textAlign: 'left', fontWeight: 'bold' }}
@@ -4165,9 +4224,9 @@ const PaymentContainer = () => {
 
                                 </Select>
                             </FormControl>
-                            <Button onClick={() => { updadatePaymentStatus() }} size="small" variant='contained' style={reservationInformation.length != 0 && reservationInformation.payment.paymentStatus == reservationStatus ? { display: 'none' } : { display: '' }}>Update</Button> */}
+                            <Button onClick={() => { updadatePaymentStatus() }} size="small" variant='contained' style={reservationInformation.length != 0 && reservationInformation.payment.paymentStatus == reservationStatus ? { display: 'none' } : { display: '' }}>Update</Button>
                         </ContainerGlobal>
-                    </ContainerGlobalRow>
+                    </ContainerGlobalRow> */}
                     <ContainerGlobalRow
                         style={{ gap: '50px' }}
                     >
@@ -4205,9 +4264,9 @@ const PaymentContainer = () => {
                                         id="demo-select-small"
                                         value={paymentMethod}
                                         label="Menu"
-                                        onChange={(event) => {
-                                            setPaymentMethod(event.target.value);
-                                        }
+                                        onChange={(event) => 
+                                            setPaymentMethod(event.target.value)
+                                            
                                         }
 
                                     >
@@ -5076,7 +5135,19 @@ const PaymentContainer = () => {
                                     disabled />
 
                             </InputContainer>
+                            <InputContainer>
+                                <TextField
 
+                                    placeholder='Username'
+                                    label="Username"
+                                    variant="outlined"
+                                    value={reservationInformation.length != 0 ? reservationInformation.guestInformation.user.userName : ""}
+                                    
+
+                                    disabled
+                                    style={{ width: '55%', }} />
+
+                            </InputContainer>
 
 
 

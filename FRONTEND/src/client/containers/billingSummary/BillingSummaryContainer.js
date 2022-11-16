@@ -95,6 +95,9 @@ const BillingSummaryContainer = () => {
         setIsLoading(true);
         setStatus('loading')
         setLoadingMessage('Please wait...')
+        setTimeout(() => {
+            handleCloseIsLoading(3)
+        }, 90000)
     }
 
     const handleCloseIsLoading = (status, link) => {
@@ -149,11 +152,11 @@ const BillingSummaryContainer = () => {
                 window.sessionStorage.removeItem('address');
                 window.sessionStorage.removeItem('nationality');
             }
-            else if(response.data.role == 'NON-USER'){
-                axios.delete(apiKey+"auth/Logout").then((response) => {
-        
+            else if (response.data.role != 'CUSTOMER') {
+                axios.delete(apiKey + "auth/Logout").then((response) => {
+
                     window.location.reload();
-                  })
+                })
             }
             axios.get(apiKey + 'api/getAllGuest').then((guest) => {
                 console.log(guest.data)
@@ -272,7 +275,7 @@ const BillingSummaryContainer = () => {
 
         handleOpenIsLoading();
         for (let parent = 0; parent < bookingInformation.length; parent++) {
-            bookingInformation[parent].roomID.map((firstData) => {
+            bookingInformation[parent].roomID.map((firstData, indexfirst, arrayfirst) => {
                 let item = {
                     checkIn: bookingInformation[parent].checkIn,
                     checkOut: bookingInformation[parent].checkOut,
@@ -283,7 +286,7 @@ const BillingSummaryContainer = () => {
                 }).then((isAvailable) => {
                     console.log(isAvailable.data)
 
-                    if (isAvailable.data == true) {
+                    if (isAvailable.data == true && indexfirst == arrayfirst.length - 1) {
                         if (userInformation.length == 0) {
                             let formatNumber;
                             if (window.sessionStorage.getItem('contactNumber').slice(0, 3) == "+63") {
@@ -304,7 +307,7 @@ const BillingSummaryContainer = () => {
                                     user_id: user.data.account.id,
                                     firstName: window.sessionStorage.getItem('firstName'),
                                     lastName: window.sessionStorage.getItem('lastName'),
-                                    birthDate: new Date(Date.parse(new Date(window.sessionStorage.getItem('birthday')))+ 86400000),
+                                    birthDate: new Date(Date.parse(new Date(window.sessionStorage.getItem('birthday'))) + 86400000),
                                     gender: window.sessionStorage.getItem('gender'),
                                     address: window.sessionStorage.getItem('address'),
                                     nationality: window.sessionStorage.getItem('nationality'),
@@ -997,6 +1000,9 @@ const BillingSummaryContainer = () => {
 
                         }
                     }
+                    else if(isAvailable.data == true && indexfirst != arrayfirst.length - 1){
+                        
+                    }
                     else {
                         alert('Sorry, Some of your rooms was reserved by someone else. ')
                         handleCloseIsLoading(3)
@@ -1124,7 +1130,16 @@ const BillingSummaryContainer = () => {
         }
     }
 
-
+    const [matches, setMatches] = useState(
+        window.matchMedia("(max-width: 1000px)").matches
+      )
+    
+      useEffect(() => {
+        window
+        .matchMedia("(max-width: 1000px)")
+        .addEventListener('change', e => setMatches( e.matches ));
+      }, []);
+    
 
 
     return (
@@ -1201,9 +1216,11 @@ const BillingSummaryContainer = () => {
                         </Title>
                     </HeadContainer>
                     <TabContainer
-                className='guestInformation'>
+                    
+                    direction={matches && 'column'}
+                        className='guestInformation'
+                        >
                         <TableContainer
-                className='guestInformation'
                         >
                             <Title
                                 size='18px'
@@ -1299,9 +1316,11 @@ const BillingSummaryContainer = () => {
                 <TabContainer
                     direction='column'
                     border='0.2px solid black'
-                    style={{overflowX: 'auto'}}
+                    style={{ overflowX: 'auto' }}
                 >
-                    <TabContainer style={{margin: '0px'}} w='100%'>
+                    <TabContainer style={{ margin: '0px' }} w='100%'
+                    
+                    >
                         <HeadContainer>
                             <Title
                                 size='18px'
@@ -1334,7 +1353,7 @@ const BillingSummaryContainer = () => {
                     </TabContainer>
                     <TabContainer
                     >
-                        <TableContainer style={{ borderRight: '0.2px solid black' }}>
+                        <TableContainer style={{ borderRight: '0.2px solid black'}}>
                             <RadioGroup
                                 aria-labelledby="demo-controlled-radio-buttons-group"
                                 name="controlled-radio-buttons-group"
@@ -1346,7 +1365,7 @@ const BillingSummaryContainer = () => {
                                 style={{ margin: '0px 0px 0px 30px' }}
                             >
                                 {modeOfPayment.filter((obj) => obj.isActive == true).map((item) => (
-                                    item.paymentMode === "Cash" ? <FormControlLabel style={{textAlign: 'left'}} value={item.paymentMode} control={<Radio />} label={item.paymentMode} disabled={typeOfPayment === "Full Payment" ? true : false} /> : <FormControlLabel style={{textAlign: 'left'}} value={item.paymentMode} control={<Radio />} label={item.paymentMode} />
+                                    item.paymentMode === "Cash" ? <FormControlLabel style={{ textAlign: 'left' }} value={item.paymentMode} control={<Radio />} label={item.paymentMode} disabled={typeOfPayment === "Full Payment" ? true : false} /> : <FormControlLabel style={{ textAlign: 'left' }} value={item.paymentMode} control={<Radio />} label={item.paymentMode} />
                                 ))}
                             </RadioGroup>
                         </TableContainer>
@@ -1362,8 +1381,8 @@ const BillingSummaryContainer = () => {
                                 style={{ margin: '0px 0px 0px 30px' }}
 
                             >
-                                <FormControlLabel style={{textAlign: 'left'}} value="Down Payment" control={<Radio />} label="Down Payment" />
-                                <FormControlLabel style={{textAlign: 'left'}} value="Full Payment" control={<Radio />} label="Full Payment" disabled={modeOfPaymentValue === "Pay at The Hotel" ? true : false} />
+                                <FormControlLabel style={{ textAlign: 'left' }} value="Down Payment" control={<Radio />} label="Down Payment" />
+                                <FormControlLabel style={{ textAlign: 'left' }} value="Full Payment" control={<Radio />} label="Full Payment" disabled={modeOfPaymentValue === "Pay at The Hotel" ? true : false} />
                             </RadioGroup>
                         </TableContainer>
                     </TabContainer>
@@ -1400,7 +1419,7 @@ const BillingSummaryContainer = () => {
 
                         >
                             {discount.map((item) => (
-                                <FormControlLabel style={{textAlign: 'left'}} value={item.discountType} control={<Radio />} label={item.discountType} />
+                                <FormControlLabel style={{ textAlign: 'left' }} value={item.discountType} control={<Radio />} label={item.discountType} />
                             ))}
 
                             <p><b><i>NOTE:</i></b> Discount will only be <b> applied upon check in</b>. Guest <b> must present their Senior citizen / PWD I.D</b>, Thank you!.</p>
@@ -1414,8 +1433,8 @@ const BillingSummaryContainer = () => {
                 <TabContainer
                     direction='column'
                     border='0.2px solid black'
-                    
-                    >
+
+                >
                     <HeadContainer>
                         <Title
                             size='18px'
@@ -1527,11 +1546,11 @@ const BillingSummaryContainer = () => {
 
                     axios.get(apiKey + "auth/verify-token").then((response1) => {
 
-                        if(response1.data.role != 'NON-USER'){
-                        window.location = '/bookingCart'
+                        if (response1.data.role != 'NON-USER') {
+                            window.location = '/bookingCart'
                         }
-                        else{
-                        window.location = '/guestInformation'
+                        else {
+                            window.location = '/guestInformation'
                         }
                     }).catch((err) => {
 

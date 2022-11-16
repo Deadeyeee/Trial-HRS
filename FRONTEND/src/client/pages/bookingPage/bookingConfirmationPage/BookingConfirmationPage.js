@@ -12,9 +12,9 @@ function BookingConfirmationPage() {
   }, [])
   return (
     <Container>
-            <NavigationBar book />
+            <NavigationBar book  className='hide'/>
               <BookingConfirmationCont></BookingConfirmationCont>
-            <Footer />
+            <Footer className='hide'/>
         </Container>
   )
 }

@@ -421,10 +421,7 @@ export const BookingChildPageCont = () => {
                                 <TextInput
                                     onChange={(e) => {
 
-                                        if (e.target.value <= 0) {
-                                            setAdult(1);
-                                        }
-                                        else if (e.target.value >= roomType.maxAdultOccupancy) {
+                                        if (e.target.value >= roomType.maxAdultOccupancy) {
                                             setAdult(roomType.maxAdultOccupancy);
                                         }
                                         else {
@@ -467,10 +464,7 @@ export const BookingChildPageCont = () => {
                                 <TextInput
                                     onChange={(e) => {
 
-                                        if (e.target.value <= 0 || e.target.value <= null) {
-                                            setKid(0);
-                                        }
-                                        else if (e.target.value >= roomType.maxKidsOccupancy) {
+                                        if (e.target.value >= roomType.maxKidsOccupancy) {
                                             setKid(roomType.maxKidsOccupancy);
                                         }
                                         else {
@@ -548,10 +542,7 @@ export const BookingChildPageCont = () => {
                             </Title>
                             <TextInput
                                 onChange={(e) => {
-                                    if (e.target.value <= 0) {
-                                        setRoomQuantity(1);
-                                    }
-                                    else if (e.target.value >= availedRooms.length) {
+                                    if (e.target.value >= availedRooms.length) {
                                         setRoomQuantity(availedRooms.length);
                                     }
                                     else {
@@ -602,8 +593,8 @@ export const BookingChildPageCont = () => {
                                 Special Instruction:
                             </Title>
                             <TextField
-                                placeholder='Special Instruction'
-                                label="Special Instruction"
+                                placeholder='Special Instruction(Subject for availablity)'
+                                label="Special Instruction(Subject for availablity)"
                                 variant="outlined"
                                 type='textarea'
                                 multiline
@@ -633,6 +624,7 @@ export const BookingChildPageCont = () => {
                 border="1px solid #0C4426"
                 margin='30px 0px 0px 0px'
                 fontsize='23px'
+                style={adult == '' || adult == null || adult < 1 || kid === null || kid == '' || kid < 0 || roomQuantity <= 0 || roomQuantity == null || roomQuantity == ''? { pointerEvents: 'none', backgroundColor: 'rgb(0,0,0,.2)' } : ''}
                 onClick={addRoom}
             >
                 Book this now!

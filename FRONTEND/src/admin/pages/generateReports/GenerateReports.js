@@ -1522,39 +1522,48 @@ const GeneratedReports = () => {
                                     reservationSummary.filter((obj) => obj.reservation.reservationStatus == 'RESERVED').filter((obj) => {
                                         let filterDate = getDates(startDate, endDate);
 
-                                        for (let index = 0; index < filterDate.length; index++) {
-                                            if (Date.parse(new Date(filterDate[index]).toLocaleDateString()) >= Date.parse(new Date(new Date(obj.checkInDate).toLocaleDateString())) && Date.parse(new Date(filterDate[index]).toLocaleDateString()) <= Date.parse(new Date(new Date(obj.checkOutDate).toLocaleDateString()))) {
-                                                return obj
-                                                break;
-                                            }
-
+                                        if (filterDate.includes(moment(obj.reservation.reservationDate).format('YYYY-MM-DD')) == true) {
+                                            return obj
                                         }
+                                        // for (let index = 0; index < filterDate.length; index++) {
+                                        //     if (Date.parse(new Date(filterDate[index]).toLocaleDateString()) >= Date.parse(new Date(new Date(obj.checkInDate).toLocaleDateString())) && Date.parse(new Date(filterDate[index]).toLocaleDateString()) <= Date.parse(new Date(new Date(obj.checkOutDate).toLocaleDateString()))) {
+                                        //         return obj
+                                        //         break;
+                                        //     }
+
+                                        // }
                                     }).length
                                     : ''}
                                 cancelled={reservationSummary != 0 ?
                                     reservationSummary.filter((obj) => obj.reservation.reservationStatus == 'UNSETTLED').filter((obj) => {
                                         let filterDate = getDates(startDate, endDate);
 
-                                        for (let index = 0; index < filterDate.length; index++) {
-                                            if (Date.parse(new Date(filterDate[index]).toLocaleDateString()) >= Date.parse(new Date(new Date(obj.checkInDate).toLocaleDateString())) && Date.parse(new Date(filterDate[index]).toLocaleDateString()) <= Date.parse(new Date(new Date(obj.checkOutDate).toLocaleDateString()))) {
-                                                return obj
-                                                break;
-                                            }
-
+                                        if (filterDate.includes(moment(obj.reservation.reservationDate).format('YYYY-MM-DD')) == true) {
+                                            return obj
                                         }
+                                        // for (let index = 0; index < filterDate.length; index++) {
+                                        //     if (Date.parse(new Date(filterDate[index]).toLocaleDateString()) >= Date.parse(new Date(new Date(obj.checkInDate).toLocaleDateString())) && Date.parse(new Date(filterDate[index]).toLocaleDateString()) <= Date.parse(new Date(new Date(obj.checkOutDate).toLocaleDateString()))) {
+                                        //         return obj
+                                        //         break;
+                                        //     }
+
+                                        // }
                                     }).length
                                     : ''}
                                 pending={reservationSummary != 0 ?
                                     reservationSummary.filter((obj) => obj.reservation.reservationStatus == 'PENDING').filter((obj) => {
                                         let filterDate = getDates(startDate, endDate);
 
-                                        for (let index = 0; index < filterDate.length; index++) {
-                                            if (Date.parse(new Date(filterDate[index]).toLocaleDateString()) >= Date.parse(new Date(new Date(obj.checkInDate).toLocaleDateString())) && Date.parse(new Date(filterDate[index]).toLocaleDateString()) <= Date.parse(new Date(new Date(obj.checkOutDate).toLocaleDateString()))) {
-                                                return obj
-                                                break;
-                                            }
-
+                                        if (filterDate.includes(moment(obj.reservation.reservationDate).format('YYYY-MM-DD')) == true) {
+                                            return obj
                                         }
+                                        // for (let index = 0; index < filterDate.length; index++) {
+                                        //     if (Date.parse(new Date(filterDate[index]).toLocaleDateString()) >= Date.parse(new Date(new Date(obj.checkInDate).toLocaleDateString())) && Date.parse(new Date(filterDate[index]).toLocaleDateString()) <= Date.parse(new Date(new Date(obj.checkOutDate).toLocaleDateString()))) {
+                                        //         return obj
+                                        //         break;
+                                        //     }
+
+                                        // }
                                     }).length
                                     : ''}
                             />
@@ -1573,25 +1582,29 @@ const GeneratedReports = () => {
                                             reservationSummary != 0 ?
                                                 reservationSummary.filter((obj) => obj.reservation.reservationStatus == 'PENDING' || obj.reservation.reservationStatus == 'UNSETTLED' || obj.reservation.reservationStatus == 'RESERVED').filter((obj) => {
                                                     let filterDate = getDates(startDate, endDate);
-
-                                                    for (let index = 0; index < filterDate.length; index++) {
-                                                        if (Date.parse(new Date(filterDate[index]).toLocaleDateString()) >= Date.parse(new Date(new Date(obj.checkInDate).toLocaleDateString())) && Date.parse(new Date(filterDate[index]).toLocaleDateString()) <= Date.parse(new Date(new Date(obj.checkOutDate).toLocaleDateString()))) {
-                                                            return obj
-                                                            break;
-                                                        }
-
+                                                    if (filterDate.includes(moment(obj.reservation.reservationDate).format('YYYY-MM-DD')) == true) {
+                                                        return obj
                                                     }
+                                                    // for (let index = 0; index < filterDate.length; index++) {
+                                                    //     if (Date.parse(new Date(filterDate[index]).toLocaleDateString()) >= Date.parse(new Date(new Date(obj.checkInDate).toLocaleDateString())) && Date.parse(new Date(filterDate[index]).toLocaleDateString()) <= Date.parse(new Date(new Date(obj.checkOutDate).toLocaleDateString()))) {
+                                                    //         return obj
+                                                    //         break;
+                                                    //     }
+
+                                                    // }
 
                                                 }).length != 0 ? reservationSummary.filter((obj) => obj.reservation.reservationStatus == 'PENDING' || obj.reservation.reservationStatus == 'UNSETTLED' || obj.reservation.reservationStatus == 'RESERVED').filter((obj) => {
                                                     let filterDate = getDates(startDate, endDate);
-
-                                                    for (let index = 0; index < filterDate.length; index++) {
-                                                        if (Date.parse(new Date(filterDate[index]).toLocaleDateString()) >= Date.parse(new Date(new Date(obj.checkInDate).toLocaleDateString())) && Date.parse(new Date(filterDate[index]).toLocaleDateString()) <= Date.parse(new Date(new Date(obj.checkOutDate).toLocaleDateString()))) {
-                                                            return obj
-                                                            break;
-                                                        }
-
+                                                    if (filterDate.includes(moment(obj.reservation.reservationDate).format('YYYY-MM-DD')) == true) {
+                                                        return obj
                                                     }
+                                                    // for (let index = 0; index < filterDate.length; index++) {
+                                                    //     if (Date.parse(new Date(filterDate[index]).toLocaleDateString()) >= Date.parse(new Date(new Date(obj.checkInDate).toLocaleDateString())) && Date.parse(new Date(filterDate[index]).toLocaleDateString()) <= Date.parse(new Date(new Date(obj.checkOutDate).toLocaleDateString()))) {
+                                                    //         return obj
+                                                    //         break;
+                                                    //     }
+
+                                                    // }
 
                                                 }).length : 0 : 0
                                         }

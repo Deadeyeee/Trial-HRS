@@ -52,6 +52,7 @@ const style = {
 export const ProfileContainer = () => {
 
 
+    let userNameValidation = /^\S*$/;
     let letters = /^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/;
     let phoneNumberValidation = /^(09|\+639)\d{9}$/;
     let passwordValidation = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[-._!"`'#%&,:;<>=@{}~\$\(\)\*\+\/\\\?\[\]\^\| ])[A-Za-z\d -._!"`'#%&,:;<>=@{}~\$\(\)\*\+\/\\\?\[\]\^\|]{8,}/;
@@ -229,6 +230,10 @@ export const ProfileContainer = () => {
                                     setContactNumberError("This number is already taken.")
 
                                 }
+                                else if (item.userName.toLowerCase() == username.toLowerCase()) {
+                                    setUserNameError("This userName is already taken.")
+
+                                }
                             }
 
                         })
@@ -250,6 +255,7 @@ export const ProfileContainer = () => {
             setNationality(userInformation.nationality.charAt(0).toUpperCase() + userInformation.nationality.slice(1));
             setGender(userInformation.gender);
             setAddress(userInformation.address);
+            setUsername(userInformation.user.userName)
         }
     }, [userInformation, open])
 
@@ -285,13 +291,14 @@ export const ProfileContainer = () => {
                 axios.patch(apiKey + 'api/updateUsers/' + userInformation.user.id, {
                     email: email,
                     contactNumber: formatNumber,
+                    userName: username,
 
                 }).then((result) => {
                     console.log(result.data);
                     axios.patch(apiKey + 'api/updateGuest/' + userInformation.id, {
                         firstName: firstName.toLocaleLowerCase(),
                         lastName: lastName.toLocaleLowerCase(),
-                        birthDate: new Date(Date.parse(new Date(birthDay))+ 86400000),
+                        birthDate: new Date(Date.parse(new Date(birthDay)) + 86400000),
                         gender: gender,
                         address: address,
                         nationality: nationality
@@ -430,7 +437,7 @@ export const ProfileContainer = () => {
                 >
                 </HorizontalLine>
                 <ProfileContentContainer
-                    style={{ flexDirection: 'column', gap: '20px', marginBottom: '10px', marginTop: '20px'}}>
+                    style={{ flexDirection: 'column', gap: '20px', marginBottom: '10px', marginTop: '20px' }}>
                     <ContainerGlobal
                         justify='space-between'
                         gap='200px'
@@ -486,7 +493,7 @@ export const ProfileContainer = () => {
                         </Title>
                     </ContainerGlobal>
                 </ProfileContentContainer>
-                <hr style={{width: '50%'}}></hr>
+                <hr style={{ width: '50%' }}></hr>
                 <ProfileContentContainer
                     style={{ width: '90%' }}
                 >
@@ -980,6 +987,35 @@ export const ProfileContainer = () => {
                             required
                             inputProps={{ maxLength: 255 }} />
 
+
+
+                    </InputContainer>
+                    <InputContainer>
+                        <TextField
+
+                            error={userNameError.length != 0 ? true : false}
+                            helperText={userNameError.length != 0 ? userNameError : ""}
+                            placeholder='Username'
+                            label="Username"
+                            variant="outlined"
+                            inputRef={userNameRef}
+                            value={username}
+                            onChange={(e) => {
+                                setUsername(e.target.value)
+                                
+                                if (!userNameValidation.test(e.target.value) && e.target.value.length != 0) {
+                                    console.log('asda')
+                                    setUserNameError("Invalid username.")
+                                }
+                                else {
+                                    setUserNameError("")
+                                }
+                            }}
+                            inputProps={{ maxLength: 40 }}
+
+                            required
+                            
+                            style={{ width: '55%', }} />
 
 
                     </InputContainer>

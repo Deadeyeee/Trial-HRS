@@ -63,10 +63,16 @@ const BookingCartPageCont = () => {
   }
 
   useEffect(() => {
-
-    if (JSON.parse(window.sessionStorage.getItem("AvailedRoom")).length == 0 || window.sessionStorage.getItem("AvailedRoom") == null) {
+    if (window.sessionStorage.getItem("AvailedRoom") == null) {
       window.location = "/booking"
+
     }
+    else {
+      if (JSON.parse(window.sessionStorage.getItem("AvailedRoom")).length == 0) {
+        window.location = "/booking"
+      }
+    }
+
     setBookingInformation(JSON.parse(window.sessionStorage.getItem("AvailedRoom")))
   }, [])
 
@@ -93,7 +99,7 @@ const BookingCartPageCont = () => {
 
 
   return (
-    <Container style={{width: '95%'}}>
+    <Container style={{ width: '95%' }}>
 
 
       <Modal
@@ -136,7 +142,7 @@ const BookingCartPageCont = () => {
 
 
       <FlexboxContainer
-      style={{overflow: 'visible'}}
+        style={{ overflow: 'visible' }}
       >
         <Title
           color='#2e2e2e'
@@ -147,7 +153,7 @@ const BookingCartPageCont = () => {
           Booking Cart
         </Title>
         <TableContainer
-        className='tableCart'
+          className='tableCart'
           cellspacing="0"
           cellpadding="0">
           <Tr>
@@ -184,7 +190,7 @@ const BookingCartPageCont = () => {
             <Td align='center'></Td>
             <Td align='center'></Td>
             <Td colSpan={2} align='center' style={{ fontSize: '40px' }}>Grand Total:</Td>
-            <Td align='center' style={{ fontSize: '100%', fontWeight: 'normal', color: 'red' }}>{numberFormat(grandTotal)}</Td>
+            <Td align='center' style={{ fontSize: '30px', fontWeight: 'normal', color: 'red' }}>{numberFormat(grandTotal)}</Td>
             <Td align='center'></Td>
           </Tr>
         </TableContainer>

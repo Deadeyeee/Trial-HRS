@@ -8,11 +8,11 @@ import Axios from 'axios';
 import 'font-awesome/css/font-awesome.min.css';
 import { apiKey } from '../../../../apiKey';
 import { ContainerForm, ContainerFormContent, InputContainer } from '../../../containers/informationForm/style';
-import { FormControl, FormControlLabel, FormLabel, InputLabel, MenuItem, Radio, RadioGroup, Select, TextField } from '@mui/material';
+import { Checkbox, FormControl, FormControlLabel, FormLabel, InputLabel, Link, MenuItem, Radio, RadioGroup, Select, TextField } from '@mui/material';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { nationalities } from '../../../../nationalities';
-import { CheckCircleOutline, Close, HighlightOffSharp } from '@mui/icons-material';
+import { ArrowBack, ArrowLeft, ArrowLeftSharp, CheckBox, CheckCircleOutline, Close, HighlightOffSharp } from '@mui/icons-material';
 import logo from '../../../images/logo.png';
 import { Box, CircularProgress, Grow, Modal } from '@mui/material';
 
@@ -87,6 +87,9 @@ export const Register = () => {
   const [nationality, setNationality] = useState('Filipino');
 
 
+  const [agreement, setAgreement] = useState(false)
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
 
   const emailRef = useRef();
   const contactNumberRef = useRef();
@@ -202,7 +205,7 @@ export const Register = () => {
             Axios.post(apiKey + 'api/addGuest', {
               firstName: firstName,
               lastName: lastName,
-              birthDate: new Date(Date.parse(new Date(birthday))+ 86400000),
+              birthDate: new Date(Date.parse(new Date(birthday)) + 86400000),
               gender: gender,
               address: address,
               nationality: nationality,
@@ -311,8 +314,8 @@ export const Register = () => {
       >
 
         <div style={{ width: '100%' }} onClick={() => window.location.href = '/login'}>
-          <IconButton style={{ float: 'right' }}>
-            <Close />
+          <IconButton style={{ float: 'left' }}>
+            <ArrowBack />
           </IconButton>
         </div>
 
@@ -581,7 +584,45 @@ export const Register = () => {
               />
             </InputContainer>
 
+            <InputContainer
+              justify='center'
+              gap='0px'>
+              <FormControlLabel control={
+                <Checkbox
+                  style={{ padding: '0px', margin: '0px', }}
+                  value={agreement}
+                  onChange={(e) => {
+                    if (e.target.checked) {
+                      setAgreement(true)
+                    }
+                    else {
+                      setAgreement(false)
+                    }
+                  }}
+                  required
+                />
+              } />
+              <p style={{ fontSize: '14px', textAlign: 'center' }}>I acknowledge that I have read and agree to the
+                <Link style={{cursor: 'pointer'}}
+                  onClick={()=>{window.open('https://rmluxehotel.com/termsAndCondition/', '_blank')}}
+                  > Terms and Conditions and Privacy Policy.
+                </Link>
+              </p>
 
+{/* 
+              <Modal
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+              >
+                <Box sx={style}
+                  onClick={handleClose}
+                >
+                  <TermsAndConditionsCont />
+                </Box>
+              </Modal> */}
+            </InputContainer>
 
 
 

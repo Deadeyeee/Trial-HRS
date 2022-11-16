@@ -41,8 +41,8 @@ export const HomeBooking = ({ title }) => {
     new Date(new Date(new Date().getTime() + 86400000).setHours(0, 0, 0, 0))
   );
   const [nights, setNights] = useState();
-  const [adults, setAdults] = useState(1);
-  const [kids, setKids] = useState(0);
+  const [adults, setAdults] = useState('1');
+  const [kids, setKids] = useState('0');
   let minEndDate = new Date(startDate);
 
   useEffect(() => {
@@ -161,9 +161,6 @@ export const HomeBooking = ({ title }) => {
                 if (e.target.value > 99) {
                   setAdults(99)
                 }
-                else if (e.target.value < 1) {
-                  setAdults(1)
-                }
                 else {
                   setAdults(e.target.value)
                 }
@@ -197,9 +194,6 @@ export const HomeBooking = ({ title }) => {
                 if (e.target.value > 99) {
                   setKids(99)
                 }
-                else if (e.target.value < 0) {
-                  setKids(0)
-                }
                 else {
                   setKids(e.target.value)
                 }
@@ -230,7 +224,10 @@ export const HomeBooking = ({ title }) => {
           padding='10px 50px'
 
           border="1px solid #8F805F"
+
           // fontsize='1.1vw'
+          style={adults == '' ||adults == null || adults < 1 || kids === null || kids == '' || kids < 0 ? {pointerEvents: 'none', backgroundColor: 'rgb(0,0,0,.2)'} : ''}
+          // disabled = {adults == null || adults < 1 || kids == null || kids < 0 ?  true : false}
           className='buttonBook'
           onClick={() => {
             bookFilterDate();
@@ -489,7 +486,7 @@ export const HomeBooking = ({ title }) => {
                 size1000="100%"
               >
                 {" "}
-                You can Check-In from 2pm to 4am and Check-out before 12pm.
+                You can Check-In from 2pm to 4pm and Check-out before 12pm.
               </Title>
             </Answer>
           </Faq>

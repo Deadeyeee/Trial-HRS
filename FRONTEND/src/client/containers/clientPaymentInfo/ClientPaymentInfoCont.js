@@ -523,7 +523,7 @@ const ClientPaymentInfoCont = () => {
               fstyle="Normal"
               align="Center"
             >
-              {value.reservationReferenceNumber}
+              RECEIPT DECLINED
             </Title>
           </StatusContainer>
           <StatusContainer>

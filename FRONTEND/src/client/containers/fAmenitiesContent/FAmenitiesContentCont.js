@@ -22,9 +22,11 @@ export const FAmenitiesContentCont = () => {
                 Facilities and Amenities
             </Title>
             <HorizontalLine></HorizontalLine>
-            <FlexboxContainer style={{overflow: 'visible'}}>
+            <FlexboxContainer style={{ overflow: 'visible' }}>
                 <FlexboxContentMain>
-                    <div style={{ width: '500px', display: 'inline-block', }}>
+                    <div style={{display: 'inline-block', }}
+                        className='imageSlider'
+                    >
                         <ImageSlider2 />
                     </div>
                     {/* <FlexboxMainPhotoLeft
@@ -44,15 +46,15 @@ export const FAmenitiesContentCont = () => {
                         </Title>
                         <Description>
                             <i>
-                            Nothing beats a great venue for bringing people together. 
-                            There will never be a dull moment at RM Luxe Hotel because we have the ideal space for any of your events. 
-                            Celebrate your milestones at our open event space on the building's rooftop, which can be designed and customized 
-                            to your specifications.
+                                Nothing beats a great venue for bringing people together.
+                                There will never be a dull moment at RM Luxe Hotel because we have the ideal space for any of your events.
+                                Celebrate your milestones at our open event space on the building's rooftop, which can be designed and customized
+                                to your specifications.
                             </i>
                         </Description>
                         <Description>
-                            <i style={{fontWeight:"bold", fontSize: "18px"}}>
-                            For inquiries, please message us thru inbox or email:<a href='mailTo: rm.luxehotel@gmail.com' style={{color:"#8F8068"}}> rm.luxehotel@gmail.com</a> Thank you.
+                            <i style={{ fontWeight: "bold", fontSize: "18px" }}>
+                                For inquiries, please message us thru inbox or email:<a href='mailTo: rm.luxehotel@gmail.com' style={{ color: "#8F8068" }}> rm.luxehotel@gmail.com</a> Thank you.
                             </i>
                         </Description>
                     </FlexboxContent>

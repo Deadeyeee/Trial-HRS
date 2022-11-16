@@ -969,7 +969,6 @@ const RoomDetailsContainer = () => {
 
                     {roomType.length != 0 ?
                         roomType
-                            .slice((roomPage - 1) * 10, roomPage * 10)
                             .filter((item) => {
                                 if (search != '') {
                                     if (
@@ -996,6 +995,7 @@ const RoomDetailsContainer = () => {
                                 }
                             })
                             .sort((a, b) => b.roomRate - a.roomRate)
+                            .slice((roomPage - 1) * 10, roomPage * 10)
                             .map((items) => (
                                 <Tr>
                                     <Td align='center'>{items.roomType}</Td>

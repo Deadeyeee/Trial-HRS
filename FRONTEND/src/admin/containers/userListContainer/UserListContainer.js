@@ -1603,27 +1603,13 @@ const UserListContainer = () => {
                             <InputContainer>
                                 <TextField
 
-                                    error={userNameError.length != 0 ? true : false}
-                                    helperText={userNameError.length != 0 ? userNameError : ""}
                                     placeholder='Username'
                                     label="Username"
                                     variant="outlined"
-                                    inputRef={userNameRef}
                                     value={userName}
-                                    onChange={(e) => {
-                                        setUserName(e.target.value)
-                                        if (!userNameValidation.test(e.target.value) && e.target.value.length != 0) {
-                                            console.log('asda')
-                                            setUserNameError("Invalid username.")
-                                        }
-                                        else {
-
-                                            setUserNameError("")
-                                        }
-                                    }}
                                     inputProps={{ maxLength: 40 }}
 
-                                    required
+                                    disabled
                                     style={{ width: '55%', }} />
 
 
@@ -1854,7 +1840,6 @@ const UserListContainer = () => {
                     </Tr>
                     {guests.length != 0 && accountInformation.length != 0 ?
                         guests
-                            .slice((roomPage - 1) * 10, roomPage * 10)
                             .filter((obj) => obj.user.id != accountInformation.id)
                             .filter((item) => {
                                 if (search != '') {
@@ -1886,11 +1871,12 @@ const UserListContainer = () => {
                                 }
                             })
                             .sort((a, b) => a.firstName.localeCompare(b.firstName))
+                            .slice((roomPage - 1) * 10, roomPage * 10)
                             .map((item) => (
                                 <Tr>
                                     <Td align='center'>{item.id.split('-')[0]}</Td>
                                     <Td align='center'>{item.user.userName}</Td>
-                                    <Td align='center'>{item.firstName} {item.lastName}</Td>
+                                    <Td align='center' style={{textTransform: 'capitalize'}}>{item.firstName.toLowerCase()} {item.lastName.toLowerCase()}</Td>
                                     <Td align='center'>{item.user.status != false ?
                                         <ContainerGlobal
                                             w='100px'

@@ -13,9 +13,10 @@ export const Container = styled(motion.div)`
     width: 15%;
     background-color: #2E2E2E;
     z-index: 2;
+    overflow-y: auto;
+    overflow-x: hidden;
     @media (max-width: 1300px) {
-    gap: 3px
-    
+    gap: 3px;
     
       }
 `;
@@ -36,6 +37,7 @@ export const ProfileContainer = styled(motion.a)`
   display: flex;
   align-items: center;
   text-decoration: none;
+  width: 95%;
   margin: 50px 0px 20px 0px;
   gap: 5px;
   border-radius: .5rem;
@@ -61,11 +63,18 @@ export const Image = styled(motion.img)`
     margin-right: 2px;
     background-color: white;
     border-radius: 0.5rem;
+
+    @media (max-width: 1300px) {
+      width: 25px;
+    height: 25px;
+    
+      }
 `;
 
 export const DescriptionContainer = styled(motion.div)`
   display: flex;
   flex-direction: column;
+  width: 100%;
   gap: 5px;
 `;
 

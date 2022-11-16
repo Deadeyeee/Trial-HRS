@@ -852,7 +852,7 @@ const BookingsContainer = () => {
                     display='inline'
                     padding='5px 10px'
                 >
-                    {value}
+                    receipt declined
                 </Title>
             </ContainerGlobal>
         }
@@ -1383,7 +1383,6 @@ const BookingsContainer = () => {
 
                     {reservationSummary.length != 0 ?
                         reservationSummary
-                            .slice((roomPage - 1) * 10, roomPage * 10)
                             .filter((item) => {
 
 
@@ -1432,10 +1431,11 @@ const BookingsContainer = () => {
                             })
                             .filter((obj) => (obj.bookingReferenceNumber).toString().includes(searchValue) || (obj.reservation.reservationReferenceNumber).toString().includes(searchValue) || (obj.reservation.guestInformation.firstName).includes(searchValue) || (obj.reservation.guestInformation.lastName).includes(searchValue))
                             .sort((a, b) => b.bookingReferenceNumber - a.bookingReferenceNumber)
+                            .slice((roomPage - 1) * 10, roomPage * 10)
                             .map((item) => (
                                 <Tr>
                                     <Td align='center'>{item.bookingReferenceNumber}</Td>
-                                    <Td align='center'>{item.reservation.guestInformation.firstName.toLowerCase()}, {item.reservation.guestInformation.lastName.toLowerCase()}</Td>
+                                    <Td align='center' style={{textTransform: 'capitalize'}}>{item.reservation.guestInformation.firstName.toLowerCase()} {item.reservation.guestInformation.lastName.toLowerCase()}</Td>
                                     <Td align='center'>{item.reservation.reservationReferenceNumber}</Td>
 
                                     {/* <Td align='center'>{item.room.roomType.roomType}</Td> */}
@@ -1818,7 +1818,7 @@ const BookingsContainer = () => {
                                     family='Helvetica'
                                     fstyle='Normal'
                                     weight='bold'
-                                    align='left'
+                                    align='right'
                                     margin='15px 0px 20px 0px'
                                 >
                                     {reservationSummaryInfo.length != 0 ? reservationSummaryInfo.roomType : ''}
@@ -1867,7 +1867,7 @@ const BookingsContainer = () => {
                                     family='Helvetica'
                                     fstyle='Normal'
                                     weight='bold'
-                                    align='left'
+                                    align='right'
                                     margin='15px 0px 20px 0px'
                                 >
                                     {reservationSummaryInfo.length != 0 ? reservationSummaryInfo.roomNumber : ''}
@@ -1902,7 +1902,7 @@ const BookingsContainer = () => {
                                     family='Helvetica'
                                     fstyle='Normal'
                                     weight='bold'
-                                    align='left'
+                                    align='right'
                                     margin='15px 0px 20px 0px'
                                 >
                                     {reservationSummaryInfo.length != 0 ? numberFormat(reservationSummaryInfo.roomRate) : ''}
@@ -2831,6 +2831,20 @@ const BookingsContainer = () => {
                             </InputContainer>
 
 
+                            <InputContainer>
+                                <TextField
+
+                                    placeholder='Username'
+                                    label="Username"
+                                    variant="outlined"
+                                    inputRef={userNameRef}
+                                    value={reservationSummaryInfo.length != 0 ? reservationSummaryInfo.reservation.guestInformation.user.userName : ""}
+                                    
+
+                                    disabled
+                                    style={{ width: '55%', }} />
+
+                            </InputContainer>
 
 
                         </ContainerFormContent>
@@ -3630,7 +3644,7 @@ const BookingsContainer = () => {
                                 gap='10px'
                                 justify='space-between'
                                 align='center'
-                                overflow='auto'
+                                overflow='visible'
 
                             >
                                 <InputContainer>
@@ -4211,7 +4225,20 @@ const BookingsContainer = () => {
 
                             </InputContainer>
 
+                            <InputContainer>
+                                <TextField
 
+                                    placeholder='Username'
+                                    label="Username"
+                                    variant="outlined"
+                                    inputRef={userNameRef}
+                                    value={reservationSummaryInfo.length != 0 ? reservationSummaryInfo.reservation.guestInformation.user.userName : ""}
+                                    
+
+                                    disabled
+                                    style={{ width: '55%', }} />
+
+                            </InputContainer>
 
 
                         </ContainerFormContent>

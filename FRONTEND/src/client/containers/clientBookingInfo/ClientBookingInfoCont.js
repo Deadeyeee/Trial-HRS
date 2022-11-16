@@ -20,6 +20,8 @@ const ClientBookingInfoCont = () => {
     const [activeReservation, setActiveReservation] = useState([])
     const [grandTotal, setGrandTotal] = useState(0);
     const [reservedBooking, setReservedBooking] = useState([])
+    const [amenity, setAmenity] = useState([])
+    const [orderedAmenity, setOrderedAmenity] = useState([])
     useEffect(() => {
 
     }, [])
@@ -80,6 +82,22 @@ const ClientBookingInfoCont = () => {
             }
         }).catch((err) => {
             console.log(err)
+
+        });
+
+
+
+
+        axios.get(apiKey + 'api/getAllOrderedAmenities').then((result) => {
+            setOrderedAmenity(result.data.filter((obj) => obj.reservationSummary.reservation.id == activeReservation.id))
+        }).catch((err) => {
+
+        });
+
+
+        axios.get(apiKey + 'api/getAllAmenities').then((result) => {
+            setAmenity(result.data)
+        }).catch((err) => {
 
         });
 
@@ -294,6 +312,19 @@ const ClientBookingInfoCont = () => {
                             size1000='20px'
                         >
                             For further information, please send an email to <a target='_blank' href='mailto: Rm.LuxeHotel@gmail.com'>Rm.LuxeHotel@gmail.com</a>, or <a href='/login'>message us</a> through your account. You will find the details of your reservation made below.
+                        </Title>
+                        <Title
+                            family='raleway, sans-serif'
+                            weight='400'
+                            fstyle='Normal'
+                            size='25px'
+                            color='#2e2e2e'
+                            align='center'
+                            margin='25px 200px'
+                            margin1000='25px 100px'
+                            size1000='20px'
+                        >
+                            NOTE: Unpaid fees within the given time period will result to <b>CANCELATION</b> of reservation.
                         </Title>
                     </BankContentContainer>
                     <Title
@@ -606,6 +637,7 @@ const ClientBookingInfoCont = () => {
                             cellspacing="0"
                             cellpadding="0">
                             <Tr bg="transparent">
+                                <Th bg='#2E2E2E' color='white' align='center'>Booking status</Th>
                                 <Th bg='#2E2E2E' color='white' align='center'>Room type</Th>
                                 <Th bg='#2E2E2E' color='white' align='center'>Check in</Th>
                                 <Th bg='#2E2E2E' color='white' align='center'>Check out</Th>
@@ -617,6 +649,7 @@ const ClientBookingInfoCont = () => {
 
                                 <Tr style={index % 2 == 0 ? { backgroundColor: 'rgb(0,0,0,.1)' } : { backgroundColor: 'transparent' }}>
 
+                                    <Td align='center' style={{ textTransform: 'capitalize' }}>{item.bookingStatus.toLowerCase()}</Td>
                                     <Td align='center'>{item.roomType}</Td>
                                     <Td align='center'>{new Date(item.checkInDate).toLocaleDateString()}</Td>
                                     <Td align='center'>{new Date(item.checkOutDate).toLocaleDateString()}</Td>
@@ -679,7 +712,7 @@ const ClientBookingInfoCont = () => {
                                         align='right'
                                         size1000='16px'
                                     >
-                                        {numberFormat(grandTotal / 2)}
+                                        {numberFormat(parseFloat(grandTotal) / 2)}
                                     </Title>
                                 </ContainerGlobal>
                                 :
@@ -704,7 +737,7 @@ const ClientBookingInfoCont = () => {
                                         align='right'
                                         size1000='16px'
                                     >
-                                        {numberFormat(grandTotal)}
+                                        {numberFormat(parseFloat(grandTotal))}
                                     </Title>
                                 </ContainerGlobal>
                             }
@@ -733,6 +766,36 @@ const ClientBookingInfoCont = () => {
                                 </Title>
                             </ContainerGlobal>
 
+                            {/* {amenity.length != 0 && orderedAmenity.length != 0 ?
+                                amenity.map((item) => (
+                                    <ContainerGlobal justify='space-between' gap='70px'>
+                                        <Title
+                                            family='raleway, sans-serif'
+                                            weight='400'
+                                            fstyle='Normal'
+                                            size='18px'
+                                            color='#2e2e2e'
+                                            align='left'
+                                            size1000='12px'
+                                        >
+                                            <b> Total: {item.amenityName} ({orderedAmenity.filter((obj) => obj.amenity_id == item.id).map((item) => item.quantity).reduce((accu, value) => parseInt(accu) + parseInt(value), 0)})</b>
+                                        </Title>
+                                        <Title
+                                            family='Roboto Slab'
+                                            weight='400'
+                                            fstyle='Normal'
+                                            size='18px'
+                                            color='#000000'
+                                            align='right'
+                                            size1000='12px'
+                                        >
+                                            {numberFormat(orderedAmenity.filter((obj) => obj.amenity_id == item.id).map((item) => item.total).reduce((accu, value) => parseFloat(accu) + parseFloat(value), 0))}
+                                        </Title>
+                                    </ContainerGlobal>
+                                ))
+                                : ''} */}
+
+                            
                             <ContainerGlobal justify='space-between' gap='70px'>
                                 <Title
                                     family='raleway, sans-serif'
@@ -754,7 +817,7 @@ const ClientBookingInfoCont = () => {
                                     align='right'
                                     size1000='16px'
                                 >
-                                    {numberFormat(grandTotal)}
+                                    {numberFormat(parseFloat(grandTotal))}
                                 </Title>
                             </ContainerGlobal>
                             <HorizontalLine
@@ -1152,6 +1215,7 @@ const ClientBookingInfoCont = () => {
                             cellspacing="0"
                             cellpadding="0">
                             <Tr bg="transparent">
+                                <Th bg='#2E2E2E' color='white' align='center'>Booking status</Th>
                                 <Th bg='#2E2E2E' color='white' align='center'>Room type</Th>
                                 <Th bg='#2E2E2E' color='white' align='center'>Check in</Th>
                                 <Th bg='#2E2E2E' color='white' align='center'>Check out</Th>
@@ -1163,6 +1227,7 @@ const ClientBookingInfoCont = () => {
 
                                 <Tr style={index % 2 == 0 ? { backgroundColor: 'rgb(0,0,0,.1)' } : { backgroundColor: 'transparent' }}>
 
+                                    <Td align='center' style={{ textTransform: 'capitalize' }}>{item.bookingStatus.toLowerCase()}</Td>
                                     <Td align='center'>{item.roomType}</Td>
                                     <Td align='center'>{new Date(item.checkInDate).toLocaleDateString()}</Td>
                                     <Td align='center'>{new Date(item.checkOutDate).toLocaleDateString()}</Td>
@@ -1250,7 +1315,7 @@ const ClientBookingInfoCont = () => {
                                         align='right'
                                         size1000='16px'
                                     >
-                                        {numberFormat(grandTotal)}
+                                        {numberFormat(parseFloat(grandTotal))}
                                     </Title>
                                 </ContainerGlobal>
                             }
@@ -1278,7 +1343,60 @@ const ClientBookingInfoCont = () => {
                                     {numberFormat(activeReservation.payment.paymentMade)}
                                 </Title>
                             </ContainerGlobal>
+                            {amenity.length != 0 && orderedAmenity.length != 0 ?
+                                amenity.map((item) => (
+                                    <ContainerGlobal justify='space-between' gap='70px'>
+                                        <Title
+                                            family='raleway, sans-serif'
+                                            weight='400'
+                                            fstyle='Normal'
+                                            size='18px'
+                                            color='#2e2e2e'
+                                            align='left'
+                                            size1000='12px'
+                                        >
+                                            <b> Total: {item.amenityName} ({orderedAmenity.filter((obj) => obj.amenity_id == item.id).map((item) => item.quantity).reduce((accu, value) => parseInt(accu) + parseInt(value), 0)})</b>
+                                        </Title>
+                                        <Title
+                                            family='Roboto Slab'
+                                            weight='400'
+                                            fstyle='Normal'
+                                            size='18px'
+                                            color='#000000'
+                                            align='right'
+                                            size1000='12px'
+                                        >
+                                            {numberFormat(orderedAmenity.filter((obj) => obj.amenity_id == item.id).map((item) => item.total).reduce((accu, value) => parseFloat(accu) + parseFloat(value), 0))}
+                                        </Title>
+                                    </ContainerGlobal>
+                                ))
+                                : ''}
 
+                            {reservedBooking != 0 ? <ContainerGlobal justify='space-between' gap='70px'>
+                                <Title
+                                    family='raleway, sans-serif'
+                                    weight='400'
+                                    fstyle='Normal'
+                                    size='18px'
+                                    color='#2e2e2e'
+                                    align='left'
+                                    size1000='12px'
+                                >
+                                    <b> Others:</b>
+                                </Title>
+                                <Title
+                                    family='Roboto Slab'
+                                    weight='400'
+                                    fstyle='Normal'
+                                    size='18px'
+                                    color='#000000'
+                                    align='right'
+                                    size1000='12px'
+                                >
+                                    {numberFormat(reservedBooking.map((item) => item.others).reduce((accu, value) => parseFloat(accu) + parseFloat(value), 0))}
+                                </Title>
+                            </ContainerGlobal>
+                                : ''}
                             <ContainerGlobal justify='space-between' gap='70px'>
                                 <Title
                                     family='raleway, sans-serif'
@@ -1300,7 +1418,7 @@ const ClientBookingInfoCont = () => {
                                     align='right'
                                     size1000='16px'
                                 >
-                                    {numberFormat(grandTotal)}
+                                    {numberFormat(parseFloat(grandTotal))}
                                 </Title>
                             </ContainerGlobal>
                             <HorizontalLine
@@ -1683,6 +1801,7 @@ const ClientBookingInfoCont = () => {
                             cellspacing="0"
                             cellpadding="0">
                             <Tr bg="transparent">
+                                <Th bg='#2E2E2E' color='white' align='center'>Booking status</Th>
                                 <Th bg='#2E2E2E' color='white' align='center'>Room type</Th>
                                 <Th bg='#2E2E2E' color='white' align='center'>Check in</Th>
                                 <Th bg='#2E2E2E' color='white' align='center'>Check out</Th>
@@ -1694,6 +1813,7 @@ const ClientBookingInfoCont = () => {
 
                                 <Tr style={index % 2 == 0 ? { backgroundColor: 'rgb(0,0,0,.1)' } : { backgroundColor: 'transparent' }}>
 
+                                    <Td align='center' style={{ textTransform: 'capitalize' }}>{item.bookingStatus.toLowerCase()}</Td>
                                     <Td align='center'>{item.roomType}</Td>
                                     <Td align='center'>{new Date(item.checkInDate).toLocaleDateString()}</Td>
                                     <Td align='center'>{new Date(item.checkOutDate).toLocaleDateString()}</Td>
@@ -1781,7 +1901,7 @@ const ClientBookingInfoCont = () => {
                                         align='right'
                                         size1000='16px'
                                     >
-                                        {numberFormat(grandTotal)}
+                                        {numberFormat(parseFloat(grandTotal))}
                                     </Title>
                                 </ContainerGlobal>
                             }
@@ -1809,7 +1929,60 @@ const ClientBookingInfoCont = () => {
                                     {numberFormat(activeReservation.payment.paymentMade)}
                                 </Title>
                             </ContainerGlobal>
+                            {amenity.length != 0 && orderedAmenity.length != 0 ?
+                                amenity.map((item) => (
+                                    <ContainerGlobal justify='space-between' gap='70px'>
+                                        <Title
+                                            family='raleway, sans-serif'
+                                            weight='400'
+                                            fstyle='Normal'
+                                            size='18px'
+                                            color='#2e2e2e'
+                                            align='left'
+                                            size1000='12px'
+                                        >
+                                            <b> Total: {item.amenityName} ({orderedAmenity.filter((obj) => obj.amenity_id == item.id).map((item) => item.quantity).reduce((accu, value) => parseInt(accu) + parseInt(value), 0)})</b>
+                                        </Title>
+                                        <Title
+                                            family='Roboto Slab'
+                                            weight='400'
+                                            fstyle='Normal'
+                                            size='18px'
+                                            color='#000000'
+                                            align='right'
+                                            size1000='12px'
+                                        >
+                                            {numberFormat(orderedAmenity.filter((obj) => obj.amenity_id == item.id).map((item) => item.total).reduce((accu, value) => parseFloat(accu) + parseFloat(value), 0))}
+                                        </Title>
+                                    </ContainerGlobal>
+                                ))
+                                : ''}
 
+                            {reservedBooking != 0 ? <ContainerGlobal justify='space-between' gap='70px'>
+                                <Title
+                                    family='raleway, sans-serif'
+                                    weight='400'
+                                    fstyle='Normal'
+                                    size='18px'
+                                    color='#2e2e2e'
+                                    align='left'
+                                    size1000='12px'
+                                >
+                                    <b> Others:</b>
+                                </Title>
+                                <Title
+                                    family='Roboto Slab'
+                                    weight='400'
+                                    fstyle='Normal'
+                                    size='18px'
+                                    color='#000000'
+                                    align='right'
+                                    size1000='12px'
+                                >
+                                    {numberFormat(reservedBooking.map((item) => item.others).reduce((accu, value) => parseFloat(accu) + parseFloat(value), 0))}
+                                </Title>
+                            </ContainerGlobal>
+                                : ''}
                             <ContainerGlobal justify='space-between' gap='70px'>
                                 <Title
                                     family='raleway, sans-serif'
@@ -1831,7 +2004,7 @@ const ClientBookingInfoCont = () => {
                                     align='right'
                                     size1000='16px'
                                 >
-                                    {numberFormat(grandTotal)}
+                                    {numberFormat(parseFloat(grandTotal))}
                                 </Title>
                             </ContainerGlobal>
                             <HorizontalLine
@@ -1985,7 +2158,7 @@ const ClientBookingInfoCont = () => {
                         display='inline'
                         padding='5px 10px'
                     >
-                        {value.toLowerCase()}
+                        cancelled
                     </Title>
                 </ContainerGlobal>
             }
@@ -2020,6 +2193,7 @@ const ClientBookingInfoCont = () => {
 
 
     const [reservationPage, setReservationPage] = useState(1)
+
     return (
         <Container>
 
@@ -2093,7 +2267,7 @@ const ClientBookingInfoCont = () => {
                         </Tr>
                         {reservation
                             .slice((reservationPage - 1) * 6, reservationPage * 6)
-                            .sort((a, b)=> Date.parse(new Date(b.reservationDate)) - Date.parse(new Date(a.reservationDate)))
+                            .sort((a, b) => Date.parse(new Date(b.reservationDate)) - Date.parse(new Date(a.reservationDate)))
                             .map((item, index) => (
 
                                 <Tr style={index % 2 == 0 ? { backgroundColor: 'transparent' } : { backgroundColor: 'rgb(0,0,0,.1)' }}>
@@ -2101,7 +2275,7 @@ const ClientBookingInfoCont = () => {
                                     <Td style={item.id == activeReservation.id ? { backgroundColor: 'green', color: 'black' } : { backgroundColor: 'transparent' }} align='center'>{item.reservationReferenceNumber}</Td>
                                     <Td style={item.id == activeReservation.id ? { backgroundColor: 'green', color: 'black' } : { backgroundColor: 'transparent' }} align='center'>{new Date(item.reservationDate).toLocaleDateString()} {new Date(item.reservationDate).toLocaleTimeString()}</Td>
                                     <Td style={item.id == activeReservation.id ? { backgroundColor: 'green', color: 'black', fontWeight: 'bold' } : { backgroundColor: 'transparent' }} align='center'>{reservationStatusStyle(item.reservationStatus)}</Td>
-                                    <Td style={item.id == activeReservation.id ? { backgroundColor: 'green', color: 'black' } : { backgroundColor: 'transparent' }} align='center'><a href="#" style={{ cursor: 'pointer', color: 'blue' }} onClick={() => { view(item.id) }}>View</a></Td>
+                                    <Td style={item.id == activeReservation.id ? { backgroundColor: 'green', color: 'black' } : { backgroundColor: 'transparent' }} align='center'><a href="#" style={item.id == activeReservation.id ? { cursor: 'default', color: 'black' } : { cursor: 'pointer', color: 'blue' }} onClick={() => { view(item.id) }}>View</a></Td>
                                     {/* <Td align='center'>{item.numberOfNights}</Td>
                             <Td align='center'>{numberFormat(item.room.roomType.roomRate)}</Td>
                             <Td align='center' style={{ color: 'red' }}>{numberFormat(item.room.roomType.roomRate * item.numberOfNights)}</Td> */}

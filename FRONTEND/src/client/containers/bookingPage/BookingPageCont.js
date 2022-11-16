@@ -28,15 +28,15 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import PendingIcon from '@mui/icons-material/Pending';
 import ImageSlider from '../../components/imageSlider/ImageSlider';
 import * as moment from 'moment';
-import { Badge, ClickAwayListener, Tooltip } from '@mui/material';
+import { Badge, CircularProgress, ClickAwayListener, Tooltip } from '@mui/material';
 import { borderRadius } from '@mui/system';
 import { apiKey } from '../../../apiKey';
 import { Info } from '@mui/icons-material';
 export const BookingPageCont = () => {
     const ratingValue = 3.6;
     const [roomType, setRoomType] = useState([])
-    const [adults, setAdults] = useState(1)
-    const [kids, setKids] = useState(0)
+    const [adults, setAdults] = useState('1')
+    const [kids, setKids] = useState('0')
     const [usedServices, setUsedServices] = useState([])
     const [startDate, setStartDate] = useState(new Date(new Date().setHours(0, 0, 0, 0)));
     const [endDate, setEndDate] = useState(new Date(new Date(new Date().getTime() + 86400000).setHours(0, 0, 0, 0)));
@@ -78,7 +78,7 @@ export const BookingPageCont = () => {
     //     }
     // }, [])
 
-
+    const [roomtypeLoading, setRoomtypeLoading] = useState(false);
 
     useEffect(() => {
         axios.get(apiKey + 'api/getAllRoomTypeImages').then((result) => {
@@ -97,8 +97,8 @@ export const BookingPageCont = () => {
 
             setEndDate(new Date(window.sessionStorage.getItem('endDate')))
             setStartDate(new Date(window.sessionStorage.getItem('startDate')))
-            setAdults(parseInt(window.sessionStorage.getItem('guest')))
-            setKids(parseInt(window.sessionStorage.getItem('kids')))
+            setAdults(window.sessionStorage.getItem('guest'))
+            setKids(window.sessionStorage.getItem('kids'))
             window.sessionStorage.clear();
         }
     }, [])
@@ -199,13 +199,13 @@ export const BookingPageCont = () => {
     const getRooms = async () => {
         try {
             let res = await axios.get(apiKey + 'api/getAllRoom')
-            setRoom([])
-            res.data.map((item) => {
-                if (item.roomStatus !== "Maintenance" && item.status != false) {
-                    setRoom((oldData) => [...oldData, item])
-                }
-            })
-
+            // setRoom([])
+            // res.data.map((item) => {
+            //     if (item.roomStatus !== "Maintenance" && item.status != false) {
+            //         setRoom((oldData) => [...oldData, item])
+            //     }
+            // })
+            setRoom(res.data.filter((item) => notAvailableRoom.includes(item.id) == false && item.roomStatus !== "Maintenance" && item.status != false))
 
         } catch (error) {
             console.log(error.data)
@@ -240,9 +240,11 @@ export const BookingPageCont = () => {
 
         }
     }
+
+
     useEffect(() => {
         getNotAvailableRoom();
-        getRooms();
+        // getRooms();
         // getRoomtypes();
         getUsedServices()
         window.sessionStorage.removeItem('checkIn')
@@ -319,12 +321,13 @@ export const BookingPageCont = () => {
     }, [bookFilter, bookedRooms])
 
     useEffect(() => {
-        room.map((value, index) => {
-            if (notAvailableRoom.includes(value.id)) {
-                room.splice(index, 1)
-            }
-        })
-    }, [room, notAvailableRoom])
+        getRooms();
+        // room.map((value, index) => {
+        //     if (notAvailableRoom.includes(value.id)) {
+        //         room.splice(index, 1)
+        //     }
+        // })
+    }, [notAvailableRoom])
     // setAvailableRoomType([])
 
     useEffect(() => {
@@ -364,20 +367,22 @@ export const BookingPageCont = () => {
         //     })
         // }
         // console.log(roomType)
-
-        axios.get(apiKey + 'api/getAllRoomType').then((res) => {
-            setRoomType(res.data.filter((item) => {
-                if (item.maxAdultOccupancy >= adults && item.maxKidsOccupancy >= kids && uniqueAvailbleRoomType.includes(item.id) == true && item.status == true) {
-                    return item;
+        console.log("availedRoomDates", availbleRoomType)
+        setRoomtypeLoading(true)
+        setTimeout(() => {
+            axios.get(apiKey + 'api/getAllRoomType').then((res) => {
+                setRoomType(res.data.filter((item) => {
+                    if (item.maxAdultOccupancy >= adults && item.maxKidsOccupancy >= kids && room.map((item)=> item.roomType_id).includes(item.id) == true && item.status == true) {
+                        return item;
+                    }
                 }
-            }
-
-            ))
-
-        }).catch((err) => {
-            console.log(err)
-
-        });
+                ))
+                setRoomtypeLoading(false)
+            }).catch((err) => {
+                console.log(err)
+                setRoomtypeLoading(false)
+            });
+        }, 5000);
 
 
     }, [availbleRoomType])
@@ -521,9 +526,6 @@ export const BookingPageCont = () => {
                                 if (e.target.value > 99) {
                                     setAdults(99)
                                 }
-                                else if (e.target.value < 1) {
-                                    setAdults(1)
-                                }
                                 else {
                                     setAdults(e.target.value)
                                 }
@@ -563,9 +565,6 @@ export const BookingPageCont = () => {
                                 if (e.target.value > 99) {
                                     setKids(99)
                                 }
-                                else if (e.target.value < 0 || e.target.value == null) {
-                                    setKids(0)
-                                }
                                 else {
                                     setKids(e.target.value)
                                 }
@@ -595,6 +594,7 @@ export const BookingPageCont = () => {
                     padding='10px 50px'
 
                     border="1px solid #8F805F"
+                    style={adults == '' ||adults == null || adults < 1 || kids === null || kids == '' || kids < 0 ? {pointerEvents: 'none', backgroundColor: 'rgb(0,0,0,.2)'} : ''}
                     // fontsize='1.1vw'
                     className='buttonBook'
                     onClick={() => { bookFilterDate(); }}
@@ -643,8 +643,8 @@ export const BookingPageCont = () => {
                 w="30%"
             ></HorizontalLine>
 
-            {
-                roomType.length == 0 ?
+            {roomtypeLoading ? <CircularProgress></CircularProgress> :
+                roomType.length == 0 && roomType.filter((item) => uniqueAvailbleRoomType.includes(item.id)).length == 0 ?
                     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexFlow: 'column' }}>
                         <Title
                             color='#898585'
@@ -654,7 +654,7 @@ export const BookingPageCont = () => {
                             family='Roboto Slab'
 
                         >
-                            No available rooms in your preffered date(s). Please pick another one.
+                            No available rooms in your preferred date(s). Please pick another one.
 
                         </Title>
                         {/* <Button
@@ -755,8 +755,8 @@ export const BookingPageCont = () => {
                                             </Tooltip>
                                         </ClickAwayListener> */}
                                         <Tooltip title='Kids 8 years old and below are free' placement="top"
-                                            // onClose={handleTooltipClose}
-                                            // open={open}
+                                        // onClose={handleTooltipClose}
+                                        // open={open}
                                         >
                                             <Badge badgeContent='i' color="primary" style={{ paddingRight: '8px' }}>
                                                 {item.maxAdultOccupancy} Adult(s) and {item.maxKidsOccupancy} Kid(s) only </Badge>

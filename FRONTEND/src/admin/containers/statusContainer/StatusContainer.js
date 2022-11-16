@@ -138,6 +138,7 @@ const StatusContainer = () => {
         setAddress(value.address);
         setAccountActive(value.user.status)
         setUserInformation(value)
+        setUsername(value.user.userName)
 
     };
     const handleClose = () => {
@@ -152,6 +153,7 @@ const StatusContainer = () => {
         setAddress('');
         setAccountActive(true)
         setUserInformation([])
+        setUsername('')
 
 
     };
@@ -167,6 +169,7 @@ const StatusContainer = () => {
         setAddress(value.address);
         setUserInformation(value)
         setAccountActive(value.user.status)
+        setUsername(value.user.userName)
 
     };
     const handleClose2 = () => {
@@ -181,6 +184,7 @@ const StatusContainer = () => {
         setAddress('');
         setUserInformation([])
         setAccountActive(true)
+        setUsername('')
     };
 
 
@@ -218,9 +222,9 @@ const StatusContainer = () => {
                 }).then((result) => {
                     console.log(result.data);
                     axios.patch(apiKey + 'api/updateGuest/' + userInformation.id, {
-                        firstName: firstName.toLocaleLowerCase(),
-                        lastName: lastName.toLocaleLowerCase(),
-                        birthDate: new Date(Date.parse(new Date(birthDay))+ 86400000),
+                        firstName: firstName,
+                        lastName: lastName,
+                        birthDate: new Date(Date.parse(new Date(birthDay)) + 86400000),
                         gender: gender,
                         address: address,
                         nationality: nationality
@@ -583,7 +587,6 @@ const StatusContainer = () => {
 
                     {guests.length != 0 ?
                         guests
-                            .slice((roomPage - 1) * 10, roomPage * 10)
                             .sort((a, b) => a.firstName.localeCompare(b.firstName))
                             .filter((item) => {
                                 if (startDateFilter != null && endDateFilter != null) {
@@ -627,11 +630,12 @@ const StatusContainer = () => {
                                     return item
                                 }
                             })
+                            .slice((roomPage - 1) * 10, roomPage * 10)
                             .map((item) => (
                                 <Tr>
                                     <Td align='center'>{item.id.split('-')[0]}</Td>
                                     <Td align='center'>{item.user.userName}</Td>
-                                    <Td align='center'>{item.firstName} {item.lastName}</Td>
+                                    <Td align='center' style={{ textTransform: 'capitalize' }}>{item.firstName.toLowerCase()} {item.lastName.toLowerCase()}</Td>
                                     <Td align='center'>{item.user.email}</Td>
                                     <Td align='center'>{reservationSummary.length != 0 ? reservationSummary.filter((obj) => (obj.reservation.guest_id == item.id)).length : 0}</Td>
                                     <Td align='center'>{item.user.status != false ?
@@ -1029,6 +1033,20 @@ const StatusContainer = () => {
 
 
                     </InputContainer>
+
+                    <InputContainer>
+                        <TextField
+
+                            placeholder='Username'
+                            label="Username"
+                            variant="outlined"
+                            value={username}
+
+
+                            disabled
+                            style={{ width: '55%', }} />
+
+                    </InputContainer>
                     <InputContainer>
                         <FormControl sx={{ width: 200, margin: '5px 0px' }} size="large" variant="standard">
                             <InputLabel id="demo-select-small" >Account Status</InputLabel>
@@ -1054,7 +1072,6 @@ const StatusContainer = () => {
                         </FormControl>
 
                     </InputContainer>
-
                     <Button
                         variant="contained"
                         color='success'
@@ -1341,6 +1358,19 @@ const StatusContainer = () => {
                             inputProps={{ maxLength: 255 }} />
 
 
+
+                    </InputContainer>
+                    <InputContainer>
+                        <TextField
+
+                            placeholder='Username'
+                            label="Username"
+                            variant="outlined"
+                            value={username}
+
+
+                            disabled
+                            style={{ width: '55%', }} />
 
                     </InputContainer>
                     <InputContainer>

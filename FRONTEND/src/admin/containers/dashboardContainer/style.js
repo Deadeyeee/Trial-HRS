@@ -25,7 +25,7 @@ export const SummaryPlate = styled(motion.div)`
   display: flex;
   justify-content: flex-start;
   gap: 10px;
-  width: 365px;
+  width: 20%;
   align-items: center;
   background-color: white;
   border-radius: .5rem;

@@ -649,7 +649,6 @@ const RoomStatusContainer = () => {
                         <Th align='center'>Action</Th>
                     </Tr>
                     {roomValue.length != 0 ? roomValue
-                        .slice((roomPage - 1) * 10, roomPage * 10)
                         .filter((item) => {
                             if (search != '') {
                                 if (
@@ -685,7 +684,9 @@ const RoomStatusContainer = () => {
                                 return item
                             }
                         })
-                        .sort((a, b) => a.roomNumber - b.roomNumber).map((item) => (
+                        .sort((a, b) => a.roomNumber - b.roomNumber)
+                        .slice((roomPage - 1) * 10, roomPage * 10)
+                        .map((item) => (
                             <Tr>
                                 <Td align='center'>{item.roomNumber}</Td>
                                 <Td align='center'>{item.roomType.roomType}</Td>
@@ -728,7 +729,7 @@ const RoomStatusContainer = () => {
                         :
                         <Tr>
                             <Td align='center' colSpan={6}>Rooms is empty</Td>
-                        </Tr>}
+                        </Tr>   }
 
                 </TableContainer>
                 <ContainerGlobal

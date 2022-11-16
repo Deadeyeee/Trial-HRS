@@ -30,6 +30,10 @@ export const TermsAndConditionsContentContainer = styled(motion.div)`
     display: flex;
     flex-direction: row;
     margin: 10px 30px;
+    @media (max-width: 1000px){
+        
+    flex-direction: column;
+    }
 `;
 
 export const ButtonHolder = styled(motion.div)`

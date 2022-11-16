@@ -8,48 +8,67 @@ import { ContainerGlobal } from '../../../admin/components/container/container';
 import { apiKey } from '../../../apiKey';
 import html2canvas from 'html2canvas';
 import { jsPDF } from "jspdf";
-function BookingConfirmationCont() {
+function BookingConfirmationPrint() {
 
+    axios.defaults.withCredentials = true;
     const [reservedBooking, setReservationBooking] = useState([]);
     const { id } = useParams();
     const [grandTotal, setGrandTotal] = useState(0);
     const [reservationInfo, setReservationInfo] = useState([]);
     const [logedIn, setLogedIn] = useState(false);
     const [guestRole, setguestRole] = useState('')
+
     useEffect(() => {
-        axios.get(apiKey + 'api/getAllReservationSummary').then((result) => {
-            setReservationBooking([])
-            for (let index = 0; index < result.data.length; index++) {
-                if (id == result.data[index].reservation_id) {
-                    setReservationBooking((oldData) => [...oldData, result.data[index]])
 
-                    console.log('ey')
-                }
-            }
-        }).catch((err) => {
-            console.log(err)
-
-        });
 
         axios.get(apiKey + 'api/getReservation/' + id).then((result) => {
             setReservationInfo(result.data)
-            if (result.data.reservationStatus != 'PENDING') {
-                window.location = '/'
-            }
+            axios.get(apiKey + 'api/getAllReservationSummary').then((result) => {
+                setReservationBooking([])
+                for (let index = 0; index < result.data.length; index++) {
+                    if (id == result.data[index].reservation_id) {
+                        setReservationBooking((oldData) => [...oldData, result.data[index]])
+
+                        console.log('ey')
+                    }
+                    if (index == result.data.length - 1) {
+                        axios.get(apiKey + "auth/verify-token").then((response) => {
+                            console.log(response)
+                            if (response.status === 200) {
+                                setLogedIn(true)
+                                setguestRole(response.data.role)
+                                console.log(response.data.role)
+
+                            }
+                            else {
+                                setLogedIn(false)
+                            }
+
+                            setTimeout(() => {
+
+                                window.print()
+                                window.close();
+                            }, 1000);
+                        }).catch((err) => {
+                            console.log(err)
+                            setTimeout(() => {
+
+                                window.print()
+                                window.close();
+                            }, 1000);
+                        });
+                    }
+                }
+            }).catch((err) => {
+                console.log(err)
+
+            });
         }).catch((err) => {
             console.log(err)
 
         });
 
-        axios.get(apiKey + "auth/verify-token").then((response) => {
-            if (response.status === 200) {
-                setLogedIn(true)
-                setguestRole(response.data.role)
-            }
-            else {
-                setLogedIn(false)
-            }
-        });
+
     }, [])
 
     useEffect(() => {
@@ -143,7 +162,7 @@ function BookingConfirmationCont() {
         // pdf.addImage(data, "JPEG", 1, 1, 600, 800)
         // pdf.save('RMLuxeHotel_BookingConfimation_PDF');
 
-        window.open('/booking/confirmation/print/' + id, '_blank')
+        window.print()
     };
 
 
@@ -238,14 +257,12 @@ function BookingConfirmationCont() {
                     align='Center'
 
                 >
-
-                    {reservationInfo.length != 0 && reservationInfo.payment.paymentMode.paymentMode == 'Bank Deposit (via Metro Bank)' ? 'Deposit payment through our bank account:' : 'Deposit payment through our gcash account:'}
+                    Deposit payment through our bank account:
                 </Title>
                 <BankDetailsContainer className='bankDetailscont'>
 
                     <BankTitleContainer style={{ margin: '40px 0px' }} className='bankDetails'>
                         <ContainerGlobal
-                            gap='40px'
                             justify='space-between'
                             w='100%'>
                             <Title
@@ -267,14 +284,13 @@ function BookingConfirmationCont() {
                                 size='25px'
                                 color='#2e2e2e'
                                 size1000='100%'
-                                align='right'
+                                align='left'
                             >
                                 {reservationInfo.length != 0 && reservationInfo.payment.paymentMode.billerName}
                             </Title>
                         </ContainerGlobal>
 
                         <ContainerGlobal
-                            gap='40px'
                             justify='space-between'
                             w='100%'>
                             <Title
@@ -295,14 +311,13 @@ function BookingConfirmationCont() {
                                 size='25px'
                                 size1000='100%'
                                 color='#2e2e2e'
-                                align='right'
+                                align='left'
                             >
                                 Quezon City
                             </Title>
                         </ContainerGlobal>
 
                         <ContainerGlobal
-                            gap='40px'
                             justify='space-between'
                             w='100%'>
                             <Title
@@ -323,14 +338,13 @@ function BookingConfirmationCont() {
                                 size='25px'
                                 color='#2e2e2e'
                                 size1000='100%'
-                                align='right'
+                                align='left'
                             >
                                 {reservationInfo.length != 0 && reservationInfo.payment.paymentMode.accountName}
                             </Title>
                         </ContainerGlobal>
 
                         <ContainerGlobal
-                            gap='40px'
                             justify='space-between'
                             w='100%'>
                             <Title
@@ -351,8 +365,7 @@ function BookingConfirmationCont() {
                                 size='25px'
                                 color='#2e2e2e'
                                 size1000='100%'
-                                align='right'
-                                style={{ wordBreak: 'break-word' }}
+                                align='left'
                             >
                                 {reservationInfo.length != 0 && reservationInfo.payment.paymentMode.accountNumber}
                             </Title>
@@ -392,7 +405,7 @@ function BookingConfirmationCont() {
                         size='25px'
                         color='#2e2e2e'
                         align='center'
-                        margin='25px 200px 10px 200px'
+                        margin='25px 200px'
                         size1000='100%'
                     >
                         For further information, please send an email to <a target='_blank' href='mailto: Rm.LuxeHotel@gmail.com'>Rm.LuxeHotel@gmail.com</a>, or <a href='/client/messages'>message us</a> through your account. You will find the details of your reservation made below.
@@ -425,7 +438,7 @@ function BookingConfirmationCont() {
                             <b>***IMPORTANT***</b>
                         </Title>
                         <GeneratedAccountContainer>
-                            
+
                             <Title
                                 family='raleway, sans-serif'
                                 weight='700'
@@ -456,7 +469,7 @@ function BookingConfirmationCont() {
                             <b>***IMPORTANT***</b>
                         </Title>
                         <GeneratedAccountContainer>
-                           
+
                             <Title
                                 family='raleway, sans-serif'
                                 weight='700'
@@ -514,7 +527,9 @@ function BookingConfirmationCont() {
                                 size1000='100%'
                                 align='right'
                                 w='50%'
-                                style={{ wordBreak: 'break-word' }}
+                                style={{
+                                    wordWrap: 'break-word'
+                                }}
                             >
                                 {reservationInfo.length != 0 && reservationInfo.reservationReferenceNumber}
                             </Title>
@@ -704,7 +719,6 @@ function BookingConfirmationCont() {
                                 color='#2e2e2e'
                                 align='right'
                                 w='50%'
-                                style={{ wordBreak: 'break-word' }}
                             >
                                 <b>{reservationInfo.length != 0 && reservationInfo.guestInformation.user.email.toLowerCase()}</b>
                             </Title>
@@ -759,7 +773,6 @@ function BookingConfirmationCont() {
                                 color='#2e2e2e'
                                 align='right'
                                 w='50%'
-                                style={{ wordBreak: 'break-word' }}
                             >
                                 <b>{reservationInfo.length != 0 && reservationInfo.guestInformation.user.contactNumber.toLowerCase()}</b>
                             </Title>
@@ -847,24 +860,8 @@ function BookingConfirmationCont() {
                     <b>NOTE!:</b> Discount will only take effect upon check-in. Please present your valid id to our frontdesk to confirm your discount. Thank you
                 </center>
             </div>
-            <ButtonHolder className='hide'>
-                <Button
-                    whileHover={{ backgroundColor: "#302B20", color: "white" }}
-                    w='40%'
-                    h='60px'
-                    textcolor="black"
-                    fam='Times New Roman'
-                    weight='-400'
-                    fontStyle='Italic'
-                    radius="0px"
-                    border="1px solid #8F805F"
+            <ButtonHolder style={{ justifyContent: 'center' }} className='hide'>
 
-                    fontsize='16px'
-                    bg='#DFD3B9'
-                    href={logedIn == false ? '/login' : '/client/profile'}
-                >
-                    {logedIn == false ? 'Login' : 'Go to profile'}
-                </Button>
                 <Button
                     whileHover={{ backgroundColor: "#ffffff", color: "black" }}
                     w='40%'
@@ -886,4 +883,4 @@ function BookingConfirmationCont() {
     )
 }
 
-export default BookingConfirmationCont
+export default BookingConfirmationPrint

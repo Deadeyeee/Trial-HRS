@@ -31,12 +31,12 @@ const style = {
     top: '50%',
     flexDirection: 'column',
     alignItems: 'center',
-    justifyContent: 'center ',
+    justifyContent: 'flex-start',
     left: '50%',
     transform: 'translate(-50%, -50%)',
     height: '80vh',
     overflow: 'scroll',
-    width: '1500px',
+    width: '80vw',
     bgcolor: 'background.paper',
     boxShadow: 24,
     p: 4,
@@ -167,6 +167,13 @@ const InformationForm = () => {
             if (result.data.role != 'NON-USER') {
                 handleCloseIsLoading();
                 window.location = '/billingSummary'
+            }
+
+            if (result.data.role != 'CUSTOMER') {
+                axios.delete(apiKey + "auth/Logout").then((response) => {
+
+                    window.location.reload();
+                })
             }
         }).catch((err) => {
         });
@@ -666,7 +673,7 @@ const InformationForm = () => {
                                 />
                             } />
                             <p style={{ fontSize: '14px', textAlign: 'center' }}>Kindly, check the box if you have read and agreed to RM Luxe Hotel's
-                                <Link
+                                <Link style={{cursor: 'pointer'}}
                                     onClick={handleOpen}> Terms and Conditions
                                 </Link>
                             </p>

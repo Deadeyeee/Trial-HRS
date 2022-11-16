@@ -22,21 +22,22 @@ export const RegisterBorder = styled(motion.div)`
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+      justify-content: flex-start;
     width: 20%;
     height: auto;
     background: rgba(255, 255, 255, 1);
     border-radius: 20px;
     position: absolute;
     z-index: 1;
-    overflow: hidden;
+    height: 90vh;
+    overflow: auto;
     padding: 30px 50px 30px 50px;
     box-shadow: -5px 10px 5px black;
     @media (max-width: 1000px) {
       justify-content: flex-start;
     width: auto;
     height: 80vh;
-    overflow: scroll;
+    overflow: auto;
       }
 `;
 

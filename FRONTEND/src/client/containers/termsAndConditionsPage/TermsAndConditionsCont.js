@@ -8,14 +8,16 @@ const TermsAndConditionsCont = () => {
             <Title
                 weight='400'
                 size='66px'
+                size1000='25px'
                 fstyle='Normal'
                 align='Center'
                 color='#bfaa7e'
-                margin='200px 0px 0px 0px'
             >
                 Terms And Conditions
             </Title>
-            <HorizontalLine></HorizontalLine>
+            <HorizontalLine
+            style={{width: '40%'}}
+            ></HorizontalLine>
             <TermsAndConditionsContainer>
                 <Title
                     family='raleway, sans-serif'
@@ -25,6 +27,8 @@ const TermsAndConditionsCont = () => {
                     color='#2e2e2e'
                     align='left'
                     margin='0px 0px 10px 0px'
+                    margin1000='0px 0px 10px 0px'
+                    size1000='14px'
                     line='30px'
                 >
                     <b>1.</b> Check Out time is <b>12:00NN</b> and Check in time is <b>2:00PM</b>.
@@ -38,6 +42,8 @@ const TermsAndConditionsCont = () => {
                     align='left'
                     margin='0px 0px 10px 0px'
                     line='30px'
+                    margin1000='0px 0px 10px 0px'
+                    size1000='14px'
                 >
                     <b>2.</b> Strictly <b><u>NO SMOKING/DRINKING</u></b> policy inside the hotel's premises.
                 </Title>
@@ -50,6 +56,8 @@ const TermsAndConditionsCont = () => {
                     align='left'
                     margin='0px 0px 10px 0px'
                     line='30px'
+                    margin1000='0px 0px 10px 0px'
+                    size1000='14px'
                 >
                     <b>3.</b> The hotel is not responsible for the safety of any valuables left in the guest Rooms
                     as governed by the <b>Civil Code of the Philippines.</b> Visitors are required to register
@@ -66,6 +74,8 @@ const TermsAndConditionsCont = () => {
                     align='left'
                     margin='0px 0px 10px 0px'
                     line='30px'
+                    margin1000='0px 0px 10px 0px'
+                    size1000='14px'
                 >
                     <b>4.</b> Possesion of the following are strictly not allowed within the hotel premises. The hotel reserves the right
                     to report any such activity to the Government.
@@ -80,6 +90,8 @@ const TermsAndConditionsCont = () => {
                     align='left'
                     margin='0px 0px 10px 0px'
                     line='30px'
+                    margin1000='0px 0px 10px 0px'
+                    size1000='14px'
                 >
                     <b>5.</b> The Hotel Reserves the <b><i>the right of charge a fee</i></b> should be there be <b><i>stained linens,
                         foul odor, losses and breakages in the room</i></b> for the duration of the guest'stay
@@ -93,6 +105,8 @@ const TermsAndConditionsCont = () => {
                     align='left'
                     margin='0px 0px 10px 0px'
                     line='30px'
+                    margin1000='0px 0px 10px 0px'
+                    size1000='14px'
                 >
                     <b>6.</b> <b>THE ROOM KEY</b> <b><i>must be surrendered upon check-out</i></b> Lost or damaged room key
                     will be charged <b><i>PHP 500.00</i></b>
@@ -106,6 +120,8 @@ const TermsAndConditionsCont = () => {
                     align='left'
                     margin='0px 0px 10px 0px'
                     line='30px'
+                    margin1000='0px 0px 10px 0px'
+                    size1000='14px'
                 >
                     <b>7.</b> The hotel reserves the right to institute necessary actions under the following cases:
                     <ul>
@@ -122,6 +138,8 @@ const TermsAndConditionsCont = () => {
                     color='#2e2e2e'
                     align='left'
                     margin='0px 0px 0px 0px'
+                    margin1000='0px 0px 10px 0px'
+                    size1000='17px'
                 >
                     CHARGES FOR DAMAGED/MISSING ITEMS:
                 </Title>
@@ -135,6 +153,8 @@ const TermsAndConditionsCont = () => {
                             color='#2e2e2e'
                             align='left'
                             margin='0px 0px 5px 0px'
+                            margin1000='0px 0px 5px 0px'
+                            size1000='14px'
                         >
                             SMOKING/DRINKING - PHP 10,000.00
                         </Title>
@@ -146,6 +166,8 @@ const TermsAndConditionsCont = () => {
                             color='#2e2e2e'
                             align='left'
                             margin='0px 0px 5px 0px'
+                            margin1000='0px 0px 5px 0px'
+                            size1000='14px'
                         >
                             Tables - PHP 3,000.00
                         </Title>
@@ -157,6 +179,8 @@ const TermsAndConditionsCont = () => {
                             color='#2e2e2e'
                             align='left'
                             margin='0px 0px 5px 0px'
+                            margin1000='0px 0px 5px 0px'
+                            size1000='14px'
                         >
                             Stained Linen - PHP 1,000.00
                         </Title>
@@ -168,6 +192,8 @@ const TermsAndConditionsCont = () => {
                             color='#2e2e2e'
                             align='left'
                             margin='0px 0px 5px 0px'
+                            margin1000='0px 0px 5px 0px'
+                            size1000='14px'
                         >
                             Foul Odor - PHP 1,000.00
                         </Title>
@@ -181,6 +207,8 @@ const TermsAndConditionsCont = () => {
                             color='#2e2e2e'
                             align='left'
                             margin='0px 0px 5px 0px'
+                            margin1000='0px 0px 5px 0px'
+                            size1000='14px'
                         >
                             Bed Runner / Throw Pillow - PHP 500.00
                         </Title>
@@ -192,6 +220,8 @@ const TermsAndConditionsCont = () => {
                             color='#2e2e2e'
                             align='left'
                             margin='0px 0px 5px 0px'
+                            margin1000='0px 0px 5px 0px'
+                            size1000='14px'
                         >
                             Room Key - PHP 500.00
                         </Title>
@@ -203,6 +233,8 @@ const TermsAndConditionsCont = () => {
                             color='#2e2e2e'
                             align='left'
                             margin='0px 0px 5px 0px'
+                            margin1000='0px 0px 5px 0px'
+                            size1000='14px'
                         >
                             Kitchen Wares - PHP 500.00
                         </Title>
@@ -214,6 +246,8 @@ const TermsAndConditionsCont = () => {
                             color='#2e2e2e'
                             align='left'
                             margin='0px 0px 5px 0px'
+                            margin1000='0px 0px 5px 0px'
+                            size1000='14px'
                         >
                             Towel - PHP 500.00
                         </Title>
@@ -227,6 +261,8 @@ const TermsAndConditionsCont = () => {
                             color='#2e2e2e'
                             align='left'
                             margin='0px 0px 5px 0px'
+                            margin1000='0px 0px 5px 0px'
+                            size1000='14px'
                         >
                             Slippers - PHP 200.00
                         </Title>
@@ -238,6 +274,8 @@ const TermsAndConditionsCont = () => {
                             color='#2e2e2e'
                             align='left'
                             margin='0px 0px 5px 0px'
+                            margin1000='0px 0px 5px 0px'
+                            size1000='14px'
                         >
                             Room Key - PHP 500.00
                         </Title>
