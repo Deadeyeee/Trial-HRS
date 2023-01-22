@@ -215,13 +215,13 @@ new CronJob('* 1 * * * *', () => {
     'America/Los_Angeles'
 )
 
-new CronJob('* 1 * * * *', () => {
-    disableGuest();
-},
-    null,
-    true,
-    'America/Los_Angeles'
-)
+// new CronJob('* 1 * * * *', () => {
+//     disableGuest();
+// },
+//     null,
+//     true,
+//     'America/Los_Angeles'
+// )
 
 
 

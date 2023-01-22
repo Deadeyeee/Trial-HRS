@@ -286,7 +286,7 @@ const BillingSummaryContainer = () => {
                 }).then((isAvailable) => {
                     console.log(isAvailable.data)
 
-                    if (isAvailable.data == true && indexfirst == arrayfirst.length - 1) {
+                    if (isAvailable.data == true && parent == bookingInformation.length - 1 && indexfirst == arrayfirst.length - 1) {
                         if (userInformation.length == 0) {
                             let formatNumber;
                             if (window.sessionStorage.getItem('contactNumber').slice(0, 3) == "+63") {
@@ -1000,10 +1000,8 @@ const BillingSummaryContainer = () => {
 
                         }
                     }
-                    else if(isAvailable.data == true && indexfirst != arrayfirst.length - 1){
+                    else if(isAvailable.data == false){
                         
-                    }
-                    else {
                         alert('Sorry, Some of your rooms was reserved by someone else. ')
                         handleCloseIsLoading(3)
                         window.sessionStorage.clear();

@@ -4740,7 +4740,7 @@ export const ReservationContainer = () => {
                                     <Th align='center' color='black'>Total nights</Th>
                                     <Th align='center' color='black'>Rate per night</Th>
                                     <Th align='center' color='black'>Total amout due</Th>
-                                    <Th align='center' color='black'>Action</Th>
+                                    {/* <Th align='center' color='black'>Action</Th> */}
                                 </Tr>
                                 {reservationSummaryInfo.length != 0 ?
 
@@ -4757,7 +4757,7 @@ export const ReservationContainer = () => {
                                             <Td align='center' style={item.id == editReservationId ? { backgroundColor: 'green', color: 'white' } : { backgroundColor: '', color: '' }}>{numberFormat(item.room.roomType.roomRate)}</Td>
                                             <Td align='center' style={item.id == editReservationId ? { backgroundColor: 'green', color: 'white' } : { backgroundColor: '', color: 'red' }}>{numberFormat(item.total)}</Td>
 
-                                            <Td align='center' style={item.id == editReservationId ? { backgroundColor: 'green', color: 'white' } : { backgroundColor: '', color: '' }}>
+                                            {/* <Td align='center' style={item.id == editReservationId ? { backgroundColor: 'green', color: 'white' } : { backgroundColor: '', color: '' }}>
 
 
                                                 {item.id == editReservationId ?
@@ -4781,7 +4781,7 @@ export const ReservationContainer = () => {
                                                     </ContainerGlobal>}
 
 
-                                            </Td>
+                                            </Td> */}
                                         </Tr>
 
                                     ))
